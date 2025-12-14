@@ -1,0 +1,377 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// 3.1 Core multi-tenant entities
+
+model Tenant {
+  id        String   @id @default(uuid())
+  name      String
+  slug      String   @unique
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  users         Membership[]
+  stores        Store[]
+  customers     Customer[]
+  products      Product[]
+  collections   Collection[]
+  orders        Order[]
+  whatsappAccount WhatsAppAccount?
+  knowledgeBase KnowledgeBaseItem[]
+  agents        AgentAction[]
+
+  @@index([createdAt])
+}
+
+model User {
+  id        String   @id @default(uuid())
+  email     String   @unique
+  name      String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  memberships Membership[]
+}
+
+enum Role {
+  OWNER
+  STAFF
+}
+
+model Membership {
+  id        String   @id @default(uuid())
+  userId    String
+  tenantId  String
+  role      Role     @default(STAFF)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user   User   @relation(fields: [userId], references: [id])
+  tenant Tenant @relation(fields: [tenantId], references: [id])
+
+  @@unique([userId, tenantId])
+}
+
+// 3.2 Commerce entities
+
+model Store {
+  id        String   @id @default(uuid())
+  tenantId  String
+  name      String
+  slug      String
+  settings  Json?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  tenant Tenant @relation(fields: [tenantId], references: [id])
+
+  @@unique([tenantId, slug])
+}
+
+model Product {
+  id          String   @id @default(uuid())
+  tenantId    String
+  title       String
+  description String?
+  handle      String
+  price       Decimal  @default(0)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  tenant   Tenant           @relation(fields: [tenantId], references: [id])
+  variants ProductVariant[]
+  listings MarketplaceListing[]
+
+  @@unique([tenantId, handle])
+}
+
+model ProductVariant {
+  id        String   @id @default(uuid())
+  productId String
+  title     String
+  sku       String?
+  price     Decimal  @default(0)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  product   Product     @relation(fields: [productId], references: [id])
+  inventory Inventory[]
+}
+
+model Inventory {
+  id        String   @id @default(uuid())
+  variantId String
+  quantity  Int      @default(0)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  variant ProductVariant @relation(fields: [variantId], references: [id])
+}
+
+model Collection {
+  id        String   @id @default(uuid())
+  tenantId  String
+  title     String
+  handle    String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  tenant Tenant @relation(fields: [tenantId], references: [id])
+  
+  @@unique([tenantId, handle])
+}
+
+model Customer {
+  id        String   @id @default(uuid())
+  tenantId  String
+  name      String?
+  email     String?
+  phone     String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  tenant Tenant  @relation(fields: [tenantId], references: [id])
+  orders Order[]
+  carts  Cart[]
+}
+
+model Cart {
+  id         String   @id @default(uuid())
+  tenantId   String
+  customerId String?
+  items      Json     @default("[]") // Simplified for v1
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  customer Customer? @relation(fields: [customerId], references: [id])
+}
+
+model DraftOrder {
+  id        String   @id @default(uuid())
+  tenantId  String
+  items     Json
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+enum OrderStatus {
+  DRAFT
+  PENDING_PAYMENT
+  PAID
+  PROCESSING
+  SHIPPED
+  DELIVERED
+  CANCELLED
+  REFUND_REQUESTED
+  REFUNDED
+}
+
+model Order {
+  id          String      @id @default(uuid())
+  tenantId    String
+  customerId  String?
+  status      OrderStatus @default(DRAFT)
+  totalAmount Decimal     @default(0)
+  currency    String      @default("NGN")
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+
+  tenant        Tenant          @relation(fields: [tenantId], references: [id])
+  customer      Customer?       @relation(fields: [customerId], references: [id])
+  items         OrderItem[]
+  events        OrderEvent[]
+  paymentIntent PaymentIntent?
+  deliveryTasks DeliveryTask[]
+}
+
+model OrderItem {
+  id        String   @id @default(uuid())
+  orderId   String
+  title     String
+  quantity  Int
+  price     Decimal
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  order Order @relation(fields: [orderId], references: [id])
+}
+
+model OrderEvent {
+  id        String   @id @default(uuid())
+  orderId   String
+  type      String
+  payload   Json?
+  createdAt DateTime @default(now())
+
+  order Order @relation(fields: [orderId], references: [id])
+}
+
+enum PaymentStatus {
+  INITIATED
+  REDIRECTED
+  PENDING
+  PAID
+  FAILED
+  CANCELED
+}
+
+model PaymentIntent {
+  id        String        @id @default(uuid())
+  orderId   String        @unique
+  reference String        @unique
+  amount    Decimal
+  currency  String        @default("NGN")
+  status    PaymentStatus @default(INITIATED)
+  provider  String        @default("paystack")
+  createdAt DateTime      @default(now())
+  updatedAt DateTime      @updatedAt
+
+  order  Order          @relation(fields: [orderId], references: [id])
+  events PaymentEvent[]
+}
+
+model PaymentEvent {
+  id              String   @id @default(uuid())
+  paymentIntentId String
+  type            String
+  payload         Json?
+  createdAt       DateTime @default(now())
+
+  paymentIntent PaymentIntent @relation(fields: [paymentIntentId], references: [id])
+}
+
+model DeliveryZone {
+  id        String   @id @default(uuid())
+  tenantId  String
+  name      String
+  price     Decimal
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model DeliveryTask {
+  id        String   @id @default(uuid())
+  orderId   String
+  status    String   @default("PENDING")
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  order  Order           @relation(fields: [orderId], references: [id])
+  events DeliveryEvent[]
+}
+
+model DeliveryEvent {
+  id             String   @id @default(uuid())
+  deliveryTaskId String
+  type           String
+  payload        Json?
+  createdAt      DateTime @default(now())
+
+  deliveryTask DeliveryTask @relation(fields: [deliveryTaskId], references: [id])
+}
+
+// 3.3 Marketplace entities (v1)
+
+model MarketplaceListing {
+  id        String   @id @default(uuid())
+  productId String
+  isListed  Boolean  @default(false)
+  rankScore Int      @default(0)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  product Product            @relation(fields: [productId], references: [id])
+  events  MarketplaceEvent[]
+}
+
+model MarketplaceEvent {
+  id        String   @id @default(uuid())
+  listingId String
+  type      String   // IMPRESSION, CLICK
+  createdAt DateTime @default(now())
+
+  listing MarketplaceListing @relation(fields: [listingId], references: [id])
+}
+
+// 3.4 WhatsApp + AI entities (v1)
+
+model WhatsAppAccount {
+  id          String   @id @default(uuid())
+  tenantId    String   @unique
+  phoneNumber String
+  providerId  String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  tenant Tenant @relation(fields: [tenantId], references: [id])
+}
+
+model Conversation {
+  id        String    @id @default(uuid())
+  tenantId  String
+  userPhone String
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  messages  Message[]
+}
+
+model Message {
+  id             String   @id @default(uuid())
+  conversationId String
+  direction      String   // INBOUND, OUTBOUND
+  content        String
+  createdAt      DateTime @default(now())
+
+  conversation Conversation @relation(fields: [conversationId], references: [id])
+}
+
+model AgentAction {
+  id        String   @id @default(uuid())
+  tenantId  String
+  name      String
+  config    Json?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  tenant Tenant @relation(fields: [tenantId], references: [id])
+}
+
+model ApprovalRequest {
+  id        String            @id @default(uuid())
+  action    String
+  payload   Json
+  status    String            @default("PENDING") // PENDING, APPROVED, REJECTED
+  createdAt DateTime          @default(now())
+  decision  ApprovalDecision?
+}
+
+model ApprovalDecision {
+  id        String   @id @default(uuid())
+  requestId String   @unique
+  userId    String
+  decision  String   // APPROVED, REJECTED
+  reason    String?
+  createdAt DateTime @default(now())
+
+  request ApprovalRequest @relation(fields: [requestId], references: [id])
+}
+
+model KnowledgeBaseItem {
+  id        String   @id @default(uuid())
+  tenantId  String
+  question  String
+  answer    String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  tenant Tenant @relation(fields: [tenantId], references: [id])
+}

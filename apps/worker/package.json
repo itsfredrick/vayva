@@ -1,0 +1,23 @@
+{
+    "name": "worker",
+    "version": "0.0.0",
+    "private": true,
+    "scripts": {
+        "dev": "tsx watch src/worker.ts",
+        "build": "tsc",
+        "start": "node dist/worker.js",
+        "lint": "eslint ."
+    },
+    "dependencies": {
+        "@vayva/db": "workspace:*",
+        "@vayva/shared": "workspace:*",
+        "bullmq": "^4.12.0",
+        "dotenv": "^16.3.1",
+        "ioredis": "^5.8.2"
+    },
+    "devDependencies": {
+        "@types/node": "^20.0.0",
+        "tsx": "^4.6.2",
+        "typescript": "^5.0.0"
+    }
+}
