@@ -1,0 +1,37 @@
+
+> ops-console@0.0.0 build /Users/fredrick/.gemini/antigravity/scratch/vayva/apps/ops-console
+> next build
+
+  ▲ Next.js 14.2.35
+
+   Creating an optimized production build ...
+Failed to compile.
+
+./src/app/ops/disputes/page.tsx
+Module not found: Can't resolve '@/services/OpsService'
+
+https://nextjs.org/docs/messages/module-not-found
+
+./src/app/ops/merchants/[id]/page.tsx
+Module not found: Can't resolve '@/services/OpsService'
+
+https://nextjs.org/docs/messages/module-not-found
+
+./src/app/ops/merchants/page.tsx
+Module not found: Can't resolve '@/services/OpsService'
+
+https://nextjs.org/docs/messages/module-not-found
+
+./src/app/ops/page.tsx
+Module not found: Can't resolve '../../../services/OpsService'
+
+https://nextjs.org/docs/messages/module-not-found
+
+./src/app/ops/refunds/page.tsx
+Module not found: Can't resolve '@/services/OpsService'
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+> Build failed because of webpack errors
+ ELIFECYCLE  Command failed with exit code 1.

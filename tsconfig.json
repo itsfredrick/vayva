@@ -6,12 +6,18 @@
             "ES2020"
         ],
         "module": "ESNext",
-        "moduleResolution": "bundler",
+        "moduleResolution": "node",
         "skipLibCheck": true,
         "strict": true,
         "forceConsistentCasingInFileNames": true,
         "resolveJsonModule": true,
-        "isolatedModules": true
+        "isolatedModules": true,
+        "baseUrl": ".",
+        "paths": {
+            "@vayva/db": [
+                "infra/db/src/client.ts"
+            ]
+        }
     },
     "include": [],
     "exclude": [

@@ -17,7 +17,7 @@ const start = async () => {
         await server.listen({ port: 3005, host: '0.0.0.0' });
         console.log('WhatsApp Service running on port 3005');
     } catch (err) {
-        server.log.error(err);
+        (server.log as any).error(err);
         process.exit(1);
     }
 };

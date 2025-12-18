@@ -17,7 +17,7 @@ const start = async () => {
         await server.listen({ port: 3004, host: '0.0.0.0' });
         console.log('Audit Service running on port 3004');
     } catch (err) {
-        server.log.error(err);
+        (server.log as any).error(err);
         process.exit(1);
     }
 };

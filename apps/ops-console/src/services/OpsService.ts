@@ -59,6 +59,10 @@ export class OpsService {
         return MOCK_MERCHANTS;
     }
 
+    static async getDisputes() {
+        return MOCK_DISPUTES;
+    }
+
     static async getMerchant(id: string) {
         return MOCK_MERCHANTS.find(m => m.id === id);
     }

@@ -18,7 +18,7 @@ const start = async () => {
         await server.listen({ port: 3020, host: '0.0.0.0' });
         console.log('Theme Service running on port 3020');
     } catch (err) {
-        server.log.error(err);
+        (server.log as any).error(err);
         process.exit(1);
     }
 };

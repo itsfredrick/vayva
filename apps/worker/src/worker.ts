@@ -1,5 +1,5 @@
 import { Worker } from 'bullmq';
-import dotenv from 'dotenv';
+import * as dotenv from 'dotenv';
 import { prisma } from '@vayva/db';
 import IORedis from 'ioredis';
 

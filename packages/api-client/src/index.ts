@@ -80,4 +80,4 @@ class ApiClient {
 }
 
 export const apiClient = new ApiClient();
-export * from './generated/schema';
+export type * from './generated/schema';

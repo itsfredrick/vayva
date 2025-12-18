@@ -1,6 +1,8 @@
 import { NextResponse } from 'next/server';
 import { prisma } from '@vayva/db';
 
+export const dynamic = 'force-dynamic';
+
 export async function GET() {
     // Public endpoint
     const incidents = await prisma.statusIncident.findMany({

@@ -1,4 +1,5 @@
-import { AddOn, Invoice, PlanDetails, PlanTier, PLANS, Subscription, UsageStats } from '@/types/billing';
+import { AddOn, Invoice, PlanDetails, PlanTier, Subscription, UsageStats } from '@/types/billing';
+import { PLANS } from '@/lib/billing/plans';
 
 // Mock Data
 let currentPlan: PlanTier = 'STARTER';

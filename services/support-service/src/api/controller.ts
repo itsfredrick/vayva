@@ -37,7 +37,7 @@ export const SupportController = {
                 customerId,
                 subject,
                 description,
-                priority: priority || 'MEDIUM',
+                priority: (priority || 'MEDIUM') as any,
                 category,
                 orderId,
                 conversationId,
@@ -48,7 +48,7 @@ export const SupportController = {
                         body: description,
                         direction: 'INBOUND', // Assuming created from inquiry
                         channel: 'INTERNAL'
-                    }] : []
+                    } as any] : []
                 }
             }
         });
@@ -61,7 +61,7 @@ export const SupportController = {
         const tickets = await prisma.supportTicket.findMany({
             where: {
                 storeId,
-                status: status || undefined,
+                status: (status as any) || undefined,
                 assignedTo: assignedTo || undefined
             },
             include: {
@@ -92,7 +92,7 @@ export const SupportController = {
         const { id } = req.params;
         const ticket = await prisma.supportTicket.update({
             where: { id },
-            data: req.body
+            data: req.body as any
         });
         return ticket;
     },
@@ -109,8 +109,8 @@ export const SupportController = {
                 storeId: ticket.storeId,
                 ticketId: id,
                 body,
-                channel: channel || 'INTERNAL',
-                direction: direction || 'INTERNAL',
+                channel: (channel || 'INTERNAL') as any,
+                direction: (direction || 'INTERNAL') as any,
                 attachments,
                 createdBy: userId
             }

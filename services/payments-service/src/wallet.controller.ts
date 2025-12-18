@@ -1,8 +1,10 @@
 import { FastifyRequest, FastifyReply } from 'fastify';
 import { z } from 'zod';
 import { prisma } from '@vayva/db';
-import bcrypt from 'bcryptjs';
-import crypto from 'crypto';
+// import { WalletStatus, TransactionType, TransactionStatus } from '@prisma/client';
+import * as bcrypt from 'bcryptjs';
+import * as crypto from 'crypto';
+import axios from 'axios';
 
 /**
  * Wallet Read Model (Summary)
@@ -55,7 +57,7 @@ export const getLedgerHandler = async (req: FastifyRequest, reply: FastifyReply)
 
     return reply.send(ledger.map(entry => ({
         ...entry,
-        amountKobo: entry.amountKobo.toString()
+        amount: entry.amount.toString()
     })));
 };
 
@@ -68,7 +70,7 @@ const setPinSchema = z.object({
 
 export const setPinHandler = async (req: FastifyRequest, reply: FastifyReply) => {
     const storeId = req.headers['x-store-id'] as string;
-    const { pin } = setPinSchema.parse(req.body);
+    const { pin } = setPinSchema.parse(req.body as any);
 
     const hashedPin = await bcrypt.hash(pin, 10);
 
@@ -89,7 +91,7 @@ const verifyPinSchema = z.object({
 
 export const verifyPinHandler = async (req: FastifyRequest, reply: FastifyReply) => {
     const storeId = req.headers['x-store-id'] as string;
-    const { pin } = verifyPinSchema.parse(req.body);
+    const { pin } = verifyPinSchema.parse(req.body as any);
 
     const wallet = await prisma.wallet.findUnique({ where: { storeId } });
     if (!wallet || !wallet.pinHash) return reply.status(400).send({ error: 'PIN not set' });
@@ -104,14 +106,20 @@ export const verifyPinHandler = async (req: FastifyRequest, reply: FastifyReply)
     if (!isValid) {
         const attempts = wallet.failedPinAttempts + 1;
         const isLocked = attempts >= 5;
-        await prisma.wallet.update({
-            where: { storeId },
-            data: {
-                failedPinAttempts: attempts,
-                isLocked: isLocked,
-                lockedUntil: isLocked ? new Date(Date.now() + 15 * 60000) : null
-            }
-        });
+        try {
+            await prisma.wallet.update({
+                where: { storeId },
+                data: {
+                    failedPinAttempts: attempts,
+                    isLocked: isLocked,
+                    lockedUntil: isLocked ? new Date(Date.now() + 15 * 60000) : null
+                }
+            });
+            return reply.send({ success: true, message: 'Wallet lock status updated' });
+        } catch (error) {
+            (req.log as any).error(error);
+            return reply.status(500).send({ error: 'Failed to update wallet lock status' });
+        }
         return reply.status(401).send({ error: 'Invalid PIN', attemptsRemaining: 5 - attempts });
     }
 
@@ -124,24 +132,23 @@ export const verifyPinHandler = async (req: FastifyRequest, reply: FastifyReply)
     return reply.send({ status: 'success', unlockToken: 'v1_session_' + crypto.randomBytes(16).toString('hex') });
 };
 
+
 /**
  * Virtual Account (Paystack Dedicated Account)
  */
 const PAYSTACK_SECRET_KEY = process.env.PAYSTACK_SECRET_KEY || 'sk_test_mock';
 const IS_TEST_MODE = !process.env.PAYSTACK_SECRET_KEY || process.env.PAYSTACK_MOCK === 'true';
 
-import axios from 'axios';
-
 export const createVirtualAccountHandler = async (req: FastifyRequest, reply: FastifyReply) => {
     const storeId = req.headers['x-store-id'] as string;
 
     const wallet = await prisma.wallet.findUnique({ where: { storeId } });
     if (!wallet) return reply.status(404).send({ error: 'Wallet not found' });
-    if (wallet.vaStatus === 'ACTIVE') return reply.send({ status: 'ACTIVE', data: wallet });
+    if ((wallet.vaStatus as any) === 'CREATED') return reply.send({ status: 'CREATED', data: wallet });
 
     if (IS_TEST_MODE) {
         const mockVA = {
-            vaStatus: 'ACTIVE' as const,
+            vaStatus: 'CREATED' as any,
             vaBankName: 'Test Bank',
             vaAccountNumber: Math.floor(Math.random() * 9000000000 + 1000000000).toString(),
             vaAccountName: 'VAYVA/' + storeId.slice(0, 8),
@@ -166,14 +173,14 @@ export const createVirtualAccountHandler = async (req: FastifyRequest, reply: Fa
             customer: store?.slug + '@vayva.app', // Dynamic placeholder
             preferred_bank: "wema-bank"
         }, {
-            headers: { Authorization: `Bearer ${PAYSTACK_SECRET_KEY}` }
+            headers: { Authorization: `Bearer ${PAYSTACK_SECRET_KEY} ` }
         });
 
         const va = response.data.data;
         const updated = await prisma.wallet.update({
             where: { storeId },
             data: {
-                vaStatus: 'ACTIVE',
+                vaStatus: 'CREATED' as any,
                 vaBankName: va.bank.name,
                 vaAccountNumber: va.account_number,
                 vaAccountName: va.account_name,
@@ -207,7 +214,7 @@ const addBankSchema = z.object({
 
 export const addBankHandler = async (req: FastifyRequest, reply: FastifyReply) => {
     const storeId = req.headers['x-store-id'] as string;
-    const body = addBankSchema.parse(req.body);
+    const body = addBankSchema.parse(req.body as any);
 
     if (body.isDefault) {
         await prisma.bankBeneficiary.updateMany({
@@ -240,7 +247,7 @@ const withdrawInitiateSchema = z.object({
 
 export const initiateWithdrawalHandler = async (req: FastifyRequest, reply: FastifyReply) => {
     const storeId = req.headers['x-store-id'] as string;
-    const body = withdrawInitiateSchema.parse(req.body);
+    const body = withdrawInitiateSchema.parse(req.body as any);
 
     const wallet = await prisma.wallet.findUnique({ where: { storeId } });
     if (!wallet || !wallet.pinHash) return reply.status(400).send({ error: 'Wallet not ready or PIN not set' });
@@ -291,7 +298,7 @@ const withdrawConfirmSchema = z.object({
 
 export const confirmWithdrawalHandler = async (req: FastifyRequest, reply: FastifyReply) => {
     const storeId = req.headers['x-store-id'] as string;
-    const { withdrawalId, otpCode } = withdrawConfirmSchema.parse(req.body);
+    const { withdrawalId, otpCode } = withdrawConfirmSchema.parse(req.body as any);
 
     const withdrawal = await prisma.withdrawal.findUnique({ where: { id: withdrawalId } });
     if (!withdrawal) return reply.status(404).send({ error: 'Withdrawal not found' });
@@ -323,11 +330,14 @@ export const confirmWithdrawalHandler = async (req: FastifyRequest, reply: Fasti
             prisma.ledgerEntry.create({
                 data: {
                     storeId,
-                    type: 'PAYOUT',
-                    status: 'SUCCESS',
-                    amountKobo: withdrawal.amountKobo,
-                    title: 'Withdrawal to Bank',
-                    reference: 'WDR-' + Date.now()
+                    referenceType: 'payout',
+                    referenceId: 'WDR-' + Date.now(),
+                    direction: 'DEBIT',
+                    account: 'payouts',
+                    amount: (Number(withdrawal.amountKobo) / 100) as any,
+                    currency: 'NGN',
+                    description: 'Withdrawal to Bank',
+                    metadata: { status: 'SUCCESS' }
                 }
             })
         ]);
@@ -349,7 +359,7 @@ const kycSubmitSchema = z.object({
 
 export const submitKycHandler = async (req: FastifyRequest, reply: FastifyReply) => {
     const storeId = req.headers['x-store-id'] as string;
-    const { nin, bvn } = kycSubmitSchema.parse(req.body);
+    const { nin, bvn } = kycSubmitSchema.parse(req.body as any);
 
     // 1. Masking
     const ninLast4 = nin.slice(-4);
@@ -364,8 +374,8 @@ export const submitKycHandler = async (req: FastifyRequest, reply: FastifyReply)
                 storeId,
                 ninLast4,
                 bvnLast4,
-                fullNinEncrypted: `ENC:${nin}`, // Placeholder for encryption
-                fullBvnEncrypted: `ENC:${bvn}`, // Placeholder for encryption
+                fullNinEncrypted: `ENC:${nin} `, // Placeholder for encryption
+                fullBvnEncrypted: `ENC:${bvn} `, // Placeholder for encryption
                 status: 'PENDING',
                 audit: [
                     { event: 'KYC_SUBMITTED', at: new Date().toISOString(), actorId: req.headers['x-user-id'] }
@@ -374,8 +384,8 @@ export const submitKycHandler = async (req: FastifyRequest, reply: FastifyReply)
             update: {
                 ninLast4,
                 bvnLast4,
-                fullNinEncrypted: `ENC:${nin}`,
-                fullBvnEncrypted: `ENC:${bvn}`,
+                fullNinEncrypted: `ENC:${nin} `,
+                fullBvnEncrypted: `ENC:${bvn} `,
                 status: 'PENDING',
                 audit: {
                     push: { event: 'KYC_RESUBMITTED', at: new Date().toISOString(), actorId: req.headers['x-user-id'] }

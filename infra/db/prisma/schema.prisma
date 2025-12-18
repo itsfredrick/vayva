@@ -348,10 +348,10 @@ model Store {
   
   // WhatsApp & Communication
   whatsAppChannel   WhatsappChannel?
-  contacts          Contact[]
+  crmContacts       Contact[]
   conversations     Conversation[]
   aiActionRuns      AiActionRun[]
-  approvalRequests  ApprovalRequest[]
+  approvalRequests  Approval[]
   
   // Financial relations
   wallet            Wallet?
@@ -478,12 +478,24 @@ model Store {
   publishHistory    PublishHistory[]
   domainMappings    DomainMapping[]
   
-  subscription      MerchantSubscription?
-  invoices          Invoice[]
+  merchantSubscription MerchantSubscription?
+
   dunningAttempts   DunningAttempt[]
   
   // Template Gallery
   templateSelection StoreTemplateSelection?
+
+  // V2/Secondary Relations (to resolve ambiguities)
+  webhookEventsV2    WebhookEventV2[]
+  webhookDeliveriesV2 WebhookDeliveryV2[]
+  disputesV2         DisputeV2[]
+  returnRequestsV2   ReturnRequestV2[]
+  invoicesV2         InvoiceV2[]
+  supportTicketsV2   SupportTicketV2[]
+  merchantApiKeys    MerchantApiKey[]
+  idempotencyKeysV2  IdempotencyKeyV2[]
+  inventoryItemsV2   InventoryItemV2[]
+  statusIncidentsV2  StatusIncidentV2[]
 }
 
 model TemplateManifest {
@@ -1635,6 +1647,7 @@ model IdempotencyKey {
 model WebhookEvent {
   id          String   @id @default(uuid())
   merchantId  String?
+  store       Store?   @relation(fields: [merchantId], references: [id])
   
   provider    String   // paystack, shipbubble, meta
   eventId     String   @unique // Provider's unique ID
@@ -1671,7 +1684,7 @@ model JobDeadLetter {
 
 // --- SUPPORT & STATUS ---
 
-model SupportTicket {
+model SupportTicketV2 {
   id          String   @id @default(uuid())
   storeId     String   // Using storeId to match existing pattern instead of generic merchantId if possible, or mapping merchantId to Store.id
   store       Store    @relation(fields: [storeId], references: [id])
@@ -1699,7 +1712,7 @@ model SupportTicket {
 model SupportMessage {
   id          String   @id @default(uuid())
   ticketId    String
-  ticket      SupportTicket @relation(fields: [ticketId], references: [id])
+  ticket      SupportTicketV2 @relation(fields: [ticketId], references: [id])
   
   senderType  String   // merchant_user, platform_admin, system
   senderId    String?  // userId if applicable
@@ -1814,6 +1827,11 @@ model Invoice {
   
   createdAt     DateTime @default(now())
   
+  subscriptionId String?
+  subscription  Subscription? @relation(fields: [subscriptionId], references: [id])
+
+
+
   @@index([storeId])
   @@map("invoice")
 }
@@ -2137,7 +2155,7 @@ model Withdrawal {
   @@index([storeId])
 }
 
-model Invoice {
+model InvoiceV2 {
   id              String   @id @default(uuid())
   storeId         String
   customerId      String?
@@ -2157,7 +2175,7 @@ model Invoice {
   
   subscriptionId  String?
   subscription    Subscription? @relation(fields: [subscriptionId], references: [id])
-  invoiceLines    InvoiceLine[]
+  invoiceLines    InvoiceLineV2[]
 
   store           Store    @relation(fields: [storeId], references: [id])
 
@@ -2287,7 +2305,7 @@ model Refund {
   charge           Charge   @relation(fields: [chargeId], references: [id])
   
   approvalRequestId String? @unique
-  approvalRequest  ApprovalRequest? @relation(fields: [approvalRequestId], references: [id])
+  approvalRequest  Approval? @relation(fields: [approvalRequestId], references: [id])
   
   @@unique([provider, providerRefundId])
 }
@@ -3392,13 +3410,15 @@ model Subscription {
   store                 Store              @relation(fields: [storeId], references: [id])
   plan                  Plan               @relation(fields: [planKey], references: [key])
   invoices              Invoice[]
+  invoicesV2            InvoiceV2[]
+
 
   @@index([storeId, status])
 }
 
 
 
-model InvoiceLine {
+model InvoiceLineV2 {
   id          String  @id @default(uuid())
   invoiceId   String
   
@@ -3408,7 +3428,7 @@ model InvoiceLine {
   amount      Decimal @db.Decimal(10, 2)
   metadata    Json?
   
-  invoice     Invoice @relation(fields: [invoiceId], references: [id])
+  invoice     InvoiceV2 @relation(fields: [invoiceId], references: [id])
 }
 
 model UsageCounter {
@@ -3502,7 +3522,7 @@ model WebhookEndpoint {
   @@index([storeId, status])
 }
 
-model WebhookEvent {
+model WebhookEventV2 {
   id        String   @id @default(uuid())
   storeId   String
   
@@ -3538,7 +3558,7 @@ model WebhookDelivery {
   
   store               Store                 @relation(fields: [storeId], references: [id])
   endpoint            WebhookEndpoint       @relation(fields: [endpointId], references: [id])
-  event               WebhookEvent          @relation(fields: [eventId], references: [id])
+  event               WebhookEventV2          @relation(fields: [eventId], references: [id])
 
   @@index([storeId, status, nextRetryAt])
   @@index([endpointId, createdAt])
@@ -3690,7 +3710,7 @@ enum MigrationStatus {
   PAUSED
 }
 
-model IdempotencyKey {
+model IdempotencyKeyV2 {
   id           String             @id @default(uuid())
   storeId      String?
   
@@ -3703,6 +3723,8 @@ model IdempotencyKey {
   
   createdAt    DateTime           @default(now())
   updatedAt    DateTime           @updatedAt
+  store        Store?             @relation(fields: [storeId], references: [id])
+
 
   @@unique([storeId, scope, key])
   @@index([scope, key])
@@ -4255,26 +4277,32 @@ model ApprovalExecutionLog {
   startedAt DateTime @default(now())
   finishedAt DateTime?
   
-  approvalRequest ApprovalRequest @relation(fields: [approvalRequestId], references: [id])
+  approvalRequest Approval @relation(fields: [approvalRequestId], references: [id])
   
   @@map("approval_execution_log")
 }
 
-model ApprovalRequest {
+model Approval {
   id          String   @id @default(uuid())
   merchantId  String
+  storeId     String?  // Compatibility for some services
   
   requestedByUserId String? 
-  requestedByLabel  String 
+  requestedByLabel  String? 
   
-  actionType  String // refund.issue, campaign.send
+  actionType  String? // refund.issue, campaign.send
+  type        String? // DISCOUNT_APPLICATION
+  
+  summary     String?
   
   entityType  String?
   entityId    String?
   
-  payload     Json    
+  payload     Json?   
+  data        Json?   // Compatibility
   
-  status      String   @default("pending") // pending, approved, rejected, executed, failed, cancelled
+  status      ApprovalStatus @default(PENDING)
+  actionBy    String?
   
   reason      String? 
   decisionReason String? 
@@ -4284,22 +4312,22 @@ model ApprovalRequest {
   decidedAt       DateTime?
   
   executionId   String? 
-  correlationId String 
+  correlationId String? 
   
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
-  
-  store       Store    @relation(fields: [merchantId], references: [id])
+
   logs        ApprovalExecutionLog[]
+  store       Store    @relation(fields: [merchantId], references: [id])
   refunds     Refund[] 
-  
+
   @@index([merchantId, status])
   @@index([executionId])
   @@map("approval_request")
 }
 
 // Integration 44: Disputes & Chargebacks
-model Dispute {
+model DisputeV2 {
   id              String   @id @default(uuid())
   merchantId      String
   
@@ -4327,17 +4355,17 @@ model Dispute {
   createdAt       DateTime @default(now())
   updatedAt       DateTime @updatedAt
 
-  evidence        DisputeEvidence[]
-  submissions     DisputeSubmission[]
+  evidence        DisputeEvidenceV2[]
+  submissions     DisputeSubmissionV2[]
 
   @@index([storeId])
   @@map("dispute")
 }
 
-model DisputeEvidence {
+model DisputeEvidenceV2 {
   id              String   @id @default(uuid())
   disputeId       String
-  dispute         Dispute  @relation(fields: [disputeId], references: [id])
+  dispute         DisputeV2  @relation(fields: [disputeId], references: [id])
   
   merchantId      String
   
@@ -4354,10 +4382,10 @@ model DisputeEvidence {
   @@map("dispute_evidence")
 }
 
-model DisputeSubmission {
+model DisputeSubmissionV2 {
   id              String   @id @default(uuid())
   disputeId       String   @unique
-  dispute         Dispute  @relation(fields: [disputeId], references: [id])
+  dispute         DisputeV2  @relation(fields: [disputeId], references: [id])
   
   submittedBy     String
   submittedAt     DateTime @default(now())
@@ -4369,7 +4397,7 @@ model DisputeSubmission {
 }
 
 // Integration 45: Returns & RMA
-model ReturnRequest {
+model ReturnRequestV2 {
   id              String   @id @default(uuid())
   merchantId      String
   
@@ -4417,7 +4445,7 @@ model ReturnRequest {
 model ReturnEvent {
   id              String   @id @default(uuid())
   returnRequestId String
-  returnRequest   ReturnRequest @relation(fields: [returnRequestId], references: [id])
+  returnRequest   ReturnRequestV2 @relation(fields: [returnRequestId], references: [id])
   
   type            String
   metadata        Json?    @default("{}")
@@ -4432,7 +4460,7 @@ model ReturnEvent {
 }
 
 // Integration 46: Inventory
-model InventoryItem {
+model InventoryItemV2 {
   id              String   @id @default(uuid())
   merchantId      String
   
@@ -4446,6 +4474,8 @@ model InventoryItem {
   lowStockThreshold Int    @default(3)
   
   updatedAt       DateTime @default(now()) @updatedAt
+  store           Store?    @relation(fields: [storeId], references: [id])
+
 
   @@unique([merchantId, productId, variantId])
   @@index([merchantId])
@@ -4724,8 +4754,8 @@ model UptimeCheckResult {
   @@map("uptime_check_result")
 }
 
-model StatusIncident {
-  id              String   @id @default(uuid())
+model StatusIncidentV2 {
+  id              String   @id(map: "status_incident_v2_pkey") @default(uuid())
   title           String
   description     String?
   status          String   @default("investigating")
@@ -4735,11 +4765,14 @@ model StatusIncident {
   autoGenerated   Boolean  @default(false)
   createdBy       String   @default("system")
   lastUpdateAt    DateTime?
+  store           Store?    @relation(fields: [storeId], references: [id])
+  storeId         String?
+
   
   updates         StatusIncidentUpdate[]
   links           IncidentLink[]
 
-  @@map("status_incident")
+  @@map("status_incident_v2")
 }
 
 model StatusIncidentUpdate {
@@ -4749,7 +4782,7 @@ model StatusIncidentUpdate {
   authorType      String   
   createdAt       DateTime @default(now())
   
-  incident        StatusIncident @relation(fields: [incidentId], references: [id])
+  incident        StatusIncidentV2 @relation(fields: [incidentId], references: [id])
 
   @@index([incidentId])
   @@map("status_incident_update")
@@ -4760,7 +4793,7 @@ model IncidentLink {
   incidentId      String
   uptimeCheckId   String
   
-  incident        StatusIncident @relation(fields: [incidentId], references: [id])
+  incident        StatusIncidentV2 @relation(fields: [incidentId], references: [id])
   uptimeCheck     UptimeCheck    @relation(fields: [uptimeCheckId], references: [id])
 
   @@index([incidentId])
@@ -4770,7 +4803,7 @@ model IncidentLink {
 
 // Integration 57: Integrations Framework
 
-model ApiKey {
+model MerchantApiKey {
   id              String   @id @default(uuid())
   merchantId      String
   name            String
@@ -4782,6 +4815,8 @@ model ApiKey {
   createdByUserId String
   createdAt       DateTime @default(now())
   revokedAt       DateTime?
+  store           Store    @relation(fields: [merchantId], references: [id])
+
 
   @@index([merchantId])
   @@map("api_key")
@@ -4798,13 +4833,13 @@ model WebhookSubscription {
   createdAt         DateTime @default(now())
   updatedAt         DateTime @default(now()) @updatedAt
   
-  deliveries        WebhookDelivery[]
+  deliveries        WebhookDeliveryV2[]
 
   @@index([merchantId])
   @@map("webhook_subscription")
 }
 
-model WebhookDelivery {
+model WebhookDeliveryV2 {
   id                    String   @id @default(uuid())
   webhookSubscriptionId String
   merchantId            String
@@ -4817,6 +4852,20 @@ model WebhookDelivery {
   nextRetryAt           DateTime?
   deliveredAt           DateTime?
   createdAt             DateTime @default(now())
+
+  store                 Store    @relation(fields: [merchantId], references: [id])
+
+
+
+  subscription          WebhookSubscription @relation(fields: [webhookSubscriptionId], references: [id])
+
+  @@unique([webhookSubscriptionId, eventId])
+  @@index([webhookSubscriptionId])
+  @@index([merchantId])
+  @@map("webhook_delivery")
+}
+
+
 
 // Integration 59: Feature Flags & Kill Switches
 
@@ -4832,13 +4881,3 @@ model FeatureFlag {
 
   @@map("feature_flag")
 }
-
-  subscription          WebhookSubscription @relation(fields: [webhookSubscriptionId], references: [id])
-
-  @@unique([webhookSubscriptionId, eventId])
-  @@index([webhookSubscriptionId])
-  @@index([merchantId])
-  @@map("webhook_delivery")
-}
-
-

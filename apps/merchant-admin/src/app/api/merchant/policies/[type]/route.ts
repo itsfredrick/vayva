@@ -3,6 +3,8 @@ import { getServerSession } from 'next-auth';
 import { prisma } from '@vayva/db';
 import { sanitizeMarkdown, validatePolicyContent } from '@vayva/policies';
 
+export const dynamic = 'force-dynamic';
+
 export async function GET(
     req: NextRequest,
     { params }: { params: { type: string } }

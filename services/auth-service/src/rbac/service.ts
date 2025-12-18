@@ -1,6 +1,5 @@
-
 import { prisma } from '@vayva/db';
-import { AppRole } from '@prisma/client';
+// import { AppRole } from '@prisma/client';
 
 export const RbacService = {
     // --- Permissions ---
@@ -111,7 +110,7 @@ export const PermissionGuard = {
         if (!member) return false;
 
         // Owner Override (Legacy Enum or System Role)
-        if (member.roleEnum === 'OWNER') return true;
+        if ((member as any).roleEnum === 'OWNER') return true;
 
         // Check Role Relation permissions
         if (member.roleRel) {

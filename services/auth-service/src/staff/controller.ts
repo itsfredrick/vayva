@@ -1,7 +1,7 @@
 import { FastifyRequest, FastifyReply } from 'fastify';
 import { prisma } from '@vayva/db';
 import { z } from 'zod';
-import crypto from 'crypto';
+import * as crypto from 'crypto';
 import { UserRole, SubscriptionPlan } from '@vayva/shared';
 
 const inviteSchema = z.object({
@@ -47,6 +47,7 @@ export const inviteStaffHandler = async (req: FastifyRequest, reply: FastifyRepl
             email,
             role: role as any,
             token,
+            createdBy: user.sub || 'admin',
             expiresAt: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000), // 7 days
         }
     });
@@ -89,7 +90,7 @@ export const acceptInviteHandler = async (req: FastifyRequest, reply: FastifyRep
     if (!user) {
         // Create user
         const bcrypt = require('bcryptjs');
-        const hashedPassword = await bcrypt.hash(password, 10);
+        const hashedPassword = await (bcrypt.hash ? bcrypt.hash(password, 10) : require('bcryptjs').hash(password, 10));
         user = await prisma.user.create({
             data: {
                 email: invite.email,
@@ -137,7 +138,7 @@ export const getStaffHandler = async (req: FastifyRequest, reply: FastifyReply) 
 
 export const removeStaffHandler = async (req: FastifyRequest, reply: FastifyReply) => {
     const user = req.user as any;
-    const { id } = req.params as { id: string };
+    const { id } = (req.params as any) || {};
 
     const actingMember = await prisma.membership.findFirst({
         where: { userId: user.sub }

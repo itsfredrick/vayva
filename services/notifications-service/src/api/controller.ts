@@ -31,7 +31,7 @@ export const NotificationController = {
         const { id } = req.params;
         const template = await prisma.notificationTemplate.update({
             where: { id },
-            data: req.body
+            data: req.body as any
         });
         return template;
     }

@@ -18,7 +18,7 @@ const start = async () => {
         await server.listen({ port: 3023, host: '0.0.0.0' });
         console.log('Admin Service running on port 3023');
     } catch (err) {
-        server.log.error(err);
+        (server.log as any).error(err);
         process.exit(1);
     }
 };

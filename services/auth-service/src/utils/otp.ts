@@ -1,5 +1,5 @@
 import { prisma } from '@vayva/db';
-import crypto from 'crypto';
+import * as crypto from 'crypto';
 
 export const generateOtp = () => {
     return crypto.randomInt(100000, 999999).toString();

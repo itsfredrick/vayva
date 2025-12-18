@@ -99,8 +99,8 @@ export const OnboardingController = {
         for (const item of items) {
             await prisma.goLiveChecklistItem.upsert({
                 where: { storeId_key: { storeId, key: item.key } },
-                create: { storeId, ...item },
-                update: { status: item.status as any }
+                create: { storeId, ...item } as any,
+                update: { status: item.status } as any
             });
         }
 

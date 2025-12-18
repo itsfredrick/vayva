@@ -12,6 +12,7 @@ export interface ApiResponse<T> {
 export enum UserRole {
     OWNER = 'OWNER',
     ADMIN = 'ADMIN',
+    STAFF = 'STAFF',
     SUPPORT = 'SUPPORT',
     FINANCE = 'FINANCE',
     OPS = 'OPS'

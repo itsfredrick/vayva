@@ -1,8 +1,8 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
-import { OpsShell } from '@/components/OpsShell';
-import { OpsService, Dispute } from '@/services/ops.service';
+import { OpsShell } from '../../../components/OpsShell';
+import { OpsService, Dispute } from '../../../services/OpsService';
 import Link from 'next/link';
 
 export default function DisputesPage() {
@@ -39,7 +39,7 @@ export default function DisputesPage() {
                                 <td className="px-6 py-4">₦{d.amount.toLocaleString()}</td>
                                 <td className="px-6 py-4">
                                     <span className={`inline-block px-2 py-1 rounded-full text-xs font-bold capitalize ${d.status === 'open' ? 'bg-red-100 text-red-700' :
-                                            'bg-green-100 text-green-700'
+                                        'bg-green-100 text-green-700'
                                         }`}>
                                         {d.status.replace('_', ' ')}
                                     </span>

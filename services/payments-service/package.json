@@ -16,9 +16,12 @@
         "stripe": "^14.17.0",
         "zod": "^3.22.4",
         "bullmq": "^5.4.1",
-        "dotenv": "^16.4.5"
+        "dotenv": "^16.4.5",
+        "axios": "^1.6.7",
+        "bcryptjs": "^2.4.3"
     },
     "devDependencies": {
+        "@types/bcryptjs": "^2.4.6",
         "@types/node": "^20.11.24",
         "ts-node-dev": "^2.0.0",
         "typescript": "^5.3.3"

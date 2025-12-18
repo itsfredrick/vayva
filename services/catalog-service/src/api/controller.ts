@@ -44,7 +44,7 @@ export const CatalogController = {
     // --- Products ---
 
     createProduct: async (req: FastifyRequest<{ Body: CreateProductBody }>, reply: FastifyReply) => {
-        const { storeId, title, price, description, status, trackInventory, variants } = req.body;
+        const { storeId, title, price, description, status, trackInventory, variants } = req.body as any;
 
         // Transaction to create product + variants + initial inventory
         const result = await prisma.$transaction(async (tx: any) => { // Explicit any for now if tx type inference fails
@@ -112,7 +112,7 @@ export const CatalogController = {
     },
 
     getProducts: async (req: FastifyRequest<{ Querystring: { storeId: string, status?: string } }>, reply: FastifyReply) => {
-        const { storeId, status } = req.query;
+        const { storeId, status } = req.query as any;
         if (!storeId) return reply.status(400).send({ error: "storeId required" });
 
         const products = await prisma.product.findMany({
@@ -152,7 +152,7 @@ export const CatalogController = {
 
         const product = await prisma.product.update({
             where: { id },
-            data
+            data: data as any
         });
         return product;
     },
@@ -179,7 +179,7 @@ export const CatalogController = {
 
     generateVariants: async (req: FastifyRequest<{ Params: { id: string }, Body: GenerateVariantsBody }>, reply: FastifyReply) => {
         const { id } = req.params;
-        const { options } = req.body;
+        const { options } = req.body as any;
 
         const keys = Object.keys(options);
         const cartesian = (...a: any[]) => a.reduce((a, b) => a.flatMap((d: any) => b.map((e: any) => [d, e].flat())));
@@ -239,7 +239,7 @@ export const CatalogController = {
     // --- Inventory ---
 
     getInventory: async (req: FastifyRequest<{ Querystring: { storeId: string } }>, reply: FastifyReply) => {
-        const { storeId } = req.query;
+        const { storeId } = req.query as any;
         // For V1 simple list
         const items = await prisma.inventoryItem.findMany({
             where: {
@@ -254,7 +254,7 @@ export const CatalogController = {
     },
 
     adjustInventory: async (req: FastifyRequest<{ Body: AdjustInventoryBody }>, reply: FastifyReply) => {
-        const { storeId, variantId, quantity, reason, locationId } = req.body;
+        const { storeId, variantId, quantity, reason, locationId } = req.body as any;
 
         const result = await prisma.$transaction(async (tx: any) => {
             let locId = locationId;

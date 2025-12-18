@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { Loader2 } from 'lucide-react';
-import { OpsAuthService } from '@/services/auth.service';
+import { OpsAuthService } from '../../services/AuthService';
 
 export default function OpsSignin() {
     const [email, setEmail] = useState('');

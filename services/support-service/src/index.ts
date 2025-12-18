@@ -27,7 +27,7 @@ const start = async () => {
         await server.listen({ port, host: '0.0.0.0' });
         console.log(`Support Service running on port ${port}`);
     } catch (err) {
-        server.log.error(err);
+        (server.log as any).error(err);
         process.exit(1);
     }
 };

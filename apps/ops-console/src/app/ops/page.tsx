@@ -1,8 +1,8 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
-import { OpsShell } from '@/components/OpsShell';
-import { OpsService } from '@/services/ops.service';
+import { OpsShell } from '../../components/OpsShell';
+import { OpsService } from '../../services/OpsService';
 import { Users, AlertTriangle, Receipt, Activity } from 'lucide-react';
 import Link from 'next/link';
 

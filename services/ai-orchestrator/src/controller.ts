@@ -7,12 +7,12 @@ export const processHandler = async (req: FastifyRequest, reply: FastifyReply) =
 
     const message = await prisma.message.findUnique({
         where: { id: messageId },
-        include: { conversation: true }
+        include: { conversation: { include: { contact: true } } }
     });
 
     if (!message || !message.conversation) return reply.status(404).send({ error: 'Message not found' });
 
-    const text = message.content.toLowerCase();
+    const text = (message.textBody || '').toLowerCase();
     let responseText = '';
 
     // Simple V1 Heuristics
@@ -23,17 +23,17 @@ export const processHandler = async (req: FastifyRequest, reply: FastifyReply) =
         // Create Approval
         const approval = await prisma.approval.create({
             data: {
-                storeId: message.conversation.storeId,
+                merchantId: message.conversation.merchantId,
+                // storeId is mapped in DB but let's use the field name
                 // requesterId: message.conversation.customerPhone, // Store in data if needed
                 type: 'DISCOUNT_APPLICATION',
-                summary: `Discount request from ${message.conversation.customerPhone}`,
-                data: { discount: '10%', requesterId: message.conversation.customerPhone },
+                data: { discount: '10%', requesterId: message.conversation.contact.phoneE164 },
                 status: 'PENDING'
             }
         });
         responseText = `I've requested a 10% discount for you. Waiting for manager approval. (Approval ID: ${approval.id})`;
     } else {
-        responseText = `Echo: ${message.content} - (AI Logic Placeholder)`;
+        responseText = `Echo: ${message.textBody} - (AI Logic Placeholder)`;
     }
 
     // Send Reply

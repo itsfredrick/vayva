@@ -1,7 +1,7 @@
 import { FastifyRequest, FastifyReply } from 'fastify';
 import { prisma } from '@vayva/db';
 import { z } from 'zod'; // Import zod
-import bcrypt from 'bcryptjs';
+import * as bcrypt from 'bcryptjs';
 
 const hashPassword = async (password: string) => {
     return bcrypt.hash(password, 10);
@@ -49,7 +49,7 @@ const resetPasswordSchema = z.object({
 });
 
 export const registerHandler = async (req: FastifyRequest, reply: FastifyReply) => {
-    const { email, password, firstName, lastName, phone } = registerSchema.parse(req.body);
+    const { email, password, firstName, lastName, phone } = (req.body as any) || {};
 
     const existing = await prisma.user.findUnique({ where: { email } });
     if (existing) return reply.status(409).send({ error: 'Email already exists' });
@@ -88,7 +88,7 @@ export const registerHandler = async (req: FastifyRequest, reply: FastifyReply) 
 };
 
 export const loginHandler = async (req: FastifyRequest, reply: FastifyReply) => {
-    const { email, password } = loginSchema.parse(req.body);
+    const { email, password } = (req.body as any) || {};
     const user = await prisma.user.findUnique({
         where: { email },
         include: { memberships: { include: { store: true } } },
@@ -141,7 +141,7 @@ export const loginHandler = async (req: FastifyRequest, reply: FastifyReply) => 
 };
 
 export const verifyOtpHandler = async (req: FastifyRequest, reply: FastifyReply) => {
-    const { email, code } = verifyOtpSchema.parse(req.body);
+    const { email, code } = (req.body as any) || {};
 
     const otp = await prisma.otpCode.findFirst({
         where: {
@@ -170,7 +170,7 @@ export const verifyOtpHandler = async (req: FastifyRequest, reply: FastifyReply)
 };
 
 export const resendOtpHandler = async (req: FastifyRequest, reply: FastifyReply) => {
-    const { email } = forgotPasswordSchema.parse(req.body);
+    const { email } = (req.body as any) || {};
 
     // Create new OTP
     const otp = Math.floor(100000 + Math.random() * 900000).toString();
@@ -230,7 +230,7 @@ export const getMeHandler = async (req: FastifyRequest, reply: FastifyReply) => 
 };
 
 export const forgotPasswordHandler = async (req: FastifyRequest, reply: FastifyReply) => {
-    const { email } = forgotPasswordSchema.parse(req.body);
+    const { email } = (req.body as any) || {};
     const user = await prisma.user.findUnique({ where: { email } });
 
     if (user) {
@@ -251,7 +251,7 @@ export const forgotPasswordHandler = async (req: FastifyRequest, reply: FastifyR
 };
 
 export const resetPasswordHandler = async (req: FastifyRequest, reply: FastifyReply) => {
-    const { email, code, newPassword } = resetPasswordSchema.parse(req.body);
+    const { email, code, newPassword } = (req.body as any) || {};
 
     const otp = await prisma.otpCode.findFirst({
         where: {

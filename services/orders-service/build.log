@@ -1,0 +1,11 @@
+
+> orders-service@1.0.0 build /Users/fredrick/.gemini/antigravity/scratch/vayva/services/orders-service
+> tsc
+
+src/controller.ts(46,17): error TS2339: Property 'storeId' does not exist on type 'unknown'.
+src/controller.ts(46,26): error TS2339: Property 'items' does not exist on type 'unknown'.
+src/controller.ts(46,33): error TS2339: Property 'customer' does not exist on type 'unknown'.
+src/controller.ts(46,43): error TS2339: Property 'paymentMethod' does not exist on type 'unknown'.
+src/controller.ts(46,58): error TS2339: Property 'deliveryMethod' does not exist on type 'unknown'.
+src/controller.ts(46,74): error TS2339: Property 'notes' does not exist on type 'unknown'.
+ ELIFECYCLE  Command failed with exit code 2.

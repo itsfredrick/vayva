@@ -1,7 +1,7 @@
 import { FastifyPluginAsync } from 'fastify';
 import { prisma } from '@vayva/db';
 import { SignupRequestSchema } from '@vayva/schemas';
-import bcrypt from 'bcryptjs';
+import * as bcrypt from 'bcryptjs';
 
 const signupRoute: FastifyPluginAsync = async (fastify) => {
     fastify.post('/signup', async (request, reply) => {
@@ -26,7 +26,8 @@ const signupRoute: FastifyPluginAsync = async (fastify) => {
             data: {
                 email: body.email,
                 password: hashedPassword,
-                name: `${body.firstName} ${body.lastName}`,
+                firstName: body.firstName,
+                lastName: body.lastName,
             },
         });
 
@@ -38,7 +39,7 @@ const signupRoute: FastifyPluginAsync = async (fastify) => {
             user: {
                 id: user.id,
                 email: user.email,
-                name: user.name,
+                name: `${user.firstName} ${user.lastName}`,
             },
         };
     });

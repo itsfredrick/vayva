@@ -1,0 +1,29 @@
+
+> payments-service@1.0.0 build /Users/fredrick/.gemini/antigravity/scratch/vayva/services/payments-service
+> tsc
+
+src/controller.ts(5,8): error TS1192: Module '"crypto"' has no default export.
+src/controller.ts(170,13): error TS2353: Object literal may only specify known properties, and 'type' does not exist in type '(Without<OrderTimelineEventCreateInput, OrderTimelineEventUncheckedCreateInput> & OrderTimelineEventUncheckedCreateInput) | (Without<...> & OrderTimelineEventCreateInput)'.
+src/controller.ts(181,13): error TS2353: Object literal may only specify known properties, and 'paymentId' does not exist in type '(Without<ReceiptCreateInput, ReceiptUncheckedCreateInput> & ReceiptUncheckedCreateInput) | (Without<...> & ReceiptCreateInput)'.
+src/controllers/dispute.controller.ts(8,19): error TS2304: Cannot find name 'DisputeProvider'.
+src/controllers/dispute.controller.ts(33,15): error TS2304: Cannot find name 'DisputeEvidenceType'.
+src/controllers/dispute.controller.ts(43,21): error TS2339: Property 'error' does not exist on type 'FastifyBaseLogger'.
+src/controllers/dispute.controller.ts(58,21): error TS2339: Property 'error' does not exist on type 'FastifyBaseLogger'.
+src/controllers/dispute.controller.ts(71,21): error TS2339: Property 'error' does not exist on type 'FastifyBaseLogger'.
+src/providers/stripe.ts(39,13): error TS2322: Type 'Status' is not assignable to type '"requires_payment_method" | "requires_confirmation" | "requires_action" | "processing" | "succeeded" | "canceled"'.
+  Type '"requires_capture"' is not assignable to type '"requires_payment_method" | "requires_confirmation" | "requires_action" | "processing" | "succeeded" | "canceled"'.
+src/providers/stripe.ts(56,13): error TS2322: Type 'string' is not assignable to type '"succeeded" | "canceled" | "pending" | "failed"'.
+src/wallet.controller.ts(7,8): error TS2300: Duplicate identifier 'axios'.
+src/wallet.controller.ts(60,27): error TS2339: Property 'amountKobo' does not exist on type '{ id: string; storeId: string; referenceType: string; referenceId: string; direction: string; account: string; amount: Decimal; currency: string; description: string | null; occurredAt: Date; metadata: JsonValue; createdAt: Date; }'.
+src/wallet.controller.ts(140,8): error TS2300: Duplicate identifier 'axios'.
+src/wallet.controller.ts(147,9): error TS2367: This comparison appears to be unintentional because the types 'VirtualAccountStatus' and '"ACTIVE"' have no overlap.
+src/wallet.controller.ts(333,21): error TS2353: Object literal may only specify known properties, and 'type' does not exist in type 'Without<LedgerEntryCreateInput, LedgerEntryUncheckedCreateInput> & LedgerEntryUncheckedCreateInput'.
+src/webhooks/handler.ts(21,17): error TS2339: Property 'error' does not exist on type 'FastifyBaseLogger'.
+src/webhooks/handler.ts(43,34): error TS18048: 'event' is possibly 'undefined'.
+src/webhooks/handler.ts(55,30): error TS18048: 'event' is possibly 'undefined'.
+src/webhooks/handler.ts(56,24): error TS18048: 'event' is possibly 'undefined'.
+src/webhooks/handler.ts(57,22): error TS18048: 'event' is possibly 'undefined'.
+src/webhooks/handler.ts(65,18): error TS18048: 'event' is possibly 'undefined'.
+src/webhooks/handler.ts(66,15): error TS18048: 'event' is possibly 'undefined'.
+src/webhooks/handler.ts(67,15): error TS18048: 'event' is possibly 'undefined'.
+ ELIFECYCLE  Command failed with exit code 2.

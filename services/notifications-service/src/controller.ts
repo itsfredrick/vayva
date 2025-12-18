@@ -27,7 +27,8 @@ export const notifyHandler = async (req: FastifyRequest, reply: FastifyReply) =>
         data: {
             type: body.template, // Using template as type for now
             title: `Notification: ${body.template}`,
-            message: JSON.stringify(body.data),
+            body: JSON.stringify(body.data),
+            severity: 'info',
             userId: body.userId,
             storeId: body.storeId
         }

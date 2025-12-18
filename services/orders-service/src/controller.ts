@@ -1,6 +1,6 @@
 import { FastifyRequest, FastifyReply } from 'fastify';
 import { prisma } from '@vayva/db';
-import { OrderStatus, PaymentStatus, FulfillmentStatus, Channel } from '@prisma/client';
+// import { OrderStatus, PaymentStatus, FulfillmentStatus, Channel } from '@prisma/client';
 
 export const OrdersController = {
     // --- QUERY ---
@@ -10,9 +10,9 @@ export const OrdersController = {
         const orders = await prisma.order.findMany({
             where: {
                 storeId,
-                status: status ? (status as OrderStatus) : undefined,
-                paymentStatus: paymentStatus ? (paymentStatus as PaymentStatus) : undefined,
-                fulfillmentStatus: fulfillmentStatus ? (fulfillmentStatus as FulfillmentStatus) : undefined
+                status: status ? (status as any) : undefined,
+                paymentStatus: paymentStatus ? (paymentStatus as any) : undefined,
+                fulfillmentStatus: fulfillmentStatus ? (fulfillmentStatus as any) : undefined
             },
             include: {
                 customer: true,
@@ -43,7 +43,7 @@ export const OrdersController = {
     // --- ACTIONS ---
 
     createOrder: async (req: FastifyRequest<{ Body: any }>, reply: FastifyReply) => {
-        const { storeId, items, customer, paymentMethod, deliveryMethod, notes } = req.body;
+        const { storeId, items, customer, paymentMethod, deliveryMethod, notes } = req.body as any;
 
         // 1. CRM - Find or Create Customer
         let customerId = null;
@@ -75,29 +75,30 @@ export const OrdersController = {
 
         const order = await prisma.order.create({
             data: {
+                refCode: `ORD-${Date.now()}`,
                 storeId,
                 customerId,
                 customerPhone: customer?.phone,
                 customerEmail: customer?.email,
 
-                status: OrderStatus.OPEN,
+                status: 'OPEN' as any,
                 // Cast to PaymentStatus enum. If COD -> INITIATED
-                paymentStatus: paymentMethod === 'COD' ? PaymentStatus.INITIATED : PaymentStatus.INITIATED,
-                fulfillmentStatus: FulfillmentStatus.UNFULFILLED,
+                paymentStatus: paymentMethod === 'COD' ? 'INITIATED' as any : 'INITIATED' as any,
+                fulfillmentStatus: 'UNFULFILLED' as any,
 
                 paymentMethod,
                 deliveryMethod,
                 internalNote: notes,
 
-                subtotal,
-                total,
+                subtotal: subtotal as any,
+                total: total as any,
 
                 items: {
                     create: items.map((item: any) => ({
                         title: item.title,
                         productId: item.productId,
                         variantId: item.variantId,
-                        price: item.price,
+                        price: item.price as any,
                         quantity: item.quantity
                     }))
                 },
@@ -129,7 +130,7 @@ export const OrdersController = {
         const updated = await prisma.order.update({
             where: { id },
             data: {
-                paymentStatus: PaymentStatus.PAID,
+                paymentStatus: 'PAID' as any,
                 paymentMethod: method,
                 events: {
                     create: {
@@ -158,8 +159,8 @@ export const OrdersController = {
         const updated = await prisma.order.update({
             where: { id },
             data: {
-                fulfillmentStatus: FulfillmentStatus.DELIVERED,
-                status: OrderStatus.FULFILLED, // Auto-close/fulfill logic
+                fulfillmentStatus: 'DELIVERED' as any,
+                status: 'FULFILLED' as any, // Auto-close/fulfill logic
                 events: {
                     create: {
                         storeId: order.storeId,

@@ -3,7 +3,7 @@
 import React, { useState, Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { Loader2, ShieldCheck } from 'lucide-react';
-import { OpsAuthService } from '@/services/auth.service';
+import { OpsAuthService } from '../../../services/AuthService';
 
 const MfaContent = () => {
     const [code, setCode] = useState('');

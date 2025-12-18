@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { GlassPanel, Button, StatusChip } from '@vayva/ui';
-import { toggleFlag, createFlag, updateFlagRules } from './actions';
+import { toggleFlag, createFlag, updateFlagRules } from '../actions';
 import { Edit2, Plus, AlertTriangle } from 'lucide-react';
 
 export function FlagList({ flags }: { flags: any[] }) {

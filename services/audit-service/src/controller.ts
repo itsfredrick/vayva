@@ -17,13 +17,15 @@ export const emitAuditHandler = async (req: FastifyRequest, reply: FastifyReply)
 
     const event = await prisma.auditEvent.create({
         data: {
-            action: body.action,
-            resource: body.resource,
-            resourceId: body.resourceId,
-            userId: body.userId,
+            event: body.action,
+            actorId: body.userId || body.opsUserId || 'SYSTEM',
+            actorType: body.userId ? 'USER' : (body.opsUserId ? 'OPS_USER' : 'SYSTEM'),
+            meta: {
+                ...body.metadata,
+                resource: body.resource,
+                resourceId: body.resourceId
+            },
             storeId: body.storeId,
-            opsUserId: body.opsUserId,
-            metadata: body.metadata || {},
             ipAddress: (req.headers['x-forwarded-for'] as string) || req.ip
         }
     });

@@ -1,0 +1,54 @@
+
+> storefront@0.0.0 build /Users/fredrick/.gemini/antigravity/scratch/vayva/apps/storefront
+> next build
+
+  ▲ Next.js 14.2.35
+
+   Creating an optimized production build ...
+ ✓ Compiled successfully
+   Linting and checking validity of types ...
+   Collecting page data ...
+   Generating static pages (0/15) ...
+   Generating static pages (3/15) 
+   Generating static pages (7/15) 
+   Generating static pages (11/15) 
+ ✓ Generating static pages (15/15)
+   Finalizing page optimization ...
+   Collecting build traces ...
+
+Route (app)                              Size     First Load JS
+┌ ○ /                                    1.54 kB         101 kB
+├ ○ /_not-found                          137 B          87.5 kB
+├ ƒ /[lang]/account                      4.36 kB         100 kB
+├ ƒ /[lang]/account/addresses            2.01 kB        93.4 kB
+├ ƒ /[lang]/account/help                 4.6 kB         91.9 kB
+├ ƒ /[lang]/account/payments             1.79 kB        93.2 kB
+├ ƒ /[lang]/favorites                    2.93 kB         109 kB
+├ ƒ /[lang]/gift-cards                   6.96 kB        99.9 kB
+├ ƒ /[lang]/menu                         4.57 kB         102 kB
+├ ƒ /[lang]/past-deliveries              3.23 kB         109 kB
+├ ○ /api/health                          0 B                0 B
+├ ○ /cart                                1.01 kB         100 kB
+├ ○ /checkout                            4 kB            100 kB
+├ ƒ /collections/[id]                    1.3 kB          101 kB
+├ ƒ /contact                             206 B           241 kB
+├ ○ /order/confirmation                  2.99 kB         102 kB
+├ ○ /order/status                        2.74 kB         102 kB
+├ ○ /order/success                       882 B           100 kB
+├ ○ /orders                              1.19 kB         101 kB
+├ ƒ /pages/[slug]                        685 B           100 kB
+├ ○ /paystack-mock                       1.41 kB        88.8 kB
+├ ƒ /policies/[slug]                     840 B           109 kB
+├ ƒ /product/[id]                        1.19 kB         110 kB
+├ ƒ /products/[id]                       1.32 kB         101 kB
+├ ○ /search                              1.23 kB         101 kB
+└ ○ /stores                              1.34 kB         110 kB
++ First Load JS shared by all            87.3 kB
+  ├ chunks/407-a0746f0cc267e371.js       31.7 kB
+  ├ chunks/839ec0ab-c28e15812b916df7.js  53.7 kB
+  └ other shared chunks (total)          1.94 kB
+
+
+○  (Static)   prerendered as static content
+ƒ  (Dynamic)  server-rendered on demand
+

@@ -18,21 +18,25 @@ export const handleStripeWebhook = async (req: FastifyRequest, reply: FastifyRep
     const webhookSecret = process.env.STRIPE_WEBHOOK_SECRET;
 
     if (!webhookSecret || !process.env.STRIPE_SECRET_KEY) {
-        req.log.error('Missing Stripe Config');
+        (req.log as any).error('Missing Stripe Config');
         return reply.status(500).send({ error: 'Server Config Error' });
     }
 
     const provider = new StripeProvider(process.env.STRIPE_SECRET_KEY, webhookSecret);
 
-    // Fastify raw body is needed here. Ensure content type parser is set for raw/buffer 
-    const result = await provider.verifyWebhookSignature(req.rawBody as any || JSON.stringify(req.body), sig);
+    // Fastify raw body is needed here. Ensure content type parser is set for raw/buffer
+    const bodyStr = (req as any).rawBody || JSON.stringify(req.body);
+    const result = await provider.verifyWebhookSignature(bodyStr, sig);
 
-    if (!result.isValid || !result.event) {
-        req.log.warn(`Invalid Webhook Signature: ${result.error}`);
+    if (!result.isValid) {
+        (req.log as any).warn(`Invalid Webhook Signature: ${result.error}`);
         return reply.status(400).send({ error: `Webhook Error: ${result.error}` });
     }
 
     const event = result.event;
+    if (!event) {
+        return reply.status(400).send({ error: 'Event data missing' });
+    }
 
     // 2. Idempotency Check & Persist
     const existing = await prisma.paymentWebhookEvent.findUnique({

@@ -1,6 +1,6 @@
 
 import { prisma } from '@vayva/db';
-import { getMerchantId } from '../../../../lib/auth/tenant';
+import { getMerchantId } from '@/lib/auth/tenant';
 import { IntegrationsView } from './components/IntegrationsView';
 
 export const metadata = {

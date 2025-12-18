@@ -1,6 +1,5 @@
-
 import { prisma } from '@vayva/db';
-import { AppRole } from '@prisma/client';
+// import { AppRole } from '@prisma/client';
 
 export const TeamService = {
     inviteMember: async (storeId: string, email: string) => {
@@ -19,8 +18,9 @@ export const TeamService = {
             data: {
                 storeId,
                 email,
-                role: AppRole.STAFF, // Default to STAFF until we migrate invites to match Role table
+                role: 'STAFF', // Using string literal
                 token,
+                createdBy: 'SYSTEM', // Placeholder
                 expiresAt: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000) // 7 days
             }
         });

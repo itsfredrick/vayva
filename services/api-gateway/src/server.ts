@@ -229,7 +229,7 @@ const start = async () => {
         await server.listen({ port: parseInt(config.PORT) || 4000, host: '0.0.0.0' });
         console.log(`API Gateway running on port ${parseInt(config.PORT) || 4000}`);
     } catch (err) {
-        server.log.error(err);
+        (server.log as any).error(err);
         process.exit(1);
     }
 };

@@ -21,7 +21,7 @@ const start = async () => {
         await server.listen({ port: 3008, host: '0.0.0.0' });
         console.log('Notifications Service running on port 3008');
     } catch (err) {
-        server.log.error(err);
+        (server.log as any).error(err);
         process.exit(1);
     }
 };

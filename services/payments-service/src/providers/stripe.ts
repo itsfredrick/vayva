@@ -36,7 +36,7 @@ export class StripeProvider implements IPaymentsProvider {
         return {
             id: intent.id,
             clientSecret: intent.client_secret || undefined,
-            status: intent.status,
+            status: intent.status as any,
             amount: intent.amount,
             currency: intent.currency,
             rawData: intent
@@ -53,7 +53,7 @@ export class StripeProvider implements IPaymentsProvider {
 
         return {
             id: refund.id,
-            status: refund.status || 'pending',
+            status: (refund.status || 'pending') as any,
             amount: refund.amount,
             currency: refund.currency,
             rawData: refund

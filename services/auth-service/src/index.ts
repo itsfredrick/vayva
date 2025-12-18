@@ -45,7 +45,7 @@ const start = async () => {
         await server.listen({ port: 3011, host: '0.0.0.0' });
         console.log('Auth Service running on port 3011');
     } catch (err) {
-        server.log.error(err);
+        (server.log as any).error(err);
         process.exit(1);
     }
 };

@@ -1,14 +1,17 @@
 import { FastifyRequest, FastifyReply } from 'fastify';
-import { prisma, ApprovalStatus } from '@vayva/db';
+import { prisma } from '@vayva/db';
 
 export const listApprovalsHandler = async (req: FastifyRequest, reply: FastifyReply) => {
-    const { storeId, status } = req.query as { storeId: string, status?: ApprovalStatus };
-    if (!storeId) return reply.status(400).send({ error: 'storeId required' });
+    const { storeId, status } = req.query as { storeId: string, status?: string };
+    if (!storeId) {
+        (req.log as any).error('storeId required for listApprovalsHandler');
+        return reply.status(400).send({ error: 'storeId required' });
+    }
 
     const approvals = await prisma.approval.findMany({
         where: {
             storeId,
-            status: status || undefined
+            status: (status as any) || undefined
         },
         orderBy: { createdAt: 'desc' }
     });

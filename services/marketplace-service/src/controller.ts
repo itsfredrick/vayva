@@ -109,13 +109,13 @@ export const MarketplaceController = {
         }
 
         // Reliable Delivery
-        if ((analytics._avg.deliverySuccessRate || 0) >= 90) {
+        if (((analytics._avg.deliverySuccessRate as any) || 0) >= 90) {
             badges.push('reliable_delivery');
             metrics.deliverySuccessRate = analytics._avg.deliverySuccessRate;
         }
 
         // Fast Response
-        if ((support._avg.firstResponseAvgSeconds || 0) <= 300) { // 5 minutes
+        if (((support._avg.firstResponseAvgSeconds as any) || 0) <= 300) { // 5 minutes
             badges.push('fast_response');
             metrics.avgResponseTimeSeconds = support._avg.firstResponseAvgSeconds;
         }

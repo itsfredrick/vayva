@@ -1,6 +1,6 @@
 
 import { prisma } from '@vayva/db';
-import crypto from 'crypto';
+import * as crypto from 'crypto';
 import axios from 'axios';
 
 export const WebhookController = {
@@ -9,13 +9,15 @@ export const WebhookController = {
         const rawKey = `vayva_${crypto.randomBytes(32).toString('hex')}`;
         const keyHash = crypto.createHash('sha256').update(rawKey).digest('hex');
 
-        const apiKey = await prisma.apiKey.create({
+        const apiKey = await prisma.merchantApiKey.create({
             data: {
-                storeId,
+                merchantId: storeId,
                 name,
                 keyHash,
+                prefix: rawKey.substring(0, 8),
                 scopes,
-                status: 'ACTIVE'
+                status: 'ACTIVE',
+                createdByUserId: 'SYSTEM'
             }
         });
 
@@ -23,14 +25,14 @@ export const WebhookController = {
     },
 
     listApiKeys: async (storeId: string) => {
-        return await prisma.apiKey.findMany({
-            where: { storeId },
+        return await prisma.merchantApiKey.findMany({
+            where: { merchantId: storeId },
             orderBy: { createdAt: 'desc' }
         });
     },
 
     revokeApiKey: async (keyId: string) => {
-        return await prisma.apiKey.update({
+        return await prisma.merchantApiKey.update({
             where: { id: keyId },
             data: { status: 'REVOKED', revokedAt: new Date() }
         });
@@ -63,7 +65,7 @@ export const WebhookController = {
 
     // --- Event Publishing ---
     publishEvent: async (storeId: string, type: string, payload: any) => {
-        const event = await prisma.webhookEvent.create({
+        const event = await prisma.webhookEventV2.create({
             data: { storeId, type, payload }
         });
 

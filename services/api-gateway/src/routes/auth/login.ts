@@ -1,7 +1,7 @@
 import { FastifyPluginAsync } from 'fastify';
 import { prisma } from '@vayva/db';
 import { LoginRequestSchema } from '@vayva/schemas';
-import bcrypt from 'bcryptjs';
+import * as bcrypt from 'bcryptjs';
 
 const loginRoute: FastifyPluginAsync = async (fastify) => {
     fastify.post('/login', async (request, reply) => {
@@ -39,7 +39,7 @@ const loginRoute: FastifyPluginAsync = async (fastify) => {
             user: {
                 id: user.id,
                 email: user.email,
-                name: user.name,
+                name: `${(user as any).firstName} ${(user as any).lastName}`,
             },
         };
     });

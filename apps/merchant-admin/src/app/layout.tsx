@@ -3,6 +3,8 @@ import type { Metadata } from 'next';
 import '@vayva/theme/css';
 import { AuthProvider } from '@/context/AuthContext';
 
+export const dynamic = 'force-dynamic';
+
 const spaceGrotesk = Space_Grotesk({
     subsets: ['latin'],
     weight: ['300', '400', '500', '600', '700'],

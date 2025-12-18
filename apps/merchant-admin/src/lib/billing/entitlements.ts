@@ -12,9 +12,6 @@ export function getPlanDefinition(slug: string) {
 
 import { Gating, GateResult } from './gating';
 
-export function getPlanDefinition(slug: string) {
-    return PLANS[slug] || PLANS.growth;
-}
 
 /**
  * Checks access and returns boolean (Legacy/Simple check)

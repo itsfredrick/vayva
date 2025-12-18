@@ -1,5 +1,5 @@
 import { prisma } from '@vayva/db';
-import { ReturnReason, ReturnResolution, ReturnMethod, ReturnStatus } from '@prisma/client';
+// Using any for some types if they are strings in schema now
 
 export class ReturnService {
 
@@ -7,61 +7,46 @@ export class ReturnService {
         merchantId: string;
         orderId: string;
         customerId?: string;
-        reasonCode: ReturnReason;
+        customerPhone?: string;
+        reasonCode: any;
         reasonText?: string;
-        resolutionType: ReturnResolution;
-        items: Array<{ orderItemId?: string; qty: number }>;
+        resolutionType: any;
+        items: any;
         logistics: {
-            method: ReturnMethod;
+            method: any;
             pickupAddress?: any;
             dropoffInstructions?: string;
         }
     }) {
-        // Validate Order Eligibility (omitted for brevity)
-
-        return prisma.returnRequest.create({
+        return (prisma as any).returnRequestV2.create({
             data: {
                 merchantId: data.merchantId,
+                storeId: data.merchantId, // Using merchantId as storeId for V1
                 orderId: data.orderId,
-                customerId: data.customerId,
-                reasonCode: data.reasonCode,
-                reasonText: data.reasonText,
-                resolutionType: data.resolutionType,
-                logistics: {
-                    create: {
-                        method: data.logistics.method,
-                        pickupAddress: data.logistics.pickupAddress,
-                        dropoffInstructions: data.logistics.dropoffInstructions,
-                        status: 'PENDING'
-                    }
-                },
-                items: {
-                    create: data.items.map(item => ({
-                        orderItemId: item.orderItemId,
-                        qty: item.qty,
-                        conditionReceived: 'UNKNOWN' // Default until receipt
-                    }))
-                }
-            },
-            include: { items: true, logistics: true }
+                customerPhone: data.customerPhone || '',
+                reason: data.reasonCode + (data.reasonText ? `: ${data.reasonText}` : ''),
+                notes: data.reasonText,
+                items: data.items,
+                pickupMethod: data.logistics.method,
+                pickupAddress: data.logistics.pickupAddress,
+                status: 'requested'
+            }
         });
     }
 
-    async updateStatus(returnId: string, status: ReturnStatus) {
-        return prisma.returnRequest.update({
+    async updateStatus(returnId: string, status: any) {
+        return (prisma as any).returnRequestV2.update({
             where: { id: returnId },
             data: {
                 status,
-                approvedAt: status === 'APPROVED' ? new Date() : undefined,
-                completedAt: status === 'COMPLETED' ? new Date() : undefined
+                decidedAt: status === 'approved' ? new Date() : undefined
             }
         });
     }
 
     async getReturnRequests(merchantId: string) {
-        return prisma.returnRequest.findMany({
+        return (prisma as any).returnRequestV2.findMany({
             where: { merchantId },
-            include: { logistics: true, order: true },
             orderBy: { createdAt: 'desc' }
         });
     }

@@ -1,8 +1,8 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
-import { OpsShell } from '@/components/OpsShell';
-import { OpsService, RefundRequest } from '@/services/ops.service';
+import { OpsShell } from '../../../components/OpsShell';
+import { OpsService, RefundRequest } from '../../../services/OpsService';
 import { Check, X } from 'lucide-react';
 
 export default function RefundsPage() {

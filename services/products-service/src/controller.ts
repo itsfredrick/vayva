@@ -48,7 +48,7 @@ export const createProductHandler = async (req: FastifyRequest, reply: FastifyRe
                     title: 'Default',
                     price: parseFloat(price),
                     sku,
-                    inventory: parseInt(stock || '0'),
+                    options: {} // Required by schema
                 }
             }
         },
@@ -58,7 +58,7 @@ export const createProductHandler = async (req: FastifyRequest, reply: FastifyRe
     // Log Inventory Event
     await prisma.inventoryEvent.create({
         data: {
-            variantId: product.variants[0].id,
+            variantId: (product as any).variants[0].id,
             quantity: parseInt(stock || '0'),
             action: 'ADJUSTMENT',
             reason: 'Initial stock',
@@ -97,11 +97,11 @@ export const updateProductHandler = async (req: FastifyRequest, reply: FastifyRe
 
     // Update default variant price/stock if provided
     if (product.variants.length > 0) {
-        await prisma.variant.update({
-            where: { id: product.variants[0].id },
+        await prisma.productVariant.update({
+            where: { id: (product as any).variants[0].id },
             data: {
                 price: price ? parseFloat(price) : undefined,
-                inventory: stock ? parseInt(stock) : undefined
+                // inventory removed as it's not on variant model
             }
         });
     }

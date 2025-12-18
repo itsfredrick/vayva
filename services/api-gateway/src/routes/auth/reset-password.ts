@@ -1,7 +1,7 @@
 import { FastifyPluginAsync } from 'fastify';
 import { prisma } from '@vayva/db';
 import { ResetPasswordRequestSchema } from '@vayva/schemas';
-import bcrypt from 'bcryptjs';
+import * as bcrypt from 'bcryptjs';
 
 const resetPasswordRoute: FastifyPluginAsync = async (fastify) => {
     fastify.post('/reset-password', async (request, reply) => {

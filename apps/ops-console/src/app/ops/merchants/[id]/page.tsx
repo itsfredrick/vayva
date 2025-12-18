@@ -1,8 +1,8 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
-import { OpsShell } from '@/components/OpsShell';
-import { OpsService, Merchant } from '@/services/ops.service';
+import { OpsShell } from '../../../../components/OpsShell';
+import { OpsService, Merchant } from '../../../../services/OpsService';
 import { useParams, useRouter } from 'next/navigation';
 import { CheckCircle, XCircle, Ban, ArrowLeft, Clock, ShieldCheck, Shield } from 'lucide-react';
 import Link from 'next/link';

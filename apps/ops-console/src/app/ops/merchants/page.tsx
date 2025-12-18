@@ -1,8 +1,8 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
-import { OpsShell } from '@/components/OpsShell';
-import { OpsService, Merchant } from '@/services/ops.service';
+import { OpsShell } from '../../../components/OpsShell';
+import { OpsService, Merchant } from '../../../services/OpsService';
 import Link from 'next/link';
 
 export default function MerchantsPage() {
@@ -40,15 +40,15 @@ export default function MerchantsPage() {
                                 <td className="px-6 py-4 text-sm capitalize">{m.plan}</td>
                                 <td className="px-6 py-4">
                                     <span className={`inline-block px-2 py-1 rounded-full text-xs font-bold capitalize ${m.kycStatus === 'verified' ? 'bg-green-100 text-green-700' :
-                                            m.kycStatus === 'pending' ? 'bg-orange-100 text-orange-700' :
-                                                'bg-gray-100 text-gray-600'
+                                        m.kycStatus === 'pending' ? 'bg-orange-100 text-orange-700' :
+                                            'bg-gray-100 text-gray-600'
                                         }`}>
                                         {m.kycStatus}
                                     </span>
                                 </td>
                                 <td className="px-6 py-4">
                                     <span className={`inline-block px-2 py-1 rounded-full text-xs font-bold capitalize ${m.riskScore === 'high' ? 'bg-red-100 text-red-700' :
-                                            'bg-gray-100 text-gray-600'
+                                        'bg-gray-100 text-gray-600'
                                         }`}>
                                         {m.riskScore}
                                     </span>

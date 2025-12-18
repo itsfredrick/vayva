@@ -2,7 +2,7 @@ import { FastifyRequest, FastifyReply } from 'fastify';
 import { z } from 'zod';
 import { prisma, PaymentStatus } from '@vayva/db';
 import axios from 'axios';
-import crypto from 'crypto';
+import * as crypto from 'crypto';
 
 const PAYSTACK_SECRET_KEY = process.env.PAYSTACK_SECRET_KEY || 'sk_test_mock';
 const IS_TEST_MODE = !process.env.PAYSTACK_SECRET_KEY || process.env.PAYSTACK_MOCK === 'true';
@@ -167,9 +167,8 @@ async function processSuccessfulPayment(tx: any, paystackData: any) {
     await prisma.orderTimelineEvent.create({
         data: {
             orderId: tx.orderId,
-            type: 'PAYMENT_CONFIRMED',
-            text: `Payment of ${tx.currency} ${tx.amount / 100} confirmed via Paystack`,
-            metadata: { reference: tx.reference, paystackId: paystackData.id }
+            title: 'PAYMENT_CONFIRMED',
+            body: `Payment of ${tx.currency} ${tx.amount / 100} confirmed via Paystack. Ref: ${tx.reference}`,
         }
     });
 
@@ -178,9 +177,7 @@ async function processSuccessfulPayment(tx: any, paystackData: any) {
     await prisma.receipt.create({
         data: {
             orderId: tx.orderId,
-            paymentId: tx.id,
-            receiptNumber,
-            issuedAt: new Date(),
+            url: `https://dash.vayva.app/receipts/${receiptNumber}`,
         }
     });
 
