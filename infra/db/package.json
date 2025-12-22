@@ -4,8 +4,11 @@
     "main": "./src/client.ts",
     "types": "./src/client.ts",
     "scripts": {
-        "db:generate": "prisma generate",
-        "db:push": "prisma db push"
+        "db:generate": "prisma generate --schema=./prisma/schema.prisma",
+        "db:push": "prisma db push --schema=./prisma/schema.prisma"
+    },
+    "prisma": {
+        "schema": "prisma/schema.prisma"
     },
     "dependencies": {
         "@prisma/client": "5.7.0"
