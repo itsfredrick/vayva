@@ -120,7 +120,7 @@ export const AiActionsPanel = ({ thread }: { thread?: WaThread }) => {
                     <p className="text-sm text-[#0B0B0B] mb-3">{thread.aiSuggestions.reply}</p>
                     <div className="flex gap-2">
                         <Button size="sm" className="w-full bg-purple-600 hover:bg-purple-700 text-white">Use</Button>
-                        <Button size="sm" variant="outline" className="w-10"><Icon name="Edit" size={14} /></Button>
+                        <Button size="sm" variant="outline" className="w-10"><Icon name="Pencil" size={14} /></Button>
                     </div>
                 </div>
             )}

@@ -1,5 +1,6 @@
 'use server';
 
+import crypto from 'crypto';
 import { revalidatePath } from 'next/cache';
 import { ApiKeyService } from '../../../../lib/security/apiKeys';
 import { WebhookService } from '../../../../lib/integrations/webhookService';
@@ -78,14 +79,16 @@ export async function createWebhook(formData: FormData) {
 
         const { prisma } = await import('@vayva/db');
         const secret = crypto.randomUUID().replace(/-/g, '');
+        const secretHash = crypto.createHash('sha256').update(secret).digest('hex');
 
         await prisma.webhookSubscription.create({
             data: {
                 merchantId,
+                name: (data.url.split('//')[1] || data.url).split('/')[0], // Default name from hostname
                 url: data.url,
                 events: data.events,
-                secret,
-                isActive: true
+                signingSecretHash: secretHash,
+                status: 'active'
             }
         });
 

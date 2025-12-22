@@ -34,10 +34,12 @@ export async function POST(req: NextRequest) {
             data: {
                 action: 'admin.webhook.replay',
                 actorType: 'platform_admin',
-                actorId: admin.user.id || 'admin',
-                targetType: 'webhook_event',
-                targetId: event.id,
-                metadata: { original_event_id: event_id }
+                actorId: (admin.user as any).id || 'admin',
+                entityType: 'webhook_event',
+                entityId: event.id,
+                afterState: { original_event_id: event_id } as any,
+                correlationId: `replay_${Date.now()}`,
+                actorLabel: (admin.user as any).email || 'Admin'
             }
         });
 

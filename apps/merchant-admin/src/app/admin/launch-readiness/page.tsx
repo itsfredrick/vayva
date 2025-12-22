@@ -11,13 +11,13 @@ export default async function LaunchReadinessPage() {
     const [envHealth, serviceHealth, latestBackup] = await Promise.all([
         Promise.resolve(EnvHealth.check()), // Synchronous but wrap for consistence
         ServiceHealth.check(),
-        prisma.backupReceipt.findFirst({ orderBy: { timestamp: 'desc' } })
+        prisma.backupReceipt.findFirst({ orderBy: { createdAt: 'desc' } })
     ]);
 
     const gates = [
         { name: 'Environment Config', status: envHealth.ok },
         { name: 'Critical Services', status: serviceHealth.ok },
-        { name: 'Recent Backup', status: !!latestBackup && (Date.now() - latestBackup.timestamp.getTime() < 24 * 60 * 60 * 1000) }, // < 24h
+        { name: 'Recent Backup', status: !!latestBackup && (Date.now() - latestBackup.createdAt.getTime() < 24 * 60 * 60 * 1000) }, // < 24h
         { name: 'SSL / Security', status: true } // Mocked assumption for V1
     ];
 
@@ -49,7 +49,10 @@ export default async function LaunchReadinessPage() {
                     <div className="space-y-4">
                         <div className="flex justify-between items-center">
                             <span>Config Variables</span>
-                            <StatusChip status={envHealth.ok ? 'active' : 'error'} label={envHealth.ok ? 'OK' : 'MISSING'} />
+                            <div className="flex items-center gap-2">
+                                <StatusChip status={envHealth.ok ? 'active' : 'error'} />
+                                <span className="text-xs font-bold">{envHealth.ok ? 'OK' : 'MISSING'}</span>
+                            </div>
                         </div>
                         {envHealth.missing.length > 0 && (
                             <div className="p-3 bg-red-500/10 rounded text-xs text-red-400">
@@ -85,9 +88,12 @@ export default async function LaunchReadinessPage() {
                     <div className="flex justify-between items-center">
                         <div>
                             <div>Latest Backup</div>
-                            <div className="text-xs text-muted-foreground">{latestBackup ? latestBackup.timestamp.toLocaleString() : 'Never'}</div>
+                            <div className="text-xs text-muted-foreground">{latestBackup ? latestBackup.createdAt.toLocaleString() : 'Never'}</div>
                         </div>
-                        <StatusChip status={latestBackup && (Date.now() - latestBackup.timestamp.getTime() < 24 * 60 * 60 * 1000) ? 'active' : 'warning'} label={latestBackup ? 'Found' : 'Missing'} />
+                        <div className="flex items-center gap-2">
+                            <StatusChip status={latestBackup && (Date.now() - latestBackup.createdAt.getTime() < 24 * 60 * 60 * 1000) ? 'active' : 'warning'} />
+                            <span className="text-xs font-bold">{latestBackup ? 'Found' : 'Missing'}</span>
+                        </div>
                     </div>
                 </GlassPanel>
             </div>

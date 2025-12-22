@@ -76,7 +76,7 @@ const VerifyContent = () => {
             {/* Icon */}
             <div className="flex justify-center mb-6">
                 <div className="w-16 h-16 bg-black/5 rounded-full flex items-center justify-center">
-                    <Icon name="Mail" className="w-8 h-8 text-black" />
+                    <Icon name={"Mail" as any} className="w-8 h-8 text-black" />
                 </div>
             </div>
 
@@ -124,7 +124,7 @@ const VerifyContent = () => {
             >
                 {loading ? (
                     <>
-                        <Icon name="Loader2" className="w-5 h-5 animate-spin" />
+                        <Icon name={"Loader2" as any} className="w-5 h-5 animate-spin" />
                         Verifying...
                     </>
                 ) : (

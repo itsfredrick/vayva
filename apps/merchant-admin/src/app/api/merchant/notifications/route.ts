@@ -5,7 +5,7 @@ import { prisma } from '@vayva/db';
 
 export async function GET(req: NextRequest) {
     const session = await getServerSession(authOptions);
-    if (!session?.user?.storeId) {
+    if (!(session?.user as any)?.storeId) {
         return new NextResponse('Unauthorized', { status: 401 });
     }
 
@@ -15,7 +15,7 @@ export async function GET(req: NextRequest) {
     const cursor = searchParams.get('cursor');
 
     const where: any = {
-        storeId: session.user.storeId
+        storeId: (session!.user as any).storeId
     };
 
     if (status === 'unread') {
@@ -40,7 +40,7 @@ export async function GET(req: NextRequest) {
 
     const unreadCount = await prisma.notification.count({
         where: {
-            storeId: session.user.storeId,
+            storeId: (session!.user as any).storeId,
             isRead: false
         }
     });

@@ -47,7 +47,7 @@ export default function BillingPage() {
 
             {isPastDue && (
                 <div className="bg-red-50 border border-red-100 p-4 rounded-xl mb-8 flex items-center gap-4">
-                    <Icon name="AlertOctagon" className="text-red-500" />
+                    <Icon name={"AlertOctagon" as any} className="text-red-500" />
                     <div className="flex-1">
                         <h3 className="font-bold text-red-900">Payment Failed</h3>
                         <p className="text-sm text-red-700">Your subscription is past due. Pro features are restricted.</p>
@@ -67,9 +67,9 @@ export default function BillingPage() {
                             <div className="text-3xl font-bold mb-4">{formatMoneyNGN(plan.priceNgn)}<span className="text-sm font-normal text-gray-500">/mo</span></div>
 
                             <ul className="space-y-3 mb-8 text-sm text-gray-600">
-                                <li className="flex gap-2"><Icon name="Check" size={16} /> {plan.limits.teamSeats} Team Seat(s)</li>
-                                <li className="flex gap-2"><Icon name="Check" size={16} /> Campaign Limit: {plan.limits.monthlyCampaignSends}</li>
-                                <li className="flex gap-2"><Icon name="Check" size={16} /> {plan.features.approvals ? 'Approvals Included' : 'Basic Tools'}</li>
+                                <li className="flex gap-2"><Icon name={"Check" as any} size={16} /> {plan.limits.teamSeats} Team Seat(s)</li>
+                                <li className="flex gap-2"><Icon name={"Check" as any} size={16} /> Campaign Limit: {plan.limits.monthlyCampaignSends}</li>
+                                <li className="flex gap-2"><Icon name={"Check" as any} size={16} /> {plan.features.approvals ? 'Approvals Included' : 'Basic Tools'}</li>
                             </ul>
 
                             <button

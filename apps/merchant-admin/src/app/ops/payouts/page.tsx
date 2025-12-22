@@ -42,7 +42,7 @@ export default function OpsPayoutsPage() {
 
             <div className="border border-white/10 rounded-xl overflow-hidden bg-[#0b141a]/50">
                 <div className="p-4 bg-white/5 border-b border-white/5 font-bold text-white flex items-center gap-2">
-                    <Icon name="AlertCircle" className="text-red-400" size={18} /> Failed Payouts Queue
+                    <Icon name={"AlertCircle" as any} className="w-12 h-12 text-red-500 mb-2" size={18} /> Failed Payouts Queue
                 </div>
                 <table className="w-full text-left text-sm">
                     <thead className="bg-[#0b141a] text-text-secondary border-b border-white/5 font-medium uppercase text-xs tracking-wider">

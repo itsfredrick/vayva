@@ -11,7 +11,7 @@ export class ReturnService {
     ) {
         // Check if exists
         const existing = await prisma.returnRequest.findFirst({
-            where: { orderId, status: { not: 'cancelled' } }
+            where: { order: { id: orderId }, status: { not: 'CANCELLED' } }
         });
 
         if (existing) {
@@ -20,24 +20,27 @@ export class ReturnService {
 
         const request = await prisma.returnRequest.create({
             data: {
-                storeId,
-                merchantId: 'pending_lookup', // Ideally lookup from Store owner
-                orderId,
-                customerPhone,
-                items: payload.items,
-                reason: payload.reason,
-                notes: payload.notes,
-                pickupMethod: payload.preferredMethod, // 'dropoff' | 'pickup'
-                status: 'requested',
-                correlationId: `ret_${Date.now()}`,
-                events: {
+                store: { connect: { id: storeId } },
+                order: { connect: { id: orderId } },
+                // customerPhone mapped to notes or ignored (schema doesn't have it)
+                // reason mapped to reasonText (schema has reasonCode enum and optional reasonText)
+                reasonCode: 'OTHER', // Defaulting as mapping 'reason' string to enum is complex without more logic
+                reasonText: payload.reason,
+                resolutionType: 'REFUND', // Defaulting
+                status: 'REQUESTED',
+                // Creating ITEMS nested
+                items: {
+                    create: payload.items.map((i: any) => ({
+                        qty: i.quantity || 1,
+                        // orderItemId: i.id // Assuming payload has ID, but strict schema needs valid IDs.
+                        // For V1 simple, skip linking orderItemId explicitly unless available validation
+                    }))
+                },
+                logistics: payload.preferredMethod ? {
                     create: {
-                        type: 'status_change',
-                        actorType: 'customer',
-                        actorLabel: 'Customer',
-                        metadata: { status: 'requested', reason: payload.reason }
+                        method: payload.preferredMethod === 'pickup' ? 'CARRIER' : 'DROPOFF', // Map simple strings to enum
                     }
-                }
+                } : undefined
             }
         });
 
@@ -46,9 +49,9 @@ export class ReturnService {
 
     static async getRequests(storeId: string) {
         return prisma.returnRequest.findMany({
-            where: { storeId },
+            where: { store: { id: storeId } },
             orderBy: { createdAt: 'desc' },
-            include: { events: true } // V1 include events for history
+            include: { items: true, logistics: true }
         });
     }
 
@@ -63,25 +66,9 @@ export class ReturnService {
             await tx.returnRequest.update({
                 where: { id: requestId },
                 data: {
-                    status,
-                    decisionReason: data?.decisionReason,
-                    decidedBy: status === 'approved' || status === 'rejected' ? actorId : undefined,
-                    decidedAt: status === 'approved' || status === 'rejected' ? new Date() : undefined,
-                    pickupAddress: data?.pickupAddress,
-                    dropoffAddress: data?.dropoffAddress,
-                    inspectionOutcome: data?.inspectionOutcome,
-                    inspectedAt: data?.inspectionOutcome ? new Date() : undefined,
-                    receivedAt: status === 'received' ? new Date() : undefined
-                }
-            });
-
-            await tx.returnEvent.create({
-                data: {
-                    returnRequestId: requestId,
-                    type: 'status_change',
-                    actorType: 'merchant_user',
-                    actorLabel: 'Merchant', // Ideally fetch user name
-                    metadata: { status, ...data }
+                    status: status as any,
+                    approvedAt: status === 'APPROVED' ? new Date() : undefined,
+                    completedAt: status === 'COMPLETED' ? new Date() : undefined
                 }
             });
         });

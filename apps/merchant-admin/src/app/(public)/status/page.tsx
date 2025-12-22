@@ -29,7 +29,7 @@ export default function StatusPage() {
                     }`}>
                     <div className={`w-16 h-16 rounded-full flex items-center justify-center ${isGood ? 'bg-green-100 text-green-600' : 'bg-yellow-100 text-yellow-600'
                         }`}>
-                        <Icon name={isGood ? 'Check' : 'AlertTriangle'} size={32} />
+                        <Icon name={(isGood ? 'Check' : 'AlertTriangle') as any} size={32} />
                     </div>
                     <div>
                         <h2 className={`text-xl font-bold ${isGood ? 'text-green-800' : 'text-yellow-800'}`}>

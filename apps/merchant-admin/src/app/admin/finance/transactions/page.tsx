@@ -16,19 +16,19 @@ const MOCK_TRANSACTIONS = [
 
 export default function TransactionsPage() {
     return (
-        <AppShell title="Transactions" breadcrumb="Finance / Transactions">
+        <AppShell sidebar={<></>} header={<></>}>
             <div className="flex flex-col gap-6">
                 {/* KPI Row */}
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                     {[
-                        { label: 'Total Received (30d)', value: '₦ 4,250,050', icon: 'payments', color: 'text-white' },
-                        { label: 'Successful', value: '142', icon: 'check_circle', color: 'text-state-success' },
-                        { label: 'Failed', value: '5', icon: 'cancel', color: 'text-state-danger' },
-                        { label: 'Pending Refunds', value: '2', icon: 'restart_alt', color: 'text-state-warning' },
+                        { label: 'Total Received (30d)', value: '₦ 4,250,050', icon: 'Wallet', color: 'text-white' },
+                        { label: 'Successful', value: '142', icon: 'CheckCircle', color: 'text-state-success' },
+                        { label: 'Failed', value: '5', icon: 'XCircle', color: 'text-state-danger' },
+                        { label: 'Pending Refunds', value: '2', icon: 'RotateCcw', color: 'text-state-warning' },
                     ].map((stat, i) => (
                         <GlassPanel key={i} className="p-4 flex flex-col gap-2">
                             <div className="flex items-center gap-2 text-text-secondary text-xs font-bold uppercase tracking-wider">
-                                <Icon name={stat.icon} size={16} />
+                                <Icon name={stat.icon as any} size={16} />
                                 {stat.label}
                             </div>
                             <div className={`text-xl font-bold ${stat.color}`}>{stat.value}</div>
@@ -39,7 +39,7 @@ export default function TransactionsPage() {
                 {/* Filters */}
                 <GlassPanel className="p-4 flex flex-col md:flex-row gap-4 justify-between items-center">
                     <div className="w-full md:w-auto relative">
-                        <Icon name="search" size={18} className="absolute left-3 top-1/2 -translate-y-1/2 text-text-secondary" />
+                        <Icon name={"Search" as any} size={18} className="absolute left-3 top-1/2 -translate-y-1/2 text-text-secondary" />
                         <input
                             className="bg-white/5 border border-white/5 rounded-full pl-10 pr-4 py-2 text-sm text-white focus:outline-none focus:border-primary w-full md:w-64"
                             placeholder="Search by Order ID, Ref..."
@@ -84,14 +84,14 @@ export default function TransactionsPage() {
                                         <td className="p-4"><StatusChip status={tx.status} /></td>
                                         <td className="p-4">
                                             <span className="flex items-center gap-1 text-xs text-text-secondary uppercase font-bold tracking-wider">
-                                                <Icon name="credit_card" size={14} /> {tx.provider}
+                                                <Icon name={"CreditCard" as any} size={14} /> {tx.provider}
                                             </span>
                                         </td>
                                         <td className="p-4 text-text-secondary text-xs">{tx.date}</td>
                                         <td className="p-4 text-right">
                                             <Link href={`/admin/finance/transactions/${tx.id}`}>
                                                 <Button size="icon" variant="ghost" className="h-8 w-8 text-text-secondary hover:text-white">
-                                                    <Icon name="chevron_right" size={20} />
+                                                    <Icon name={"ChevronRight" as any} size={20} />
                                                 </Button>
                                             </Link>
                                         </td>

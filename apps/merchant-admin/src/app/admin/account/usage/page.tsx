@@ -70,7 +70,7 @@ export default function UsagePage() {
                     <div className="flex items-center justify-between p-3 rounded-lg bg-white/5 border border-white/10">
                         <div className="flex items-center gap-3">
                             <div className="p-2 rounded-full bg-green-500/10 text-green-500">
-                                <Icon name="MessageSquare" size={16} />
+                                <Icon name={"MessageSquare" as any} size={16} />
                             </div>
                             <div>
                                 <h4 className="font-medium text-white">WhatsApp AI</h4>
@@ -87,7 +87,7 @@ export default function UsagePage() {
                     <div className="flex items-center justify-between p-3 rounded-lg bg-white/5 border border-white/10">
                         <div className="flex items-center gap-3">
                             <div className={`p-2 rounded-full ${usage.marketplaceListed ? 'bg-blue-500/10 text-blue-500' : 'bg-white/10 text-text-secondary'}`}>
-                                <Icon name="Store" size={16} />
+                                <Icon name={"Store" as any} size={16} />
                             </div>
                             <div>
                                 <h4 className="font-medium text-white">Marketplace Listing</h4>
@@ -96,7 +96,7 @@ export default function UsagePage() {
                                 </p>
                             </div>
                         </div>
-                        {!usage.marketplaceListed && <Icon name="Lock" size={14} className="text-text-secondary" />}
+                        {!usage.marketplaceListed && <Icon name={"Lock" as any} size={14} className="text-text-secondary" />}
                     </div>
                 </GlassPanel>
             </div>

@@ -51,7 +51,7 @@ export function PaywallModal({ isOpen, onClose, title, message, requiredPlan = '
                                 <Icon name="Zap" size={14} className="text-green-500" /> Pro Templates
                             </div>
                             <div className="font-bold flex items-center gap-1 justify-end">
-                                <Icon name="BarChart" size={14} className="text-green-500" /> Analytics
+                                <Icon name={"BarChart" as any} className="text-primary w-6 h-6" /> Analytics
                             </div>
                         </div>
                     </div>

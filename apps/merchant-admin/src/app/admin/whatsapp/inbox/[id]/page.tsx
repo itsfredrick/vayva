@@ -55,7 +55,7 @@ export default function ConversationDetailPage({ params }: { params: { id: strin
                         </div>
                         <div className="flex gap-2">
                             <Button size="sm" variant="ghost" className="h-8 w-8 p-0"><Icon name="Search" size={18} /></Button>
-                            <Button size="sm" variant="ghost" className="h-8 w-8 p-0"><Icon name="MoreVertical" size={18} /></Button>
+                            <Button size="sm" variant="ghost" className="h-8 w-8 p-0"><Icon name={"MoreVertical" as any} size={18} /></Button>
                         </div>
                     </div>
 

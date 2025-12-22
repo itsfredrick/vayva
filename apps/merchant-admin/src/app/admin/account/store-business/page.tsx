@@ -114,7 +114,7 @@ export default function StoreBusinessPage() {
                         <div className="pt-4 flex justify-end gap-3">
                             <Link href="/admin/control-center/preview" target="_blank">
                                 <Button type="button" variant="secondary">
-                                    <Icon name="Eye" size={16} className="mr-2" />
+                                    <Icon name={"Eye" as any} size={16} className="mr-2" />
                                     Preview Store
                                 </Button>
                             </Link>

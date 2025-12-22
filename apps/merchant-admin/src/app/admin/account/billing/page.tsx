@@ -26,7 +26,7 @@ export default function BillingPage() {
                 </div>
 
                 <div className="mt-8 flex items-center gap-2 text-text-secondary text-sm">
-                    <Icon name="Shield" size={14} />
+                    <Icon name={"Shield" as any} size={14} />
                     <span>Payments are secured by Paystack</span>
                 </div>
             </GlassPanel>

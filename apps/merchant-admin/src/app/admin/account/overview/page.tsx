@@ -47,7 +47,7 @@ export default function AccountOverviewPage() {
                 <GlassPanel className="p-6 flex flex-col justify-between">
                     <div>
                         <div className="flex items-center justify-between mb-4">
-                            <Icon name="CreditCard" className="text-primary" />
+                            <Icon name={"CreditCard" as any} className="text-primary" />
                             <span className="text-xs font-bold bg-white/10 px-2 py-1 rounded text-white uppercase">{subscription?.planId} PLAN</span>
                         </div>
                         <h3 className="text-lg font-bold text-white">Subscription</h3>
@@ -62,7 +62,7 @@ export default function AccountOverviewPage() {
                 <GlassPanel className="p-6 flex flex-col justify-between">
                     <div>
                         <div className="flex items-center justify-between mb-4">
-                            <Icon name="Store" className="text-blue-400" />
+                            <Icon name={"Store" as any} className="text-blue-400" />
                             <span className={`text-xs font-bold px-2 py-1 rounded uppercase ${store?.isPublished ? 'bg-green-500/10 text-green-500' : 'bg-yellow-500/10 text-yellow-500'}`}>
                                 {store?.isPublished ? 'Live' : 'Offline'}
                             </span>
@@ -84,7 +84,7 @@ export default function AccountOverviewPage() {
                 <GlassPanel className="p-6 flex flex-col justify-between">
                     <div>
                         <div className="flex items-center justify-between mb-4">
-                            <Icon name="Shield" className={kyc?.status === 'verified' ? 'text-green-500' : 'text-orange-500'} />
+                            <Icon name={"Shield" as any} className={kyc?.status === 'verified' ? 'text-green-500' : 'text-orange-500'} />
                             <span className="text-xs font-bold bg-white/10 px-2 py-1 rounded text-white uppercase">Compliance</span>
                         </div>
                         <h3 className="text-lg font-bold text-white">Identity Verification</h3>
@@ -103,7 +103,7 @@ export default function AccountOverviewPage() {
                 <GlassPanel className="p-6 flex flex-col justify-between">
                     <div>
                         <div className="flex items-center justify-between mb-4">
-                            <Icon name="MessageSquare" className="text-green-400" />
+                            <Icon name={"MessageSquare" as any} className="text-green-400" />
                             <span className="text-xs font-bold bg-white/10 px-2 py-1 rounded text-white uppercase">AI AGENT</span>
                         </div>
                         <h3 className="text-lg font-bold text-white">WhatsApp Agent</h3>
@@ -119,7 +119,7 @@ export default function AccountOverviewPage() {
                 <GlassPanel className="p-6 flex flex-col justify-between">
                     <div>
                         <div className="flex items-center justify-between mb-4">
-                            <Icon name="Wallet" className="text-purple-400" />
+                            <Icon name={"Wallet" as any} className="text-purple-400" />
                         </div>
                         <h3 className="text-lg font-bold text-white">Wallet</h3>
                         <p className="text-sm text-text-secondary mt-1">View balance and payouts.</p>

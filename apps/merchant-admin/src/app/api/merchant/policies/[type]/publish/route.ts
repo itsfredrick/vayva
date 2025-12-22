@@ -8,15 +8,15 @@ export async function POST(
 ) {
     try {
         const session = await getServerSession();
-        if (!session?.user?.storeId) {
+        if (!(session?.user as any)?.storeId) {
             return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
         }
 
         const policy = await prisma.merchantPolicy.update({
             where: {
                 storeId_type: {
-                    storeId: session.user.storeId,
-                    type: params.type.toUpperCase().replace('-', '_')
+                    storeId: (session!.user as any).storeId,
+                    type: params.type.toUpperCase().replace('-', '_') as any
                 }
             },
             data: {

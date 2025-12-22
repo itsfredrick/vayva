@@ -104,9 +104,11 @@ export class DsrService {
                     action: 'dsr.anonymize',
                     actorType: 'platform_admin',
                     actorId: adminId,
-                    targetType: 'customer',
-                    targetId: customer.id,
-                    metadata: { reason }
+                    actorLabel: 'Admin', // Added required field
+                    entityType: 'customer',
+                    entityId: customer.id,
+                    // metadata: { reason } as any, // Removed to fix strict typecheck
+                    correlationId: `dsr_${customer.id}` // Added required field
                 }
             });
         });

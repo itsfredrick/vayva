@@ -21,7 +21,7 @@ export default function IdentityPage() {
     useEffect(() => {
         // Pre-fill from Auth User or Onboarding State
         const initialData = {
-            fullName: state?.identity?.fullName || user?.fullName || '',
+            fullName: state?.identity?.fullName || (user as any)?.fullName || user?.email || '',
             email: state?.identity?.email || user?.email || '',
             phone: state?.identity?.phone || user?.phone || '',
         };

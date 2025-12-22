@@ -21,7 +21,7 @@ export default function RefundPage() {
     };
 
     return (
-        <AppShell title="Process Refund" breadcrumb={`Orders / ${id} / Refund`}>
+        <AppShell sidebar={<></>} header={<></>}>
             <div className="flex flex-col gap-6 max-w-4xl mx-auto">
                 <div className="flex items-center justify-between">
                     <div>
@@ -39,14 +39,14 @@ export default function RefundPage() {
                                 <div className="flex gap-4">
                                     <label className="flex items-center gap-2 cursor-pointer group">
                                         <div className={`w-5 h-5 rounded-full border flex items-center justify-center ${refundType === 'full' ? 'border-primary bg-primary' : 'border-white/20 bg-transparent'}`}>
-                                            {refundType === 'full' && <Icon name="check" size={12} className="text-black" />}
+                                            {refundType === 'full' && <Icon name={"Check" as any} size={12} className="text-black" />}
                                         </div>
                                         <input type="radio" className="hidden" checked={refundType === 'full'} onChange={() => setRefundType('full')} />
                                         <span className="text-white group-hover:text-primary transition-colors">Full Refund</span>
                                     </label>
                                     <label className="flex items-center gap-2 cursor-pointer group">
                                         <div className={`w-5 h-5 rounded-full border flex items-center justify-center ${refundType === 'partial' ? 'border-primary bg-primary' : 'border-white/20 bg-transparent'}`}>
-                                            {refundType === 'partial' && <Icon name="check" size={12} className="text-black" />}
+                                            {refundType === 'partial' && <Icon name={"Check" as any} size={12} className="text-black" />}
                                         </div>
                                         <input type="radio" className="hidden" checked={refundType === 'partial'} onChange={() => setRefundType('partial')} />
                                         <span className="text-white group-hover:text-primary transition-colors">Partial Refund</span>
@@ -109,7 +109,7 @@ export default function RefundPage() {
                         </GlassPanel>
 
                         <div className="p-4 rounded-xl bg-primary/10 border border-primary/20 text-xs text-primary/80">
-                            <Icon name="info" size={16} className="inline mr-1 mb-0.5" />
+                            <Icon name={"Info" as any} size={16} className="inline mr-1 mb-0.5" />
                             Processing fees from Paystack may not be returned depending on their policy.
                         </div>
                     </div>

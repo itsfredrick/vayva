@@ -33,7 +33,7 @@ export default function OpsMerchantsPage() {
                     <span>All Statuses</span>
                 </div>
                 <div className="flex items-center gap-2 px-3 py-1.5 bg-white/5 rounded border border-white/10 text-sm text-text-secondary min-w-[200px]">
-                    <Icon name="AlertTriangle" size={16} />
+                    <Icon name={"AlertTriangle" as any} className="w-12 h-12 text-yellow-500 mb-2" />
                     <span>All Risk Levels</span>
                 </div>
                 <div className="flex-1" />

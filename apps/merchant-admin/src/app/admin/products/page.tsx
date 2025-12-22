@@ -23,12 +23,12 @@ export default function ProductsListPage() {
             ProductsService.getProducts(),
             ProductsService.getLimits()
         ]);
-        setProducts(pData);
+        setProducts(pData.map(p => ({ ...p, trackInventory: (p as any).trackInventory ?? false })));
         setLimits(lData);
         setIsLoading(false);
     };
 
-    const isLimitReached = limits && limits.limit !== 'unlimited' && limits.used >= limits.limit;
+    const isLimitReached = limits ? (limits.limit !== 'unlimited' && limits.used >= limits.limit) : false;
 
     // Filtering logic (client side for speed demo)
     const filteredProducts = products.filter(p =>
@@ -42,7 +42,7 @@ export default function ProductsListPage() {
                 {/* Header Actions */}
                 <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
                     <div className="relative w-full md:w-96">
-                        <Icon name="Search" className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={16} />
+                        <Icon name={"Search" as any} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={16} />
                         <input
                             type="text"
                             placeholder="Search products..."
@@ -52,10 +52,10 @@ export default function ProductsListPage() {
                         />
                     </div>
                     <div className="flex gap-2 w-full md:w-auto">
-                        <Button variant="outline"><Icon name="Upload" size={16} className="mr-2" /> Import</Button>
+                        <Button variant="outline"><Icon name={"Upload" as any} size={16} className="mr-2" /> Import</Button>
                         <Link href={isLimitReached ? '/admin/account/subscription' : '/admin/products/new'}>
                             <Button disabled={isLimitReached} className={cn(isLimitReached && "opacity-50 cursor-not-allowed")}>
-                                <Icon name="Plus" size={16} className="mr-2" /> Add Product
+                                <Icon name={"Plus" as any} size={16} className="mr-2" /> Add Product
                             </Button>
                         </Link>
                     </div>
@@ -65,7 +65,7 @@ export default function ProductsListPage() {
                 {isLimitReached && (
                     <div className="bg-orange-50 border border-orange-100 rounded-xl p-4 flex items-center justify-between">
                         <div className="flex items-center gap-3">
-                            <Icon name="AlertTriangle" className="text-orange-500" size={20} />
+                            <Icon name={"AlertTriangle" as any} className="text-orange-500" size={20} />
                             <div>
                                 <p className="text-sm font-bold text-orange-800">Product Limit Reached</p>
                                 <p className="text-xs text-orange-600">You have reached the limit of {limits?.limit} products on your {limits?.plan} plan.</p>
@@ -76,7 +76,8 @@ export default function ProductsListPage() {
                 )}
 
                 {/* Empty State */}
-                {!isLoading && products.length === 0 && (
+                {/* This empty state is now handled by the conditional return above */}
+                {/* {!isLoading && products.length === 0 && (
                     <div className="bg-white border border-gray-100 rounded-xl p-12 flex flex-col items-center justify-center text-center">
                         <div className="w-16 h-16 bg-gray-50 rounded-full flex items-center justify-center mb-4">
                             <Icon name="Package" size={32} className="text-gray-300" />
@@ -85,7 +86,7 @@ export default function ProductsListPage() {
                         <p className="text-gray-500 text-sm mb-6 max-w-sm">Add your first product to start selling properly on your Vayva store.</p>
                         <Link href="/admin/products/new"><Button>Add Product</Button></Link>
                     </div>
-                )}
+                )} */}
 
                 {/* Products Table */}
                 {!isLoading && products.length > 0 && (
@@ -110,7 +111,7 @@ export default function ProductsListPage() {
                                         <td className="px-6 py-4">
                                             <div className="w-10 h-10 bg-gray-100 rounded overflow-hidden">
                                                 {product.images[0] && <img src={product.images[0]} alt="" className="w-full h-full object-cover" />}
-                                                {!product.images[0] && <div className="w-full h-full flex items-center justify-center"><Icon name="Image" size={14} className="text-gray-300" /></div>}
+                                                {!product.images[0] && <div className="w-full h-full flex items-center justify-center"><Icon name={"Image" as any} size={14} className="text-gray-300" /></div>}
                                             </div>
                                         </td>
                                         <td className="px-6 py-4 font-medium text-[#0B0B0B]">

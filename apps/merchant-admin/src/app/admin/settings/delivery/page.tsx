@@ -26,6 +26,7 @@ export default function DeliverySettingsPage() {
     }, [merchant]);
 
     const loadProfiles = async () => {
+        if (!merchant?.storeId) return;
         setLoading(true);
         try {
             const data = await FulfillmentAPI.getProfiles(merchant.storeId);
@@ -42,7 +43,7 @@ export default function DeliverySettingsPage() {
     };
 
     const handleAddZone = async () => {
-        if (!selectedProfileId) return;
+        if (!selectedProfileId || !merchant?.storeId) return;
         try {
             await FulfillmentAPI.createZone({
                 storeId: merchant.storeId,

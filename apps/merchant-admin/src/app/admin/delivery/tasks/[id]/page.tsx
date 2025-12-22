@@ -28,7 +28,7 @@ export default function DeliveryTaskDetailPage() {
     };
 
     return (
-        <AppShell title={`Task ${task.id}`} breadcrumb={`Delivery / Tasks / ${task.id}`}>
+        <AppShell sidebar={<></>} header={<></>}>
             <div className="flex flex-col gap-6 max-w-6xl mx-auto">
                 {/* Header */}
                 <div className="flex items-center justify-between">
@@ -66,7 +66,7 @@ export default function DeliveryTaskDetailPage() {
                             <h3 className="font-bold text-white mb-4">Delivery Address</h3>
                             <div className="flex gap-4">
                                 <div className="w-12 h-12 rounded-full bg-white/5 flex items-center justify-center shrink-0">
-                                    <Icon name="location_on" className="text-primary" />
+                                    <Icon name={"MapPin" as any} className="text-primary" />
                                 </div>
                                 <div className="flex-1">
                                     <p className="text-white font-medium mb-1">{task.address}</p>

@@ -115,11 +115,11 @@ export default function StoreDetailsPage() {
                         />
                         <div className="px-3 flex items-center justify-center">
                             {isCheckingSlug ? (
-                                <Icon name="Loader2" className="animate-spin text-gray-400" size={16} />
+                                <Icon name={"Loader2" as any} className="animate-spin text-gray-400" size={16} />
                             ) : slugAvailable === true ? (
-                                <Icon name="CheckCircle" className="text-green-500" size={16} />
+                                <Icon name={"CheckCircle" as any} className="text-green-500" size={16} />
                             ) : slugAvailable === false ? (
-                                <Icon name="XCircle" className="text-red-500" size={16} />
+                                <Icon name={"XCircle" as any} className="text-red-500" size={16} />
                             ) : null}
                         </div>
                     </div>

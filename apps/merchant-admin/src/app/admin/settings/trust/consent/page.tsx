@@ -35,7 +35,7 @@ export default function ConsentPage() {
                             <h3 className="text-3xl font-bold text-green-600 mt-1">{stats.optIns}</h3>
                         </div>
                         <div className="w-12 h-12 bg-green-50 rounded-xl flex items-center justify-center text-green-600">
-                            <Icon name="CheckCircle" size={24} />
+                            <Icon name={"CheckCircle" as any} size={24} />
                         </div>
                     </div>
                     <div className="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm flex items-center justify-between">
@@ -44,7 +44,7 @@ export default function ConsentPage() {
                             <h3 className="text-3xl font-bold text-red-600 mt-1">{stats.optOuts}</h3>
                         </div>
                         <div className="w-12 h-12 bg-red-50 rounded-xl flex items-center justify-center text-red-600">
-                            <Icon name="XCircle" size={24} />
+                            <Icon name={"XCircle" as any} size={24} />
                         </div>
                     </div>
                 </div>

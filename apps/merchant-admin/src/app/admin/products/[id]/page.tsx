@@ -31,7 +31,7 @@ export default function ProductDetailPage({ params }: { params: { id: string } }
                 <div className="flex justify-between items-center bg-white p-6 rounded-xl border border-gray-100 shadow-sm">
                     <div className="flex items-center gap-4">
                         <div className="w-16 h-16 bg-gray-100 rounded-lg overflow-hidden">
-                            {product.images[0] ? <img src={product.images[0]} className="w-full h-full object-cover" /> : <div className="w-full h-full flex items-center justify-center"><Icon name="Image" className="text-gray-300" /></div>}
+                            {product.images[0] ? <img src={product.images[0]} className="w-full h-full object-cover" /> : <div className="w-full h-full flex items-center justify-center"><Icon name={"Image" as any} className="text-gray-300" /></div>}
                         </div>
                         <div>
                             <h1 className="text-xl font-bold text-[#0B0B0B]">{product.name}</h1>

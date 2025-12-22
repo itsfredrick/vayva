@@ -14,7 +14,8 @@ export default function WhatsAppPage() {
     const [ownNumber, setOwnNumber] = useState(state?.identity?.phone || '');
     const [loading, setLoading] = useState(false);
 
-    const isStarter = user?.plan === 'starter';
+    const userPlan = (user as any)?.plan || 'free';
+    const isStarter = userPlan === 'starter';
 
     const handleSelectMode = (m: 'own' | 'vayva') => {
         if (m === 'vayva' && isStarter) {
@@ -65,7 +66,7 @@ export default function WhatsAppPage() {
                         </div>
                         <h3 className="font-bold text-black mb-1">Use my number</h3>
                         <p className="text-xs text-gray-500">Connect your existing WhatsApp Business number.</p>
-                        {mode === 'own' && <div className="absolute top-4 right-4"><Icon name="CheckCircle" className="text-black" size={20} /></div>}
+                        {mode === 'own' && <div className="absolute top-4 right-4"><Icon name={"CheckCircle" as any} className="text-black" size={20} /></div>}
                     </div>
 
                     <div
@@ -85,7 +86,7 @@ export default function WhatsAppPage() {
                         {isStarter ? (
                             <span className="absolute top-4 right-4 bg-gray-200 text-gray-600 text-[10px] font-bold px-2 py-1 rounded">GROWTH+</span>
                         ) : (
-                            mode === 'vayva' && <div className="absolute top-4 right-4"><Icon name="CheckCircle" className="text-black" size={20} /></div>
+                            mode === 'vayva' && <div className="absolute top-4 right-4"><Icon name={"CheckCircle" as any} className="text-black" size={20} /></div>
                         )}
                     </div>
                 </div>
@@ -107,8 +108,8 @@ export default function WhatsAppPage() {
                         </div>
                     ) : (
                         <div className="space-y-4 text-center py-4">
-                            <div className="w-16 h-16 bg-blue-50 rounded-full flex items-center justify-center mx-auto animate-pulse">
-                                <Icon name="Hash" className="text-blue-500" size={32} />
+                            <div className="w-16 h-16 bg-green-50 rounded-full flex items-center justify-center mx-auto animate-pulse">
+                                <Icon name={"CheckCircle" as any} className="text-[#46EC13]" size={20} />
                             </div>
                             <h3 className="font-bold text-black">Number Assignment</h3>
                             <p className="text-sm text-gray-500 max-w-sm mx-auto">

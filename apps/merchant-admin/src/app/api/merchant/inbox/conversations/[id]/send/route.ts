@@ -28,7 +28,7 @@ export async function POST(req: NextRequest, { params }: { params: { id: string 
     });
 
     if (!conversation) return new NextResponse('Not Found', { status: 404 });
-    if (conversation.merchantId !== session.user.storeId) return new NextResponse('Forbidden', { status: 403 });
+    if (conversation.merchantId !== (session!.user as any).storeId) return new NextResponse('Forbidden', { status: 403 });
 
     // CONSENT CHECK
     // If blocked_all, usually we can't send anything.
@@ -48,7 +48,7 @@ export async function POST(req: NextRequest, { params }: { params: { id: string 
 
     // Send via Provider
     try {
-        const waRes = await WhatsAppProvider.sendText(conversation.contact.phone, text);
+        const waRes = await WhatsAppProvider.sendText(conversation.contact.phoneE164 || '', text);
 
         // Save Message to DB
         const message = await prisma.message.create({
@@ -82,9 +82,10 @@ export async function POST(req: NextRequest, { params }: { params: { id: string 
             type: 'inbox.message_sent',
             payload: { messageId: message.id, type },
             ctx: {
-                actorId: session.user.id,
-                actorType: 'user',
-                actorLabel: `${session.user.firstName} ${session.user.lastName}`
+                actorId: (session!.user as any).id,
+                actorType: 'user' as any,
+                correlationId: `req-${Date.now()}`,
+                actorLabel: `${(session!.user as any).firstName || 'System'} ${(session!.user as any).lastName || ''}`
             }
         });
 

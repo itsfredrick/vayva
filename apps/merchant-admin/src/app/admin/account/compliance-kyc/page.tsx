@@ -61,7 +61,7 @@ export default function ComplianceKycPage() {
                             ${status === 'VERIFIED' ? 'bg-green-100 text-green-600' :
                                 status === 'PENDING' ? 'bg-yellow-100 text-yellow-600' :
                                     'bg-gray-100 text-gray-600'}`}>
-                            <Icon name={status === 'VERIFIED' ? 'ShieldCheck' : status === 'PENDING' ? 'Clock' : 'Shield'} size={32} />
+                            <Icon name={(status === 'VERIFIED' ? 'ShieldCheck' : status === 'PENDING' ? 'Clock' : 'Shield') as any} size={32} />
                         </div>
                         <h2 className="text-xl font-bold text-black uppercase tracking-wider">{status.replace('_', ' ')}</h2>
                         <p className="text-sm text-gray-500 mt-1">Current KYC Status</p>
@@ -90,7 +90,7 @@ export default function ComplianceKycPage() {
                     {status === 'VERIFIED' && (
                         <GlassPanel className="p-6 border-l-4 border-l-green-500">
                             <h3 className="text-lg font-bold text-black flex items-center gap-2">
-                                <Icon name="CheckCircle" className="text-green-500" />
+                                <Icon name={"CheckCircle" as any} className="text-green-500" />
                                 You're all set!
                             </h3>
                             <p className="text-gray-600 mt-2">
@@ -107,7 +107,7 @@ export default function ComplianceKycPage() {
                     {status === 'PENDING' && (
                         <GlassPanel className="p-6 border-l-4 border-l-yellow-500">
                             <h3 className="text-lg font-bold text-black flex items-center gap-2">
-                                <Icon name="Clock" className="text-yellow-500" />
+                                <Icon name={"Clock" as any} className="text-yellow-500" />
                                 Review in Progress
                             </h3>
                             <p className="text-gray-600 mt-2">

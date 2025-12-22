@@ -13,7 +13,7 @@ export async function GET(req: NextRequest, { params }: { params: { type: string
     if (!['reconciliation'].includes(type)) return new NextResponse('Invalid Type', { status: 400 });
 
     const csv = await ReportsService.generateCSV(
-        session.user.storeId,
+        (session!.user as any).storeId,
         type as any,
         { from: new Date(0), to: new Date() } // All time for V1 export? or parse query params
     );

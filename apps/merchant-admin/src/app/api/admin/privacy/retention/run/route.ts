@@ -34,9 +34,11 @@ export async function POST(req: NextRequest) {
                 action: 'retention.purge',
                 actorType: 'system', // or admin triggered
                 actorId: admin.user.email || 'job',
-                targetType: 'system',
-                targetId: 'webhook_events',
-                metadata: { count: result.count }
+                entityType: 'system',
+                entityId: 'webhook_events',
+                afterState: { count: result.count } as any,
+                correlationId: `job_${Date.now()}`,
+                actorLabel: 'System Job'
             }
         });
 

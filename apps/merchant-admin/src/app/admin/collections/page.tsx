@@ -21,7 +21,7 @@ export default function CollectionsPage() {
                 <div className="flex items-center justify-between">
                     <div className="flex-1 max-w-sm">
                         <GlassPanel className="p-1 pl-4 flex items-center gap-2">
-                            <Icon name="Search" className="text-text-secondary" />
+                            <Icon name={"Search" as any} className="text-text-secondary" />
                             <input
                                 className="bg-transparent border-none outline-none text-white text-sm w-full h-10 placeholder:text-text-secondary"
                                 placeholder="Search collections..."
@@ -73,7 +73,7 @@ export default function CollectionsPage() {
                                             {/* @ts-ignore */}
                                             <Link href={`/admin/collections/${col.id}`}>
                                                 <Button size="icon" variant="ghost" className="h-8 w-8 text-text-secondary hover:text-white">
-                                                    <Icon name="ChevronRight" size={20} />
+                                                    <Icon name={"ChevronRight" as any} size={20} />
                                                 </Button>
                                             </Link>
                                         </td>

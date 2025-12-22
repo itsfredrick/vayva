@@ -51,7 +51,7 @@ const BaseButton = React.forwardRef<HTMLButtonElement, ButtonProps>(
                 whileTap={!props.disabled && !isLoading ? tapScale : undefined}
                 {...(props as any)}
             >
-                {isLoading && <Icon name="Loader2" className="mr-2 h-4 w-4 animate-spin" />}
+                {isLoading && <Icon name="Loader" className="mr-2 h-4 w-4 animate-spin" />}
                 {children}
             </motion.button>
         );

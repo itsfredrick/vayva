@@ -15,16 +15,7 @@ export default function PayoutsPage() {
     ];
 
     return (
-        <AppShell
-            title="Payouts"
-            breadcrumbs={[
-                { label: 'Payments', href: '/admin/payments' },
-                { label: 'Payouts', href: '#' }
-            ]}
-            profile={{ name: user?.name || '', email: user?.email || '' }}
-            storeName="Store"
-            onLogout={() => router.push('/signin')}
-        >
+        <AppShell sidebar={<></>} header={<></>}>
             <GlassPanel className="p-0 overflow-hidden">
                 <table className="w-full text-left border-collapse">
                     <thead>

@@ -14,7 +14,7 @@ export default function KnowledgeBasePage() {
                 <div className="w-[300px] flex flex-col gap-4 shrink-0">
                     <GlassPanel className="p-2 flex flex-col gap-1">
                         <div className="flex items-center gap-2 px-3 py-2 bg-white/10 rounded-lg text-white font-bold text-sm cursor-pointer">
-                            <Icon name="HelpCircle" size={18} /> FAQs
+                            <Icon name={"HelpCircle" as any} size={18} /> FAQs
                         </div>
                         <div className="flex items-center gap-2 px-3 py-2 text-text-secondary hover:bg-white/5 rounded-lg font-medium text-sm cursor-pointer transition-colors">
                             <Icon name="ScrollText" size={18} /> Store Policies

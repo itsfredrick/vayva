@@ -58,7 +58,7 @@ export default function SecurityPage() {
                     {security.activeSessions.map(session => (
                         <div key={session.id} className="flex items-center justify-between p-3 rounded bg-white/5">
                             <div className="flex items-center gap-3">
-                                <Icon name="Laptop" className="text-text-secondary" />
+                                <Icon name={"Laptop" as any} className="text-text-secondary" />
                                 <div>
                                     <p className="text-white text-sm font-medium">{session.device} {session.isCurrent && <span className="text-green-500 text-xs ml-2">(Current)</span>}</p>
                                     <p className="text-xs text-text-secondary">{session.location} • {session.lastActive}</p>

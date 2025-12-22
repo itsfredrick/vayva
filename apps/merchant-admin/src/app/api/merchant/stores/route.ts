@@ -5,12 +5,12 @@ import { prisma } from '@vayva/db';
 
 export async function GET(req: NextRequest) {
     const session = await getServerSession(authOptions);
-    if (!session?.user?.id) return new NextResponse('Unauthorized', { status: 401 });
+    if (!(session?.user as any)?.id) return new NextResponse('Unauthorized', { status: 401 });
 
     try {
         // Find all stores where user is a member
         const memberships = await prisma.membership.findMany({
-            where: { userId: session.user.id },
+            where: { userId: (session!.user as any).id },
             include: { store: true }
         });
 
@@ -24,13 +24,14 @@ export async function GET(req: NextRequest) {
 
 export async function POST(req: NextRequest) {
     const session = await getServerSession(authOptions);
-    if (!session?.user?.id) return new NextResponse('Unauthorized', { status: 401 });
+    if (!(session?.user as any)?.id) return new NextResponse('Unauthorized', { status: 401 });
 
     // Check if user is allowed to create more stores (Growth/Pro limit?)
     // For now, allow open creation.
 
     const body = await req.json();
     const { name, slug, category } = body;
+    const { id: userId } = (session!.user as any);
 
     if (!name || !slug) return new NextResponse('Name and Slug required', { status: 400 });
 
@@ -47,7 +48,7 @@ export async function POST(req: NextRequest) {
                 onboardingStatus: 'NOT_STARTED', // Explicitly new
                 memberships: {
                     create: {
-                        userId: session.user.id,
+                        userId: (session!.user as any).id,
                         role: 'OWNER'
                     }
                 }

@@ -1,18 +1,15 @@
 'use client';
 
-import { AppShell } from '@vayva/ui';
-import { useAuth } from '@/context/AuthContext';
+import { AdminShell } from '@/components/admin-shell';
+import { Button, cn } from '@vayva/ui';
+import { api } from '@/services/api';
+import Link from 'next/link';
 
 export default function DashboardPage() {
-    const { logout, user } = useAuth();
-
     return (
-        <AppShell
+        <AdminShell
             title="Overview"
-            breadcrumbs={[{ label: 'Dashboard', href: '/admin/dashboard' }]}
-            profile={{ name: user?.name || 'Merchant', email: user?.email || '' }}
-            storeName="Vayva Store"
-            onLogout={logout}
+            breadcrumb="Dashboard"
         >
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                 <div className="p-6 bg-white/5 border border-white/10 rounded-xl">
@@ -28,6 +25,6 @@ export default function DashboardPage() {
                     <div className="inline-flex items-center px-2 py-1 rounded bg-yellow-500/20 text-yellow-500 text-sm font-medium">Draft</div>
                 </div>
             </div>
-        </AppShell>
+        </AdminShell>
     );
 }

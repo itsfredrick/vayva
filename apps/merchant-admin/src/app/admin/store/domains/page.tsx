@@ -21,7 +21,7 @@ export default function DomainsPage() {
                         <div className="flex items-start justify-between">
                             <div className="flex gap-4">
                                 <div className="w-12 h-12 rounded-full bg-primary/20 flex items-center justify-center text-primary">
-                                    <Icon name="Globe" size={24} />
+                                    <Icon name={"Globe" as any} size={24} />
                                 </div>
                                 <div className="flex flex-col gap-1">
                                     <h3 className="font-bold text-white text-lg">brand.vayva.ng</h3>
@@ -39,7 +39,7 @@ export default function DomainsPage() {
                 {/* Custom Domain Placeholder */}
                 <GlassPanel className="p-8 text-center flex flex-col items-center justify-center gap-4 border-2 border-dashed border-white/10 shadow-none bg-transparent">
                     <div className="w-16 h-16 rounded-full bg-white/5 flex items-center justify-center mb-2">
-                        <Icon name="Globe" size={32} className="text-text-secondary" />
+                        <Icon name={"Globe" as any} size={32} className="text-text-secondary" />
                     </div>
                     <h3 className="text-xl font-bold text-white">Connect a Custom Domain</h3>
                     <p className="text-text-secondary max-w-md">

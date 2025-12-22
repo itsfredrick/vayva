@@ -6,7 +6,7 @@ import { PLANS } from '@/lib/billing/plans';
 
 export async function POST(req: NextRequest) {
     const session = await getServerSession(authOptions);
-    if (!session?.user?.storeId) return new NextResponse('Unauthorized', { status: 401 });
+    if (!(session?.user as any)?.storeId) return new NextResponse('Unauthorized', { status: 401 });
 
     const body = await req.json();
     const { plan_slug } = body;
@@ -24,14 +24,14 @@ export async function POST(req: NextRequest) {
 
         // Upsert pending subscription
         await prisma.merchantSubscription.upsert({
-            where: { storeId: session.user.storeId },
+            where: { storeId: (session!.user as any).storeId },
             update: {
                 planSlug: plan_slug,
                 lastPaymentStatus: 'pending'
                 // Don't change status to active yet until webhook logic
             },
             create: {
-                storeId: session.user.storeId,
+                storeId: (session!.user as any).storeId,
                 planSlug: plan_slug,
                 status: 'pending',
                 lastPaymentStatus: 'pending'

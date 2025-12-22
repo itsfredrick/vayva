@@ -5,18 +5,19 @@ import { SupportService } from '@/lib/support';
 
 export async function POST(req: NextRequest, { params }: { params: { id: string } }) {
     const session = await getServerSession(authOptions);
-    if (!session?.user) return new NextResponse('Unauthorized', { status: 401 });
+    if (!(session!.user as any)?.storeId) return new NextResponse('Unauthorized', { status: 401 });
 
     const body = await req.json();
 
     try {
         // Ensure ownership first
-        await SupportService.getTicketDetails(params.id, session.user.storeId);
+        await SupportService.getTicketDetails(params.id, (session!.user as any).storeId);
 
+        const { storeId, id: userId } = (session!.user as any);
         const msg = await SupportService.addMessage(
             params.id,
             'merchant_user',
-            session.user.id,
+            userId,
             body.message
         );
         return NextResponse.json(msg);

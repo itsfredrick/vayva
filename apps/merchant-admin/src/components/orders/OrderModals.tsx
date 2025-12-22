@@ -54,8 +54,14 @@ export const DeliveryTaskModal = ({ isOpen, onClose, order }: DeliveryTaskModalP
                         <div className="flex flex-col gap-1">
                             <label className="text-xs font-bold text-[#525252]">Delivery Address</label>
                             <div className="p-2 border border-gray-200 rounded-lg bg-gray-50 text-sm text-gray-500 h-24 overflow-hidden">
-                                {order.shippingAddress.street}<br />
-                                {order.shippingAddress.city}, {order.shippingAddress.state}
+                                {order.shippingAddress ? (
+                                    <>
+                                        {order.shippingAddress.street}<br />
+                                        {order.shippingAddress.city}, {order.shippingAddress.state}
+                                    </>
+                                ) : (
+                                    <span className="text-gray-400 italic">No shipping address provided</span>
+                                )}
                             </div>
                         </div>
                     </div>

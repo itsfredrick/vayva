@@ -16,7 +16,7 @@ export default async function IntegrationsPage() {
 
     const [keys, webhooks] = await Promise.all([
         prisma.apiKey.findMany({
-            where: { merchantId },
+            where: { storeId: merchantId },
             orderBy: { createdAt: 'desc' }
         }),
         prisma.webhookSubscription.findMany({

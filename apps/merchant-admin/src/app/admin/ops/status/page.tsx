@@ -19,7 +19,7 @@ export default async function StatusPage() {
     const [checks, incidents] = await Promise.all([
         prisma.uptimeCheck.findMany({
             take: 50,
-            orderBy: { checkedAt: 'desc' }
+            orderBy: { createdAt: 'desc' },
         }),
         prisma.statusIncident.findMany({
             where: { status: 'active' },

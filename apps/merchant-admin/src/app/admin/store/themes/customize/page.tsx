@@ -32,7 +32,7 @@ export default function ThemeCustomizePage() {
             <div className="h-16 border-b border-white/5 bg-[#142210]/50 backdrop-blur-xl flex items-center justify-between px-4 z-50">
                 <div className="flex items-center gap-4">
                     <Button variant="ghost" size="icon" onClick={() => router.back()}>
-                        <Icon name="ArrowLeft" />
+                        <Icon name={"ArrowLeft" as any} />
                     </Button>
                     <span className="font-bold hidden md:inline-block">Dawn Theme</span>
                     <div className="h-4 w-[1px] bg-white/10 hidden md:block" />
@@ -41,13 +41,13 @@ export default function ThemeCustomizePage() {
                             onClick={() => setViewMode('desktop')}
                             className={`p-1.5 rounded-full transition-colors ${viewMode === 'desktop' ? 'bg-white/10 text-white' : 'text-text-secondary hover:text-white'}`}
                         >
-                            <Icon name="Monitor" size={18} />
+                            <Icon name={"Monitor" as any} size={18} />
                         </button>
                         <button
                             onClick={() => setViewMode('mobile')}
                             className={`p-1.5 rounded-full transition-colors ${viewMode === 'mobile' ? 'bg-white/10 text-white' : 'text-text-secondary hover:text-white'}`}
                         >
-                            <Icon name="Smartphone" size={18} />
+                            <Icon name={"Smartphone" as any} size={18} />
                         </button>
                     </div>
                 </div>
@@ -88,21 +88,21 @@ export default function ThemeCustomizePage() {
                                 {sections.map((section, idx) => (
                                     <div key={section.id} className="group p-3 rounded-lg bg-white/5 border border-transparent hover:border-white/10 flex items-center justify-between cursor-pointer active:cursor-grabbing hover:bg-white/10 transition-colors">
                                         <div className="flex items-center gap-3">
-                                            <Icon name="GripVertical" size={16} className="text-white/20 group-hover:text-white/50 cursor-grab" />
+                                            <Icon name={"GripVertical" as any} size={16} className="text-white/20 group-hover:text-white/50 cursor-grab" />
                                             <span className="text-sm font-medium">{section.name}</span>
                                         </div>
                                         <div className="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
                                             <button className="p-1 hover:text-white text-text-secondary">
-                                                <Icon name="Eye" size={16} />
+                                                <Icon name={"Eye" as any} size={16} />
                                             </button>
                                             <button className="p-1 hover:text-white text-text-secondary">
-                                                <Icon name="Settings" size={16} />
+                                                <Icon name={"Settings" as any} size={16} />
                                             </button>
                                         </div>
                                     </div>
                                 ))}
                                 <Button variant="outline" className="w-full mt-4 text-xs border-dashed border-white/20 text-text-secondary hover:text-white hover:border-white/40">
-                                    <Icon name="Plus" className="mr-2" size={16} />
+                                    <Icon name={"Plus" as any} className="mr-2" size={16} />
                                     Add Section
                                 </Button>
                             </>

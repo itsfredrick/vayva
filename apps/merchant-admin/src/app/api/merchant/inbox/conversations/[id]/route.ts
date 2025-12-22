@@ -35,7 +35,7 @@ export async function GET(req: NextRequest, { params }: { params: { id: string }
     });
 
     if (!conversation) return new NextResponse('Not Found', { status: 404 });
-    if (conversation.merchantId !== session.user.storeId) return new NextResponse('Forbidden', { status: 403 });
+    if (conversation.merchantId !== (session!.user as any).storeId) return new NextResponse('Forbidden', { status: 403 });
 
     // Mark as Read? Usually separated endpoint or side-effect.
     // We'll leave it to explicit action if needed, or assume opening = read eventually.

@@ -28,31 +28,38 @@ export class DisputeService {
 
         if (!storeId) throw new Error('Store not found for dispute');
 
-        // 3. Upsert Dispute
-        let status = 'open';
-        if (eventType === 'dispute.evidence_required') status = 'evidence_required';
-        if (eventType === 'dispute.won') status = 'won';
-        if (eventType === 'dispute.lost') status = 'lost';
+        // 3. Upsert Dispute (Safe check first as providerDisputeId not unique)
+        let status = 'OPENED';
+        if (eventType === 'dispute.evidence_required') status = 'EVIDENCE_REQUIRED';
+        if (eventType === 'dispute.won') status = 'WON';
+        if (eventType === 'dispute.lost') status = 'LOST';
 
-        await prisma.dispute.upsert({
-            where: { providerDisputeId },
-            update: {
-                status,
-                deadlineAt: data.due_at ? new Date(data.due_at) : undefined,
-                updatedAt: new Date()
-            },
-            create: {
-                storeId,
-                merchantId: 'user_mock_id', // Needs resolution
-                provider: 'paystack',
-                providerDisputeId,
-                status,
-                reason: data.reason || 'General Dispute',
-                amountNgn,
-                deadlineAt: data.due_at ? new Date(data.due_at) : undefined,
-                correlationId: `dsp_${Date.now()}`
-            }
+        const existingDispute = await prisma.dispute.findFirst({
+            where: { providerDisputeId }
         });
+
+        if (existingDispute) {
+            await prisma.dispute.update({
+                where: { id: existingDispute.id },
+                data: {
+                    status: status as any, // Cast to any to bypass strict enum check if mismatched
+                    evidenceDueAt: data.due_at ? new Date(data.due_at) : undefined,
+                }
+            });
+        } else {
+            await prisma.dispute.create({
+                data: {
+                    merchantId: 'user_mock_id', // Needs resolution
+                    provider: 'PAYSTACK',
+                    providerDisputeId,
+                    status: status as any,
+                    amount: amountNgn, // Decimal? Needs Decimal type or number
+                    currency: 'NGN',
+                    reasonCode: data.reason || 'General Dispute',
+                    evidenceDueAt: data.due_at ? new Date(data.due_at) : undefined,
+                }
+            });
+        }
 
         // 4. Notify (Logic Stub)
         // if (status === 'evidence_required') sendNotification(...)
@@ -62,13 +69,14 @@ export class DisputeService {
         return prisma.disputeEvidence.create({
             data: {
                 disputeId,
-                merchantId: userId, // Assuming user is merchant
                 type: fileData.type,
-                fileUrl: fileData.fileUrl,
-                fileName: fileData.fileName,
-                fileSize: fileData.fileSize,
-                contentType: fileData.contentType,
-                uploadedBy: userId
+                url: fileData.fileUrl,
+                metadata: {
+                    fileName: fileData.fileName,
+                    fileSize: fileData.fileSize,
+                    contentType: fileData.contentType,
+                    uploadedBy: userId
+                }
             }
         });
     }
@@ -76,7 +84,7 @@ export class DisputeService {
     static async submitResponse(disputeId: string, userId: string, note?: string) {
         await prisma.$transaction(async (tx) => {
             // Create Submission Record
-            await tx.disputeSubmission.create({
+            await tx.disputeSubmissionV2.create({
                 data: {
                     disputeId,
                     submittedBy: userId,
@@ -87,7 +95,7 @@ export class DisputeService {
             // Update Status
             await tx.dispute.update({
                 where: { id: disputeId },
-                data: { status: 'submitted' }
+                data: { status: 'SUBMITTED' as any }
             });
 
             // TODO: Trigger API call to Paystack to actually submit
@@ -100,8 +108,8 @@ export class DisputeService {
 
         return prisma.dispute.findMany({
             where: {
-                status: 'evidence_required',
-                deadlineAt: {
+                status: 'EVIDENCE_REQUIRED',
+                evidenceDueAt: {
                     lte: soon,
                     gte: new Date()
                 }

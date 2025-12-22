@@ -1,7 +1,7 @@
 
 import { prisma } from '@vayva/db';
 import { SecurityUtils } from '@/lib/security/tokens';
-import { EmailService } from '../../email/emailService';
+import { EmailService } from '../email/emailService';
 
 export class AuthFlowService {
 

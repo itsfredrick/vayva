@@ -108,7 +108,7 @@ export default function ProductImportPage() {
         <div className="max-w-4xl mx-auto py-12 px-6">
             <div className="mb-8">
                 <button onClick={() => router.back()} className="text-sm text-gray-500 hover:text-black mb-2 flex items-center gap-1">
-                    <Icon name="ArrowLeft" size={14} /> Back to Products
+                    <Icon name={"ArrowLeft" as any} size={14} /> Back to Products
                 </button>
                 <h1 className="text-2xl font-bold">Import Products</h1>
                 <p className="text-gray-500">Upload a CSV file to bulk add products.</p>
@@ -129,7 +129,7 @@ export default function ProductImportPage() {
                 {/* STEP 1: UPLOAD */}
                 {step === 1 && (
                     <div className="flex flex-col items-center justify-center h-full py-12 border-2 border-dashed border-gray-200 rounded-xl hover:bg-gray-50 transition">
-                        <Icon name="UploadCloud" size={48} className="text-gray-300 mb-4" />
+                        <Icon name={"UploadCloud" as any} size={48} className="text-gray-300 mb-4" />
                         <p className="font-bold text-gray-700 mb-2">Click to upload CSV</p>
                         <p className="text-sm text-gray-400 mb-6">or drag and drop file here</p>
                         <input
@@ -224,7 +224,7 @@ export default function ProductImportPage() {
                 {step === 4 && importResult && (
                     <div className="text-center py-12">
                         <div className="w-16 h-16 bg-green-100 text-green-600 rounded-full flex items-center justify-center mx-auto mb-6">
-                            <Icon name="Check" size={32} />
+                            <Icon name={"Check" as any} size={32} />
                         </div>
                         <h3 className="font-bold text-2xl mb-2">Import Complete</h3>
                         <p className="text-gray-500 mb-8">Successfully processed {importResult.processedRows} rows.</p>

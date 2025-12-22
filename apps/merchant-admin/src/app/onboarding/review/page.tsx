@@ -12,8 +12,8 @@ export default function ReviewPage() {
     const router = useRouter();
     const [loading, setLoading] = useState(false);
 
-    const isKycPending = state?.kyc?.status === 'pending' || state?.kyc?.status === 'PENDING';
-    const isKycVerified = state?.kyc?.status === 'verified' || state?.kyc?.status === 'VERIFIED';
+    const isKycPending = (state?.kyc?.status as string) === 'pending' || (state?.kyc?.status as string) === 'PENDING';
+    const isKYCVerified = (state?.kyc?.status as string) === 'verified' || (state?.kyc?.status as string) === 'VERIFIED';
 
     const handleFinish = async () => {
         setLoading(true);
@@ -86,11 +86,11 @@ export default function ReviewPage() {
                             <Icon name={isKycPending ? 'Clock' : 'ShieldCheck'} />
                         </div>
                         <div>
-                            <h3 className={`font-bold ${isKycVerified ? 'text-green-900' : 'text-yellow-900'}`}>
-                                {isKycVerified ? 'Identity Verified' : (isKycPending ? 'Verification Pending' : 'Submission Required')}
+                            <h3 className={`font-bold ${isKYCVerified ? 'text-green-900' : 'text-yellow-900'}`}>
+                                {isKYCVerified ? 'Identity Verified' : (isKycPending ? 'Verification Pending' : 'Submission Required')}
                             </h3>
-                            <p className={`text-sm mt-1 ${isKycVerified ? 'text-green-700' : 'text-yellow-700'}`}>
-                                {isKycVerified
+                            <p className={`text-sm mt-1 ${isKYCVerified ? 'text-green-700' : 'text-yellow-700'}`}>
+                                {isKYCVerified
                                     ? "Your identity has been verified. Your store will be live immediately after setup."
                                     : (isKycPending
                                         ? "Your store will be launched soon after verification. You can proceed to your dashboard now."

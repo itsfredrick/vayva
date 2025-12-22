@@ -128,7 +128,7 @@ export class ReportsService {
             orderBy: { createdAt: 'desc' },
             include: {
                 transactions: true,
-                refunds: true,
+                // refunds: true, // Removed as relation doesn't exist, using transactions
                 shipment: true,
                 customer: { select: { firstName: true, lastName: true, phone: true } } // Basic details
             }
@@ -140,16 +140,16 @@ export class ReportsService {
             nextCursor = nextItem?.id;
         }
 
-        const items: ReconciliationRow[] = itemsRaw.map(o => {
+        const items: ReconciliationRow[] = itemsRaw.map((o: any) => {
             const total = Number(o.total);
 
             // Sum successful payments
-            const paidTransactions = o.transactions.filter(t => t.status === 'SUCCESS' && t.type === 'CHARGE');
-            const paidAmount = paidTransactions.reduce((acc, t) => acc + Number(t.amount), 0);
+            const paidTransactions = o.transactions.filter((t: any) => t.status === 'SUCCESS' && t.type === 'CHARGE');
+            const paidAmount = paidTransactions.reduce((acc: any, t: any) => acc + Number(t.amount), 0);
 
-            // Sum completed refunds
-            const refundRows = o.refunds.filter(r => r.status === 'COMPLETED');
-            const refundedAmount = refundRows.reduce((acc, r) => acc + Number(r.amount), 0);
+            // Sum completed refunds via transactions
+            const refundTransactions = o.transactions.filter((t: any) => t.status === 'SUCCESS' && t.type === 'REFUND');
+            const refundedAmount = refundTransactions.reduce((acc: any, t: any) => acc + Number(t.amount), 0);
 
             const discrepancies: string[] = [];
 

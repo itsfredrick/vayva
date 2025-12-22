@@ -54,11 +54,13 @@ export default function TrackOrderPage({ params }: { params: { slug: string } })
                         ))}
                     </div>
 
-                    <Button variant="outline" className="w-full border-white/10 text-white hover:bg-white/5 gap-2">
-                        <Icon name="HelpCircle" size={16} /> Need help with this order?
-                    </Button>
+                    <div className="mt-8 text-center text-sm text-gray-500">
+                        <p className="flex items-center justify-center gap-2">
+                            <Icon name={"HelpCircle" as any} size={16} />
+                            Need help with this order? <a href="#" className="underline">Contact Support</a>
+                        </p>
+                    </div>
                 </div>
-
             </div>
         </StoreShell>
     );

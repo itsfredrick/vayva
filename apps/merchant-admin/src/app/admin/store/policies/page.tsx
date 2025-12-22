@@ -21,7 +21,7 @@ export default function PoliciesPage() {
                             target="_blank"
                             className="px-4 py-2 border border-gray-200 rounded-lg text-xs font-bold text-gray-400 hover:text-black hover:border-black transition-all flex items-center gap-2"
                         >
-                            View on Storefront <Icon name="ExternalLink" size={12} />
+                            View on Storefront <Icon name={"ExternalLink" as any} size={12} />
                         </a>
                         <Button className="!bg-black !text-white !rounded-lg !h-9 !px-4 text-xs">Save Policies</Button>
                     </div>
@@ -68,7 +68,7 @@ export default function PoliciesPage() {
                         <div className="p-8 bg-gray-50 rounded-[32px] border border-gray-100 relative overflow-hidden">
                             <div className="relative z-10">
                                 <div className="w-10 h-10 bg-black text-white rounded-xl flex items-center justify-center mb-6">
-                                    <Icon name="MessageSquare" size={18} />
+                                    <Icon name={"MessageSquare" as any} size={18} />
                                 </div>
                                 <h3 className="font-bold text-black mb-2 text-lg">AI Integration</h3>
                                 <p className="text-sm text-gray-500 leading-relaxed">
@@ -85,11 +85,11 @@ export default function PoliciesPage() {
                             <h3 className="font-bold text-black mb-6 text-lg">Templates</h3>
                             <div className="flex flex-col gap-3">
                                 <Button variant="ghost" className="!justify-start !text-sm !h-12 !px-4 !rounded-xl hover:!bg-gray-50">
-                                    <Icon name="FileText" size={16} className="mr-3 text-gray-400" />
+                                    <Icon name={"FileText" as any} size={16} className="mr-3 text-gray-400" />
                                     Standard Template
                                 </Button>
                                 <Button variant="ghost" className="!justify-start !text-sm !h-12 !px-4 !rounded-xl hover:!bg-gray-50">
-                                    <Icon name="ShieldOff" size={16} className="mr-3 text-gray-400" />
+                                    <Icon name={"ShieldOff" as any} size={16} className="mr-3 text-gray-400" />
                                     Strict No-Return Policy
                                 </Button>
                             </div>

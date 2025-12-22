@@ -5,7 +5,7 @@ import { prisma } from '@vayva/db';
 
 export async function GET(req: NextRequest) {
     const session = await getServerSession(authOptions);
-    if (!session?.user?.storeId) {
+    if (!(session?.user as any)?.storeId) {
         return new NextResponse('Unauthorized', { status: 401 });
     }
 
@@ -20,7 +20,7 @@ export async function GET(req: NextRequest) {
     const actorId = searchParams.get('actor_id');
 
     const where: any = {
-        storeId: session.user.storeId
+        storeId: (session!.user as any).storeId
     };
 
     if (entityType) where.entityType = entityType;

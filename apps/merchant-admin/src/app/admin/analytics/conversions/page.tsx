@@ -27,7 +27,7 @@ export default function ConversionFunnelPage() {
                             </div>
                         </div>
 
-                        <Icon name="ArrowDown" className="text-white/20" />
+                        <Icon name={"ArrowDown" as any} className="text-white/20" />
 
                         {/* Step 2 */}
                         <div className="w-full">
@@ -42,7 +42,7 @@ export default function ConversionFunnelPage() {
                             </div>
                         </div>
 
-                        <Icon name="ArrowDown" className="text-white/20" />
+                        <Icon name={"ArrowDown" as any} className="text-white/20" />
 
                         {/* Step 3 */}
                         <div className="w-full">
@@ -56,7 +56,7 @@ export default function ConversionFunnelPage() {
                             </div>
                         </div>
 
-                        <Icon name="ArrowDown" className="text-white/20" />
+                        <Icon name={"ArrowDown" as any} className="text-white/20" />
 
                         {/* Step 4 */}
                         <div className="w-full">
@@ -73,7 +73,7 @@ export default function ConversionFunnelPage() {
                 </GlassPanel>
 
                 <div className="p-4 rounded-xl bg-white/5 border border-white/5 flex gap-4 items-start">
-                    <Icon name="Lightbulb" className="text-primary mt-1" />
+                    <Icon name={"Lightbulb" as any} className="text-primary mt-1" />
                     <div>
                         <h3 className="font-bold text-white text-sm">Optimization Tip</h3>
                         <p className="text-xs text-text-secondary">

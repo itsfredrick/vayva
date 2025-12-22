@@ -14,7 +14,7 @@ export async function POST(req: NextRequest) {
 
     const reply = await prisma.quickReply.create({
         data: {
-            merchantId: session.user.storeId,
+            merchantId: (session!.user as any).storeId,
             title,
             content,
             category
@@ -28,7 +28,7 @@ export async function GET(req: NextRequest) {
     const session = await getServerSession(authOptions);
     if (!session?.user) return new NextResponse('Unauthorized', { status: 401 });
 
-    const count = await prisma.quickReply.count({ where: { merchantId: session.user.storeId } });
+    const count = await prisma.quickReply.count({ where: { merchantId: (session!.user as any).storeId } });
 
     if (count === 0) {
         // Seed Defaults
@@ -47,7 +47,7 @@ export async function GET(req: NextRequest) {
 
         await prisma.quickReply.createMany({
             data: defaults.map(d => ({
-                merchantId: session.user.storeId,
+                merchantId: (session!.user as any).storeId,
                 title: d.title,
                 content: d.content,
                 category: d.category
@@ -56,7 +56,7 @@ export async function GET(req: NextRequest) {
     }
 
     const items = await prisma.quickReply.findMany({
-        where: { merchantId: session.user.storeId, isActive: true },
+        where: { merchantId: (session!.user as any).storeId, isActive: true },
         orderBy: { title: 'asc' }
     });
 

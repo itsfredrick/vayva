@@ -85,7 +85,7 @@ export const AuthService = {
         return await apiClient.auth.forgotPassword(payload);
     },
 
-    resetPassword: async (payload: { email: string; code: string; newPassword: string }) => {
+    resetPassword: async (payload: any) => {
         return await apiClient.auth.resetPassword(payload);
     },
 

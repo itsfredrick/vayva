@@ -103,7 +103,7 @@ export default function SigninPage() {
                             onClick={() => setShowPassword(!showPassword)}
                             className="absolute right-3 top-[38px] text-gray-400 hover:text-black transition-colors"
                         >
-                            <Icon name={showPassword ? 'EyeOff' : 'Eye'} className="w-5 h-5" />
+                            <Icon name={(showPassword ? 'EyeOff' : 'Eye') as any} className="w-5 h-5" />
                         </button>
                     </div>
 
@@ -127,7 +127,7 @@ export default function SigninPage() {
                 >
                     {loading ? (
                         <>
-                            <Icon name="Loader2" className="w-5 h-5 animate-spin" />
+                            <Icon name={"Loader2" as any} className="w-5 h-5 animate-spin" />
                             Signing in...
                         </>
                     ) : (
@@ -150,7 +150,7 @@ export default function SigninPage() {
                     <div className="bg-white rounded-2xl p-6 max-w-sm w-full shadow-2xl animate-fade-in">
                         <div className="text-center mb-4">
                             <div className="w-12 h-12 bg-yellow-100 rounded-full flex items-center justify-center mx-auto mb-3">
-                                <Icon name="Info" className="w-6 h-6 text-yellow-600" />
+                                <Icon name={"Info" as any} className="w-6 h-6 text-yellow-600" />
                             </div>
                             <h3 className="text-lg font-heading font-semibold text-black mb-2">
                                 Google Sign-In Not Configured

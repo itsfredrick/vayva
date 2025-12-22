@@ -35,19 +35,20 @@ export default function WaInboxPage({ params }: { params: { threadId?: string } 
                  To get the "App-like" feel, we might want to strip the header for this specific route.
                  However, to keep it simple and consistent:
              */}
-            <AdminShell title="Inbox" className="h-[calc(100vh-64px)] !p-0 !max-w-none flex flex-row overflow-hidden absolute inset-0 top-0 pt-0">
-                {/* This is a hacky way to remove padding using !p-0. In a real app we'd have a `layout="full"` prop on AdminShell. */}
-                {/* Sidebar */}
-                <div className="shrink-0 h-full">
-                    <InboxSidebar threads={threads} activeId={params.threadId} />
-                </div>
+            <div className="h-[calc(100vh-64px)] w-full flex flex-row overflow-hidden relative">
+                <AdminShell>
+                    {/* Sidebar */}
+                    <div className="shrink-0 h-full border-r border-gray-200">
+                        <InboxSidebar threads={threads} activeId={params.threadId} />
+                    </div>
 
-                {/* Main Content */}
-                <div className="flex-1 flex h-full">
-                    <ChatWindow thread={activeThread} />
-                    <AiActionsPanel thread={activeThread} />
-                </div>
-            </AdminShell>
+                    {/* Main Content */}
+                    <div className="flex-1 flex h-full">
+                        <ChatWindow thread={activeThread} />
+                        <AiActionsPanel thread={activeThread} />
+                    </div>
+                </AdminShell>
+            </div>
         </div>
     );
 }

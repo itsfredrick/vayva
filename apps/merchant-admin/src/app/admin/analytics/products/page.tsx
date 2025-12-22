@@ -11,7 +11,7 @@ import { formatNGN } from '@/config/pricing';
 
 export default function ProductPerformancePage() {
     return (
-        <AppShell title="Product Performance" breadcrumb="Analytics / Products">
+        <AppShell sidebar={<></>} header={<></>}>
             <div className="flex flex-col gap-6">
                 <AnalyticsFilterBar />
 
@@ -19,7 +19,7 @@ export default function ProductPerformancePage() {
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                     <GlassPanel className="p-4 bg-primary/10 border-primary/20">
                         <div className="flex items-center gap-2 mb-2">
-                            <Icon name="Trophy" className="text-primary" size={18} />
+                            <Icon name={"Trophy" as any} className="text-primary" size={18} />
                             <span className="text-xs font-bold uppercase tracking-wider text-primary">Best Seller</span>
                         </div>
                         <div className="text-lg font-bold text-white">Ultra-Soft T-Shirt</div>
@@ -27,7 +27,7 @@ export default function ProductPerformancePage() {
                     </GlassPanel>
                     <GlassPanel className="p-4">
                         <div className="flex items-center gap-2 mb-2">
-                            <Icon name="RotateCcw" className="text-state-warning" size={18} />
+                            <Icon name={"RotateCcw" as any} className="text-state-warning" size={18} />
                             <span className="text-xs font-bold uppercase tracking-wider text-state-warning">High Returns</span>
                         </div>
                         <div className="text-lg font-bold text-white">Slim Fit Jeans</div>
@@ -35,7 +35,7 @@ export default function ProductPerformancePage() {
                     </GlassPanel>
                     <GlassPanel className="p-4 bg-state-danger/10 border-state-danger/20">
                         <div className="flex items-center gap-2 mb-2">
-                            <Icon name="Package" className="text-state-danger" size={18} />
+                            <Icon name={"Package" as any} className="text-state-danger" size={18} />
                             <span className="text-xs font-bold uppercase tracking-wider text-state-danger">Low Stock</span>
                         </div>
                         <div className="text-lg font-bold text-white">3 Products</div>

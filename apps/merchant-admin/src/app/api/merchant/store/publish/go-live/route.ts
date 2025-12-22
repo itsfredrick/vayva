@@ -5,13 +5,13 @@ import { PublishService } from '@/lib/publish/publishService';
 
 export async function POST(req: NextRequest) {
     const session = await getServerSession(authOptions);
-    if (!session?.user?.storeId) return new NextResponse('Unauthorized', { status: 401 });
+    if (!(session?.user as any)?.storeId) return new NextResponse('Unauthorized', { status: 401 });
 
     try {
         const result = await PublishService.goLive(
-            session.user.storeId,
-            session.user.id,
-            session.user.name || session.user.email || 'Merchant'
+            (session!.user as any).storeId,
+            (session!.user as any).id,
+            (session!.user as any).name || (session!.user as any).email || 'Merchant'
         );
         return NextResponse.json(result);
     } catch (e: any) {

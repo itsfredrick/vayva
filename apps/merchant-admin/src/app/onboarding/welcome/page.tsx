@@ -21,7 +21,7 @@ export default function WelcomePage() {
         }
     }, [state]);
 
-    const isStarter = user?.plan === 'starter';
+    const isStarter = (user as any)?.plan === 'starter';
 
     const toggleGoal = (id: string) => {
         if (id === 'storefront') return; // Required
@@ -86,7 +86,7 @@ export default function WelcomePage() {
                             <p className="text-sm text-gray-500">Your own branded website to showcase products and accept payments.</p>
                         </div>
                         <div className="w-6 h-6 flex items-center justify-center">
-                            {selectedGoals.includes('storefront') && <Icon name="CheckCircle" className="text-black" size={20} />}
+                            {selectedGoals.includes('storefront') && <Icon name={"CheckCircle" as any} className="text-black" size={20} />}
                         </div>
                     </button>
 
@@ -119,7 +119,7 @@ export default function WelcomePage() {
                             <p className="text-sm text-gray-500">List your products on our centralized marketplace to reach millions.</p>
                         </div>
                         <div className="w-6 h-6 flex items-center justify-center">
-                            {selectedGoals.includes('market') && <Icon name="CheckCircle" className="text-purple-600" size={20} />}
+                            {selectedGoals.includes('market') && <Icon name={"CheckCircle" as any} className="text-purple-600" size={20} />}
                             {isStarter && !selectedGoals.includes('market') && <Icon name="Lock" className="text-gray-400" size={16} />}
                         </div>
                     </button>
@@ -148,7 +148,7 @@ export default function WelcomePage() {
                             <p className="text-sm text-gray-500">Automate customer support and sales recovery on WhatsApp.</p>
                         </div>
                         <div className="w-6 h-6 flex items-center justify-center">
-                            {selectedGoals.includes('whatsapp_ai') && <Icon name="CheckCircle" className="text-green-600" size={20} />}
+                            {selectedGoals.includes('whatsapp_ai') && <Icon name={"CheckCircle" as any} className="text-green-600" size={20} />}
                         </div>
                     </button>
                 </div>

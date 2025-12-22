@@ -17,7 +17,8 @@ export function ApiKeysTab({ keys }: { keys: any[] }) {
                     <h3 className="text-lg font-medium text-foreground">API Keys</h3>
                     <p className="text-sm text-muted-foreground">Manage keys for accessing the Vayva API.</p>
                 </div>
-                <Button onClick={() => setIsCreating(true)} icon={<Plus className="w-4 h-4" />}>
+                <Button onClick={() => setIsCreating(true)}>
+                    <Plus className="w-4 h-4 mr-2" />
                     Create New Key
                 </Button>
             </div>
@@ -51,7 +52,6 @@ export function ApiKeysTab({ keys }: { keys: any[] }) {
                         <div>
                             <div className="font-medium flex items-center gap-2">
                                 {key.name || 'Unnamed Key'}
-                                <span className="text-xs font-mono text-muted-foreground bg-accent/20 px-1 rounded">{key.prefix}...</span>
                             </div>
                             <div className="text-xs text-muted-foreground mt-1">
                                 Created: {new Date(key.createdAt).toLocaleDateString()} • Last Used: {key.lastUsedAt ? new Date(key.lastUsedAt).toLocaleDateString() : 'Never'}
@@ -59,15 +59,15 @@ export function ApiKeysTab({ keys }: { keys: any[] }) {
                         </div>
                         <div className="flex gap-2">
                             <Button
-                                variant="danger"
+                                variant="destructive"
                                 size="sm"
-                                icon={<Trash2 className="w-4 h-4" />}
                                 onClick={async () => {
                                     if (confirm('Revoke this key? Apps using it will stop working.')) {
                                         await revokeApiKey(key.id);
                                     }
                                 }}
                             >
+                                <Trash2 className="w-4 h-4 mr-2" />
                                 Revoke
                             </Button>
                         </div>

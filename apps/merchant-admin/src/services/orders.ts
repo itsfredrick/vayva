@@ -44,6 +44,12 @@ export interface Order {
         riderName?: string;
         trackingUrl?: string;
     };
+    shippingAddress?: {
+        street: string;
+        city: string;
+        state: string;
+        country: string;
+    };
 }
 
 export const OrdersService = {

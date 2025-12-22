@@ -62,7 +62,7 @@ export default function DisputesPage() {
                     </table>
                     {DISPUTES.length === 0 && (
                         <div className="p-12 text-center text-gray-400">
-                            <Icon name="CheckCircle" size={48} className="mx-auto mb-4 opacity-50 text-green-500" />
+                            <Icon name={"CheckCircle" as any} size={48} className="mx-auto mb-4 opacity-50 text-green-500" />
                             <p>No open disputes. Great job!</p>
                         </div>
                     )}

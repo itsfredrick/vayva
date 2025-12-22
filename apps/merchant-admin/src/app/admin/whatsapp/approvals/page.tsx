@@ -34,13 +34,10 @@ export default function ApprovalsPage() {
     };
 
     return (
-        <AppShell
-            title="AI Approvals"
-            breadcrumbs={[{ label: 'Approvals', href: '/admin/whatsapp/approvals' }]}
-            profile={{ name: user?.name || '', email: user?.email || '' }}
-            storeName="Store"
-            onLogout={() => router.push('/signin')}
-        >
+        <AppShell sidebar={<></>} header={<></>}>
+            <div className="flex flex-col gap-4 p-4">
+                <h1 className="text-2xl font-bold text-white">AI Approvals</h1>
+            </div>
             <GlassPanel className="p-0 overflow-hidden">
                 <table className="w-full text-left border-collapse">
                     <thead>

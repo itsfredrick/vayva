@@ -10,7 +10,7 @@ export class Repository {
 
     static products = {
         async findMany(ctx: TenantContext, args: any = {}) {
-            return prisma.inventoryItem.findMany({ // Using Inventory as proxy for Product in this example or Product model
+            return prisma.inventoryItemV2.findMany({ // Using Inventory as proxy for Product in this example or Product model
                 ...args,
                 where: {
                     ...args.where,
@@ -22,7 +22,7 @@ export class Repository {
 
         async findUnique(ctx: TenantContext, id: string) {
             // We must findFirst to allow merchantId filter, findUnique only takes ID
-            return prisma.inventoryItem.findFirst({
+            return prisma.inventoryItemV2.findFirst({
                 where: {
                     id,
                     merchantId: ctx.merchantId // FORCED ISOLATION
@@ -31,7 +31,7 @@ export class Repository {
         },
 
         async create(ctx: TenantContext, data: any) {
-            return prisma.inventoryItem.create({
+            return prisma.inventoryItemV2.create({
                 data: {
                     ...data,
                     merchantId: ctx.merchantId // FORCED OWNERSHIP

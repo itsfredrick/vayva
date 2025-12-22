@@ -47,7 +47,7 @@ export default function ContactPage() {
                                     href={`#${social}`}
                                     className="w-10 h-10 rounded-full bg-gray-100 flex items-center justify-center text-[#1d1d1f]/60 hover:text-[#46EC13] hover:bg-[#1d1d1f] transition-all"
                                 >
-                                    <Icon name="public" size={20} />
+                                    <Icon name={"Globe" as any} size={20} />
                                 </a>
                             ))}
                         </div>

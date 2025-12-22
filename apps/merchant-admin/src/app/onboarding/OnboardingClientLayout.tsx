@@ -128,7 +128,7 @@ export function OnboardingClientLayout({ children }: { children: React.ReactNode
                     <div className="max-w-3xl mx-auto p-6 md:p-12 pb-32">
                         <Suspense fallback={
                             <div className="h-64 flex items-center justify-center">
-                                <Icon name="Loader2" className="w-8 h-8 animate-spin text-gray-400" />
+                                <Icon name={"Loader2" as any} className="w-8 h-8 animate-spin text-gray-400" />
                             </div>
                         }>
                             {children}

@@ -49,7 +49,7 @@ export default function TemplateGalleryPage() {
                         {templates.map(template => (
                             <div key={template.id} className="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden hover:shadow-lg transition-all">
                                 <div className="aspect-video bg-gradient-to-br from-green-50 to-blue-50 flex items-center justify-center">
-                                    <Icon name="Layout" size={48} className="text-gray-300" />
+                                    <Icon name={"Layout" as any} size={48} className="text-gray-300" />
                                 </div>
                                 <div className="p-6">
                                     <h3 className="font-bold text-[#0B1220] mb-2">{template.name}</h3>

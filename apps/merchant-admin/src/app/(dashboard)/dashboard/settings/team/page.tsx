@@ -127,10 +127,10 @@ export default function TeamSettingsPage() {
             {/* Stats / Usage */}
             <div className="bg-white p-4 rounded-xl border border-gray-100 shadow-sm flex items-center justify-between">
                 <div className="flex items-center gap-2">
-                    <div className="p-2 bg-green-50 text-green-600 rounded-lg"><Icon name="Users" size={20} /></div>
+                    <div className="p-2 bg-green-50 text-green-600 rounded-lg"><Icon name={"Users" as any} size={20} /></div>
                     <div>
                         <p className="text-sm font-bold text-[#0B0B0B]">Seat Usage</p>
-                        <p className="text-xs text-gray-500">{members.length + invites.length} active seats</p>
+                        <p className="text-xs text-gray-400">{members.length + invites.length} active seats</p>
                     </div>
                 </div>
                 <div className="text-xs text-gray-400">Plan Limit depends on Plan</div>
@@ -157,7 +157,7 @@ export default function TeamSettingsPage() {
                                 <td className="px-4 py-3">
                                     <select
                                         value={m.role}
-                                        onChange={(e) => handleRoleChange(m.userId, e.target.value)}
+                                        onChange={(e) => handleRoleChange(m.id, e.target.value)}
                                         disabled={m.role === 'owner'} // Owner checks on server too
                                         className="bg-gray-50 border-none rounded text-xs py-1 px-2"
                                     >
@@ -173,7 +173,7 @@ export default function TeamSettingsPage() {
                                 </td>
                                 <td className="px-4 py-3 text-right">
                                     {m.role !== 'owner' && (
-                                        <button onClick={() => handleRemove(m.userId)} className="text-red-500 hover:text-red-700 text-xs font-medium">Remove</button>
+                                        <button onClick={() => handleRemove(m.id)} className="text-red-500 hover:text-red-700 text-xs font-medium">Remove</button>
                                     )}
                                 </td>
                             </tr>

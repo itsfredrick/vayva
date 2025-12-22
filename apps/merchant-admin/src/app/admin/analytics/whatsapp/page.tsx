@@ -9,7 +9,7 @@ import { formatNGN } from '@/config/pricing';
 
 export default function WhatsappAnalyticsPage() {
     return (
-        <AppShell title="WhatsApp AI Analytics" breadcrumb="Analytics / WhatsApp">
+        <AppShell sidebar={<></>} header={<></>}>
             <div className="flex flex-col gap-6">
                 <AnalyticsFilterBar />
 

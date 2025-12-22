@@ -5,15 +5,15 @@ import { PublishService } from '@/lib/publish/publishService';
 
 export async function POST(req: NextRequest) {
     const session = await getServerSession(authOptions);
-    if (!session?.user?.storeId) return new NextResponse('Unauthorized', { status: 401 });
+    if (!(session?.user as any)?.storeId) return new NextResponse('Unauthorized', { status: 401 });
 
     const body = await req.json();
 
     try {
         await PublishService.unpublish(
-            session.user.storeId,
-            session.user.id,
-            session.user.name || 'Merchant',
+            (session!.user as any).storeId,
+            (session!.user as any).id,
+            (session!.user as any).name || 'Merchant',
             body.reason || 'No reason provided'
         );
         return NextResponse.json({ success: true });

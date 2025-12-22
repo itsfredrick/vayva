@@ -86,9 +86,11 @@ export default function AddProductPage() {
                     <div className="bg-white p-6 rounded-xl border border-gray-100 shadow-sm space-y-4">
                         <h3 className="font-bold text-[#0B0B0B]">Media</h3>
                         <div className="border-2 border-dashed border-gray-200 rounded-xl p-8 flex flex-col items-center justify-center text-center hover:bg-gray-50 transition-colors cursor-pointer">
-                            <Icon name="UploadCloud" size={24} className="text-gray-400 mb-2" />
-                            <p className="text-sm font-medium text-gray-600">Click to upload images</p>
-                            <p className="text-xs text-gray-400">or drag and drop</p>
+                            <div className="flex flex-col items-center justify-center pt-5 pb-6">
+                                <Icon name={"UploadCloud" as any} className="w-8 h-8 mb-4 text-gray-500" />
+                                <p className="mb-2 text-sm text-gray-500"><span className="font-semibold">Click to upload</span> or drag and drop</p>
+                                <p className="text-xs text-gray-500">SVG, PNG, JPG or GIF (MAX. 800x400px)</p>
+                            </div>
                         </div>
                     </div>
 
@@ -183,7 +185,7 @@ export default function AddProductPage() {
                                                 className="text-red-500 hover:text-red-700"
                                                 onClick={() => setVariants(variants.filter((_, idx) => idx !== i))}
                                             >
-                                                <Icon name="Trash" size={16} />
+                                                <Icon name={"Trash" as any} size={16} />
                                             </button>
                                         </div>
                                     ))}

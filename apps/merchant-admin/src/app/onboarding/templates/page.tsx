@@ -14,7 +14,7 @@ export default function TemplatesPage() {
     const [selectedId, setSelectedId] = useState('vayya-storefront');
     const [previewTemplate, setPreviewTemplate] = useState<string | null>(null);
 
-    const isStarter = user?.plan === 'starter';
+    const isStarter = (user as any)?.plan === 'starter';
 
     useEffect(() => {
         if (state?.template?.selectedTemplateId) {
@@ -47,7 +47,7 @@ export default function TemplatesPage() {
                     <p className="text-gray-600">Select a design for your online store. You can switch anytime.</p>
                 </div>
                 <div className="text-right hidden md:block">
-                    <p className="text-sm font-bold text-black">Current Plan: <span className="uppercase text-primary-600">{user?.plan || 'Starter'}</span></p>
+                    <p className="text-sm font-bold text-black">Current Plan: <span className="uppercase text-primary-600">{(user as any)?.plan || 'Starter'}</span></p>
                 </div>
             </div>
 

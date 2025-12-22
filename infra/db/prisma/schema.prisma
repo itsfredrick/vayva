@@ -429,6 +429,9 @@ model Store {
   usageCounters     UsageCounter[]
   billingProfile    BillingProfile?
 
+  // Integration 17B: Emails
+  emailMessages     EmailMessage[]
+
   // Integration 18: Developer Platform
   apiKeys           ApiKey[]
   webhookEndpoints  WebhookEndpoint[]
@@ -4880,4 +4883,35 @@ model FeatureFlag {
   createdAt   DateTime @default(now())
 
   @@map("feature_flag")
+}
+
+// Integration 59B: Email Communication
+model EmailMessage {
+  id            String   @id @default(uuid())
+  merchantId    String?
+  userId        String?
+  toEmail       String
+  subject       String
+  templateKey   String?
+  status        String   // queued, sent, failed, suppressed
+  provider      String?  // resend, sendgrid, console
+  providerMsgId String?
+  error         String?
+  meta          Json     @default("{}")
+  correlationId String?
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+  
+  store         Store?   @relation(fields: [merchantId], references: [id])
+
+  @@map("email_message")
+}
+
+model EmailSuppression {
+  id        String   @id @default(uuid())
+  email     String   @unique
+  reason    String?
+  createdAt DateTime @default(now())
+
+  @@map("email_suppression")
 }

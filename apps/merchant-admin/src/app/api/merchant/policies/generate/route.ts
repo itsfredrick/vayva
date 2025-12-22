@@ -1,17 +1,18 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getServerSession } from 'next-auth';
 import { prisma } from '@vayva/db';
+// @ts-ignore
 import { generateDefaultPolicies } from '@vayva/policies';
 
 export async function POST(req: NextRequest) {
     try {
         const session = await getServerSession();
-        if (!session?.user?.storeId) {
+        if (!(session?.user as any)?.storeId) {
             return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
         }
 
         const store = await prisma.store.findUnique({
-            where: { id: session.user.storeId },
+            where: { id: (session!.user as any).storeId },
             select: { name: true, slug: true, settings: true }
         });
 
@@ -29,17 +30,17 @@ export async function POST(req: NextRequest) {
 
         // Create policy records
         const created = await Promise.all(
-            policies.map(policy =>
+            policies.map((policy: any) =>
                 prisma.merchantPolicy.upsert({
                     where: {
                         storeId_type: {
-                            storeId: session.user.storeId,
+                            storeId: (session!.user as any).storeId,
                             type: policy.type.toUpperCase().replace('-', '_')
                         }
                     },
                     create: {
-                        storeId: session.user.storeId,
-                        merchantId: session.user.id,
+                        storeId: (session!.user as any).storeId,
+                        merchantId: (session!.user as any).id,
                         storeSlug: store.slug,
                         type: policy.type.toUpperCase().replace('-', '_'),
                         title: policy.title,

@@ -94,7 +94,7 @@ export default function PaymentsPage() {
                             />
                             {loading && (
                                 <div className="absolute right-3 top-3">
-                                    <Icon name="Loader2" className="animate-spin text-gray-400" size={20} />
+                                    <Icon name={"Loader2" as any} className="animate-spin text-gray-400" size={20} />
                                 </div>
                             )}
                         </div>
@@ -102,7 +102,7 @@ export default function PaymentsPage() {
 
                     {verifiedName && (
                         <div className="p-3 bg-green-50 border border-green-100 rounded-lg flex items-center gap-2 animate-fade-in">
-                            <Icon name="CheckCircle" className="text-green-600" size={16} />
+                            <Icon name={"CheckCircle" as any} className="text-green-600" size={16} />
                             <span className="text-sm font-bold text-green-800">{verifiedName}</span>
                         </div>
                     )}

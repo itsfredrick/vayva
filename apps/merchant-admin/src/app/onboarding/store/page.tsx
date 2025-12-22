@@ -37,7 +37,7 @@ export default function StoreDetailsPage() {
     const isFormValid = storeName && category && subdomain && address && city;
 
     return (
-        <AppShell mode="onboarding" breadcrumb="Onboarding / Store Details">
+        <AppShell sidebar={<></>} header={<></>}>
             <div className="flex flex-col gap-6 max-w-5xl mx-auto">
                 {/* Header With Stepper */}
                 <div className="flex items-center justify-between">
@@ -45,7 +45,7 @@ export default function StoreDetailsPage() {
                         <h1 className="text-2xl font-bold text-white">Store Details</h1>
                         <p className="text-text-secondary">Tell us a bit about your business.</p>
                     </div>
-                    <Stepper currentStep={2} />
+                    <Stepper currentStep={2} steps={[]} />
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -81,7 +81,6 @@ export default function StoreDetailsPage() {
                                 placeholder="storename"
                                 value={subdomain}
                                 onChange={e => setSubdomain(e.target.value)}
-                                warning={subdomain && <span className="flex items-center gap-1">.vayva.ng <span className="text-primary text-[10px] px-1 rounded bg-primary/20">Available</span></span>}
                             />
                         </div>
 

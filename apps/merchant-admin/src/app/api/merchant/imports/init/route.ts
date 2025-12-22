@@ -25,14 +25,14 @@ export async function POST(req: NextRequest) {
 
     const job = await prisma.importJob.create({
         data: {
-            merchantId: session.user.storeId,
+            merchantId: (session!.user as any).storeId,
             type: 'products_csv',
             status: 'pending',
             originalFilename: filename,
             fileUrl: fileUrl,
             checksum,
             correlationId: randomBytes(16).toString('hex'),
-            createdBy: session.user.id
+            createdBy: (session!.user as any).id
         }
     });
 

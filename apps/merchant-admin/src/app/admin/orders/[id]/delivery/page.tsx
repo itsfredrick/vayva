@@ -21,7 +21,7 @@ export default function CreateDeliveryTaskPage() {
     };
 
     return (
-        <AppShell title="Create Delivery Task" breadcrumb={`Orders / ${id} / Delivery`}>
+        <AppShell sidebar={<></>} header={<></>}>
             <div className="flex flex-col gap-6 max-w-5xl mx-auto">
                 <div className="flex items-center justify-between">
                     <div>
@@ -89,7 +89,7 @@ export default function CreateDeliveryTaskPage() {
                     <div className="flex flex-col gap-6">
                         <GlassPanel className="p-6">
                             <h3 className="font-bold text-white mb-4 flex items-center gap-2">
-                                <Icon name="location_on" size={20} className="text-primary" />
+                                <Icon name={"MapPin" as any} size={20} className="text-primary" />
                                 Destination
                             </h3>
                             <p className="text-white font-medium mb-1">12 Admiralty Way</p>

@@ -77,14 +77,14 @@ export default function OrdersPage() {
                 <div className="flex items-center justify-between">
                     <div className="flex items-center gap-2 max-w-md w-full">
                         <div className="relative flex-1">
-                            <Icon name="Search" size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
+                            <Icon name={"Search" as any} size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
                             <input
                                 type="text"
                                 placeholder="Search orders..."
                                 className="w-full h-10 pl-10 pr-4 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-black/5"
                             />
                         </div>
-                        <Button variant="outline"><Icon name="Filter" size={16} className="mr-2" /> Filters</Button>
+                        <Button variant="outline"><Icon name={"Filter" as any} size={16} className="mr-2" /> Filters</Button>
                     </div>
                 </div>
 
@@ -117,7 +117,7 @@ export default function OrdersPage() {
                                 <tr>
                                     <td colSpan={6} className="px-6 py-12 text-center text-gray-500">
                                         <div className="flex flex-col items-center gap-2">
-                                            <Icon name="ShoppingBag" size={32} className="text-gray-300" />
+                                            <Icon name={"ShoppingBag" as any} size={32} className="text-gray-300" />
                                             <p>No orders found.</p>
                                         </div>
                                     </td>
@@ -151,7 +151,7 @@ export default function OrdersPage() {
                                                 Fulfill
                                             </Button>
                                             <button className="p-2 hover:bg-gray-100 rounded-full text-gray-400 hover:text-black opacity-0 group-hover:opacity-100 transition-opacity">
-                                                <Icon name="ChevronRight" size={16} />
+                                                <Icon name={"ChevronRight" as any} size={16} />
                                             </button>
                                         </td>
                                     </motion.tr>

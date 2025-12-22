@@ -13,7 +13,8 @@ export function FlagList({ flags }: { flags: any[] }) {
         <div className="space-y-6">
             <div className="flex justify-between items-center">
                 <h1 className="text-2xl font-bold">Feature Flags & Kill Switches</h1>
-                <Button onClick={() => setIsCreating(true)} icon={<Plus className="w-4 h-4" />}>
+                <Button onClick={() => setIsCreating(true)}>
+                    <Plus className="w-4 h-4 mr-2" />
                     New Flag
                 </Button>
             </div>
@@ -49,13 +50,14 @@ export function FlagList({ flags }: { flags: any[] }) {
                                 </span>
                                 <Button
                                     size="sm"
-                                    variant={flag.enabled ? 'danger' : 'outline'}
+                                    variant={flag.enabled ? 'destructive' : 'outline'}
                                     onClick={async () => await toggleFlag(flag.id, !flag.enabled)}
                                 >
                                     {flag.enabled ? 'Disable' : 'Enable'}
                                 </Button>
                             </div>
-                            <Button size="sm" variant="ghost" icon={<Edit2 className="w-4 h-4" />} onClick={() => setEditingId(flag.id)}>
+                            <Button size="sm" variant="ghost" onClick={() => setEditingId(flag.id)}>
+                                <Edit2 className="w-4 h-4 mr-2" />
                                 Rules
                             </Button>
                         </div>

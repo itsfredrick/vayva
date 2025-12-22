@@ -48,7 +48,7 @@ export default function CustomersPage() {
                 <div className="flex items-center justify-between">
                     <div className="flex items-center gap-2 max-w-md w-full">
                         <div className="relative flex-1">
-                            <Icon name="Search" size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
+                            <Icon name={"Search" as any} size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
                             <input
                                 type="text"
                                 placeholder="Search customers..."

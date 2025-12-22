@@ -47,7 +47,7 @@ export default function OrderDetailPage({ params }: { params: { id: string } }) 
                         <p className="text-[#525252] text-sm">{new Date(order.createdAt).toLocaleString()}</p>
                     </div>
                     <div className="flex gap-2">
-                        <Button variant="outline"><Icon name="Printer" size={16} /></Button>
+                        <Button variant="outline"><Icon name={"Printer" as any} size={16} /></Button>
                         <Button variant="outline" onClick={() => setShowRefundModal(true)}>Refund</Button>
                         <Button onClick={() => setShowDeliveryModal(true)}>Fulfil Order</Button>
                     </div>

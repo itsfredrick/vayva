@@ -1,7 +1,7 @@
 
 import { NextRequest, NextResponse } from 'next/server';
 import { AnalyticsService } from '@/lib/analytics/analyticsService';
-import { VisitorService } from '@/lib/analytics/visitor.ts'; // Note: check import path logic if .ts handling needs care in some setups, usually .ts is fine in import if mapped or just omission
+import { VisitorService } from '@/lib/analytics/visitor';
 
 export async function POST(req: NextRequest) {
     try {

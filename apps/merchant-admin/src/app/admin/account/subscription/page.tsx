@@ -58,7 +58,7 @@ export default function SubscriptionPage() {
 
             {/* Additional Info / Security Badge for Payments placeholder */}
             <div className="flex items-center justify-center gap-2 text-text-secondary text-sm">
-                <Icon name="Lock" size={14} />
+                <Icon name={"Lock" as any} size={14} />
                 <span>Payments processed securely by Paystack</span>
             </div>
         </div>

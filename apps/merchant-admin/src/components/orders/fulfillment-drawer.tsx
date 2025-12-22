@@ -74,6 +74,12 @@ export function FulfillmentDrawer({ order, isOpen, onClose, onUpdate }: Fulfillm
         }
     };
 
+    const handleFulfill = async () => {
+        // Stub for fulfillment confirmation
+        console.log('Fulfillment confirmed');
+        onClose();
+    };
+
     return (
         <Drawer isOpen={isOpen} onClose={onClose} title={`Fulfillment #${order?.orderNumber}`}>
             <div className="space-y-6 pt-4">
@@ -97,7 +103,7 @@ export function FulfillmentDrawer({ order, isOpen, onClose, onUpdate }: Fulfillm
                         <Package className="w-12 h-12 mx-auto text-muted-foreground mb-4 opacity-50" />
                         <h3 className="font-semibold mb-2">Ready to Fulfill?</h3>
                         <p className="text-sm text-muted-foreground mb-6">Create a shipment to start the delivery process.</p>
-                        <Button onClick={handleCreateShipment} loading={loading} className="w-full">
+                        <Button onClick={handleCreateShipment} isLoading={loading} className="w-full">
                             Create Shipment
                         </Button>
                     </div>
@@ -122,7 +128,7 @@ export function FulfillmentDrawer({ order, isOpen, onClose, onUpdate }: Fulfillm
                                     </div>
                                 </div>
 
-                                <Button onClick={handleDispatch} loading={loading} className="w-full">
+                                <Button onClick={handleDispatch} isLoading={loading} className="w-full">
                                     Mark as Dispatched
                                 </Button>
                             </Card>
@@ -139,6 +145,9 @@ export function FulfillmentDrawer({ order, isOpen, onClose, onUpdate }: Fulfillm
                                 </div>
                                 <Button variant="outline" className="w-full">
                                     <Send className="w-4 h-4 mr-2" /> Send Tracking via WhatsApp
+                                </Button>
+                                <Button className="w-full" onClick={handleFulfill} isLoading={loading}>
+                                    Confirm Fulfillment
                                 </Button>
                                 <Button variant="secondary" className="w-full">
                                     Mark Delivered

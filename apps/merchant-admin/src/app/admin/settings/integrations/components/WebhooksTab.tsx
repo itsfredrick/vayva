@@ -15,7 +15,8 @@ export function WebhooksTab({ webhooks }: { webhooks: any[] }) {
                     <h3 className="text-lg font-medium text-foreground">Webhooks</h3>
                     <p className="text-sm text-muted-foreground">Receive real-time notifications for store events.</p>
                 </div>
-                <Button onClick={() => setIsCreating(true)} icon={<Plus className="w-4 h-4" />}>
+                <Button onClick={() => setIsCreating(true)}>
+                    <Plus className="w-4 h-4 mr-2" />
                     Add Endpoint
                 </Button>
             </div>
@@ -47,15 +48,15 @@ export function WebhooksTab({ webhooks }: { webhooks: any[] }) {
                             </div>
                             <div className="flex gap-2">
                                 <Button
-                                    variant="danger"
+                                    variant="destructive"
                                     size="sm"
-                                    icon={<Trash2 className="w-4 h-4" />}
                                     onClick={async () => {
                                         if (confirm('Delete this webhook?')) {
                                             await deleteWebhook(hook.id);
                                         }
                                     }}
                                 >
+                                    <Trash2 className="w-4 h-4 mr-2" />
                                     Delete
                                 </Button>
                             </div>

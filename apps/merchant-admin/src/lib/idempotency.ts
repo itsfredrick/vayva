@@ -46,7 +46,7 @@ export class IdempotencyService {
             // Let's implement Re-Lock update.
             await prisma.idempotencyKey.update({
                 where: { key },
-                data: { status: 'started', expiresAt: new Date(Date.now() + 60000), response: null }
+                data: { status: 'started', expiresAt: new Date(Date.now() + 60000), response: null as any }
             });
             return { status: 'started', isNew: true };
         }

@@ -8,12 +8,12 @@ export const dynamic = 'force-dynamic';
 export async function GET(req: NextRequest) {
     try {
         const session = await getServerSession();
-        if (!session?.user?.storeId) {
+        if (!(session?.user as any)?.storeId) {
             return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
         }
 
         const policies = await prisma.merchantPolicy.findMany({
-            where: { storeId: session.user.storeId },
+            where: { storeId: (session!.user as any).storeId },
             orderBy: { type: 'asc' }
         });
 

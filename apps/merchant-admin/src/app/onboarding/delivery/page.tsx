@@ -19,7 +19,7 @@ export default function DeliveryPage() {
     // Populate from state or use identity defaults
     useEffect(() => {
         if (state?.pickupLocation) {
-            setFormData(state.pickupLocation);
+            setFormData({ ...state.pickupLocation, notes: state.pickupLocation.notes || '' });
         } else if (state?.identity) {
             // Pre-fill contact info from identity
             setFormData(prev => ({

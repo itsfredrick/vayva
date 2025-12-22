@@ -2,11 +2,15 @@ import { NextRequest, NextResponse } from 'next/server';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '@/lib/auth';
 import { getReachableAudience } from '@/lib/consent/analytics';
-import { MessageIntent } from '@vayva/db';
+
+enum MessageIntent {
+    MARKETING = 'MARKETING',
+    TRANSACTIONAL = 'TRANSACTIONAL'
+}
 
 export async function GET(req: NextRequest) {
     const session = await getServerSession(authOptions);
-    if (!session?.user?.storeId) {
+    if (!(session?.user as any)?.storeId) {
         return new NextResponse('Unauthorized', { status: 401 });
     }
 
@@ -18,7 +22,7 @@ export async function GET(req: NextRequest) {
     }
 
     const intent = type === 'marketing' ? MessageIntent.MARKETING : MessageIntent.TRANSACTIONAL;
-    const audience = await getReachableAudience(session.user.storeId, intent);
+    const audience = await getReachableAudience((session!.user as any).storeId, intent as any);
 
     return NextResponse.json(audience);
 }

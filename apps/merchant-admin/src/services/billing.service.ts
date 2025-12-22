@@ -1,5 +1,4 @@
-import { AddOn, Invoice, PlanDetails, PlanTier, Subscription, UsageStats } from '@/types/billing';
-import { PLANS } from '@/lib/billing/plans';
+import { AddOn, Invoice, PLANS_DETAILS, PlanDetails, PlanTier, Subscription, UsageStats } from '@/types/billing';
 
 // Mock Data
 let currentPlan: PlanTier = 'STARTER';
@@ -62,7 +61,7 @@ export const BillingService = {
     },
 
     getPlans: async (): Promise<PlanDetails[]> => {
-        return Object.values(PLANS);
+        return Object.values(PLANS_DETAILS);
     },
 
     changePlan: async (planId: PlanTier): Promise<void> => {
@@ -77,11 +76,12 @@ export const BillingService = {
         };
 
         // Add invoice if paid
-        if (PLANS[planId].price > 0) {
+        const plan = PLANS_DETAILS[planId];
+        if (plan && plan.price > 0) {
             invoices.unshift({
                 id: `inv_${Math.floor(Math.random() * 10000)}`,
                 date: new Date().toISOString(),
-                amount: PLANS[planId].price,
+                amount: plan.price,
                 status: 'paid',
                 pdfUrl: '#',
                 billingReason: 'subscription_update'
@@ -96,7 +96,7 @@ export const BillingService = {
 
     getUsage: async (): Promise<UsageStats> => {
         await new Promise(resolve => setTimeout(resolve, 400));
-        const plan = PLANS[currentPlan];
+        const plan = PLANS_DETAILS[currentPlan];
         return {
             productsCount: 3,
             productsLimit: plan.productLimit,

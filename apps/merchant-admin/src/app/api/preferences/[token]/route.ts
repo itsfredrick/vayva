@@ -43,7 +43,7 @@ export async function POST(
             fullyBlocked: body.fullyBlocked
         },
         {
-            channel: ConsentChannel.WEB,
+            channel: 'WEB' as any,
             source: ConsentSource.CUSTOMER_ACTION,
             reason: 'Customer updated preferences via link'
         }

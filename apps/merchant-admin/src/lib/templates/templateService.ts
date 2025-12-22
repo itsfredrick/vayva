@@ -22,10 +22,10 @@ export class TemplateService {
                 update: {
                     templateId,
                     version: template.version,
-                    config: template.configSchema || {}, // Default config
+                    config: (template.configSchema as any) || {}, // Default config
                     previousTemplateId: current?.templateId,
                     previousVersion: current?.version,
-                    previousConfig: current?.config,
+                    previousConfig: current?.config as any,
                     appliedAt: new Date(),
                     appliedBy: userId
                 },
@@ -33,7 +33,7 @@ export class TemplateService {
                     storeId,
                     templateId,
                     version: template.version,
-                    config: template.configSchema || {},
+                    config: (template.configSchema as any) || {},
                     appliedAt: new Date(),
                     appliedBy: userId
                 }
@@ -45,9 +45,10 @@ export class TemplateService {
                     action: 'template.apply',
                     actorType: 'merchant_user',
                     actorId: userId,
-                    targetType: 'store',
-                    targetId: storeId,
-                    metadata: { templateId, version: template.version }
+                    actorLabel: 'Merchant User',
+                    storeId: storeId,
+                    correlationId: crypto.randomUUID(),
+                    afterState: { templateId, version: template.version } as any
                 }
             });
         });
@@ -71,14 +72,14 @@ export class TemplateService {
                 data: {
                     templateId: current.previousTemplateId!,
                     version: current.previousVersion!,
-                    config: current.previousConfig!,
+                    config: (current.previousConfig as any)!,
                     // Shift current to previous? Or just clear previous?
                     // Let's just swap them to allow toggle back and forth potentially, 
                     // or usually rollback clears the "Redo" stack.
                     // For simplicity: Set previous to NULL to prevent infinite rollback loop or simple toggle.
                     previousTemplateId: current.templateId,
                     previousVersion: current.version,
-                    previousConfig: current.config,
+                    previousConfig: current.config as any,
                     appliedAt: new Date(),
                     appliedBy: userId
                 }
@@ -89,12 +90,13 @@ export class TemplateService {
                     action: 'template.rollback',
                     actorType: 'merchant_user',
                     actorId: userId,
-                    targetType: 'store',
-                    targetId: storeId,
-                    metadata: {
+                    actorLabel: 'Merchant User',
+                    storeId: storeId,
+                    correlationId: crypto.randomUUID(),
+                    afterState: {
                         from: current.templateId,
                         to: current.previousTemplateId
-                    }
+                    } as any
                 }
             });
         });

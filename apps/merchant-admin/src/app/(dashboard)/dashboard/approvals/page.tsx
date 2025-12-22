@@ -118,12 +118,12 @@ export default function ApprovalsPage() {
                         <div className="flex items-center gap-4">
                             {/* Status Icon */}
                             <div className={`w-10 h-10 rounded-full flex items-center justify-center shrink-0 ${item.status === 'pending' ? 'bg-blue-50 text-blue-600' :
-                                    item.status === 'approved' || item.status === 'executed' ? 'bg-green-50 text-green-600' :
-                                        'bg-red-50 text-red-600'
+                                item.status === 'approved' || item.status === 'executed' ? 'bg-green-50 text-green-600' :
+                                    'bg-red-50 text-red-600'
                                 }`}>
-                                {item.status === 'pending' && <Icon name="Clock" size={20} />}
-                                {(item.status === 'approved' || item.status === 'executed') && <Icon name="CheckCircle" size={20} />}
-                                {(item.status === 'rejected' || item.status === 'failed') && <Icon name="XCircle" size={20} />}
+                                {item.status === 'pending' && <Icon name={"Clock" as any} size={20} />}
+                                {(item.status === 'approved' || item.status === 'executed') && <Icon name={"CheckCircle" as any} size={20} />}
+                                {(item.status === 'rejected' || item.status === 'failed') && <Icon name={"XCircle" as any} size={20} />}
                             </div>
 
                             <div>
@@ -147,14 +147,14 @@ export default function ApprovalsPage() {
                             )}
                             {activeTab === 'history' && (
                                 <span className={`text-xs font-bold uppercase ${item.status === 'executed' ? 'text-green-600' :
-                                        item.status === 'failed' ? 'text-red-600' :
-                                            item.status === 'rejected' ? 'text-gray-500' : 'text-gray-400'
+                                    item.status === 'failed' ? 'text-red-600' :
+                                        item.status === 'rejected' ? 'text-gray-500' : 'text-gray-400'
                                     }`}>
                                     {item.status}
                                 </span>
                             )}
 
-                            <Icon name="ChevronRight" size={16} className="text-gray-300 group-hover:text-black transition-colors" />
+                            <Icon name={"ChevronRight" as any} size={16} className="text-gray-300 group-hover:text-black transition-colors" />
                         </div>
                     </motion.div>
                 ))}
@@ -183,7 +183,7 @@ export default function ApprovalsPage() {
                                     <p className="text-xs text-gray-400 font-mono mt-1">{selectedItem.id}</p>
                                 </div>
                                 <button onClick={() => setSelectedItem(null)} className="p-2 hover:bg-gray-200 rounded-full transition">
-                                    <Icon name="X" size={20} />
+                                    <Icon name={"X" as any} size={20} />
                                 </button>
                             </div>
 

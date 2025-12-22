@@ -27,7 +27,7 @@ export default function ThemesPage() {
                 {/* Filters */}
                 <GlassPanel className="p-4 flex flex-col md:flex-row gap-4 justify-between items-center">
                     <div className="w-full md:w-auto relative">
-                        <Icon name="Search" size={18} className="absolute left-3 top-1/2 -translate-y-1/2 text-text-secondary" />
+                        <Icon name={"Search" as any} size={18} className="absolute left-3 top-1/2 -translate-y-1/2 text-text-secondary" />
                         <input
                             className="bg-white/5 border border-white/5 rounded-full pl-10 pr-4 py-2 text-sm text-white focus:outline-none focus:border-primary w-full md:w-64"
                             placeholder="Search templates..."
@@ -63,7 +63,7 @@ export default function ThemesPage() {
                                             <Button className="px-8">Customize</Button>
                                         </Link>
                                         <Button variant="outline">
-                                            <Icon name="Eye" size={18} className="mr-2" />
+                                            <Icon name={"Eye" as any} size={18} className="mr-2" />
                                             Preview
                                         </Button>
                                     </div>
@@ -76,7 +76,7 @@ export default function ThemesPage() {
                     <div className="col-span-1">
                         <GlassPanel className="p-6 h-full flex flex-col justify-center items-center text-center">
                             <div className="w-16 h-16 rounded-full bg-white/5 flex items-center justify-center mb-4">
-                                <Icon name="Gauge" size={32} className="text-primary" />
+                                <Icon name={"Gauge" as any} size={32} className="text-primary" />
                             </div>
                             <h3 className="font-bold text-white mb-2">High Performance</h3>
                             <p className="text-sm text-text-secondary">Your store speed score is 92/100. This theme is optimized for mobile conversions in Nigeria.</p>

@@ -44,7 +44,7 @@ export default function SelectStorePage() {
                 </div>
 
                 <div className="space-y-3">
-                    {user?.memberships?.map((storeId: string) => (
+                    {(user as any)?.memberships?.map((storeId: string) => (
                         <div
                             key={storeId}
                             onClick={() => handleSelect(storeId)}
@@ -63,7 +63,7 @@ export default function SelectStorePage() {
                         </div>
                     ))}
 
-                    {(!user?.memberships || user.memberships.length === 0) && (
+                    {(!(user as any)?.memberships || (user as any).memberships.length === 0) && (
                         <div className="text-center text-text-secondary py-4">No stores found.</div>
                     )}
                 </div>

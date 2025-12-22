@@ -7,7 +7,7 @@ export async function GET(req: NextRequest) {
     const session = await getServerSession(authOptions);
     if (!session?.user) return new NextResponse('Unauthorized', { status: 401 });
 
-    const tickets = await SupportService.getMerchantTickets(session.user.storeId);
+    const tickets = await SupportService.getMerchantTickets((session!.user as any).storeId);
     return NextResponse.json(tickets);
 }
 
@@ -17,9 +17,10 @@ export async function POST(req: NextRequest) {
 
     const body = await req.json();
 
+    const { storeId, id: userId } = (session!.user as any);
     const ticket = await SupportService.createTicket({
-        storeId: session.user.storeId,
-        userId: session.user.id,
+        storeId: storeId,
+        userId: userId,
         type: body.type,
         subject: body.subject,
         description: body.description,

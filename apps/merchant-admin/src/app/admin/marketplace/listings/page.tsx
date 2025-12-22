@@ -18,7 +18,7 @@ const MOCK_LISTINGS = [
 
 export default function MarketplaceListingsPage() {
     return (
-        <AppShell title="Marketplace Listings" breadcrumb="Marketplace / Listings">
+        <AppShell sidebar={<></>} header={<></>}>
             <div className="flex flex-col gap-6">
                 {/* Top Info Bar */}
                 <div className="flex items-center justify-between bg-indigo-500/10 border border-indigo-500/20 rounded-xl p-4">
@@ -37,7 +37,7 @@ export default function MarketplaceListingsPage() {
                 {/* Filters */}
                 <GlassPanel className="p-4 flex flex-col md:flex-row gap-4 justify-between items-center">
                     <div className="w-full md:w-auto relative">
-                        <Icon name="search" size={18} className="absolute left-3 top-1/2 -translate-y-1/2 text-text-secondary" />
+                        <Icon name={"Search" as any} size={18} className="absolute left-3 top-1/2 -translate-y-1/2 text-text-secondary" />
                         <input
                             className="bg-white/5 border border-white/5 rounded-full pl-10 pr-4 py-2 text-sm text-white focus:outline-none focus:border-primary w-full md:w-64"
                             placeholder="Search listings..."
@@ -87,7 +87,7 @@ export default function MarketplaceListingsPage() {
                                         <td className="p-4 text-xs text-text-secondary">
                                             {item.views > 0 ? (
                                                 <span className="flex items-center gap-1">
-                                                    <Icon name="visibility" size={14} /> {item.views} views
+                                                    <Icon name={"Eye" as any} size={14} /> {item.views} views
                                                 </span>
                                             ) : '-'}
                                         </td>

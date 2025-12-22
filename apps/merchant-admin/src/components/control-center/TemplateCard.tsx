@@ -16,7 +16,7 @@ export function TemplateCard({ template, isActive, onSelect, onPreview, canSelec
             {/* Thumbnail Placeholder */}
             <div className="aspect-[4/3] w-full bg-white/5 relative">
                 <div className="absolute inset-0 flex items-center justify-center text-white/10 group-hover:text-white/20 transition-colors">
-                    <Icon name="Layout" size={48} />
+                    <Icon name={"Layout" as any} size={48} />
                 </div>
                 {/* ID Overlay for debug/clarity */}
                 <div className="absolute top-2 right-2 px-2 py-1 bg-black/50 rounded text-xs text-white/50 backdrop-blur-sm">
@@ -28,7 +28,7 @@ export function TemplateCard({ template, isActive, onSelect, onPreview, canSelec
                 <div className="mb-2">
                     <h3 className="text-lg font-medium text-white flex items-center gap-2">
                         {template.name}
-                        {isActive && <Icon name="CheckCircle" size={16} className="text-primary" />}
+                        {isActive && <Icon name={"CheckCircle" as any} size={16} className="text-primary" />}
                     </h3>
                     <p className="text-sm text-text-secondary line-clamp-2 h-10">{template.description}</p>
                 </div>
@@ -64,7 +64,7 @@ export function TemplateCard({ template, isActive, onSelect, onPreview, canSelec
             {!canSelect && !isActive && (
                 <div className="absolute inset-0 z-10 flex items-center justify-center bg-black/60 backdrop-blur-[2px]">
                     <div className="text-center p-4">
-                        <Icon name="Lock" size={24} className="mx-auto mb-2 text-white/70" />
+                        <Icon name={"Lock" as any} size={24} className="mx-auto mb-2 text-white/70" />
                         <p className="text-sm font-medium text-white">Upgrade to unlock</p>
                     </div>
                 </div>

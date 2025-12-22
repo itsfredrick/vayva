@@ -70,37 +70,37 @@ export default function AnalyticsDashboardPage() {
                     <KPICard
                         title="Net Sales"
                         value={`₦ ${Number(kpis.netSales || 0).toLocaleString()}`}
-                        icon="TrendingUp"
+                        icon={"TrendingUp" as any}
                         color="bg-green-50 text-green-600"
                     />
                     <KPICard
                         title="Orders"
                         value={kpis.orders || 0}
-                        icon="ShoppingBag"
+                        icon={"ShoppingBag" as any}
                         color="bg-blue-50 text-blue-600"
                     />
                     <KPICard
                         title="Payment Success"
                         value={`${kpis.paymentSuccessRate || 0}%`}
-                        icon="CreditCard"
+                        icon={"CreditCard" as any}
                         color="bg-purple-50 text-purple-600"
                     />
                     <KPICard
                         title="Delivery Success"
                         value={`${Number(kpis.deliverySuccessRate || 0).toFixed(1)}%`}
-                        icon="Truck"
+                        icon={"Truck" as any}
                         color="bg-orange-50 text-orange-600"
                     />
                     <KPICard
                         title="Refund Rate"
                         value={`${kpis.refundRate || 0}%`}
-                        icon="RotateCcw"
+                        icon={"RotateCcw" as any}
                         color="bg-red-50 text-red-600"
                     />
                     <KPICard
                         title="WhatsApp Response"
                         value={`${Math.round((kpis.whatsappResponseTime || 0) / 60)}m`}
-                        icon="MessageCircle"
+                        icon={"MessageCircle" as any}
                         color="bg-green-50 text-green-600"
                     />
                 </div>
@@ -119,16 +119,16 @@ export default function AnalyticsDashboardPage() {
                             </p>
                         </div>
                         <div className="w-32 h-32 rounded-full bg-white/50 backdrop-blur-sm flex items-center justify-center border border-green-200">
-                            <Icon name="Activity" size={48} className="text-green-600" />
+                            <Icon name={"Activity" as any} size={48} className="text-green-600" />
                         </div>
                     </div>
                 </div>
 
                 {/* Quick Links */}
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                    <QuickLink href="/admin/analytics/reports" icon="BarChart" title="View Reports" />
-                    <QuickLink href="/admin/analytics/goals" icon="Target" title="Manage Goals" />
-                    <QuickLink href="/admin/analytics/insights" icon="Lightbulb" title="AI Insights" />
+                    <QuickLink href="/admin/analytics/reports" icon={"BarChart" as any} title="View Reports" />
+                    <QuickLink href="/admin/analytics/goals" icon={"Target" as any} title="Manage Goals" />
+                    <QuickLink href="/admin/analytics/insights" icon={"Lightbulb" as any} title="AI Insights" />
                 </div>
 
             </div>
@@ -144,7 +144,7 @@ function KPICard({ title, value, icon, color }: any) {
                 <h3 className="text-2xl font-bold text-[#0B1220]">{value}</h3>
             </div>
             <div className={cn("w-12 h-12 rounded-xl flex items-center justify-center", color)}>
-                <Icon name={icon} size={24} />
+                <Icon name={icon as any} size={24} />
             </div>
         </div>
     );
@@ -157,7 +157,7 @@ function QuickLink({ href, icon, title }: any) {
             className="bg-white rounded-xl p-4 border border-gray-100 hover:border-green-200 hover:shadow-md transition-all flex items-center gap-3 group"
         >
             <div className="w-10 h-10 bg-gray-50 group-hover:bg-green-50 rounded-lg flex items-center justify-center transition-all">
-                <Icon name={icon} size={20} className="text-gray-600 group-hover:text-green-600 transition-all" />
+                <Icon name={icon as any} size={20} className="text-gray-600 group-hover:text-green-600 transition-all" />
             </div>
             <span className="font-medium text-[#0B1220] group-hover:text-green-600 transition-all">{title}</span>
         </a>

@@ -37,7 +37,7 @@ export default function ControlCenterPage() {
                 <div className="flex gap-3">
                     <Link href="/admin/control-center/preview" target="_blank">
                         <Button variant="secondary" className="gap-2">
-                            <Icon name="Eye" size={16} />
+                            <Icon name={"Eye" as any} size={16} />
                             Preview
                         </Button>
                     </Link>
@@ -61,7 +61,7 @@ export default function ControlCenterPage() {
                         }}
                         title={!isKycVerified ? "Verify KYC to publish" : "Publish Store"}
                     >
-                        <Icon name="Globe" size={16} />
+                        <Icon name={"Globe" as any} size={16} />
                         {isPublished ? 'Update Live Store' : 'Publish Store'}
                     </Button>
                 </div>
@@ -113,7 +113,7 @@ export default function ControlCenterPage() {
             <GlassPanel className={`p-6 mt-8 flex items-center justify-between border-l-4 ${isKycVerified ? 'border-l-green-500 bg-green-500/5' : 'border-l-yellow-500 bg-yellow-500/5'}`}>
                 <div className="flex items-center gap-4">
                     <div className={`p-2 rounded-full ${isKycVerified ? 'bg-green-500/20 text-green-500' : 'bg-yellow-500/20 text-yellow-500'}`}>
-                        <Icon name={isKycVerified ? "CheckCircle" : "AlertCircle"} size={24} />
+                        <Icon name={(isKycVerified ? "CheckCircle" : "AlertCircle") as any} size={24} />
                     </div>
                     <div>
                         <h4 className="font-medium text-white">{isPublished ? 'Store is Live' : (isKycVerified ? 'Ready to Publish' : 'Store is Offline')}</h4>

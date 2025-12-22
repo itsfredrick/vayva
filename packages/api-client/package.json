@@ -6,6 +6,9 @@
     "scripts": {
         "generate": "npx openapi-typescript ../../services/api-gateway/openapi/openapi.yaml -o src/generated/schema.d.ts"
     },
+    "dependencies": {
+        "@vayva/shared": "workspace:*"
+    },
     "devDependencies": {
         "openapi-typescript": "^6.7.0",
         "typescript": "^5.0.0"

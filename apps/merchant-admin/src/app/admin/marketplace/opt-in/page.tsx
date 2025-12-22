@@ -22,12 +22,12 @@ export default function MarketplaceOptInPage() {
     };
 
     return (
-        <AppShell title="Marketplace Setup" breadcrumb="Marketplace / Enable">
-            <div className="max-w-3xl mx-auto flex flex-col gap-6 py-10">
+        <AppShell sidebar={<></>} header={<></>}>
+            <div className="max-w-3xl mx-auto flex flex-col gap-6 py-10 px-4">
                 {/* Intro Panel */}
                 <GlassPanel className="p-8 text-center bg-gradient-to-br from-indigo-900/20 to-purple-900/20 border-indigo-500/20">
                     <div className="w-16 h-16 rounded-full bg-indigo-500/20 flex items-center justify-center mx-auto mb-6 text-indigo-400">
-                        <Icon name="storefront" size={32} />
+                        <Icon name={"Store" as any} size={32} />
                     </div>
                     <h1 className="text-3xl font-bold text-white mb-4">Sell on Vayva Market</h1>
                     <p className="text-text-secondary text-lg mb-8 max-w-xl mx-auto">
@@ -36,12 +36,12 @@ export default function MarketplaceOptInPage() {
                     </p>
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8 text-left">
                         {[
-                            { icon: 'public', title: 'Nationwide Reach', text: 'Access customers in every state.' },
-                            { icon: 'payments', title: 'Secure Payments', text: 'Vayva handles trust and escrow.' },
-                            { icon: 'dashboard', title: 'Unified Control', text: 'Manage everything in one place.' },
+                            { icon: 'Globe', title: 'Nationwide Reach', text: 'Access customers in every state.' },
+                            { icon: 'CreditCard', title: 'Secure Payments', text: 'Vayva handles trust and escrow.' },
+                            { icon: 'LayoutDashboard', title: 'Unified Control', text: 'Manage everything in one place.' },
                         ].map((feat, i) => (
                             <div key={i} className="flex flex-col gap-2 p-4 rounded-xl bg-white/5 border border-white/5">
-                                <Icon name={feat.icon} className="text-indigo-400" />
+                                <Icon name={feat.icon as any} className="text-indigo-400" />
                                 <h3 className="font-bold text-white">{feat.title}</h3>
                                 <p className="text-xs text-text-secondary">{feat.text}</p>
                             </div>

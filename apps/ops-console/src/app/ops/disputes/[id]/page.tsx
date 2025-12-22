@@ -27,7 +27,7 @@ export default function DisputeDetailPage({ params }: { params: { id: string } }
                 </Link>
                 <div>
                     <h1 className="text-2xl font-bold tracking-tight">Dispute {dispute.id}</h1>
-                    <p className="text-sm text-gray-500">Order #{dispute.orderId} • {dispute.time}</p>
+                    <p className="text-sm text-gray-500">Order #{dispute.orderId} • Created {dispute.timeline[0].time}</p>
                 </div>
                 <div className="ml-auto flex gap-3">
                     <button className="px-4 py-2 border border-gray-200 rounded-lg text-sm font-medium hover:bg-gray-50 text-gray-700">

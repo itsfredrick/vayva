@@ -56,7 +56,7 @@ export default function ForgotPasswordPage() {
             >
                 <div className="text-center">
                     <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-6">
-                        <Icon name="CheckCircle" className="w-8 h-8 text-green-600" />
+                        <Icon name={"CheckCircle" as any} className="w-8 h-8 text-green-600" />
                     </div>
 
                     {resendTimer > 0 ? (
@@ -90,7 +90,7 @@ export default function ForgotPasswordPage() {
         >
             <div className="flex justify-center mb-6">
                 <div className="w-16 h-16 bg-black/5 rounded-full flex items-center justify-center">
-                    <Icon name="KeyRound" className="w-8 h-8 text-black" />
+                    <Icon name={"KeyRound" as any} className="w-8 h-8 text-black" />
                 </div>
             </div>
 
@@ -119,7 +119,7 @@ export default function ForgotPasswordPage() {
                 >
                     {loading ? (
                         <>
-                            <Icon name="Loader2" className="w-5 h-5 animate-spin" />
+                            <Icon name={"Loader2" as any} className="w-5 h-5 animate-spin" />
                             Sending...
                         </>
                     ) : (
@@ -130,7 +130,7 @@ export default function ForgotPasswordPage() {
 
             <div className="mt-6 text-center">
                 <Link href="/signin" className="text-sm text-[#0D1D1E] hover:text-black font-medium transition-colors inline-flex items-center gap-1">
-                    <Icon name="ArrowLeft" className="w-4 h-4" />
+                    <Icon name={"ArrowLeft" as any} className="w-4 h-4" />
                     Back to sign in
                 </Link>
             </div>

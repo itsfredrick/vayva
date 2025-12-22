@@ -54,7 +54,7 @@ const WalletHeader = () => {
                     </div>
                 </div>
                 <div className="flex gap-2 text-xs text-gray-500 bg-gray-50 px-3 py-2 rounded-lg border border-gray-100">
-                    <Icon name="ShieldCheck" size={14} className="text-green-600" />
+                    <Icon name={"ShieldCheck" as any} size={14} className="text-green-600" />
                     Securely Encrypted
                 </div>
             </div>
@@ -69,7 +69,7 @@ const WalletKPIs = () => {
             {/* 1. Available Balance */}
             <div className="bg-black text-white rounded-xl p-6 flex flex-col justify-between shadow-lg relative overflow-hidden group">
                 <div className="absolute top-0 right-0 p-4 opacity-10 group-hover:scale-110 transition-transform">
-                    <Icon name="Wallet" size={64} />
+                    <Icon name={"Wallet" as any} size={64} />
                 </div>
                 <div className="flex flex-col gap-1 relative z-10">
                     <span className="text-xs uppercase tracking-widest text-gray-400">Available Balance</span>
@@ -85,7 +85,7 @@ const WalletKPIs = () => {
                 <div className="flex flex-col gap-1">
                     <div className="flex items-center gap-2">
                         <span className="text-xs uppercase tracking-widest text-[#525252]">Pending Settlement</span>
-                        <Icon name="Clock" size={12} className="text-gray-400" />
+                        <Icon name={"Clock" as any} size={12} className="text-gray-400" />
                     </div>
                     <h2 className="text-2xl font-bold text-[#0B0B0B]">₦ {summary?.pendingPayouts.toLocaleString() || '0.00'}</h2>
                 </div>
@@ -123,7 +123,7 @@ const LedgerPane = ({ selectedId, onSelect }: { selectedId: string | null, onSel
                                 "w-10 h-10 rounded-full flex items-center justify-center",
                                 tx.type === 'inflow' ? "bg-green-100 text-green-600" : (tx.type === 'payout' ? "bg-black text-white" : "bg-gray-100 text-gray-600")
                             )}>
-                                <Icon name={tx.type === 'inflow' ? 'ArrowDownLeft' : (tx.type === 'payout' ? 'ArrowUpRight' : 'Info')} size={18} />
+                                <Icon name={(tx.type === 'inflow' ? 'ArrowDownLeft' : (tx.type === 'payout' ? 'ArrowUpRight' : 'Info')) as any} size={18} />
                             </div>
                             <div>
                                 <p className="text-sm font-bold text-[#0B0B0B]">{tx.description}</p>
@@ -242,12 +242,12 @@ const WalletContent = () => {
             {/* Actions Row */}
             <div className="flex gap-3 overflow-x-auto pb-1">
                 <Button className="shrink-0" onClick={() => setWithdrawOpen(true)}>
-                    <Icon name="ArrowUpRight" size={16} className="mr-2" /> Withdraw Funds
+                    <Icon name={"ArrowUpRight" as any} size={16} className="mr-2" /> Withdraw Funds
                 </Button>
                 <Button variant="outline" className="shrink-0" onClick={() => setAddBankOpen(true)}>
-                    <Icon name="Plus" size={16} className="mr-2" /> Add Bank Account
+                    <Icon name={"Plus" as any} size={16} className="mr-2" /> Add Bank Account
                 </Button>
-                <Button variant="outline" className="shrink-0" disabled><Icon name="Download" size={16} className="mr-2" /> Statements</Button>
+                <Button variant="outline" className="shrink-0" disabled><Icon name={"Download" as any} size={16} className="mr-2" /> Statements</Button>
                 <div className="flex-1"></div>
             </div>
 

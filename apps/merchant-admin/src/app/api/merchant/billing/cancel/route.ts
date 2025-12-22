@@ -5,11 +5,11 @@ import { prisma } from '@vayva/db';
 
 export async function POST(req: NextRequest) {
     const session = await getServerSession(authOptions);
-    if (!session?.user?.storeId) return new NextResponse('Unauthorized', { status: 401 });
+    if (!(session?.user as any)?.storeId) return new NextResponse('Unauthorized', { status: 401 });
 
     try {
         await prisma.merchantSubscription.update({
-            where: { storeId: session.user.storeId },
+            where: { storeId: (session!.user as any).storeId },
             data: { cancelAtPeriodEnd: true }
         });
 

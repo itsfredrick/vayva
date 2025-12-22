@@ -52,7 +52,7 @@ const ResetPasswordContent = () => {
             >
                 <div className="text-center">
                     <div className="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-6">
-                        <Icon name="AlertCircle" className="w-8 h-8 text-red-600" />
+                        <Icon name={"AlertCircle" as any} className="w-8 h-8 text-red-600" />
                     </div>
                     <Link href="/forgot-password">
                         <Button variant="primary" className="w-full !bg-black !text-white !rounded-xl !h-12">
@@ -72,7 +72,7 @@ const ResetPasswordContent = () => {
         >
             <div className="flex justify-center mb-6">
                 <div className="w-16 h-16 bg-black/5 rounded-full flex items-center justify-center">
-                    <Icon name="Lock" className="w-8 h-8 text-black" />
+                    <Icon name={"Lock" as any} className="w-8 h-8 text-black" />
                 </div>
             </div>
 
@@ -98,7 +98,7 @@ const ResetPasswordContent = () => {
                             onClick={() => setShowPassword(!showPassword)}
                             className="absolute right-3 top-[38px] text-gray-400 hover:text-black transition-colors"
                         >
-                            <Icon name={showPassword ? 'EyeOff' : 'Eye'} className="w-5 h-5" />
+                            <Icon name={(showPassword ? 'EyeOff' : 'Eye') as any} className="w-5 h-5" />
                         </button>
                     </div>
                     <PasswordStrengthIndicator password={password} />
@@ -118,7 +118,7 @@ const ResetPasswordContent = () => {
                         onClick={() => setShowConfirmPassword(!showConfirmPassword)}
                         className="absolute right-3 top-[38px] text-gray-400 hover:text-black transition-colors"
                     >
-                        <Icon name={showConfirmPassword ? 'EyeOff' : 'Eye'} className="w-5 h-5" />
+                        <Icon name={(showConfirmPassword ? 'EyeOff' : 'Eye') as any} className="w-5 h-5" />
                     </button>
                     {confirmPassword.length > 0 && password !== confirmPassword && (
                         <p className="text-xs text-red-600 mt-1">Passwords do not match</p>
@@ -134,7 +134,7 @@ const ResetPasswordContent = () => {
                 >
                     {loading ? (
                         <>
-                            <Icon name="Loader2" className="w-5 h-5 animate-spin" />
+                            <Icon name={"Loader2" as any} className="w-5 h-5 animate-spin" />
                             Resetting password...
                         </>
                     ) : (
@@ -145,7 +145,7 @@ const ResetPasswordContent = () => {
 
             <div className="mt-6 text-center">
                 <Link href="/signin" className="text-sm text-[#0D1D1E] hover:text-black font-medium transition-colors inline-flex items-center gap-1">
-                    <Icon name="ArrowLeft" className="w-4 h-4" />
+                    <Icon name={"ArrowLeft" as any} className="w-4 h-4" />
                     Back to sign in
                 </Link>
             </div>

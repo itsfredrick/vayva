@@ -35,8 +35,9 @@ export default function CollectionPage({ params }: { params: { slug: string, col
 
                     {/* Toolbar */}
                     <div className="flex gap-3 w-full md:w-auto">
-                        <Button variant="outline" className="flex-1 md:flex-none justify-between text-white border-white/10 hover:bg-white/5">
-                            <span className="flex items-center gap-2"><Icon name="Sliders" size={16} /> Filter</span>
+                        <Button variant="outline" size="sm" className="hidden md:flex">
+                            <Icon name={"Sliders" as any} size={14} className="mr-2" />
+                            Filter
                         </Button>
                         <Button variant="outline" className="flex-1 md:flex-none justify-between text-white border-white/10 hover:bg-white/5 gap-4">
                             <span className="flex items-center gap-2"><Icon name="ArrowUpDown" size={16} /> Sort</span>

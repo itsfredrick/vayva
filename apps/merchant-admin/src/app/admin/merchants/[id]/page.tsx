@@ -106,8 +106,8 @@ export default function MerchantAdminDetail({ params }: { params: { id: string }
                     ) : (
                         <ul className="space-y-2 mb-8">
                             {snapshot.readiness.issues.map((i: any) => (
-                                <li key={i.code} className="text-red-600 flex gap-2">
-                                    <Icon name="XCircle" size={16} /> {i.title}: {i.description}
+                                <li key={i.code} className="text-red-600">
+                                    <Icon name={"CircleX" as any} size={14} className="mr-1" /> {i.title}: {i.description}
                                 </li>
                             ))}
                         </ul>

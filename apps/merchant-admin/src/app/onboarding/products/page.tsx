@@ -22,7 +22,8 @@ export default function ProductsPage() {
         { id: '1', name: '', price: '', stock: '10' }
     ]);
 
-    const plan = user?.plan || 'starter';
+    const plan = (user as any)?.plan || 'starter';
+    const isStarter = (user as any)?.plan === 'starter';
     const maxProducts = plan === 'starter' ? 5 : plan === 'growth' ? 20 : 999;
     const isLimitReached = products.length >= maxProducts;
 
@@ -49,13 +50,13 @@ export default function ProductsPage() {
             if (validProducts.length > 0) {
                 // Bulk create loop (naive for V1)
                 for (const p of validProducts) {
-                    await ProductService.create({
+                    await ProductService.createProduct({
                         name: p.name,
-                        price: p.price,
-                        stock: p.stock,
+                        price: parseFloat(p.price) || 0,
+                        stock: parseInt(p.stock) || 0,
                         description: 'Added during onboarding',
                         sku: `SKU-${Date.now()}-${Math.random().toString(36).substr(2, 5)}`
-                    });
+                    } as any);
                 }
             }
 

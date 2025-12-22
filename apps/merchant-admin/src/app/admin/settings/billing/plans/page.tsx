@@ -36,7 +36,7 @@ const PLANS = [
 
 export default function PlanSelectionPage() {
     return (
-        <AppShell title="Select a Plan" breadcrumb="Billing / Plans">
+        <AppShell sidebar={<></>} header={<></>}>
             <div className="max-w-6xl mx-auto py-10">
                 <div className="text-center mb-10">
                     <h1 className="text-3xl font-bold text-white mb-2">Choose the plan that fits your growth</h1>
@@ -63,7 +63,7 @@ export default function PlanSelectionPage() {
                             <div className="flex-1 space-y-4 mb-8">
                                 {plan.features.map((feat, i) => (
                                     <div key={i} className="flex items-center gap-3 text-sm text-white">
-                                        <Icon name="check" className="text-state-success shrink-0" size={16} />
+                                        <Icon name={"Check" as any} className="text-state-success shrink-0" size={16} />
                                         {feat}
                                     </div>
                                 ))}

@@ -93,7 +93,7 @@ export default function PoliciesPage() {
                                 placeholder="Policy Title"
                             />
                         </div>
-                        <Button onClick={handleSave} loading={isSaving}>
+                        <Button onClick={handleSave} isLoading={isSaving}>
                             <Icon name="Save" size={16} className="mr-2" />
                             Save Policy
                         </Button>

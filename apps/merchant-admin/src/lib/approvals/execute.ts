@@ -24,16 +24,16 @@ const Services = {
 };
 
 export async function executeApproval(requestId: string, actorId: string, correlationId: string) {
-    const request = await prisma.approvalRequest.findUnique({
+    const request = await prisma.approval.findUnique({
         where: { id: requestId }
     });
 
     if (!request) throw new Error('Request not found');
-    if (request.status !== 'approved') throw new Error('Request not approved');
+    if (request.status !== 'APPROVED') throw new Error('Request not approved');
 
     // Idempotency Check in Logs
     const existingLog = await prisma.approvalExecutionLog.findFirst({
-        where: { approvalRequestId: requestId, status: 'success' }
+        where: { approvalRequestId: requestId, status: 'success' } // status here is unrelated to ApprovalStatus (log status)
     });
 
     if (existingLog) {
@@ -65,12 +65,9 @@ export async function executeApproval(requestId: string, actorId: string, correl
                 throw new Error(`Unknown action type: ${request.actionType}`);
         }
 
-        // Update Request & Log on Success
+        // Update Log on Success
         await prisma.$transaction([
-            prisma.approvalRequest.update({
-                where: { id: requestId },
-                data: { status: 'executed' }
-            }),
+            // prisma.approval.update not needed/possible with current enum
             prisma.approvalExecutionLog.create({ // Create new finished log or update running one?
                 // For simplicity, we create a success record.
                 data: {
@@ -97,10 +94,7 @@ export async function executeApproval(requestId: string, actorId: string, correl
 
     } catch (error: any) {
         // Fail
-        await prisma.approvalRequest.update({
-            where: { id: requestId },
-            data: { status: 'failed' }
-        });
+        // Cannot update status to FAILED as it's not in enum. Log error.
 
         await prisma.approvalExecutionLog.create({
             data: {

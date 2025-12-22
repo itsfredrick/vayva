@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
+import Link from 'next/link';
 import { AdminShell } from '@/components/admin-shell';
 import { Button, Icon, cn } from '@vayva/ui';
 import { api } from '@/services/api';
@@ -39,18 +40,21 @@ export default function GoLivePage() {
                             <p className="text-[#525252]">Complete the checklist below to launch your store.</p>
                         </div>
                         <div className="w-20 h-20 bg-white/50 backdrop-blur-sm rounded-full flex items-center justify-center border border-green-200">
-                            <Icon name="Rocket" size={40} className="text-green-600" />
+                            <Icon name={"Rocket" as any} size={40} className="text-green-600" />
                         </div>
                     </div>
                 </div>
 
                 {/* Blockers Alert */}
                 {!canGoLive && (
-                    <div className="bg-orange-50 border border-orange-200 rounded-xl p-4 flex items-start gap-3">
-                        <Icon name="AlertTriangle" size={20} className="text-orange-600 mt-0.5" />
+                    <div className="p-4 rounded-xl bg-orange-50 border border-orange-200 flex gap-4 items-start">
+                        <Icon name={"AlertTriangle" as any} className="text-orange-600 shrink-0 mt-0.5" size={20} />
                         <div>
-                            <h3 className="font-bold text-orange-900 mb-1">Action Required</h3>
-                            <p className="text-sm text-orange-700">You have {blockers.length} item(s) that need attention before going live.</p>
+                            <h4 className="font-bold text-orange-900 text-sm mb-1">Pre-Launch Checklist</h4>
+                            <p className="text-xs text-orange-700 mb-3">Ensure you've completed all required steps before requesting go-live review.</p>
+                            <Link href="/admin/settings/compliance">
+                                <Button size="sm" variant="outline" className="w-full">Review Compliance</Button>
+                            </Link>
                         </div>
                     </div>
                 )}
@@ -72,7 +76,7 @@ export default function GoLivePage() {
                                             item.status === 'BLOCKED' ? "bg-red-100 text-red-600" :
                                                 "bg-gray-100 text-gray-400"
                                     )}>
-                                        {item.status === 'DONE' ? <Icon name="Check" size={14} /> : <Icon name="Circle" size={14} />}
+                                        {item.status === 'DONE' ? <Icon name={"Check" as any} size={14} /> : <Icon name={"Circle" as any} size={14} />}
                                     </div>
                                     <div className="flex-1">
                                         <h3 className="font-medium text-[#0B1220] mb-1">{item.title}</h3>
@@ -97,14 +101,16 @@ export default function GoLivePage() {
 
                 {/* Actions */}
                 <div className="flex items-center justify-between">
-                    <Button variant="outline" href="/admin/onboarding">
-                        <Icon name="ArrowLeft" size={16} className="mr-2" />
-                        Back to Setup
-                    </Button>
+                    <Link href="/admin/onboarding">
+                        <Button variant="outline">
+                            <Icon name={"ArrowLeft" as any} size={16} className="mr-2" />
+                            Back to Setup
+                        </Button>
+                    </Link>
                     <div className="flex gap-3">
                         <Button variant="outline">Preview Store</Button>
                         <Button disabled={!canGoLive}>
-                            <Icon name="Rocket" size={16} className="mr-2" />
+                            <Icon name={"Rocket" as any} size={16} className="mr-2" />
                             {canGoLive ? 'Launch Store' : 'Complete Checklist First'}
                         </Button>
                     </div>

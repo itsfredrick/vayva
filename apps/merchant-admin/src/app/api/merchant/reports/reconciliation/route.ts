@@ -11,7 +11,7 @@ export async function GET(req: NextRequest) {
     const cursor = searchParams.get('cursor') || undefined;
     const limit = parseInt(searchParams.get('limit') || '20');
 
-    const data = await ReportsService.getReconciliation(session.user.storeId, limit, cursor);
+    const data = await ReportsService.getReconciliation((session!.user as any).storeId, limit, cursor);
 
     return NextResponse.json(data);
 }

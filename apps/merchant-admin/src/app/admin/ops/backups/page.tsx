@@ -1,8 +1,7 @@
 
 import { prisma } from '@vayva/db';
-import { GlassPanel, Button } from '@vayva/ui';
+import { GlassPanel, Button, Icon } from '@vayva/ui';
 import { revalidatePath } from 'next/cache';
-import { Download, Play } from 'lucide-react';
 
 export const metadata = { title: 'Disaster Recovery' };
 
@@ -17,7 +16,7 @@ async function triggerDrill() {
 export default async function BackupsPage() {
     const receipts = await prisma.backupReceipt.findMany({
         take: 20,
-        orderBy: { timestamp: 'desc' }
+        orderBy: { createdAt: 'desc' }
     });
 
     return (
@@ -25,7 +24,8 @@ export default async function BackupsPage() {
             <div className="flex justify-between items-center">
                 <h1 className="text-2xl font-bold">Backups & Disaster Recovery</h1>
                 <form action={triggerDrill}>
-                    <Button type="submit" icon={<Play className="w-4 h-4" />}>
+                    <Button type="submit">
+                        <Icon name={"Play" as any} size={14} className="mr-2" />
                         Run Restore Drill
                     </Button>
                 </form>
@@ -50,25 +50,29 @@ export default async function BackupsPage() {
                 <h2 className="text-xl font-semibold mb-4">Backup History</h2>
                 <div className="space-y-3">
                     {receipts.length === 0 && <div className="text-muted-foreground">No backup receipts found.</div>}
-                    {receipts.map(r => (
-                        <GlassPanel key={r.id} className="p-4 flex justify-between items-center">
-                            <div>
-                                <div className="font-bold">{r.filename}</div>
-                                <div className="text-xs text-muted-foreground">
-                                    {(r.sizeBytes / 1024 / 1024).toFixed(2)} MB • {r.timestamp.toLocaleString()}
+                    {receipts.map(r => {
+                        const meta = r.meta as any;
+                        return (
+                            <GlassPanel key={r.id} className="p-4 flex justify-between items-center">
+                                <div>
+                                    <div className="font-bold">{meta?.filename || r.backupId}</div>
+                                    <div className="text-xs text-muted-foreground">
+                                        {((meta?.sizeBytes || 0) / 1024 / 1024).toFixed(2)} MB • {r.createdAt.toLocaleString()}
+                                    </div>
                                 </div>
-                            </div>
-                            <div className="flex gap-2">
-                                <span className={`px-2 py-0.5 text-xs rounded ${r.verified ? 'bg-green-500/20 text-green-400' : 'bg-yellow-500/20 text-yellow-500'}`}>
-                                    {r.verified ? 'Verified' : 'Unverified'}
-                                </span>
-                                {/* Only show download if Admin - implicitly admin here */}
-                                <Button size="sm" variant="ghost" icon={<Download className="w-4 h-4" />}>
-                                    Proxy DL
-                                </Button>
-                            </div>
-                        </GlassPanel>
-                    ))}
+                                <div className="flex gap-2">
+                                    <span className={`px-2 py-0.5 text-xs rounded ${r.status === 'success' ? 'bg-green-500/20 text-green-400' : 'bg-yellow-500/20 text-yellow-500'}`}>
+                                        {r.status === 'success' ? 'Verified' : 'Pending'}
+                                    </span>
+                                    {/* Only show download if Admin - implicitly admin here */}
+                                    <Button size="sm" variant="ghost">
+                                        <Icon name={"Download" as any} size={14} className="mr-2" />
+                                        Proxy DL
+                                    </Button>
+                                </div>
+                            </GlassPanel>
+                        );
+                    })}
                 </div>
             </section>
         </div>

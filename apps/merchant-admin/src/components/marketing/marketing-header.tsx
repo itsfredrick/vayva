@@ -63,7 +63,7 @@ export function MarketingHeader() {
                     className="lg:hidden z-50 w-10 h-10 flex items-center justify-center text-[#1d1d1f]"
                     onClick={() => setIsMenuOpen(!isMenuOpen)}
                 >
-                    <Icon name={isMenuOpen ? 'close' : 'menu'} size={24} />
+                    <Icon name={isMenuOpen ? ('X' as any) : ('Menu' as any)} size={24} />
                 </button>
             </div>
 

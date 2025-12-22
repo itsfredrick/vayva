@@ -15,7 +15,7 @@ export function Spinner({ size = 'md', className = '' }: SpinnerProps) {
 
     return (
         <div className={`animate-spin text-primary ${sizeClasses[size]} ${className}`}>
-            <Icon name="Loader2" size={size === 'sm' ? 16 : size === 'md' ? 32 : 48} />
+            <Icon name="Loader" size={size === 'sm' ? 16 : size === 'md' ? 32 : 48} />
         </div>
     );
 }

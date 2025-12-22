@@ -7,7 +7,7 @@ export async function GET(req: NextRequest) {
     const session = await getServerSession(authOptions);
     if (!session?.user) return new NextResponse('Unauthorized', { status: 401 });
 
-    const storeId = session.user.storeId;
+    const storeId = (session!.user as any).storeId;
     const { searchParams } = new URL(req.url);
     const status = searchParams.get('status') || 'OPEN';
     const limit = parseInt(searchParams.get('limit') || '20');
@@ -21,7 +21,7 @@ export async function GET(req: NextRequest) {
         orderBy: { lastMessageAt: 'desc' },
         take: limit,
         include: {
-            contact: { select: { firstName: true, lastName: true, phone: true } },
+            contact: { select: { phoneE164: true, displayName: true } },
             messages: {
                 take: 1,
                 orderBy: { createdAt: 'desc' },

@@ -30,7 +30,7 @@ export function ActionApprovalCard({ type, title, description, risk, onApprove, 
     if (status !== 'pending') {
         return (
             <div className={`p-4 rounded-lg border ${status === 'approved' ? 'bg-state-success/10 border-state-success/20' : 'bg-state-danger/10 border-state-danger/20'} flex items-center gap-3`}>
-                <Icon name={status === 'approved' ? 'check_circle' : 'cancel'} className={status === 'approved' ? 'text-state-success' : 'text-state-danger'} />
+                <Icon name={(status === 'approved' ? 'CheckCircle' : 'X') as any} className={status === 'approved' ? 'text-state-success' : 'text-state-danger'} />
                 <span className={`text-sm font-bold ${status === 'approved' ? 'text-state-success' : 'text-state-danger'}`}>
                     Action {status === 'approved' ? 'Approved' : 'Rejected'}
                 </span>
@@ -54,7 +54,12 @@ export function ActionApprovalCard({ type, title, description, risk, onApprove, 
                     <p className="text-xs text-text-secondary">{description}</p>
                 </div>
                 <div className="p-2 bg-white/5 rounded-lg text-white/50">
-                    <Icon name={type === 'refund' ? 'payments' : type === 'delivery' ? 'local_shipping' : 'local_offer'} size={20} />
+                    <Icon
+                        name={
+                            (type === 'refund' ? 'Banknote' :
+                                type === 'delivery' ? 'Truck' :
+                                    'Tag') as any
+                        } size={20} />
                 </div>
             </div>
 

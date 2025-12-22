@@ -3,7 +3,7 @@
 import React, { useState } from 'react';
 import { Button, GlassPanel, Icon } from '@vayva/ui';
 import { StepShell } from './StepShell';
-import { TEMPLATES, Template } from '@/lib/templates-registry';
+import { TEMPLATES, TemplateDefinition } from '@/lib/templates-registry';
 import { useAuth } from '@/context/AuthContext';
 
 interface ThemeSelectionStepProps {
@@ -15,8 +15,8 @@ interface ThemeSelectionStepProps {
 }
 
 export function ThemeSelectionStep({ value, onChange, onNext, onBack, isSubmitting }: ThemeSelectionStepProps) {
-    const { store } = useAuth();
-    const [previewTemplate, setPreviewTemplate] = useState<Template | null>(null);
+    const { store } = useAuth() as any;
+    const [previewTemplate, setPreviewTemplate] = useState<TemplateDefinition | null>(null);
 
     return (
         <StepShell
@@ -41,9 +41,9 @@ export function ThemeSelectionStep({ value, onChange, onNext, onBack, isSubmitti
                                 style={{ backgroundColor: theme.colors.background }}
                             >
                                 <div className="absolute top-2 right-2">
-                                    {theme.tag && (
+                                    {theme.tags[0] && (
                                         <span className="bg-black/80 text-white text-[10px] px-2 py-1 rounded-full backdrop-blur-md uppercase tracking-wide font-bold">
-                                            {theme.tag}
+                                            {theme.tags[0]}
                                         </span>
                                     )}
                                 </div>

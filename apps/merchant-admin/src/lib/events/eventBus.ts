@@ -25,7 +25,7 @@ export class EventBus {
             ops.push(
                 prisma.auditLog.create({
                     data: {
-                        merchantId,
+                        store: { connect: { id: merchantId } },
                         actorType: ctx.actorType,
                         actorId: ctx.actorId,
                         actorLabel: ctx.actorLabel,
@@ -62,8 +62,8 @@ export class EventBus {
                     prisma.notification.upsert({
                         where: { dedupeKey },
                         create: {
-                            merchantId,
-                            userId: ctx.actorId, // If notification is for the actor? Usually notifications are for the merchant (all users) or specific user.
+                            store: { connect: { id: merchantId } },
+                            userId: ctx.actorId, // If notification is for the actor? usually notifications are for the merchant (all users) or specific user.
                             // For V1, let's assign None (null) to mean "All Store Admins" unless specified.
                             // But our schema has userId. If we want it to be global for store, we leave userId null or handle logic.
                             // Let's assume system notifications go to the dashboard feed (null userId = visible to all with access).
@@ -88,7 +88,7 @@ export class EventBus {
                 ops.push(
                     prisma.notification.create({
                         data: {
-                            merchantId,
+                            store: { connect: { id: merchantId } },
                             userId: null, // Broadcast to store
                             type,
                             title,

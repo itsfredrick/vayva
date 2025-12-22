@@ -67,7 +67,10 @@ export default function StaffSettingsPage() {
 
 
     return (
-        <AppShell breadcrumb="Settings / Staff" title="Staff & Roles">
+        <AppShell sidebar={<></>} header={<></>}>
+            <div className="max-w-6xl mx-auto flex flex-col gap-4 mb-6">
+                <h1 className="text-2xl font-bold text-white">Staff & Roles</h1>
+            </div>
             <div className="max-w-6xl mx-auto">
 
                 {/* Toolbar */}

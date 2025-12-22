@@ -15,7 +15,7 @@ export default function VariantsPage() {
     const id = params.id as string;
 
     return (
-        <AppShell title="Edit Variants" breadcrumb={`Catalog / ${id} / Variants`}>
+        <AppShell sidebar={<></>} header={<></>}>
             <div className="flex flex-col gap-6 max-w-5xl mx-auto">
                 <div className="flex items-center justify-between">
                     <div>
@@ -43,7 +43,7 @@ export default function VariantsPage() {
                                     {['40', '41', '42', '43'].map(v => (
                                         <div key={v} className="px-3 py-2 rounded-lg bg-white/10 text-white text-sm flex items-center gap-2">
                                             {v}
-                                            <Icon name="close" size={14} className="cursor-pointer hover:text-state-danger" />
+                                            <Icon name={"X" as any} size={14} className="cursor-pointer hover:text-state-danger" />
                                         </div>
                                     ))}
                                     <input
@@ -54,7 +54,7 @@ export default function VariantsPage() {
                             </div>
                         </div>
                         <Button variant="outline" size="sm" className="w-fit text-xs">
-                            <Icon name="add" size={16} className="mr-2" />
+                            <Icon name={"Plus" as any} size={16} className="mr-2" />
                             Add another option
                         </Button>
                     </div>
@@ -92,7 +92,7 @@ export default function VariantsPage() {
                                         </td>
                                         <td className="p-4">
                                             <Button size="icon" variant="ghost" className="h-8 w-8 text-text-secondary hover:text-state-danger">
-                                                <Icon name="delete" size={18} />
+                                                <Icon name={"Trash" as any} size={18} />
                                             </Button>
                                         </td>
                                     </tr>

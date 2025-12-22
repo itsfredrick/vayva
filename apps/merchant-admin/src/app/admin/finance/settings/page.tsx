@@ -10,7 +10,7 @@ export default function FinanceSettingsPage() {
     const [isEditingBank, setIsEditingBank] = useState(false);
 
     return (
-        <AppShell title="Finance Settings" breadcrumb="Finance / Settings">
+        <AppShell sidebar={<></>} header={<></>}>
             <div className="flex flex-col gap-8 max-w-4xl mx-auto pb-20">
                 {/* Bank Settings */}
                 <div className="space-y-4">
@@ -20,7 +20,7 @@ export default function FinanceSettingsPage() {
                             <div className="flex items-start justify-between">
                                 <div className="flex gap-4">
                                     <div className="w-12 h-12 rounded-full bg-primary/20 flex items-center justify-center text-primary">
-                                        <Icon name="account_balance" size={24} />
+                                        <Icon name={"Landmark" as any} size={24} />
                                     </div>
                                     <div>
                                         <h3 className="font-bold text-white text-lg">GTBank •••• 1234</h3>
@@ -50,7 +50,7 @@ export default function FinanceSettingsPage() {
                                     </div>
                                 </div>
                                 <div className="p-3 bg-state-warning/10 border border-state-warning/20 rounded-lg flex gap-3">
-                                    <Icon name="lock" className="text-state-warning shrink-0" />
+                                    <Icon name={"Lock" as any} className="text-state-warning shrink-0" />
                                     <div>
                                         <p className="text-sm font-bold text-state-warning">Security Verification Required</p>
                                         <p className="text-xs text-text-secondary">You will need to verify this change via OTP sent to the owner's phone.</p>

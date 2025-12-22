@@ -43,13 +43,10 @@ export default function WhatsAppPage() {
     };
 
     return (
-        <AppShell
-            title="WhatsApp AI"
-            breadcrumbs={[{ label: 'Inbox', href: '/admin/whatsapp' }]}
-            profile={{ name: user?.name || '', email: user?.email || '' }}
-            storeName="Store"
-            onLogout={() => router.push('/signin')}
-        >
+        <AppShell sidebar={<></>} header={<></>}>
+            <div className="flex flex-col gap-4 p-4">
+                <h1 className="text-2xl font-bold text-white">WhatsApp AI</h1>
+            </div>
             <div className="grid grid-cols-3 gap-6 h-[calc(100vh-140px)]">
                 {/* Conversation List */}
                 <GlassPanel className="col-span-1 p-0 flex flex-col overflow-hidden">

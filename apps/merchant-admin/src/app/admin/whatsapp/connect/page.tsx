@@ -17,7 +17,10 @@ export default function ConnectWizardPage() {
     const nextStep = () => setStep(s => Math.min(s + 1, 4));
 
     return (
-        <AppShell title="Connect WhatsApp" breadcrumb="WhatsApp / Connect">
+        <AppShell sidebar={<></>} header={<></>}>
+            <div className="flex flex-col gap-4 p-4">
+                <h1 className="text-2xl font-bold text-white">Connect WhatsApp</h1>
+            </div>
             <div className="max-w-2xl mx-auto py-10">
                 {/* Stepper */}
                 <div className="flex items-center justify-between mb-10 px-4">
@@ -28,7 +31,7 @@ export default function ConnectWizardPage() {
                             <div key={i} className="flex flex-col items-center relative z-10">
                                 <div className={`w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold mb-2 transition-colors 
                                     ${isActive ? 'bg-primary text-black' : isDone ? 'bg-state-success text-black' : 'bg-white/10 text-text-secondary'}`}>
-                                    {isDone ? <Icon name="Check" size={16} /> : i + 1}
+                                    {isDone ? <Icon name={"Check" as any} size={16} /> : i + 1}
                                 </div>
                                 <span className={`text-xs ${isActive ? 'text-white font-bold' : 'text-text-secondary'}`}>{s}</span>
 
@@ -139,7 +142,7 @@ export default function ConnectWizardPage() {
                     {step === 4 && (
                         <div className="flex flex-col h-full items-center text-center justify-center gap-6">
                             <div className="w-20 h-20 rounded-full bg-state-success/20 flex items-center justify-center text-state-success mb-4">
-                                <Icon name="CheckCircle" size={40} />
+                                <Icon name={"CheckCircle" as any} size={40} />
                             </div>
                             <div>
                                 <h2 className="text-3xl font-bold text-white mb-2">You're all set!</h2>

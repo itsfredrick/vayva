@@ -40,7 +40,7 @@ export default function StaffRolesPage() {
                     disabled={!canAddStaff}
                     title={!canAddStaff ? 'Upgrade to Pro to add staff' : 'Invite Staff'}
                 >
-                    <Icon name="Plus" size={16} className="mr-2" />
+                    <Icon name={"Plus" as any} size={16} className="mr-2" />
                     Invite Member
                 </Button>
             </div>
@@ -48,7 +48,7 @@ export default function StaffRolesPage() {
             {!canAddStaff && (
                 <div className="p-4 rounded-lg bg-white/5 border border-white/10 flex items-center justify-between">
                     <div className="flex items-center gap-3">
-                        <Icon name="Lock" className="text-yellow-500" />
+                        <Icon name={"Lock" as any} className="text-yellow-500" />
                         <div>
                             <h4 className="text-white font-bold">Staff accounts are locked</h4>
                             <p className="text-sm text-text-secondary">Upgrade to the Pro plan to add up to 5 team members.</p>

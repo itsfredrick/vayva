@@ -62,7 +62,7 @@ export default function ReportsPage() {
                         <option value="90d">Last 90 Days</option>
                     </select>
                     <button onClick={handleExport} className="flex items-center gap-1.5 px-4 py-2 bg-white border border-gray-200 rounded-lg text-sm font-bold hover:bg-gray-50">
-                        <Icon name="Download" size={14} />
+                        <Icon name={"Download" as any} size={14} />
                         Export
                     </button>
                 </div>
@@ -142,7 +142,7 @@ export default function ReportsPage() {
                                     <td className="p-4 text-center">
                                         {item.discrepancies.length > 0 ? (
                                             <span className="inline-flex items-center gap-1 px-2 py-0.5 bg-red-100 text-red-700 rounded text-[10px] font-bold">
-                                                <Icon name="AlertCircle" size={10} />
+                                                <Icon name={"AlertCircle" as any} size={10} />
                                                 {item.discrepancies[0]}
                                             </span>
                                         ) : (
@@ -171,7 +171,7 @@ function SummaryCard({ label, value, sub, icon, negative }: any) {
                 <p className="text-gray-400 text-xs mt-1">{sub}</p>
             </div>
             <div className="p-2 bg-gray-50 rounded-lg text-gray-400">
-                <Icon name={icon} size={18} />
+                <Icon name={icon as any} size={18} />
             </div>
         </div>
     );

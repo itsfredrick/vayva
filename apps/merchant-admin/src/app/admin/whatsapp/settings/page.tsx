@@ -47,7 +47,10 @@ export default function WhatsAppSettingsPage() {
     };
 
     return (
-        <AppShell title="WhatsApp AI Settings" breadcrumb="WhatsApp / Settings">
+        <AppShell sidebar={<></>} header={<></>}>
+            <div className="flex flex-col gap-4 p-4">
+                <h1 className="text-2xl font-bold text-white">WhatsApp AI Settings</h1>
+            </div>
             <div className="max-w-4xl mx-auto space-y-6 pb-24">
 
                 {/* 1. Agent Status */}
@@ -91,7 +94,7 @@ export default function WhatsAppSettingsPage() {
                                 </>
                             ) : (
                                 <div className="flex items-center gap-2 text-state-warning">
-                                    <Icon name="AlertTriangle" />
+                                    <Icon name={"AlertTriangle" as any} />
                                     <span className="font-bold">WhatsApp not connected</span>
                                 </div>
                             )}

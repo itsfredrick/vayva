@@ -31,7 +31,7 @@ export default function TransactionDetailPage() {
     };
 
     return (
-        <AppShell title={`Transaction ${tx.id}`} breadcrumb={`Finance / Transactions / ${tx.id}`}>
+        <AppShell sidebar={<></>} header={<></>}>
             <div className="flex flex-col gap-6 max-w-6xl mx-auto">
                 {/* Header Actions */}
                 <div className="flex items-center justify-between">
@@ -41,7 +41,7 @@ export default function TransactionDetailPage() {
                     </div>
                     <div className="flex gap-2">
                         <Button variant="outline" size="sm">
-                            <Icon name="refresh" size={16} className="mr-2" />
+                            <Icon name={"RefreshCw" as any} size={16} className="mr-2" />
                             Re-check Status
                         </Button>
                         <Button variant="outline" size="sm">
@@ -72,7 +72,7 @@ export default function TransactionDetailPage() {
                                     <div className="flex items-center gap-2 mb-1">
                                         <span className="text-white font-bold">{tx.provider}</span>
                                         <span className="px-1.5 py-0.5 rounded bg-white/10 text-[10px] text-text-secondary font-mono">{tx.ref}</span>
-                                        <button className="text-primary hover:text-white transition-colors"><Icon name="content_copy" size={14} /></button>
+                                        <button className="text-primary hover:text-white transition-colors"><Icon name={"Copy" as any} size={14} /></button>
                                     </div>
                                     <p className="text-sm text-text-secondary">{tx.payment_method}</p>
                                 </div>

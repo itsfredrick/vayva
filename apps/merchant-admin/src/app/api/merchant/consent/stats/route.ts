@@ -5,10 +5,10 @@ import { getConsentStats } from '@/lib/consent/analytics';
 
 export async function GET(req: NextRequest) {
     const session = await getServerSession(authOptions);
-    if (!session?.user?.storeId) {
+    if (!(session?.user as any)?.storeId) {
         return new NextResponse('Unauthorized', { status: 401 });
     }
 
-    const stats = await getConsentStats(session.user.storeId);
+    const stats = await getConsentStats((session!.user as any).storeId);
     return NextResponse.json(stats);
 }

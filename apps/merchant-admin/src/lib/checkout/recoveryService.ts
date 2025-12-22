@@ -29,8 +29,7 @@ export class RecoveryService {
 
     static async processRecovery(messageId: string) {
         const msg = await prisma.checkoutRecoveryMessage.findUnique({
-            where: { id: messageId },
-            include: { checkoutSession: true }
+            where: { id: messageId }
         }); // In real Prisma client this relation needs to be defined in schema or fetched manually if relation inference is off
 
         // Manual fetch if relation issue

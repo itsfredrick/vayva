@@ -12,7 +12,7 @@ export default function MarketplaceAnalyticsPage() {
             {/* Not Enabled State Placeholder */}
             <div className="flex flex-col items-center justify-center h-[50vh] text-center max-w-lg mx-auto">
                 <div className="w-20 h-20 rounded-full bg-indigo-500/10 flex items-center justify-center mb-6">
-                    <Icon name="Store" size={40} className="text-indigo-400" />
+                    <Icon name={"Store" as any} size={40} className="text-indigo-400" />
                 </div>
                 <h2 className="text-2xl font-bold text-white mb-2">Sell on Vayva Market</h2>
                 <p className="text-text-secondary mb-8">

@@ -27,7 +27,7 @@ export default function PagesListPage() {
             <div className="mb-6 flex items-center justify-between">
                 <div>
                     <Link href="/admin/control-center" className="mb-2 flex items-center text-sm text-text-secondary hover:text-white">
-                        <Icon name="ArrowLeft" size={16} className="mr-2" />
+                        <Icon name={"ArrowLeft" as any} size={16} className="mr-2" />
                         Back to Control Center
                     </Link>
                     <h1 className="text-2xl font-bold text-white">Pages</h1>
@@ -35,7 +35,7 @@ export default function PagesListPage() {
                 </div>
                 <Link href="/admin/control-center/pages/new">
                     <Button variant="primary" className="gap-2">
-                        <Icon name="Plus" size={16} />
+                        <Icon name={"Plus" as any} size={16} />
                         New Page
                     </Button>
                 </Link>
@@ -44,7 +44,7 @@ export default function PagesListPage() {
             <GlassPanel className="p-0 overflow-hidden">
                 {pages.length === 0 ? (
                     <div className="p-12 text-center text-text-secondary">
-                        <Icon name="FileText" size={48} className="mx-auto mb-4 opacity-30" />
+                        <Icon name={"FileText" as any} size={48} className="mx-auto mb-4 opacity-30" />
                         <p>No pages created yet.</p>
                     </div>
                 ) : (
@@ -63,10 +63,10 @@ export default function PagesListPage() {
                                 </div>
                                 <div className="flex gap-2">
                                     <Button variant="outline" size="sm" className="h-8 w-8 p-0 flex items-center justify-center">
-                                        <Icon name="Edit2" size={14} />
+                                        <Icon name={"Edit2" as any} size={14} />
                                     </Button>
                                     <Button variant="outline" size="sm" className="h-8 w-8 p-0 flex items-center justify-center text-red-500 hover:text-red-400 hover:border-red-500/50">
-                                        <Icon name="Trash" size={14} />
+                                        <Icon name={"Trash" as any} size={14} />
                                     </Button>
                                 </div>
                             </div>

@@ -40,7 +40,7 @@ export default function KnowledgeBasePage() {
                             <div key={item.id} className="bg-white p-6 rounded-xl border border-gray-100 shadow-sm flex flex-col gap-3 group hover:border-blue-100 transition-colors">
                                 <div className="flex justify-between items-start">
                                     <span className="text-[10px] uppercase font-bold text-gray-400 tracking-wider bg-gray-50 px-2 py-1 rounded">{item.category}</span>
-                                    {item.status === 'synced' && <Icon name="CheckCircle" size={14} className="text-green-500" />}
+                                    {item.status === 'synced' && <Icon name={"CheckCircle" as any} size={14} className="text-green-500" />}
                                 </div>
                                 <h3 className="font-bold text-[#0B0B0B]">{item.question}</h3>
                                 <p className="text-sm text-gray-600 line-clamp-3 group-hover:line-clamp-none transition-all">{item.answer}</p>

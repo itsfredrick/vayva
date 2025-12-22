@@ -174,14 +174,14 @@ export default function StorePoliciesPage() {
                                 key={type}
                                 onClick={() => setSelectedType(type)}
                                 className={`w-full text-left px-4 py-3 rounded-lg transition-colors ${isSelected
-                                        ? 'bg-[#22C55E]/10 text-[#22C55E] font-medium'
-                                        : 'hover:bg-slate-100 text-slate-700'
+                                    ? 'bg-[#22C55E]/10 text-[#22C55E] font-medium'
+                                    : 'hover:bg-slate-100 text-slate-700'
                                     }`}
                             >
                                 <div className="flex items-center justify-between">
                                     <span className="text-sm">{label}</span>
                                     {policy && (
-                                        <Badge variant={policy.status === 'PUBLISHED' ? 'default' : 'secondary'}>
+                                        <Badge variant={(policy.status === 'PUBLISHED' ? 'default' : 'secondary') as any}>
                                             {policy.status === 'PUBLISHED' ? 'Published' : 'Draft'}
                                         </Badge>
                                     )}
@@ -203,7 +203,7 @@ export default function StorePoliciesPage() {
                                 </label>
                                 <Input
                                     value={title}
-                                    onChange={(e) => setTitle(e.target.value)}
+                                    onChange={(e: any) => setTitle(e.target.value)}
                                     placeholder="Policy Title"
                                 />
                             </div>
@@ -214,7 +214,7 @@ export default function StorePoliciesPage() {
                                 </label>
                                 <Textarea
                                     value={content}
-                                    onChange={(e) => setContent(e.target.value)}
+                                    onChange={(e: any) => setContent(e.target.value)}
                                     placeholder="Policy content in markdown..."
                                     rows={20}
                                     className="font-mono text-sm"
@@ -228,7 +228,7 @@ export default function StorePoliciesPage() {
                                 <Button
                                     onClick={handlePublish}
                                     disabled={saving}
-                                    variant="default"
+                                    variant="primary"
                                 >
                                     Publish
                                 </Button>

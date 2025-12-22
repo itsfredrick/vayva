@@ -68,7 +68,7 @@ export default function InvoicesPage() {
                                     </td>
                                     <td className="px-6 py-4 text-right">
                                         <Button variant="ghost" size="sm" className="gap-2">
-                                            <Icon name="Download" size={14} />
+                                            <Icon name={"Download" as any} size={14} />
                                             Download
                                         </Button>
                                     </td>

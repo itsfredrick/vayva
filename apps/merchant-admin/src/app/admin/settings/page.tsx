@@ -41,14 +41,11 @@ export default function SettingsPage() {
     };
 
     return (
-        <AppShell
-            title="Settings"
-            breadcrumbs={[{ label: 'Settings', href: '/admin/settings' }]}
-            profile={{ name: user?.name || '', email: user?.email || '' }}
-            storeName="Store"
-            onLogout={() => router.push('/signin')}
-        >
-            <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+        <AppShell sidebar={<></>} header={<></>}>
+            <div className="max-w-4xl mx-auto flex flex-col gap-4 p-4">
+                <h1 className="text-2xl font-bold text-white">Settings</h1>
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-4 gap-6 max-w-6xl mx-auto">
                 {/* Sidebar */}
                 <GlassPanel className="col-span-1 p-4 space-y-2">
                     <button
@@ -99,10 +96,10 @@ export default function SettingsPage() {
                                 <div className="flex items-center justify-between p-4 border border-white/10 rounded-lg">
                                     <div className="flex items-center gap-3">
                                         <div className="w-10 h-10 rounded-full bg-primary/20 flex items-center justify-center text-primary font-bold">
-                                            {user?.name?.[0] || 'U'}
+                                            {(user as any)?.firstName ? (user as any).firstName.charAt(0) : user?.email?.charAt(0) || 'U'}
                                         </div>
                                         <div>
-                                            <div className="text-white font-medium">{user?.name}</div>
+                                            <div className="text-white font-medium">{(user as any)?.firstName} {(user as any)?.lastName}</div>
                                             <div className="text-sm text-text-secondary">{user?.email}</div>
                                         </div>
                                     </div>
@@ -127,7 +124,7 @@ export default function SettingsPage() {
 
                     {activeTab === 'billing' && (
                         <GlassPanel className="p-8 text-center py-20">
-                            <Icon name="credit-card" className="w-16 h-16 mx-auto mb-4 text-text-secondary opacity-50" />
+                            <Icon name={"CreditCard" as any} className="w-16 h-16 mx-auto mb-4 text-text-secondary opacity-50" />
                             <h3 className="text-lg font-medium text-white mb-2">Billing & Plans</h3>
                             <p className="text-text-secondary mb-6">Manage your subscription and payment methods.</p>
                             <Button variant="secondary" disabled>Coming in V2</Button>

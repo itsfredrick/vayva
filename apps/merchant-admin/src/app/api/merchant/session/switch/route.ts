@@ -6,7 +6,7 @@ import { cookies } from 'next/headers';
 
 export async function POST(req: NextRequest) {
     const session = await getServerSession(authOptions);
-    if (!session?.user?.id) return new NextResponse('Unauthorized', { status: 401 });
+    if (!(session?.user as any)?.id) return new NextResponse('Unauthorized', { status: 401 });
 
     const { storeId } = await req.json();
     if (!storeId) return new NextResponse('Store ID required', { status: 400 });
@@ -14,7 +14,7 @@ export async function POST(req: NextRequest) {
     // Verify membership
     const membership = await prisma.membership.findFirst({
         where: {
-            userId: session.user.id,
+            userId: (session!.user as any).id,
             storeId: storeId
         }
     });
@@ -25,13 +25,14 @@ export async function POST(req: NextRequest) {
 
     // Set Cookie for Persistence
     // In a real app we might verify this cookie in middleware
-    cookies().set('x-active-store-id', storeId, {
+    const response = NextResponse.json({ success: true, storeId });
+    response.cookies.set('x-active-store-id', storeId, {
         path: '/',
         httpOnly: true,
         secure: process.env.NODE_ENV === 'production',
-        meanSite: 'strict',
+        sameSite: 'strict',
         maxAge: 60 * 60 * 24 * 30 // 30 days
     });
 
-    return NextResponse.json({ success: true, storeId });
+    return response;
 }

@@ -1,5 +1,11 @@
+
 import { prisma } from '@vayva/db';
-import { MessageIntent } from '@vayva/db';
+import { ComplianceEvent, ConsentChannel, ConsentSource } from '@vayva/db';
+
+export enum MessageIntent {
+    TRANSACTIONAL = 'TRANSACTIONAL',
+    MARKETING = 'MARKETING'
+}
 
 export async function getConsentStats(merchantId: string) {
     const [

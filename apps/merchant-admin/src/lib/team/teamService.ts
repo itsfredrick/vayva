@@ -13,8 +13,8 @@ export class TeamService {
     };
 
     static async getSeatUsage(merchantId: string) {
-        return prisma.teamMember.count({
-            where: { merchantId, status: 'active' }
+        return prisma.membership.count({
+            where: { storeId: merchantId, status: 'active' }
         });
     }
 
@@ -29,15 +29,17 @@ export class TeamService {
 
         // 2. Create Invite
         const token = SecurityUtils.generateToken();
-        const tokenHash = SecurityUtils.hashToken(token);
+        // StaffInvite schema uses 'token' directly and it's unique.
+        // The original code used tokenHash, but let's check schema.
+        // Line 722: token String @unique
 
-        await prisma.teamInvite.create({
+        await prisma.staffInvite.create({
             data: {
-                merchantId,
-                invitedEmail: data.email,
+                storeId: merchantId,
+                email: data.email,
                 role: data.role,
-                tokenHash,
-                createdByUserId,
+                token,
+                createdBy: createdByUserId, // schema uses createdBy (String)
                 expiresAt: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000) // 7 days
             }
         });
@@ -50,42 +52,33 @@ export class TeamService {
             text: `Accept: /invite/accept?token=${token}`,
             templateKey: 'team_invite',
             merchantId,
-            correlationId: `invite_${tokenHash.substring(0, 8)}`
-        });
-        await prisma.teamMember.create({
-            data: {
-                merchantId,
-                email: data.email,
-                role: data.role,
-                status: 'invited'
-            }
+            correlationId: `invite_${token.substring(0, 8)}`
         });
     }
 
     static async acceptInvite(token: string, userId: string) {
-        const tokenHash = SecurityUtils.hashToken(token);
-
-        const invite = await prisma.teamInvite.findUnique({ where: { tokenHash } });
+        // StaffInvite schema uses 'token' uniquely.
+        const invite = await prisma.staffInvite.findUnique({ where: { token } });
         if (!invite) throw new Error('Invalid Invite');
         if (invite.expiresAt < new Date()) throw new Error('Expired Invite');
         if (invite.acceptedAt) throw new Error('Already Accepted');
 
         await prisma.$transaction(async (tx) => {
             // Mark Accepted
-            await tx.teamInvite.update({
+            await tx.staffInvite.update({
                 where: { id: invite.id },
                 data: { acceptedAt: new Date() }
             });
 
-            // Update Member to Active
-            // Find by email or create if email mismatch (edge case, simplified for V1)
-            // We update the one created during invite
-            if (invite.invitedEmail) {
-                await tx.teamMember.updateMany({
-                    where: { merchantId: invite.merchantId, email: invite.invitedEmail },
-                    data: { status: 'active', userId }
-                });
-            }
+            // Create Membership
+            await tx.membership.create({
+                data: {
+                    userId,
+                    storeId: invite.storeId,
+                    role: invite.role,
+                    status: 'active'
+                }
+            });
         });
     }
 }

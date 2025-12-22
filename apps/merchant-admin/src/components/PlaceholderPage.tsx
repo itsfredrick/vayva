@@ -7,12 +7,7 @@ export default function PlaceholderPage({ title = "Coming Soon" }: { title?: str
     const router = useRouter();
 
     return (
-        <AppShell
-            title={title}
-            storeName="Store"
-            breadcrumbs={[{ label: title, href: '#' }]}
-            onLogout={() => router.push('/signin')}
-        >
+        <AppShell sidebar={<></>} header={<></>}>
             <div className="flex items-center justify-center h-[50vh]">
                 <GlassPanel className="p-12 text-center max-w-md mx-auto">
                     <div className="bg-white/10 w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-6">

@@ -4,6 +4,7 @@ import React, { useState, useEffect } from 'react';
 import { AdminShell } from '@/components/admin-shell';
 import { Button, cn } from '@vayva/ui';
 import { api } from '@/services/api';
+import Link from 'next/link';
 
 export default function UsagePage() {
     const [usage, setUsage] = useState<any[]>([]);
@@ -70,9 +71,11 @@ export default function UsagePage() {
                     })}
                 </div>
 
-                <Button variant="outline" href="/admin/billing/plans">
-                    View Plans
-                </Button>
+                <Link href="/admin/billing/plans">
+                    <Button variant="outline">
+                        View Plans
+                    </Button>
+                </Link>
 
             </div>
         </AdminShell>

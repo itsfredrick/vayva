@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { AdminShell } from '@/components/admin-shell';
-import { Icon } from '@vayva/ui';
+import { Icon, Button } from '@vayva/ui';
 
 const RETURNS = [
     { id: 'RMA-001', customer: 'Alice Doe', order: '#ORDER-1024', amount: '₦15,000', status: 'REQUESTED', date: '2 mins ago' },
@@ -43,16 +43,16 @@ export default function ReturnsPage() {
                                     <td className="px-6 py-4 font-medium">{rma.amount}</td>
                                     <td className="px-6 py-4">
                                         <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${rma.status === 'REQUESTED' ? 'bg-orange-50 text-orange-600' :
-                                                rma.status === 'APPROVED' ? 'bg-blue-50 text-blue-600' :
-                                                    'bg-gray-100 text-gray-600'
+                                            rma.status === 'APPROVED' ? 'bg-blue-50 text-blue-600' :
+                                                'bg-gray-100 text-gray-600'
                                             }`}>
                                             {rma.status}
                                         </span>
                                     </td>
                                     <td className="px-6 py-4 text-right">
-                                        <button className="text-gray-400 hover:text-[#0B0B0B]">
-                                            <Icon name="MoreHorizontal" size={16} />
-                                        </button>
+                                        <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
+                                            <Icon name={"MoreHorizontal" as any} size={16} />
+                                        </Button>
                                     </td>
                                 </tr>
                             ))}

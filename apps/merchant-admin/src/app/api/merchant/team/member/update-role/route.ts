@@ -7,11 +7,11 @@ import { EventBus } from '@/lib/events/eventBus';
 
 export async function POST(req: NextRequest) {
     const session = await getServerSession(authOptions);
-    if (!session?.user?.storeId) {
+    if (!(session?.user as any)?.storeId) {
         return new NextResponse('Unauthorized', { status: 401 });
     }
 
-    const { storeId, id: userId } = session.user;
+    const { storeId, id: userId } = (session!.user as any);
     const hasPerm = await hasPermission(userId, storeId, PERMISSIONS.TEAM_MANAGE);
     if (!hasPerm) {
         return new NextResponse('Forbidden', { status: 403 });
@@ -41,7 +41,8 @@ export async function POST(req: NextRequest) {
         data: { role }
     });
 
-    const actorLabel = `${session.user.firstName || ''} ${session.user.lastName || ''}`.trim() || session.user.email;
+    const user = (session!.user as any);
+    const actorLabel = `${user.firstName || ''} ${user.lastName || ''}`.trim() || user.email || 'System';
     await EventBus.publish({
         merchantId: storeId,
         type: 'team.role_updated',

@@ -26,7 +26,7 @@ export default function ListingDetailPage() {
     };
 
     return (
-        <AppShell title="Edit Listing" breadcrumb={`Marketplace / Listings / ${listing.name}`}>
+        <AppShell sidebar={<></>} header={<></>}>
             <div className="flex flex-col gap-6 max-w-6xl mx-auto">
                 {/* Header Actions */}
                 <div className="flex items-center justify-between">
@@ -75,12 +75,12 @@ export default function ListingDetailPage() {
                                             <span className="text-xs font-bold text-text-secondary">IMG {img}</span>
                                             {i === 0 && <span className="absolute top-2 left-2 px-1.5 py-0.5 rounded bg-primary text-black text-[10px] font-bold uppercase">Main</span>}
                                             <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-                                                <Icon name="check_circle" className="text-primary" />
+                                                <Icon name={"CheckCircle" as any} className="text-primary" />
                                             </div>
                                         </div>
                                     ))}
                                     <div className="aspect-square rounded-lg border-2 border-dashed border-white/10 flex flex-col items-center justify-center text-text-secondary hover:text-white hover:border-white/30 cursor-pointer transition-colors">
-                                        <Icon name="add" />
+                                        <Icon name={"Plus" as any} />
                                         <span className="text-xs font-bold mt-1">Add</span>
                                     </div>
                                 </div>
@@ -131,7 +131,7 @@ export default function ListingDetailPage() {
                                     { label: 'Prohibited items check', met: true },
                                 ].map((item, i) => (
                                     <div key={i} className="flex items-center gap-2">
-                                        <Icon name="check_circle" size={16} className="text-state-success" />
+                                        <Icon name={"CheckCircle" as any} size={16} className="text-state-success" />
                                         <span className="text-sm text-white">{item.label}</span>
                                     </div>
                                 ))}
@@ -144,12 +144,12 @@ export default function ListingDetailPage() {
                             <div className="space-y-2">
                                 <Link href="/admin/products/123">
                                     <Button variant="outline" className="w-full justify-start text-xs">
-                                        <Icon name="edit" size={14} className="mr-2" />
+                                        <Icon name={"Edit" as any} size={14} className="mr-2" />
                                         Edit Original Product
                                     </Button>
                                 </Link>
                                 <Button variant="outline" className="w-full justify-start text-xs text-state-danger hover:text-state-danger hover:bg-state-danger/10 border-state-danger/20">
-                                    <Icon name="delete" size={14} className="mr-2" />
+                                    <Icon name={"Trash2" as any} size={14} className="mr-2" />
                                     Remove Listing
                                 </Button>
                             </div>

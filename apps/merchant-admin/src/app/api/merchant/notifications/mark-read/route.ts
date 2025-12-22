@@ -5,7 +5,7 @@ import { prisma } from '@vayva/db';
 
 export async function POST(req: NextRequest) {
     const session = await getServerSession(authOptions);
-    if (!session?.user?.storeId) {
+    if (!(session?.user as any)?.storeId) {
         return new NextResponse('Unauthorized', { status: 401 });
     }
 
@@ -15,7 +15,7 @@ export async function POST(req: NextRequest) {
     if (mark_all) {
         await prisma.notification.updateMany({
             where: {
-                storeId: session.user.storeId,
+                storeId: (session!.user as any).storeId,
                 isRead: false
             },
             data: {
@@ -26,7 +26,7 @@ export async function POST(req: NextRequest) {
     } else if (ids && Array.isArray(ids) && ids.length > 0) {
         await prisma.notification.updateMany({
             where: {
-                storeId: session.user.storeId,
+                storeId: (session!.user as any).storeId,
                 id: { in: ids },
                 isRead: false
             },
@@ -39,7 +39,7 @@ export async function POST(req: NextRequest) {
 
     const unreadCount = await prisma.notification.count({
         where: {
-            storeId: session.user.storeId,
+            storeId: (session!.user as any).storeId,
             isRead: false
         }
     });

@@ -6,10 +6,6 @@ import { prisma } from '@vayva/db';
 import { v4 as uuidv4 } from 'uuid';
 
 export async function GET(req: NextRequest) {
-    // Admin Guard (Mock or Real)
-    // const session = await getServerSession(authOptions);
-    // if (!session?.user?.isAdmin) return new NextResponse('Unauthorized', { status: 403 });
-
     const { searchParams } = new URL(req.url);
     const merchantId = searchParams.get('merchant_id');
 
@@ -17,8 +13,8 @@ export async function GET(req: NextRequest) {
 
     try {
         const store = await prisma.store.findUnique({
-            where: { id: merchantId }, // assuming merchantId is storeId for this context
-            include: { policies: true }
+            where: { id: merchantId },
+            include: { merchantPolicies: true }
         });
 
         if (!store) return new NextResponse('Store not found', { status: 404 });
@@ -29,7 +25,7 @@ export async function GET(req: NextRequest) {
         const snapshot = {
             merchant: {
                 id: merchantId,
-                plan: 'growth', // Mock plan
+                plan: 'growth',
                 createdAt: store.createdAt
             },
             store: {
@@ -39,8 +35,9 @@ export async function GET(req: NextRequest) {
             },
             readiness,
             policies: {
-                published: store.policies.some(p => p.published),
-                types: store.policies.map(p => p.type)
+                policiesPublished: store.merchantPolicies.filter((p: any) => p.isPublished).length,
+                policiesTotal: store.merchantPolicies.length,
+                types: store.merchantPolicies.map((p: any) => p.type)
             },
             meta: {
                 correlationId,

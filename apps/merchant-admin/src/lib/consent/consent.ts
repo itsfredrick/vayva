@@ -1,5 +1,10 @@
 import { prisma } from '@vayva/db';
-import { CommunicationConsent, ConsentEventType, ConsentChannel, ConsentSource, MessageIntent } from '@vayva/db';
+import { CommunicationConsent, ConsentEventType, ConsentChannel, ConsentSource } from '@vayva/db';
+
+export enum MessageIntent {
+    TRANSACTIONAL = 'TRANSACTIONAL',
+    MARKETING = 'MARKETING'
+}
 
 // -----------------------------------------------------------------------------
 // Phone Normalization
@@ -25,12 +30,10 @@ export function normalizePhoneToE164(input: string, country = 'NG'): string | nu
 // Get Consent (with defaults)
 // -----------------------------------------------------------------------------
 export async function getConsent(merchantId: string, phoneE164: string): Promise<CommunicationConsent> {
-    const consent = await prisma.communicationConsent.findUnique({
+    const consent = await prisma.communicationConsent.findFirst({
         where: {
-            merchantId_phoneE164: {
-                merchantId,
-                phoneE164
-            }
+            merchantId,
+            phoneE164
         }
     });
 
@@ -87,41 +90,54 @@ export async function applyConsentUpdate(
     else if (patch.transactionalAllowed === true) eventType = ConsentEventType.TRANSACTIONAL_ON;
     else if (patch.transactionalAllowed === false) eventType = ConsentEventType.TRANSACTIONAL_OFF;
 
-    const [updated] = await prisma.$transaction([
-        prisma.communicationConsent.upsert({
-            where: {
-                merchantId_phoneE164: { merchantId, phoneE164 }
-            },
-            create: {
-                merchantId,
-                phoneE164,
-                marketingOptIn: patch.marketingOptIn ?? false,
-                marketingOptInSource: patch.marketingOptInSource || 'unknown',
-                marketingOptInAt: patch.marketingOptIn === true ? new Date() : null,
-                transactionalAllowed: patch.transactionalAllowed ?? true,
-                fullyBlocked: patch.fullyBlocked ?? false,
-            },
-            update: {
-                marketingOptIn: patch.marketingOptIn,
-                marketingOptInSource: patch.marketingOptInSource,
-                marketingOptInAt,
-                marketingOptOutAt,
-                transactionalAllowed: patch.transactionalAllowed,
-                fullyBlocked: patch.fullyBlocked,
-                updatedAt: new Date()
-            }
-        }),
-        prisma.complianceEvent.create({
+    // Use transaction with safe explicit logic since upsert via compound ID is tricky without known input type
+    const [updated] = await prisma.$transaction(async (tx) => {
+        const found = await tx.communicationConsent.findFirst({
+            where: { merchantId, phoneE164 }
+        });
+
+        let result;
+        if (found) {
+            result = await tx.communicationConsent.update({
+                where: { id: found.id },
+                data: {
+                    marketingOptIn: patch.marketingOptIn,
+                    marketingOptInSource: patch.marketingOptInSource,
+                    marketingOptInAt,
+                    marketingOptOutAt,
+                    transactionalAllowed: patch.transactionalAllowed,
+                    fullyBlocked: patch.fullyBlocked,
+                    updatedAt: new Date()
+                }
+            });
+        } else {
+            result = await tx.communicationConsent.create({
+                data: {
+                    merchantId,
+                    phoneE164,
+                    marketingOptIn: patch.marketingOptIn ?? false,
+                    marketingOptInSource: patch.marketingOptInSource || 'unknown',
+                    marketingOptInAt: patch.marketingOptIn === true ? new Date() : null,
+                    transactionalAllowed: patch.transactionalAllowed ?? true,
+                    fullyBlocked: patch.fullyBlocked ?? false,
+                }
+            });
+        }
+
+        await tx.complianceEvent.create({
             data: {
                 merchantId,
                 phoneE164,
                 eventType,
                 channel: meta.channel,
                 source: meta.source,
-                metadata: { reason: meta.reason, patch }
+                // Cast patch to any to avoid strict Json compatibility issues
+                metadata: { reason: meta.reason, patch: patch as any }
             }
-        })
-    ]);
+        });
+
+        return [result];
+    });
 
     return updated;
 }

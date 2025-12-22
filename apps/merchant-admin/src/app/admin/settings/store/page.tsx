@@ -17,7 +17,10 @@ export default function StoreSettingsPage() {
     };
 
     return (
-        <AppShell title="Store Settings" breadcrumb="Settings / Store">
+        <AppShell sidebar={<></>} header={<></>}>
+            <div className="max-w-4xl mx-auto mb-6">
+                <h1 className="text-2xl font-bold text-white">Store Settings</h1>
+            </div>
             <div className="max-w-4xl mx-auto space-y-6 pb-24">
 
                 {/* 1. Store Identity */}

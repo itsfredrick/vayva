@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { useEffect } from 'react';
 import { cn } from '../utils';
-import { X } from 'lucide-react';
+import { X as XIcon } from 'lucide-react';
 
 export interface DrawerProps {
     isOpen: boolean;
@@ -50,7 +50,7 @@ export function Drawer({ isOpen, onClose, title, children, className }: DrawerPr
                             onClick={onClose}
                             className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
                         >
-                            <X className="w-5 h-5" />
+                            <XIcon className="w-5 h-5" />
                         </button>
                     </div>
                 )}

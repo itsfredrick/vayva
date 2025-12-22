@@ -33,14 +33,14 @@ export default function GoalsPage() {
                         <h1 className="text-2xl font-bold text-[#0B1220]">Sales Goals</h1>
                         <p className="text-[#525252]">Set and track your business targets.</p>
                     </div>
-                    <Button><Icon name="Plus" size={16} className="mr-2" /> New Goal</Button>
+                    <Button><Icon name={"Plus" as any} size={16} className="mr-2" /> New Goal</Button>
                 </div>
 
                 {isLoading ? (
                     <div className="text-center text-gray-400 py-12">Loading goals...</div>
                 ) : goals.length === 0 ? (
                     <div className="bg-white rounded-2xl p-12 border border-gray-100 text-center">
-                        <Icon name="Target" size={48} className="mx-auto text-gray-300 mb-4" />
+                        <Icon name={"Target" as any} size={48} className="mx-auto text-gray-300 mb-4" />
                         <h3 className="font-bold text-[#0B1220] mb-2">No goals set yet</h3>
                         <p className="text-[#525252] mb-6">Start tracking your progress by setting your first goal.</p>
                         <Button>Create Your First Goal</Button>

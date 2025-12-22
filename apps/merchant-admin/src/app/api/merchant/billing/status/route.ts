@@ -6,15 +6,15 @@ import { PLANS } from '@/lib/billing/plans';
 
 export async function GET(req: NextRequest) {
     const session = await getServerSession(authOptions);
-    if (!session?.user?.storeId) return new NextResponse('Unauthorized', { status: 401 });
+    if (!(session?.user as any)?.storeId) return new NextResponse('Unauthorized', { status: 401 });
 
     try {
         const sub = await prisma.merchantSubscription.findUnique({
-            where: { storeId: session.user.storeId }
+            where: { storeId: (session!.user as any).storeId }
         });
 
         const invoices = await prisma.invoice.findMany({
-            where: { storeId: session.user.storeId },
+            where: { storeId: (session!.user as any).storeId },
             orderBy: { issuedAt: 'desc' },
             take: 10
         });

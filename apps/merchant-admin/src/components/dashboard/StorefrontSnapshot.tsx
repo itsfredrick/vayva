@@ -30,17 +30,17 @@ export const StorefrontSnapshot = ({ store }: StorefrontSnapshotProps) => {
                     {/* Store Logo/Avatar */}
                     <div
                         className="w-16 h-16 rounded-xl border border-white/10 flex items-center justify-center overflow-hidden bg-white/5"
-                        style={{ backgroundColor: store.brandColor ? `${store.brandColor}20` : undefined }}
+                        style={{ backgroundColor: (store as any).brandColor ? `${(store as any).brandColor}20` : undefined }}
                     >
                         {store.logoUrl ? (
-                            <img src={store.logoUrl} alt={store.storeName} className="w-full h-full object-cover" />
+                            <img src={store.logoUrl} alt={store.name} className="w-full h-full object-cover" />
                         ) : (
-                            <span className="text-2xl font-bold text-white uppercase">{store.storeName[0]}</span>
+                            <span className="text-2xl font-bold text-white uppercase">{store.name[0]}</span>
                         )}
                     </div>
 
                     <div>
-                        <h3 className="text-xl font-bold text-white mb-1">{store.storeName}</h3>
+                        <h3 className="text-xl font-bold text-white mb-1">{store.name}</h3>
                         <div className="flex items-center gap-2">
                             <span className="text-sm text-text-secondary">vayva.shop/{store.slug}</span>
                             <button onClick={handleCopyLink} className="text-text-secondary hover:text-white transition-colors">
@@ -65,7 +65,7 @@ export const StorefrontSnapshot = ({ store }: StorefrontSnapshotProps) => {
             <div className="bg-white/5 rounded-xl p-4 mb-6 flex items-center justify-between">
                 <div>
                     <p className="text-xs text-text-secondary mb-1">Current Theme</p>
-                    <p className="text-sm font-bold text-white capitalize">{store.selectedTemplateId.replace('-', ' ')}</p>
+                    <p className="text-sm font-bold text-white capitalize">{((store as any).selectedTemplateId || 'default').replace('-', ' ')}</p>
                 </div>
                 <Link href="/admin/control-center/templates">
                     <button className="text-xs text-primary hover:text-primary/80 font-medium transition-colors">

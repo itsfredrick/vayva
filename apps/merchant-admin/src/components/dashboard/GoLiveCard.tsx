@@ -88,7 +88,7 @@ export function GoLiveCard() {
             {isLive ? (
                 <div className="space-y-4">
                     <div className="p-4 bg-green-50 rounded-lg flex items-center gap-3">
-                        <Icon name="Globe" className="text-green-600" />
+                        <Icon name={"Globe" as any} className="text-green-600" />
                         <div className="flex-1">
                             <div className="text-xs text-green-700 font-bold uppercase">Public URL</div>
                             <a href="#" className="text-sm font-medium text-green-900 underline">vayva.ng/store</a>
@@ -103,7 +103,7 @@ export function GoLiveCard() {
                     {!isReady && (
                         <div className="bg-orange-50 p-4 rounded-lg border border-orange-100">
                             <div className="flex items-center gap-2 mb-2 text-orange-800 font-bold text-sm">
-                                <Icon name="AlertTriangle" size={16} />
+                                <Icon name={"AlertTriangle" as any} size={16} />
                                 {blockers.length} Issues preventing Go Live
                             </div>
                             <div className="space-y-1">
@@ -121,12 +121,12 @@ export function GoLiveCard() {
                         onClick={handleGoLive}
                         disabled={!isReady || processing}
                         className={`w-full py-3 rounded-lg font-bold flex items-center justify-center gap-2 ${!isReady
-                                ? 'bg-gray-100 text-gray-400 cursor-not-allowed'
-                                : 'bg-black text-white hover:bg-gray-800'
+                            ? 'bg-gray-100 text-gray-400 cursor-not-allowed'
+                            : 'bg-black text-white hover:bg-gray-800'
                             }`}
                     >
                         {processing ? 'Publishing...' : 'Go Live Now'}
-                        <Icon name="ArrowRight" size={16} />
+                        <Icon name={"ArrowRight" as any} size={16} />
                     </button>
                 </div>
             )}

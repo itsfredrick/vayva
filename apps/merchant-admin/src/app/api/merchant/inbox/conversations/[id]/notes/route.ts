@@ -13,13 +13,13 @@ export async function POST(req: NextRequest, { params }: { params: { id: string 
     if (!note) return new NextResponse('Note empty', { status: 400 });
 
     const conv = await prisma.conversation.findUnique({ where: { id } });
-    if (!conv || conv.merchantId !== session.user.storeId) return new NextResponse('Forbidden', { status: 403 });
+    if (!conv || conv.merchantId !== (session!.user as any).storeId) return new NextResponse('Forbidden', { status: 403 });
 
     const created = await prisma.internalNote.create({
         data: {
             merchantId: conv.merchantId,
             conversationId: id,
-            authorId: session.user.id,
+            authorId: (session!.user as any).id, // Or name if simple string
             note
         }
     });

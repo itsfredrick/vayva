@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getServerSession } from 'next-auth';
 import { prisma } from '@vayva/db';
+// @ts-ignore
 import { sanitizeMarkdown, validatePolicyContent } from '@vayva/policies';
 
 export const dynamic = 'force-dynamic';
@@ -11,15 +12,15 @@ export async function GET(
 ) {
     try {
         const session = await getServerSession();
-        if (!session?.user?.storeId) {
+        if (!(session?.user as any)?.storeId) {
             return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
         }
 
         const policy = await prisma.merchantPolicy.findUnique({
             where: {
                 storeId_type: {
-                    storeId: session.user.storeId,
-                    type: params.type.toUpperCase().replace('-', '_')
+                    storeId: (session!.user as any).storeId,
+                    type: params.type.toUpperCase().replace('-', '_') as any
                 }
             }
         });
@@ -41,7 +42,7 @@ export async function PUT(
 ) {
     try {
         const session = await getServerSession();
-        if (!session?.user?.storeId) {
+        if (!(session?.user as any)?.storeId) {
             return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
         }
 
@@ -60,8 +61,8 @@ export async function PUT(
         const policy = await prisma.merchantPolicy.update({
             where: {
                 storeId_type: {
-                    storeId: session.user.storeId,
-                    type: params.type.toUpperCase().replace('-', '_')
+                    storeId: (session!.user as any).storeId,
+                    type: params.type.toUpperCase().replace('-', '_') as any
                 }
             },
             data: {

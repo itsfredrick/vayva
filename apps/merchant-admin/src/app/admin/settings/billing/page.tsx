@@ -44,13 +44,17 @@ function UsageCard({ title, used, limit, resetDate, link }: { title: string, use
 
 export default function BillingDashboardPage() {
     return (
-        <AppShell title="Billing & Subscription" breadcrumb="Settings / Billing">
+        <AppShell sidebar={<></>} header={<></>}>
             <div className="max-w-6xl mx-auto space-y-8">
+                <div className="mb-6">
+                    <h1 className="text-2xl font-bold text-white">Billing & Subscription</h1>
+                    <p className="text-text-secondary">Manage your plan and payment methods.</p>
+                </div>
 
                 {/* Top Row: Current Plan & Payment */}
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <GlassPanel className="p-6 relative overflow-hidden">
-                        <div className="absolute top-0 right-0 p-4 opacity-50"><Icon name="Ticket" size={64} className="text-white/5" /></div>
+                        <div className="absolute top-0 right-0 p-4 opacity-50"><Icon name={"Ticket" as any} size={64} className="text-white/5" /></div>
                         <div className="relative z-10">
                             <div className="flex items-center gap-3 mb-2">
                                 <h2 className="text-lg font-bold text-white">Current Plan</h2>
@@ -68,12 +72,12 @@ export default function BillingDashboardPage() {
                     </GlassPanel>
 
                     <GlassPanel className="p-6 relative overflow-hidden">
-                        <div className="absolute top-0 right-0 p-4 opacity-50"><Icon name="CreditCard" size={64} className="text-white/5" /></div>
+                        <div className="absolute top-0 right-0 p-4 opacity-50"><Icon name={"CreditCard" as any} size={64} className="text-white/5" /></div>
                         <div className="relative z-10">
                             <h2 className="text-lg font-bold text-white mb-4">Payment Method</h2>
                             <div className="flex items-center gap-4 mb-6">
                                 <div className="w-12 h-8 rounded bg-white/10 flex items-center justify-center">
-                                    <Icon name="CreditCard" />
+                                    <Icon name={"CreditCard" as any} />
                                 </div>
                                 <div>
                                     <div className="font-bold text-white">Mastercard •••• 4242</div>
@@ -129,7 +133,7 @@ export default function BillingDashboardPage() {
                                                 </span>
                                             </td>
                                             <td className="p-4 text-right">
-                                                <Button variant="ghost" size="sm" className="h-8"><Icon name="Download" size={16} /></Button>
+                                                <Button variant="ghost" size="sm" className="h-8"><Icon name={"Download" as any} size={16} /></Button>
                                             </td>
                                         </tr>
                                     ))}

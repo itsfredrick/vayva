@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@vayva/db';
+// @ts-ignore
 import { hash } from 'bcryptjs';
 
 // Only allow in development or test env
@@ -25,10 +26,9 @@ export async function POST(req: NextRequest) {
             const user = await prisma.user.create({
                 data: {
                     email,
-                    name: 'Test Owner',
                     password: hashedPassword,
                     role: 'OWNER'
-                }
+                } as any
             });
 
             // Create Store

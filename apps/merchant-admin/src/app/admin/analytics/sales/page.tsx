@@ -9,7 +9,7 @@ import { formatNGN } from '@/config/pricing';
 
 export default function SalesReportPage() {
     return (
-        <AppShell title="Sales Report" breadcrumb="Analytics / Sales">
+        <AppShell sidebar={<></>} header={<></>}>
             <div className="flex flex-col gap-6">
                 <AnalyticsFilterBar />
                 <AnalyticsFilterBar />

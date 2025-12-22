@@ -28,7 +28,7 @@ export default function PayoutDetailPage() {
     };
 
     return (
-        <AppShell title={`Payout ${payout.id}`} breadcrumb={`Finance / Payouts / ${payout.id}`}>
+        <AppShell sidebar={<></>} header={<></>}>
             <div className="flex flex-col gap-6 max-w-6xl mx-auto">
                 {/* Header Actions */}
                 <div className="flex items-center justify-between">
@@ -40,7 +40,7 @@ export default function PayoutDetailPage() {
                     </div>
                     <div className="flex gap-2">
                         <Button variant="outline" size="sm">
-                            <Icon name="download" size={16} className="mr-2" />
+                            <Icon name={"Download" as any} size={16} className="mr-2" />
                             Statement
                         </Button>
                         <Button variant="outline" size="sm">
@@ -66,7 +66,7 @@ export default function PayoutDetailPage() {
                                 <div className="col-span-2 pt-4 border-t border-white/5">
                                     <h3 className="text-xs font-bold text-text-secondary uppercase tracking-wider mb-1">Destination</h3>
                                     <div className="flex items-center gap-2">
-                                        <Icon name="account_balance" className="text-text-secondary" />
+                                        <Icon name={"Landmark" as any} className="text-text-secondary" />
                                         <span className="text-white font-bold">{payout.bank}</span>
                                         <span className="text-text-secondary text-sm">({payout.accountName})</span>
                                     </div>
@@ -83,7 +83,7 @@ export default function PayoutDetailPage() {
                                 {payout.reconciliation.map((line, i) => (
                                     <div key={i} className="p-4 flex items-center justify-between hover:bg-white/5 cursor-pointer transition-colors group">
                                         <div className="flex items-center gap-2">
-                                            <Icon name="chevron_right" size={16} className="text-text-secondary group-hover:text-white" />
+                                            <Icon name={"ChevronRight" as any} size={16} className="text-text-secondary group-hover:text-white" />
                                             <span className="text-text-secondary">{line.label}</span>
                                             <span className="px-1.5 py-0.5 rounded bg-white/10 text-[10px] text-text-secondary">{line.count} items</span>
                                         </div>

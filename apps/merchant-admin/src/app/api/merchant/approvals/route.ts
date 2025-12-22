@@ -11,7 +11,7 @@ export async function POST(req: NextRequest) {
 
     const body = await req.json();
     const { actionType, entityType, entityId, payload, reason, merchantId } = body;
-    const storeId = merchantId || session.user.storeId; // Fallback
+    const storeId = merchantId || (session!.user as any).storeId; // Fallback
 
     if (!storeId) return new NextResponse('Store ID required', { status: 400 });
 
@@ -24,11 +24,11 @@ export async function POST(req: NextRequest) {
     try {
         const correlationId = `req_${Date.now()}_${Math.random().toString(36).substring(7)}`;
 
-        const approval = await prisma.approvalRequest.create({
+        const approval = await prisma.approval.create({
             data: {
                 merchantId: storeId,
-                requestedByUserId: session.user.id,
-                requestedByLabel: `${session.user.firstName} ${session.user.lastName}`,
+                requestedByUserId: (session!.user as any).id,
+                requestedByLabel: `${(session!.user as any).firstName} ${(session!.user as any).lastName}`,
                 actionType,
                 entityType,
                 entityId,
@@ -48,9 +48,9 @@ export async function POST(req: NextRequest) {
                 requestedBy: approval.requestedByLabel
             },
             ctx: {
-                actorId: session.user.id,
-                actorType: 'user',
-                actorLabel: `${session.user.firstName} ${session.user.lastName}`,
+                actorId: (session!.user as any).id,
+                actorType: 'user' as any,
+                actorLabel: `${(session!.user as any).firstName} ${(session!.user as any).lastName}`,
                 correlationId
             }
         });
@@ -66,10 +66,10 @@ export async function GET(req: NextRequest) {
     const session = await getServerSession(authOptions);
     if (!session?.user) return new NextResponse('Unauthorized', { status: 401 });
 
-    const storeId = session.user.storeId;
+    const storeId = (session!.user as any).storeId;
 
     // Check View Permission
-    const canView = await hasPermission(session.user.id, storeId, PERMISSIONS.APPROVALS_VIEW);
+    const canView = await hasPermission((session!.user as any).id, storeId, PERMISSIONS.APPROVALS_VIEW);
     if (!canView) return new NextResponse('Forbidden', { status: 403 });
 
     const { searchParams } = new URL(req.url);
@@ -80,7 +80,7 @@ export async function GET(req: NextRequest) {
     const where: any = { merchantId: storeId };
     if (status && status !== 'all') where.status = status;
 
-    const items = await prisma.approvalRequest.findMany({
+    const items = await prisma.approval.findMany({
         where,
         orderBy: { createdAt: 'desc' },
         take: limit,

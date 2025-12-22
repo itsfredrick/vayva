@@ -61,7 +61,7 @@ export default function AddOnsPage() {
 
                         {addon.isIncludedInPlan ? (
                             <Button variant="outline" className="w-full" disabled>
-                                <Icon name="Check" size={14} className="mr-2" />
+                                <Icon name={"Check" as any} size={14} className="mr-2" />
                                 Active (Plan Benefit)
                             </Button>
                         ) : (

@@ -94,7 +94,7 @@ export default function MarketingHomePage() {
                             >
                                 <div className="flex items-center gap-3 mb-2">
                                     <div className="w-8 h-8 rounded-full bg-black text-white flex items-center justify-center">
-                                        <Icon name="Check" size={16} />
+                                        <Icon name={"Check" as any} size={16} />
                                     </div>
                                     <div>
                                         <p className="text-xs font-bold text-gray-900">New Order</p>
@@ -128,7 +128,7 @@ export default function MarketingHomePage() {
                                 className="p-8 rounded-3xl bg-gray-50 hover:bg-white hover:shadow-xl transition-all border border-transparent hover:border-gray-100"
                             >
                                 <div className={`w-12 h-12 rounded-2xl bg-white border border-gray-100 shadow-sm flex items-center justify-center mb-6 text-black`}>
-                                    <Icon name={feature.icon} size={24} />
+                                    <Icon name={feature.icon as any} size={24} />
                                 </div>
                                 <h3 className="text-xl font-bold text-black mb-3">{feature.title}</h3>
                                 <p className="text-gray-500 leading-relaxed">{feature.desc}</p>
@@ -168,7 +168,7 @@ export default function MarketingHomePage() {
                             <div className="aspect-square rounded-3xl bg-white/5 border border-white/10 p-8 rotate-3">
                                 <div className="w-full h-full bg-[#111] rounded-2xl border border-white/5 flex items-center justify-center text-white/20 font-medium">
                                     <div className="text-center">
-                                        <Icon name="LayoutDashboard" size={48} className="mx-auto mb-4 opacity-50" />
+                                        <Icon name={"LayoutDashboard" as any} size={48} className="mx-auto mb-4 opacity-50" />
                                         <p>Dashboard Preview</p>
                                     </div>
                                 </div>

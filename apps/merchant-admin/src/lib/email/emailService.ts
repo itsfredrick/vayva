@@ -1,33 +1,9 @@
-
 import { prisma } from '@vayva/db';
 import { EmailAdapter, EmailPayload } from './types';
 import { ConsoleAdapter } from './adapters/consoleAdapter';
-
-
 import { FlagService } from '../flags/flagService';
 
 export class EmailService {
-
-    // ... existing setup ...
-
-    static async send(payload: EmailPayload) {
-        // KILL SWITCH CHECK
-        // Using "email.outbound.enabled" as the key
-        // NOTE: In real world, we need merchantId context here. 
-        // Assuming payload has it or we can derive it, otherwise falling back to Global Check.
-        // For V1, we will check GLOBAL safety if no merchantId is available roughly, 
-        // but ideally we should pass merchantId.
-
-        // Let's assume global safety for generic system emails, or specific if known.
-        // For safety, let's create a "system" context if generic.
-        const enabled = await FlagService.isEnabled('email.outbound.enabled');
-        if (!enabled) {
-            console.warn(`[Email] Blocked by Kill Switch`);
-            return { success: false, error: 'Feature Disabled' };
-        }
-
-        // ... existing logic
-
     private static adapter: EmailAdapter = new ConsoleAdapter(); // Default to Console
 
     static initialize() {
@@ -37,7 +13,14 @@ export class EmailService {
     }
 
     static async send(payload: EmailPayload) {
-        // 1. Check Suppression
+        // 1. KILL SWITCH CHECK
+        const enabled = await FlagService.isEnabled('email.outbound.enabled');
+        if (!enabled) {
+            console.warn(`[Email] Blocked by Kill Switch`);
+            return { success: false, error: 'Feature Disabled' };
+        }
+
+        // 2. Check Suppression
         const suppression = await prisma.emailSuppression.findUnique({
             where: { email: payload.to }
         });
@@ -45,13 +28,10 @@ export class EmailService {
         if (suppression) {
             console.warn(`[EmailService] Suppression hit for ${payload.to}`);
             await this.logEmail(payload, 'suppressed', 'console', undefined, 'Recipient suppressed');
-            return;
+            return { success: false, error: 'Recipient suppressed' };
         }
 
-        // 2. Log Queued/Sending
-        // We log "sent" immediately after success usually, or "queued" if using a queue.
-        // For sync sending V1:
-
+        // 3. Send
         try {
             const result = await this.adapter.send(payload);
 
@@ -63,9 +43,11 @@ export class EmailService {
                 result.error
             );
 
+            return { success: !result.error, error: result.error };
         } catch (e: any) {
             console.error('[EmailService] Send Failed', e);
             await this.logEmail(payload, 'failed', 'console', undefined, e.message);
+            return { success: false, error: e.message };
         }
     }
 

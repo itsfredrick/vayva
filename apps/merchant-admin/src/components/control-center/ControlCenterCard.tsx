@@ -18,7 +18,7 @@ export function ControlCenterCard({ title, description, icon, href, status, disa
                 <div>
                     <div className="mb-4 flex items-center justify-between">
                         <div className="flex h-10 w-10 items-center justify-center rounded-full bg-white/5 text-white/70 group-hover:bg-white/10 group-hover:text-white">
-                            <Icon name={icon} size={20} />
+                            <Icon name={icon as any} size={20} />
                         </div>
                         {status && (
                             <span className="rounded-full bg-white/5 px-2 py-1 text-xs font-medium text-white/50">
@@ -27,7 +27,10 @@ export function ControlCenterCard({ title, description, icon, href, status, disa
                         )}
                     </div>
 
-                    <h3 className="mb-1 text-lg font-medium text-white">{title}</h3>
+                    <h3 className="mb-1 flex items-center gap-2 text-lg font-medium text-white">
+                        <Icon name={icon as any} className="w-6 h-6 text-primary group-hover:scale-110 transition-transform" />
+                        {title}
+                    </h3>
                     <p className="text-sm text-text-secondary">{description}</p>
                 </div>
 

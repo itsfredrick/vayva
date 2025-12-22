@@ -1,14 +1,11 @@
-```typescript
 import crypto from 'crypto';
 import { prisma } from '@vayva/db';
-
-
-import { FlagService } from '../../flags/flagService';
+import { FlagService } from '../flags/flagService';
 
 export class WebhookService {
 
     static signPayload(secret: string, payload: any, eventId: string, timestamp: number): string {
-        const signaturePayload = `${ timestamp }.${ eventId }.${ JSON.stringify(payload) } `;
+        const signaturePayload = `${timestamp}.${eventId}.${JSON.stringify(payload)} `;
         return crypto.createHmac('sha256', secret).update(signaturePayload).digest('hex');
     }
 
@@ -16,7 +13,7 @@ export class WebhookService {
         // KILL SWITCH CHECK
         const enabled = await FlagService.isEnabled('webhooks.outbound.enabled', { merchantId });
         if (!enabled) {
-            console.warn(`[Webhook] Blocked by Kill Switch for merchant ${ merchantId }`);
+            console.warn(`[Webhook] Blocked by Kill Switch for merchant ${merchantId}`);
             return;
         }
 
@@ -32,15 +29,13 @@ export class WebhookService {
 
         // Queue Deliveries
         for (const sub of subscriptions) {
-            await prisma.webhookDelivery.create({
+            await prisma.webhookDeliveryV2.create({
                 data: {
                     webhookSubscriptionId: sub.id,
                     merchantId,
                     eventName,
                     eventId,
-                    status: 'queued',
-                    // In a real system, we'd persist the payload or fetch it fresh. 
-                    // Here assuming downstream worker handles it.
+                    status: 'queued'
                 }
             });
 
@@ -54,13 +49,13 @@ export class WebhookService {
         const timestamp = Date.now();
         const signature = this.signPayload(sub.signingSecretHash, payload, eventId, timestamp);
 
-        console.log(`[Webhook] Sending to ${ sub.url } `, {
+        console.log(`[Webhook] Sending to ${sub.url} `, {
             'X-Vayva-Event': payload.type,
             'X-Vayva-Signature': signature
         });
 
         // Mock update
-        await prisma.webhookDelivery.update({
+        await prisma.webhookDeliveryV2.update({
             where: { webhookSubscriptionId_eventId: { webhookSubscriptionId: sub.id, eventId } },
             data: {
                 status: 'sent',

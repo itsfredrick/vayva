@@ -21,7 +21,38 @@ export class ApiKeyService {
 
     static match(rawKey: string, storedHash: string): boolean {
         const hash = this.hashKey(rawKey);
-        // Constant time comparison (though timing attack on hash string is effectively mitigated by the hash itself being unknown)
+        // Constant time comparison
         return crypto.timingSafeEqual(Buffer.from(hash), Buffer.from(storedHash));
+    }
+
+    static async createKey(storeId: string, name: string, scopes: string[], userId: string) {
+        const { prisma } = await import('@vayva/db');
+        const rawKey = this.generateKey();
+        const keyHash = this.hashKey(rawKey);
+        const prefix = this.getPrefix(rawKey);
+
+        const apiKey = await prisma.apiKey.create({
+            data: {
+                storeId,
+                name,
+                keyHash,
+                scopes,
+                status: 'ACTIVE'
+            }
+        });
+
+        return { ...apiKey, key: rawKey };
+    }
+
+    static async revokeKey(keyId: string, storeId: string) {
+        const { prisma } = await import('@vayva/db');
+        // Ensure the key belongs to the store
+        await prisma.apiKey.updateMany({
+            where: { id: keyId, storeId },
+            data: {
+                status: 'REVOKED',
+                revokedAt: new Date()
+            }
+        });
     }
 }

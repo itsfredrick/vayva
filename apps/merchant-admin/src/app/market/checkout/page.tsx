@@ -54,7 +54,7 @@ export default function MarketCheckoutPage() {
                                     <Icon name="CreditCard" className="text-primary" />
                                     <span className="font-bold text-white">Pay with Card</span>
                                 </div>
-                                <Icon name="CheckCircle" className="text-primary" />
+                                <Icon name={"CheckCircle" as any} className="text-white" size={12} />
                             </div>
                             <div className="flex items-center justify-between p-4 rounded-xl border border-white/10 bg-white/5 cursor-pointer hover:bg-white/10">
                                 <div className="flex items-center gap-3">

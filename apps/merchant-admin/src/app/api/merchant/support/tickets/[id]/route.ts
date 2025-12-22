@@ -8,7 +8,7 @@ export async function GET(req: NextRequest, { params }: { params: { id: string }
     if (!session?.user) return new NextResponse('Unauthorized', { status: 401 });
 
     try {
-        const ticket = await SupportService.getTicketDetails(params.id, session.user.storeId);
+        const ticket = await SupportService.getTicketDetails(params.id, (session!.user as any).storeId);
         return NextResponse.json(ticket);
     } catch (e) {
         return new NextResponse('Not Found', { status: 404 });

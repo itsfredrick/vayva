@@ -73,7 +73,7 @@ export default function ReportsPage() {
                         />
                     </div>
                     <Button variant="outline" size="sm">
-                        <Icon name="Download" size={16} className="mr-2" />
+                        <Icon name={"Download" as any} size={16} className="mr-2" />
                         Export CSV
                     </Button>
                 </div>

@@ -11,13 +11,13 @@ export async function POST(req: NextRequest, { params }: { params: { id: string 
 
     const { id } = params;
 
-    const request = await prisma.approvalRequest.findUnique({ where: { id } });
+    const request = await prisma.approval.findUnique({ where: { id } });
     if (!request) return new NextResponse('Not Found', { status: 404 });
-    if (request.merchantId !== session.user.storeId) return new NextResponse('Forbidden', { status: 403 });
-    if (request.status !== 'pending') return new NextResponse('Request not pending', { status: 400 });
+    if (request.merchantId !== (session!.user as any).storeId) return new NextResponse('Forbidden', { status: 403 });
+    if (request.status !== 'PENDING') return new NextResponse('Request not pending', { status: 400 });
 
     // Check Permission
-    const canDecide = await hasPermission(session.user.id, request.merchantId, PERMISSIONS.APPROVALS_DECIDE);
+    const canDecide = await hasPermission((session!.user as any).id, request.merchantId, PERMISSIONS.APPROVALS_DECIDE);
     if (!canDecide) return new NextResponse('Forbidden', { status: 403 });
 
     // We don't strictly enforce action-specific permission for rejection, but safe to keep consistent.
@@ -26,12 +26,12 @@ export async function POST(req: NextRequest, { params }: { params: { id: string 
     const body = await req.json().catch(() => ({}));
     const reason = body?.decisionReason;
 
-    await prisma.approvalRequest.update({
+    await prisma.approval.update({
         where: { id },
         data: {
-            status: 'rejected',
-            decidedByUserId: session.user.id,
-            decidedByLabel: `${session.user.firstName} ${session.user.lastName}`,
+            status: 'REJECTED',
+            decidedByUserId: (session!.user as any).id,
+            decidedByLabel: `${(session!.user as any).firstName} ${(session!.user as any).lastName}`,
             decidedAt: new Date(),
             decisionReason: reason
         }
@@ -42,10 +42,10 @@ export async function POST(req: NextRequest, { params }: { params: { id: string 
         type: 'approvals.rejected',
         payload: { approvalId: id, reason },
         ctx: {
-            actorId: session.user.id,
-            actorType: 'user',
-            actorLabel: `${session.user.firstName} ${session.user.lastName}`,
-            correlationId: request.correlationId
+            actorId: (session!.user as any).id,
+            actorType: 'user' as any,
+            actorLabel: `${(session!.user as any).firstName} ${(session!.user as any).lastName}`,
+            correlationId: request.correlationId || `req_${id}`
         }
     });
 

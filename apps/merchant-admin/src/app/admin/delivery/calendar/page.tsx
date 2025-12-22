@@ -9,10 +9,10 @@ import { Icon } from '@vayva/ui';
 
 export default function DeliveryCalendarPage() {
     return (
-        <AppShell title="Delivery Calendar" breadcrumb="Delivery / Calendar">
+        <AppShell sidebar={<></>} header={<></>}>
             <div className="flex flex-col items-center justify-center h-[60vh] text-center max-w-2xl mx-auto px-6">
                 <div className="w-24 h-24 rounded-full bg-white/5 flex items-center justify-center mb-6">
-                    <Icon name="calendar_month" size={48} className="text-primary/50" />
+                    <Icon name={"Calendar" as any} size={48} className="text-primary/50" />
                 </div>
                 <h1 className="text-3xl font-bold text-white mb-2">Delivery Scheduling Coming Soon</h1>
                 <p className="text-text-secondary mb-8">

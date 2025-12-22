@@ -15,7 +15,7 @@ export async function GET(req: NextRequest) {
     const to = toStr ? new Date(toStr) : new Date();
     const from = fromStr ? new Date(fromStr) : new Date(Date.now() - 7 * 24 * 60 * 60 * 1000);
 
-    const metrics = await ReportsService.getSummary(session.user.storeId, { from, to });
+    const data = await ReportsService.getSummary((session!.user as any).storeId, { from, to });
 
-    return NextResponse.json(metrics);
+    return NextResponse.json(data);
 }
