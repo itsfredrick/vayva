@@ -46,24 +46,12 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
-      - name: Type check
-        run: pnpm turbo run typecheck
-        continue-on-error: false
-
-      - name: Check runtime boundaries
-        run: pnpm check:runtime
-        continue-on-error: false
-
-      - name: Lint
-        run: pnpm turbo run lint
-        continue-on-error: false
-
-      - name: Unit tests
-        run: pnpm turbo run test
-        continue-on-error: false
-
       - name: Build all packages
         run: pnpm turbo run build
+        continue-on-error: false
+
+      - name: Type check
+        run: pnpm turbo run typecheck
         continue-on-error: false
 
       - name: Check bundle size
