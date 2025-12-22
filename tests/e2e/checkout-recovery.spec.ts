@@ -1,7 +1,7 @@
 
 import { test, expect } from '@playwright/test';
-import { CheckoutService } from '../apps/merchant-admin/src/lib/checkout/checkoutService';
-import { RecoveryService } from '../apps/merchant-admin/src/lib/checkout/recoveryService';
+import { CheckoutService } from '../../apps/merchant-admin/src/lib/checkout/checkoutService';
+import { RecoveryService } from '../../apps/merchant-admin/src/lib/checkout/recoveryService';
 import { prisma } from '@vayva/db';
 
 test.describe('Checkout & Recovery', () => {

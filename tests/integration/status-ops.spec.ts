@@ -1,6 +1,6 @@
 
 import { test, expect } from '@playwright/test';
-import { UptimeService } from '../apps/merchant-admin/src/lib/ops/uptimeService';
+import { UptimeService } from '../../apps/merchant-admin/src/lib/ops/uptimeService';
 import { prisma } from '@vayva/db';
 
 test.describe('Status Ops & Uptime', () => {

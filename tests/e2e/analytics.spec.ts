@@ -1,6 +1,6 @@
 
 import { test, expect } from '@playwright/test';
-import { AnalyticsService } from '../apps/merchant-admin/src/lib/analytics/analyticsService';
+import { AnalyticsService } from '../../apps/merchant-admin/src/lib/analytics/analyticsService';
 import { prisma } from '@vayva/db';
 
 test.describe('Analytics System', () => {

@@ -1,7 +1,7 @@
 
 import { test, expect } from '@playwright/test';
-import { AuthFlowService } from '../apps/merchant-admin/src/lib/security/authFlowService';
-import { LifecycleService } from '../apps/merchant-admin/src/lib/security/lifecycleService';
+import { AuthFlowService } from '../../apps/merchant-admin/src/lib/security/authFlowService';
+import { LifecycleService } from '../../apps/merchant-admin/src/lib/security/lifecycleService';
 import { prisma } from '@vayva/db';
 
 test.describe('Account Lifecycle & Security', () => {

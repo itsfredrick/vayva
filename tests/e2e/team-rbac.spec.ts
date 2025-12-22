@@ -1,7 +1,7 @@
 
 import { test, expect } from '@playwright/test';
-import { TeamService } from '../apps/merchant-admin/src/lib/team/teamService';
-import { can, ROLES, PERMISSIONS } from '../apps/merchant-admin/src/lib/team/permissions';
+import { TeamService } from '../../apps/merchant-admin/src/lib/team/teamService';
+import { can, ROLES, PERMISSIONS } from '../../apps/merchant-admin/src/lib/team/permissions';
 import { prisma } from '@vayva/db';
 
 test.describe('Team RBAC v2', () => {

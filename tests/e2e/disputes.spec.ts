@@ -1,7 +1,7 @@
 
 import { test, expect } from '@playwright/test';
 import { prisma } from '@vayva/db';
-import { DisputeService } from '../apps/merchant-admin/src/lib/disputes/disputeService';
+import { DisputeService } from '../../apps/merchant-admin/src/lib/disputes/disputeService';
 
 // We mock the service calls if needed, or rely on seeded data
 // Since handleWebhookEvent writes to DB, we can test it directly if we have DB access in test env

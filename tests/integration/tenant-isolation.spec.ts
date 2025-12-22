@@ -1,8 +1,8 @@
 
 import { test, expect } from '@playwright/test';
-import { Repository } from '../apps/merchant-admin/src/lib/db/repo';
-import { StorageService } from '../apps/merchant-admin/src/lib/storage/storageService';
-import { TenantContext } from '../apps/merchant-admin/src/lib/auth/tenantContext';
+import { Repository } from '../../apps/merchant-admin/src/lib/db/repo';
+import { StorageService } from '../../apps/merchant-admin/src/lib/storage/storageService';
+import { TenantContext } from '../../apps/merchant-admin/src/lib/auth/tenantContext';
 import { prisma } from '@vayva/db';
 
 test.describe('No Data Leak Suite', () => {

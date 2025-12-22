@@ -1,8 +1,8 @@
 
 import { test, expect } from '@playwright/test';
-import { EmailService } from '../apps/merchant-admin/src/lib/email/emailService';
-import { TeamService } from '../apps/merchant-admin/src/lib/team/teamService';
-import { ROLES } from '../apps/merchant-admin/src/lib/team/permissions';
+import { EmailService } from '../../apps/merchant-admin/src/lib/email/emailService';
+import { TeamService } from '../../apps/merchant-admin/src/lib/team/teamService';
+import { ROLES } from '../../apps/merchant-admin/src/lib/team/permissions';
 import { prisma } from '@vayva/db';
 
 test.describe('Email System', () => {

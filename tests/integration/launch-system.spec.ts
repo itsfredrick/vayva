@@ -1,7 +1,7 @@
 
 import { test, expect } from '@playwright/test';
-import { EnvHealth } from '../apps/merchant-admin/src/lib/ops/envHealth';
-import { ServiceHealth } from '../apps/merchant-admin/src/lib/ops/serviceHealth';
+import { EnvHealth } from '../../apps/merchant-admin/src/lib/ops/envHealth';
+import { ServiceHealth } from '../../apps/merchant-admin/src/lib/ops/serviceHealth';
 
 test.describe('Launch System Health', () => {
 

@@ -1,6 +1,6 @@
 
 import { test, expect } from '@playwright/test';
-import { ReturnTokenService } from '../apps/merchant-admin/src/lib/returns/returnToken';
+import { ReturnTokenService } from '../../apps/merchant-admin/src/lib/returns/returnToken';
 
 test.describe('Returns System', () => {
 
