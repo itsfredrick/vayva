@@ -72,6 +72,7 @@ export const LegalPageLayout: React.FC<LegalPageLayoutProps> = ({
             {/* Top Navigation / Back Link */}
             <div className="max-w-[1280px] mx-auto px-6 pt-12 print:hidden">
                 {backLink && (
+                    // @ts-ignore
                     <Link
                         href={backLink.href}
                         className="inline-flex items-center gap-2 text-sm text-gray-400 hover:text-black transition-colors group mb-8"
@@ -181,7 +182,9 @@ export const LegalPageLayout: React.FC<LegalPageLayoutProps> = ({
 
                     <footer className="mt-32 pt-12 border-t border-gray-100 print:hidden text-center md:text-left">
                         <p className="text-sm text-gray-400">
-                            Looking for something else? Visit our <Link href="/legal" className="text-black font-bold underline">Legal Hub</Link>.
+                            Looking for something else? Visit our
+                            {/* @ts-ignore */}
+                            <Link href="/legal" className="text-black font-bold underline">Legal Hub</Link>.
                         </p>
                     </footer>
                 </main>

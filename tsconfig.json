@@ -19,9 +19,15 @@
             ]
         }
     },
-    "include": [],
+    "include": [
+        "apps/*/src/**/*",
+        "packages/*/src/**/*",
+        "infra/*/src/**/*"
+    ],
     "exclude": [
         "node_modules",
-        "dist"
+        "dist",
+        ".next",
+        "build"
     ]
 }

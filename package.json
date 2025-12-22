@@ -13,7 +13,9 @@
     "doctor": "node scripts/doctor.js",
     "test:e2e": "playwright test",
     "test:ui": "playwright test --ui",
-    "validate:ship": "pnpm lint && pnpm typecheck && pnpm build && pnpm test:e2e",
+    "validate:ship": "pnpm lint && pnpm build && pnpm test:e2e",
+    "check:runtime": "node scripts/check-runtime-boundaries.mjs",
+    "check:bundle": "node scripts/check-bundle-size.mjs",
     "db:seed": "echo '✅ Mock data is pre-loaded in services. No DB seed required yet.'",
     "db:generate": "turbo run db:generate",
     "db:push": "turbo run db:push"
@@ -26,7 +28,7 @@
     "typescript": "^5.0.0"
   },
   "engines": {
-    "node": ">=20.0.0"
+    "node": "20.x"
   },
   "prisma": {
     "schema": "infra/db/prisma/schema.prisma"

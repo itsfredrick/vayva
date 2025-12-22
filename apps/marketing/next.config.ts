@@ -1,7 +1,7 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  /* config options here */
+  transpilePackages: ["@vayva/db", "@vayva/template-service"],
 };
 
 export default nextConfig;
