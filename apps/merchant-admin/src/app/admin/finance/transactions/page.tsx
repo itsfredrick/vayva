@@ -2,11 +2,7 @@
 
 import React, { useState } from 'react';
 import Link from 'next/link';
-import { AppShell } from '@vayva/ui';
-import { GlassPanel } from '@vayva/ui';
-import { Button } from '@vayva/ui';
-import { Icon } from '@vayva/ui';
-import { StatusChip } from '@vayva/ui';
+import { AppShell , GlassPanel , Button , Icon , StatusChip } from '@vayva/ui';
 
 const MOCK_TRANSACTIONS = [
     { id: 'TX-1001', order: 'VV-1024', customer: 'Chinedu Okafor', amount: '₦ 51,500', status: 'paid', provider: 'Paystack', date: 'Just now' },

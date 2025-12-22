@@ -2,8 +2,7 @@
 
 import React from 'react';
 import Link from 'next/link';
-import { Icon } from '@vayva/ui'; // Assuming this exists or works like Lucide
-import { cn } from '@vayva/ui';
+import { Icon, cn } from '@vayva/ui';
 
 interface ChecklistItem {
     id: string;

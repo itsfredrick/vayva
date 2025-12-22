@@ -4,10 +4,7 @@ import React from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { AdminShell } from '@/components/admin-shell';
-import { GlassPanel } from '@vayva/ui';
-import { Button } from '@vayva/ui';
-import { Input } from '@vayva/ui';
-import { Icon } from '@vayva/ui';
+import { GlassPanel , Button , Input , Icon } from '@vayva/ui';
 
 export default function CreateCollectionPage() {
     const router = useRouter();

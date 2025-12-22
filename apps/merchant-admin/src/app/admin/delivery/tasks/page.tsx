@@ -2,10 +2,7 @@
 
 import React from 'react';
 import Link from 'next/link';
-import { AppShell } from '@vayva/ui';
-import { GlassPanel } from '@vayva/ui';
-import { Button } from '@vayva/ui';
-import { Icon } from '@vayva/ui';
+import { AppShell , GlassPanel , Button , Icon } from '@vayva/ui';
 
 const MOCK_TASKS = [
     { id: 'DT-204', order: 'VV-1024', customer: 'Chinedu Okafor', type: 'Delivery', window: 'Today, 2pm - 4pm', status: 'Scheduled', assignee: 'Unassigned' },

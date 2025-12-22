@@ -1,8 +1,7 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { GlassPanel, cn } from '@vayva/ui';
-import { Button, Icon } from '@vayva/ui';
+import { GlassPanel, cn , Button, Icon } from '@vayva/ui';
 import { useOnboarding } from '@/context/OnboardingContext';
 import { useAuth } from '@/context/AuthContext';
 

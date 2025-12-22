@@ -2,9 +2,7 @@
 
 import React from 'react';
 import { AdminShell } from '@/components/admin-shell';
-import { GlassPanel } from '@vayva/ui';
-import { Button } from '@vayva/ui';
-import { Icon } from '@vayva/ui';
+import { GlassPanel , Button , Icon } from '@vayva/ui';
 
 export default function KnowledgeBasePage() {
     return (

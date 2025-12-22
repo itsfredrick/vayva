@@ -2,8 +2,7 @@
 
 import React from 'react';
 import { AdminShell } from '@/components/admin-shell';
-import { GlassPanel } from '@vayva/ui';
-import { Icon } from '@vayva/ui';
+import { GlassPanel , Icon } from '@vayva/ui';
 import { ConversationList } from '@/components/whatsapp/conversation-list';
 
 const MOCK_CONVERSATIONS = [

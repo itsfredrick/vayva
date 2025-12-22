@@ -2,10 +2,7 @@
 
 import React from 'react';
 import Link from 'next/link';
-import { AppShell } from '@vayva/ui';
-import { GlassPanel } from '@vayva/ui';
-import { Button } from '@vayva/ui';
-import { Icon } from '@vayva/ui';
+import { AppShell , GlassPanel , Button , Icon } from '@vayva/ui';
 
 function UsageCard({ title, used, limit, resetDate, link }: { title: string, used: number, limit: number, resetDate: string, link: string }) {
     const percentage = Math.min((used / limit) * 100, 100);

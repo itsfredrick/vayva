@@ -2,8 +2,7 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
-import { Button, Icon } from '@vayva/ui';
-import { Input } from '@vayva/ui';
+import { Button, Icon , Input } from '@vayva/ui';
 import { AuthService } from '@/services/auth';
 import { SplitAuthLayout } from '@/components/auth/SplitAuthLayout';
 

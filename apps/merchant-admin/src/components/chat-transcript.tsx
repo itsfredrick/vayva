@@ -1,6 +1,5 @@
 import React from 'react';
-import { Icon } from '@vayva/ui';
-import { Button } from '@vayva/ui';
+import { Icon , Button } from '@vayva/ui';
 
 export type Message = {
     id: string;

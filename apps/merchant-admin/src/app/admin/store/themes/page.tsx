@@ -3,9 +3,7 @@
 import React from 'react';
 import Link from 'next/link';
 import { AdminShell } from '@/components/admin-shell'; // Use local localized shell
-import { GlassPanel } from '@vayva/ui';
-import { Button } from '@vayva/ui';
-import { Icon } from '@vayva/ui';
+import { GlassPanel, Button, Icon } from '@vayva/ui';
 
 const THEMES = [
     { id: 't1', name: 'Dawn', description: 'A chic, minimalist theme for fashion brands.', category: 'Fashion', image: 'bg-gradient-to-br from-indigo-900 to-purple-900', current: true },

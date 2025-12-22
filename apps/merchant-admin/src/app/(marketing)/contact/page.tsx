@@ -1,8 +1,7 @@
 'use client';
 
 import React from 'react';
-import { Button } from '@vayva/ui';
-import { Icon } from '@vayva/ui';
+import { Button , Icon } from '@vayva/ui';
 import { motion } from 'framer-motion';
 
 export default function ContactPage() {

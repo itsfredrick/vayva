@@ -3,11 +3,7 @@
 import React from 'react';
 import Link from 'next/link';
 import { useParams } from 'next/navigation';
-import { AppShell } from '@vayva/ui';
-import { GlassPanel } from '@vayva/ui';
-import { Button } from '@vayva/ui';
-import { Icon } from '@vayva/ui';
-import { StatusChip } from '@vayva/ui';
+import { AppShell , GlassPanel , Button , Icon , StatusChip } from '@vayva/ui';
 import { MoneyBreakdown } from '@/components/money-breakdown';
 
 export default function TransactionDetailPage() {

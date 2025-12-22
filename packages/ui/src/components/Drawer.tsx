@@ -1,5 +1,6 @@
-import * as React from 'react';
-import { useEffect } from 'react';
+'use client';
+
+import { useEffect, type ReactNode } from 'react';
 import { cn } from '../utils';
 import { X as XIcon } from 'lucide-react';
 
@@ -7,7 +8,7 @@ export interface DrawerProps {
     isOpen: boolean;
     onClose: () => void;
     title?: string;
-    children: React.ReactNode;
+    children: ReactNode;
     className?: string;
 }
 

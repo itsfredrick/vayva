@@ -2,11 +2,7 @@
 
 import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { AppShell } from '@vayva/ui';
-import { GlassPanel } from '@vayva/ui';
-import { Button } from '@vayva/ui';
-import { Input } from '@vayva/ui';
-import { Stepper } from '@vayva/ui';
+import { AppShell , GlassPanel , Button , Input , Stepper } from '@vayva/ui';
 
 export default function StoreDetailsPage() {
     const router = useRouter();

@@ -3,8 +3,7 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { Button, Icon } from '@vayva/ui';
-import { Input } from '@vayva/ui';
+import { Button, Icon , Input } from '@vayva/ui';
 import { PhoneInput } from '@/components/ui/PhoneInput';
 import { PasswordStrengthIndicator } from '@/components/ui/PasswordStrengthIndicator';
 import { AuthService } from '@/services/auth';

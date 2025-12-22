@@ -1,8 +1,7 @@
 'use client';
 
 import React from 'react';
-import { Input } from '@vayva/ui';
-import { Button } from '@vayva/ui';
+import { Input , Button } from '@vayva/ui';
 import { StepShell } from './StepShell';
 
 interface StoreNameStepProps {

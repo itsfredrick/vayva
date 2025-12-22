@@ -3,8 +3,7 @@
 import { useState, Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
-import { Button, Icon } from '@vayva/ui';
-import { Input } from '@vayva/ui';
+import { Button, Icon , Input } from '@vayva/ui';
 import { PasswordStrengthIndicator } from '@/components/ui/PasswordStrengthIndicator';
 import { AuthService } from '@/services/auth';
 import { SplitAuthLayout } from '@/components/auth/SplitAuthLayout';

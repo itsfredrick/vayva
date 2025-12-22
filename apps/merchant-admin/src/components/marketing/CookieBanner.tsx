@@ -3,7 +3,7 @@
 
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { Button, Icon } from '@vayva/ui';
+import { Button, Icon , cn } from '@vayva/ui';
 import { motion, AnimatePresence } from 'framer-motion';
 
 export const CookieBanner: React.FC = () => {
@@ -144,4 +144,3 @@ export const CookieBanner: React.FC = () => {
     );
 };
 
-import { cn } from '@vayva/ui';

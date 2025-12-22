@@ -2,8 +2,7 @@
 
 import React, { Suspense } from 'react';
 import Link from 'next/link';
-import { Button } from '@vayva/ui';
-import { Icon } from '@vayva/ui';
+import { Button , Icon } from '@vayva/ui';
 import { motion } from 'framer-motion';
 
 function WhatsAppContent() {

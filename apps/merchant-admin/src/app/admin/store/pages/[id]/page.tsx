@@ -2,10 +2,7 @@
 
 import React, { useState } from 'react';
 import { useParams, useRouter } from 'next/navigation';
-import { AppShell } from '@vayva/ui';
-import { GlassPanel } from '@vayva/ui';
-import { Button } from '@vayva/ui';
-import { Icon, IconName } from '@vayva/ui';
+import { AppShell , GlassPanel , Button , Icon, IconName } from '@vayva/ui';
 
 const BLOCKS: { id: string; name: string; icon: IconName }[] = [
     { id: 'heading', name: 'Heading', icon: 'Heading' },

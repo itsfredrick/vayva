@@ -3,9 +3,7 @@
 import React from 'react';
 import Link from 'next/link';
 import { AdminShell } from '@/components/admin-shell';
-import { GlassPanel } from '@vayva/ui';
-import { Button } from '@vayva/ui';
-import { Icon } from '@vayva/ui';
+import { GlassPanel , Button , Icon } from '@vayva/ui';
 
 const MOCK_COLLECTIONS = [
     { id: '1', name: 'Summer Essentials', count: 12, visibility: 'Storefront', updated: '2 days ago' },

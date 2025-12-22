@@ -3,8 +3,7 @@
 import React from 'react';
 import { OpsShell } from '@/components/ops/ops-shell';
 import { RiskChip } from '@/components/ops/risk-chip';
-import { Button } from '@vayva/ui';
-import { Icon } from '@vayva/ui';
+import { Button , Icon } from '@vayva/ui';
 
 const MOCK_LISTINGS = [
     { id: '1', name: 'Cheap iPhone 15 Pro', merchant: 'ScamStore99', category: 'Phones', status: 'Pending', risk: 'High', reason: 'Price too low' },

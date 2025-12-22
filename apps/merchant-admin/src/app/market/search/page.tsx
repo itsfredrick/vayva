@@ -4,8 +4,7 @@ import React from 'react';
 import Link from 'next/link';
 import { MarketShell } from '@/components/market/market-shell';
 import { MarketProductCard, MarketProduct } from '@/components/market/market-product-card';
-import { Button } from '@vayva/ui';
-import { Icon } from '@vayva/ui';
+import { Button , Icon } from '@vayva/ui';
 
 const MOCK_RESULTS: MarketProduct[] = [
     { id: '1', name: 'MacBook Pro M3 Max', price: '₦ 3,500,000', image: '', sellerName: 'TechDepot', sellerVerified: true, inStock: true, rating: 4.8 },

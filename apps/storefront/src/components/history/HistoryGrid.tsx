@@ -1,7 +1,6 @@
 'use client';
 
-import { Delivery } from '@/types/menu';
-import { Meal } from '@/types/menu';
+import { Delivery , Meal } from '@/types/menu';
 import { LocaleKey, LOCALES } from '@/data/locales';
 import { DeliveryCard } from './DeliveryCard';
 

@@ -4,8 +4,7 @@ import React from 'react';
 import Link from 'next/link';
 import { MarketShell } from '@/components/market/market-shell';
 import { MarketProductCard, MarketProduct } from '@/components/market/market-product-card';
-import { Button } from '@vayva/ui';
-import { Icon } from '@vayva/ui';
+import { Button , Icon } from '@vayva/ui';
 
 const CATEGORIES = [
     { name: 'Fashion', icon: 'Shirt', count: '2.5k' },

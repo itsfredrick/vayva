@@ -1,10 +1,8 @@
 'use client';
 
 import React from 'react';
-import { AppShell } from '@vayva/ui';
-import { GlassPanel } from '@vayva/ui';
+import { AppShell , GlassPanel , Icon } from '@vayva/ui';
 import { AnalyticsFilterBar } from '@/components/analytics-filter-bar';
-import { Icon } from '@vayva/ui';
 import { formatNGN } from '@/config/pricing';
 
 export default function WhatsappAnalyticsPage() {

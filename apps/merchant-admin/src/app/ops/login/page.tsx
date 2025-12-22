@@ -2,8 +2,7 @@
 
 import React, { useState } from 'react';
 import Link from 'next/link';
-import { Button } from '@vayva/ui';
-import { Icon } from '@vayva/ui';
+import { Button , Icon } from '@vayva/ui';
 
 export default function OpsLoginPage() {
     const [step, setStep] = useState<'email' | 'mfa'>('email');

@@ -4,8 +4,7 @@ import React from 'react';
 import Link from 'next/link';
 import { OpsShell } from '@/components/ops/ops-shell';
 import { RiskChip } from '@/components/ops/risk-chip';
-import { Button } from '@vayva/ui';
-import { Icon } from '@vayva/ui';
+import { Button , Icon } from '@vayva/ui';
 
 const MOCK_MERCHANT = {
     id: '1',

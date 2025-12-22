@@ -2,8 +2,7 @@
 
 import React from 'react';
 import { StoreShell } from '@/components/storefront/store-shell';
-import { Button } from '@vayva/ui';
-import { Icon } from '@vayva/ui';
+import { Button , Icon } from '@vayva/ui';
 
 export default function TrackOrderPage({ params }: { params: { slug: string } }) {
     return (

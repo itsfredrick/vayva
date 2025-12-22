@@ -1,6 +1,5 @@
 
-import { prisma } from '@vayva/db';
-import { ComplianceEvent, ConsentChannel, ConsentSource } from '@vayva/db';
+import { prisma , ComplianceEvent, ConsentChannel, ConsentSource } from '@vayva/db';
 
 export enum MessageIntent {
     TRANSACTIONAL = 'TRANSACTIONAL',

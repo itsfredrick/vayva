@@ -2,10 +2,7 @@
 
 import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { AppShell } from '@vayva/ui';
-import { GlassPanel } from '@vayva/ui';
-import { Button } from '@vayva/ui';
-import { Icon } from '@vayva/ui';
+import { AppShell , GlassPanel , Button , Icon } from '@vayva/ui';
 
 const STEPS = ['Choose Number', 'Verify', 'Permissions', 'Turn on AI'];
 

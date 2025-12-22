@@ -2,10 +2,7 @@
 
 import React from 'react';
 import Link from 'next/link';
-import { AppShell } from '@vayva/ui';
-import { GlassPanel } from '@vayva/ui';
-import { Button } from '@vayva/ui';
-import { Icon } from '@vayva/ui';
+import { AppShell , GlassPanel , Button , Icon } from '@vayva/ui';
 
 const MOCK_PAYOUTS = [
     { id: 'PO-8821', amount: '₦ 450,200', status: 'Processing', bank: 'GTBank •••• 1234', period: 'Oct 20 - Oct 27', date: 'Oct 28' },

@@ -3,9 +3,7 @@
 import React, { useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { Button } from '@vayva/ui';
-import { Icon } from '@vayva/ui';
-import { GlassPanel } from '@vayva/ui';
+import { Button , Icon , GlassPanel } from '@vayva/ui';
 
 const SECTIONS = [
     { id: 'header', name: 'Header', visible: true, fixed: true },

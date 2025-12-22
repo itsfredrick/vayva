@@ -2,8 +2,7 @@
 
 import React from 'react';
 import Link from 'next/link';
-import { Button } from '@vayva/ui';
-import { Icon } from '@vayva/ui';
+import { Button , Icon } from '@vayva/ui';
 
 interface MarketShellProps {
     children: React.ReactNode;

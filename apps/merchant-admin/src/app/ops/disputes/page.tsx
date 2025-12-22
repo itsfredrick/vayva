@@ -3,8 +3,7 @@
 import React from 'react';
 import { OpsShell } from '@/components/ops/ops-shell';
 import { RiskChip } from '@/components/ops/risk-chip';
-import { Button } from '@vayva/ui';
-import { Icon } from '@vayva/ui';
+import { Button , Icon } from '@vayva/ui';
 
 const MOCK_DISPUTES = [
     { id: 'DSP-8821', merchant: 'TechDepot', amount: '₦ 45,000', reason: 'Item not received', due: '48 hours', status: 'Open' },

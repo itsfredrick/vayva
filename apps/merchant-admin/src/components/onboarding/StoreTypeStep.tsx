@@ -1,9 +1,8 @@
 'use client';
 
 import React from 'react';
-import { Button } from '@vayva/ui';
+import { Button , Icon } from '@vayva/ui';
 import { StepShell } from './StepShell';
-import { Icon } from '@vayva/ui';
 
 const STORE_TYPES = [
     { id: 'fashion', label: 'Fashion & Clothing', icon: 'Shirt' },

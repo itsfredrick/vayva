@@ -59,7 +59,6 @@ export default function BrandingPage() {
                     <h3 className="mb-3 text-sm font-medium text-white">Logo</h3>
                     <GlassPanel className="p-4 flex flex-col items-center justify-center gap-4 cursor-pointer hover:bg-white/5 transition-colors border-dashed border-white/20">
                         {branding.logoUrl ? (
-                            // eslint-disable-next-line @next/next/no-img-element
                             <img src={branding.logoUrl} alt="Logo" className="h-16 w-auto object-contain" />
                         ) : (
                             <div className="h-16 w-16 rounded-full bg-white/10 flex items-center justify-center text-white/30">

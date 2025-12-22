@@ -2,9 +2,8 @@
 
 import React from 'react';
 import { AdminShell } from '@/components/admin-shell';
-import { GlassPanel } from '@vayva/ui';
+import { GlassPanel , Icon } from '@vayva/ui';
 import { AnalyticsFilterBar } from '@/components/analytics-filter-bar';
-import { Icon } from '@vayva/ui';
 
 export default function ConversionFunnelPage() {
     return (

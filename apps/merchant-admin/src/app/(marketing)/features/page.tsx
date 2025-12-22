@@ -2,8 +2,7 @@
 
 import React from 'react';
 import Link from 'next/link';
-import { Button } from '@vayva/ui';
-import { Icon, IconName } from '@vayva/ui';
+import { Button , Icon, IconName } from '@vayva/ui';
 import { motion } from 'framer-motion';
 
 const FEATURES = [

@@ -1,10 +1,7 @@
 'use client';
 
 import React from 'react';
-import { AppShell } from '@vayva/ui';
-import { GlassPanel } from '@vayva/ui';
-import { Button } from '@vayva/ui';
-import { Icon } from '@vayva/ui';
+import { AppShell , GlassPanel , Button , Icon } from '@vayva/ui';
 
 export default function InvoicesPage() {
     return (

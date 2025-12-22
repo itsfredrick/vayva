@@ -4,8 +4,7 @@ import React from 'react';
 import Link from 'next/link';
 import { StoreShell } from '@/components/storefront/store-shell';
 import { ProductCard, Product } from '@/components/storefront/product-card';
-import { Button } from '@vayva/ui';
-import { Icon } from '@vayva/ui';
+import { Button , Icon } from '@vayva/ui';
 
 const MOCK_PRODUCTS: Product[] = [
     { id: '1', name: 'Premium Cotton Tee', price: '₦ 12,000', image: '', slug: 'premium-cotton-tee', inStock: true },

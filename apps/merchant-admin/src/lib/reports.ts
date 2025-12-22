@@ -1,5 +1,4 @@
-import { prisma } from '@vayva/db';
-import { Prisma } from '@vayva/db';
+import { prisma , Prisma } from '@vayva/db';
 
 export interface ReportDateRange {
     from: Date;

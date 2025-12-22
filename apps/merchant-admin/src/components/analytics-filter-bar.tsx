@@ -1,8 +1,7 @@
 'use client';
 
 import React from 'react';
-import { GlassPanel } from '@vayva/ui';
-import { Icon } from '@vayva/ui';
+import { GlassPanel , Icon } from '@vayva/ui';
 
 export function AnalyticsFilterBar() {
     return (

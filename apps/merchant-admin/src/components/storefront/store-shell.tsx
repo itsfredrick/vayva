@@ -3,8 +3,7 @@
 import React, { useState } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { Icon } from '@vayva/ui';
-import { Button } from '@vayva/ui';
+import { Icon , Button } from '@vayva/ui';
 
 interface StoreShellProps {
     children: React.ReactNode;

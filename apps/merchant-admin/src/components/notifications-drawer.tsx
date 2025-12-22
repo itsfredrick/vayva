@@ -1,10 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
-import { Drawer } from '@vayva/ui';
-import { Icon } from '@vayva/ui';
-import { Button } from '@vayva/ui';
-import { cn } from '@vayva/ui';
+import { Drawer , Icon , Button , cn } from '@vayva/ui';
 
 interface NotificationsDrawerProps {
     isOpen: boolean;

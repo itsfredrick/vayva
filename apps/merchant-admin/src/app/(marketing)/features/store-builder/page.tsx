@@ -2,8 +2,7 @@
 
 import React from 'react';
 import Link from 'next/link';
-import { Icon } from '@vayva/ui';
-import { Button } from '@vayva/ui';
+import { Icon , Button } from '@vayva/ui';
 import { motion } from 'framer-motion';
 
 export default function StoreBuilderPage() {

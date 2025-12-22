@@ -3,8 +3,7 @@
 import React from 'react';
 import Link from 'next/link';
 import { StoreShell } from '@/components/storefront/store-shell';
-import { Button } from '@vayva/ui';
-import { Icon } from '@vayva/ui';
+import { Button , Icon } from '@vayva/ui';
 
 export default function CartPage({ params }: { params: { slug: string } }) {
     return (

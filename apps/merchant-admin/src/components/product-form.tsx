@@ -3,10 +3,7 @@
 import React, { useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { GlassPanel } from '@vayva/ui';
-import { Button } from '@vayva/ui';
-import { Input } from '@vayva/ui';
-import { Icon } from '@vayva/ui';
+import { GlassPanel , Button , Input , Icon } from '@vayva/ui';
 
 interface ProductFormProps {
     initialData?: any;

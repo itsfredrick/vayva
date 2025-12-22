@@ -3,8 +3,7 @@
 import React from 'react';
 import Link from 'next/link';
 import { MarketShell } from '@/components/market/market-shell';
-import { Button } from '@vayva/ui';
-import { Icon } from '@vayva/ui';
+import { Button , Icon } from '@vayva/ui';
 
 export default function MarketCartPage() {
     return (

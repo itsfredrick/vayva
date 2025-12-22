@@ -3,8 +3,7 @@
 import React from 'react';
 import { OpsShell } from '@/components/ops/ops-shell';
 import { RiskChip } from '@/components/ops/risk-chip';
-import { Button } from '@vayva/ui';
-import { Icon } from '@vayva/ui';
+import { Button , Icon } from '@vayva/ui';
 
 const MOCK_FLAGS = [
     { id: '1', merchant: 'ScamStore99', trigger: 'Refund me now or I report', severity: 'High', time: '10 min ago' },

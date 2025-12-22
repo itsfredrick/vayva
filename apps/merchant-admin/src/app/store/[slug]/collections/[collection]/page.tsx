@@ -3,8 +3,7 @@
 import React from 'react';
 import { StoreShell } from '@/components/storefront/store-shell';
 import { ProductCard, Product } from '@/components/storefront/product-card';
-import { Button } from '@vayva/ui';
-import { Icon } from '@vayva/ui';
+import { Button , Icon } from '@vayva/ui';
 import { formatNGN } from '@/config/pricing';
 
 const MOCK_PRODUCTS: Product[] = [

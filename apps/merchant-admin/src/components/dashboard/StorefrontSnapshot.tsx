@@ -2,8 +2,7 @@
 
 import React from 'react';
 import Link from 'next/link';
-import { Icon } from '@vayva/ui';
-import { cn } from '@vayva/ui';
+import { Icon , cn } from '@vayva/ui';
 import { Store } from '@/types'; // Ensure this matches your types
 
 interface StorefrontSnapshotProps {

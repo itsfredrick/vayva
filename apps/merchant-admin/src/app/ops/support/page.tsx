@@ -3,8 +3,7 @@
 import React from 'react';
 import { OpsShell } from '@/components/ops/ops-shell';
 import { RiskChip } from '@/components/ops/risk-chip';
-import { Button } from '@vayva/ui';
-import { Icon } from '@vayva/ui';
+import { Button , Icon } from '@vayva/ui';
 
 const MOCK_TICKETS = [
     { id: '1', merchant: 'TechDepot', subject: 'Payout not received', status: 'Open', priority: 'High', time: '10 min ago' },

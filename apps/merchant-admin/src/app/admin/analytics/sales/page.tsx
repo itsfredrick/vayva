@@ -1,8 +1,7 @@
 'use client';
 
 import React from 'react';
-import { AppShell } from '@vayva/ui';
-import { GlassPanel } from '@vayva/ui';
+import { AppShell , GlassPanel } from '@vayva/ui';
 import { AnalyticsFilterBar } from '@/components/analytics-filter-bar';
 import { TrendChart } from '@/components/trend-chart';
 import { formatNGN } from '@/config/pricing';
