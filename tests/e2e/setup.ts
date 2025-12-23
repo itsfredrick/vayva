@@ -27,7 +27,8 @@ test.beforeAll(async () => {
                 id: TEST_USER_ID,
                 email: 'test@merchant.com',
                 password: '$2a$10$dummyhashedpassword', // bcrypt hash of 'password123'
-                name: 'Test Merchant Owner',
+                firstName: 'Test',
+                lastName: 'Merchant Owner',
                 isEmailVerified: true,
                 isPhoneVerified: false,
             },
