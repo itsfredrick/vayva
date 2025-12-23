@@ -2,7 +2,6 @@
 
 import React, { useState } from 'react';
 import Link from 'next/link';
-import Image from 'next/image';
 
 export function GlobalFooter() {
     const [email, setEmail] = useState('');
@@ -19,7 +18,7 @@ export function GlobalFooter() {
             {/* Main Footer Content */}
             <div className="max-w-7xl mx-auto px-6 py-16">
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-12">
-                    {/* Brand & Context Block */}
+                    {/* Column 1 - Brand */}
                     <div className="lg:col-span-1">
                         <div className="mb-6">
                             <Link href="/" className="inline-block">
@@ -40,7 +39,7 @@ export function GlobalFooter() {
                                 target="_blank"
                                 rel="noopener noreferrer"
                                 className="text-gray-400 hover:text-[#22C55E] transition-colors"
-                                aria-label="Twitter"
+                                aria-label="X (Twitter)"
                             >
                                 <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M23 3a10.9 10.9 0 01-3.14 1.53 4.48 4.48 0 00-7.86 3v1A10.66 10.66 0 013 4s-4 9 5 13a11.64 11.64 0 01-7 2c9 5 20 0 20-11.5a4.5 4.5 0 00-.08-.83A7.72 7.72 0 0023 3z" />
@@ -71,10 +70,21 @@ export function GlobalFooter() {
                                     <line x1="17.5" y1="6.5" x2="17.51" y2="6.5" strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} />
                                 </svg>
                             </a>
+                            <a
+                                href="https://facebook.com/vayva"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="text-gray-400 hover:text-[#22C55E] transition-colors"
+                                aria-label="Facebook"
+                            >
+                                <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                                    <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z" />
+                                </svg>
+                            </a>
                         </div>
                     </div>
 
-                    {/* Column 1 - Product */}
+                    {/* Column 2 - Product */}
                     <div>
                         <h3 className="text-sm font-semibold text-white mb-4">Product</h3>
                         <ul className="space-y-3">
@@ -108,15 +118,10 @@ export function GlobalFooter() {
                                     Store Builder
                                 </Link>
                             </li>
-                            <li>
-                                <Link href="/whatsapp-ai" className="text-sm text-gray-400 hover:text-white transition-colors">
-                                    WhatsApp AI
-                                </Link>
-                            </li>
                         </ul>
                     </div>
 
-                    {/* Column 2 - Company */}
+                    {/* Column 3 - Company */}
                     <div>
                         <h3 className="text-sm font-semibold text-white mb-4">Company</h3>
                         <ul className="space-y-3">
@@ -136,11 +141,6 @@ export function GlobalFooter() {
                                 </Link>
                             </li>
                             <li>
-                                <Link href="/press" className="text-sm text-gray-400 hover:text-white transition-colors">
-                                    Press
-                                </Link>
-                            </li>
-                            <li>
                                 <Link href="/contact" className="text-sm text-gray-400 hover:text-white transition-colors">
                                     Contact
                                 </Link>
@@ -148,7 +148,7 @@ export function GlobalFooter() {
                         </ul>
                     </div>
 
-                    {/* Column 3 - Support */}
+                    {/* Column 4 - Support */}
                     <div>
                         <h3 className="text-sm font-semibold text-white mb-4">Support</h3>
                         <ul className="space-y-3">
@@ -167,15 +167,10 @@ export function GlobalFooter() {
                                     Community
                                 </Link>
                             </li>
-                            <li>
-                                <Link href="/docs" className="text-sm text-gray-400 hover:text-white transition-colors">
-                                    Documentation
-                                </Link>
-                            </li>
                         </ul>
                     </div>
 
-                    {/* Column 4 - Legal & Compliance */}
+                    {/* Column 5 - Legal & Compliance */}
                     <div>
                         <h3 className="text-sm font-semibold text-white mb-4">Legal & Compliance</h3>
                         <ul className="space-y-3">
