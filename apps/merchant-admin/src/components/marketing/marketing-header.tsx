@@ -28,8 +28,8 @@ export function MarketingHeader() {
                     <Image
                         src="/vayva-logo.png"
                         alt="Vayva"
-                        width={32}
-                        height={32}
+                        width={64}
+                        height={64}
                         className="object-contain"
                     />
                     <span className="text-[#1d1d1f] font-bold text-xl tracking-tight">Vayva</span>

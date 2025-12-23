@@ -36,8 +36,8 @@ export const SplitAuthLayout = ({
                     <Image
                         src="/vayva-logo.png"
                         alt="Vayva"
-                        width={32}
-                        height={32}
+                        width={64}
+                        height={64}
                         className="object-contain"
                     />
                     <span className="text-lg font-heading font-bold text-black">Vayva</span>

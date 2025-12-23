@@ -66,8 +66,8 @@ export const AdminShell = ({ children, title, breadcrumb, mode = 'admin' }: Admi
                     <Image
                         src="/vayva-logo.png"
                         alt="Vayva"
-                        width={24}
-                        height={24}
+                        width={48}
+                        height={48}
                         className="shrink-0 mr-4 object-contain"
                     />
                     <motion.div
