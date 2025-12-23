@@ -1,6 +1,7 @@
 'use client';
 
 import React from 'react';
+import Image from 'next/image';
 import { AuthLeftPanel } from './AuthLeftPanel';
 import { AuthRightPanel } from './AuthRightPanel';
 
@@ -32,11 +33,13 @@ export const SplitAuthLayout = ({
             {/* Mobile header - Only visible on mobile */}
             <div className="lg:hidden bg-[#F8F9FA] p-6 border-b border-gray-200">
                 <div className="flex items-center gap-2">
-                    <div className="w-8 h-8 bg-black rounded-lg flex items-center justify-center">
-                        <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
-                        </svg>
-                    </div>
+                    <Image
+                        src="/vayva-logo.png"
+                        alt="Vayva"
+                        width={32}
+                        height={32}
+                        className="object-contain"
+                    />
                     <span className="text-lg font-heading font-bold text-black">Vayva</span>
                 </div>
             </div>

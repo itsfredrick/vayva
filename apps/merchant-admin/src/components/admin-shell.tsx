@@ -62,9 +62,13 @@ export const AdminShell = ({ children, title, breadcrumb, mode = 'admin' }: Admi
             >
                 {/* Logo Area */}
                 <div className="h-[72px] flex items-center px-6 border-b border-white/10 shrink-0 overflow-hidden whitespace-nowrap">
-                    <div className="w-6 h-6 shrink-0 bg-white rounded flex items-center justify-center mr-4">
-                        <Icon name="ShieldCheck" className="text-[#0D1D1E]" size={14} />
-                    </div>
+                    <Image
+                        src="/vayva-logo.png"
+                        alt="Vayva"
+                        width={24}
+                        height={24}
+                        className="shrink-0 mr-4 object-contain"
+                    />
                     <motion.div
                         initial={{ opacity: 0 }}
                         animate={{ opacity: isSidebarExpanded ? 1 : 0 }}

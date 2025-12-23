@@ -2,8 +2,9 @@
 
 import React, { useState } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { usePathname } from 'next/navigation';
-import { Icon , Button } from '@vayva/ui';
+import { Icon, Button } from '@vayva/ui';
 import { cn } from '@/lib/utils';
 import { motion, AnimatePresence } from 'framer-motion';
 
@@ -24,9 +25,13 @@ export function MarketingHeader() {
             <div className="max-w-[1440px] mx-auto px-4 lg:px-6 h-20 flex items-center justify-between">
                 {/* Logo */}
                 <Link href="/" className="flex items-center gap-2 z-50">
-                    <div className="w-8 h-8 bg-[#46EC13] rounded-lg flex items-center justify-center">
-                        <span className="text-black font-bold text-xl">V</span>
-                    </div>
+                    <Image
+                        src="/vayva-logo.png"
+                        alt="Vayva"
+                        width={32}
+                        height={32}
+                        className="object-contain"
+                    />
                     <span className="text-[#1d1d1f] font-bold text-xl tracking-tight">Vayva</span>
                 </Link>
 
