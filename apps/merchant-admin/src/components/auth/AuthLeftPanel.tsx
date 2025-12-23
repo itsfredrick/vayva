@@ -2,7 +2,6 @@
 
 import React from 'react';
 import Link from 'next/link';
-import { Icon } from '@vayva/ui';
 
 interface AuthLeftPanelProps {
     showSignInLink?: boolean;
@@ -11,65 +10,58 @@ interface AuthLeftPanelProps {
 
 export const AuthLeftPanel = ({ showSignInLink, showSignUpLink }: AuthLeftPanelProps) => {
     return (
-        <div className="hidden lg:flex lg:w-[40%] bg-[#F8F9FA] flex-col justify-between p-12 relative overflow-hidden">
-            {/* Subtle decorative elements */}
-            <div className="absolute top-0 right-0 w-64 h-64 bg-[#0D1D1E]/5 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2" />
-            <div className="absolute bottom-0 left-0 w-96 h-96 bg-[#0D1D1E]/5 rounded-full blur-3xl translate-y-1/2 -translate-x-1/2" />
-
+        <div className="hidden lg:flex lg:w-[45%] bg-gray-50 flex-col justify-between p-12 relative">
             {/* Top: Logo */}
-            <div className="relative z-10">
+            <div>
                 <Link href="/" className="inline-flex items-center gap-2 group">
-                    <div className="w-10 h-10 bg-black rounded-xl flex items-center justify-center transition-transform group-hover:scale-105">
-                        <Icon name="Store" className="text-white w-6 h-6" />
-                    </div>
-                    <span className="text-xl font-heading font-bold text-black">
+                    <span className="text-2xl font-bold text-black">
                         Vayva
                     </span>
                 </Link>
             </div>
 
-            {/* Center: Image and messaging */}
-            <div className="relative z-10 flex flex-col items-start justify-center flex-1 py-12">
-                {/* Placeholder illustration - will be replaced with actual image */}
-                <div className="w-full max-w-md mb-8">
-                    <div className="aspect-square bg-gradient-to-br from-[#0D1D1E]/10 to-[#0D1D1E]/5 rounded-3xl flex items-center justify-center">
-                        <Icon name="Smartphone" className="w-32 h-32 text-[#0D1D1E]/20" />
+            {/* Center: Context & Reassurance */}
+            <div className="flex flex-col items-start justify-center flex-1 py-12 max-w-md">
+                {/* Subtle abstract illustration */}
+                <div className="w-full mb-12">
+                    <div className="aspect-[4/3] bg-gradient-to-br from-gray-200 to-gray-100 rounded-2xl flex items-center justify-center relative overflow-hidden">
+                        {/* Abstract WhatsApp-adjacent visual */}
+                        <div className="absolute inset-0 flex items-center justify-center">
+                            <div className="w-32 h-32 border-4 border-gray-300 rounded-3xl rotate-12 opacity-40"></div>
+                            <div className="absolute w-24 h-24 border-4 border-gray-400 rounded-2xl -rotate-6 opacity-30"></div>
+                        </div>
                     </div>
                 </div>
 
                 {/* Headline */}
-                <h2 className="text-3xl font-heading font-bold text-black mb-4 leading-tight">
-                    Get yourself a storefront + WhatsApp AI
+                <h2 className="text-3xl font-bold text-gray-900 mb-4 leading-tight">
+                    Run your business on WhatsApp — with structure behind it.
                 </h2>
 
-                {/* Subtext */}
-                <p className="text-lg text-black/60 mb-6 leading-relaxed">
-                    Start selling online in minutes. No technical skills required.
-                    Your customers can shop and chat with AI assistance.
+                {/* Supporting copy */}
+                <p className="text-lg text-gray-700 mb-3 leading-relaxed">
+                    Vayva helps you turn conversations into orders, payments, deliveries, and reliable business records.
                 </p>
 
-                {/* Carousel dots (static for now) */}
-                <div className="flex gap-2">
-                    <div className="w-2 h-2 rounded-full bg-black" />
-                    <div className="w-2 h-2 rounded-full bg-black/20" />
-                    <div className="w-2 h-2 rounded-full bg-black/20" />
-                </div>
+                {/* Optional secondary line */}
+                <p className="text-sm text-gray-600 leading-relaxed">
+                    Built for African merchants who need clarity, not complexity.
+                </p>
             </div>
 
             {/* Bottom: Navigation links */}
-            <div className="relative z-10 flex items-center justify-between text-sm">
+            <div className="flex items-center justify-between text-sm">
                 <Link
                     href="/"
-                    className="text-[#0D1D1E] hover:text-black font-medium transition-colors flex items-center gap-1"
+                    className="text-gray-700 hover:text-black font-medium transition-colors"
                 >
-                    <Icon name="ArrowLeft" className="w-4 h-4" />
-                    Back to home
+                    ← Back to home
                 </Link>
 
                 {showSignInLink && (
                     <Link
                         href="/signin"
-                        className="text-[#0D1D1E] hover:text-black font-medium transition-colors"
+                        className="text-gray-700 hover:text-black font-medium transition-colors"
                     >
                         Sign in
                     </Link>
@@ -78,7 +70,7 @@ export const AuthLeftPanel = ({ showSignInLink, showSignUpLink }: AuthLeftPanelP
                 {showSignUpLink && (
                     <Link
                         href="/signup"
-                        className="text-[#0D1D1E] hover:text-black font-medium transition-colors"
+                        className="text-gray-700 hover:text-black font-medium transition-colors"
                     >
                         Create account
                     </Link>

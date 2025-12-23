@@ -5,19 +5,22 @@ import Link from 'next/link';
 
 interface AuthRightPanelProps {
     children: React.ReactNode;
-    stepIndicator?: string; // e.g., "Step 1/2"
+    stepIndicator?: string;
     title: string;
     subtitle?: string;
 }
 
 export const AuthRightPanel = ({ children, stepIndicator, title, subtitle }: AuthRightPanelProps) => {
     return (
-        <div className="flex-1 lg:w-[60%] bg-white flex flex-col">
-            {/* Top bar with help link */}
-            <div className="h-16 px-6 lg:px-12 flex items-center justify-end border-b border-gray-100">
+        <div className="flex-1 lg:w-[55%] bg-white flex flex-col">
+            {/* Top bar with logo and help link */}
+            <div className="h-16 px-6 lg:px-12 flex items-center justify-between border-b border-gray-100">
+                <Link href="/" className="text-2xl font-bold text-black">
+                    Vayva
+                </Link>
                 <Link
                     href="/help"
-                    className="text-sm text-[#0D1D1E] hover:text-black font-medium transition-colors"
+                    className="text-sm text-gray-600 hover:text-black font-medium transition-colors"
                 >
                     Having trouble? Get help
                 </Link>
@@ -25,39 +28,33 @@ export const AuthRightPanel = ({ children, stepIndicator, title, subtitle }: Aut
 
             {/* Main content area */}
             <div className="flex-1 flex items-center justify-center p-6 lg:p-12">
-                <div className="w-full max-w-[520px]">
-                    {/* Form card */}
-                    <div className="bg-white border border-[#E6E6E6] rounded-[20px] shadow-[0_4px_24px_rgba(0,0,0,0.06)] p-8 lg:p-10">
-                        {/* Step indicator */}
-                        {stepIndicator && (
-                            <div className="text-xs font-medium text-black/40 uppercase tracking-wider mb-3">
-                                {stepIndicator}
-                            </div>
-                        )}
+                <div className="w-full max-w-[480px]">
+                    {/* Title */}
+                    <h1 className="text-3xl font-bold text-gray-900 mb-2 leading-tight">
+                        {title}
+                    </h1>
 
-                        {/* Title */}
-                        <h1 className="text-3xl lg:text-4xl font-heading font-bold text-black mb-3 leading-tight">
-                            {title}
-                        </h1>
+                    {/* Subtitle */}
+                    {subtitle && (
+                        <p className="text-base text-gray-600 mb-8">
+                            {subtitle}
+                        </p>
+                    )}
 
-                        {/* Subtitle */}
-                        {subtitle && (
-                            <p className="text-base text-[#525252] mb-8">
-                                {subtitle}
-                            </p>
-                        )}
-
-                        {/* Form content */}
-                        <div>
-                            {children}
-                        </div>
+                    {/* Form content */}
+                    <div>
+                        {children}
                     </div>
 
-                    {/* Simple Footer Links - Centered under the card */}
-                    <div className="mt-8 flex items-center justify-center gap-6 text-[11px] font-bold text-gray-400 uppercase tracking-widest">
-                        <Link href="/legal/terms" className="hover:text-black transition-colors">Terms of Service</Link>
-                        <div className="w-1 h-1 bg-gray-200 rounded-full" />
-                        <Link href="/legal/privacy" className="hover:text-black transition-colors">Privacy Policy</Link>
+                    {/* Simple Footer Links - Centered under the form */}
+                    <div className="mt-8 flex items-center justify-center gap-4 text-sm text-gray-500">
+                        <Link href="/legal/terms" className="hover:text-gray-900 transition-colors">
+                            Terms of Service
+                        </Link>
+                        <span>•</span>
+                        <Link href="/legal/privacy" className="hover:text-gray-900 transition-colors">
+                            Privacy Policy
+                        </Link>
                     </div>
                 </div>
             </div>
