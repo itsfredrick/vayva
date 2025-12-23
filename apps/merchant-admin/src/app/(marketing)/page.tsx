@@ -1,196 +1,259 @@
-'use client';
-
-import React from 'react';
 import Link from 'next/link';
-import { Button , Icon } from '@vayva/ui';
-import { motion } from 'framer-motion';
+import { Button } from '@vayva/ui';
 
-export default function MarketingHomePage() {
+export default function LandingPage() {
     return (
-        <div className="flex flex-col gap-20 pb-20 overflow-hidden bg-white">
+        <div className="min-h-screen">
             {/* Hero Section */}
-            <section className="relative pt-24 px-4">
-                <div className="max-w-[1440px] mx-auto grid lg:grid-cols-2 gap-12 items-center">
-                    <motion.div
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.6 }}
-                        className="space-y-8"
-                    >
-                        <div className="inline-flex items-center gap-2 bg-gray-50 rounded-full px-4 py-1.5 border border-gray-200">
-                            <span className="w-2 h-2 rounded-full bg-black animate-pulse" />
-                            <span className="text-xs font-bold text-gray-600 uppercase tracking-wide">New: WhatsApp AI Assistant</span>
-                        </div>
-
-                        <h1 className="text-5xl md:text-7xl font-bold text-black leading-[1.1] tracking-tight">
-                            Build your empire, <br />
-                            <span className="text-gray-400">
-                                right from Lagos.
-                            </span>
+            <section className="bg-[#F7FAF7] py-20 px-4">
+                <div className="max-w-6xl mx-auto grid md:grid-cols-2 gap-12 items-center">
+                    {/* Left Column */}
+                    <div>
+                        <h1 className="text-5xl font-semibold text-[#0F172A] mb-6">
+                            Sell on WhatsApp.<br />Grow your business.
                         </h1>
-
-                        <p className="text-xl text-gray-500 max-w-lg leading-relaxed">
-                            The all-in-one operating system for African merchants. Store builder, logistics, payments, and AI automation—simplified.
+                        <p className="text-lg text-[#64748B] mb-8 leading-relaxed">
+                            The complete platform for Nigerian merchants to build stores, manage inventory,
+                            accept payments, and sell directly through WhatsApp.
                         </p>
-
-                        <div className="flex flex-col sm:flex-row gap-4 pt-4">
+                        <div className="flex gap-4">
                             <Link href="/signup">
-                                <Button data-testid="landing-get-started" className="h-14 px-8 rounded-full bg-black hover:bg-black/80 text-white font-bold text-lg shadow-xl shadow-black/10 transition-all">
-                                    Start Free Trial
+                                <Button className="bg-[#22C55E] hover:bg-[#16A34A] text-white px-8 py-3 rounded-lg">
+                                    Get Started
                                 </Button>
                             </Link>
-                            <Link href="/features">
-                                <Button variant="outline" className="h-14 px-8 rounded-full border-gray-200 hover:bg-gray-50 text-black font-bold text-lg bg-white transition-all">
-                                    Browse Features
+                            <Link href="#features">
+                                <Button variant="outline" className="border-[#E5E7EB] text-[#0F172A] px-8 py-3 rounded-lg">
+                                    View Features
                                 </Button>
                             </Link>
                         </div>
+                    </div>
 
-                        <div className="flex items-center gap-4 text-sm text-gray-500 font-medium">
-                            <div className="flex -space-x-2">
-                                {[1, 2, 3, 4].map(i => (
-                                    <div key={i} className="w-8 h-8 rounded-full border-2 border-white bg-gray-100 flex items-center justify-center text-[10px] font-bold text-gray-400">
-                                        {i}
-                                    </div>
-                                ))}
-                            </div>
-                            <p>Trusted by 10,000+ merchants</p>
+                    {/* Right Column */}
+                    <div className="bg-white rounded-lg border border-[#E5E7EB] p-8">
+                        <div className="aspect-video bg-[#F7FAF7] rounded flex items-center justify-center text-[#64748B]">
+                            Dashboard Preview
                         </div>
-                    </motion.div>
-
-                    <motion.div
-                        initial={{ opacity: 0, scale: 0.95 }}
-                        animate={{ opacity: 1, scale: 1 }}
-                        transition={{ duration: 0.8, delay: 0.2 }}
-                        className="relative"
-                    >
-                        {/* Abstract Device Mockup */}
-                        <div className="relative z-10 bg-white border border-gray-200 rounded-3xl shadow-2xl overflow-hidden aspect-[4/3]">
-                            <div className="absolute top-0 left-0 right-0 h-12 bg-gray-50 border-b border-gray-100 flex items-center px-4 gap-2">
-                                <div className="flex gap-1.5">
-                                    <div className="w-3 h-3 rounded-full bg-gray-300" />
-                                    <div className="w-3 h-3 rounded-full bg-gray-300" />
-                                    <div className="w-3 h-3 rounded-full bg-gray-300" />
-                                </div>
-                            </div>
-                            <div className="p-8 mt-12 grid grid-cols-2 gap-6 bg-white">
-                                <div className="space-y-4">
-                                    <div className="h-32 bg-gray-50 rounded-xl" />
-                                    <div className="h-4 w-2/3 bg-gray-50 rounded" />
-                                    <div className="h-4 w-1/2 bg-gray-50 rounded" />
-                                </div>
-                                <div className="space-y-4">
-                                    <div className="h-32 bg-gray-50 rounded-xl" />
-                                    <div className="h-4 w-2/3 bg-gray-50 rounded" />
-                                    <div className="h-4 w-1/2 bg-gray-50 rounded" />
-                                </div>
-                            </div>
-                            {/* Floating Card */}
-                            <motion.div
-                                animate={{ y: [0, -10, 0] }}
-                                transition={{ repeat: Infinity, duration: 4, ease: "easeInOut" }}
-                                className="absolute bottom-8 right-8 bg-white backdrop-blur-xl border border-gray-100 p-4 rounded-2xl shadow-lg max-w-xs"
-                            >
-                                <div className="flex items-center gap-3 mb-2">
-                                    <div className="w-8 h-8 rounded-full bg-black text-white flex items-center justify-center">
-                                        <Icon name={"Check" as any} size={16} />
-                                    </div>
-                                    <div>
-                                        <p className="text-xs font-bold text-gray-900">New Order</p>
-                                        <p className="text-[10px] text-gray-500">Just now • ₦ 45,000</p>
-                                    </div>
-                                </div>
-                            </motion.div>
-                        </div>
-                        {/* Background blobs behind image */}
-                        <div className="absolute -top-10 -right-10 w-64 h-64 bg-gray-100/50 rounded-full blur-3xl -z-10" />
-                        <div className="absolute -bottom-10 -left-10 w-64 h-64 bg-gray-100/50 rounded-full blur-3xl -z-10" />
-                    </motion.div>
+                    </div>
                 </div>
             </section>
 
-            {/* Features Strip */}
-            <section className="py-24 bg-white border-y border-gray-100">
-                <div className="max-w-[1440px] mx-auto px-4 lg:px-6">
-                    <div className="text-center mb-16">
-                        <h2 className="text-3xl font-bold text-black">Everything you need to sell.</h2>
+            {/* Trust Signals */}
+            <section className="py-12 px-4 bg-white">
+                <div className="max-w-6xl mx-auto flex flex-wrap justify-center gap-12 text-[#64748B]">
+                    <div className="text-center">
+                        <p className="font-medium">Built for Nigerian businesses</p>
                     </div>
+                    <div className="text-center">
+                        <p className="font-medium">Secure by design</p>
+                    </div>
+                    <div className="text-center">
+                        <p className="font-medium">Scales with your growth</p>
+                    </div>
+                </div>
+            </section>
+
+            {/* Features Overview */}
+            <section id="features" className="py-20 px-4 bg-[#F7FAF7]">
+                <div className="max-w-6xl mx-auto">
+                    <h2 className="text-3xl font-semibold text-[#0F172A] mb-4 text-center">
+                        Everything you need to sell
+                    </h2>
+                    <p className="text-[#64748B] text-center mb-12 max-w-2xl mx-auto">
+                        A complete commerce platform designed for WhatsApp-first selling in Nigeria.
+                    </p>
+
                     <div className="grid md:grid-cols-3 gap-8">
-                        {[
-                            { title: 'Store Builder', desc: 'No-code website builder with beautiful themes.', icon: 'Store' },
-                            { title: 'Logistics', desc: 'Discounted shipping rates with top partners.', icon: 'Truck' },
-                            { title: 'Payments', desc: 'Accept cards, transfers, and USSD instantly.', icon: 'CreditCard' },
-                        ].map((feature, i) => (
-                            <motion.div
-                                key={i}
-                                whileHover={{ y: -5 }}
-                                className="p-8 rounded-3xl bg-gray-50 hover:bg-white hover:shadow-xl transition-all border border-transparent hover:border-gray-100"
-                            >
-                                <div className={`w-12 h-12 rounded-2xl bg-white border border-gray-100 shadow-sm flex items-center justify-center mb-6 text-black`}>
-                                    <Icon name={feature.icon as any} size={24} />
-                                </div>
-                                <h3 className="text-xl font-bold text-black mb-3">{feature.title}</h3>
-                                <p className="text-gray-500 leading-relaxed">{feature.desc}</p>
-                            </motion.div>
-                        ))}
+                        {/* Feature 1 */}
+                        <div className="bg-white rounded-lg border border-[#E5E7EB] p-6">
+                            <div className="w-12 h-12 bg-[#F7FAF7] rounded-lg flex items-center justify-center mb-4">
+                                <svg className="w-6 h-6 text-[#22C55E]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
+                                </svg>
+                            </div>
+                            <h3 className="text-xl font-semibold text-[#0F172A] mb-2">Store Builder</h3>
+                            <p className="text-[#64748B]">
+                                Create your online store in minutes. No coding required.
+                            </p>
+                        </div>
+
+                        {/* Feature 2 */}
+                        <div className="bg-white rounded-lg border border-[#E5E7EB] p-6">
+                            <div className="w-12 h-12 bg-[#F7FAF7] rounded-lg flex items-center justify-center mb-4">
+                                <svg className="w-6 h-6 text-[#22C55E]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z" />
+                                </svg>
+                            </div>
+                            <h3 className="text-xl font-semibold text-[#0F172A] mb-2">Payments</h3>
+                            <p className="text-[#64748B]">
+                                Accept cards, bank transfers, and USSD payments instantly.
+                            </p>
+                        </div>
+
+                        {/* Feature 3 */}
+                        <div className="bg-white rounded-lg border border-[#E5E7EB] p-6">
+                            <div className="w-12 h-12 bg-[#F7FAF7] rounded-lg flex items-center justify-center mb-4">
+                                <svg className="w-6 h-6 text-[#22C55E]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z" />
+                                </svg>
+                            </div>
+                            <h3 className="text-xl font-semibold text-[#0F172A] mb-2">WhatsApp Integration</h3>
+                            <p className="text-[#64748B]">
+                                Sell directly through WhatsApp with automated order management.
+                            </p>
+                        </div>
                     </div>
                 </div>
             </section>
 
             {/* How It Works */}
-            <section className="py-32 px-4 bg-black overflow-hidden">
-                <div className="max-w-[1440px] mx-auto relative z-10">
-                    <div className="grid md:grid-cols-2 gap-20 items-center">
-                        <div className="text-white">
-                            <span className="text-gray-400 font-bold tracking-wide uppercase mb-4 block">How it works</span>
-                            <h2 className="text-4xl md:text-5xl font-bold mb-8">From idea to <br /> first sale in minutes.</h2>
+            <section className="py-20 px-4 bg-white">
+                <div className="max-w-6xl mx-auto">
+                    <h2 className="text-3xl font-semibold text-[#0F172A] mb-4 text-center">
+                        How it works
+                    </h2>
+                    <p className="text-[#64748B] text-center mb-12 max-w-2xl mx-auto">
+                        Start selling in three simple steps.
+                    </p>
 
-                            <div className="space-y-12">
-                                {[
-                                    { title: 'Create your store', desc: 'Sign up and choose a template that fits your brand.' },
-                                    { title: 'Add products', desc: 'Upload your inventory, set prices, and manage variants.' },
-                                    { title: 'Start selling', desc: 'Share your link and accept payments instantly.' }
-                                ].map((step, i) => (
-                                    <div key={i} className="flex gap-6 group">
-                                        <div className="flex-shrink-0 w-12 h-12 rounded-full border border-white/20 flex items-center justify-center font-bold text-xl group-hover:bg-white group-hover:text-black transition-colors">
-                                            {i + 1}
-                                        </div>
-                                        <div>
-                                            <h4 className="text-xl font-bold mb-2">{step.title}</h4>
-                                            <p className="text-white/50">{step.desc}</p>
-                                        </div>
-                                    </div>
-                                ))}
+                    <div className="grid md:grid-cols-3 gap-12">
+                        <div className="text-center">
+                            <div className="w-12 h-12 bg-[#22C55E] text-white rounded-full flex items-center justify-center text-xl font-semibold mx-auto mb-4">
+                                1
                             </div>
+                            <h3 className="text-xl font-semibold text-[#0F172A] mb-2">Create your store</h3>
+                            <p className="text-[#64748B]">
+                                Sign up and set up your store with your business information and branding.
+                            </p>
                         </div>
-                        <div className="relative">
-                            <div className="aspect-square rounded-3xl bg-white/5 border border-white/10 p-8 rotate-3">
-                                <div className="w-full h-full bg-[#111] rounded-2xl border border-white/5 flex items-center justify-center text-white/20 font-medium">
-                                    <div className="text-center">
-                                        <Icon name={"LayoutDashboard" as any} size={48} className="mx-auto mb-4 opacity-50" />
-                                        <p>Dashboard Preview</p>
-                                    </div>
-                                </div>
+
+                        <div className="text-center">
+                            <div className="w-12 h-12 bg-[#22C55E] text-white rounded-full flex items-center justify-center text-xl font-semibold mx-auto mb-4">
+                                2
                             </div>
+                            <h3 className="text-xl font-semibold text-[#0F172A] mb-2">Add your products</h3>
+                            <p className="text-[#64748B]">
+                                Upload your inventory, set prices, and organize your catalog.
+                            </p>
+                        </div>
+
+                        <div className="text-center">
+                            <div className="w-12 h-12 bg-[#22C55E] text-white rounded-full flex items-center justify-center text-xl font-semibold mx-auto mb-4">
+                                3
+                            </div>
+                            <h3 className="text-xl font-semibold text-[#0F172A] mb-2">Start selling</h3>
+                            <p className="text-[#64748B]">
+                                Share your store link and start accepting orders through WhatsApp.
+                            </p>
                         </div>
                     </div>
                 </div>
             </section>
 
-            {/* CTA */}
-            <section className="py-20 px-4">
-                <div className="max-w-5xl mx-auto bg-gray-50 border border-gray-100 rounded-[2.5rem] p-12 md:p-20 text-center relative overflow-hidden">
-                    <div className="relative z-10">
-                        <h2 className="text-4xl md:text-5xl font-bold text-black mb-6">Ready to scale?</h2>
-                        <p className="text-gray-500 text-lg mb-8 max-w-xl mx-auto">
-                            Join thousands of merchants growing their business with Vayva today.
-                        </p>
-                        <Link href="/signup">
-                            <Button className="h-14 px-10 rounded-full bg-black hover:bg-black/80 text-white font-bold text-lg shadow-lg">
-                                Create free account
+            {/* Templates Preview */}
+            <section className="py-20 px-4 bg-[#F7FAF7]">
+                <div className="max-w-6xl mx-auto">
+                    <h2 className="text-3xl font-semibold text-[#0F172A] mb-4 text-center">
+                        Professional templates
+                    </h2>
+                    <p className="text-[#64748B] text-center mb-12 max-w-2xl mx-auto">
+                        Choose from beautifully designed templates for your industry.
+                    </p>
+
+                    <div className="grid md:grid-cols-3 gap-8 mb-8">
+                        {[1, 2, 3].map((i) => (
+                            <div key={i} className="bg-white rounded-lg border border-[#E5E7EB] overflow-hidden">
+                                <div className="aspect-video bg-[#F7FAF7]"></div>
+                                <div className="p-4">
+                                    <h4 className="font-semibold text-[#0F172A]">Template {i}</h4>
+                                    <p className="text-sm text-[#64748B]">Professional design</p>
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+
+                    <div className="text-center">
+                        <Link href="/templates">
+                            <Button variant="outline" className="border-[#E5E7EB] text-[#0F172A] px-8 py-3 rounded-lg">
+                                Explore Templates
                             </Button>
                         </Link>
                     </div>
+                </div>
+            </section>
+
+            {/* Pricing Preview */}
+            <section className="py-20 px-4 bg-white">
+                <div className="max-w-6xl mx-auto">
+                    <h2 className="text-3xl font-semibold text-[#0F172A] mb-4 text-center">
+                        Simple, transparent pricing
+                    </h2>
+                    <p className="text-[#64748B] text-center mb-12 max-w-2xl mx-auto">
+                        Choose the plan that fits your business.
+                    </p>
+
+                    <div className="grid md:grid-cols-3 gap-8 mb-8">
+                        <div className="bg-white rounded-lg border border-[#E5E7EB] p-6">
+                            <h3 className="text-xl font-semibold text-[#0F172A] mb-2">Starter</h3>
+                            <p className="text-3xl font-semibold text-[#0F172A] mb-4">Free</p>
+                            <p className="text-[#64748B] mb-6">Perfect for getting started</p>
+                            <ul className="space-y-2 text-[#64748B]">
+                                <li>✓ Basic store</li>
+                                <li>✓ Up to 50 products</li>
+                                <li>✓ WhatsApp integration</li>
+                            </ul>
+                        </div>
+
+                        <div className="bg-white rounded-lg border-2 border-[#22C55E] p-6">
+                            <h3 className="text-xl font-semibold text-[#0F172A] mb-2">Growth</h3>
+                            <p className="text-3xl font-semibold text-[#0F172A] mb-4">₦15,000<span className="text-base text-[#64748B]">/mo</span></p>
+                            <p className="text-[#64748B] mb-6">For growing businesses</p>
+                            <ul className="space-y-2 text-[#64748B]">
+                                <li>✓ Everything in Starter</li>
+                                <li>✓ Unlimited products</li>
+                                <li>✓ Custom domain</li>
+                                <li>✓ Analytics</li>
+                            </ul>
+                        </div>
+
+                        <div className="bg-white rounded-lg border border-[#E5E7EB] p-6">
+                            <h3 className="text-xl font-semibold text-[#0F172A] mb-2">Pro</h3>
+                            <p className="text-3xl font-semibold text-[#0F172A] mb-4">₦35,000<span className="text-base text-[#64748B]">/mo</span></p>
+                            <p className="text-[#64748B] mb-6">For established stores</p>
+                            <ul className="space-y-2 text-[#64748B]">
+                                <li>✓ Everything in Growth</li>
+                                <li>✓ Priority support</li>
+                                <li>✓ Advanced features</li>
+                                <li>✓ API access</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div className="text-center">
+                        <Link href="/pricing">
+                            <Button variant="outline" className="border-[#E5E7EB] text-[#0F172A] px-8 py-3 rounded-lg">
+                                View Full Pricing
+                            </Button>
+                        </Link>
+                    </div>
+                </div>
+            </section>
+
+            {/* Final CTA */}
+            <section className="py-20 px-4 bg-[#F7FAF7]">
+                <div className="max-w-3xl mx-auto text-center">
+                    <h2 className="text-3xl font-semibold text-[#0F172A] mb-4">
+                        Start selling on WhatsApp in minutes
+                    </h2>
+                    <p className="text-[#64748B] mb-8">
+                        Join thousands of Nigerian merchants growing their business with Vayva.
+                    </p>
+                    <Link href="/signup">
+                        <Button className="bg-[#22C55E] hover:bg-[#16A34A] text-white px-8 py-3 rounded-lg">
+                            Get Started
+                        </Button>
+                    </Link>
                 </div>
             </section>
         </div>
