@@ -2,6 +2,7 @@
 
 import React from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 
 interface AuthLeftPanelProps {
     showSignInLink?: boolean;
@@ -11,6 +12,21 @@ interface AuthLeftPanelProps {
 export const AuthLeftPanel = ({ showSignInLink, showSignUpLink }: AuthLeftPanelProps) => {
     return (
         <div className="hidden lg:flex lg:w-[45%] bg-gray-50 flex-col justify-between p-12 relative">
+            {/* Top: Logo at 2x size (100% increase) */}
+            <div>
+                <Link href="/" className="inline-flex items-center gap-3 group">
+                    <Image
+                        src="/vayva-logo.png"
+                        alt="Vayva Logo"
+                        width={64}
+                        height={64}
+                        className="object-contain"
+                        priority
+                    />
+                    <span className="text-3xl font-bold text-black">Vayva</span>
+                </Link>
+            </div>
+
             {/* Center: Context & Reassurance */}
             <div className="flex flex-col items-start justify-center flex-1 py-12 max-w-md">
                 {/* Subtle abstract illustration */}

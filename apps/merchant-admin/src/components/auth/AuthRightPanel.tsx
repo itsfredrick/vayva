@@ -2,7 +2,6 @@
 
 import React from 'react';
 import Link from 'next/link';
-import { Logo } from '@/components/Logo';
 
 interface AuthRightPanelProps {
     children: React.ReactNode;
@@ -14,9 +13,11 @@ interface AuthRightPanelProps {
 export const AuthRightPanel = ({ children, stepIndicator, title, subtitle }: AuthRightPanelProps) => {
     return (
         <div className="flex-1 lg:w-[55%] bg-white flex flex-col">
-            {/* Top bar with logo and help link */}
+            {/* Top bar with Vayva text and help link */}
             <div className="h-16 px-6 lg:px-12 flex items-center justify-between border-b border-gray-100">
-                <Logo size="md" showText={true} href="/" />
+                <Link href="/" className="text-2xl font-bold text-black">
+                    Vayva
+                </Link>
                 <Link
                     href="/help"
                     className="text-sm text-gray-600 hover:text-black font-medium transition-colors"
