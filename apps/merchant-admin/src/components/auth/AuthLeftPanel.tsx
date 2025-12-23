@@ -40,12 +40,12 @@ export const AuthLeftPanel = ({ showSignInLink, showSignUpLink }: AuthLeftPanelP
 
                 {/* Supporting copy */}
                 <p className="text-lg text-gray-700 mb-3 leading-relaxed">
-                    Vayva helps you turn conversations into orders, payments, deliveries, and reliable business records.
+                    Vayva turns conversations into orders, payments, deliveries, and reliable business records.
                 </p>
 
                 {/* Optional secondary line */}
                 <p className="text-sm text-gray-600 leading-relaxed">
-                    Built for African merchants who need clarity, not complexity.
+                    Built for African merchants.
                 </p>
             </div>
 
