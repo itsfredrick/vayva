@@ -46,9 +46,9 @@ export function MarketingFooter() {
                             <div className="w-8 h-8 bg-[#46EC13] rounded-lg flex items-center justify-center">
                                 <span className="text-black font-bold text-xl">V</span>
                             </div>
-                            <span className="text-[#1d1d1f] font-bold text-xl tracking-tight">Vayva</span>
+                            <span className="text-white font-bold text-xl tracking-tight">Vayva</span>
                         </Link>
-                        <p className="text-[#1d1d1f]/60 max-w-xs text-sm leading-relaxed">
+                        <p className="text-gray-400 max-w-xs text-sm leading-relaxed">
                             The all-in-one execution platform for African merchants. Build, sell, and grow with automated tools designed for our market.
                         </p>
                         <div className="flex gap-4">
@@ -68,13 +68,13 @@ export function MarketingFooter() {
                     {/* Links Columns */}
                     {Object.entries(FOOTER_LINKS).map(([category, links]) => (
                         <div key={category} className="col-span-1">
-                            <h4 className="font-bold text-[#1d1d1f] mb-6">{category}</h4>
+                            <h4 className="font-bold text-white mb-6">{category}</h4>
                             <ul className="space-y-4">
                                 {links.map((link) => (
                                     <li key={link.href}>
                                         <Link
                                             href={link.href}
-                                            className="text-sm text-[#1d1d1f]/60 hover:text-[#46EC13] transition-colors"
+                                            className="text-sm text-gray-400 hover:text-[#22C55E] transition-colors"
                                         >
                                             {link.label}
                                         </Link>
@@ -87,12 +87,12 @@ export function MarketingFooter() {
 
                 {/* Bottom Bar */}
                 <div className="pt-8 border-t border-black/5 flex flex-col md:flex-row justify-between items-center gap-4">
-                    <p className="text-[#1d1d1f]/40 text-xs">
+                    <p className="text-gray-500 text-xs">
                         © {new Date().getFullYear()} Vayva Inc. Built for Africa.
                     </p>
                     <div className="flex gap-6">
-                        <Link href="/legal/privacy" className="text-xs text-[#1d1d1f]/40 hover:text-[#1d1d1f]">Privacy Policy</Link>
-                        <Link href="/legal/terms" className="text-xs text-[#1d1d1f]/40 hover:text-[#1d1d1f]">Terms of Service</Link>
+                        <Link href="/legal/privacy" className="text-xs text-gray-500 hover:text-white">Privacy Policy</Link>
+                        <Link href="/legal/terms" className="text-xs text-gray-500 hover:text-white">Terms of Service</Link>
                     </div>
                 </div>
             </div>
