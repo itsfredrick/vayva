@@ -1,90 +1,273 @@
 'use client';
 
 import React, { useState } from 'react';
-import { Button } from '@vayva/ui';
-import { motion } from 'framer-motion';
 import Link from 'next/link';
+import { Button } from '@vayva/ui';
 
-export default function MarketplaceWaitlistPage() {
-    const [email, setEmail] = useState('');
-    const [submitted, setSubmitted] = useState(false);
+const MARKETPLACE_CATEGORIES = [
+    {
+        id: 'payments',
+        name: 'Payments & Finance',
+        description: 'Advanced payment processing and financial tools',
+        example: 'Example: Multi-currency support, installment payments',
+    },
+    {
+        id: 'logistics',
+        name: 'Logistics & Delivery',
+        description: 'Extended delivery and fulfillment options',
+        example: 'Example: International shipping, warehouse management',
+    },
+    {
+        id: 'marketing',
+        name: 'Marketing & Messaging',
+        description: 'Customer engagement and marketing automation',
+        example: 'Example: Email campaigns, SMS notifications',
+    },
+    {
+        id: 'accounting',
+        name: 'Accounting & Records',
+        description: 'Advanced bookkeeping and compliance tools',
+        example: 'Example: Tax filing, invoice generation',
+    },
+    {
+        id: 'analytics',
+        name: 'Analytics & Insights',
+        description: 'Deep business intelligence and reporting',
+        example: 'Example: Customer segmentation, sales forecasting',
+    },
+    {
+        id: 'developer',
+        name: 'Developer Tools',
+        description: 'APIs and integrations for custom workflows',
+        example: 'Example: Webhook endpoints, custom integrations',
+    },
+];
 
-    const handleSubmit = (e: React.FormEvent) => {
-        e.preventDefault();
-        // Simulate API call
-        setTimeout(() => {
-            setSubmitted(true);
-        }, 800);
-    };
+export default function MarketplacePage() {
+    const [hoveredCategory, setHoveredCategory] = useState<string | null>(null);
+    const [showWaitlistModal, setShowWaitlistModal] = useState(false);
 
     return (
-        <div className="min-h-[80vh] flex flex-col items-center justify-center px-4 relative overflow-hidden">
-            {/* Background Blobs */}
-            <div className="absolute top-1/4 -left-20 w-96 h-96 bg-[#46EC13]/10 rounded-full blur-[100px] pointer-events-none" />
-            <div className="absolute bottom-1/4 -right-20 w-96 h-96 bg-blue-500/10 rounded-full blur-[100px] pointer-events-none" />
-
-            <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6 }}
-                className="max-w-2xl mx-auto text-center relative z-10"
-            >
-                <div className="inline-flex items-center gap-2 bg-blue-50 border border-blue-100 px-4 py-1.5 rounded-full mb-8">
-                    <span className="w-2 h-2 bg-blue-500 rounded-full animate-pulse" />
-                    <span className="text-xs font-bold text-blue-700 uppercase tracking-wide">Coming Soon</span>
+        <div className="min-h-screen bg-white">
+            {/* Page Hero */}
+            <section className="pt-32 pb-16 px-4">
+                <div className="max-w-4xl mx-auto">
+                    <p className="text-sm text-[#64748B] mb-4">Product → Marketplace</p>
+                    <h1 className="text-4xl md:text-5xl font-bold text-[#0F172A] mb-6 leading-tight">
+                        Extend Vayva when your business needs more.
+                    </h1>
+                    <p className="text-xl text-[#64748B] max-w-2xl">
+                        The Vayva Marketplace will let you add specialized tools—only when they\'re useful to your operations.
+                    </p>
                 </div>
+            </section>
 
-                <h1 className="text-5xl md:text-7xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-gray-900 via-gray-800 to-gray-900 mb-6 pb-2">
-                    Vayva Marketplace
-                </h1>
-
-                <p className="text-xl text-gray-500 mb-10 leading-relaxed max-w-lg mx-auto">
-                    The first AI-powered marketplace for African commerce.
-                    Compare prices, find trusted merchants, and shop with confidence.
-                </p>
-
-                {submitted ? (
-                    <motion.div
-                        initial={{ opacity: 0, scale: 0.95 }}
-                        animate={{ opacity: 1, scale: 1 }}
-                        className="bg-green-50 border border-green-200 rounded-2xl p-8 max-w-md mx-auto"
-                    >
-                        <div className="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4 text-green-600">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" /><polyline points="22 4 12 14.01 9 11.01" /></svg>
+            {/* What the Marketplace Is */}
+            <section className="py-16 px-4 bg-gray-50">
+                <div className="max-w-6xl mx-auto">
+                    <div className="grid md:grid-cols-2 gap-12 items-center">
+                        {/* Explanation */}
+                        <div>
+                            <h2 className="text-2xl font-bold text-[#0F172A] mb-6">
+                                Why a marketplace?
+                            </h2>
+                            <div className="space-y-4 text-[#64748B]">
+                                <p>
+                                    Businesses don\'t need everything on day one. As your operations grow, your needs become more specific.
+                                </p>
+                                <p>
+                                    The Marketplace allows you to add capabilities without cluttering the core system. Only install what you actually use.
+                                </p>
+                                <p>
+                                    Every tool integrates directly into your existing workflows—no separate dashboards, no disconnected systems.
+                                </p>
+                            </div>
                         </div>
-                        <h3 className="text-xl font-bold text-gray-900 mb-2">You're on the list!</h3>
-                        <p className="text-gray-500">We'll notify you when we open the doors.</p>
-                    </motion.div>
-                ) : (
-                    <form onSubmit={handleSubmit} className="flex flex-col sm:flex-row gap-4 max-w-md mx-auto">
-                        <input
-                            type="email"
-                            placeholder="Enter your email address"
-                            required
-                            value={email}
-                            onChange={(e) => setEmail(e.target.value)}
-                            className="flex-1 h-14 px-6 rounded-full border border-gray-200 bg-white shadow-sm focus:outline-none focus:ring-2 focus:ring-[#46EC13] focus:border-transparent transition-all w-full text-base"
-                        />
-                        <Button
-                            type="submit"
-                            className="h-14 px-8 rounded-full bg-[#1d1d1f] hover:bg-black text-white font-bold text-lg shadow-lg hover:shadow-xl transition-all"
-                        >
-                            Join Waitlist
-                        </Button>
-                    </form>
-                )}
-            </motion.div>
 
-            {/* Subtle Legal Footer */}
-            <motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ delay: 1, duration: 1 }}
-                className="absolute bottom-10 left-0 right-0 flex justify-center gap-6 text-[10px] font-bold text-gray-400 uppercase tracking-widest z-10"
-            >
-                <Link href="/legal/privacy" className="hover:text-black transition-colors">Privacy Policy</Link>
-                <Link href="/legal/acceptable-use" className="hover:text-black transition-colors">Acceptable Use</Link>
-            </motion.div>
+                        {/* Visual */}
+                        <div className="bg-white rounded-lg border border-gray-200 p-8">
+                            <div className="relative">
+                                {/* Core System */}
+                                <div className="w-32 h-32 bg-[#22C55E]/10 border-2 border-[#22C55E] rounded-lg flex items-center justify-center mx-auto mb-8">
+                                    <span className="text-sm font-semibold text-[#22C55E]">Core System</span>
+                                </div>
+
+                                {/* Add-ons */}
+                                <div className="grid grid-cols-3 gap-4">
+                                    {['Payments', 'Logistics', 'Marketing', 'Analytics', 'Records', 'Tools'].map((addon) => (
+                                        <div key={addon} className="bg-gray-50 border border-gray-200 rounded p-3 text-center">
+                                            <span className="text-xs text-[#64748B]">{addon}</span>
+                                        </div>
+                                    ))}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            {/* Marketplace Categories */}
+            <section className="py-16 px-4">
+                <div className="max-w-6xl mx-auto">
+                    <h2 className="text-3xl font-bold text-[#0F172A] mb-4 text-center">
+                        What you\'ll find in the Marketplace
+                    </h2>
+                    <p className="text-[#64748B] text-center mb-12 max-w-2xl mx-auto">
+                        Preview of tool categories that will be available
+                    </p>
+
+                    <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                        {MARKETPLACE_CATEGORIES.map((category) => (
+                            <div
+                                key={category.id}
+                                className="bg-white border border-gray-200 rounded-lg p-6 cursor-not-allowed opacity-75 hover:opacity-100 transition-opacity relative"
+                                onMouseEnter={() => setHoveredCategory(category.id)}
+                                onMouseLeave={() => setHoveredCategory(null)}
+                                onClick={() => setShowWaitlistModal(true)}
+                            >
+                                <div className="absolute top-4 right-4">
+                                    <span className="text-xs bg-gray-100 text-[#64748B] px-2 py-1 rounded">
+                                        Coming Soon
+                                    </span>
+                                </div>
+
+                                <h3 className="text-lg font-semibold text-[#0F172A] mb-2 pr-20">
+                                    {category.name}
+                                </h3>
+                                <p className="text-sm text-[#64748B] mb-4">
+                                    {category.description}
+                                </p>
+
+                                {hoveredCategory === category.id && (
+                                    <div className="text-xs text-[#22C55E] italic">
+                                        {category.example}
+                                    </div>
+                                )}
+                            </div>
+                        ))}
+                    </div>
+                </div>
+            </section>
+
+            {/* How Add-ons Will Work */}
+            <section className="py-16 px-4 bg-gray-50">
+                <div className="max-w-4xl mx-auto">
+                    <h2 className="text-3xl font-bold text-[#0F172A] mb-12 text-center">
+                        How add-ons will work
+                    </h2>
+
+                    <div className="space-y-8">
+                        {[
+                            { num: 1, text: 'Browse available tools', detail: 'See what\'s available in the Marketplace' },
+                            { num: 2, text: 'See what problem each solves', detail: 'Clear explanations of what each tool does' },
+                            { num: 3, text: 'Enable only what you need', detail: 'No forced bundles or unnecessary features' },
+                            { num: 4, text: 'Integrated into your workflows', detail: 'Works seamlessly with your existing setup' },
+                        ].map((step) => (
+                            <div key={step.num} className="flex items-start gap-6">
+                                <div className="flex-shrink-0 w-12 h-12 bg-[#22C55E] text-white rounded-full flex items-center justify-center text-xl font-bold">
+                                    {step.num}
+                                </div>
+                                <div className="pt-2">
+                                    <p className="text-lg font-semibold text-[#0F172A] mb-1">{step.text}</p>
+                                    <p className="text-[#64748B]">{step.detail}</p>
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+
+                    <div className="mt-12 p-6 bg-white rounded-lg border border-[#22C55E]/20">
+                        <p className="text-center text-lg font-semibold text-[#0F172A]">
+                            No disconnected tools. No separate dashboards.
+                        </p>
+                    </div>
+                </div>
+            </section>
+
+            {/* Coming Soon Centerpiece */}
+            <section className="py-20 px-4">
+                <div className="max-w-3xl mx-auto">
+                    <div className="bg-gray-50 rounded-lg border border-gray-200 p-12 text-center">
+                        <h2 className="text-3xl font-bold text-[#0F172A] mb-6">
+                            Marketplace launching soon.
+                        </h2>
+                        <p className="text-lg text-[#64748B] mb-8 max-w-2xl mx-auto leading-relaxed">
+                            We\'re building the Marketplace carefully—so every tool meets the same reliability and clarity standards as the core Vayva system.
+                        </p>
+                        <div className="space-y-3 text-sm text-[#64748B] max-w-md mx-auto">
+                            <p>• Early access will roll out gradually</p>
+                            <p>• Only production-ready tools will be listed</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            {/* Platform Philosophy */}
+            <section className="py-16 px-4 bg-gray-50">
+                <div className="max-w-4xl mx-auto text-center">
+                    <h2 className="text-3xl font-bold text-[#0F172A] mb-6">
+                        A platform, not a bundle of features.
+                    </h2>
+                    <div className="grid md:grid-cols-3 gap-8 text-left">
+                        <div>
+                            <p className="font-semibold text-[#0F172A] mb-2">Core stays stable</p>
+                            <p className="text-sm text-[#64748B]">
+                                The foundation you rely on doesn\'t change unexpectedly
+                            </p>
+                        </div>
+                        <div>
+                            <p className="font-semibold text-[#0F172A] mb-2">Marketplace grows over time</p>
+                            <p className="text-sm text-[#64748B]">
+                                New capabilities added as they\'re needed by real businesses
+                            </p>
+                        </div>
+                        <div>
+                            <p className="font-semibold text-[#0F172A] mb-2">Businesses opt in</p>
+                            <p className="text-sm text-[#64748B]">
+                                You choose what to add, nothing is forced on you
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            {/* Final CTA */}
+            <section className="py-20 px-4">
+                <div className="max-w-3xl mx-auto text-center">
+                    <h2 className="text-3xl font-bold text-[#0F172A] mb-6">
+                        Start with the core. Extend when ready.
+                    </h2>
+                    <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                        <Link href="/features">
+                            <Button className="bg-[#22C55E] hover:bg-[#16A34A] text-white px-8 py-4 text-lg font-semibold">
+                                Explore core features
+                            </Button>
+                        </Link>
+                        <Link href="/pricing">
+                            <Button variant="outline" className="border-2 border-gray-300 text-[#0F172A] px-8 py-4 text-lg font-semibold">
+                                View pricing
+                            </Button>
+                        </Link>
+                    </div>
+                </div>
+            </section>
+
+            {/* Coming Soon Modal */}
+            {showWaitlistModal && (
+                <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4" onClick={() => setShowWaitlistModal(false)}>
+                    <div className="bg-white rounded-lg p-8 max-w-md" onClick={(e) => e.stopPropagation()}>
+                        <h3 className="text-2xl font-bold text-[#0F172A] mb-4">Coming Soon</h3>
+                        <p className="text-[#64748B] mb-6">
+                            The Marketplace is currently in development. We\'ll announce when it\'s ready.
+                        </p>
+                        <Button
+                            onClick={() => setShowWaitlistModal(false)}
+                            className="w-full bg-[#22C55E] hover:bg-[#16A34A] text-white"
+                        >
+                            Got it
+                        </Button>
+                    </div>
+                </div>
+            )}
         </div>
     );
 }
