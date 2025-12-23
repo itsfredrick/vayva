@@ -40,17 +40,11 @@ test.beforeAll(async () => {
             update: {},
             create: {
                 id: TEST_MERCHANT_ID,
-                businessName: 'Test Store',
+                name: 'Test Store',
                 slug: 'test-store-e2e',
-                email: 'test@merchant.com',
-                phone: '+2348012345678',
-                currency: 'NGN',
-                timezone: 'Africa/Lagos',
-                country: 'NG',
-                isLive: false,
-                isTestMode: true,
                 onboardingStatus: 'IN_PROGRESS',
-                subscriptionPlan: 'STARTER',
+                plan: 'STARTER',
+                category: 'general',
             },
         });
 
