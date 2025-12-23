@@ -1,72 +1,306 @@
 'use client';
 
-import React from 'react';
+import React, { useState } from 'react';
 import Link from 'next/link';
-import { Button , Icon } from '@vayva/ui';
-import { motion } from 'framer-motion';
+import { Button } from '@vayva/ui';
 
-const THEMES = [
-    { name: 'Aurora', category: 'Fashion', image: 'bg-pink-500/20' },
-    { name: 'Onyx', category: 'Electronics', image: 'bg-blue-500/20' },
-    { name: 'Sage', category: 'Home & Living', image: 'bg-green-500/20' },
-    { name: 'Ember', category: 'Beauty', image: 'bg-orange-500/20' },
-    { name: 'Obsidian', category: 'Luxury', image: 'bg-black/50' },
-    { name: 'Cobalt', category: 'Services', image: 'bg-indigo-500/20' },
+const TEMPLATES = [
+    {
+        id: 'retail',
+        name: 'Retail Selling',
+        category: 'retail',
+        description: 'Structured orders, simple payments, delivery tracking for everyday selling.',
+        workflows: ['Orders', 'Payments', 'Deliveries', 'Records'],
+        setupTime: '5–10 minutes',
+        volume: 'medium',
+        teamSize: 'solo',
+    },
+    {
+        id: 'food-catering',
+        name: 'Food & Catering',
+        category: 'food',
+        description: 'Order scheduling, payment tracking, delivery coordination for food businesses.',
+        workflows: ['Orders', 'Payments', 'Deliveries', 'Inventory', 'Records'],
+        setupTime: '10–15 minutes',
+        volume: 'medium',
+        teamSize: 'small',
+    },
+    {
+        id: 'services',
+        name: 'Services & Bookings',
+        category: 'services',
+        description: 'Appointment tracking, payment recording, customer history for service providers.',
+        workflows: ['Orders', 'Payments', 'Customers', 'Records'],
+        setupTime: '5–10 minutes',
+        volume: 'low',
+        teamSize: 'solo',
+    },
+    {
+        id: 'online-selling',
+        name: 'Online Selling',
+        category: 'online',
+        description: 'Full e-commerce setup with inventory, payments, and delivery management.',
+        workflows: ['Orders', 'Payments', 'Inventory', 'Deliveries', 'Customers', 'Records'],
+        setupTime: '15–20 minutes',
+        volume: 'high',
+        teamSize: 'small',
+    },
+    {
+        id: 'wholesale',
+        name: 'Wholesale / Bulk Orders',
+        category: 'wholesale',
+        description: 'Large order management, payment terms, delivery coordination for bulk selling.',
+        workflows: ['Orders', 'Payments', 'Inventory', 'Deliveries', 'Records'],
+        setupTime: '10–15 minutes',
+        volume: 'high',
+        teamSize: 'multi',
+    },
+    {
+        id: 'custom',
+        name: 'Custom Setup',
+        category: 'custom',
+        description: 'Start from scratch and configure exactly what you need.',
+        workflows: ['Customizable'],
+        setupTime: '20+ minutes',
+        volume: 'any',
+        teamSize: 'any',
+    },
+];
+
+const CATEGORIES = [
+    { id: 'all', label: 'All templates' },
+    { id: 'retail', label: 'Retail selling' },
+    { id: 'food', label: 'Food & catering' },
+    { id: 'services', label: 'Services & bookings' },
+    { id: 'online', label: 'Online selling' },
+    { id: 'wholesale', label: 'Wholesale / bulk orders' },
+    { id: 'custom', label: 'Custom setup' },
 ];
 
 export default function TemplatesPage() {
+    const [selectedCategory, setSelectedCategory] = useState('all');
+    const [selectedTemplate, setSelectedTemplate] = useState<string | null>(null);
+
+    const filteredTemplates = selectedCategory === 'all'
+        ? TEMPLATES
+        : TEMPLATES.filter(t => t.category === selectedCategory);
+
+    const currentTemplate = TEMPLATES.find(t => t.id === selectedTemplate);
+
     return (
-        <div className="min-h-screen py-20 px-4">
-            <div className="max-w-7xl mx-auto">
-                <motion.div
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.6 }}
-                    className="text-center max-w-3xl mx-auto mb-16"
-                >
-                    <h1 className="text-4xl md:text-6xl font-bold text-[#1d1d1f] mb-6">Start with style.</h1>
-                    <p className="text-xl text-[#1d1d1f]/60 mb-8">
-                        Choose from our professionally designed themes. Fully customizable and optimized for mobile.
+        <div className="min-h-screen bg-white">
+            {/* Page Header */}
+            <section className="pt-32 pb-16 px-4">
+                <div className="max-w-6xl mx-auto">
+                    <p className="text-sm text-[#64748B] mb-4">Product → Templates</p>
+                    <h1 className="text-4xl md:text-5xl font-bold text-[#0F172A] mb-6 leading-tight">
+                        Start with a structure that fits your business.
+                    </h1>
+                    <p className="text-xl text-[#64748B] max-w-3xl">
+                        Templates give you proven operational setups for common WhatsApp-based businesses—orders, payments, deliveries, and records already aligned.
                     </p>
+                </div>
+            </section>
 
-                    {/* Filters */}
-                    <div className="flex flex-wrap justify-center gap-3">
-                        {['All', 'Fashion', 'Electronics', 'Beauty', 'Food', 'Services'].map((filter, i) => (
-                            <button key={filter} className={`px-5 py-2 rounded-full text-sm font-bold border transition-colors ${i === 0 ? 'bg-[#1d1d1f] text-white border-[#1d1d1f]' : 'bg-transparent text-[#1d1d1f]/60 border-gray-200 hover:border-gray-400 hover:text-[#1d1d1f]'}`}>
-                                {filter}
-                            </button>
-                        ))}
-                    </div>
-                </motion.div>
-
-                <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-                    {THEMES.map((theme, i) => (
-                        <motion.div
-                            key={theme.name}
-                            initial={{ opacity: 0, y: 20 }}
-                            whileInView={{ opacity: 1, y: 0 }}
-                            viewport={{ once: true }}
-                            transition={{ delay: i * 0.1 }}
-                            className="group cursor-pointer"
-                        >
-                            <div className={`aspect-[3/4] rounded-[2rem] ${theme.image.replace('/20', '/10')} border border-gray-100 mb-6 relative overflow-hidden shadow-sm group-hover:shadow-xl transition-all duration-500`}>
-                                <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 bg-white/20 backdrop-blur-sm transition-opacity">
-                                    <Button className="rounded-full font-bold bg-[#1d1d1f] text-white hover:bg-[#1d1d1f]/90 shadow-xl">Preview Theme</Button>
-                                </div>
+            {/* Template Selector */}
+            <section className="py-16 px-4">
+                <div className="max-w-6xl mx-auto">
+                    <div className="grid lg:grid-cols-4 gap-8">
+                        {/* Filters (Sticky on desktop) */}
+                        <div className="lg:col-span-1">
+                            <div className="lg:sticky lg:top-24">
+                                <h3 className="text-sm font-semibold text-[#64748B] mb-4 uppercase tracking-wide">
+                                    Business Type
+                                </h3>
+                                <nav className="space-y-2">
+                                    {CATEGORIES.map((category) => (
+                                        <button
+                                            key={category.id}
+                                            onClick={() => setSelectedCategory(category.id)}
+                                            className={`w-full text-left px-4 py-3 rounded-lg transition-colors ${selectedCategory === category.id
+                                                    ? 'bg-[#22C55E]/10 text-[#22C55E] font-semibold'
+                                                    : 'text-[#0F172A] hover:bg-gray-50'
+                                                }`}
+                                        >
+                                            {category.label}
+                                        </button>
+                                    ))}
+                                </nav>
                             </div>
-                            <div className="flex justify-between items-center px-2">
+                        </div>
+
+                        {/* Template Cards */}
+                        <div className="lg:col-span-3">
+                            <div className="grid md:grid-cols-2 gap-6">
+                                {filteredTemplates.map((template) => (
+                                    <div
+                                        key={template.id}
+                                        className="bg-white border border-gray-200 rounded-lg p-6 hover:border-[#22C55E] hover:shadow-sm transition-all cursor-pointer"
+                                        onClick={() => setSelectedTemplate(template.id)}
+                                    >
+                                        <h3 className="text-xl font-bold text-[#0F172A] mb-2">
+                                            {template.name}
+                                        </h3>
+                                        <p className="text-[#64748B] mb-4">
+                                            {template.description}
+                                        </p>
+
+                                        {/* Workflows */}
+                                        <div className="flex flex-wrap gap-2 mb-4">
+                                            {template.workflows.map((workflow) => (
+                                                <span
+                                                    key={workflow}
+                                                    className="text-xs bg-gray-100 text-[#64748B] px-2 py-1 rounded"
+                                                >
+                                                    {workflow}
+                                                </span>
+                                            ))}
+                                        </div>
+
+                                        <div className="flex justify-between items-center">
+                                            <span className="text-sm text-[#64748B]">
+                                                Setup: {template.setupTime}
+                                            </span>
+                                            <Button
+                                                variant="outline"
+                                                className="border-2 border-gray-300 text-sm"
+                                                onClick={(e) => {
+                                                    e.stopPropagation();
+                                                    setSelectedTemplate(template.id);
+                                                }}
+                                            >
+                                                Preview template
+                                            </Button>
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            {/* Educational Note */}
+            <section className="py-16 px-4 bg-gray-50">
+                <div className="max-w-3xl mx-auto text-center">
+                    <p className="text-lg text-[#64748B] italic">
+                        Templates don\'t replace understanding your business. They give you a clean starting structure you can adapt as you grow.
+                    </p>
+                </div>
+            </section>
+
+            {/* Custom Template Option */}
+            <section className="py-16 px-4">
+                <div className="max-w-3xl mx-auto text-center">
+                    <h2 className="text-2xl font-bold text-[#0F172A] mb-4">
+                        Prefer to start from scratch?
+                    </h2>
+                    <p className="text-[#64748B] mb-6">
+                        Templates are optional. You can start with a blank setup and configure everything yourself.
+                    </p>
+                    <Link href="/signup">
+                        <Button variant="outline" className="border-2 border-gray-300 px-8 py-4 text-lg font-semibold">
+                            Start with a blank setup
+                        </Button>
+                    </Link>
+                </div>
+            </section>
+
+            {/* Template Preview Modal */}
+            {selectedTemplate && currentTemplate && (
+                <div
+                    className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4 overflow-y-auto"
+                    onClick={() => setSelectedTemplate(null)}
+                >
+                    <div
+                        className="bg-white rounded-lg max-w-3xl w-full my-8"
+                        onClick={(e) => e.stopPropagation()}
+                    >
+                        {/* Preview Header */}
+                        <div className="p-8 border-b border-gray-200">
+                            <div className="flex justify-between items-start mb-4">
                                 <div>
-                                    <h3 className="text-xl font-bold text-[#1d1d1f]">{theme.name}</h3>
-                                    <p className="text-[#1d1d1f]/50 text-sm">{theme.category}</p>
+                                    <h2 className="text-3xl font-bold text-[#0F172A] mb-2">
+                                        {currentTemplate.name}
+                                    </h2>
+                                    <p className="text-[#64748B]">{currentTemplate.description}</p>
                                 </div>
-                                <Link href="/auth/signup">
-                                    <span className="text-sm font-bold text-[#46EC13] group-hover:underline">Use this theme</span>
+                                <button
+                                    onClick={() => setSelectedTemplate(null)}
+                                    className="text-[#64748B] hover:text-[#0F172A] text-2xl"
+                                >
+                                    ×
+                                </button>
+                            </div>
+                        </div>
+
+                        {/* Overview Panel */}
+                        <div className="p-8 border-b border-gray-200">
+                            <h3 className="font-semibold text-[#0F172A] mb-4">What this template is for</h3>
+                            <div className="space-y-3 text-[#64748B]">
+                                <p>
+                                    <strong>Best for:</strong> {currentTemplate.category === 'retail' && 'Merchants selling physical products daily'}
+                                    {currentTemplate.category === 'food' && 'Food vendors and catering services'}
+                                    {currentTemplate.category === 'services' && 'Service providers and consultants'}
+                                    {currentTemplate.category === 'online' && 'Online stores with inventory management'}
+                                    {currentTemplate.category === 'wholesale' && 'Bulk sellers and distributors'}
+                                    {currentTemplate.category === 'custom' && 'Businesses with unique requirements'}
+                                </p>
+                                <p>
+                                    <strong>Solves:</strong> Reduces setup time by pre-configuring common workflows and defaults
+                                </p>
+                            </div>
+                        </div>
+
+                        {/* Included Workflows */}
+                        <div className="p-8 border-b border-gray-200">
+                            <h3 className="font-semibold text-[#0F172A] mb-4">Included workflows</h3>
+                            <div className="space-y-3">
+                                {currentTemplate.workflows.map((workflow) => (
+                                    <div key={workflow} className="flex items-start gap-3">
+                                        <div className="w-6 h-6 bg-[#22C55E]/10 rounded flex items-center justify-center flex-shrink-0 mt-0.5">
+                                            <span className="text-[#22C55E] text-sm">✓</span>
+                                        </div>
+                                        <div>
+                                            <p className="font-semibold text-[#0F172A]">{workflow}</p>
+                                            <p className="text-sm text-[#64748B]">
+                                                {workflow === 'Orders' && 'Pre-configured order statuses and tracking'}
+                                                {workflow === 'Payments' && 'Payment recording and reconciliation setup'}
+                                                {workflow === 'Inventory' && 'Stock tracking and low-stock alerts'}
+                                                {workflow === 'Deliveries' && 'Delivery status management'}
+                                                {workflow === 'Customers' && 'Customer profile and history tracking'}
+                                                {workflow === 'Records' && 'Automatic record generation'}
+                                                {workflow === 'Customizable' && 'Configure everything from scratch'}
+                                            </p>
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+
+                        {/* Apply Template */}
+                        <div className="p-8">
+                            <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-6">
+                                <p className="text-sm text-blue-900">
+                                    Applying a template sets up workflows and defaults. You can change everything later. No data is locked, and templates do not limit features.
+                                </p>
+                            </div>
+                            <div className="flex gap-4">
+                                <Link href="/signup" className="flex-1">
+                                    <Button className="w-full bg-[#22C55E] hover:bg-[#16A34A] text-white py-4 text-lg font-semibold">
+                                        Apply template
+                                    </Button>
+                                </Link>
+                                <Link href="/signup" className="flex-1">
+                                    <Button variant="outline" className="w-full border-2 border-gray-300 py-4 text-lg font-semibold">
+                                        Customize first
+                                    </Button>
                                 </Link>
                             </div>
-                        </motion.div>
-                    ))}
+                        </div>
+                    </div>
                 </div>
-            </div>
+            )}
         </div>
     );
 }
