@@ -59,10 +59,10 @@ export class RiskEngine {
         });
 
         // Simple threshold check for Status
-        if (profile.merchantRiskScore > 100 && profile.status !== 'RESTRICTED' && profile.status !== 'SUSPENDED') {
+        if (profile.merchantRiskScore > 100 && profile.status !== RiskStatus.RESTRICTED && profile.status !== RiskStatus.SUSPENDED) {
             await prisma.riskProfile.update({
                 where: { merchantId },
-                data: { status: 'RESTRICTED' }
+                data: { status: RiskStatus.RESTRICTED }
             });
             // Auto-enforce
             await this.createEnforcement(merchantId, 'REQUIRE_MANUAL_APPROVAL', 'MERCHANT', null, 'Risk score exceeded 100');
