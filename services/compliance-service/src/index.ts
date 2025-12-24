@@ -23,7 +23,7 @@ const start = async () => {
         await fastify.listen({ port, host: '0.0.0.0' });
         console.log(`Compliance service listening on port ${port}`);
     } catch (err) {
-        fastify.log.error(err);
+        fastify.log.warn(err);
         process.exit(1);
     }
 };
