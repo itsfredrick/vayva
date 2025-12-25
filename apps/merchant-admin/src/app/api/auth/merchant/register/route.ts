@@ -71,8 +71,6 @@ export async function POST(request: NextRequest) {
                 data: {
                     name: storeName,
                     slug: `${storeName.toLowerCase().replace(/[^a-z0-9]+/g, '-')}-${Date.now()}`,
-                    currency: 'NGN',
-                    timezone: 'Africa/Lagos',
                     onboardingCompleted: false,
                     onboardingLastStep: 'welcome',
                 },
@@ -91,11 +89,10 @@ export async function POST(request: NextRequest) {
             // Create OTP code
             await tx.otpCode.create({
                 data: {
-                    userId: newUser.id,
+                    identifier: email.toLowerCase(),
                     code: otpCode,
-                    type: 'email_verification',
+                    type: 'EMAIL_VERIFICATION',
                     expiresAt: otpExpiresAt,
-                    isUsed: false,
                 },
             });
 
@@ -103,8 +100,8 @@ export async function POST(request: NextRequest) {
             await tx.merchantOnboarding.create({
                 data: {
                     storeId: store.id,
-                    status: 'IN_PROGRESS',
-                    currentStep: 'welcome',
+                    currentStepKey: 'welcome',
+                    completedSteps: [],
                     data: {
                         business: {
                             name: storeName,

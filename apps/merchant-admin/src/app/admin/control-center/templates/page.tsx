@@ -46,9 +46,9 @@ export default function TemplatesPage() {
         setApplyingId(null);
     };
 
-    const handlePreview = (id: string) => {
+    const handlePreview = (template: StoreTemplate) => {
         // Open preview in new tab or modal
-        window.open(`/admin/control-center/preview?template=${id}`, '_blank');
+        window.open(`/admin/control-center/preview?template=${template.id}`, '_blank');
     };
 
     if (loading || !config) {
@@ -94,11 +94,10 @@ export default function TemplatesPage() {
                         return (
                             <TemplateCard
                                 key={template.id}
-                                template={template}
-                                isActive={config.templateId === template.id}
-                                onSelect={handleSelectTemplate}
-                                onPreview={handlePreview}
-                                canSelect={canSelect}
+                                template={template as any}
+                                onPreview={handlePreview as any}
+                                onUse={() => handleSelectTemplate(template.id)}
+                                userPlan={USER_PLAN as any}
                             />
                         );
                     })}

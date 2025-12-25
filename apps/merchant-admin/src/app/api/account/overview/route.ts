@@ -59,7 +59,7 @@ export async function GET() {
             // WhatsApp Agent Status
             whatsapp: {
                 connected: !!store.whatsAppChannel,
-                automationEnabled: store.whatsAppChannel?.isActive || false,
+                automationEnabled: store.whatsAppChannel?.status === 'active' || false,
             },
 
             // Alerts (blocking issues)

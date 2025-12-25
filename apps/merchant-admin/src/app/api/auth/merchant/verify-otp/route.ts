@@ -15,20 +15,10 @@ export async function POST(request: NextRequest) {
             );
         }
 
-        // Find user with OTP codes
+        // Find user by email
         const user = await prisma.user.findUnique({
             where: { email: email.toLowerCase() },
             include: {
-                otpCodes: {
-                    where: {
-                        type: 'email_verification',
-                        isUsed: false,
-                    },
-                    orderBy: {
-                        createdAt: 'desc',
-                    },
-                    take: 1,
-                },
                 memberships: {
                     where: { status: 'active' },
                     include: { store: true },
@@ -51,24 +41,34 @@ export async function POST(request: NextRequest) {
             );
         }
 
-        // Get the most recent OTP
-        const otpRecord = user.otpCodes[0];
+        // Find the OTP code
+        const otpRecord = await prisma.otpCode.findFirst({
+            where: {
+                identifier: email.toLowerCase(),
+                type: 'EMAIL_VERIFICATION',
+                isUsed: false,
+            },
+            orderBy: {
+                createdAt: 'desc',
+            },
+        });
+
         if (!otpRecord) {
             return NextResponse.json(
-                { error: 'No verification code found. Please request a new one.' },
-                { status: 404 }
-            );
-        }
-
-        // Check if OTP has expired
-        if (otpRecord.expiresAt < new Date()) {
-            return NextResponse.json(
-                { error: 'Verification code has expired. Please request a new one.' },
+                { error: 'No valid OTP found' },
                 { status: 400 }
             );
         }
 
-        // Verify code
+        // Check if OTP is expired
+        if (new Date() > otpRecord.expiresAt) {
+            return NextResponse.json(
+                { error: 'OTP has expired' },
+                { status: 400 }
+            );
+        }
+
+        // Verify OTP code
         if (otpRecord.code !== code) {
             return NextResponse.json(
                 { error: 'Invalid verification code' },
