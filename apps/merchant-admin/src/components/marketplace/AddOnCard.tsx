@@ -2,8 +2,7 @@
 
 import React from 'react';
 import Link from 'next/link';
-import { AddOnMetadata } from '@vayva/extensions/addon-types';
-import { CompatibilityCheck } from '@vayva/extensions/compatibility';
+import { AddOnMetadata, CompatibilityCheck } from '@vayva/extensions';
 
 interface AddOnCardProps {
     addon: AddOnMetadata;

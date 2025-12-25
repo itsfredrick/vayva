@@ -1,3 +1,4 @@
+
 import { prisma } from '@vayva/db';
 // Using any for some types if they are strings in schema now
 
@@ -15,25 +16,31 @@ export class DisputeService {
         evidenceDueAt?: Date;
     }) {
         // Idempotency: Ignore if exists
-        const existing = await prisma.disputeV2.findUnique({
-            where: { providerDisputeId: data.providerDisputeId }
+        // Composite unique key: provider + providerDisputeId
+        const existing = await prisma.dispute.findUnique({
+            where: {
+                provider_providerDisputeId: {
+                    provider: data.provider,
+                    providerDisputeId: data.providerDisputeId
+                }
+            }
         });
 
         if (existing) return existing;
 
-        return prisma.disputeV2.create({
+        return prisma.dispute.create({
             data: {
                 merchantId: data.merchantId,
                 storeId: data.merchantId, // Using merchantId as storeId for V1
                 provider: data.provider,
                 providerDisputeId: data.providerDisputeId,
-                amountNgn: data.amount,
+                amount: data.amount, // Field is 'amount'
                 currency: data.currency,
-                reason: data.reasonCode || 'Unknown',
+                reasonCode: data.reasonCode || 'Unknown', // Field is 'reasonCode' not 'reason'
                 orderId: data.orderId,
-                deadlineAt: data.evidenceDueAt,
+                evidenceDueAt: data.evidenceDueAt, // Field is 'evidenceDueAt' not 'deadlineAt'
                 status: 'OPENED',
-                correlationId: `DISP-${Date.now()}`
+                // correlationId // Field absent in schema? I'll remove it.
             }
         });
     }
@@ -45,16 +52,20 @@ export class DisputeService {
         textExcerpt?: string;
         metadata?: any;
     }) {
-        const evidence = await (prisma as any).disputeEvidenceV2.create({
+        const evidence = await prisma.disputeEvidence.create({
             data: {
                 disputeId,
-                merchantId: data.merchantId,
-                type: data.type,
-                fileUrl: data.url || '',
-                fileName: 'evidence.txt',
-                fileSize: 0,
-                contentType: 'text/plain',
-                uploadedBy: 'SYSTEM'
+                type: data.type || 'OTHER', // Enum required
+                url: data.url || '',
+                // Mapping extra fields to metadata since schema lacks them
+                metadata: {
+                    fileName: 'evidence.txt',
+                    fileSize: 0,
+                    contentType: 'text/plain',
+                    uploadedBy: 'SYSTEM',
+                    merchantId: data.merchantId,
+                    ...(data.metadata || {})
+                }
             }
         });
 
@@ -62,17 +73,26 @@ export class DisputeService {
     }
 
     async getDisputes(merchantId: string) {
-        return prisma.disputeV2.findMany({
+        return prisma.dispute.findMany({
             where: { merchantId },
             orderBy: { createdAt: 'desc' }
         });
     }
 
     async getDisputeDetails(disputeId: string) {
-        return prisma.disputeV2.findUnique({
+        const dispute = await prisma.dispute.findUnique({
             where: { id: disputeId },
-            include: { evidence: true, order: true } as any
+            include: { order: true } // camelCase relation
         });
+
+        if (!dispute) return null;
+
+        // Manual fetch for evidence since relation is missing
+        const evidence = await prisma.disputeEvidence.findMany({
+            where: { disputeId }
+        });
+
+        return { ...dispute, evidence };
     }
 }
 

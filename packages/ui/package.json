@@ -1,10 +1,12 @@
 {
     "name": "@vayva/ui",
     "version": "0.0.0",
+    "private": true,
     "main": "src/index.ts",
     "types": "src/index.ts",
     "exports": {
-        ".": "./src/index.ts"
+        ".": "./src/index.ts",
+        "./tailwind-preset": "./src/tailwind-preset.ts"
     },
     "dependencies": {
         "@vayva/content": "workspace:*",

@@ -24,8 +24,8 @@ export const PerformanceInsights = ({ insights, recommendation }: { insights: In
                                 insight.type === 'warning' ? "text-yellow-600" : "text-red-500"
                         )}>
                             <Icon name={
-                                insight.type === 'positive' ? "CheckCircle" :
-                                    insight.type === 'warning' ? "AlertTriangle" : "AlertOctagon"
+                                insight.type === 'positive' ? "CircleCheck" :
+                                    insight.type === 'warning' ? "TriangleAlert" : "OctagonAlert"
                             } size={16} />
                         </div>
                         <div className="flex-1">

@@ -74,7 +74,7 @@ export class ErrorBoundary extends Component<Props, State> {
                 <div className="min-h-[400px] flex items-center justify-center p-8">
                     <div className="max-w-md w-full bg-white rounded-2xl border border-gray-200 shadow-sm p-8 text-center">
                         <div className="w-16 h-16 bg-red-50 rounded-full flex items-center justify-center mx-auto mb-4">
-                            <Icon name="AlertCircle" size={32} className="text-red-600" />
+                            <Icon name="CircleAlert" size={32} className="text-red-600" />
                         </div>
 
                         <h2 className="text-xl font-bold text-gray-900 mb-2">

@@ -16,6 +16,12 @@
         "paths": {
             "@vayva/db": [
                 "infra/db/src/client.ts"
+            ],
+            "@vayva/extensions": [
+                "packages/extensions/src/index.ts"
+            ],
+            "@vayva/extensions/*": [
+                "packages/extensions/src/*"
             ]
         }
     },

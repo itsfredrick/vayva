@@ -217,7 +217,7 @@ export const AdminShell = ({ children, title, breadcrumb, mode = 'admin' }: Admi
                                 className="flex items-center gap-2 p-1 rounded-full hover:bg-gray-50 transition-colors"
                             >
                                 <Avatar
-                                    initials={initials}
+                                    fallback={initials}
                                     className="bg-indigo-600"
                                     size="sm"
                                 />

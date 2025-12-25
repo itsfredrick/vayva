@@ -27,15 +27,12 @@ export async function GET(req: NextRequest, { params }: { params: Promise<{ id: 
                 // Include author name if needed, assuming user relation in schema update?
                 // The schema I added didn't explicitly relation Author -> User but just authorId string for simplicity in plan.
                 // We should probably rely on just ID or fetch user separate if strict.
-            },
-            tagMaps: {
-                include: { tag: true }
             }
         }
     });
 
     if (!conversation) return new NextResponse('Not Found', { status: 404 });
-    if (conversation.merchantId !== (session!.user as any).storeId) return new NextResponse('Forbidden', { status: 403 });
+    if (conversation.storeId !== (session!.user as any).storeId) return new NextResponse('Forbidden', { status: 403 });
 
     // Mark as Read? Usually separated endpoint or side-effect.
     // We'll leave it to explicit action if needed, or assume opening = read eventually.

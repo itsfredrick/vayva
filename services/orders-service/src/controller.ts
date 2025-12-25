@@ -1,6 +1,6 @@
+
 import { FastifyRequest, FastifyReply } from 'fastify';
 import { prisma } from '@vayva/db';
-// import { OrderStatus, PaymentStatus, FulfillmentStatus, Channel } from '@prisma/client';
 
 export const OrdersController = {
     // --- QUERY ---
@@ -15,9 +15,9 @@ export const OrdersController = {
                 fulfillmentStatus: fulfillmentStatus ? (fulfillmentStatus as any) : undefined
             },
             include: {
-                customer: true,
-                items: true,
-                events: { orderBy: { createdAt: 'desc' }, take: 1 } // Latest event
+                Customer: true,
+                OrderItem: true,
+                OrderEvent: { orderBy: { createdAt: 'desc' }, take: 1 } // Latest event
             },
             orderBy: { createdAt: 'desc' }
         });
@@ -29,11 +29,11 @@ export const OrdersController = {
         const order = await prisma.order.findUnique({
             where: { id },
             include: {
-                customer: true,
-                items: true,
-                events: { orderBy: { createdAt: 'desc' } },
-                transactions: true,
-                shipment: true
+                Customer: true,
+                OrderItem: true,
+                OrderEvent: { orderBy: { createdAt: 'desc' } },
+                PaymentTransaction: true,
+                Shipment: true
             }
         });
         if (!order) return reply.status(404).send({ error: "Order not found" });
@@ -93,7 +93,7 @@ export const OrdersController = {
                 subtotal: subtotal as any,
                 total: total as any,
 
-                items: {
+                OrderItem: {
                     create: items.map((item: any) => ({
                         title: item.title,
                         productId: item.productId,
@@ -103,7 +103,7 @@ export const OrdersController = {
                     }))
                 },
 
-                events: {
+                OrderEvent: {
                     create: {
                         storeId,
                         type: 'CREATED',
@@ -112,7 +112,7 @@ export const OrdersController = {
                     }
                 }
             },
-            include: { events: true }
+            include: { OrderEvent: true }
         });
 
         // 3. Reserve Inventory? (Integration 8 call - TODO)
@@ -132,7 +132,7 @@ export const OrdersController = {
             data: {
                 paymentStatus: 'PAID' as any,
                 paymentMethod: method,
-                events: {
+                OrderEvent: {
                     create: {
                         storeId: order.storeId,
                         type: 'PAYMENT_UPDATED',
@@ -161,7 +161,7 @@ export const OrdersController = {
             data: {
                 fulfillmentStatus: 'DELIVERED' as any,
                 status: 'FULFILLED' as any, // Auto-close/fulfill logic
-                events: {
+                OrderEvent: {
                     create: {
                         storeId: order.storeId,
                         type: 'FULFILLMENT_UPDATED',

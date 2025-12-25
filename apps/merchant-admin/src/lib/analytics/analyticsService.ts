@@ -20,7 +20,7 @@ export class AnalyticsService {
 
         // if (!ALLOWED_EVENTS.includes(data.eventName)) return; // Strict mode
 
-        return prisma.analyticsEvent.create({
+        return prisma.analytics_event.create({
             data: {
                 merchantId: data.merchantId,
                 storeId: data.storeId,
@@ -37,7 +37,7 @@ export class AnalyticsService {
     static async getMerchantSummary(merchantId: string, from: Date, to: Date) {
         // Aggregate Counts
         // Prisma groupBy is good here
-        const events = await prisma.analyticsEvent.groupBy({
+        const events = await prisma.analytics_event.groupBy({
             by: ['eventName'],
             where: {
                 merchantId,
@@ -53,7 +53,7 @@ export class AnalyticsService {
 
         // Visitors (Approximate distinct)
         // Prisma doesn't do distinct count easily in groupBy without raw query or separate query
-        const visitors = await prisma.analyticsEvent.findMany({
+        const visitors = await prisma.analytics_event.findMany({
             where: { merchantId, occurredAt: { gte: from, lte: to } },
             distinct: ['visitorId'],
             select: { visitorId: true }
@@ -73,7 +73,7 @@ export class AnalyticsService {
         // Internal Admin Funnel
         // Steps: signup_started -> signup_completed -> store_live
 
-        const stats = await prisma.analyticsEvent.groupBy({
+        const stats = await prisma.analytics_event.groupBy({
             by: ['eventName'],
             where: {
                 eventName: { in: ['signup_started', 'signup_completed', 'store_live'] },

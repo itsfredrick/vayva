@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { Button } from '@vayva/ui';
-import { AddOnMetadata } from '@vayva/extensions/addon-types';
+import { AddOnMetadata } from '@vayva/extensions';
 
 interface AddOnReviewScreenProps {
     addon: AddOnMetadata;

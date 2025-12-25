@@ -28,33 +28,23 @@ export const MarketingController = {
     listDiscountRules: async (storeId: string) => {
         return await prisma.discountRule.findMany({
             where: { storeId },
-            include: { coupons: true },
             orderBy: { createdAt: 'desc' }
         });
     },
 
-    createCoupon: async (storeId: string, ruleId: string, code: string) => {
+    // --- Coupons ---
+    createCoupon: async (storeId: string, data: any) => {
         return await prisma.coupon.create({
             data: {
                 storeId,
-                ruleId,
-                code: code.toUpperCase(),
-                status: 'ACTIVE'
+                ruleId: data.discountRuleId,
+                code: data.code,
+                // status default ACTIVE
             }
         });
     },
 
     // --- Segments ---
-    createSegment: async (storeId: string, data: any) => {
-        return await prisma.segment.create({
-            data: {
-                storeId,
-                name: data.name,
-                definition: data.definition
-            }
-        });
-    },
-
     listSegments: async (storeId: string) => {
         return await prisma.segment.findMany({
             where: { storeId },
@@ -62,29 +52,37 @@ export const MarketingController = {
         });
     },
 
-    // --- Campaigns ---
-    createCampaign: async (storeId: string, userId: string, data: any) => {
-        return await prisma.campaign.create({
+    createSegment: async (storeId: string, data: any) => {
+        return await prisma.segment.create({
             data: {
                 storeId,
-                type: data.type || 'BROADCAST',
-                channel: data.channel || 'WHATSAPP',
                 name: data.name,
-                status: 'DRAFT',
-                segmentId: data.segmentId,
-                messageBody: data.messageBody,
-                messageTemplateKey: data.messageTemplateKey,
-                variables: data.variables,
-                createdByUserId: userId
+                definition: data.criteria || {}
             }
         });
     },
 
+    // --- Campaigns ---
     listCampaigns: async (storeId: string) => {
         return await prisma.campaign.findMany({
             where: { storeId },
-            include: { segment: true },
             orderBy: { createdAt: 'desc' }
+        });
+    },
+
+    createCampaign: async (storeId: string, data: any) => {
+        return await prisma.campaign.create({
+            data: {
+                storeId,
+                name: data.name,
+                type: data.type || 'BLAST',
+                channel: data.channel || 'EMAIL',
+                status: 'DRAFT',
+                segmentId: data.segmentId,
+                messageBody: data.content || '',
+                scheduledAt: data.scheduledAt ? new Date(data.scheduledAt) : null,
+                createdByUserId: data.userId || 'system'
+            }
         });
     },
 

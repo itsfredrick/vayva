@@ -11,7 +11,11 @@ export const FoodCateringTemplate: React.FC<TemplateProps> = ({ businessName, de
         { id: 'cat_2', name: 'Fried Rice', price: 2800, type: 'food', desc: 'Rich nigerian fried rice', time: '15m' },
         { id: 'cat_3', name: 'Chicken', price: 1200, type: 'food', desc: 'Peppered or Fried', time: '10m' },
         { id: 'cat_4', name: 'Extra Beef', price: 1500, type: 'food', desc: 'Tender spicy beef', time: '10m' }
-    ] : products.filter(p => p.type === 'food');
+    ] : products.filter(p => p.type === 'food').map(p => ({
+        ...p,
+        desc: p.description,
+        time: (p as any).prepTimeMinutes ? `${(p as any).prepTimeMinutes}m` : '15m'
+    }));
 
     return (
         <div className="font-sans min-h-screen bg-orange-50/30 text-gray-900 pb-24">

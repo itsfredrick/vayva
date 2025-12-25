@@ -11,7 +11,7 @@ export class FraudService {
         metadata?: any,
         correlationId: string
     }) {
-        await prisma.fraudSignal.create({
+        await prisma.fraud_signal.create({
             data: {
                 storeId: data.storeId,
                 merchantId: data.merchantId,

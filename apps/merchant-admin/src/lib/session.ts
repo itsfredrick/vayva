@@ -28,8 +28,8 @@ export interface SessionUser {
  * Generate JWT token for user session
  */
 export function generateToken(payload: SessionPayload): string {
-    return jwt.sign(payload, JWT_SECRET, {
-        expiresIn: JWT_EXPIRES_IN,
+    return jwt.sign({ ...payload }, JWT_SECRET, {
+        expiresIn: JWT_EXPIRES_IN as any,
     });
 }
 

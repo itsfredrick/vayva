@@ -7,10 +7,12 @@ jobs:
   notify:
     runs-on: ubuntu-latest
     if: github.event.deployment_status.state == 'success' || github.event.deployment_status.state == 'failure'
+    env:
+      SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
     
     steps:
       - name: Notify Slack on Success
-        if: github.event.deployment_status.state == 'success' && secrets.SLACK_WEBHOOK_URL != ''
+        if: github.event.deployment_status.state == 'success' && env.SLACK_WEBHOOK_URL != ''
         uses: slackapi/slack-github-action@v1
         with:
           payload: |
@@ -54,11 +56,10 @@ jobs:
                 }
               ]
             }
-        env:
-          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+
 
       - name: Notify Slack on Failure
-        if: github.event.deployment_status.state == 'failure' && secrets.SLACK_WEBHOOK_URL != ''
+        if: github.event.deployment_status.state == 'failure' && env.SLACK_WEBHOOK_URL != ''
         uses: slackapi/slack-github-action@v1
         with:
           payload: |
@@ -102,5 +103,4 @@ jobs:
                 }
               ]
             }
-        env:
-          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+

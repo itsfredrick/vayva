@@ -148,7 +148,7 @@ export default function OrderFlowPage() {
                                                         : "bg-white border-gray-200 text-gray-400 hover:border-gray-300"
                                                 )}
                                             >
-                                                <Icon name="CheckCircle" size={10} />
+                                                <Icon name="CircleCheck" size={10} />
                                                 Marks Complete
                                             </button>
 
@@ -167,7 +167,7 @@ export default function OrderFlowPage() {
 
                 {!hasTerminal && (
                     <div className="mt-4 p-3 bg-red-50 border border-red-100 text-red-600 text-sm rounded-xl flex items-center gap-3 animate-pulse">
-                        <Icon name="AlertTriangle" size={18} />
+                        <Icon name="TriangleAlert" size={18} />
                         <div>
                             <span className="font-bold block">Invalid Flow</span>
                             Every order must have a final completion state (e.g. Delivered).

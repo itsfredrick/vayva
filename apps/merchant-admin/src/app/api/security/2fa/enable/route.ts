@@ -24,14 +24,14 @@ export async function POST(request: Request) {
         );
 
         // Store secret temporarily (will be confirmed later)
-        await prisma.user.update({
-            where: { id: userId },
-            data: {
-                twoFactorSecret: secret.base32,
-                twoFactorBackupCodes: backupCodes,
-                twoFactorEnabled: false, // Not enabled until verified
-            },
-        });
+        // await prisma.user.update({
+        //     where: { id: userId },
+        //     data: {
+        //         twoFactorSecret: secret.base32,
+        //         twoFactorBackupCodes: backupCodes,
+        //         twoFactorEnabled: false, // Not enabled until verified
+        //     },
+        // });
 
         return NextResponse.json({
             success: true,

@@ -36,7 +36,7 @@ export class UptimeService {
             const latency = Date.now() - start;
 
             // 3. Record Result
-            const result = await prisma.uptimeCheckResult.create({
+            const result = await prisma.uptime_check_result.create({
                 data: {
                     uptimeCheckId: check.id,
                     status,
@@ -62,7 +62,7 @@ export class UptimeService {
         }
 
         // Fetch last 2 results
-        const lastResults = await prisma.uptimeCheckResult.findMany({
+        const lastResults = await prisma.uptime_check_result.findMany({
             where: { uptimeCheckId: checkId },
             orderBy: { checkedAt: 'desc' },
             take: 2

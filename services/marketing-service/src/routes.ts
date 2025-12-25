@@ -18,7 +18,7 @@ export async function marketingRoutes(server: FastifyInstance) {
     server.post('/discounts/coupons', async (req: any, reply) => {
         const storeId = req.headers['x-store-id'];
         const { ruleId, code } = req.body;
-        return await MarketingController.createCoupon(storeId, ruleId, code);
+        return await MarketingController.createCoupon(storeId, { discountRuleId: ruleId, code });
     });
 
     // --- Segments ---
@@ -41,7 +41,7 @@ export async function marketingRoutes(server: FastifyInstance) {
     server.post('/campaigns', async (req: any, reply) => {
         const storeId = req.headers['x-store-id'];
         const userId = req.headers['x-user-id'] || 'system';
-        return await MarketingController.createCampaign(storeId, userId, req.body);
+        return await MarketingController.createCampaign(storeId, { ...req.body, userId });
     });
 
     // --- Automations ---

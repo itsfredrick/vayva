@@ -24,7 +24,7 @@ export class BackupService {
 
     static async runRestoreDrill(sourceId: string) {
         // 1. Log Start
-        const drill = await prisma.restoreDrillRun.create({
+        const drill = await prisma.restore_drill_run.create({
             data: {
                 startedAt: new Date(),
                 restoreSource: sourceId,
@@ -42,7 +42,7 @@ export class BackupService {
             const smokeTestPassed = true;
 
             // 4. Log Completion
-            await prisma.restoreDrillRun.update({
+            await prisma.restore_drill_run.update({
                 where: { id: drill.id },
                 data: {
                     completedAt: new Date(),
@@ -53,7 +53,7 @@ export class BackupService {
             return { success: true };
 
         } catch (e: any) {
-            await prisma.restoreDrillRun.update({
+            await prisma.restore_drill_run.update({
                 where: { id: drill.id },
                 data: {
                     completedAt: new Date(),

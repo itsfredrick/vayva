@@ -2,6 +2,7 @@
 
 import React, { useState } from 'react';
 import { Button, Icon, cn } from '@vayva/ui';
+import { Switch } from '@/components/ui/Switch';
 import { useOnboarding } from '@/context/OnboardingContext';
 
 // Master Prompt Step 7: Payments (Expanded)
@@ -14,7 +15,7 @@ type ProofRule = 'optional' | 'required_all' | 'required_transfer';
 
 export default function PaymentsPage() {
     const { state, updateState, goToStep } = useOnboarding();
-    const userPlan = state.plan || 'free';
+    const userPlan = state?.plan || 'free';
     const isFree = userPlan === 'free';
 
     const [methods, setMethods] = useState<PaymentMethod[]>([]);
@@ -129,7 +130,7 @@ export default function PaymentsPage() {
                                     </div>
                                     <p className="text-xs text-gray-500 max-w-xs">Automatically match bank alerts to orders. No manual checking required.</p>
                                 </div>
-                                <Switch checked={false} disabled={isFree} />
+                                <Switch checked={false} onCheckedChange={() => { }} disabled={isFree} />
                             </div>
                         </div>
                     </div>
@@ -184,7 +185,7 @@ export default function PaymentsPage() {
                         {((proofRule === 'required_all') || (proofRule === 'required_transfer' && activePreview === 'transfer')) && activePreview && (
                             <div className="mt-6 animate-in fade-in slide-in-from-bottom-2">
                                 <div className="p-4 rounded-lg border border-dashed border-gray-300 bg-white flex flex-col items-center justify-center text-center gap-2 cursor-pointer hover:bg-gray-50 transition-colors">
-                                    <Icon name="UploadCloud" size={24} className="text-gray-400" />
+                                    <Icon name="CloudUpload" size={24} className="text-gray-400" />
                                     <div className="space-y-0.5">
                                         <p className="text-sm font-medium text-gray-900">Upload Proof</p>
                                         <p className="text-[10px] text-gray-500">Required to complete order</p>

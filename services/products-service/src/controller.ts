@@ -7,7 +7,7 @@ export const listProductsHandler = async (req: FastifyRequest, reply: FastifyRep
 
     const products = await prisma.product.findMany({
         where: { storeId },
-        include: { variants: true }
+        include: { ProductVariant: true }
     });
     return reply.send(products);
 };
@@ -23,7 +23,7 @@ export const listPublicProductsHandler = async (req: FastifyRequest, reply: Fast
             storeId,
             status: 'ACTIVE' // Only active products
         },
-        include: { variants: true }
+        include: { ProductVariant: true }
     });
     return reply.send(products);
 };
@@ -43,7 +43,7 @@ export const createProductHandler = async (req: FastifyRequest, reply: FastifyRe
             handle: handle + '-' + Date.now(), // Ensure unique
             description,
             status: 'ACTIVE',
-            variants: {
+            ProductVariant: {
                 create: {
                     title: 'Default',
                     price: parseFloat(price),
@@ -52,13 +52,13 @@ export const createProductHandler = async (req: FastifyRequest, reply: FastifyRe
                 }
             }
         },
-        include: { variants: true }
+        include: { ProductVariant: true }
     });
 
     // Log Inventory Event
     await prisma.inventoryEvent.create({
         data: {
-            variantId: (product as any).variants[0].id,
+            variantId: (product as any).ProductVariant[0].id,
             quantity: parseInt(stock || '0'),
             action: 'ADJUSTMENT',
             reason: 'Initial stock',
@@ -73,7 +73,7 @@ export const getProductHandler = async (req: FastifyRequest, reply: FastifyReply
     const { id } = req.params as { id: string };
     const product = await prisma.product.findUnique({
         where: { id },
-        include: { variants: true }
+        include: { ProductVariant: true }
     });
     if (!product) return reply.status(404).send({ error: 'Product not found' });
     return reply.send(product);
@@ -92,13 +92,13 @@ export const updateProductHandler = async (req: FastifyRequest, reply: FastifyRe
             title: name,
             description,
         },
-        include: { variants: true }
+        include: { ProductVariant: true }
     });
 
     // Update default variant price/stock if provided
-    if (product.variants.length > 0) {
+    if (product.ProductVariant.length > 0) {
         await prisma.productVariant.update({
-            where: { id: (product as any).variants[0].id },
+            where: { id: (product as any).ProductVariant[0].id },
             data: {
                 price: price ? parseFloat(price) : undefined,
                 // inventory removed as it's not on variant model
@@ -109,7 +109,7 @@ export const updateProductHandler = async (req: FastifyRequest, reply: FastifyRe
     // Return updated
     const updated = await prisma.product.findUnique({
         where: { id },
-        include: { variants: true }
+        include: { ProductVariant: true }
     });
     return reply.send(updated);
 };

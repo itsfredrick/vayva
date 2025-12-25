@@ -1,9 +1,9 @@
 {
   "version": 2,
-  "buildCommand": "pnpm turbo run build --filter=web...",
+  "buildCommand": "pnpm turbo run build --filter=merchant-admin...",
   "installCommand": "pnpm install --frozen-lockfile",
-  "outputDirectory": "apps/web/.next",
-  "ignoreCommand": "git diff --quiet HEAD^ HEAD -- apps/web packages infra",
+  "outputDirectory": "apps/merchant-admin/.next",
+  "ignoreCommand": "git diff --quiet HEAD^ HEAD -- apps/merchant-admin packages infra",
   "github": {
     "silent": true
   }

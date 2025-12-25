@@ -4,18 +4,11 @@ import { prisma } from '@vayva/db';
 
 interface CreateTicketBody {
     storeId: string;
-    customerId?: string;
+    userId: string;
     subject: string;
-    description?: string;
+    description: string;
     priority?: string;
     type?: string;
-    orderId?: string;
-    conversationId?: string;
-}
-
-interface UpdateTicketBody {
-    status?: string;
-    priority?: string;
 }
 
 interface AddMessageBody {
@@ -27,28 +20,26 @@ interface AddMessageBody {
 
 export const SupportController = {
     createTicket: async (req: FastifyRequest<{ Body: CreateTicketBody }>, reply: FastifyReply) => {
-        const { storeId, customerId, subject, description, priority, type, orderId, conversationId } = req.body;
+        const { storeId, userId, subject, description, priority, type } = req.body;
 
         const ticket = await prisma.supportTicket.create({
             data: {
                 storeId,
-                customerId,
                 subject,
                 description,
                 priority: (priority || 'medium') as any,
                 type: type || 'general',
-                orderId,
-                conversationId,
                 status: 'open',
-                messages: {
+                ticketMessages: {
                     create: description ? [{
-                        storeId,
+                        storeId, // Assuming ticketMessage has storeId
                         message: description,
                         sender: 'merchant',
-                        senderId: null
+                        senderId: userId
                     } as any] : []
                 }
-            }
+            },
+            include: { ticketMessages: true }
         });
 
         return reply.status(201).send(ticket);
@@ -62,8 +53,8 @@ export const SupportController = {
                 status: (status as any) || undefined
             },
             include: {
-                customer: true,
-                order: true
+                Customer: true,
+                Order: true
             },
             orderBy: { updatedAt: 'desc' }
         });
@@ -75,21 +66,21 @@ export const SupportController = {
         const ticket = await prisma.supportTicket.findUnique({
             where: { id },
             include: {
-                messages: { orderBy: { createdAt: 'asc' } },
-                customer: true,
-                order: { include: { items: true } },
-                conversation: true
+                ticketMessages: { orderBy: { createdAt: 'asc' } },
+                Customer: true,
+                Order: true
             }
         });
         if (!ticket) return reply.status(404).send({ error: "Ticket not found" });
         return ticket;
     },
 
-    updateTicket: async (req: FastifyRequest<{ Params: { id: string }, Body: UpdateTicketBody }>, reply: FastifyReply) => {
+    updateTicket: async (req: FastifyRequest<{ Params: { id: string }, Body: any }>, reply: FastifyReply) => {
         const { id } = req.params;
+        const updates = req.body as any;
         const ticket = await prisma.supportTicket.update({
             where: { id },
-            data: req.body as any
+            data: updates
         });
         return ticket;
     },
@@ -115,7 +106,8 @@ export const SupportController = {
         // Auto-update ticket timestamp
         await prisma.supportTicket.update({
             where: { id },
-            data: { updatedAt: new Date() }
+            data: { updatedAt: new Date() },
+            include: { ticketMessages: true }
         });
 
         return reply.status(201).send(ticketMessage);

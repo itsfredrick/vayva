@@ -24,16 +24,24 @@ export class DsrService {
                     take: 50, // Limit for export size safety or paginate
                     orderBy: { createdAt: 'desc' }
                 },
-                tickets: true,
-                communicationConsents: true
+                supportTickets: true
             }
         });
 
         if (!customer) return null;
 
+        // Fetch consents separately due to missing relation
+        const communicationConsents = await prisma.communication_consent.findMany({
+            where: {
+                merchantId: storeId,
+                customerId: customer.id
+            }
+        });
+
         // Return raw data structure for JSON export
         return {
             customer,
+            communicationConsents,
             exportedAt: new Date(),
             policy: 'Vayva Privacy Export'
         };

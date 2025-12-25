@@ -387,6 +387,7 @@ export interface Integration {
     logoUrl: string; // use Icon name as proxy or url
     description: string;
     status: 'connected' | 'not_connected' | 'error';
+    category?: 'payment' | 'marketing' | 'logistics' | 'analytics';
     connectedAt?: string;
     configRequired: boolean;
 }

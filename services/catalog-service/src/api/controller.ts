@@ -73,7 +73,7 @@ export const CatalogController = {
                             inventoryItems: {
                                 create: {
                                     // Default location for V1
-                                    location: {
+                                    InventoryLocation: { // Corrected from location to InventoryLocation (PascalCase relation)
                                         connectOrCreate: {
                                             where: { id: "DEFAULT" }, // Needs robust logic, using placeholders or finding default
                                             create: { storeId, name: "Default Location", isDefault: true }
@@ -96,7 +96,7 @@ export const CatalogController = {
                         price: price,
                         inventoryItems: {
                             create: {
-                                location: {
+                                InventoryLocation: { // Corrected
                                     create: { storeId, name: "Default Location", isDefault: true }
                                 }
                             }
@@ -121,8 +121,8 @@ export const CatalogController = {
                 status: status || undefined,
             },
             include: {
-                variants: true,
-                images: true
+                ProductVariant: true, // PascalCase
+                ProductImage: true
             },
             orderBy: { updatedAt: 'desc' }
         });
@@ -134,12 +134,12 @@ export const CatalogController = {
         const product = await prisma.product.findUnique({
             where: { id },
             include: {
-                variants: {
+                ProductVariant: { // PascalCase
                     include: {
-                        inventoryItems: true
+                        InventoryItem: true // PascalCase
                     }
                 },
-                images: true
+                ProductImage: true
             }
         });
         if (!product) return reply.status(404).send({ error: "Product not found" });
@@ -243,11 +243,11 @@ export const CatalogController = {
         // For V1 simple list
         const items = await prisma.inventoryItem.findMany({
             where: {
-                location: { storeId }
+                InventoryLocation: { storeId } // PascalCase
             },
             include: {
-                variant: true,
-                product: true
+                ProductVariant: true, // PascalCase
+                Product: true // PascalCase
             }
         });
         return items;

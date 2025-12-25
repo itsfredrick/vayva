@@ -40,7 +40,7 @@ export const DependencyMatrix = ({ blockingIssues }: DependencyMatrixProps) => {
                             "w-10 h-10 rounded-full flex items-center justify-center shrink-0",
                             issue.severity === 'critical' ? "bg-red-100 text-red-600" : "bg-amber-100 text-amber-600"
                         )}>
-                            <Icon name={issue.severity === 'critical' ? "X " : "Info"} size={20} />
+                            <Icon name={issue.severity === 'critical' ? "CircleX" : "Info"} size={20} />
                         </div>
                         <div className="flex-1">
                             <h4 className="font-bold text-gray-900">{issue.title}</h4>

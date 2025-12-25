@@ -1,5 +1,48 @@
 import type { Config } from 'tailwindcss';
-import { colors } from './tokens';
+
+const colors = {
+    primary: {
+        DEFAULT: '#0B0B0B',
+        hover: '#1A1A1A',
+        50: '#F9F9F9',
+        100: '#F3F3F3',
+        200: '#E7E7E7',
+        300: '#D1D1D1',
+        400: '#B0B0B0',
+        500: '#0B0B0B',
+        600: '#080808',
+        700: '#050505',
+        800: '#030303',
+        900: '#000000',
+    },
+    accent: {
+        DEFAULT: '#0D1D1E',
+        hover: '#1A2F31',
+        light: '#E8ECEC',
+    },
+    background: {
+        DEFAULT: '#FFFFFF',
+        subtle: '#FBFCFC',
+        light: '#F8F9FA',
+    },
+    text: {
+        primary: '#0B0B0B',
+        secondary: '#6B7280',
+        tertiary: '#9CA3AF',
+        inverse: '#FFFFFF',
+    },
+    border: {
+        DEFAULT: '#E5E7EB',
+        subtle: '#F3F4F6',
+        strong: '#D1D5DB',
+    },
+    status: {
+        success: '#10B981',
+        warning: '#F59E0B',
+        danger: '#EF4444',
+        info: '#3B82F6',
+    }
+};
 
 export const vayvaPreset: Config = {
     content: [],

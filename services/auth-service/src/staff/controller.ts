@@ -1,3 +1,4 @@
+
 import { FastifyRequest, FastifyReply } from 'fastify';
 import { prisma } from '@vayva/db';
 import { z } from 'zod';
@@ -130,7 +131,7 @@ export const getStaffHandler = async (req: FastifyRequest, reply: FastifyReply) 
 
     const staff = await prisma.membership.findMany({
         where: { storeId: membership.storeId },
-        include: { user: { select: { id: true, firstName: true, lastName: true, email: true, phone: true } } }
+        include: { User: { select: { id: true, firstName: true, lastName: true, email: true, phone: true } } }
     });
 
     return reply.send(staff);

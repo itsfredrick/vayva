@@ -31,7 +31,7 @@ export async function GET(req: NextRequest) {
     const members = await prisma.membership.findMany({
         where: { storeId },
         include: {
-            user: {
+            User: {
                 select: {
                     id: true,
                     firstName: true,
@@ -53,8 +53,8 @@ export async function GET(req: NextRequest) {
         members: members.map(m => ({
             id: m.id,
             userId: m.userId,
-            name: `${m.user.firstName || ''} ${m.user.lastName || ''}`.trim() || 'Unknown',
-            email: m.user.email,
+            name: `${m.User.firstName || ''} ${m.User.lastName || ''}`.trim() || 'Unknown',
+            email: m.User.email,
             role: m.role,
             status: m.status,
             joinedAt: m.createdAt

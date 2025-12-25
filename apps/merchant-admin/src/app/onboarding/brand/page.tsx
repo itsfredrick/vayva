@@ -43,7 +43,7 @@ export default function BrandPage() {
     };
 
     const handleBack = () => {
-        goToStep('store-details');
+        goToStep('business');
     };
 
     return (

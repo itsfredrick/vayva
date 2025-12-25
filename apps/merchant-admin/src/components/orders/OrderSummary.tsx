@@ -50,7 +50,7 @@ export const OrderSummary = ({ stats, type }: OrderSummaryProps) => {
                 <div className="flex items-center justify-between">
                     <p className="text-3xl font-bold text-gray-900">{stats.countCompleted}</p>
                     <div className="bg-green-50 text-green-600 p-2 rounded-lg">
-                        <Icon name="CheckCircle" size={20} />
+                        <Icon name="CircleCheck" size={20} />
                     </div>
                 </div>
             </div>

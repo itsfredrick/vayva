@@ -169,7 +169,7 @@ export function ProductCatalogSystem({ onComplete }: { onComplete: () => void })
                         </div>
 
                         <div className="p-4 bg-green-50 rounded-xl border border-green-100 flex items-start gap-3">
-                            <Icon name="Whatsapp" className="text-green-600 mt-1" size={16} />
+                            <Icon name="MessageCircle" className="text-green-600 mt-1" size={16} />
                             <div className="space-y-1">
                                 <h4 className="font-bold text-green-900 text-sm">WhatsApp Automation</h4>
                                 <p className="text-xs text-green-700">

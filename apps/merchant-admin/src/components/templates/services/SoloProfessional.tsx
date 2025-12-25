@@ -39,7 +39,11 @@ export const SoloProfessionalTemplate: React.FC<TemplateProps> = ({ businessName
             duration: '1 hr',
             desc: 'Premium haircut at your convenience.'
         }
-    ] : products.filter(p => p.type === 'service');
+    ] : products.filter(p => p.type === 'service').map(p => ({
+        ...p,
+        desc: p.description,
+        duration: (p as any).durationMinutes ? `${(p as any).durationMinutes} mins` : '1 hr'
+    }));
 
     return (
         <div className="font-sans min-h-screen bg-neutral-50 text-neutral-900 pb-20">

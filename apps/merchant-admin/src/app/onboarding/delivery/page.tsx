@@ -14,7 +14,7 @@ interface DeliveryStage { id: string; label: string; visibleToCustomer: boolean;
 
 export default function DeliveryPage() {
     const { state, updateState, goToStep } = useOnboarding();
-    const userPlan = state.plan || 'free';
+    const userPlan = state?.plan || 'free';
     const isPro = userPlan === 'pro';
 
     const [policy, setPolicy] = useState<DeliveryPolicy>('required');

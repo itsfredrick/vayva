@@ -13,7 +13,7 @@ export async function POST(request: Request) {
 
         const order = await prisma.order.findUnique({
             where: { id: orderId },
-            include: { customer: true }
+            include: { Customer: true }
         });
 
         if (!order) {
@@ -27,7 +27,7 @@ export async function POST(request: Request) {
         // Amount in order is typically in Major units (NGN), Paystack needs Kobo
         // Schema says `total` is Decimal.
         const amountKobo = Math.round(Number(order.total) * 100);
-        const email = order.customer?.email || order.customerEmail || 'guest@vayva.com';
+        const email = order.Customer?.email || order.customerEmail || 'guest@vayva.com';
 
         const initResponse = await PaystackService.initializeTransaction(
             email,

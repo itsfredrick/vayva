@@ -34,7 +34,12 @@ export const AutoPartsTemplate: React.FC<TemplateProps> = ({ businessName, demoM
             tags: [],
             img: 'https://images.unsplash.com/photo-1506469717960-433cebe3f181?w=800&q=80'
         }
-    ] : products.filter(p => p.type === 'retail');
+    ] : products.filter(p => p.type === 'retail').map(p => ({
+        ...p,
+        img: p.images?.[0] || 'https://images.unsplash.com/photo-1486262715619-67b85e0b08d3?w=800&q=80',
+        condition: p.category || 'Used',
+        tags: (p as any).searchTags || []
+    }));
 
     return (
         <div className="font-sans min-h-screen bg-slate-50 text-slate-900 pb-20">

@@ -51,7 +51,7 @@ export const CustomerDrawer = ({ isOpen, onClose, customerId }: CustomerDrawerPr
     if (!isOpen) return null;
 
     return (
-        <Drawer isOpen={isOpen} onClose={onClose} title={loading ? "Loading..." : "Customer Profile"} size="lg">
+        <Drawer isOpen={isOpen} onClose={onClose} title={loading ? "Loading..." : "Customer Profile"}>
             {loading || !customer ? (
                 <div className="h-full flex items-center justify-center">
                     <div className="animate-spin w-8 h-8 border-2 border-black border-t-transparent rounded-full" />

@@ -8,7 +8,7 @@ export async function GET(req: Request, { params }: { params: Promise<{ id: stri
         const ticket = await prisma.supportTicket.findUnique({
             where: { id: id },
             include: {
-                messages: {
+                ticketMessages: {
                     orderBy: { createdAt: 'asc' }
                 }
             }

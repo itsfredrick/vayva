@@ -30,7 +30,7 @@ const onboardingRoute: FastifyPluginAsync = async (fastify) => {
             data: {
                 name: body.name,
                 slug: body.slug, // TODO: Ensure unique slug globally
-                users: {
+                TenantMembership: {
                     create: {
                         userId: user.id,
                         role: 'OWNER',

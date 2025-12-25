@@ -11,7 +11,7 @@ export class ReturnService {
     ) {
         // Check if exists
         const existing = await prisma.returnRequest.findFirst({
-            where: { order: { id: orderId }, status: { not: 'CANCELLED' } }
+            where: { orderId: orderId, status: { not: 'CANCELLED' } }
         });
 
         if (existing) {
@@ -20,27 +20,27 @@ export class ReturnService {
 
         const request = await prisma.returnRequest.create({
             data: {
-                store: { connect: { id: storeId } },
-                order: { connect: { id: orderId } },
+                merchantId: storeId,
+                orderId: orderId,
                 // customerPhone mapped to notes or ignored (schema doesn't have it)
                 // reason mapped to reasonText (schema has reasonCode enum and optional reasonText)
                 reasonCode: 'OTHER', // Defaulting as mapping 'reason' string to enum is complex without more logic
                 reasonText: payload.reason,
                 resolutionType: 'REFUND', // Defaulting
                 status: 'REQUESTED',
-                // Creating ITEMS nested
+                // items and logistics removed as they do not exist in schema
+                /*
                 items: {
                     create: payload.items.map((i: any) => ({
                         qty: i.quantity || 1,
-                        // orderItemId: i.id // Assuming payload has ID, but strict schema needs valid IDs.
-                        // For V1 simple, skip linking orderItemId explicitly unless available validation
                     }))
                 },
                 logistics: payload.preferredMethod ? {
                     create: {
-                        method: payload.preferredMethod === 'pickup' ? 'CARRIER' : 'DROPOFF', // Map simple strings to enum
+                        method: payload.preferredMethod === 'pickup' ? 'CARRIER' : 'DROPOFF',
                     }
                 } : undefined
+                */
             }
         });
 
@@ -49,9 +49,9 @@ export class ReturnService {
 
     static async getRequests(storeId: string) {
         return prisma.returnRequest.findMany({
-            where: { store: { id: storeId } },
+            where: { merchantId: storeId },
             orderBy: { createdAt: 'desc' },
-            include: { items: true, logistics: true }
+            // include: { items: true, logistics: true } // Removed
         });
     }
 

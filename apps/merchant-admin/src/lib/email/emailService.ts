@@ -21,7 +21,7 @@ export class EmailService {
         }
 
         // 2. Check Suppression
-        const suppression = await prisma.emailSuppression.findUnique({
+        const suppression = await prisma.email_suppression.findUnique({
             where: { email: payload.to }
         });
 
@@ -58,7 +58,7 @@ export class EmailService {
         providerMsgId?: string,
         error?: string
     ) {
-        await prisma.emailMessage.create({
+        await prisma.email_message.create({
             data: {
                 toEmail: payload.to,
                 templateKey: payload.templateKey,

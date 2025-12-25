@@ -56,7 +56,7 @@ async function handlePaymentIntentSucceeded(intent: any) {
             status: 'succeeded',
             amount: intent.amount / 100, // Stripe is minor units
         },
-        include: { order: true }
+        include: { Order: true }
     });
 
     // 2. Update Order Status if linked

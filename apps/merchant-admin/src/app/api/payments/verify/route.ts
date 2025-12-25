@@ -38,7 +38,7 @@ export async function GET(request: Request) {
             return NextResponse.json({ error: "Order not found" }, { status: 404 });
         }
 
-        if (order.paymentStatus === 'SUCCESS' || order.paymentStatus === 'PAID') {
+        if (order.paymentStatus === 'VERIFIED') {
             return NextResponse.json({ message: "Order already processed", order });
         }
 

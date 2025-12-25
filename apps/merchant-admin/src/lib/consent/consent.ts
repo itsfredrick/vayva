@@ -1,4 +1,4 @@
-import { prisma , CommunicationConsent, ConsentEventType, ConsentChannel, ConsentSource } from '@vayva/db';
+import { prisma, communication_consent, ConsentEventType, ConsentChannel, ConsentSource } from '@vayva/db';
 
 export enum MessageIntent {
     TRANSACTIONAL = 'TRANSACTIONAL',
@@ -28,8 +28,8 @@ export function normalizePhoneToE164(input: string, country = 'NG'): string | nu
 // -----------------------------------------------------------------------------
 // Get Consent (with defaults)
 // -----------------------------------------------------------------------------
-export async function getConsent(merchantId: string, phoneE164: string): Promise<CommunicationConsent> {
-    const consent = await prisma.communicationConsent.findFirst({
+export async function getConsent(merchantId: string, phoneE164: string): Promise<communication_consent> {
+    const consent = await prisma.communication_consent.findFirst({
         where: {
             merchantId,
             phoneE164
@@ -68,7 +68,7 @@ export async function applyConsentUpdate(
         source: ConsentSource;
         reason?: string;
     }
-): Promise<CommunicationConsent> {
+): Promise<communication_consent> {
     const existing = await getConsent(merchantId, phoneE164);
 
     let marketingOptInAt = (existing as any).marketingOptInAt;
@@ -91,13 +91,13 @@ export async function applyConsentUpdate(
 
     // Use transaction with safe explicit logic since upsert via compound ID is tricky without known input type
     const [updated] = await prisma.$transaction(async (tx) => {
-        const found = await tx.communicationConsent.findFirst({
+        const found = await tx.communication_consent.findFirst({
             where: { merchantId, phoneE164 }
         });
 
         let result;
         if (found) {
-            result = await tx.communicationConsent.update({
+            result = await tx.communication_consent.update({
                 where: { id: found.id },
                 data: {
                     marketingOptIn: patch.marketingOptIn,
@@ -110,7 +110,7 @@ export async function applyConsentUpdate(
                 }
             });
         } else {
-            result = await tx.communicationConsent.create({
+            result = await tx.communication_consent.create({
                 data: {
                     merchantId,
                     phoneE164,
@@ -123,7 +123,7 @@ export async function applyConsentUpdate(
             });
         }
 
-        await tx.complianceEvent.create({
+        await tx.compliance_event.create({
             data: {
                 merchantId,
                 phoneE164,
@@ -146,7 +146,7 @@ export async function applyConsentUpdate(
 // -----------------------------------------------------------------------------
 export function shouldSendMessage(
     messageIntent: MessageIntent,
-    consent: CommunicationConsent
+    consent: communication_consent
 ): { allowed: boolean; reason?: string } {
     if (consent.fullyBlocked) {
         return { allowed: false, reason: 'blocked_all' };

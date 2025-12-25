@@ -27,7 +27,7 @@ export class IdempotencyService {
         // Atomic upsert or find logic needed. 
         // Prisma upsert is atomic for creating.
 
-        const existing = await prisma.idempotencyKey.findUnique({ where: { key } });
+        const existing = await prisma.idempotency_key.findUnique({ where: { key } });
 
         if (existing) {
             if (existing.requestHash !== hash) {
@@ -44,7 +44,7 @@ export class IdempotencyService {
             // For now, simpler to treat as "proceed" or return failure. 
             // We'll treat failed as "allows retry" -> delete and recreate or update.
             // Let's implement Re-Lock update.
-            await prisma.idempotencyKey.update({
+            await prisma.idempotency_key.update({
                 where: { key },
                 data: { status: 'started', expiresAt: new Date(Date.now() + 60000), response: null as any }
             });
@@ -52,7 +52,7 @@ export class IdempotencyService {
         }
 
         // Create New
-        await prisma.idempotencyKey.create({
+        await prisma.idempotency_key.create({
             data: {
                 key,
                 scope,
@@ -67,14 +67,14 @@ export class IdempotencyService {
     }
 
     static async complete(key: string, response: any) {
-        await prisma.idempotencyKey.update({
+        await prisma.idempotency_key.update({
             where: { key },
             data: { status: 'completed', response }
         });
     }
 
     static async fail(key: string, error?: string) {
-        await prisma.idempotencyKey.update({
+        await prisma.idempotency_key.update({
             where: { key },
             data: { status: 'failed', response: { error } }
         });

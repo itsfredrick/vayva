@@ -124,10 +124,10 @@ export default function TemplatesPage() {
     const [compareMode, setCompareMode] = useState(false);
 
     // Business type matching for "Recommended"
-    const businessSegment = state.intent?.segment; // 'retail', 'food', 'services', 'mixed'
+    const businessSegment = state?.intent?.segment; // 'retail', 'food', 'services', 'mixed'
 
     // Default to 'free' plan integration
-    const userPlan = state.plan || 'free';
+    const userPlan = state?.plan || 'free';
 
     const handleSelect = (id: TemplateId) => {
         const template = TEMPLATES.find(t => t.id === id);
@@ -161,7 +161,7 @@ export default function TemplatesPage() {
                 </div>
                 {!compareMode ? (
                     <Button variant="outline" onClick={toggleCompare} className="flex gap-2">
-                        <Icon name="Columns" size={16} /> Compare Templates
+                        <Icon name="Columns2" size={16} /> Compare Templates
                     </Button>
                 ) : (
                     <Button variant="ghost" onClick={toggleCompare}>Close Comparison</Button>
@@ -208,7 +208,7 @@ export default function TemplatesPage() {
                                     <td key={t.id} className="p-4">
                                         <Button
                                             size="sm"
-                                            variant={t.isPro && userPlan !== 'pro' ? 'ghost' : (selected === t.id ? 'default' : 'outline')}
+                                            variant={t.isPro && userPlan !== 'pro' ? 'ghost' : (selected === t.id ? 'primary' : 'outline')}
                                             disabled={t.isPro && userPlan !== 'pro'}
                                             onClick={() => { setSelected(t.id); setCompareMode(false); }}
                                             className="w-full"
@@ -311,7 +311,7 @@ export default function TemplatesPage() {
                                     {/* Selection Indicator */}
                                     {selected === template.id && (
                                         <div className="absolute top-4 right-4 text-black animate-in zoom-in duration-200">
-                                            <Icon name="CheckCircle2" size={24} className="fill-black text-white" />
+                                            <Icon name="CircleCheck" size={24} className="fill-black text-white" />
                                         </div>
                                     )}
                                 </div>

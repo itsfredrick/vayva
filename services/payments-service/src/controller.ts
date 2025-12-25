@@ -1,3 +1,4 @@
+
 import { FastifyRequest, FastifyReply } from 'fastify';
 import { z } from 'zod';
 import { prisma, PaymentStatus } from '@vayva/db';
@@ -192,8 +193,8 @@ export const listTransactionsHandler = async (req: FastifyRequest, reply: Fastif
     const transactions = await prisma.paymentTransaction.findMany({
         where: { storeId },
         include: {
-            order: {
-                include: { customer: true }
+            Order: {
+                include: { Customer: true }
             }
         },
         orderBy: { createdAt: 'desc' }
@@ -201,4 +202,3 @@ export const listTransactionsHandler = async (req: FastifyRequest, reply: Fastif
 
     return reply.send(transactions);
 };
-

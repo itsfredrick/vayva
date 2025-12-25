@@ -10,31 +10,36 @@ export class Repository {
 
     static products = {
         async findMany(ctx: TenantContext, args: any = {}) {
-            return prisma.inventoryItemV2.findMany({ // Using Inventory as proxy for Product in this example or Product model
+            return prisma.inventoryItem.findMany({ // Using Inventory as proxy for Product in this example or Product model
                 ...args,
                 where: {
                     ...args.where,
-                    merchantId: ctx.merchantId, // FORCED ISOLATION
-                    // If store specific: storeId: ctx.storeId 
+                    InventoryLocation: {
+                        storeId: ctx.storeId // FORCED ISOLATION through location
+                    }
                 }
             });
         },
 
         async findUnique(ctx: TenantContext, id: string) {
-            // We must findFirst to allow merchantId filter, findUnique only takes ID
-            return prisma.inventoryItemV2.findFirst({
+            // We must findFirst to allow storeId filter, findUnique only takes ID
+            return prisma.inventoryItem.findFirst({
                 where: {
                     id,
-                    merchantId: ctx.merchantId // FORCED ISOLATION
+                    InventoryLocation: {
+                        storeId: ctx.storeId // FORCED ISOLATION through location
+                    }
                 }
             });
         },
 
         async create(ctx: TenantContext, data: any) {
-            return prisma.inventoryItemV2.create({
+            // Note: InventoryItem requires locationId, not merchantId
+            // The caller should provide locationId that belongs to their store
+            return prisma.inventoryItem.create({
                 data: {
                     ...data,
-                    merchantId: ctx.merchantId // FORCED OWNERSHIP
+                    // locationId should be provided in data and validated to belong to ctx.storeId
                 }
             });
         }

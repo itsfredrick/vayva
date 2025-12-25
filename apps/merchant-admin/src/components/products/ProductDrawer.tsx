@@ -116,7 +116,7 @@ interface ProductDrawerProps {
 
 export const ProductDrawer: React.FC<ProductDrawerProps> = ({ isOpen, onClose, onSubmit, initialData, isLoading }) => {
     const { register, handleSubmit, watch, setValue, reset, formState: { errors, isSubmitting } } = useForm<ProductFormValues>({
-        resolver: zodResolver(productSchema),
+        resolver: zodResolver(productSchema) as any,
         defaultValues: {
             type: ProductServiceType.RETAIL,
             status: ProductServiceStatus.ACTIVE,
@@ -167,7 +167,7 @@ export const ProductDrawer: React.FC<ProductDrawerProps> = ({ isOpen, onClose, o
                     <div className="grid grid-cols-2 gap-4">
                         <div className="col-span-2">
                             <Label>Product Title</Label>
-                            <Input {...register('title')} placeholder="e.g. Vintage Cotton Shirt" error={errors.title?.message} />
+                            <Input {...register('title')} placeholder="e.g. Vintage Cotton Shirt" error={!!errors.title} />
                         </div>
 
                         <div className="col-span-2">
@@ -208,7 +208,7 @@ export const ProductDrawer: React.FC<ProductDrawerProps> = ({ isOpen, onClose, o
                     <div className="grid grid-cols-2 gap-4">
                         <div>
                             <Label>Price (₦)</Label>
-                            <Input type="number" {...register('price')} placeholder="0.00" error={errors.price?.message} />
+                            <Input type="number" {...register('price')} placeholder="0.00" error={!!errors.price} />
                         </div>
 
                         {/* RETAIL LOGIC */}

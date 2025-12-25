@@ -39,7 +39,7 @@ export default function IdentityPage() {
             }
         });
 
-        await goToStep('store-details');
+        await goToStep('business');
     };
 
     const handleBack = () => {

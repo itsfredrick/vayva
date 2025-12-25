@@ -41,7 +41,7 @@ export const OrderCard = ({ order, onClick, variant = 'list' }: OrderCardProps) 
             >
                 <div className="flex justify-between items-start mb-2">
                     <span className="text-xs font-mono text-gray-500">#{order.id.split('_')[1]}</span>
-                    <span className="text-xs font-bold text-gray-400 bg-gray-50 px-1.5 py-0.5 rounded uppercase">{order.timestamp ? new Date(order.timestamps.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : 'Now'}</span>
+                    <span className="text-xs font-bold text-gray-400 bg-gray-50 px-1.5 py-0.5 rounded uppercase">{order.timestamps?.createdAt ? new Date(order.timestamps.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : 'Now'}</span>
                 </div>
 
                 <h4 className="font-bold text-gray-900 mb-1 line-clamp-2">

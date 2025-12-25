@@ -1,5 +1,5 @@
+
 import { prisma } from '@vayva/db';
-// import { AppRole } from '@prisma/client';
 
 export const TeamService = {
     inviteMember: async (storeId: string, email: string) => {
@@ -33,10 +33,10 @@ export const TeamService = {
         const members = await prisma.membership.findMany({
             where: { storeId },
             include: {
-                user: {
+                User: {
                     select: { id: true, email: true, firstName: true, lastName: true, phone: true }
                 },
-                roleRel: true
+                Role: true
             }
         });
 

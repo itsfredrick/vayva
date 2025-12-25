@@ -29,23 +29,23 @@ export class WebhookService {
 
         // Queue Deliveries
         for (const sub of subscriptions) {
-            await prisma.webhookDeliveryV2.create({
+            const delivery = await prisma.webhookDelivery.create({
                 data: {
-                    webhookSubscriptionId: sub.id,
-                    merchantId,
-                    eventName,
+                    endpointId: sub.id,
+                    storeId: merchantId,
+                    eventType: eventName,
                     eventId,
-                    status: 'queued'
+                    status: 'PENDING'
                 }
             });
 
             // In V1, we simulate "Worker" processing immediately
-            await this.processDelivery(sub, eventId, payload);
+            await this.processDelivery(sub, eventId, payload, delivery.id);
         }
     }
 
     // Mocking the worker process
-    private static async processDelivery(sub: any, eventId: string, payload: any) {
+    private static async processDelivery(sub: any, eventId: string, payload: any, deliveryId: string) {
         const timestamp = Date.now();
         const signature = this.signPayload(sub.signingSecretHash, payload, eventId, timestamp);
 
@@ -55,11 +55,11 @@ export class WebhookService {
         });
 
         // Mock update
-        await prisma.webhookDeliveryV2.update({
-            where: { webhookSubscriptionId_eventId: { webhookSubscriptionId: sub.id, eventId } },
+        await prisma.webhookDelivery.update({
+            where: { id: deliveryId },
             data: {
-                status: 'sent',
-                httpStatus: 200,
+                status: 'DELIVERED',
+                responseCode: 200,
                 deliveredAt: new Date()
             }
         });

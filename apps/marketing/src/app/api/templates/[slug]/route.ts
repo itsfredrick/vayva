@@ -1,3 +1,4 @@
+
 import { NextResponse } from 'next/server';
 import { prisma } from '@vayva/db';
 
@@ -8,19 +9,19 @@ export async function GET(request: Request, { params }: { params: Promise<{ slug
 
     try {
         const template = await prisma.template.findUnique({
-            where: { slug: slug },
-            include: {
-                assets: true,
-                versions: {
-                    orderBy: { createdAt: 'desc' },
-                    take: 1
-                }
-            }
+            where: { slug: slug }
         });
 
         if (!template || !template.isActive) {
             return NextResponse.json({ error: 'Template not found' }, { status: 404 });
         }
+
+        const assets = await prisma.templateAsset.findMany({ where: { templateId: template.id } });
+        const versions = await prisma.templateVersion.findMany({
+            where: { templateId: template.id },
+            orderBy: { createdAt: 'desc' },
+            take: 1
+        });
 
         // Normalize response
         const payload = {
@@ -37,8 +38,8 @@ export async function GET(request: Request, { params }: { params: Promise<{ slug
             repoUrl: template.repoUrl,
             homepageUrl: template.homepageUrl,
             updatedAt: template.updatedAt,
-            version: template.versions[0]?.version || '0.0.0',
-            assets: template.assets.map((a: any) => ({
+            version: versions[0]?.version || '0.0.0',
+            assets: assets.map((a: any) => ({
                 type: a.type,
                 url: a.publicUrl || (a.type === 'preview_image' && template.repoUrl ? `https://opengraph.githubassets.com/1/${template.repoUrl.replace('https://github.com/', '')}` : null)
             }))

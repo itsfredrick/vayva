@@ -31,22 +31,30 @@ export const AdminController = {
             },
             take: 20,
             include: {
-                subscription: { include: { plan: true } },
-                merchantFlags: true
+                merchantSubscription: true
+                // merchantFlags: true // No relation
             }
         });
     },
 
     getMerchantDetail: async (storeId: string) => {
-        return await prisma.store.findUnique({
+        const store = await prisma.store.findUnique({
             where: { id: storeId },
             include: {
-                subscription: { include: { plan: true } },
-                merchantFlags: true,
-                featureOverrides: true,
-                supportCases: { where: { status: { in: ['OPEN', 'PENDING'] } } }
+                merchantSubscription: true
+                // merchantFlags: true // No relation
+                // featureOverrides: true // No relation
+                // supportCases: true // No relation
             }
         });
+
+        if (!store) return null;
+
+        // Manual fetches for relation-like data
+        const merchantFlags = await prisma.merchantFlag.findMany({ where: { storeId } });
+        const supportCases = await prisma.supportCase.findMany({ where: { storeId, status: { in: ['OPEN', 'PENDING'] } } });
+
+        return { ...store, merchantFlags, supportCases };
     },
 
     suspendMerchant: async (storeId: string, reason: string, actorUserId: string, ipAddress?: string) => {
@@ -102,7 +110,7 @@ export const AdminController = {
     listPendingReviews: async () => {
         return await prisma.review.findMany({
             where: { status: 'PENDING' },
-            include: { store: true, product: true },
+            // include: { store: true, product: true }, // No relations
             orderBy: { createdAt: 'desc' },
             take: 50
         });
@@ -110,6 +118,7 @@ export const AdminController = {
 
     moderateReview: async (reviewId: string, action: 'PUBLISHED' | 'REJECTED' | 'HIDDEN', reason: string, actorUserId: string) => {
         const before = await prisma.review.findUnique({ where: { id: reviewId } });
+        if (!before) throw new Error('Review not found');
 
         const review = await prisma.review.update({
             where: { id: reviewId },
@@ -145,7 +154,7 @@ export const AdminController = {
     listSupportCases: async (status?: string) => {
         return await prisma.supportCase.findMany({
             where: status ? { status: status as any } : undefined,
-            include: { store: true },
+            // include: { store: true }, // No relation
             orderBy: { createdAt: 'desc' },
             take: 100
         });

@@ -90,7 +90,7 @@ export default function ReviewPage() {
                                 onClick={() => handleEdit(section.path, section.critical)}
                                 className="text-gray-400 hover:text-black p-2 rounded-full hover:bg-gray-100 transition-colors"
                             >
-                                <Icon name="Edit" size={16} />
+                                <Icon name="Pencil" size={16} />
                             </button>
                         </div>
                         <div className="space-y-3 relative z-10">

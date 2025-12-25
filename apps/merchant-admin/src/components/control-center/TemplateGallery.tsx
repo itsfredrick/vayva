@@ -74,10 +74,10 @@ export const TemplateGallery = ({ templates, currentPlan, onUseTemplate }: Templ
                                     </div>
                                 )}
                                 <div className="absolute top-3 left-3 z-20 flex gap-2">
-                                    <Badge variant="secondary" className="bg-white/90 backdrop-blur shadow-sm text-[10px] uppercase font-bold border-none text-gray-900">
+                                    <Badge variant="default" className="bg-white/90 backdrop-blur shadow-sm text-[10px] uppercase font-bold border-none text-gray-900">
                                         {template.category}
                                     </Badge>
-                                    <Badge variant="secondary" className="bg-white/90 backdrop-blur shadow-sm text-[10px] uppercase font-bold border-none text-gray-500">
+                                    <Badge variant="default" className="bg-white/90 backdrop-blur shadow-sm text-[10px] uppercase font-bold border-none text-gray-500">
                                         {template.type}
                                     </Badge>
                                 </div>

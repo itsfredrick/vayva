@@ -50,6 +50,7 @@ export class DisputeService {
             await prisma.dispute.create({
                 data: {
                     merchantId: 'user_mock_id', // Needs resolution
+                    storeId: storeId, // Use the resolved storeId
                     provider: 'PAYSTACK',
                     providerDisputeId,
                     status: status as any,
@@ -84,7 +85,7 @@ export class DisputeService {
     static async submitResponse(disputeId: string, userId: string, note?: string) {
         await prisma.$transaction(async (tx) => {
             // Create Submission Record
-            await tx.disputeSubmissionV2.create({
+            await tx.disputeSubmission.create({
                 data: {
                     disputeId,
                     submittedBy: userId,

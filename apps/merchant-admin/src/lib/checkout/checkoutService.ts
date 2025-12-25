@@ -17,7 +17,7 @@ export class CheckoutService {
         const idempotencyKey = data.idempotencyKey || SecurityUtils.generateToken(); // Simplified for V1
 
         // 1. Check Idempotency (if key provided reused)
-        const existing = await prisma.checkoutSession.findUnique({ where: { idempotencyKey } });
+        const existing = await prisma.checkout_session.findUnique({ where: { idempotencyKey } });
         if (existing) return { session: existing, resumeToken: null }; // Don't return resume token again if already exists
 
         // 2. Draft Order ID (Mock)
@@ -27,7 +27,7 @@ export class CheckoutService {
         const resumeToken = SecurityUtils.generateToken();
         const resumeTokenHash = SecurityUtils.hashToken(resumeToken);
 
-        const session = await prisma.checkoutSession.create({
+        const session = await prisma.checkout_session.create({
             data: {
                 storeId: data.storeId,
                 merchantId: data.merchantId,
@@ -51,7 +51,7 @@ export class CheckoutService {
     }
 
     static async initiatePayment(sessionId: string) {
-        const session = await prisma.checkoutSession.findUnique({ where: { id: sessionId } });
+        const session = await prisma.checkout_session.findUnique({ where: { id: sessionId } });
         if (!session) throw new Error('Session not found');
         if (session.status === 'paid') return { status: 'paid' };
 

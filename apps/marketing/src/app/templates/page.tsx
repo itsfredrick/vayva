@@ -1,3 +1,4 @@
+
 import { Suspense } from 'react';
 import { prisma } from '@vayva/db';
 import { TemplateGallery } from '@/components/templates/template-gallery';
@@ -21,12 +22,6 @@ export default async function TemplatesPage() {
             where: { isActive: true },
             orderBy: { stars: 'desc' },
             take: 50,
-            include: {
-                assets: {
-                    where: { type: 'preview_image' },
-                    take: 1
-                }
-            }
         });
     } catch (error) {
         console.error("Database connection failed, using mock templates:", error);
@@ -45,11 +40,10 @@ export default async function TemplatesPage() {
             isActive: true,
             createdAt: new Date(),
             updatedAt: new Date(),
-            assets: []
         }));
     }
 
-    const normalizedTemplates = templates.map(t => ({
+    const normalizedTemplates = templates.map((t: any) => ({
         id: t.id,
         slug: t.slug,
         name: t.name,
@@ -59,7 +53,7 @@ export default async function TemplatesPage() {
         isFree: t.isFree,
         licenseName: t.licenseName,
         stars: t.stars,
-        previewImage: (t as any).assets?.[0]?.publicUrl || null,
+        previewImage: t.repoUrl ? `https://opengraph.githubassets.com/1/${t.repoUrl.replace('https://github.com/', '')}` : null,
         updatedAt: t.updatedAt.toISOString()
     }));
 

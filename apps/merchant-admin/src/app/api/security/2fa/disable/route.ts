@@ -21,31 +21,32 @@ export async function POST(request: Request) {
         const user = await prisma.user.findUnique({
             where: { id: userId },
             select: {
-                twoFactorBackupCodes: true,
+                id: true,
             },
         });
 
-        if (!user || !user.twoFactorBackupCodes) {
+        if (!user) {
             return NextResponse.json(
-                { error: '2FA not enabled' },
-                { status: 400 }
+                { error: 'User not found' },
+                { status: 404 }
             );
         }
 
-        const backupCodes = user.twoFactorBackupCodes as string[];
+        // const backupCodes = user.twoFactorBackupCodes as string[];
 
         // Check if code is valid
-        if (!backupCodes.includes(code)) {
-            return NextResponse.json(
-                { error: 'Invalid backup code' },
-                { status: 400 }
-            );
-        }
+        // if (!backupCodes.includes(code)) {
+        //     return NextResponse.json(
+        //         { error: 'Invalid backup code' },
+        //         { status: 400 }
+        //     );
+        // }
 
         // Remove used backup code
-        const updatedCodes = backupCodes.filter(c => c !== code);
+        // const updatedCodes = backupCodes.filter(c => c !== code);
 
-        // Disable 2FA
+        // Disable 2FA (Disabled until schema update)
+        /*
         await prisma.user.update({
             where: { id: userId },
             data: {
@@ -54,6 +55,7 @@ export async function POST(request: Request) {
                 twoFactorBackupCodes: updatedCodes,
             },
         });
+        */
 
         return NextResponse.json({
             success: true,

@@ -24,14 +24,8 @@ export const MarketplaceController = {
 
     getStoreProfile: async (slug: string) => {
         return await prisma.storeProfile.findUnique({
-            where: { slug },
-            include: {
-                reviews: {
-                    where: { status: 'PUBLISHED' },
-                    orderBy: { createdAt: 'desc' },
-                    take: 10
-                }
-            }
+            where: { slug }
+            // include: { reviews: ... } // Relation not defined in schema
         });
     },
 
@@ -101,11 +95,15 @@ export const MarketplaceController = {
 
         // Verified Store
         const store = await prisma.store.findUnique({
-            where: { id: storeId },
-            include: { storefrontSettings: true }
+            where: { id: storeId }
         });
-        if (store?.storefrontSettings) {
-            badges.push('verified');
+
+        // Manual check for storefront settings if needed, but for now skipping relation access
+        if (store) {
+            const settings = await prisma.storefrontSettings.findUnique({ where: { storeId: store.id } });
+            if (settings) {
+                badges.push('verified');
+            }
         }
 
         // Reliable Delivery

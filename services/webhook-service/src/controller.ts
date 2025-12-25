@@ -9,15 +9,14 @@ export const WebhookController = {
         const rawKey = `vayva_${crypto.randomBytes(32).toString('hex')}`;
         const keyHash = crypto.createHash('sha256').update(rawKey).digest('hex');
 
-        const apiKey = await prisma.merchantApiKey.create({
+        const apiKey = await prisma.apiKey.create({
             data: {
-                merchantId: storeId,
+                storeId,
                 name,
                 keyHash,
-                prefix: rawKey.substring(0, 8),
+                // prefix: rawKey.substring(0, 8), // Not in schema
                 scopes,
-                status: 'ACTIVE',
-                createdByUserId: 'SYSTEM'
+                status: 'ACTIVE'
             }
         });
 
@@ -25,14 +24,14 @@ export const WebhookController = {
     },
 
     listApiKeys: async (storeId: string) => {
-        return await prisma.merchantApiKey.findMany({
-            where: { merchantId: storeId },
+        return await prisma.apiKey.findMany({
+            where: { storeId },
             orderBy: { createdAt: 'desc' }
         });
     },
 
     revokeApiKey: async (keyId: string) => {
-        return await prisma.merchantApiKey.update({
+        return await prisma.apiKey.update({
             where: { id: keyId },
             data: { status: 'REVOKED', revokedAt: new Date() }
         });
@@ -41,7 +40,7 @@ export const WebhookController = {
     // --- Webhook Endpoints ---
     createWebhookEndpoint: async (storeId: string, url: string, events: string[]) => {
         const secret = crypto.randomBytes(32).toString('hex');
-        const secretEnc = Buffer.from(secret).toString('base64'); // Simple encoding (use proper encryption in prod)
+        const secretEnc = Buffer.from(secret).toString('base64'); // Simple encoding
 
         const endpoint = await prisma.webhookEndpoint.create({
             data: {
@@ -69,7 +68,7 @@ export const WebhookController = {
             data: { storeId, type, payload }
         });
 
-        // Find matching endpoints
+        // Find matching endpoints manually since filtered relation queries are complex or unsupported here
         const endpoints = await prisma.webhookEndpoint.findMany({
             where: {
                 storeId,
@@ -98,21 +97,32 @@ export const WebhookController = {
     // --- Delivery Worker ---
     deliverWebhook: async (deliveryId: string) => {
         const delivery = await prisma.webhookDelivery.findUnique({
-            where: { id: deliveryId },
-            include: { endpoint: true, event: true }
+            where: { id: deliveryId }
+            // include: { endpoint: true, event: true } // Relations NOT defined in schema
         });
 
         if (!delivery) return;
 
-        const { endpoint, event } = delivery;
+        // Manual fetch of relations
+        const endpoint = await prisma.webhookEndpoint.findUnique({ where: { id: delivery.endpointId } });
+        const event = await prisma.webhookEventV2.findUnique({ where: { id: delivery.eventId } });
+
+        if (!endpoint || !event) {
+            await prisma.webhookDelivery.update({
+                where: { id: deliveryId },
+                data: { status: 'FAILED', responseBodySnippet: 'Endpoint or Event not found' }
+            });
+            return;
+        }
+
         const secret = Buffer.from(endpoint.secretEnc, 'base64').toString();
 
         // Sign payload
         const timestamp = Date.now();
-        const payload = JSON.stringify(event.payload);
+        const payloadStr = JSON.stringify(event.payload);
         const signature = crypto
             .createHmac('sha256', secret)
-            .update(`${timestamp}.${payload}`)
+            .update(`${timestamp}.${payloadStr}`)
             .digest('hex');
 
         try {
@@ -163,7 +173,7 @@ export const WebhookController = {
                 storeId,
                 ...(endpointId && { endpointId })
             },
-            include: { event: true },
+            // include: { event: true }, // Removed due to missing relation
             orderBy: { createdAt: 'desc' },
             take: 100
         });

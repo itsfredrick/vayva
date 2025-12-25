@@ -7,10 +7,10 @@ export const processHandler = async (req: FastifyRequest, reply: FastifyReply) =
 
     const message = await prisma.message.findUnique({
         where: { id: messageId },
-        include: { conversation: { include: { contact: true } } }
+        include: { Conversation: { include: { contact: true } } }
     });
 
-    if (!message || !message.conversation) return reply.status(404).send({ error: 'Message not found' });
+    if (!message || !message.Conversation) return reply.status(404).send({ error: 'Message not found' });
 
     const text = (message.textBody || '').toLowerCase();
     let responseText = '';
@@ -23,11 +23,10 @@ export const processHandler = async (req: FastifyRequest, reply: FastifyReply) =
         // Create Approval
         const approval = await prisma.approval.create({
             data: {
-                merchantId: message.conversation.merchantId,
-                // storeId is mapped in DB but let's use the field name
-                // requesterId: message.conversation.customerPhone, // Store in data if needed
+                storeId: message.Conversation.storeId,
+                merchantId: message.Conversation.storeId, // Required field in schema
                 type: 'DISCOUNT_APPLICATION',
-                data: { discount: '10%', requesterId: message.conversation.contact.phoneE164 },
+                data: { discount: '10%', requesterId: message.Conversation.contact.phoneE164 },
                 status: 'PENDING'
             }
         });

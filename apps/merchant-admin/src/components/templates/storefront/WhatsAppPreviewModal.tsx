@@ -45,7 +45,7 @@ export function WhatsAppPreviewModal({ isOpen, onClose, productName, message: in
                     <div className="flex gap-4 pr-1">
                         <Icon name="Video" size={20} />
                         <Icon name="Phone" size={20} />
-                        <Icon name="MoreVertical" size={20} />
+                        <Icon name="EllipsisVertical" size={20} />
                     </div>
                 </div>
 

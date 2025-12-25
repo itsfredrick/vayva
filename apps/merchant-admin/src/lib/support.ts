@@ -22,7 +22,7 @@ export class SupportService {
                 subject: data.subject,
                 description: data.description,
                 priority: data.priority || 'normal',
-                messages: {
+                ticketMessages: {
                     create: {
                         sender: 'merchant',
                         senderId: data.userId,
@@ -30,14 +30,14 @@ export class SupportService {
                     }
                 }
             },
-            include: { messages: true }
+            include: { ticketMessages: true }
         });
     }
 
     static async addMessage(ticketId: string, sender: string, senderId: string, message: string) {
         const msg = await prisma.ticketMessage.create({
             data: {
-                ticket: { connect: { id: ticketId } },
+                supportTicket: { connect: { id: ticketId } },
                 sender,
                 senderId,
                 message
@@ -61,7 +61,7 @@ export class SupportService {
             where: { storeId },
             orderBy: { updatedAt: 'desc' },
             include: {
-                _count: { select: { messages: true } }
+                _count: { select: { ticketMessages: true } }
             }
         });
     }
@@ -69,7 +69,7 @@ export class SupportService {
     static async getTicketDetails(ticketId: string, storeId: string) {
         const ticket = await prisma.supportTicket.findUnique({
             where: { id: ticketId },
-            include: { messages: { orderBy: { createdAt: 'asc' } } }
+            include: { ticketMessages: { orderBy: { createdAt: 'asc' } } }
         });
 
         if (!ticket || ticket.storeId !== storeId) {

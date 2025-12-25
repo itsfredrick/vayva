@@ -1,4 +1,4 @@
-import { prisma , Prisma } from '@vayva/db';
+import { prisma, Prisma } from '@vayva/db';
 
 export interface ReportDateRange {
     from: Date;
@@ -126,10 +126,10 @@ export class ReportsService {
             cursor: cursor ? { id: cursor } : undefined,
             orderBy: { createdAt: 'desc' },
             include: {
-                transactions: true,
-                // refunds: true, // Removed as relation doesn't exist, using transactions
-                shipment: true,
-                customer: { select: { firstName: true, lastName: true, phone: true } } // Basic details
+                PaymentTransaction: true,
+                // refunds: true, // Removed as relation doesn't exist, using PaymentTransaction
+                Shipment: true,
+                Customer: { select: { firstName: true, lastName: true, phone: true } } // Basic details
             }
         });
 

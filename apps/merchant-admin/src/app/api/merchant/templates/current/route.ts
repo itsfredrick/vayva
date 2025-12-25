@@ -14,7 +14,7 @@ export async function GET(req: NextRequest) {
 
     const selection = await prisma.storeTemplateSelection.findUnique({
         where: { storeId },
-        include: { template: true }
+        include: { templateManifest: true }
     });
 
     return NextResponse.json({ selection });

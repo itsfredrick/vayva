@@ -17,6 +17,7 @@
         "@vayva/api-client": "workspace:*",
         "@vayva/content": "workspace:*",
         "@vayva/db": "workspace:*",
+        "@vayva/extensions": "workspace:*",
         "@vayva/policies": "workspace:*",
         "@vayva/schemas": "workspace:*",
         "@vayva/shared": "workspace:*",

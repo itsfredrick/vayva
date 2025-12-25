@@ -1,5 +1,5 @@
 
-import { prisma , ComplianceEvent, ConsentChannel, ConsentSource } from '@vayva/db';
+import { prisma, compliance_event, ConsentChannel, ConsentSource } from '@vayva/db';
 
 export enum MessageIntent {
     TRANSACTIONAL = 'TRANSACTIONAL',
@@ -14,11 +14,11 @@ export async function getConsentStats(merchantId: string) {
         fullyBlocked,
         transactionalDisabled
     ] = await Promise.all([
-        prisma.communicationConsent.count({ where: { merchantId } }),
-        prisma.communicationConsent.count({ where: { merchantId, marketingOptIn: true } }),
-        prisma.communicationConsent.count({ where: { merchantId, marketingOptIn: false } }),
-        prisma.communicationConsent.count({ where: { merchantId, fullyBlocked: true } }),
-        prisma.communicationConsent.count({ where: { merchantId, transactionalAllowed: false } }),
+        prisma.communication_consent.count({ where: { merchantId } }),
+        prisma.communication_consent.count({ where: { merchantId, marketingOptIn: true } }),
+        prisma.communication_consent.count({ where: { merchantId, marketingOptIn: false } }),
+        prisma.communication_consent.count({ where: { merchantId, fullyBlocked: true } }),
+        prisma.communication_consent.count({ where: { merchantId, transactionalAllowed: false } }),
     ]);
 
     const optInRate = totalCustomers > 0 ? (marketingOptedIn / totalCustomers) : 0;
@@ -28,13 +28,13 @@ export async function getConsentStats(merchantId: string) {
     last30d.setDate(last30d.getDate() - 30);
 
     const [optInEvents, optOutEvents, blockAllEvents] = await Promise.all([
-        prisma.complianceEvent.count({
+        prisma.compliance_event.count({
             where: { merchantId, eventType: 'OPT_IN', createdAt: { gte: last30d } }
         }),
-        prisma.complianceEvent.count({
+        prisma.compliance_event.count({
             where: { merchantId, eventType: 'OPT_OUT', createdAt: { gte: last30d } }
         }),
-        prisma.complianceEvent.count({
+        prisma.compliance_event.count({
             where: { merchantId, eventType: 'BLOCK_ALL', createdAt: { gte: last30d } }
         })
     ]);
@@ -68,7 +68,7 @@ export async function getReachableAudience(merchantId: string, type: MessageInte
     // Let's assume we drive from Consent rows for "Reachable" (explicitly opted in).
 
     if (type === MessageIntent.MARKETING) {
-        const eligible = await prisma.communicationConsent.count({
+        const eligible = await prisma.communication_consent.count({
             where: {
                 merchantId,
                 marketingOptIn: true,
@@ -76,13 +76,13 @@ export async function getReachableAudience(merchantId: string, type: MessageInte
             }
         });
 
-        const fullyBlockedCount = await prisma.communicationConsent.count({
+        const fullyBlockedCount = await prisma.communication_consent.count({
             where: { merchantId, fullyBlocked: true }
         });
 
         // "No marketing consent" is basically Total - Eligible - BlockedAll
         // Or specific count:
-        const noConsentCount = await prisma.communicationConsent.count({
+        const noConsentCount = await prisma.communication_consent.count({
             where: {
                 merchantId,
                 marketingOptIn: false,
@@ -104,11 +104,11 @@ export async function getReachableAudience(merchantId: string, type: MessageInte
         // If they are in the table, check flags. If not in table, they are eligible (usually).
         // But let's count only those explicitly blocked or disabled.
 
-        const fullyBlockedCount = await prisma.communicationConsent.count({
+        const fullyBlockedCount = await prisma.communication_consent.count({
             where: { merchantId, fullyBlocked: true }
         });
 
-        const transactionalDisabledCount = await prisma.communicationConsent.count({
+        const transactionalDisabledCount = await prisma.communication_consent.count({
             where: { merchantId, transactionalAllowed: false, fullyBlocked: false }
         });
 
@@ -118,7 +118,7 @@ export async function getReachableAudience(merchantId: string, type: MessageInte
         // The prompt asks for "eligible". If we don't have a total customer count source, we can't give a perfect eligible count for transactional (since default is Allow).
         // We'll treat "Total Customers" as `count(CustomerConsent)`.
 
-        const total = await prisma.communicationConsent.count({ where: { merchantId } });
+        const total = await prisma.communication_consent.count({ where: { merchantId } });
         const eligible = total - fullyBlockedCount - transactionalDisabledCount;
 
         return {

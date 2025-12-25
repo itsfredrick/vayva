@@ -13,17 +13,17 @@ export async function POST(req: NextRequest, { params }: { params: Promise<{ id:
     if (!Array.isArray(tagIds)) return new NextResponse('Invalid tags', { status: 400 });
 
     const conv = await prisma.conversation.findUnique({ where: { id } });
-    if (!conv || conv.merchantId !== (session!.user as any).storeId) return new NextResponse('Forbidden', { status: 403 });
+    if (!conv || conv.storeId !== (session!.user as any).storeId) return new NextResponse('Forbidden', { status: 403 });
 
     // Transaction to replace tags
     // 1. Delete existing maps
-    await prisma.conversationTagMap.deleteMany({
+    await prisma.conversation_tag_map.deleteMany({
         where: { conversationId: id }
     });
 
     // 2. Create new maps
     if (tagIds.length > 0) {
-        await prisma.conversationTagMap.createMany({
+        await prisma.conversation_tag_map.createMany({
             data: tagIds.map((tagId: string) => ({
                 conversationId: id,
                 tagId

@@ -11,7 +11,11 @@ export const StreetFoodTemplate: React.FC<TemplateProps> = ({ businessName, demo
         { id: 'sf_2', name: 'Chicken Suya', price: 2000, type: 'food', detail: 'Per Stick', isSpicy: true },
         { id: 'sf_3', name: 'Massive Platter', price: 15000, type: 'food', detail: 'Feeds 4 People', isSpicy: true },
         { id: 'sf_4', name: 'Masa (Rice Cake)', price: 200, type: 'food', detail: 'Per Piece', isSpicy: false }
-    ] : products.filter(p => p.type === 'food');
+    ] : products.filter(p => p.type === 'food').map(p => ({
+        ...p,
+        detail: p.category || 'Delicious',
+        isSpicy: !!p.isTodaysSpecial
+    }));
 
     return (
         <div className="font-sans min-h-screen bg-yellow-400 text-black pb-24">

@@ -36,7 +36,12 @@ export const PerfumeLuxuryTemplate: React.FC<TemplateProps> = ({ businessName, d
             img: 'https://images.unsplash.com/photo-1523293182086-7651a899d37f?q=80&w=800',
             sizes: ['50ml', '100ml']
         }
-    ] : products.filter(p => p.type === 'retail');
+    ] : products.filter(p => p.type === 'retail').map(p => ({
+        ...p,
+        img: p.images?.[0] || 'https://images.unsplash.com/photo-1594035910387-fea4779426fa?q=80&w=800',
+        notes: p.description || 'Premium Collection',
+        sizes: ['30ml', '50ml', '100ml']
+    }));
 
     return (
         <div className="font-serif min-h-screen bg-[#0a0a0a] text-amber-50 selection:bg-amber-900 selection:text-white pb-20">

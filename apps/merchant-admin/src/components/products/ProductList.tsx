@@ -101,7 +101,7 @@ export const ProductList: React.FC<ProductListProps> = ({ items, onEdit, onDelet
                                     <Button variant="ghost" size="icon" className="h-8 w-8 text-gray-400 hover:text-black" onClick={() => onEdit(item)}>
                                         <Icon name="Pencil" size={14} />
                                     </Button>
-                                    <Button variant="ghost" size="icon" className="h-8 w-8 text-gray-400 hover:text-red-600 hover:bg-red-50" onClick={() => onDelete(item.id, item.title || item.name)}>
+                                    <Button variant="ghost" size="icon" className="h-8 w-8 text-gray-400 hover:text-red-600 hover:bg-red-50" onClick={() => onDelete(item.id, item.name)}>
                                         <Icon name="Trash2" size={14} />
                                     </Button>
                                 </div>

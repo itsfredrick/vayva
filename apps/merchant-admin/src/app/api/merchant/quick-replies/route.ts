@@ -12,7 +12,7 @@ export async function POST(req: NextRequest) {
 
     if (!title || !content) return new NextResponse('Missing fields', { status: 400 });
 
-    const reply = await prisma.quickReply.create({
+    const reply = await prisma.quick_reply.create({
         data: {
             merchantId: (session!.user as any).storeId,
             title,
@@ -28,7 +28,7 @@ export async function GET(req: NextRequest) {
     const session = await getServerSession(authOptions);
     if (!session?.user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
 
-    const count = await prisma.quickReply.count({ where: { merchantId: (session!.user as any).storeId } });
+    const count = await prisma.quick_reply.count({ where: { merchantId: (session!.user as any).storeId } });
 
     if (count === 0) {
         // Seed Defaults
@@ -45,7 +45,7 @@ export async function GET(req: NextRequest) {
             { title: "Payment Method", content: "Would you like Pay on Delivery (if available in your area) or bank transfer?", category: "payment" }
         ];
 
-        await prisma.quickReply.createMany({
+        await prisma.quick_reply.createMany({
             data: defaults.map(d => ({
                 merchantId: (session!.user as any).storeId,
                 title: d.title,
@@ -55,7 +55,7 @@ export async function GET(req: NextRequest) {
         });
     }
 
-    const items = await prisma.quickReply.findMany({
+    const items = await prisma.quick_reply.findMany({
         where: { merchantId: (session!.user as any).storeId, isActive: true },
         orderBy: { title: 'asc' }
     });

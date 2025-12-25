@@ -21,7 +21,7 @@ export async function POST(request: NextRequest) {
                 where: { storeId: sessionUser.storeId },
                 data: {
                     status: 'COMPLETE',
-                    currentStep: 'complete',
+                    currentStepKey: 'complete',
                     completedAt: new Date(),
                 },
             }),

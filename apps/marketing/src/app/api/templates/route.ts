@@ -1,3 +1,4 @@
+
 import { NextResponse } from 'next/server';
 import { prisma } from '@vayva/db';
 
@@ -36,12 +37,6 @@ export async function GET(request: Request) {
                 stars: 'desc', // Popularity sort
             },
             take: 50, // Cap results
-            include: {
-                assets: {
-                    where: { type: 'preview_image' },
-                    take: 1
-                }
-            }
         });
 
         // Normalize response

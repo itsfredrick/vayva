@@ -100,13 +100,13 @@ export default function SubmitTemplatePage() {
                         <div className="space-y-6 animate-in fade-in slide-in-from-right-4 duration-300">
                             <h2 className="text-lg font-bold text-gray-900 border-b pb-2">Upload Bundle</h2>
                             <div className="border-2 border-dashed border-gray-300 rounded-xl p-12 text-center hover:border-black transition-colors cursor-pointer bg-gray-50">
-                                <Icon name="UploadCloud" size={48} className="mx-auto text-gray-400 mb-4" />
+                                <Icon name="CloudUpload" size={48} className="mx-auto text-gray-400 mb-4" />
                                 <p className="font-bold text-gray-900">Drag & drop your template bundle</p>
                                 <p className="text-xs text-gray-500 mt-1">.zip files only (max 50mb)</p>
                             </div>
 
                             <div className="bg-yellow-50 p-4 rounded-lg border border-yellow-100 flex gap-3 text-yellow-800 text-sm">
-                                <Icon name="AlertTriangle" size={20} className="shrink-0" />
+                                <Icon name="TriangleAlert" size={20} className="shrink-0" />
                                 <p>Our AI will automatically scan your code for security vulnerabilities and performance issues. Make sure to follow the <a href="#" className="underline font-bold">Vayva Theme Guidelines</a>.</p>
                             </div>
 

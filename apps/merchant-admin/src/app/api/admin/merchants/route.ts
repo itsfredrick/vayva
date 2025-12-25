@@ -19,7 +19,7 @@ export async function GET(req: NextRequest) {
             },
             take: 20,
             include: {
-                subscription: true
+                merchantSubscription: true
             },
             orderBy: { createdAt: 'desc' }
         });

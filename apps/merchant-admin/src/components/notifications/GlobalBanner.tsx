@@ -47,7 +47,7 @@ export const GlobalBanner = () => {
                     "p-1.5 rounded-full shrink-0",
                     isCritical ? "bg-white/20" : "bg-amber-200"
                 )}>
-                    <Icon name={isCritical ? "AlertTriangle" : "AlertCircle"} size={16} />
+                    <Icon name={isCritical ? "TriangleAlert" : "CircleAlert"} size={16} />
                 </div>
                 <div>
                     <span className="font-bold mr-2">{banner.title}:</span>

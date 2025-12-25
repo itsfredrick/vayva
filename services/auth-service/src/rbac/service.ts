@@ -1,5 +1,5 @@
+
 import { prisma } from '@vayva/db';
-// import { AppRole } from '@prisma/client';
 
 export const RbacService = {
     // --- Permissions ---
@@ -19,8 +19,8 @@ export const RbacService = {
                 ]
             },
             include: {
-                permissions: {
-                    include: { permission: true }
+                RolePermission: {
+                    include: { Permission: true }
                 }
             }
         });
@@ -38,13 +38,13 @@ export const RbacService = {
                 storeId,
                 name,
                 isSystem: false,
-                permissions: {
+                RolePermission: {
                     create: perms.map(p => ({
                         permissionId: p.id
                     }))
                 }
             },
-            include: { permissions: true }
+            include: { RolePermission: true }
         });
     },
 
@@ -65,7 +65,7 @@ export const RbacService = {
             where: { id: roleId },
             data: {
                 name,
-                permissions: {
+                RolePermission: {
                     deleteMany: {}, // Clear old
                     create: perms.map(p => ({
                         permissionId: p.id
@@ -101,8 +101,8 @@ export const PermissionGuard = {
         const member = await prisma.membership.findUnique({
             where: { userId_storeId: { userId, storeId } },
             include: {
-                roleRel: {
-                    include: { permissions: { include: { permission: true } } }
+                Role: {
+                    include: { RolePermission: { include: { Permission: true } } }
                 }
             }
         });
@@ -110,14 +110,14 @@ export const PermissionGuard = {
         if (!member) return false;
 
         // Owner Override (Legacy Enum or System Role)
-        if ((member as any).roleEnum === 'OWNER') return true;
+        if ((member as any).role_enum === 'OWNER') return true;
 
         // Check Role Relation permissions
-        if (member.roleRel) {
+        if (member.Role) {
             // System Role super-admin check?
-            if (member.roleRel.name === 'Owner') return true;
+            if (member.Role.name === 'Owner') return true;
 
-            const hasPerm = member.roleRel.permissions.some(rp => rp.permission.key === requiredPermission);
+            const hasPerm = member.Role.RolePermission.some((rp: any) => rp.Permission.key === requiredPermission);
             if (hasPerm) return true;
         }
 

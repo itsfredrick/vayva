@@ -98,7 +98,7 @@ export const DesignerDashboard = () => {
                                         <span className="text-xs text-gray-400">• {tpl.category}</span>
                                     </div>
 
-                                    {tpl.status === 'needs_fix' && tpl.aiReviewResult && (
+                                    {tpl.aiReviewResult?.status === 'needs_fix' && (
                                         <div className="bg-red-50 text-red-700 text-xs p-3 rounded-lg max-w-md">
                                             <strong>AI Feedback:</strong>
                                             <ul className="list-disc list-inside mt-1">
@@ -117,7 +117,7 @@ export const DesignerDashboard = () => {
                                     <div className="text-xs text-green-600 font-bold">₦{tpl.revenue.toLocaleString()} Rev</div>
                                 </div>
                                 <button className="p-2 hover:bg-gray-100 rounded-lg text-gray-400 hover:text-black transition-colors">
-                                    <Icon name="MoreVertical" size={20} />
+                                    <Icon name="EllipsisVertical" size={20} />
                                 </button>
                             </div>
                         </div>

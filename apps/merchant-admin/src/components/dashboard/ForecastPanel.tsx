@@ -28,7 +28,7 @@ export const ForecastPanel = ({ revenue, cashflow, risk }: { revenue: RevenueFor
             {/* Revenue Forecast */}
             <div className="bg-white border border-gray-200 rounded-2xl p-5 shadow-sm">
                 <div className="flex items-center gap-2 mb-3 text-gray-500">
-                    <Icon name="BarChart2" size={16} />
+                    <Icon name="ChartBar" size={16} />
                     <span className="text-xs font-bold uppercase tracking-wide">30d Revenue Forecast</span>
                 </div>
                 <div className="mb-2">

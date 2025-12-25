@@ -175,15 +175,15 @@ export default function WhatsAppPage() {
 
                             <div className="mt-8 space-y-3">
                                 <div className="flex items-center gap-3 text-sm text-gray-600">
-                                    <Icon name="CheckCircle2" className="text-green-500" size={18} />
+                                    <Icon name="CircleCheck" className="text-green-500" size={18} />
                                     <span>Orders from WhatsApp appear automatically</span>
                                 </div>
                                 <div className="flex items-center gap-3 text-sm text-gray-600">
-                                    <Icon name="CheckCircle2" className="text-green-500" size={18} />
+                                    <Icon name="CircleCheck" className="text-green-500" size={18} />
                                     <span>Customer history builds instantly</span>
                                 </div>
                                 <div className="flex items-center gap-3 text-sm text-gray-600">
-                                    <Icon name="CheckCircle2" className="text-green-500" size={18} />
+                                    <Icon name="CircleCheck" className="text-green-500" size={18} />
                                     <span>Payment records link to chats</span>
                                 </div>
                             </div>

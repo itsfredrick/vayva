@@ -4,9 +4,9 @@ import { MetaProvider } from '../providers/meta.provider';
 const provider = new MetaProvider();
 
 export class ConversationStore {
-    static async listThreads(merchantId: string) {
+    static async listThreads(storeId: string) {
         return prisma.conversation.findMany({
-            where: { merchantId },
+            where: { storeId },
             include: {
                 contact: true,
                 messages: {
@@ -18,9 +18,9 @@ export class ConversationStore {
         });
     }
 
-    static async getThread(merchantId: string, conversationId: string) {
+    static async getThread(storeId: string, conversationId: string) {
         return prisma.conversation.findFirst({
-            where: { id: conversationId, merchantId },
+            where: { id: conversationId, storeId },
             include: {
                 contact: true,
                 messages: {
@@ -30,9 +30,9 @@ export class ConversationStore {
         });
     }
 
-    static async sendMessage(merchantId: string, conversationId: string, options: { body?: string, templateName?: string }) {
+    static async sendMessage(storeId: string, conversationId: string, options: { body?: string, templateName?: string }) {
         const conversation = await prisma.conversation.findFirst({
-            where: { id: conversationId, merchantId },
+            where: { id: conversationId, storeId },
             include: { contact: true }
         });
 
@@ -41,7 +41,7 @@ export class ConversationStore {
         // 1. Create local message record
         const message = await prisma.message.create({
             data: {
-                merchantId,
+                storeId,
                 conversationId,
                 direction: Direction.OUTBOUND,
                 type: options.templateName ? MessageType.TEMPLATE : MessageType.TEXT,
@@ -83,9 +83,9 @@ export class ConversationStore {
         }
     }
 
-    static async markAsRead(merchantId: string, conversationId: string) {
+    static async markAsRead(storeId: string, conversationId: string) {
         return prisma.conversation.update({
-            where: { id: conversationId, merchantId },
+            where: { id: conversationId, storeId },
             data: { unreadCount: 0 }
         });
     }

@@ -45,10 +45,12 @@ export const OnboardingController = {
         const store = await prisma.store.findUnique({
             where: { id: storeId },
             include: {
-                products: true,
-                storefrontSettings: true
+                products: true
+                // storefrontSettings: true // Removed
             }
         });
+
+        const settings = await prisma.storefrontSettings.findUnique({ where: { storeId } });
 
         const items = [
             {
@@ -63,7 +65,7 @@ export const OnboardingController = {
                 title: 'Upload Logo',
                 description: 'Set your store logo for branding',
                 category: 'STOREFRONT',
-                status: store?.storefrontSettings?.logoS3Key ? 'DONE' : 'TODO'
+                status: settings?.logoS3Key ? 'DONE' : 'TODO'
             },
             {
                 key: 'payments.connected',

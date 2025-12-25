@@ -28,7 +28,7 @@ export async function POST(req: NextRequest, { params }: { params: Promise<{ id:
     });
 
     if (!conversation) return new NextResponse('Not Found', { status: 404 });
-    if (conversation.merchantId !== (session!.user as any).storeId) return new NextResponse('Forbidden', { status: 403 });
+    if (conversation.storeId !== (session!.user as any).storeId) return new NextResponse('Forbidden', { status: 403 });
 
     // CONSENT CHECK
     // If blocked_all, usually we can't send anything.
@@ -41,7 +41,7 @@ export async function POST(req: NextRequest, { params }: { params: Promise<{ id:
     // Adding placeholder query:
     /*
     const consent = await prisma.communicationConsent.findFirst({
-        where: { storeId: conversation.merchantId, customerPhone: conversation.contact.phone }
+        where: { storeId: conversation.storeId, customerPhone: conversation.contact.phone }
     });
     if (consent?.status === 'BLOCKED_ALL') return new NextResponse('Customer blocked all messages', { status: 403 });
     */
@@ -53,7 +53,7 @@ export async function POST(req: NextRequest, { params }: { params: Promise<{ id:
         // Save Message to DB
         const message = await prisma.message.create({
             data: {
-                merchantId: conversation.merchantId,
+                storeId: conversation.storeId,
                 conversationId: id,
                 direction: 'OUTBOUND',
                 type: 'TEXT',
@@ -78,7 +78,7 @@ export async function POST(req: NextRequest, { params }: { params: Promise<{ id:
 
         // Audit
         await EventBus.publish({
-            merchantId: conversation.merchantId,
+            merchantId: conversation.storeId,
             type: 'inbox.message_sent',
             payload: { messageId: message.id, type },
             ctx: {

@@ -13,7 +13,7 @@ export async function GET(req: Request) {
             where: { storeId },
             orderBy: { updatedAt: 'desc' },
             include: {
-                messages: {
+                ticketMessages: {
                     orderBy: { createdAt: 'desc' },
                     take: 1
                 }
@@ -46,7 +46,7 @@ export async function POST(req: Request) {
                 // Add initial message if description exists? 
                 // Alternatively, separate message creation.
                 // Let's create an initial message if description is provided to act as the "body"
-                messages: description ? {
+                ticketMessages: description ? {
                     create: {
                         sender: 'merchant',
                         message: description

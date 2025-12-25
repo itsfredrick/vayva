@@ -25,23 +25,18 @@ export async function GET() {
 
         return NextResponse.json({
             status: kycRecord?.status || 'NOT_STARTED',
-            businessType: kycRecord?.businessType || null,
+            businessType: null, // Field not in schema yet
             documents: kycRecord ? [
                 {
                     type: 'BVN',
-                    status: kycRecord.bvnVerified ? 'VERIFIED' : 'PENDING',
+                    status: 'PENDING', // Schema field missing, defaulting to PENDING
                     uploadedAt: kycRecord.createdAt,
                 },
                 {
                     type: 'ID',
-                    status: kycRecord.idVerified ? 'VERIFIED' : 'PENDING',
+                    status: 'PENDING', // Schema field missing, defaulting to PENDING
                     uploadedAt: kycRecord.createdAt,
-                },
-                ...(kycRecord.businessType === 'REGISTERED' ? [{
-                    type: 'CAC',
-                    status: kycRecord.cacVerified ? 'VERIFIED' : 'PENDING',
-                    uploadedAt: kycRecord.createdAt,
-                }] : []),
+                }
             ] : [],
             canWithdraw: kycRecord?.status === 'VERIFIED',
         });

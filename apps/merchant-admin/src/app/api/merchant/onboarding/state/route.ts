@@ -47,7 +47,7 @@ export async function GET(request: NextRequest) {
         // Return onboarding state
         return NextResponse.json({
             onboardingStatus: onboarding.status,
-            currentStep: onboarding.currentStep,
+            currentStep: onboarding.currentStepKey,
             completedSteps: onboarding.completedSteps || [],
             data: onboarding.data || {},
         });
@@ -81,7 +81,7 @@ export async function POST(request: NextRequest) {
         const onboarding = await prisma.merchantOnboarding.upsert({
             where: { storeId: sessionUser.storeId },
             update: {
-                currentStep: currentStep || undefined,
+                currentStepKey: currentStep || undefined,
                 data: data || undefined,
                 completedSteps: completedSteps || undefined,
                 updatedAt: new Date(),
@@ -89,7 +89,7 @@ export async function POST(request: NextRequest) {
             create: {
                 storeId: sessionUser.storeId,
                 status: 'IN_PROGRESS',
-                currentStep: currentStep || 'welcome',
+                currentStepKey: currentStep || 'welcome',
                 data: data || {},
                 completedSteps: completedSteps || [],
             },
@@ -107,7 +107,7 @@ export async function POST(request: NextRequest) {
             message: 'Onboarding progress saved',
             onboarding: {
                 status: onboarding.status,
-                currentStep: onboarding.currentStep,
+                currentStep: onboarding.currentStepKey,
                 completedSteps: onboarding.completedSteps,
             },
         });

@@ -5,11 +5,11 @@ import { ProductServiceType, ProductServiceStatus } from '@vayva/shared';
 export const productSchema = z.object({
     title: z.string().min(2, "Title must be at least 2 characters"),
     description: z.string().optional(),
-    productType: z.nativeEnum(ProductServiceType).default(ProductServiceType.RETAIL),
+    type: z.nativeEnum(ProductServiceType),
     price: z.coerce.number().min(0, "Price cannot be negative"),
     category: z.string().optional(),
     images: z.array(z.string()).optional(),
-    status: z.nativeEnum(ProductServiceStatus).default(ProductServiceStatus.ACTIVE),
+    status: z.nativeEnum(ProductServiceStatus),
 
     // Retail specific
     searchTags: z.array(z.string()).optional(),

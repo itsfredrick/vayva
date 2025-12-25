@@ -13,8 +13,8 @@ export const BillingController = {
     // --- Subscriptions ---
     getSubscription: async (storeId: string) => {
         return await prisma.subscription.findUnique({
-            where: { storeId },
-            include: { plan: true }
+            where: { storeId }
+            // include: { plan: true } // Removed: no relation in schema
         });
     },
 
@@ -62,13 +62,16 @@ export const BillingController = {
     // --- Entitlements ---
     checkEntitlement: async (storeId: string, feature: string): Promise<boolean> => {
         const subscription = await prisma.subscription.findUnique({
-            where: { storeId },
-            include: { plan: true }
+            where: { storeId }
         });
 
         if (!subscription || subscription.status === 'CANCELED') return false;
 
-        const limits = subscription.plan.limits as any;
+        // Fetch plan manually
+        const plan = await prisma.plan.findUnique({ where: { key: subscription.planKey } });
+        if (!plan) return false;
+
+        const limits = plan.limits as any;
 
         // Example checks
         if (feature === 'custom_domain') return limits.custom_domain === true;
@@ -79,13 +82,13 @@ export const BillingController = {
 
     getUsageLimit: async (storeId: string, usageKey: string) => {
         const subscription = await prisma.subscription.findUnique({
-            where: { storeId },
-            include: { plan: true }
+            where: { storeId }
         });
 
         if (!subscription) return { used: 0, limit: 0, remaining: 0 };
 
-        const limits = subscription.plan.limits as any;
+        const plan = await prisma.plan.findUnique({ where: { key: subscription.planKey } });
+        const limits = (plan?.limits as any) || {};
         const limit = limits[usageKey] || 0;
 
         const counter = await prisma.usageCounter.findFirst({
@@ -107,13 +110,13 @@ export const BillingController = {
         const periodEnd = new Date(now.getFullYear(), now.getMonth() + 1, 0);
 
         const subscription = await prisma.subscription.findUnique({
-            where: { storeId },
-            include: { plan: true }
+            where: { storeId }
         });
 
         if (!subscription) return;
 
-        const limits = subscription.plan.limits as any;
+        const plan = await prisma.plan.findUnique({ where: { key: subscription.planKey } });
+        const limits = (plan?.limits as any) || {};
         const limit = limits[usageKey] || 0;
 
         await prisma.usageCounter.upsert({

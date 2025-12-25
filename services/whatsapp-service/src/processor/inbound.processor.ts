@@ -13,8 +13,8 @@ export class InboundProcessor {
         // 1. Resolve Contact
         let contact = await prisma.contact.findUnique({
             where: {
-                merchantId_channel_externalId: {
-                    merchantId: storeId,
+                storeId_channel_externalId: {
+                    storeId: storeId,
                     channel: 'WHATSAPP',
                     externalId: waId
                 }
@@ -24,7 +24,7 @@ export class InboundProcessor {
         if (!contact) {
             contact = await prisma.contact.create({
                 data: {
-                    merchantId: storeId,
+                    storeId: storeId,
                     channel: 'WHATSAPP',
                     externalId: waId,
                     displayName,
@@ -36,8 +36,8 @@ export class InboundProcessor {
         // 2. Resolve Conversation
         let conversation = await prisma.conversation.findUnique({
             where: {
-                merchantId_contactId: {
-                    merchantId: storeId,
+                storeId_contactId: {
+                    storeId: storeId,
                     contactId: contact.id
                 }
             }
@@ -46,7 +46,7 @@ export class InboundProcessor {
         if (!conversation) {
             conversation = await prisma.conversation.create({
                 data: {
-                    merchantId: storeId,
+                    storeId: storeId,
                     contactId: contact.id,
                     status: 'OPEN'
                 }
@@ -56,7 +56,7 @@ export class InboundProcessor {
         // 3. Append Message
         const message = await prisma.message.create({
             data: {
-                merchantId: storeId,
+                storeId: storeId,
                 conversationId: conversation.id,
                 direction: Direction.INBOUND,
                 type: (messageData.type?.toUpperCase() as any) || MessageType.TEXT,
@@ -84,7 +84,7 @@ export class InboundProcessor {
 
         await prisma.message.updateMany({
             where: {
-                merchantId: storeId,
+                storeId: storeId,
                 providerMessageId: status.id
             },
             data: {

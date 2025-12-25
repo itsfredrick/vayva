@@ -42,7 +42,7 @@ export const webhookHandler = async (req: FastifyRequest, reply: FastifyReply) =
             });
 
             // For V1 demo fallback to a known store if channel not found
-            const storeId = channel?.merchantId || 'store-123';
+            const storeId = channel?.storeId || 'store-123';
 
             if (value.messages) {
                 await InboundProcessor.processMessage(storeId, value);

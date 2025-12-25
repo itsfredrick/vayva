@@ -6,7 +6,7 @@ export class RecoveryService {
 
     static async scheduleRecovery(sessionId: string, merchantId: string) {
         // 1. Check Settings
-        const settings = await prisma.checkoutRecoverySettings.findUnique({
+        const settings = await prisma.checkout_recovery_settings.findUnique({
             where: { merchantId }
         });
 
@@ -14,7 +14,7 @@ export class RecoveryService {
 
         // 2. Schedule Messages
         // Stage 1
-        await prisma.checkoutRecoveryMessage.create({
+        await prisma.checkout_recovery_message.create({
             data: {
                 checkoutSessionId: sessionId,
                 stage: 'hour_1',
@@ -28,7 +28,7 @@ export class RecoveryService {
     }
 
     static async processRecovery(messageId: string) {
-        const msg = await prisma.checkoutRecoveryMessage.findUnique({
+        const msg = await prisma.checkout_recovery_message.findUnique({
             where: { id: messageId }
         }); // In real Prisma client this relation needs to be defined in schema or fetched manually if relation inference is off
 
@@ -39,14 +39,14 @@ export class RecoveryService {
         // Mocked here to just log execution
         console.log(`[Recovery] Sending recovery for session ${msg.checkoutSessionId}`);
 
-        await prisma.checkoutRecoveryMessage.update({
+        await prisma.checkout_recovery_message.update({
             where: { id: messageId },
             data: { status: 'sent', sentAt: new Date() }
         });
     }
 
     static async cancelRecovery(sessionId: string) {
-        await prisma.checkoutRecoveryMessage.updateMany({
+        await prisma.checkout_recovery_message.updateMany({
             where: { checkoutSessionId: sessionId, status: 'scheduled' },
             data: { status: 'cancelled' }
         });

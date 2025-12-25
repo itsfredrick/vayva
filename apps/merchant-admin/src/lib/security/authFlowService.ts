@@ -12,7 +12,7 @@ export class AuthFlowService {
         const expiresAt = new Date(Date.now() + 60 * 60 * 1000); // 1 hour
 
         // 2. Store Hash
-        await prisma.userEmailVerification.upsert({
+        await prisma.user_email_verification.upsert({
             where: { userId },
             update: { tokenHash, expiresAt, verifiedAt: null },
             create: { userId, tokenHash, expiresAt }
@@ -35,7 +35,7 @@ export class AuthFlowService {
     static async confirmEmailVerification(token: string) {
         const tokenHash = SecurityUtils.hashToken(token);
 
-        const record = await prisma.userEmailVerification.findUnique({
+        const record = await prisma.user_email_verification.findUnique({
             where: { tokenHash }
         });
 
@@ -43,7 +43,7 @@ export class AuthFlowService {
         if (record.verifiedAt) throw new Error('Already verified');
         if (record.expiresAt < new Date()) throw new Error('Token expired');
 
-        await prisma.userEmailVerification.update({
+        await prisma.user_email_verification.update({
             where: { id: record.id },
             data: { verifiedAt: new Date() }
         });
@@ -59,7 +59,7 @@ export class AuthFlowService {
         const tokenHash = SecurityUtils.hashToken(token);
         const expiresAt = new Date(Date.now() + 15 * 60 * 1000); // 15 mins
 
-        await prisma.passwordResetToken.create({
+        await prisma.password_reset_token.create({
             data: { userId, tokenHash, expiresAt }
         });
 
@@ -69,7 +69,7 @@ export class AuthFlowService {
     static async confirmPasswordReset(token: string, newPassword: string) {
         const tokenHash = SecurityUtils.hashToken(token);
 
-        const record = await prisma.passwordResetToken.findUnique({
+        const record = await prisma.password_reset_token.findUnique({
             where: { tokenHash }
         });
 
@@ -79,7 +79,7 @@ export class AuthFlowService {
 
         await prisma.$transaction(async (tx) => {
             // 1. Mark Token Used
-            await tx.passwordResetToken.update({
+            await tx.password_reset_token.update({
                 where: { id: record.id },
                 data: { usedAt: new Date() }
             });

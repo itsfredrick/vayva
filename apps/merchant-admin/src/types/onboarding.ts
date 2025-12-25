@@ -3,15 +3,21 @@ export type PlanType = 'free' | 'growth' | 'pro';
 export type OnboardingStepId =
     | 'welcome'
     | 'setup-path'
+    | 'identity'
     | 'business'
     | 'whatsapp'
     | 'templates'
+    | 'products'
+    | 'store-details'
+    | 'brand'
     | 'order-flow'
     | 'payments'
     | 'delivery'
     | 'team'
     | 'kyc'
     | 'review'
+    | 'resume'
+    | 'store'
     | 'complete';
 
 export interface OnboardingState {
@@ -58,6 +64,12 @@ export interface OnboardingState {
         name: string;
     };
 
+    // Step 5.5: Products
+    products?: {
+        hasAddedProducts: boolean;
+        count: number;
+    };
+
     // Step 6: Order Flow
     orderFlow?: {
         statuses: string[]; // e.g. ['New', 'Confirmed', 'Paid', ...]
@@ -85,11 +97,46 @@ export interface OnboardingState {
     team?: {
         type: 'solo' | 'small' | 'large';
         invites?: Array<{ email: string; role: 'viewer' | 'staff' | 'admin' }>;
+        skipped?: boolean;
     };
 
     // Step 10: KYC (See kycStatus flag)
     kyc?: {
         method?: 'bvn' | 'nin' | 'govt_id';
         data?: Record<string, any>;
+    };
+
+    // Branding
+    branding?: {
+        logo?: string;
+        logoUrl?: string; // Legacy support
+        coverUrl?: string; // Legacy support
+        brandColor?: string; // Legacy support
+        colors?: {
+            primary: string;
+            secondary: string;
+        };
+    };
+
+    // Store Details (Legacy/Parallel)
+    storeDetails?: {
+        storeName: string;
+        category: string;
+        state: string;
+        city: string;
+        slug: string;
+    };
+
+    // Identity
+    identity?: {
+        fullName?: string;
+        email?: string;
+        phone?: string;
+        dob?: string;
+        bvn?: string;
+        nin?: string;
+        idType?: string;
+        idNumber?: string;
+        idImage?: string;
     };
 }

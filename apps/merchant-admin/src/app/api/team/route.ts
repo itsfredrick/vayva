@@ -11,7 +11,7 @@ export async function GET() {
         const members = await prisma.membership.findMany({
             where: { storeId },
             include: {
-                user: {
+                User: {
                     select: {
                         id: true,
                         email: true,
@@ -21,18 +21,18 @@ export async function GET() {
                 },
             },
             orderBy: {
-                joinedAt: 'asc',
+                createdAt: 'asc',
             },
         });
 
         return NextResponse.json({
             members: members.map(m => ({
                 id: m.userId,
-                name: `${m.user.firstName} ${m.user.lastName}`,
-                email: m.user.email,
+                name: `${m.User.firstName} ${m.User.lastName}`,
+                email: m.User.email,
                 role: m.role,
                 status: m.status,
-                joinedAt: m.joinedAt,
+                joinedAt: m.createdAt,
             })),
         });
     } catch (error: any) {

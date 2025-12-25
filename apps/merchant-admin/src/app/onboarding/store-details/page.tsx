@@ -117,9 +117,9 @@ export default function StoreDetailsPage() {
                             {isCheckingSlug ? (
                                 <Icon name={"Loader2" as any} className="animate-spin text-gray-400" size={16} />
                             ) : slugAvailable === true ? (
-                                <Icon name={"CheckCircle" as any} className="text-green-500" size={16} />
+                                <Icon name={"CircleCheck" as any} className="text-green-500" size={16} />
                             ) : slugAvailable === false ? (
-                                <Icon name={"XCircle" as any} className="text-red-500" size={16} />
+                                <Icon name={"CircleX" as any} className="text-red-500" size={16} />
                             ) : null}
                         </div>
                     </div>

@@ -38,7 +38,7 @@ export const BusinessHealthWidget = ({ data }: { data: BusinessHealthData }) => 
                         {data.factors.map(factor => (
                             <li key={factor.id} className="flex items-start gap-2 text-xs font-medium text-gray-700">
                                 <Icon
-                                    name={factor.sentiment === 'positive' ? 'TrendingUp' : factor.sentiment === 'warning' ? 'AlertCircle' : 'ArrowDown'}
+                                    name={factor.sentiment === 'positive' ? 'TrendingUp' : factor.sentiment === 'warning' ? 'CircleAlert' : 'ArrowDown'}
                                     size={14}
                                     className={factor.sentiment === 'positive' ? 'text-green-500' : factor.sentiment === 'warning' ? 'text-amber-500' : 'text-red-500'}
                                 />
@@ -51,7 +51,7 @@ export const BusinessHealthWidget = ({ data }: { data: BusinessHealthData }) => 
 
             {data.primary_risk && (
                 <div className="bg-red-50 border border-red-100 rounded-xl p-3 flex items-start gap-3">
-                    <Icon name="AlertTriangle" size={16} className="text-red-600 mt-0.5" />
+                    <Icon name="TriangleAlert" size={16} className="text-red-600 mt-0.5" />
                     <div>
                         <p className="text-xs font-bold text-red-800 uppercase tracking-wide mb-1">Risk Alert</p>
                         <p className="text-sm font-medium text-red-900">{data.primary_risk.text}</p>

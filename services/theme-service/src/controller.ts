@@ -1,3 +1,4 @@
+
 import { prisma } from '@vayva/db';
 
 const DEFAULT_TEMPLATE_SLUG = 'vayva-default';
@@ -5,38 +6,56 @@ const DEFAULT_TEMPLATE_SLUG = 'vayva-default';
 export const ThemeController = {
     // --- Template Gallery ---
     listTemplates: async (filters?: any) => {
-        return await prisma.template.findMany({
+        const templates = await prisma.template.findMany({
             where: {
                 isActive: true,
                 ...(filters?.category && filters.category !== 'All' && { category: filters.category })
             },
-            orderBy: { createdAt: 'desc' },
-            include: {
-                assets: { where: { type: 'preview_image' }, take: 1 }
-            }
+            orderBy: { createdAt: 'desc' }
         });
+
+        // Enrich with Preview Image assets manually
+        const enriched = await Promise.all(templates.map(async (t) => {
+            const assets = await prisma.templateAsset.findMany({
+                where: { templateId: t.id, type: 'preview_image' },
+                take: 1
+            });
+            return { ...t, assets };
+        }));
+
+        return enriched;
     },
 
     getTemplate: async (slug: string) => {
-        return await prisma.template.findUnique({
-            where: { slug },
-            include: { assets: true, versions: true }
+        const template = await prisma.template.findUnique({
+            where: { slug }
         });
+
+        if (!template) return null;
+
+        const assets = await prisma.templateAsset.findMany({ where: { templateId: template.id } });
+        const versions = await prisma.templateVersion.findMany({ where: { templateId: template.id } });
+
+        return { ...template, assets, versions };
     },
 
     // --- Merchant Theme Management ---
     getMerchantTheme: async (storeId: string) => {
-        return await prisma.merchantTheme.findFirst({
-            where: { storeId, status: 'PUBLISHED' },
-            include: { template: true }
+        const theme = await prisma.merchantTheme.findFirst({
+            where: { storeId, status: 'PUBLISHED' }
         });
+
+        if (!theme) return null;
+
+        const template = await prisma.template.findUnique({ where: { id: theme.templateId } });
+
+        return { ...theme, template };
     },
 
     applyTemplate: async (storeId: string, templateSlug: string, userId?: string) => {
         const template = await prisma.template.findUnique({ where: { slug: templateSlug } });
         if (!template) throw new Error('Template not found');
 
-        // Create or update draft theme? 
         // Logic: Create new draft
         return await prisma.merchantTheme.create({
             data: {
@@ -44,7 +63,6 @@ export const ThemeController = {
                 templateId: template.id,
                 status: 'DRAFT',
                 config: {},
-                // History tracking handled by creating history snapshot on publish
             }
         });
     },
