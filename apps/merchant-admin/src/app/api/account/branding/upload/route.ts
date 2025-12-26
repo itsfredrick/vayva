@@ -1,7 +1,5 @@
 import { NextResponse } from 'next/server';
 import { requireAuth } from '@/lib/auth/session';
-import { writeFile } from 'fs/promises';
-import { join } from 'path';
 import { randomUUID } from 'crypto';
 
 export async function POST(request: Request) {
@@ -41,17 +39,28 @@ export async function POST(request: Request) {
         const ext = file.name.split('.').pop();
         const filename = `${storeId}-${randomUUID()}.${ext}`;
 
-        // Convert file to buffer
-        const bytes = await file.arrayBuffer();
-        const buffer = Buffer.from(bytes);
+        let logoUrl = '';
 
-        // Save to public/uploads directory
-        const uploadDir = join(process.cwd(), 'public', 'uploads', 'logos');
-        const filepath = join(uploadDir, filename);
+        // Check if we should use Vercel Blob (Production) or local storage (Development)
+        if (process.env.BLOB_READ_WRITE_TOKEN) {
+            const { put } = await import('@vercel/blob');
+            const blob = await put(`logos/${filename}`, file, {
+                access: 'public',
+                addRandomSuffix: false,
+            });
+            logoUrl = blob.url;
+        } else {
+            // Local fallback for development
+            const { writeFile } = await import('fs/promises');
+            const { join } = await import('path');
+            const uploadDir = join(process.cwd(), 'public', 'uploads', 'logos');
+            const filepath = join(uploadDir, filename);
 
-        await writeFile(filepath, buffer);
-
-        const logoUrl = `/uploads/logos/${filename}`;
+            const bytes = await file.arrayBuffer();
+            const buffer = Buffer.from(bytes);
+            await writeFile(filepath, buffer);
+            logoUrl = `/uploads/logos/${filename}`;
+        }
 
         // Update store with logo URL
         const { prisma } = await import('@vayva/db');

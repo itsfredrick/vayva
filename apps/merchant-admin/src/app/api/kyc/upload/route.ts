@@ -1,7 +1,5 @@
 import { NextResponse } from 'next/server';
 import { requireAuth } from '@/lib/auth/session';
-import { writeFile } from 'fs/promises';
-import { join } from 'path';
 import { randomUUID } from 'crypto';
 
 export async function POST(request: Request) {
@@ -42,17 +40,28 @@ export async function POST(request: Request) {
         const ext = file.name.split('.').pop();
         const filename = `${storeId}-${documentType}-${randomUUID()}.${ext}`;
 
-        // Convert file to buffer
-        const bytes = await file.arrayBuffer();
-        const buffer = Buffer.from(bytes);
+        let documentUrl = '';
 
-        // Save to public/uploads/kyc directory
-        const uploadDir = join(process.cwd(), 'public', 'uploads', 'kyc');
-        const filepath = join(uploadDir, filename);
+        // Check if we should use Vercel Blob (Production) or local storage (Development)
+        if (process.env.BLOB_READ_WRITE_TOKEN) {
+            const { put } = await import('@vercel/blob');
+            const blob = await put(`kyc/${filename}`, file, {
+                access: 'public',
+                addRandomSuffix: false,
+            });
+            documentUrl = blob.url;
+        } else {
+            // Local fallback for development
+            const { writeFile } = await import('fs/promises');
+            const { join } = await import('path');
+            const uploadDir = join(process.cwd(), 'public', 'uploads', 'kyc');
+            const filepath = join(uploadDir, filename);
 
-        await writeFile(filepath, buffer);
-
-        const documentUrl = `/uploads/kyc/${filename}`;
+            const bytes = await file.arrayBuffer();
+            const buffer = Buffer.from(bytes);
+            await writeFile(filepath, buffer);
+            documentUrl = `/uploads/kyc/${filename}`;
+        }
 
         // Update or create KYC record
         const { prisma } = await import('@vayva/db');

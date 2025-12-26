@@ -23,6 +23,7 @@
         "@vayva/shared": "workspace:*",
         "@vayva/template-service": "workspace:^",
         "@vayva/ui": "workspace:*",
+        "@vercel/blob": "^2.0.0",
         "axios": "^1.6.2",
         "bcryptjs": "^3.0.3",
         "clsx": "^2.1.1",
