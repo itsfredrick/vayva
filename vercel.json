@@ -1,9 +1,0 @@
-{
-  "version": 2,
-  "buildCommand": "pnpm turbo run build --filter=merchant-admin",
-  "installCommand": "pnpm install --frozen-lockfile",
-  "outputDirectory": "apps/merchant-admin/.next",
-  "github": {
-    "silent": true
-  }
-}
