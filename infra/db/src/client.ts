@@ -1,12 +1,10 @@
 import { PrismaClient, Prisma } from '@prisma/client';
 
-// Values: Re-export the Prisma namespace and common enums explicitly to satisfy Turbopack (Next.js 16)
-// Turbopack cannot statically analyze 'export *' from the CommonJS @prisma/client module.
 export {
     PrismaClient,
     Prisma,
 
-    // Core Enums from schema.prisma
+    // Core Enums from schema.prisma (Verified present in generated client)
     AiActionStatus,
     ApiKeyStatus,
     AppRole,
@@ -22,13 +20,10 @@ export {
     ConsentChannel,
     ConsentEventType,
     ConsentSource,
-    ConsentStatus,
-    ConsentType,
     CouponStatus,
     DLQStatus,
     DataRequestStatus,
     DataRequestType,
-    DeliveryTaskStatus,
     DeviceStatus,
     DeviceType,
     Direction,
@@ -44,13 +39,10 @@ export {
     FlagSeverity,
     FulfillmentStatus,
     IdempotencyStatus,
-    InvoiceStatus,
     JobRunStatus,
     KycStatus,
     LegalKey,
     ListingStatus,
-    MediaType,
-    MessageIntent,
     MessageStatus,
     MessageType,
     MetricPeriod,
@@ -78,16 +70,13 @@ export {
     SubscriptionStatus,
     SupportCaseCategory,
     SupportCaseStatus,
-    ThemeCategory,
-    ThemeLicenseType,
     ThemeStatus,
     VirtualAccountStatus,
     WebhookDeliveryStatus,
     WebhookEndpointStatus
 } from '@prisma/client';
 
-// Types: Wildcard export for all generated types (models, inputs, etc.)
-// Types are erased at build time and do not trigger Turbopack's CJS export errors.
+// Types are safe to wildcard export as they don't trigger Turbopack re-export warnings
 export type * from '@prisma/client';
 
 const globalForPrisma = globalThis as unknown as {

@@ -1,7 +1,6 @@
 {
     "name": "@vayva/db",
     "version": "0.0.0",
-    "type": "module",
     "main": "./src/client.ts",
     "types": "./src/client.ts",
     "scripts": {
