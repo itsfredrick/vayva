@@ -4,7 +4,6 @@
     "main": "./src/client.ts",
     "types": "./src/client.ts",
     "scripts": {
-        "postinstall": "prisma generate --schema=./prisma/schema.prisma",
         "db:generate": "prisma generate --schema=./prisma/schema.prisma",
         "build": "pnpm run db:generate",
         "db:push": "prisma db push --schema=./prisma/schema.prisma",
