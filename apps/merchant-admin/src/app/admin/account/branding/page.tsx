@@ -1,19 +1,55 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Palette, Upload, Loader2 } from 'lucide-react';
+import { toast } from 'sonner';
 
 export default function BrandingPage() {
     const [logoUrl, setLogoUrl] = useState('');
     const [primaryColor, setPrimaryColor] = useState('#22C55E');
     const [accentColor, setAccentColor] = useState('#16A34A');
+    const [loading, setLoading] = useState(true);
     const [saving, setSaving] = useState(false);
+
+    useEffect(() => {
+        const fetchBranding = async () => {
+            try {
+                const res = await fetch('/api/account/branding');
+                if (res.ok) {
+                    const data = await res.json();
+                    setLogoUrl(data.logoUrl);
+                    setPrimaryColor(data.primaryColor);
+                    setAccentColor(data.accentColor);
+                }
+            } catch (err) {
+                toast.error('Failed to load branding settings');
+            } finally {
+                setLoading(false);
+            }
+        };
+        fetchBranding();
+    }, []);
 
     const handleSave = async () => {
         setSaving(true);
-        // TODO: Implement save logic
-        setTimeout(() => setSaving(false), 1000);
+        try {
+            const res = await fetch('/api/account/branding', {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ logoUrl, primaryColor, accentColor })
+            });
+
+            if (!res.ok) throw new Error('Failed to update branding');
+
+            toast.success('Branding updated successfully');
+        } catch (err) {
+            toast.error('Failed to save changes');
+        } finally {
+            setSaving(false);
+        }
     };
+
+    if (loading) return <div className="p-8"><Loader2 className="animate-spin w-8 h-8 text-gray-400" /></div>;
 
     return (
         <div className="max-w-3xl space-y-8">

@@ -27,6 +27,16 @@ export async function GET() {
             );
         }
 
+        // Fetch StoreProfile for additional details
+        const profile = await prisma.storeProfile.findUnique({
+            where: { storeId },
+            select: {
+                city: true,
+                state: true,
+                whatsappNumberE164: true,
+            }
+        });
+
         // Parse contacts and settings from JSON
         const contacts = store.contacts as any || {};
         const settings = store.settings as any || {};
@@ -39,11 +49,14 @@ export async function GET() {
             description: settings.description || '',
             supportEmail: contacts.email || '',
             supportPhone: contacts.phone || '',
+            logoUrl: store.logoUrl,
+            whatsappNumber: profile?.whatsappNumberE164 || '',
             address: {
                 street: settings.address?.street || '',
-                city: settings.address?.city || '',
-                state: settings.address?.state || '',
+                city: profile?.city || settings.address?.city || '',
+                state: profile?.state || settings.address?.state || '',
                 country: settings.address?.country || 'Nigeria',
+                landmark: settings.address?.landmark || '',
             },
         });
     } catch (error: any) {
@@ -73,6 +86,8 @@ export async function PUT(request: Request) {
             supportEmail,
             supportPhone,
             address,
+            logoUrl,
+            whatsappNumber,
         } = body;
 
         // Validate required fields
@@ -86,29 +101,63 @@ export async function PUT(request: Request) {
         // Get current store data
         const currentStore = await prisma.store.findUnique({
             where: { id: storeId },
-            select: { contacts: true, settings: true },
+            select: { contacts: true, settings: true, name: true, category: true, logoUrl: true },
         });
 
         const currentContacts = currentStore?.contacts as any || {};
         const currentSettings = currentStore?.settings as any || {};
 
-        // Update store
-        const updatedStore = await prisma.store.update({
-            where: { id: storeId },
-            data: {
-                name,
-                category: businessType,
-                contacts: {
-                    ...currentContacts,
-                    email: supportEmail,
-                    phone: supportPhone,
+        // Update Store and StoreProfile in a transaction
+        const [updatedStore] = await prisma.$transaction([
+            prisma.store.update({
+                where: { id: storeId },
+                data: {
+                    name,
+                    category: businessType,
+                    logoUrl: logoUrl !== undefined ? logoUrl : currentStore?.logoUrl,
+                    contacts: {
+                        ...currentContacts,
+                        email: supportEmail,
+                        phone: supportPhone,
+                    },
+                    settings: {
+                        ...currentSettings,
+                        description,
+                        address: {
+                            ...(currentSettings.address || {}),
+                            ...address,
+                        }
+                    },
                 },
-                settings: {
-                    ...currentSettings,
-                    description,
-                    address: address || currentSettings.address,
+            }),
+            prisma.storeProfile.upsert({
+                where: { storeId },
+                create: {
+                    storeId,
+                    slug: currentStore?.name?.toLowerCase().replace(/\s+/g, '-') || `store-${storeId.substring(0, 8)}`,
+                    displayName: name,
+                    city: address?.city,
+                    state: address?.state,
+                    whatsappNumberE164: whatsappNumber,
                 },
-            },
+                update: {
+                    displayName: name,
+                    city: address?.city,
+                    state: address?.state,
+                    whatsappNumberE164: whatsappNumber,
+                    logoUrl: logoUrl !== undefined ? logoUrl : currentStore?.logoUrl,
+                }
+            })
+        ]);
+
+        // Audit Logging
+        const { logAuditEvent, AuditEventType } = await import('@/lib/audit');
+        await logAuditEvent(storeId, session.user.id, AuditEventType.SETTINGS_CHANGED, {
+            keysChanged: ['name', 'category', 'location', 'branding'].filter(k => {
+                if (k === 'name') return name !== currentStore?.name;
+                if (k === 'category') return businessType !== currentStore?.category;
+                return true; // Simplified for address/logo
+            })
         });
 
         return NextResponse.json({

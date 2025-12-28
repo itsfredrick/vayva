@@ -15,7 +15,8 @@ import {
     Plug,
     FileCheck,
     Bell,
-    HelpCircle
+    HelpCircle,
+    Truck
 } from 'lucide-react';
 
 const navigation = [
@@ -48,6 +49,7 @@ const navigation = [
         title: 'Configuration',
         items: [
             { name: 'Connected Services', href: '/admin/account/integrations', icon: Plug },
+            { name: 'Delivery Settings', href: '/admin/control-center/delivery', icon: Truck }, // NEW
             { name: 'Compliance & KYC', href: '/admin/account/kyc', icon: FileCheck },
             { name: 'Notifications', href: '/admin/account/notifications', icon: Bell },
         ],

@@ -29,7 +29,7 @@ export default function WelcomePage() {
         await updateState({
             intent: { segment: selected }
         });
-        await goToStep('setup-path');
+        await goToStep('business');
     };
 
     return (
@@ -79,17 +79,32 @@ export default function WelcomePage() {
                 )}
             </div>
 
-            {/* Actions */}
-            <div className="flex flex-col items-center">
-                <Button
-                    data-testid="onboarding-welcome-continue"
-                    onClick={handleContinue}
-                    disabled={!selected}
-                    className="w-full md:w-2/3 !bg-black text-white h-12 rounded-xl text-base shadow-lg hover:shadow-xl transition-all disabled:opacity-50 disabled:cursor-not-allowed"
-                >
-                    Continue
-                </Button>
+            <Button
+                data-testid="onboarding-welcome-continue"
+                onClick={handleContinue}
+                disabled={!selected}
+                className="w-full md:w-2/3 !bg-black text-white h-12 rounded-xl text-base shadow-lg hover:shadow-xl transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+                Continue
+            </Button>
+
+            {/* Referral Code Entry */}
+            <div className="mt-8 w-full md:w-2/3 border-t border-gray-100 pt-6">
+                <p className="text-xs text-center text-gray-400 mb-3">Optional: Have a referral code?</p>
+                <div className="flex gap-2">
+                    <input
+                        type="text"
+                        placeholder="CODE123"
+                        className="flex-1 bg-gray-50 border border-gray-100 rounded-xl px-4 py-2 text-sm focus:outline-none focus:border-black transition-colors"
+                        value={state?.referralCode || ''}
+                        onChange={(e) => updateState({ referralCode: e.target.value.toUpperCase() })}
+                    />
+                </div>
             </div>
+
+            <p className="text-xs text-center text-gray-400 mt-4">
+                You can finish setup later from your dashboard.
+            </p>
         </div>
     );
 }

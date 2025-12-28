@@ -58,11 +58,6 @@ export async function POST(request: NextRequest) {
             user.firstName || 'Merchant'
         );
 
-        // Log to console in development/test
-        if (process.env.NODE_ENV === 'development' || process.env.NODE_ENV === 'test') {
-            console.log(`[DEV] Resent verification code for ${email}: ${otpCode}`);
-        }
-
         return NextResponse.json({
             message: 'A new verification code has been sent to your email.',
             email: user.email,

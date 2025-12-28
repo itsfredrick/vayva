@@ -10,16 +10,14 @@ export function GlobalHeader() {
     const pathname = usePathname();
 
     const productLinks = [
-        { href: '/how-it-works', label: 'How Vayva Works' },
+        { href: '/how-vayva-works', label: 'How Vayva Works' },
         { href: '/features', label: 'Features' },
         { href: '/templates', label: 'Templates' },
-        { href: '/marketplace', label: 'Marketplace', badge: 'Coming Soon' },
         { href: '/pricing', label: 'Pricing' },
     ];
 
     const companyLinks = [
         { href: '/about', label: 'About Vayva' },
-        { href: '/blog', label: 'Blog' },
         { href: '/careers', label: 'Careers' },
     ];
 
@@ -59,9 +57,6 @@ export function GlobalHeader() {
                                             className="block px-4 py-2 text-sm text-[#0F172A] hover:bg-gray-50 hover:text-[#22C55E] transition-colors"
                                         >
                                             {link.label}
-                                            {link.badge && (
-                                                <span className="ml-2 text-xs text-gray-500">({link.badge})</span>
-                                            )}
                                         </Link>
                                     ))}
                                 </div>
@@ -166,9 +161,6 @@ export function GlobalHeader() {
                                         onClick={() => setMobileMenuOpen(false)}
                                     >
                                         {link.label}
-                                        {link.badge && (
-                                            <span className="ml-2 text-xs text-gray-500">({link.badge})</span>
-                                        )}
                                     </Link>
                                 ))}
                             </div>

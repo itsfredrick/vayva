@@ -8,7 +8,7 @@ const legalDocuments = [
     { title: 'Acceptable Use Policy', href: '/legal/acceptable-use' },
     { title: 'Prohibited Items', href: '/legal/prohibited-items' },
     { title: 'Refund Policy', href: '/legal/refund-policy' },
-    { title: 'KYC & Safety', href: '/legal/kyc-safety' },
+    { title: 'KYC & Compliance', href: '/legal/kyc-safety' },
     { title: 'Manage Cookies', href: '/legal/cookies' },
 ];
 
@@ -27,8 +27,8 @@ export default function LegalHubPage() {
                                         <Link
                                             href={doc.href}
                                             className={`block px-3 py-2 text-sm rounded ${doc.active
-                                                    ? 'bg-gray-100 text-gray-900 font-medium'
-                                                    : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'
+                                                ? 'bg-gray-100 text-gray-900 font-medium'
+                                                : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'
                                                 }`}
                                         >
                                             {doc.title}
@@ -65,7 +65,7 @@ export default function LegalHubPage() {
                                     <h3 className="text-lg font-semibold text-gray-900 mb-2">
                                         <Link href="/legal/privacy" className="hover:underline">Privacy Policy</Link>
                                     </h3>
-                                    <p className="text-gray-700">Explains data handling practices and compliance with Nigeria Data Protection Regulation (NDPR).</p>
+                                    <p className="text-gray-700">Explains data handling practices and compliance with the Nigeria Data Protection Act (NDPA) 2023.</p>
                                 </div>
 
                                 <div className="border-l-4 border-gray-900 pl-6">
@@ -97,7 +97,7 @@ export default function LegalHubPage() {
                             <div className="space-y-6">
                                 <div className="border-l-4 border-gray-900 pl-6">
                                     <h3 className="text-lg font-semibold text-gray-900 mb-2">
-                                        <Link href="/legal/kyc-safety" className="hover:underline">KYC & Safety</Link>
+                                        <Link href="/legal/kyc-safety" className="hover:underline">KYC & Compliance</Link>
                                     </h3>
                                     <p className="text-gray-700">Identity verification requirements, risk mitigation, and enforcement procedures.</p>
                                 </div>
@@ -127,7 +127,7 @@ export default function LegalHubPage() {
                                 </div>
                                 <div>
                                     <dt className="font-semibold text-gray-900">Governing Entity</dt>
-                                    <dd className="text-gray-700">Vayva Inc.</dd>
+                                    <dd className="text-gray-700">Vayva Inc. (operating in Nigeria)</dd>
                                 </div>
                             </dl>
                         </div>

@@ -18,18 +18,24 @@ export type OnboardingStepId =
     | 'review'
     | 'resume'
     | 'store'
+    | 'storefront'
     | 'complete';
 
 export interface OnboardingState {
+    schemaVersion?: number; // Guardrail for schema evolution
     isComplete: boolean;
+    requiredComplete?: boolean;
     currentStep: OnboardingStepId;
     lastUpdatedAt: string; // ISO date
     completedSteps?: string[]; // Track completed steps
+    skippedSteps?: OnboardingStepId[]; // Steps skipped due to template fast path
+    requiredSteps?: OnboardingStepId[]; // Steps strictly required by template
 
     // Master Prompt Global State
     whatsappConnected: boolean;
     templateSelected: boolean;
     kycStatus: 'not_started' | 'pending' | 'verified' | 'failed';
+    referralCode?: string;
     plan: PlanType;
 
     // Step 1: Welcome & Intent
@@ -43,12 +49,15 @@ export interface OnboardingState {
     // Step 3: Business Basics
     business?: {
         name: string;
+        legalName?: string;
+        type?: 'individual' | 'registered';
         email: string; // Pre-filled where possible
         category: string;
         logo?: string; // Base64 or URL
         location: {
             city: string;
             state: string;
+            country: string;
         };
         description?: string;
     };
@@ -84,6 +93,13 @@ export interface OnboardingState {
             accountName?: string;
         };
         proofRequired: boolean; // "Attach proof"
+        currency?: string;
+        settlementBank?: {
+            bankName: string;
+            accountNumber: string;
+            accountName: string;
+        };
+        payoutScheduleAcknowledged?: boolean;
     };
 
     // Step 8: Delivery
@@ -91,6 +107,9 @@ export interface OnboardingState {
         policy: 'required' | 'sometimes' | 'pickup_only';
         stages: string[]; // e.g. ['Preparing', 'Out for delivery', 'Delivered']
         proofRequired: boolean;
+        pickupAddress?: string;
+        defaultProvider?: string;
+        slaExpectation?: string;
     };
 
     // Step 9: Team
@@ -125,6 +144,8 @@ export interface OnboardingState {
         state: string;
         city: string;
         slug: string;
+        domainPreference?: 'subdomain' | 'custom';
+        publishStatus?: 'draft' | 'published';
     };
 
     // Identity
@@ -132,6 +153,8 @@ export interface OnboardingState {
         fullName?: string;
         email?: string;
         phone?: string;
+        role?: 'owner' | 'admin';
+        authMethod?: 'email' | 'google';
         dob?: string;
         bvn?: string;
         nin?: string;

@@ -44,7 +44,7 @@ export const InboxSidebar = ({ threads, activeId }: { threads: WaThread[], activ
 };
 
 // --- Chat Window ---
-export const ChatWindow = ({ thread }: { thread?: WaThread }) => {
+export const ChatWindow = ({ thread }: { thread?: WaThread | null }) => {
     if (!thread) {
         return (
             <div className="flex-1 flex flex-col items-center justify-center bg-gray-50/50 text-gray-400 p-8 text-center">
@@ -104,7 +104,7 @@ export const ChatWindow = ({ thread }: { thread?: WaThread }) => {
 };
 
 // --- AI Actions Panel ---
-export const AiActionsPanel = ({ thread }: { thread?: WaThread }) => {
+export const AiActionsPanel = ({ thread }: { thread?: WaThread | null }) => {
     if (!thread) return null;
     return (
         <div className="w-80 border-l border-gray-100 bg-white flex flex-col h-full overflow-y-auto p-4 gap-6">

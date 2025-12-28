@@ -1,11 +1,13 @@
-import { NextRequest, NextResponse } from 'next/server';
 
-// DEV ONLY: This endpoint is temporarily disabled
-// TODO: Update to match current Prisma schema
-export async function POST(request: NextRequest) {
-    return NextResponse.json({ error: 'Endpoint temporarily disabled' }, { status: 503 });
-}
+import { NextResponse } from 'next/server';
 
-export async function GET(request: NextRequest) {
-    return NextResponse.json({ error: 'Endpoint temporarily disabled' }, { status: 503 });
+export async function POST() {
+    return NextResponse.json(
+        {
+            code: 'feature_not_configured',
+            feature: 'DEV_TOOLS',
+            message: 'Development tools are disabled in this environment'
+        },
+        { status: 503 }
+    );
 }

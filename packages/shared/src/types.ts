@@ -21,6 +21,8 @@ export enum UserRole {
 export enum OnboardingStatus {
     NOT_STARTED = 'NOT_STARTED',
     IN_PROGRESS = 'IN_PROGRESS',
+    REQUIRED_COMPLETE = 'REQUIRED_COMPLETE',
+    OPTIONAL_INCOMPLETE = 'OPTIONAL_INCOMPLETE',
     COMPLETE = 'COMPLETE'
 }
 
@@ -431,14 +433,15 @@ export interface ControlCenterState {
 
 // Global Notifications & Alerts Types
 
-export type NotificationType = 'critical' | 'action_required' | 'info' | 'success' | 'insight';
+export type NotificationSeverity = 'critical' | 'action_required' | 'info' | 'success' | 'insight';
 export type NotificationChannel = 'in_app' | 'banner' | 'whatsapp' | 'email';
 export type NotificationCategory = 'orders' | 'payments' | 'account' | 'system';
 
 export interface Notification {
     id: string;
     merchantId: string;
-    type: NotificationType;
+    type: string; // Changed to string to support canonical IDs
+    severity: NotificationSeverity; // Use the renamed type
     category: NotificationCategory;
     title: string;
     message: string;

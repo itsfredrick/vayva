@@ -34,6 +34,10 @@ export async function POST(req: NextRequest) {
         where: { userId_storeId: { userId: targetUserId, storeId } }
     });
 
+    // P7 Audit Log
+    const { logAuditEvent, AuditEventType } = await import('@/lib/audit');
+    await logAuditEvent(storeId, userId, AuditEventType.TEAM_MEMBER_REMOVED, { targetUserId });
+
     const user = (session!.user as any);
     const actorLabel = `${user.firstName || ''} ${user.lastName || ''}`.trim() || user.email || 'System';
     await EventBus.publish({

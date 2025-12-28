@@ -16,7 +16,7 @@ interface ThemeSelectionStepProps {
 
 export function ThemeSelectionStep({ value, onChange, onNext, onBack, isSubmitting }: ThemeSelectionStepProps) {
     const { store } = useAuth() as any;
-    const [previewTemplate, setPreviewTemplate] = useState<TemplateDefinition | null>(null);
+    const [previewTemplate, setPreviewTemplate] = useState<any>(null);
 
     return (
         <StepShell
@@ -38,23 +38,23 @@ export function ThemeSelectionStep({ value, onChange, onNext, onBack, isSubmitti
                             {/* Theme Preview Card */}
                             <div
                                 className="aspect-video w-full p-4 relative"
-                                style={{ backgroundColor: theme.colors.background }}
+                                style={{ backgroundColor: (theme as any).colors?.background || '#FAFAFA' }}
                             >
                                 <div className="absolute top-2 right-2">
-                                    {theme.tags[0] && (
+                                    {theme.category && (
                                         <span className="bg-black/80 text-white text-[10px] px-2 py-1 rounded-full backdrop-blur-md uppercase tracking-wide font-bold">
-                                            {theme.tags[0]}
+                                            {theme.category}
                                         </span>
                                     )}
                                 </div>
 
                                 {/* Mock UI */}
                                 <div className="w-full h-full flex flex-col gap-2 opacity-50 pointer-events-none select-none">
-                                    <div className="w-1/3 h-2 rounded bg-current opacity-20" style={{ color: theme.colors.text }} />
-                                    <div className="w-full h-24 rounded bg-current opacity-10" style={{ color: theme.colors.text }} />
+                                    <div className="w-1/3 h-2 rounded bg-current opacity-20" style={{ color: (theme as any).colors?.text || '#000' }} />
+                                    <div className="w-full h-24 rounded bg-current opacity-10" style={{ color: (theme as any).colors?.text || '#000' }} />
                                     <div className="grid grid-cols-2 gap-2">
-                                        <div className="h-12 rounded bg-current opacity-10" style={{ color: theme.colors.text }} />
-                                        <div className="h-12 rounded bg-current opacity-10" style={{ color: theme.colors.text }} />
+                                        <div className="h-12 rounded bg-current opacity-10" style={{ color: (theme as any).colors?.text || '#000' }} />
+                                        <div className="h-12 rounded bg-current opacity-10" style={{ color: (theme as any).colors?.text || '#000' }} />
                                     </div>
                                 </div>
 

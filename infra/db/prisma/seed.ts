@@ -9,6 +9,62 @@ async function main() {
     // Create test stores
     console.log('📦 Creating test stores...');
 
+    // AI Plans
+    console.log('🤖 Creating AI Plans...');
+    const starterPlan = await prisma.aiPlan.upsert({
+        where: { name: 'STARTER' },
+        update: {},
+        create: {
+            name: 'STARTER',
+            monthlyTokenLimit: 100000,
+            monthlyImageLimit: 50,
+            monthlyRequestLimit: 20,
+            features: { support: 'standard', models: ['llama-3.1-70b'] }
+        }
+    });
+
+    const growthPlan = await prisma.aiPlan.upsert({
+        where: { name: 'GROWTH' },
+        update: {},
+        create: {
+            name: 'GROWTH',
+            monthlyTokenLimit: 5000000,
+            monthlyImageLimit: 500,
+            monthlyRequestLimit: 2000,
+            features: { support: 'priority', models: ['llama-3.1-70b', 'vision-match'] }
+        }
+    });
+
+    const proPlan = await prisma.aiPlan.upsert({
+        where: { name: 'PRO' },
+        update: {},
+        create: {
+            name: 'PRO',
+            monthlyTokenLimit: 25000000,
+            monthlyImageLimit: 2000,
+            monthlyRequestLimit: 10000,
+            features: { support: '24/7', models: ['llama-3.1-70b', 'vision-match', 'advanced-persuasion'] }
+        }
+    });
+    console.log('✓ Created AI Plans (Starter, Growth, Pro)\n');
+
+    // Support SLA Policies
+    console.log('⏳ Creating Support SLA Policies...');
+    const slaPolicies = [
+        { plan: 'STARTER', category: 'DEFAULT', responseTimeMinutes: 1440, resolutionTimeMinutes: 2880 }, // 24h / 48h
+        { plan: 'GROWTH', category: 'DEFAULT', responseTimeMinutes: 360, resolutionTimeMinutes: 1440 },  // 6h / 24h
+        { plan: 'PRO', category: 'DEFAULT', responseTimeMinutes: 60, resolutionTimeMinutes: 720 },      // 1h / 12h
+        { plan: 'PRO', category: 'URGENT', responseTimeMinutes: 15, resolutionTimeMinutes: 240 },      // 15m / 4h
+    ];
+
+    for (const policy of slaPolicies) {
+        await prisma.supportSlaPolicy.create({ data: policy });
+    }
+    console.log('✓ Created 4 SLA Policies\n');
+
+    // Create test stores
+    console.log('📦 Creating test stores...');
+
     const store1 = await prisma.store.upsert({
         where: { id: 'store_test_1' },
         update: {},
@@ -156,8 +212,10 @@ async function main() {
     // Create sample products
     console.log('📦 Creating sample products...');
 
-    const product1 = await prisma.product.create({
-        data: {
+    const product1 = await prisma.product.upsert({
+        where: { storeId_handle: { storeId: store1.id, handle: 'jollof-rice-special' } },
+        update: {},
+        create: {
             storeId: store1.id,
             title: 'Jollof Rice Special',
             handle: 'jollof-rice-special',
@@ -167,8 +225,10 @@ async function main() {
         },
     });
 
-    const product2 = await prisma.product.create({
-        data: {
+    const product2 = await prisma.product.upsert({
+        where: { storeId_handle: { storeId: store2.id, handle: 'classic-white-tshirt' } },
+        update: {},
+        create: {
             storeId: store2.id,
             title: 'Classic White T-Shirt',
             handle: 'classic-white-tshirt',

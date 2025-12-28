@@ -1,659 +1,314 @@
+
 'use client';
 
-import React, { useState } from 'react';
+import React, { useEffect } from 'react';
+import { TEMPLATE_REGISTRY, TemplateCategory, getTemplatesByCategory, BillingPlan, getNormalizedTemplates } from '@/lib/templates-registry';
+import { CATEGORY_MARKETING, TEMPLATE_MARKETING } from '@/lib/marketing-content';
+import { useUserPlan } from '@/hooks/useUserPlan';
+import { UpgradePlanModal } from '@/components/billing/UpgradePlanModal';
 import Link from 'next/link';
-import { Button } from '@vayva/ui';
-import { TemplateConfirmation } from '@/components/onboarding/TemplateConfirmation';
-import { SetupModeSelector } from '@/components/onboarding/SetupModeSelector';
-import { UpgradeModal } from '@/components/onboarding/UpgradeModal';
+import { useSearchParams, useRouter } from 'next/navigation';
+import { captureUrlParams, saveAttribution } from '@/lib/attribution';
+import { Modal } from '@vayva/ui';
+import { StoreShell } from '@/components/storefront/store-shell';
+import { AAFashionHome } from '@/components/storefront/AAFashionHome';
+import { GizmoTechHome } from '@/components/storefront/GizmoTechHome';
+import { BloomeHome } from '@/components/storefront/BloomeHome';
+import { StandardRetailHome } from '@/components/storefront/StandardRetailHome';
+import { QuickBitesFood } from '@/components/storefront/QuickBitesFood';
+import { GourmetDiningFood } from '@/components/storefront/GourmetDiningFood';
+import { WellnessBooking } from '@/components/storefront/WellnessBooking';
+import { ProConsultBooking } from '@/components/storefront/ProConsultBooking';
+import { SkillAcademyCourses } from '@/components/storefront/SkillAcademyCourses';
+import { LearnHubCourses } from '@/components/storefront/LearnHubCourses';
+import { DigitalVaultStore } from '@/components/storefront/DigitalVaultStore';
 
-type PlanTier = 'free' | 'growth' | 'pro';
-
-const TEMPLATES = [
-    // 🟢 FREE PLAN — FOUNDATIONAL TEMPLATES
-    {
-        id: 'simple-retail',
-        name: 'Simple Retail Selling',
-        category: 'retail',
-        tier: 'free' as PlanTier,
-        description: 'Orders, manual payments, basic delivery notes for solo sellers.',
-        bestFor: 'Solo merchants selling physical products',
-        workflows: ['Orders', 'Manual Payments', 'Delivery Notes'],
-        setupTime: '5 minutes',
-        volume: 'low',
-        teamSize: 'solo',
-        configures: ['Order statuses', 'Manual payment recording', 'Basic delivery notes', 'Single-user flow'],
-        customizable: ['Prices', 'Status names'],
-        constraints: ['Single user', 'Limited records history', 'No inventory automation', 'No advanced reports'],
-    },
-    {
-        id: 'solo-services',
-        name: 'Solo Services',
-        category: 'services',
-        tier: 'free' as PlanTier,
-        description: 'Bookings via WhatsApp with payment confirmation.',
-        bestFor: 'Service providers and consultants',
-        workflows: ['Bookings', 'Payment Confirmation', 'Customer Records'],
-        setupTime: '5 minutes',
-        volume: 'low',
-        teamSize: 'solo',
-        configures: ['Booking statuses', 'Payment confirmation', 'Simple customer records'],
-        customizable: ['Service types', 'Pricing'],
-        constraints: ['Single user', 'Limited records history', 'No team access', 'No advanced reports'],
-    },
-
-    // 🔵 GROWTH PLAN — OPERATIONAL TEMPLATES
-    {
-        id: 'structured-retail',
-        name: 'Structured Retail',
-        category: 'retail',
-        tier: 'growth' as PlanTier,
-        description: 'Full order lifecycle with inventory and delivery tracking.',
-        bestFor: 'Merchants with repeatable daily operations',
-        workflows: ['Orders', 'Payments', 'Inventory', 'Deliveries', 'Records'],
-        setupTime: '10 minutes',
-        volume: 'medium',
-        teamSize: 'small',
-        configures: ['Full order lifecycle', 'Payment reconciliation', 'Inventory tracking', 'Delivery status flow'],
-        customizable: ['Prices', 'Status names', 'Staff roles', 'Workflow rules'],
-        capabilitiesUnlocked: ['Multi-staff access', 'Inventory workflows', 'Basic exports'],
-    },
-    {
-        id: 'food-catering',
-        name: 'Food & Catering',
-        category: 'food',
-        tier: 'growth' as PlanTier,
-        description: 'Order batching and delivery coordination for food businesses.',
-        bestFor: 'Food vendors and catering services',
-        workflows: ['Orders', 'Payments', 'Deliveries', 'Inventory', 'Records'],
-        setupTime: '10–15 minutes',
-        volume: 'medium',
-        teamSize: 'small',
-        configures: ['Order batching', 'Delivery coordination', 'Repeat customer handling', 'Inventory alerts'],
-        customizable: ['Menu items', 'Delivery zones', 'Staff roles', 'Workflow rules'],
-        capabilitiesUnlocked: ['Multi-staff access', 'Inventory workflows', 'Basic exports'],
-    },
-    {
-        id: 'online-selling',
-        name: 'Online Selling',
-        category: 'online',
-        tier: 'growth' as PlanTier,
-        description: 'High-volume handling with customer history and reports.',
-        bestFor: 'Online stores with inventory management',
-        workflows: ['Orders', 'Payments', 'Inventory', 'Deliveries', 'Customers', 'Records'],
-        setupTime: '15 minutes',
-        volume: 'high',
-        teamSize: 'small',
-        configures: ['High-order volume handling', 'Customer history', 'Basic reports', 'Inventory tracking'],
-        customizable: ['Product catalog', 'Pricing', 'Staff roles', 'Workflow rules'],
-        capabilitiesUnlocked: ['Multi-staff access', 'Inventory workflows', 'Basic exports'],
-    },
-
-    // 🟣 PRO PLAN — ADVANCED / SCALE TEMPLATES
-    {
-        id: 'wholesale',
-        name: 'Wholesale / Bulk Orders',
-        category: 'wholesale',
-        tier: 'pro' as PlanTier,
-        description: 'Complex pricing, partial payments, and delivery stages.',
-        bestFor: 'Bulk sellers and distributors',
-        workflows: ['Orders', 'Payments', 'Inventory', 'Deliveries', 'Records'],
-        setupTime: '15 minutes',
-        volume: 'high',
-        teamSize: 'multi',
-        configures: ['Complex pricing', 'Partial payments', 'Delivery stages', 'Bulk order statuses'],
-        customizable: ['Minimum orders', 'Payment terms', 'Staff roles', 'Workflow rules'],
-        capabilitiesUnlocked: ['Unlimited staff', 'Full audit logs', 'Long-term data retention', 'Priority support'],
-    },
-    {
-        id: 'multi-branch',
-        name: 'Multi-Branch Operations',
-        category: 'retail',
-        tier: 'pro' as PlanTier,
-        description: 'Team roles, visibility across staff, consolidated records.',
-        bestFor: 'Businesses with multiple locations or branches',
-        workflows: ['Orders', 'Payments', 'Inventory', 'Deliveries', 'Team', 'Records'],
-        setupTime: '20 minutes',
-        volume: 'high',
-        teamSize: 'multi',
-        configures: ['Team roles', 'Visibility across staff', 'Consolidated records', 'Branch management'],
-        customizable: ['Branch structure', 'Staff permissions', 'Workflow rules', 'Reports'],
-        capabilitiesUnlocked: ['Unlimited staff', 'Full audit logs', 'Long-term data retention', 'Priority support'],
-    },
-    {
-        id: 'custom-advanced',
-        name: 'Custom Advanced Setup',
-        category: 'custom',
-        tier: 'pro' as PlanTier,
-        description: 'Full workflow customization with advanced reports and audit trails.',
-        bestFor: 'Businesses requiring complete operational control',
-        workflows: ['Customizable'],
-        setupTime: '30+ minutes',
-        volume: 'any',
-        teamSize: 'any',
-        configures: ['Full workflow customization', 'Advanced reports', 'Audit trails', 'Custom integrations'],
-        customizable: ['Everything'],
-        capabilitiesUnlocked: ['Unlimited staff', 'Full audit logs', 'Long-term data retention', 'Priority support'],
-    },
-];
-
-const WORKFLOW_STEPS = [
-    { id: 'chat', label: 'Customer chat', icon: '💬' },
-    { id: 'order', label: 'Order created', icon: '📝' },
-    { id: 'payment', label: 'Payment recorded', icon: '💰' },
-    { id: 'delivery', label: 'Delivery tracked', icon: '🚚' },
-    { id: 'record', label: 'Record stored', icon: '📊' },
-];
-
-export default function TemplatesPage() {
-    const [selectedCategory, setSelectedCategory] = useState('all');
-    const [selectedVolume, setSelectedVolume] = useState('all');
-    const [selectedTeamSize, setSelectedTeamSize] = useState('all');
-    const [selectedTemplate, setSelectedTemplate] = useState<string | null>(null);
-    const [activeTab, setActiveTab] = useState('overview');
-    const [activeWorkflowStep, setActiveWorkflowStep] = useState('order');
-    const [compareTemplates, setCompareTemplates] = useState<string[]>([]);
-
-    // Transition flow state
-    const [showConfirmation, setShowConfirmation] = useState(false);
-    const [showModeSelector, setShowModeSelector] = useState(false);
-    const [templateToApply, setTemplateToApply] = useState<typeof TEMPLATES[0] | null>(null);
-
-    // Tier system state
-    const [userTier, setUserTier] = useState<PlanTier>('free'); // In production, get from auth context
-    const [showUpgradeModal, setShowUpgradeModal] = useState(false);
-    const [upgradeTemplate, setUpgradeTemplate] = useState<typeof TEMPLATES[0] | null>(null);
-
-    // Helper function to check if template is accessible
-    const isTemplateAccessible = (templateTier: PlanTier): boolean => {
-        const tierHierarchy = { free: 0, growth: 1, pro: 2 };
-        return tierHierarchy[userTier] >= tierHierarchy[templateTier];
+// Helper for plan badges
+function PlanBadge({ plan }: { plan: BillingPlan }) {
+    const styles = {
+        'free': 'bg-gray-100 text-gray-700',
+        'growth': 'bg-blue-50 text-blue-700',
+        'pro': 'bg-black text-white'
     };
+    return (
+        <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium capitalize ${styles[plan]}`}>
+            {plan}
+        </span>
+    );
+}
 
-    const filteredTemplates = TEMPLATES.filter(t => {
-        if (selectedCategory !== 'all' && t.category !== selectedCategory) return false;
-        if (selectedVolume !== 'all' && t.volume !== selectedVolume) return false;
-        if (selectedTeamSize !== 'all' && t.teamSize !== selectedTeamSize) return false;
-        return true;
-    });
+// Component map for previews
+const PREVIEW_COMPONENTS: Record<string, React.ComponentType<any>> = {
+    'StoreShell': StandardRetailHome,
+    'AAFashionHome': AAFashionHome,
+    'GizmoTechHome': GizmoTechHome,
+    'BloomeHomeLayout': BloomeHome,
+    'QuickBitesFood': QuickBitesFood,
+    'GourmetDiningFood': GourmetDiningFood,
+    'WellnessBooking': WellnessBooking,
+    'ProConsultBooking': ProConsultBooking,
+    'SkillAcademyCourses': SkillAcademyCourses,
+    'LearnHubCourses': LearnHubCourses,
+    'DigitalVaultStore': DigitalVaultStore,
+};
 
-    const currentTemplate = TEMPLATES.find(t => t.id === selectedTemplate);
+const DEMO_SLUGS: Record<string, string> = {
+    'StoreShell': 'demo-retail',
+    'QuickBitesFood': 'demo-food',
+    'GourmetDiningFood': 'demo-food',
+    'AAFashionHome': 'demo-retail',
+    'GizmoTechHome': 'demo-retail',
+    'BloomeHomeLayout': 'demo-retail',
+    // Fallback others to demo-retail
+};
 
-    const resetFilters = () => {
-        setSelectedCategory('all');
-        setSelectedVolume('all');
-        setSelectedTeamSize('all');
-    };
+export default function TemplatesLandingPage() {
+    return <TemplatesLandingPageContent />;
+}
 
-    const toggleCompare = (templateId: string) => {
-        if (compareTemplates.includes(templateId)) {
-            setCompareTemplates(compareTemplates.filter(id => id !== templateId));
-        } else if (compareTemplates.length < 2) {
-            setCompareTemplates([...compareTemplates, templateId]);
+function TemplatesLandingPageContent() {
+    const { tier: userPlan, isAuthenticated } = useUserPlan();
+    const router = useRouter();
+    const [upgradeModalOpen, setUpgradeModalOpen] = React.useState(false);
+    const [targetUpgradePlan, setTargetUpgradePlan] = React.useState<BillingPlan>('free');
+    const [previewOpen, setPreviewOpen] = React.useState(false);
+    const [selectedTemplate, setSelectedTemplate] = React.useState<any>(null);
+    const searchParams = useSearchParams();
+
+    useEffect(() => {
+        if (!searchParams) return;
+
+        captureUrlParams(searchParams, 'templates_landing');
+
+        console.log('[TELEMETRY] TEMPLATES_LANDING_VIEWED', {
+            category: searchParams.get('category'),
+            source: searchParams.get('utm_source')
+        });
+
+        const categorySlug = searchParams.get('category');
+        if (categorySlug) {
+            const targetId = Object.values(TemplateCategory).find(c => c.toLowerCase() === categorySlug.toLowerCase());
+            if (targetId) {
+                setTimeout(() => {
+                    const el = document.getElementById(`category-${targetId}`);
+                    if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }, 100);
+            }
         }
+    }, [searchParams]);
+
+    const handleUnlock = (plan: BillingPlan, templateId: string) => {
+        console.log(`[TELEMETRY] TEMPLATE_UNLOCK_CLICKED id=${templateId} required=${plan}`);
+        setTargetUpgradePlan(plan);
+        setUpgradeModalOpen(true);
     };
 
-    const handleApplyTemplate = (template: typeof TEMPLATES[0]) => {
-        // Check if template is accessible based on user's tier
-        if (!isTemplateAccessible(template.tier)) {
-            setUpgradeTemplate(template);
-            setShowUpgradeModal(true);
-            setSelectedTemplate(null); // Close preview modal
-            return;
-        }
-
-        setTemplateToApply(template);
-        setShowConfirmation(true);
-        setSelectedTemplate(null); // Close preview modal
+    const handlePreview = (template: any) => {
+        console.log(`[TELEMETRY] TEMPLATE_PREVIEW_OPENED id=${template.id}`);
+        setSelectedTemplate(template);
+        setPreviewOpen(true);
     };
 
-    const handleConfirmationContinue = () => {
-        setShowConfirmation(false);
-        setShowModeSelector(true);
+    const handleUse = (templateId: string) => {
+        console.log(`[TELEMETRY] TEMPLATE_SELECTED id=${templateId}`);
+        saveAttribution({ initial_template: templateId });
+        router.push(`/signup?template=${templateId}`);
     };
 
-    const handleConfirmationGoBack = () => {
-        setShowConfirmation(false);
-        setTemplateToApply(null);
-    };
+    const categories = Object.values(TemplateCategory);
+    const PLAN_HIERARCHY: Record<BillingPlan, number> = { 'free': 0, 'growth': 1, 'pro': 2 };
+    const canAccess = (req: BillingPlan) => (PLAN_HIERARCHY[userPlan!] || 0) >= PLAN_HIERARCHY[req];
 
-    const handleModeSelect = (mode: 'guided' | 'quick') => {
-        // Store template selection and redirect to appropriate flow
-        if (mode === 'guided') {
-            // Redirect to guided onboarding
-            window.location.href = `/onboarding/welcome?template=${templateToApply?.id}`;
-        } else {
-            // Redirect to quick setup
-            window.location.href = `/onboarding/quick-setup?template=${templateToApply?.id}`;
-        }
-    };
-
-    // Show transition screens if active
-    if (showConfirmation && templateToApply) {
-        return (
-            <TemplateConfirmation
-                template={templateToApply}
-                onContinue={handleConfirmationContinue}
-                onGoBack={handleConfirmationGoBack}
-            />
-        );
-    }
-
-    if (showModeSelector && templateToApply) {
-        return <SetupModeSelector onSelectMode={handleModeSelect} />;
-    }
-
-    // Show upgrade modal if user tries to access locked template
-    if (showUpgradeModal && upgradeTemplate) {
-        const features = upgradeTemplate.capabilitiesUnlocked || upgradeTemplate.configures;
-        return (
-            <>
-                {/* Render the main page in background */}
-                <div className="min-h-screen bg-white">
-                    {/* Page content will be here */}
-                </div>
-                <UpgradeModal
-                    requiredTier={upgradeTemplate.tier as 'growth' | 'pro'}
-                    templateName={upgradeTemplate.name}
-                    features={features}
-                    onClose={() => {
-                        setShowUpgradeModal(false);
-                        setUpgradeTemplate(null);
-                    }}
-                />
-            </>
-        );
-    }
+    // Get the preview component
+    const PreviewComponent = selectedTemplate?.layoutComponent
+        ? PREVIEW_COMPONENTS[selectedTemplate.layoutComponent]
+        : null;
 
     return (
-        <div className="min-h-screen bg-white">
-            {/* Page Header */}
-            <section className="pt-32 pb-16 px-4">
-                <div className="max-w-6xl mx-auto">
-                    <p className="text-sm text-[#64748B] mb-4">Product → Templates</p>
-                    <h1 className="text-4xl md:text-5xl font-bold text-[#0F172A] mb-6 leading-tight">
-                        Pre-built business setups you can trust.
-                    </h1>
-                    <p className="text-xl text-[#64748B] max-w-3xl mb-4">
-                        Templates give you ready-made workflows for common WhatsApp businesses—orders, payments, deliveries, and records already structured.
-                    </p>
-                    <p className="text-sm text-[#64748B] italic">
-                        You can preview everything before applying a template.
+        <div className="min-h-screen bg-gray-50 pb-20">
+            <UpgradePlanModal
+                isOpen={upgradeModalOpen}
+                onClose={() => setUpgradeModalOpen(false)}
+                currentPlan={userPlan}
+                requiredPlan={targetUpgradePlan}
+            />
+
+            <Modal
+                isOpen={previewOpen}
+                onClose={() => setPreviewOpen(false)}
+                title={selectedTemplate?.name || 'Template Preview'}
+                className="max-w-6xl"
+            >
+                <div className="flex flex-col">
+                    <div className="w-full h-[70vh] border border-gray-200 rounded-xl overflow-auto bg-white shadow-inner">
+                        {PreviewComponent ? (
+                            <PreviewComponent
+                                storeName={selectedTemplate?.name || 'Demo Store'}
+                                storeSlug={DEMO_SLUGS[selectedTemplate.layoutComponent] || 'demo-retail'}
+                            />
+                        ) : (
+                            <div className="flex items-center justify-center h-full text-gray-400">
+                                <div className="text-center">
+                                    <p className="text-sm">Preview not available</p>
+                                    <p className="text-xs mt-2">This template is still being built</p>
+                                </div>
+                            </div>
+                        )}
+                    </div>
+
+                    <div className="flex gap-4 w-full mt-6">
+                        <button
+                            onClick={() => setPreviewOpen(false)}
+                            className="flex-1 px-6 py-3 border border-gray-200 rounded-xl font-bold text-gray-700 hover:bg-gray-50 transition-all"
+                        >
+                            Back to Gallery
+                        </button>
+                        <button
+                            onClick={() => handleUse(selectedTemplate?.id)}
+                            className="flex-1 px-6 py-3 bg-[#10B981] text-white rounded-xl font-bold hover:bg-[#059669] transition-all shadow-lg shadow-green-100"
+                        >
+                            Use This Template
+                        </button>
+                    </div>
+                    <p className="mt-4 text-xs text-gray-400 font-medium text-center">
+                        Previewing {selectedTemplate?.name}. No account required to view.
                     </p>
                 </div>
-            </section>
+            </Modal>
 
-            {/* Template Browser */}
-            <section className="py-16 px-4">
-                <div className="max-w-7xl mx-auto">
-                    <div className="grid lg:grid-cols-4 gap-8">
-                        {/* Filter Panel (Sticky) */}
-                        <div className="lg:col-span-1">
-                            <div className="lg:sticky lg:top-24 space-y-6">
-                                {/* Business Type */}
-                                <div>
-                                    <h3 className="text-sm font-semibold text-[#64748B] mb-3 uppercase tracking-wide">
-                                        Business Type
-                                    </h3>
-                                    <div className="space-y-2">
-                                        {[
-                                            { id: 'all', label: 'All types' },
-                                            { id: 'retail', label: 'Retail' },
-                                            { id: 'food', label: 'Food & catering' },
-                                            { id: 'services', label: 'Services' },
-                                            { id: 'online', label: 'Online selling' },
-                                            { id: 'wholesale', label: 'Wholesale' },
-                                        ].map((cat) => (
-                                            <button
-                                                key={cat.id}
-                                                onClick={() => setSelectedCategory(cat.id)}
-                                                className={`w-full text-left px-3 py-2 rounded text-sm transition-colors ${selectedCategory === cat.id
-                                                    ? 'bg-[#22C55E]/10 text-[#22C55E] font-semibold'
-                                                    : 'text-[#0F172A] hover:bg-gray-50'
-                                                    }`}
-                                            >
-                                                {cat.label}
-                                            </button>
-                                        ))}
-                                    </div>
-                                </div>
+            {/* Hero Section */}
+            <div className="bg-white border-b border-gray-200">
+                <div className="max-w-7xl mx-auto px-4 py-20 sm:px-6 lg:px-8 text-center">
+                    <h1 className="text-4xl font-extrabold tracking-tight text-gray-900 sm:text-5xl md:text-6xl mb-6">
+                        Choose a template built for your business
+                    </h1>
+                    <p className="max-w-2xl mx-auto text-xl text-gray-500 mb-10">
+                        Start fast with templates designed for how you sell, book, or deliver.
+                    </p>
+                    <div className="flex justify-center gap-4">
+                        <button onClick={() => document.getElementById('categories')?.scrollIntoView({ behavior: 'smooth' })} className="px-8 py-3 bg-black text-white rounded-xl font-bold hover:bg-gray-800 transition-all">
+                            Browse templates
+                        </button>
+                    </div>
+                </div>
+            </div>
 
-                                {/* Order Volume */}
-                                <div>
-                                    <h3 className="text-sm font-semibold text-[#64748B] mb-3 uppercase tracking-wide">
-                                        Order Volume
-                                    </h3>
-                                    <div className="space-y-2">
-                                        {[
-                                            { id: 'all', label: 'All volumes' },
-                                            { id: 'low', label: 'Low' },
-                                            { id: 'medium', label: 'Medium' },
-                                            { id: 'high', label: 'High' },
-                                        ].map((vol) => (
-                                            <button
-                                                key={vol.id}
-                                                onClick={() => setSelectedVolume(vol.id)}
-                                                className={`w-full text-left px-3 py-2 rounded text-sm transition-colors ${selectedVolume === vol.id
-                                                    ? 'bg-[#22C55E]/10 text-[#22C55E] font-semibold'
-                                                    : 'text-[#0F172A] hover:bg-gray-50'
-                                                    }`}
-                                            >
-                                                {vol.label}
-                                            </button>
-                                        ))}
-                                    </div>
-                                </div>
+            {/* Category Sections */}
+            <div id="categories" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-16 space-y-24">
+                {categories.map((cat) => {
+                    const templates = getTemplatesByCategory(cat).filter(t => t.isFree);
+                    if (templates.length === 0) return null;
 
-                                {/* Team Size */}
-                                <div>
-                                    <h3 className="text-sm font-semibold text-[#64748B] mb-3 uppercase tracking-wide">
-                                        Team Size
-                                    </h3>
-                                    <div className="space-y-2">
-                                        {[
-                                            { id: 'all', label: 'All sizes' },
-                                            { id: 'solo', label: 'Solo' },
-                                            { id: 'small', label: 'Small team' },
-                                            { id: 'multi', label: 'Multi-staff' },
-                                        ].map((size) => (
-                                            <button
-                                                key={size.id}
-                                                onClick={() => setSelectedTeamSize(size.id)}
-                                                className={`w-full text-left px-3 py-2 rounded text-sm transition-colors ${selectedTeamSize === size.id
-                                                    ? 'bg-[#22C55E]/10 text-[#22C55E] font-semibold'
-                                                    : 'text-[#0F172A] hover:bg-gray-50'
-                                                    }`}
-                                            >
-                                                {size.label}
-                                            </button>
-                                        ))}
-                                    </div>
-                                </div>
+                    const copy = CATEGORY_MARKETING[cat];
 
-                                {/* Reset Filters */}
-                                <button
-                                    onClick={resetFilters}
-                                    className="text-sm text-[#22C55E] hover:underline"
-                                >
-                                    Reset filters
-                                </button>
-                            </div>
-                        </div>
-
-                        {/* Template Grid */}
-                        <div className="lg:col-span-3">
-                            <div className="grid md:grid-cols-2 gap-6">
-                                {filteredTemplates.map((template) => (
-                                    <div
-                                        key={template.id}
-                                        className="bg-white border border-gray-200 rounded-lg p-6 hover:border-[#22C55E] hover:shadow-sm transition-all group"
-                                    >
-                                        <div className="flex justify-between items-start mb-3">
-                                            <div>
-                                                <span className="text-xs bg-gray-100 text-[#64748B] px-2 py-1 rounded uppercase">
-                                                    {template.category}
-                                                </span>
-                                            </div>
-                                            <input
-                                                type="checkbox"
-                                                checked={compareTemplates.includes(template.id)}
-                                                onChange={() => toggleCompare(template.id)}
-                                                className="w-4 h-4"
-                                                disabled={!compareTemplates.includes(template.id) && compareTemplates.length >= 2}
-                                            />
-                                        </div>
-
-                                        <h3 className="text-xl font-bold text-[#0F172A] mb-2">
-                                            {template.name}
-                                        </h3>
-                                        <p className="text-[#64748B] mb-4">
-                                            {template.description}
-                                        </p>
-
-                                        {/* Workflows */}
-                                        <div className="flex flex-wrap gap-2 mb-4">
-                                            {template.workflows.map((workflow) => (
-                                                <span
-                                                    key={workflow}
-                                                    className="text-xs bg-gray-100 text-[#64748B] px-2 py-1 rounded"
-                                                >
-                                                    {workflow}
-                                                </span>
-                                            ))}
-                                        </div>
-
-                                        <div className="flex justify-between items-center pt-4 border-t border-gray-200">
-                                            <span className="text-sm text-[#64748B]">
-                                                {template.setupTime}
-                                            </span>
-                                            <Button
-                                                variant="outline"
-                                                className="border-2 border-gray-300 text-sm"
-                                                onClick={() => setSelectedTemplate(template.id)}
-                                            >
-                                                Preview template
-                                            </Button>
-                                        </div>
-
-                                        {/* Hover hint */}
-                                        <div className="opacity-0 group-hover:opacity-100 transition-opacity mt-3 text-xs text-[#22C55E] italic">
-                                            Best for: {template.bestFor}
-                                        </div>
-                                    </div>
-                                ))}
+                    return (
+                        <section key={cat} id={`category-${cat}`} className="scroll-mt-24">
+                            <div className="mb-8">
+                                <h2 className="text-3xl font-bold text-gray-900">{copy.headline}</h2>
+                                <p className="text-lg text-gray-500 mt-2">{copy.subheadline}</p>
                             </div>
 
-                            {/* Compare Templates */}
-                            {compareTemplates.length === 2 && (
-                                <div className="mt-8 bg-blue-50 border border-blue-200 rounded-lg p-6">
-                                    <h3 className="font-semibold text-[#0F172A] mb-4">Compare Templates</h3>
-                                    <div className="grid grid-cols-2 gap-6">
-                                        {compareTemplates.map(id => {
-                                            const t = TEMPLATES.find(template => template.id === id);
-                                            return t ? (
-                                                <div key={id}>
-                                                    <h4 className="font-semibold text-[#0F172A] mb-2">{t.name}</h4>
-                                                    <div className="space-y-2 text-sm text-[#64748B]">
-                                                        <p><strong>Type:</strong> {t.category}</p>
-                                                        <p><strong>Workflows:</strong> {t.workflows.join(', ')}</p>
-                                                        <p><strong>Team:</strong> {t.teamSize}</p>
-                                                        <p><strong>Setup:</strong> {t.setupTime}</p>
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-5xl mx-auto">
+                                {templates.map((t) => {
+                                    const marketing = TEMPLATE_MARKETING[t.id];
+
+                                    return (
+                                        <div key={t.id} className="bg-white rounded-2xl border border-gray-200 overflow-hidden shadow-sm hover:shadow-md transition-shadow flex flex-col h-full">
+                                            {/* Live Preview */}
+                                            <div
+                                                className="aspect-[16/10] bg-gray-100 relative group cursor-pointer overflow-hidden"
+                                                onClick={() => handlePreview(t)}
+                                            >
+                                                <div className="absolute inset-0 scale-[0.3] origin-top-left pointer-events-none">
+                                                    <div style={{ width: '333%', height: '333%' }}>
+                                                        {PREVIEW_COMPONENTS[t.layoutComponent || ''] ? (
+                                                            React.createElement(PREVIEW_COMPONENTS[t.layoutComponent || ''], {
+                                                                storeName: t.name,
+                                                                storeSlug: DEMO_SLUGS[t.layoutComponent || ''] || 'demo-retail'
+                                                            })
+                                                        ) : (
+                                                            <div className="w-full h-full bg-gradient-to-br from-gray-100 to-gray-200 flex items-center justify-center">
+                                                                <div className="text-gray-400 text-6xl">Preview</div>
+                                                            </div>
+                                                        )}
                                                     </div>
                                                 </div>
-                                            ) : null;
-                                        })}
-                                    </div>
-                                </div>
-                            )}
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-            {/* Educational Note */}
-            <section className="py-16 px-4 bg-gray-50">
-                <div className="max-w-3xl mx-auto">
-                    <div className="bg-white border border-gray-200 rounded-lg p-6 text-center">
-                        <p className="text-[#64748B] italic">
-                            Templates reflect common business patterns, not rules. Your business can evolve beyond them at any time.
-                        </p>
-                    </div>
-                </div>
-            </section>
-
-            {/* Custom Setup Option */}
-            <section className="py-16 px-4">
-                <div className="max-w-3xl mx-auto text-center">
-                    <h2 className="text-2xl font-bold text-[#0F172A] mb-4">
-                        Prefer full control?
-                    </h2>
-                    <p className="text-[#64748B] mb-6">
-                        Templates are optional. Blank setup available for complete customization.
-                    </p>
-                    <Link href="/signup">
-                        <Button variant="outline" className="border-2 border-gray-300 px-8 py-4 text-lg font-semibold">
-                            Start with a blank setup
-                        </Button>
-                    </Link>
-                </div>
-            </section>
-
-            {/* Template Preview Modal */}
-            {selectedTemplate && currentTemplate && (
-                <div
-                    className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4 overflow-y-auto"
-                    onClick={() => setSelectedTemplate(null)}
-                >
-                    <div
-                        className="bg-white rounded-lg max-w-5xl w-full my-8"
-                        onClick={(e) => e.stopPropagation()}
-                    >
-                        {/* Preview Header */}
-                        <div className="p-8 border-b border-gray-200">
-                            <div className="flex justify-between items-start mb-4">
-                                <div>
-                                    <h2 className="text-3xl font-bold text-[#0F172A] mb-2">
-                                        {currentTemplate.name}
-                                    </h2>
-                                    <p className="text-[#64748B] mb-2">{currentTemplate.description}</p>
-                                    <p className="text-sm text-[#64748B]">
-                                        <strong>Best for:</strong> {currentTemplate.bestFor}
-                                    </p>
-                                    <p className="text-sm text-[#64748B]">
-                                        <strong>Setup time:</strong> {currentTemplate.setupTime}
-                                    </p>
-                                </div>
-                                <button
-                                    onClick={() => setSelectedTemplate(null)}
-                                    className="text-[#64748B] hover:text-[#0F172A] text-2xl"
-                                >
-                                    ×
-                                </button>
-                            </div>
-                        </div>
-
-                        {/* Workflow Map */}
-                        <div className="p-8 border-b border-gray-200 bg-gray-50">
-                            <h3 className="font-semibold text-[#0F172A] mb-4">Workflow visualization</h3>
-                            <div className="flex items-center justify-between gap-2 overflow-x-auto">
-                                {WORKFLOW_STEPS.map((step, i) => (
-                                    <React.Fragment key={step.id}>
-                                        <button
-                                            onClick={() => setActiveWorkflowStep(step.id)}
-                                            className={`flex-shrink-0 px-4 py-3 rounded-lg border-2 transition-all ${activeWorkflowStep === step.id
-                                                ? 'border-[#22C55E] bg-[#22C55E]/10'
-                                                : 'border-gray-200 hover:border-gray-300'
-                                                }`}
-                                        >
-                                            <div className="text-2xl mb-1">{step.icon}</div>
-                                            <div className="text-xs font-semibold text-[#0F172A]">{step.label}</div>
-                                        </button>
-                                        {i < WORKFLOW_STEPS.length - 1 && (
-                                            <div className="text-[#64748B]">→</div>
-                                        )}
-                                    </React.Fragment>
-                                ))}
-                            </div>
-                        </div>
-
-                        {/* Live Preview Tabs */}
-                        <div className="p-8 border-b border-gray-200">
-                            <div className="flex gap-4 mb-6 border-b border-gray-200">
-                                {['overview', 'workflows', 'configuration'].map((tab) => (
-                                    <button
-                                        key={tab}
-                                        onClick={() => setActiveTab(tab)}
-                                        className={`pb-3 px-2 text-sm font-semibold transition-colors ${activeTab === tab
-                                            ? 'text-[#22C55E] border-b-2 border-[#22C55E]'
-                                            : 'text-[#64748B] hover:text-[#0F172A]'
-                                            }`}
-                                    >
-                                        {tab.charAt(0).toUpperCase() + tab.slice(1)}
-                                    </button>
-                                ))}
-                            </div>
-
-                            {/* Tab Content */}
-                            {activeTab === 'overview' && (
-                                <div className="space-y-4">
-                                    <p className="text-[#64748B]">{currentTemplate.description}</p>
-                                    <p className="text-[#64748B]">
-                                        This template is designed for {currentTemplate.bestFor.toLowerCase()}.
-                                    </p>
-                                </div>
-                            )}
-
-                            {activeTab === 'workflows' && (
-                                <div className="space-y-3">
-                                    {currentTemplate.workflows.map((workflow) => (
-                                        <div key={workflow} className="flex items-start gap-3 p-3 bg-gray-50 rounded">
-                                            <div className="w-6 h-6 bg-[#22C55E]/10 rounded flex items-center justify-center flex-shrink-0">
-                                                <span className="text-[#22C55E] text-sm">✓</span>
+                                                <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
+                                                <div className="absolute top-3 left-3">
+                                                    <PlanBadge plan={(t.requiredPlan || 'free') as any} />
+                                                </div>
                                             </div>
-                                            <div>
-                                                <p className="font-semibold text-[#0F172A]">{workflow}</p>
-                                                <p className="text-sm text-[#64748B]">Pre-configured and ready to use</p>
+
+                                            {/* Content */}
+                                            <div className="p-6 flex flex-col flex-1">
+                                                <div className="mb-4">
+                                                    <h3 className="font-bold text-gray-900 leading-tight">{t.name}</h3>
+                                                    <p className="text-xs text-gray-500 mt-1 line-clamp-1">{t.description}</p>
+                                                </div>
+
+                                                <div className="mt-auto grid grid-cols-2 gap-3 pt-4">
+                                                    <button
+                                                        onClick={() => handlePreview(t)}
+                                                        className="w-full px-4 py-2 border border-gray-200 rounded-lg text-sm font-semibold text-gray-700 hover:bg-gray-50"
+                                                    >
+                                                        Preview
+                                                    </button>
+                                                    <button
+                                                        onClick={() => handleUse(t.id)}
+                                                        className="px-4 py-2 bg-black text-white rounded-lg text-sm font-semibold hover:bg-gray-800"
+                                                    >
+                                                        Use Template
+                                                    </button>
+                                                </div>
                                             </div>
                                         </div>
-                                    ))}
-                                </div>
-                            )}
+                                    );
+                                })}
+                            </div>
+                        </section>
+                    );
+                })}
+            </div>
 
-                            {activeTab === 'configuration' && (
-                                <div className="grid md:grid-cols-2 gap-6">
-                                    <div>
-                                        <h4 className="font-semibold text-[#0F172A] mb-3">This template sets up:</h4>
-                                        <ul className="space-y-2">
-                                            {currentTemplate.configures.map((item) => (
-                                                <li key={item} className="flex items-center gap-2 text-sm text-[#64748B]">
-                                                    <span className="text-[#22C55E]">✔</span> {item}
-                                                </li>
-                                            ))}
-                                        </ul>
-                                    </div>
-                                    <div>
-                                        <h4 className="font-semibold text-[#0F172A] mb-3">You can still change:</h4>
-                                        <ul className="space-y-2">
-                                            {currentTemplate.customizable.map((item) => (
-                                                <li key={item} className="flex items-center gap-2 text-sm text-[#64748B]">
-                                                    <span className="text-blue-500">✎</span> {item}
-                                                </li>
-                                            ))}
-                                        </ul>
-                                    </div>
-                                </div>
-                            )}
+            {/* Why Templates Section */}
+            <div className="bg-gray-900 text-white mt-24 py-24">
+                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <div className="text-center mb-16">
+                        <h2 className="text-3xl font-bold mb-4">Why start with a template?</h2>
+                        <p className="text-gray-400 max-w-2xl mx-auto text-lg">
+                            Skip the months of development. Launch with a storefront that's already optimized for conversion.
+                        </p>
+                    </div>
+
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-12 text-center">
+                        <div>
+                            <div className="w-16 h-16 bg-gray-800 rounded-2xl flex items-center justify-center mx-auto mb-6 text-2xl">🚀</div>
+                            <h3 className="text-xl font-bold mb-2">Launch Faster</h3>
+                            <p className="text-gray-400">Go from idea to first sale in days, not months. Visual setup, zero code.</p>
                         </div>
-
-                        {/* Apply Template */}
-                        <div className="p-8">
-                            <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-6">
-                                <p className="text-sm text-blue-900 mb-2">
-                                    Applying a template sets up workflows and defaults. You can edit everything later.
-                                </p>
-                                <p className="text-xs text-blue-700">
-                                    Templates never remove features or lock your data.
-                                </p>
-                            </div>
-                            <div className="flex gap-4">
-                                <Button
-                                    onClick={() => currentTemplate && handleApplyTemplate(currentTemplate)}
-                                    className="flex-1 bg-[#22C55E] hover:bg-[#16A34A] text-white py-4 text-lg font-semibold"
-                                >
-                                    Apply template
-                                </Button>
-                                <Button
-                                    onClick={() => currentTemplate && handleApplyTemplate(currentTemplate)}
-                                    variant="outline"
-                                    className="flex-1 border-2 border-gray-300 py-4 text-lg font-semibold"
-                                >
-                                    Customize first
-                                </Button>
-                            </div>
+                        <div>
+                            <div className="w-16 h-16 bg-gray-800 rounded-2xl flex items-center justify-center mx-auto mb-6 text-2xl">📈</div>
+                            <h3 className="text-xl font-bold mb-2">Proven Flows</h3>
+                            <p className="text-gray-400">Designed with checkout flows that convert. Built on years of e-commerce data.</p>
+                        </div>
+                        <div>
+                            <div className="w-16 h-16 bg-gray-800 rounded-2xl flex items-center justify-center mx-auto mb-6 text-2xl">🎨</div>
+                            <h3 className="text-xl font-bold mb-2">Fully Brandable</h3>
+                            <p className="text-gray-400">Customize colors, fonts, and layouts to match your unique brand identity.</p>
                         </div>
                     </div>
                 </div>
-            )}
+            </div>
+
+            {/* Final CTA */}
+            <div className="bg-indigo-600 text-white py-24 text-center">
+                <h2 className="text-3xl font-bold mb-8">Ready to build your business?</h2>
+                <div className="flex justify-center gap-4">
+                    <button onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })} className="px-8 py-3 bg-white text-indigo-600 rounded-xl font-bold hover:bg-indigo-50 transition-all">
+                        See all templates
+                    </button>
+                </div>
+            </div>
         </div>
     );
 }

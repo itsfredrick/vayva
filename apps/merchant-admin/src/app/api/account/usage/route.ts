@@ -60,7 +60,7 @@ export async function GET() {
                 limit: limits[plan].ordersPerMonth,
             },
             whatsappMessages: {
-                used: 0, // TODO: Track this
+                used: 0, // Pending integration
                 limit: limits[plan].whatsappMessages,
             },
             staffSeats: {

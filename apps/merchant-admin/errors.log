@@ -1,0 +1,62 @@
+
+> merchant-admin@0.0.0 typecheck /Users/fredrick/.gemini/antigravity/scratch/vayva/apps/merchant-admin
+> tsc --noEmit
+
+.next/types/validator.ts(377,39): error TS2307: Cannot find module '../../src/app/(marketing)/status/page.js' or its corresponding type declarations.
+.next/types/validator.ts(3113,39): error TS2307: Cannot find module '../../src/app/api/debug/mock-whatsapp-order/route.js' or its corresponding type declarations.
+.next/types/validator.ts(3960,31): error TS2344: Type 'typeof import("/Users/fredrick/.gemini/antigravity/scratch/vayva/apps/merchant-admin/src/app/api/orders/[id]/delivery/manual-status/route")' does not satisfy the constraint 'RouteHandlerConfig<"/api/orders/[id]/delivery/manual-status">'.
+  Types of property 'POST' are incompatible.
+    Type '(request: Request, context: { params: { id: string; }; }) => Promise<NextResponse<{ success: boolean; shipment: { id: string; storeId: string; orderId: string; deliveryOptionType: string | null; status: string; ... 14 more ...; updatedAt: Date; }; }> | NextResponse<...>>' is not assignable to type '(request: NextRequest, context: { params: Promise<{ id: string; }>; }) => void | Response | Promise<void | Response>'.
+      Types of parameters 'context' and 'context' are incompatible.
+        Type '{ params: Promise<{ id: string; }>; }' is not assignable to type '{ params: { id: string; }; }'.
+          Types of property 'params' are incompatible.
+            Property 'id' is missing in type 'Promise<{ id: string; }>' but required in type '{ id: string; }'.
+.next/types/validator.ts(4256,39): error TS2307: Cannot find module '../../src/app/api/shipments/create/route.js' or its corresponding type declarations.
+.next/types/validator.ts(4265,39): error TS2307: Cannot find module '../../src/app/api/shipments/update/route.js' or its corresponding type declarations.
+middleware.ts(15,24): error TS2339: Property 'ip' does not exist on type 'NextRequest'.
+src/app/(marketing)/careers/page.tsx(52,30): error TS2304: Cannot find name 'Users'.
+src/app/(marketing)/templates/compare/comparison.test.ts(3,33): error TS2307: Cannot find module './api/me/plan/route' or its corresponding type declarations.
+src/app/admin/control-center/branding/page.tsx(6,10): error TS2305: Module '"@/services/control-center.service"' has no exported member 'ControlCenterService'.
+src/app/admin/control-center/navigation/page.tsx(6,10): error TS2305: Module '"@/services/control-center.service"' has no exported member 'ControlCenterService'.
+src/app/admin/control-center/pages/new/page.tsx(6,10): error TS2305: Module '"@/services/control-center.service"' has no exported member 'ControlCenterService'.
+src/app/admin/control-center/pages/page.tsx(6,10): error TS2305: Module '"@/services/control-center.service"' has no exported member 'ControlCenterService'.
+src/app/admin/control-center/policies/page.tsx(6,10): error TS2305: Module '"@/services/control-center.service"' has no exported member 'ControlCenterService'.
+src/app/admin/control-center/templates/page.tsx(6,10): error TS2305: Module '"@/services/control-center.service"' has no exported member 'ControlCenterService'.
+src/app/admin/settings/audit-logs/page.tsx(20,23): error TS2307: Cannot find module '@/components/ui/use-toast' or its corresponding type declarations.
+src/app/admin/settings/audit-logs/page.tsx(27,8): error TS2307: Cannot find module '@/components/ui/select' or its corresponding type declarations.
+src/app/admin/settings/audit-logs/page.tsx(104,40): error TS7006: Parameter 'e' implicitly has an 'any' type.
+src/app/admin/settings/audit-logs/page.tsx(105,41): error TS7006: Parameter 'e' implicitly has an 'any' type.
+src/app/admin/settings/exports/page.tsx(19,23): error TS2307: Cannot find module '@/components/ui/use-toast' or its corresponding type declarations.
+src/app/admin/settings/exports/page.tsx(26,8): error TS2307: Cannot find module '@/components/ui/select' or its corresponding type declarations.
+src/app/admin/settings/exports/page.tsx(166,63): error TS2322: Type '"default"' is not assignable to type '"primary" | "secondary" | "link" | "destructive" | "outline" | "ghost" | null | undefined'.
+src/app/admin/settings/jobs/page.tsx(20,23): error TS2307: Cannot find module '@/components/ui/use-toast' or its corresponding type declarations.
+src/app/admin/settings/jobs/page.tsx(62,36): error TS7006: Parameter 'e' implicitly has an 'any' type.
+src/app/admin/settings/jobs/page.tsx(63,37): error TS7006: Parameter 'e' implicitly has an 'any' type.
+src/app/admin/settings/recovery/page.tsx(18,23): error TS2307: Cannot find module '@/components/ui/use-toast' or its corresponding type declarations.
+src/app/admin/settings/team/page.tsx(19,79): error TS2307: Cannot find module '@/components/ui/select' or its corresponding type declarations.
+src/app/admin/settings/team/page.tsx(20,23): error TS2307: Cannot find module '@/components/ui/use-toast' or its corresponding type declarations.
+src/app/admin/settings/team/page.tsx(170,48): error TS7006: Parameter 'e' implicitly has an 'any' type.
+src/app/admin/status/page.tsx(18,23): error TS2307: Cannot find module '@/components/ui/use-toast' or its corresponding type declarations.
+src/app/admin/storefront/section-editor.tsx(27,36): error TS7006: Parameter 'e' implicitly has an 'any' type.
+src/app/admin/storefront/section-editor.tsx(40,40): error TS7006: Parameter 'e' implicitly has an 'any' type.
+src/app/admin/storefront/section-editor.tsx(48,36): error TS7006: Parameter 'e' implicitly has an 'any' type.
+src/app/admin/wa-agent/approvals/page.tsx(5,26): error TS2305: Module '"@/services/wa-agent"' has no exported member 'WaApproval'.
+src/app/admin/wa-agent/approvals/page.tsx(14,47): error TS2339: Property 'getApprovals' does not exist on type '{ getSettings: () => Promise<WaSettings>; updateSettings: (settings: WaSettings) => Promise<boolean>; getProfile: () => Promise<AiProfile>; updateProfile: (profile: AiProfile) => Promise<...>; getConversations: () => Promise<...>; sendTestMessage: (text: string) => Promise<...>; }'.
+src/app/admin/wa-agent/approvals/page.tsx(22,30): error TS2339: Property 'actionApproval' does not exist on type '{ getSettings: () => Promise<WaSettings>; updateSettings: (settings: WaSettings) => Promise<boolean>; getProfile: () => Promise<AiProfile>; updateProfile: (profile: AiProfile) => Promise<...>; getConversations: () => Promise<...>; sendTestMessage: (text: string) => Promise<...>; }'.
+src/app/admin/wa-agent/inbox/page.tsx(6,26): error TS2305: Module '"@/services/wa-agent"' has no exported member 'WaThread'.
+src/app/admin/wa-agent/inbox/page.tsx(20,53): error TS2339: Property 'getThread' does not exist on type '{ getSettings: () => Promise<WaSettings>; updateSettings: (settings: WaSettings) => Promise<boolean>; getProfile: () => Promise<AiProfile>; updateProfile: (profile: AiProfile) => Promise<...>; getConversations: () => Promise<...>; sendTestMessage: (text: string) => Promise<...>; }'.
+src/app/admin/wa-agent/knowledge-base/page.tsx(5,26): error TS2305: Module '"@/services/wa-agent"' has no exported member 'KbItem'.
+src/app/admin/wa-agent/knowledge-base/page.tsx(14,47): error TS2339: Property 'getKnowledgeBase' does not exist on type '{ getSettings: () => Promise<WaSettings>; updateSettings: (settings: WaSettings) => Promise<boolean>; getProfile: () => Promise<AiProfile>; updateProfile: (profile: AiProfile) => Promise<...>; getConversations: () => Promise<...>; sendTestMessage: (text: string) => Promise<...>; }'.
+src/app/api/ai/index/route.ts(20,51): error TS2339: Property 'indexStoreCatalog' does not exist on type 'typeof MerchantBrainService'.
+src/app/ops/audit-logs/page.tsx(18,23): error TS2307: Cannot find module '@/components/ui/use-toast' or its corresponding type declarations.
+src/app/ops/audit-logs/page.tsx(25,8): error TS2307: Cannot find module '@/components/ui/select' or its corresponding type declarations.
+src/app/ops/audit-logs/page.tsx(70,36): error TS7006: Parameter 'e' implicitly has an 'any' type.
+src/app/ops/audit-logs/page.tsx(71,37): error TS7006: Parameter 'e' implicitly has an 'any' type.
+src/components/wa-agent/WaInbox.tsx(4,10): error TS2305: Module '"@/services/wa-agent"' has no exported member 'WaThread'.
+src/components/wa-agent/WaInbox.tsx(4,20): error TS2305: Module '"@/services/wa-agent"' has no exported member 'WaMessage'.
+src/lib/ai/ai-cost.service.ts(84,17): error TS1117: An object literal cannot have multiple properties with the same name.
+src/lib/ai/sales-agent.ts(50,56): error TS2345: Argument of type '{ storeId: string; conversationId: any; trigger: EscalationTrigger; aiSummary: string; }' is not assignable to parameter of type '{ storeId: string; conversationId: string; trigger: EscalationTrigger; reason: string; aiSummary: string; metadata?: any; }'.
+  Property 'reason' is missing in type '{ storeId: string; conversationId: any; trigger: EscalationTrigger; aiSummary: string; }' but required in type '{ storeId: string; conversationId: string; trigger: EscalationTrigger; reason: string; aiSummary: string; metadata?: any; }'.
+src/lib/ai/sales-agent.ts(215,102): error TS2322: Type '"FRAUD"' is not assignable to type 'EscalationTrigger | null'.
+src/lib/ai/sales-agent.ts(224,18): error TS2678: Type '"FRAUD"' is not comparable to type 'EscalationTrigger'.
+ ELIFECYCLE  Command failed with exit code 1.

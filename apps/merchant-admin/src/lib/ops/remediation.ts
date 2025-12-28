@@ -1,6 +1,6 @@
 
 import { prisma } from '@vayva/db';
-import { Logger } from '@/lib/logger';
+import { logger as Logger } from '@/lib/logger';
 
 export async function remediateStore(storeId: string, correlationId: string) {
     const fixedIssues: string[] = [];

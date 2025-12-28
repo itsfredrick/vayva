@@ -20,7 +20,7 @@ export default function PoliciesPage() {
         const load = async () => {
             const c = await ControlCenterService.getStoreConfig();
             setConfig(c);
-            setPolicies(c.policies);
+            if (c) setPolicies(c.policies || []);
             setLoading(false);
         };
         load();

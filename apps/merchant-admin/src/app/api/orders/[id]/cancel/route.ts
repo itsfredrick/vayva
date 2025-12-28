@@ -1,23 +1,21 @@
-
 import { NextResponse } from 'next/server';
-import { UnifiedOrderStatus } from '@vayva/shared';
+import { requireAuth } from '@/lib/auth/session';
+import { prisma } from '@vayva/db';
 
 export async function POST(request: Request, { params }: { params: Promise<{ id: string }> }) {
-    const { id } = await params;
-    const body = await request.json();
+    try {
+        const session = await requireAuth();
+        const storeId = session.user.storeId;
+        const { id } = await params;
 
-    // Validate reason
-    if (!body.reason) {
-        return NextResponse.json({ error: 'Cancellation reason required' }, { status: 400 });
+        const data = await prisma.order.update({
+            where: { id, storeId },
+            data: { status: 'CANCELLED' }
+        });
+
+        return NextResponse.json({ success: true, order: data });
+    } catch (error) {
+        console.error('Order cancel error:', error);
+        return NextResponse.json({ error: 'Failed to cancel order' }, { status: 500 });
     }
-
-    // Simulate processing
-    await new Promise(resolve => setTimeout(resolve, 600));
-
-    return NextResponse.json({
-        id,
-        status: UnifiedOrderStatus.CANCELLED,
-        cancellation_reason: body.reason,
-        updated_at: new Date().toISOString()
-    });
 }

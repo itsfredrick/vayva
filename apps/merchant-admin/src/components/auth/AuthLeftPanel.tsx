@@ -16,7 +16,7 @@ export const AuthLeftPanel = ({ showSignInLink, showSignUpLink }: AuthLeftPanelP
             <div>
                 <Link href="/" className="inline-flex items-center gap-3 group">
                     <Image
-                        src="/vayva-logo.png"
+                        src="/vayva-brand-v2.png"
                         alt="Vayva Logo"
                         width={64}
                         height={64}

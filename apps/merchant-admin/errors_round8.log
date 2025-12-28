@@ -1,0 +1,10 @@
+
+> merchant-admin@0.0.0 typecheck /Users/fredrick/.gemini/antigravity/scratch/vayva/apps/merchant-admin
+> tsc --noEmit
+
+.next/types/validator.ts(377,39): error TS2307: Cannot find module '../../src/app/(marketing)/status/page.js' or its corresponding type declarations.
+.next/types/validator.ts(3113,39): error TS2307: Cannot find module '../../src/app/api/debug/mock-whatsapp-order/route.js' or its corresponding type declarations.
+.next/types/validator.ts(4256,39): error TS2307: Cannot find module '../../src/app/api/shipments/create/route.js' or its corresponding type declarations.
+.next/types/validator.ts(4265,39): error TS2307: Cannot find module '../../src/app/api/shipments/update/route.js' or its corresponding type declarations.
+src/app/(marketing)/templates/compare/comparison.test.ts(3,33): error TS2307: Cannot find module './api/me/plan/route' or its corresponding type declarations.
+ ELIFECYCLE  Command failed with exit code 2.

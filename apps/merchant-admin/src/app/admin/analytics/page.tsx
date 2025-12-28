@@ -1,165 +1,111 @@
+
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { AdminShell } from '@/components/admin-shell';
-import { Button, Icon, cn } from '@vayva/ui';
-import { api } from '@/services/api';
+import { Card, Icon } from '@vayva/ui';
+import {
+    BarChart,
+    Bar,
+    XAxis,
+    YAxis,
+    CartesianGrid,
+    Tooltip,
+    ResponsiveContainer,
+    AreaChart,
+    Area
+} from 'recharts';
 
 export default function AnalyticsDashboardPage() {
     const [data, setData] = useState<any>(null);
-    const [isLoading, setIsLoading] = useState(true);
-    const [range, setRange] = useState('30d');
-
-    const fetchData = async () => {
-        setIsLoading(true);
-        try {
-            const res = await api.get(`/analytics/overview?range=${range}`);
-            setData(res.data);
-        } catch (err) {
-            console.error(err);
-        } finally {
-            setIsLoading(false);
-        }
-    };
+    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        fetchData();
-    }, [range]);
+        const fetchAnalytics = async () => {
+            try {
+                const res = await fetch('/api/analytics/dashboard');
+                const json = await res.json();
+                setData(json);
+            } catch (err) {
+                console.error(err);
+            } finally {
+                setLoading(false);
+            }
+        };
+        fetchAnalytics();
+    }, []);
 
-    if (isLoading || !data) {
-        return (
-            <AdminShell title="Analytics">
-                <div className="flex items-center justify-center h-96 text-gray-400">Loading analytics...</div>
-            </AdminShell>
-        );
-    }
+    if (loading) return <div className="p-8 text-gray-400">Loading Analytics...</div>;
+    if (!data) return <div className="p-8 text-red-500">Failed to load data.</div>;
 
-    const kpis = data.kpis || {};
-    const healthScore = data.healthScore || 0;
+    const { funnel, counts, activation } = data;
 
     return (
-        <AdminShell title="Analytics">
-            <div className="flex flex-col gap-8">
+        <div className="max-w-7xl mx-auto py-8 px-6 space-y-8">
+            <header>
+                <h1 className="text-2xl font-bold mb-2">Product Analytics</h1>
+                <p className="text-gray-500 text-sm">Real-time insights on user behavior and activation.</p>
+            </header>
 
-                {/* Header */}
-                <div className="flex items-center justify-between">
-                    <div>
-                        <h1 className="text-2xl font-bold text-[#0B1220]">Business Overview</h1>
-                        <p className="text-[#525252]">Track your store's performance and health.</p>
-                    </div>
-                    <div className="flex gap-2">
-                        {['7d', '30d', '90d'].map(r => (
-                            <button
-                                key={r}
-                                onClick={() => setRange(r)}
-                                className={cn(
-                                    "px-4 py-2 rounded-lg text-sm font-medium transition-all",
-                                    range === r
-                                        ? "bg-[#22C55E] text-white shadow-sm"
-                                        : "bg-white border border-gray-200 text-[#525252] hover:border-gray-300"
-                                )}
-                            >
-                                {r === '7d' ? 'Last 7 Days' : r === '30d' ? 'Last 30 Days' : 'Last 90 Days'}
-                            </button>
-                        ))}
-                    </div>
+            {/* ACTIVATION STATUS */}
+            <div className="bg-white p-6 rounded-xl border border-gray-100 shadow-sm">
+                <h3 className="text-sm font-bold uppercase text-gray-500 mb-4">Activation Checklist</h3>
+                <div className="flex flex-wrap gap-4">
+                    <ActivationBadge label="Category Selected" active={activation.categorySelected} />
+                    <ActivationBadge label="Template Selected" active={activation.templateSelected} />
+                    <ActivationBadge label="Product Added" active={activation.firstProductAdded} />
+                    <ActivationBadge label="Published" active={activation.storePublished} />
                 </div>
-
-                {/* KPI Cards */}
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                    <KPICard
-                        title="Net Sales"
-                        value={`₦ ${Number(kpis.netSales || 0).toLocaleString()}`}
-                        icon={"TrendingUp" as any}
-                        color="bg-green-50 text-green-600"
-                    />
-                    <KPICard
-                        title="Orders"
-                        value={kpis.orders || 0}
-                        icon={"ShoppingBag" as any}
-                        color="bg-blue-50 text-blue-600"
-                    />
-                    <KPICard
-                        title="Payment Success"
-                        value={`${kpis.paymentSuccessRate || 0}%`}
-                        icon={"CreditCard" as any}
-                        color="bg-purple-50 text-purple-600"
-                    />
-                    <KPICard
-                        title="Delivery Success"
-                        value={`${Number(kpis.deliverySuccessRate || 0).toFixed(1)}%`}
-                        icon={"Truck" as any}
-                        color="bg-orange-50 text-orange-600"
-                    />
-                    <KPICard
-                        title="Refund Rate"
-                        value={`${kpis.refundRate || 0}%`}
-                        icon={"RotateCcw" as any}
-                        color="bg-red-50 text-red-600"
-                    />
-                    <KPICard
-                        title="WhatsApp Response"
-                        value={`${Math.round((kpis.whatsappResponseTime || 0) / 60)}m`}
-                        icon={"MessageCircle" as any}
-                        color="bg-green-50 text-green-600"
-                    />
-                </div>
-
-                {/* Health Score */}
-                <div className="bg-gradient-to-br from-green-50 to-blue-50 rounded-2xl p-8 border border-green-100">
-                    <div className="flex items-center justify-between">
-                        <div>
-                            <h3 className="text-sm font-medium text-[#525252] mb-2">Business Health Score</h3>
-                            <div className="flex items-baseline gap-2">
-                                <span className="text-5xl font-bold text-[#0B1220]">{healthScore}</span>
-                                <span className="text-2xl text-[#525252]">/ 100</span>
-                            </div>
-                            <p className="text-sm text-[#525252] mt-2">
-                                {healthScore >= 80 ? '🎉 Excellent performance!' : healthScore >= 60 ? '👍 Good, room for improvement' : '⚠️ Needs attention'}
-                            </p>
-                        </div>
-                        <div className="w-32 h-32 rounded-full bg-white/50 backdrop-blur-sm flex items-center justify-center border border-green-200">
-                            <Icon name={"Activity" as any} size={48} className="text-green-600" />
-                        </div>
-                    </div>
-                </div>
-
-                {/* Quick Links */}
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                    <QuickLink href="/admin/analytics/reports" icon={"BarChart" as any} title="View Reports" />
-                    <QuickLink href="/admin/analytics/goals" icon={"Target" as any} title="Manage Goals" />
-                    <QuickLink href="/admin/analytics/insights" icon={"Lightbulb" as any} title="AI Insights" />
-                </div>
-
             </div>
-        </AdminShell>
-    );
-}
 
-function KPICard({ title, value, icon, color }: any) {
-    return (
-        <div className="bg-white rounded-2xl p-6 border border-gray-100 shadow-sm flex items-center justify-between">
-            <div>
-                <p className="text-sm font-medium text-[#525252] mb-1">{title}</p>
-                <h3 className="text-2xl font-bold text-[#0B1220]">{value}</h3>
-            </div>
-            <div className={cn("w-12 h-12 rounded-xl flex items-center justify-center", color)}>
-                <Icon name={icon as any} size={24} />
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                {/* FUNNEL CHART */}
+                <div className="bg-white p-6 rounded-xl border border-gray-100 shadow-sm h-[400px]">
+                    <h3 className="text-lg font-bold mb-6">Checkout Funnel (30 Days)</h3>
+                    <ResponsiveContainer width="100%" height="90%">
+                        <BarChart data={funnel}>
+                            <CartesianGrid strokeDasharray="3 3" vertical={false} />
+                            <XAxis dataKey="step" axisLine={false} tickLine={false} />
+                            <YAxis axisLine={false} tickLine={false} />
+                            <Tooltip cursor={{ fill: '#f3f4f6' }} />
+                            <Bar dataKey="count" fill="#4f46e5" radius={[4, 4, 0, 0]} barSize={40} />
+                        </BarChart>
+                    </ResponsiveContainer>
+                </div>
+
+                {/* EVENTS ACTIVITY */}
+                <div className="bg-white p-6 rounded-xl border border-gray-100 shadow-sm max-h-[400px] overflow-y-auto">
+                    <h3 className="text-lg font-bold mb-4">Event Activity Breakdown</h3>
+                    <table className="w-full text-sm">
+                        <thead className="text-gray-500 font-medium border-b border-gray-100">
+                            <tr>
+                                <th className="text-left py-2">Category</th>
+                                <th className="text-left py-2">Action</th>
+                                <th className="text-right py-2">Count</th>
+                            </tr>
+                        </thead>
+                        <tbody className="divide-y divide-gray-50">
+                            {counts.length === 0 && <tr><td colSpan={3} className="py-4 text-center text-gray-400">No events recorded yet.</td></tr>}
+                            {counts.map((c: any, i: number) => (
+                                <tr key={i} className="hover:bg-gray-50">
+                                    <td className="py-3 font-mono text-xs text-gray-500">{c.category}</td>
+                                    <td className="py-3 font-medium text-gray-900">{c.action}</td>
+                                    <td className="py-3 text-right">{c.count}</td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
     );
 }
 
-function QuickLink({ href, icon, title }: any) {
+function ActivationBadge({ label, active }: { label: string, active: boolean }) {
     return (
-        <a
-            href={href}
-            className="bg-white rounded-xl p-4 border border-gray-100 hover:border-green-200 hover:shadow-md transition-all flex items-center gap-3 group"
-        >
-            <div className="w-10 h-10 bg-gray-50 group-hover:bg-green-50 rounded-lg flex items-center justify-center transition-all">
-                <Icon name={icon as any} size={20} className="text-gray-600 group-hover:text-green-600 transition-all" />
-            </div>
-            <span className="font-medium text-[#0B1220] group-hover:text-green-600 transition-all">{title}</span>
-        </a>
+        <div className={`px-3 py-1.5 rounded-full text-xs font-bold flex items-center gap-2 ${active ? 'bg-green-100 text-green-700' : 'bg-gray-100 text-gray-400'
+            }`}>
+            <Icon name={active ? "CheckCircle" as any : "Circle" as any} size={14} />
+            {label}
+        </div>
     );
 }

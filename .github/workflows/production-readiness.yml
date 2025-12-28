@@ -1,0 +1,78 @@
+name: Production Readiness Check
+
+on:
+  push:
+    branches: [main, production]
+  pull_request:
+    branches: [main, production]
+
+jobs:
+  production-scan:
+    name: Production Readiness Scan
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+          cache-dependency-path: 'apps/merchant-admin/package-lock.json'
+      
+      - name: Install dependencies
+        working-directory: apps/merchant-admin
+        run: npm ci
+      
+      - name: Run Production Scan
+        working-directory: apps/merchant-admin
+        run: npm run production:scan
+      
+      - name: Verify Environment Template
+        working-directory: apps/merchant-admin
+        run: |
+          if [ ! -f .env.example ]; then
+            echo "❌ .env.example file missing"
+            exit 1
+          fi
+          
+          # Check required vars are documented
+          REQUIRED_VARS=(
+            "NEXTAUTH_SECRET"
+            "DATABASE_URL"
+            "PAYSTACK_SECRET_KEY"
+            "PAYSTACK_PUBLIC_KEY"
+            "RESEND_API_KEY"
+            "RESEND_FROM_EMAIL"
+          )
+          
+          for var in "${REQUIRED_VARS[@]}"; do
+            if ! grep -q "$var" .env.example; then
+              echo "❌ Required variable $var not in .env.example"
+              exit 1
+            fi
+          done
+          
+          echo "✅ All required variables documented in .env.example"
+      
+      - name: TypeScript Check
+        working-directory: apps/merchant-admin
+        run: npm run typecheck
+      
+      - name: Run Tests
+        working-directory: apps/merchant-admin
+        run: npm test
+      
+      - name: Comment PR with Results
+        if: github.event_name == 'pull_request'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: '✅ Production readiness scan passed! No mock data or unsafe patterns detected.'
+            })

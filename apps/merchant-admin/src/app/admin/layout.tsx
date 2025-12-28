@@ -1,32 +1,32 @@
-'use client';
+import { getServerSession } from "next-auth";
+import { authOptions } from "@/lib/auth";
+import { redirect } from "next/navigation";
+import { prisma } from "@vayva/db";
+import { AdminLayoutClient } from "./AdminLayoutClient";
 
-import React from 'react';
-import { usePathname } from 'next/navigation';
-import { AdminShell } from '@/components/admin-shell';
-import { SupportProvider } from '@/components/support/SupportContext';
-import { ErrorBoundary } from '@/components/ErrorBoundary';
+export default async function AdminLayout({ children }: { children: React.ReactNode }) {
+    const session = await getServerSession(authOptions);
 
-export default function AdminLayout({ children }: { children: React.ReactNode }) {
-    const pathname = usePathname();
-    const isAccountOverview = pathname.includes('/account/overview');
+    if (!session?.user) {
+        redirect("/signin");
+    }
 
-    const content = isAccountOverview ? (
-        <div className="min-h-screen bg-gray-900 flex flex-col">
-            <main className="flex-1 w-full h-full p-8">
-                {children}
-            </main>
-        </div>
-    ) : (
-        <AdminShell>
-            {children}
-        </AdminShell>
-    );
+    // Check Onboarding status
+    const store = await prisma.store.findUnique({
+        where: { id: (session.user as any).storeId },
+        select: { onboardingCompleted: true }
+    });
+
+    if (store && !store.onboardingCompleted) {
+        // Allow access to select-store or logout, but block main dashboard
+        // If we redirect loop here, we need to be careful.
+        // Assuming /onboarding is outside /admin
+        redirect("/onboarding");
+    }
 
     return (
-        <SupportProvider>
-            <ErrorBoundary>
-                {content}
-            </ErrorBoundary>
-        </SupportProvider>
+        <AdminLayoutClient>
+            {children}
+        </AdminLayoutClient>
     );
 }

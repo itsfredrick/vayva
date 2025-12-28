@@ -1,4 +1,4 @@
-
+// ... imports
 import React from 'react';
 import { Icon, cn } from '@vayva/ui';
 import { Template } from '@/types/templates';
@@ -8,15 +8,16 @@ interface TemplateCardProps {
     template: Template;
     onPreview: (template: Template) => void;
     onUse: (template: Template) => void;
-    userPlan: 'starter' | 'growth' | 'pro';
+    onUnlock?: (template: Template) => void;
+    userPlan: 'free' | 'growth' | 'pro';
     recommendation?: Recommendation;
 }
 
-export const TemplateCard = ({ template, onPreview, onUse, userPlan, recommendation }: TemplateCardProps) => {
+export const TemplateCard = ({ template, onPreview, onUse, onUnlock, userPlan, recommendation }: TemplateCardProps) => {
     // Determine if locked based on plan
-    const planLevels = ['starter', 'growth', 'pro'];
+    const planLevels = ['free', 'growth', 'pro'];
     const userLevelIndex = planLevels.indexOf(userPlan);
-    const requiredLevelIndex = planLevels.indexOf(template.planLevel);
+    const requiredLevelIndex = planLevels.indexOf(template.tier);
     const isPlanLocked = requiredLevelIndex > userLevelIndex;
     const isLocked = template.isLocked || isPlanLocked;
 
@@ -39,11 +40,11 @@ export const TemplateCard = ({ template, onPreview, onUse, userPlan, recommendat
             {/* Image Area */}
             <div className="relative aspect-[4/3] bg-gray-100 overflow-hidden cursor-pointer" onClick={() => onPreview(template)}>
                 <img
-                    src={template.previewImages.cover}
+                    src={(template as any).previewImageDesktop || (template as any).previewImages?.cover || '/images/template-previews/default-desktop.png'}
                     alt={template.name}
                     className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
                     onError={(e) => {
-                        (e.target as HTMLImageElement).src = 'https://placehold.co/600x450/f3f4f6/a1a1aa?text=Template+Preview';
+                        (e.target as HTMLImageElement).src = '/images/template-previews/default-desktop.png';
                     }}
                 />
 
@@ -56,7 +57,7 @@ export const TemplateCard = ({ template, onPreview, onUse, userPlan, recommendat
                     )}
                     {isLocked && (
                         <span className="bg-gray-900/90 text-white text-[10px] font-bold px-2 py-0.5 rounded-md uppercase tracking-wide shadow-sm flex items-center gap-1">
-                            <Icon name="Lock" size={10} /> {template.planLevel} Plan
+                            <Icon name="Lock" size={10} /> {template.tier} Plan
                         </span>
                     )}
                 </div>
@@ -113,11 +114,11 @@ export const TemplateCard = ({ template, onPreview, onUse, userPlan, recommendat
                         <div className="flex items-center gap-2">
                             <span className={cn(
                                 "px-1.5 py-0.5 rounded text-[10px] uppercase font-bold border",
-                                template.planLevel === 'starter' ? "bg-gray-50 text-gray-600 border-gray-200" :
-                                    template.planLevel === 'growth' ? "bg-blue-50 text-blue-600 border-blue-200" :
+                                template.tier === 'free' ? "bg-gray-50 text-gray-600 border-gray-200" :
+                                    template.tier === 'growth' ? "bg-blue-50 text-blue-600 border-blue-200" :
                                         "bg-purple-50 text-purple-600 border-purple-200"
                             )}>
-                                {template.planLevel}
+                                {template.tier}
                             </span>
                             <span className="text-gray-300">|</span>
                             <span className="text-gray-500 font-medium capitalize flex items-center gap-1">
@@ -138,8 +139,11 @@ export const TemplateCard = ({ template, onPreview, onUse, userPlan, recommendat
                             <Icon name="Check" size={16} /> Active on Store
                         </button>
                     ) : isLocked ? (
-                        <button className="w-full py-2.5 bg-gray-900 text-white rounded-xl text-sm font-bold hover:bg-gray-800 transition-colors flex items-center justify-center gap-2">
-                            <Icon name="Lock" size={14} /> Unlock with {template.planLevel}
+                        <button
+                            onClick={() => onUnlock?.(template)}
+                            className="w-full py-2.5 bg-gray-900 text-white rounded-xl text-sm font-bold hover:bg-gray-800 transition-colors flex items-center justify-center gap-2"
+                        >
+                            <Icon name="Lock" size={14} /> Unlock with {template.tier}
                         </button>
                     ) : template.price > 0 && !template.isPurchased ? (
                         <button

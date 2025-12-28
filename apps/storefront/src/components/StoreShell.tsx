@@ -71,7 +71,7 @@ export function StoreShell({ children }: { children: React.ReactNode }) {
                     {/* Center: Desktop Nav */}
                     <nav className="hidden md:flex items-center gap-8">
                         <Link href={`/?store=${store?.slug}`} className="text-sm font-medium hover:text-gray-600 transition-colors">Home</Link>
-                        <Link href={`/collections/all?store=${store?.slug}`} className="text-sm font-medium hover:text-gray-600 transition-colors">Shop</Link>
+                        <Link href={`/products?store=${store?.slug}`} className="text-sm font-medium hover:text-gray-600 transition-colors">Shop</Link>
                         <Link href={`/pages/about?store=${store?.slug}`} className="text-sm font-medium hover:text-gray-600 transition-colors">About</Link>
                         <Link href={`/pages/contact?store=${store?.slug}`} className="text-sm font-medium hover:text-gray-600 transition-colors">Contact</Link>
                     </nav>

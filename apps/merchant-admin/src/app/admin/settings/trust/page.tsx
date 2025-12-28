@@ -14,18 +14,18 @@ const TRUST_MODULES = [
         color: 'bg-blue-50 text-blue-600'
     },
     {
+        title: 'Data & Governance',
+        description: 'Export your data, manage retention, or request account deletion.',
+        href: '/admin/settings/governance',
+        icon: 'Database',
+        color: 'bg-indigo-50 text-indigo-600'
+    },
+    {
         title: 'Consent & Messaging',
         description: 'Manage WhatsApp marketing and transactional consent settings.',
         href: '/admin/settings/trust/consent',
         icon: 'MessageCircle',
         color: 'bg-green-50 text-green-600'
-    },
-    {
-        title: 'Data Privacy Requests',
-        description: 'Handle data export and deletion requests from your customers.',
-        href: '/admin/settings/trust/data-requests',
-        icon: 'UserCheck',
-        color: 'bg-orange-50 text-orange-600'
     },
     {
         title: 'Security Posture',

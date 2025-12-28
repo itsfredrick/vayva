@@ -1,50 +1,30 @@
+
 import { NextResponse } from 'next/server';
-import { requireAuth } from '@/lib/auth/session';
 import { prisma } from '@vayva/db';
+import { checkPermission } from '@/lib/team/rbac';
+import { PERMISSIONS } from '@/lib/team/permissions';
 
 export async function GET() {
     try {
-        const session = await requireAuth();
-        const storeId = session.user.storeId;
+        const session = await checkPermission(PERMISSIONS.SETTINGS_VIEW);
+        const storeId = (session.user as any).storeId;
 
-        // Get team members
-        const members = await prisma.membership.findMany({
-            where: { storeId },
-            include: {
-                User: {
-                    select: {
-                        id: true,
-                        email: true,
-                        firstName: true,
-                        lastName: true,
-                    },
-                },
-            },
-            orderBy: {
-                createdAt: 'asc',
-            },
-        });
+        const [members, invites] = await Promise.all([
+            prisma.membership.findMany({
+                where: { storeId, status: 'active' },
+                include: { User: true }
+            }),
+            prisma.staffInvite.findMany({
+                where: { storeId, acceptedAt: null }
+            })
+        ]);
 
-        return NextResponse.json({
-            members: members.map(m => ({
-                id: m.userId,
-                name: `${m.User.firstName} ${m.User.lastName}`,
-                email: m.User.email,
-                role: m.role,
-                status: m.status,
-                joinedAt: m.createdAt,
-            })),
-        });
+        return NextResponse.json({ members, invites });
     } catch (error: any) {
         console.error('Team fetch error:', error);
-
-        if (error.message === 'Unauthorized') {
-            return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+        if (error.message.includes('Forbidden') || error.message.includes('Unauthorized')) {
+            return NextResponse.json({ error: error.message }, { status: error.message.includes('Forbidden') ? 403 : 401 });
         }
-
-        return NextResponse.json(
-            { error: 'Failed to fetch team' },
-            { status: 500 }
-        );
+        return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
     }
 }

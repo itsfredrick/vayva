@@ -73,7 +73,8 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         const publicRoutes = [
             '/signin', '/signup', '/forgot-password', '/reset-password', '/verify',
             '/', '/features', '/marketplace', '/pricing', '/templates', '/help',
-            '/legal', '/contact', '/about', '/how-it-works', '/status'
+            '/legal', '/contact', '/about', '/how-vayva-works', '/store-builder',
+            '/careers', '/blog', '/community', '/trust', '/system-status'
         ];
 
         const isPublicRoute = publicRoutes.some(p => pathname === p || (p !== '/' && pathname.startsWith(p + '/')));
@@ -96,16 +97,37 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
             // Enhanced Onboarding Gating
             if (merchant) {
-                // Block dashboard access if onboarding incomplete
-                if (pathname.startsWith('/admin') && merchant.onboardingStatus !== OnboardingStatus.COMPLETE) {
+                const isConfigured = [
+                    OnboardingStatus.COMPLETE,
+                    OnboardingStatus.REQUIRED_COMPLETE,
+                    OnboardingStatus.OPTIONAL_INCOMPLETE
+                ].includes(merchant.onboardingStatus);
+
+                // Block dashboard access if onboarding incomplete/not configured
+                if (pathname.startsWith('/admin') && !isConfigured) {
                     router.push('/onboarding/resume');
                     return;
                 }
 
-                // Block direct onboarding access if already complete
-                if (pathname.startsWith('/onboarding') && merchant.onboardingStatus === OnboardingStatus.COMPLETE) {
-                    router.push('/admin/dashboard');
-                    return;
+                // Block direct onboarding access if already fully configured (optional)
+                // However, user might want to access optional steps via /onboarding URLs.
+                // The prompt says: "send to /admin/dashboard with checklist" if REQUIRED_COMPLETE.
+                if (pathname.startsWith('/onboarding') && isConfigured && pathname !== '/onboarding/resume') {
+                    // Allow specific onboarding sub-routes if they are part of the optional checklist
+                    const allowedOptionalRoutes = [
+                        '/onboarding/whatsapp',
+                        '/onboarding/order-flow',
+                        '/onboarding/payments',
+                        '/onboarding/delivery',
+                        '/onboarding/team',
+                        '/onboarding/kyc'
+                    ];
+
+                    const isOptionalStep = allowedOptionalRoutes.some(p => pathname.startsWith(p));
+                    if (!isOptionalStep) {
+                        router.push('/admin/dashboard');
+                        return;
+                    }
                 }
             }
         }

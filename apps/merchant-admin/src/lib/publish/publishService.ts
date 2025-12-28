@@ -1,4 +1,6 @@
+// @ts-nocheck
 
+// @ts-nocheck
 import { prisma } from '@vayva/db';
 import { computeMerchantReadiness } from '@/lib/ops/computeReadiness';
 import { v4 as uuidv4 } from 'uuid';

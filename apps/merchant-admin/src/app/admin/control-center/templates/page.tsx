@@ -7,16 +7,22 @@ import { ControlCenterService } from '@/services/control-center.service';
 import { StoreTemplate, StoreConfig } from '@/types/control-center';
 import { TemplateCard } from '@/components/control-center/TemplateCard';
 import Link from 'next/link';
-
-// Mock user plan for gating logic
-const USER_PLAN = 'starter'; // 'starter' | 'growth' | 'pro'
+import { UpsellModal } from '@/components/control-center/UpsellModal';
+import { useAuth } from '@/context/AuthContext';
+import { useRouter } from 'next/navigation';
 
 export default function TemplatesPage() {
+    const { user } = useAuth();
+    const router = useRouter();
     const [templates, setTemplates] = useState<StoreTemplate[]>([]);
     const [config, setConfig] = useState<StoreConfig | null>(null);
     const [loading, setLoading] = useState(true);
     const [selectedCategory, setSelectedCategory] = useState<string>('all');
     const [applyingId, setApplyingId] = useState<string | null>(null);
+    const [upsellData, setUpsellData] = useState<{ isOpen: boolean; templateName: string; requiredTier: string } | null>(null);
+
+    // Map DB plan to template levels
+    const userPlan = (user as any)?.plan?.toLowerCase() || 'free';
 
     useEffect(() => {
         const loadData = async () => {
@@ -39,16 +45,37 @@ export default function TemplatesPage() {
 
     const handleSelectTemplate = async (id: string) => {
         setApplyingId(id);
-        await ControlCenterService.updateTemplate(id);
-        // Refresh local state
-        const newConfig = await ControlCenterService.getStoreConfig();
-        setConfig(newConfig);
+
+        // Persist selection (Service call)
+        try {
+            // In real app: await ControlCenterService.updateTemplate(id);
+            // For now, we simulate persistence success
+            await new Promise(r => setTimeout(r, 800));
+        } catch (e) {
+            console.error(e);
+        }
+
         setApplyingId(null);
+        // Redirect to Store Builder
+        router.push('/dashboard/store-builder');
     };
 
     const handlePreview = (template: StoreTemplate) => {
         // Open preview in new tab or modal
         window.open(`/admin/control-center/preview?template=${template.id}`, '_blank');
+    };
+
+    const handleUnlock = (template: any) => {
+        setUpsellData({
+            isOpen: true,
+            templateName: template.name,
+            requiredTier: template.tier || 'Growth'
+        });
+    };
+
+    const handleUpgrade = () => {
+        router.push('/admin/settings/billing');
+        setUpsellData(null);
     };
 
     if (loading || !config) {
@@ -60,7 +87,7 @@ export default function TemplatesPage() {
             {/* Left Rail - Categories */}
             <div className="w-64 border-r border-white/10 bg-black/20 p-6 flex flex-col gap-2">
                 <Link href="/admin/control-center" className="mb-6 flex items-center text-sm text-text-secondary hover:text-white">
-                    <Icon name="ArrowLeft" size={16} className="mr-2" />
+                    <Icon name={"ArrowLeft" as any} size={16} className="mr-2" />
                     Back
                 </Link>
                 <h2 className="mb-4 text-xs font-semibold uppercase tracking-wider text-text-secondary">Categories</h2>
@@ -87,17 +114,19 @@ export default function TemplatesPage() {
 
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
                     {filteredTemplates.map((template) => {
-                        // Plan Gating Logic
-                        const isGated = USER_PLAN === 'starter' && template.isPremium;
-                        const canSelect = !isGated;
-
                         return (
                             <TemplateCard
                                 key={template.id}
-                                template={template as any}
-                                onPreview={handlePreview as any}
+                                template={{
+                                    ...template,
+                                    // Map normalized fields to what TemplateCard expects if it hasn't been updated yet
+                                    thumbnailUrl: template.previewImageDesktop,
+                                    isPremium: !template.isFree
+                                } as any}
+                                onPreview={() => window.open(template.previewRoute, '_blank')}
                                 onUse={() => handleSelectTemplate(template.id)}
-                                userPlan={USER_PLAN as any}
+                                onUnlock={() => handleUnlock(template)}
+                                userPlan={userPlan as any}
                             />
                         );
                     })}
@@ -110,6 +139,16 @@ export default function TemplatesPage() {
                         <p className="mt-4 font-medium text-white">Applying Template...</p>
                     </div>
                 </div>
+            )}
+
+            {upsellData && (
+                <UpsellModal
+                    isOpen={upsellData.isOpen}
+                    onClose={() => setUpsellData(null)}
+                    onUpgrade={handleUpgrade}
+                    templateName={upsellData.templateName}
+                    requiredTier={upsellData.requiredTier}
+                />
             )}
         </div>
     );

@@ -6,74 +6,210 @@ export async function POST(req: NextRequest) {
     const rawBody = await req.text();
     const signature = req.headers.get('x-paystack-signature') || '';
 
-    const secret = process.env.PAYSTACK_SECRET_KEY || 'mock_secret';
+    const secret = process.env.PAYSTACK_SECRET_KEY;
+    if (!secret) {
+        console.error('PAYSTACK_SECRET_KEY is not configured');
+        return new NextResponse('Webhook Misconfigured', { status: 500 });
+    }
 
     if (!verifyPaystackSignature(JSON.parse(rawBody), signature, secret)) {
-        // In prod verify strict. In dev with mock might relax or ensuring mock sends correct sig.
-        // return new NextResponse('Invalid Signature', { status: 401 }); 
+        return new NextResponse('Invalid Signature', { status: 401 });
     }
 
     const event = JSON.parse(rawBody);
     const eventType = event.event;
     const data = event.data;
+    const providerEventId = String(data.id || event.id);
 
     try {
-        // Dedupe logic via WebhookEvent table (assumed existing or we create simplified flow)
+        // 1. Idempotency Check
+        const existingEvent = await prisma.paymentWebhookEvent.findUnique({
+            where: {
+                provider_providerEventId: {
+                    provider: 'PAYSTACK',
+                    providerEventId
+                }
+            }
+        });
+
+        if (existingEvent && existingEvent.status === 'PROCESSED') {
+            return new NextResponse('Already Processed', { status: 200 });
+        }
+
+        // 2. Track / Update Event Status
+        const webhookEvent = await prisma.paymentWebhookEvent.upsert({
+            where: {
+                provider_providerEventId: {
+                    provider: 'PAYSTACK',
+                    providerEventId
+                }
+            },
+            create: {
+                provider: 'PAYSTACK',
+                providerEventId,
+                eventType,
+                payload: event as any,
+                status: 'RECEIVED'
+            },
+            update: {
+                status: 'PROCESSING'
+            }
+        });
 
         if (eventType === 'charge.success') {
-            // Find subscription by customer email or ID logic
-            // Assuming metadata has storeId
             const storeId = data.metadata?.storeId;
+            const purchaseType = data.metadata?.type;
 
             if (storeId) {
-                await prisma.merchantSubscription.update({
-                    where: { storeId },
-                    data: {
-                        status: 'active',
-                        lastPaymentStatus: 'success',
-                        lastPaymentAt: new Date(),
-                        // currentPeriodStart/End from data
-                    }
-                });
+                if (purchaseType === 'subscription') {
+                    await prisma.merchantSubscription.update({
+                        where: { storeId },
+                        data: {
+                            status: 'ACTIVE',
+                            lastPaymentStatus: 'success',
+                            lastPaymentAt: new Date(),
+                        }
+                    });
+                } else if (purchaseType === 'template_purchase') {
+                    const templateId = data.metadata?.templateId;
+                    await prisma.store.update({
+                        where: { id: storeId },
+                        data: {
+                            settings: {
+                                upsert: {
+                                    update: { purchasedTemplates: { push: templateId } },
+                                    set: { purchasedTemplates: [templateId] }
+                                }
+                            }
+                        }
+                    });
+                } else if (purchaseType === 'storefront_order') {
+                    const orderId = data.metadata?.orderId;
+                    if (orderId) {
+                        await prisma.order.update({
+                            where: { id: orderId },
+                            data: {
+                                status: 'PAID',
+                                paymentStatus: 'SUCCESS',
+                            }
+                        });
 
-                await prisma.invoice.create({
-                    data: {
-                        storeId,
-                        invoiceNumber: `INV-${Date.now()}`,
-                        amountNgn: data.amount / 100,
-                        status: 'paid',
-                        paidAt: new Date(),
-                        providerInvoiceRef: data.reference
+                        await prisma.paymentTransaction.create({
+                            data: {
+                                storeId,
+                                orderId,
+                                reference: data.reference,
+                                provider: 'PAYSTACK',
+                                amount: data.amount / 100,
+                                currency: 'NGN',
+                                status: 'SUCCESS',
+                                type: 'CHARGE'
+                            }
+                        });
                     }
-                });
+                }
+
+                if (purchaseType !== 'storefront_order') {
+                    const invoice = await prisma.invoice.create({
+                        data: {
+                            storeId,
+                            invoiceNumber: `INV-${Date.now()}`,
+                            amountNgn: Math.floor(data.amount / 100),
+                            status: 'PAID',
+                            paidAt: new Date(),
+                            providerInvoiceRef: data.reference
+                        }
+                    });
+
+                    // Send Receipt Email
+                    const store = await prisma.store.findUnique({
+                        where: { id: storeId },
+                        include: {
+                            memberships: {
+                                where: { role: 'OWNER' },
+                                include: { User: true },
+                                take: 1
+                            }
+                        }
+                    });
+
+                    if (store && store.memberships[0]?.User?.email) {
+                        const { ResendEmailService } = await import('@/lib/email/resend');
+                        await ResendEmailService.sendPaymentReceiptEmail(
+                            store.memberships[0].User.email,
+                            invoice.amountNgn,
+                            invoice.invoiceNumber,
+                            store.name
+                        );
+                    }
+                }
+
+                // ---------------------------------------------------------
+                // ⚡ AUTO-DISPATCH TRIGGER
+                // ---------------------------------------------------------
+                // If payment is for an Order, trigger delivery dispatch
+                if (data.metadata?.orderId) {
+                    try {
+                        const { DeliveryService } = await import('@/lib/delivery/DeliveryService');
+                        await DeliveryService.autoDispatch(
+                            data.metadata.orderId,
+                            'storefront',
+                            `storefront:${data.metadata.orderId}:dispatch`
+                        );
+                    } catch (err) {
+                        console.error('[AutoDispatch] Failed to trigger from Paystack:', err);
+                        // Do not fail the webhook, just log
+                    }
+                }
             }
         } else if (eventType === 'charge.failed') {
-            // Handle retry/dunning
             const storeId = data.metadata?.storeId;
             if (storeId) {
                 await prisma.merchantSubscription.update({
                     where: { storeId },
                     data: {
-                        status: 'past_due',
+                        status: 'PAST_DUE',
                         lastPaymentStatus: 'failed'
                     }
                 });
             }
-        } else if (event.event.startsWith('dispute.')) {
-            // Integration 44: Disputes
-            // Dynamically import to avoid circular dep if any, or just import at top. 
-            // Importing at top is already done in previous "view". Wait, I need to check imports.
-            // I need to make sure DisputeService is imported.
-            // Actually, I'll add the import in a separate block if missing, or use strictly standard import.
+        } else if (eventType.startsWith('dispute.')) {
             const { DisputeService } = await import('@/lib/disputes/disputeService');
-            await DisputeService.handleWebhookEvent(event);
+            // Assuming DisputeService exists and is wired correctly
+            try {
+                await DisputeService.handleWebhookEvent(event);
+            } catch (error) {
+                console.error('Dispute handling failed:', error);
+            }
         }
 
+        // 3. Mark as PROCESSED
+        await prisma.paymentWebhookEvent.update({
+            where: { id: webhookEvent.id },
+            data: { status: 'PROCESSED', processedAt: new Date() }
+        });
 
         return new NextResponse('OK', { status: 200 });
 
-    } catch (e) {
-        console.error(e);
+    } catch (e: any) {
+        console.error('Webhook processing error:', e);
+
+        // Log error to webhook event if possible
+        const providerEventId = String(data.id || event.id);
+        try {
+            await prisma.paymentWebhookEvent.update({
+                where: {
+                    provider_providerEventId: {
+                        provider: 'PAYSTACK',
+                        providerEventId
+                    }
+                },
+                data: { status: 'FAILED', error: e.message }
+            });
+        } catch (innerError) {
+            // Ignore if we can't even log failure
+        }
+
         return new NextResponse('Error', { status: 500 });
     }
 }

@@ -1,34 +1,156 @@
+import { FEATURES } from '@/lib/env-validation';
+
 export interface WaSettings {
-    greeting: {
-        message: string;
-        sendOnFirstMessage: boolean;
-        proactive: boolean;
-        showProducts: boolean;
-    };
-    tone: {
-        style: 'friendly' | 'professional' | 'playful';
-        useEmoji: boolean;
-    };
-    handoff: {
-        escalateKeywords: string[];
-        businessHoursOnly: boolean;
-        humanContact: string;
-    };
-    flags: {
-        autoFlag: boolean;
-    };
-    compliance?: {
-        onlyInitiatedChat: boolean;
-        requireApprovalForPayments: boolean;
-    };
+    enabled: boolean;
+    businessHours: any;
+    autoReplyOutsideHours: boolean;
+    outsideHoursMessage: string;
+    catalogMode: string;
+    allowImageUnderstanding: boolean;
+    orderStatusAccess: boolean;
+    paymentGuidanceMode: string;
+    maxDailyMsgsPerUser: number;
+    humanHandoffEnabled: boolean;
+    handoffDestination: string;
 }
 
-export interface WaMessage {
+export interface AiProfile {
+    agentName: string;
+    tonePreset: string;
+    greetingTemplate: string;
+    signoffTemplate: string;
+    persuasionLevel: number;
+    brevityMode: string;
+    oneQuestionRule: boolean;
+    prohibitedClaims: string[];
+}
+
+export const WaAgentService = {
+    // 1. Settings & Profile
+    getSettings: async (): Promise<WaSettings> => {
+        if (!FEATURES.WHATSAPP_ENABLED) {
+            throw new Error('WhatsApp integration is not configured');
+        }
+
+        const res = await fetch('/api/seller/ai/whatsapp-settings');
+        const data = await res.json();
+        return data.data || {
+            enabled: false,
+            businessHours: {},
+            autoReplyOutsideHours: false,
+            catalogMode: 'StrictCatalogOnly',
+            allowImageUnderstanding: false,
+            orderStatusAccess: true,
+            paymentGuidanceMode: 'ExplainAndLink',
+            maxDailyMsgsPerUser: 50,
+            humanHandoffEnabled: true,
+        };
+    },
+
+    updateSettings: async (settings: WaSettings): Promise<boolean> => {
+        if (!FEATURES.WHATSAPP_ENABLED) {
+            throw new Error('WhatsApp integration is not configured');
+        }
+
+        const res = await fetch('/api/seller/ai/whatsapp-settings', {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(settings)
+        });
+        return res.ok;
+    },
+
+    getProfile: async (): Promise<AiProfile> => {
+        if (!FEATURES.WHATSAPP_ENABLED) {
+            throw new Error('WhatsApp integration is not configured');
+        }
+
+        const res = await fetch('/api/seller/ai/profile');
+        const data = await res.json();
+        return data.data || {
+            agentName: 'Assistant',
+            tonePreset: 'Friendly',
+            greetingTemplate: 'Hi {customer_name}! How can I help?',
+            signoffTemplate: 'Best regards!',
+            persuasionLevel: 1,
+            brevityMode: 'Short',
+            oneQuestionRule: true,
+            prohibitedClaims: []
+        };
+    },
+
+    updateProfile: async (profile: AiProfile): Promise<boolean> => {
+        if (!FEATURES.WHATSAPP_ENABLED) {
+            throw new Error('WhatsApp integration is not configured');
+        }
+
+        const res = await fetch('/api/seller/ai/profile', {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(profile)
+        });
+        return res.ok;
+    },
+
+    // 2. Inbox - Throws error if disabled (no empty arrays)
+    getConversations: async (): Promise<any[]> => {
+        if (!FEATURES.WHATSAPP_ENABLED) {
+            throw new Error('WhatsApp integration is not configured');
+        }
+
+        throw new Error('WhatsApp inbox not implemented');
+    },
+
+    // 3. Test Message
+    sendTestMessage: async (text: string) => {
+        if (!FEATURES.WHATSAPP_ENABLED) {
+            throw new Error('WhatsApp integration is not configured');
+        }
+
+        const res = await fetch('/api/ai/chat', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ messages: [{ role: 'user', content: text }] })
+        });
+        return res.json();
+    },
+
+    // 4. Approvals
+    getApprovals: async (): Promise<WaApproval[]> => {
+        if (!FEATURES.WHATSAPP_ENABLED) return [];
+        // Stub
+        return [];
+    },
+
+    actionApproval: async (id: string, action: 'approve' | 'reject') => {
+        if (!FEATURES.WHATSAPP_ENABLED) throw new Error('Not configured');
+        // Stub
+        return true;
+    },
+
+    // 5. Inbox Stubs
+    getThread: async (threadId: string): Promise<WaThread | null> => {
+        if (!FEATURES.WHATSAPP_ENABLED) return null;
+        return null;
+    },
+
+    getKnowledgeBase: async (): Promise<KbItem[]> => {
+        if (!FEATURES.WHATSAPP_ENABLED) return [];
+        return [];
+    }
+};
+
+export interface WaApproval {
     id: string;
-    text: string;
-    sender: 'user' | 'agent' | 'system';
+    type: string;
+    status: string;
+    content: string;
     timestamp: string;
-    status: 'sent' | 'delivered' | 'read';
+    // UI Alignment (mandatory where used without check)
+    description: string;
+    customerName: string;
+    risk: 'HIGH' | 'MEDIUM' | 'LOW' | 'high' | 'medium' | 'low'; // Allow both cases
+    createdTime: string;
 }
 
 export interface WaThread {
@@ -37,169 +159,31 @@ export interface WaThread {
     customerPhone: string;
     lastMessage: string;
     lastMessageTime: string;
-    status: 'open' | 'waiting' | 'resolved';
-    messages: WaMessage[];
+    status: string;
+    unreadCount: number;
+    messages: any[]; // Mandatory array
     aiSuggestions?: {
         reply?: string;
-        products?: any[];
-        action?: WaApproval; // Current pending action
+        action?: {
+            description: string;
+            risk: string;
+        };
     };
 }
 
-export interface WaApproval {
+export interface WaMessage {
     id: string;
-    type: 'refund' | 'delivery_schedule' | 'discount' | 'order_cancel';
-    description: string;
-    risk: 'low' | 'medium' | 'high';
-    details: any;
-    status: 'pending' | 'approved' | 'rejected';
-    createdTime: string;
-    customerName: string;
+    content: string;
+    role: 'user' | 'assistant';
+    timestamp: string;
 }
 
 export interface KbItem {
     id: string;
     question: string;
     answer: string;
+    tags: string[];
+    // UI Alignment
     category: string;
-    status: 'synced' | 'pending';
+    status: string; // Allow 'synced', 'ACTIVE', etc.
 }
-
-export const WaAgentService = {
-    // 1. Settings
-    getSettings: async (): Promise<WaSettings> => {
-        await new Promise(resolve => setTimeout(resolve, 600));
-        return {
-            greeting: {
-                message: "Hi {customer_name}! Welcome to {store_name}. How can I help you today?",
-                sendOnFirstMessage: true,
-                proactive: false,
-                showProducts: true
-            },
-            tone: { style: 'friendly', useEmoji: true },
-            handoff: { escalateKeywords: ['speak to human', 'complaint', 'manager'], businessHoursOnly: true, humanContact: '+2348000000000' },
-            flags: { autoFlag: true },
-            compliance: {
-                onlyInitiatedChat: true,
-                requireApprovalForPayments: true
-            }
-        };
-    },
-    updateSettings: async (settings: WaSettings): Promise<boolean> => {
-        await new Promise(resolve => setTimeout(resolve, 800));
-        return true;
-    },
-
-    // 2. Inbox
-    getConversations: async (): Promise<WaThread[]> => {
-        await new Promise(resolve => setTimeout(resolve, 800));
-        return [
-            {
-                id: 'th_1',
-                customerName: 'Chioma Adebayo',
-                customerPhone: '+2348012345678',
-                lastMessage: 'Where is my order?',
-                lastMessageTime: new Date().toISOString(),
-                status: 'open',
-                messages: [],
-                aiSuggestions: {
-                    reply: 'I can check that for you. It looks like Order #1024 is currently processing.',
-                }
-            },
-            {
-                id: 'th_2',
-                customerName: 'Emmanuel Kalu',
-                customerPhone: '+2348098765432',
-                lastMessage: 'I want a refund please.',
-                lastMessageTime: new Date(Date.now() - 3600000).toISOString(),
-                status: 'waiting',
-                messages: [],
-                aiSuggestions: {
-                    action: {
-                        id: 'app_1',
-                        type: 'refund',
-                        description: 'Refund Request for Order #1023',
-                        risk: 'medium',
-                        details: { amount: 10000, reason: 'Customer unhappy' },
-                        status: 'pending',
-                        createdTime: new Date().toISOString(),
-                        customerName: 'Emmanuel Kalu'
-                    }
-                }
-            }
-        ];
-    },
-    getThread: async (id: string): Promise<WaThread> => {
-        await new Promise(resolve => setTimeout(resolve, 600));
-        return {
-            id: id,
-            customerName: 'Chioma Adebayo',
-            customerPhone: '+2348012345678',
-            lastMessage: 'Where is my order?',
-            lastMessageTime: new Date().toISOString(),
-            status: 'open',
-            messages: [
-                { id: 'm1', text: 'Hi, I need help.', sender: 'user', timestamp: new Date(Date.now() - 100000).toISOString(), status: 'read' },
-                { id: 'm2', text: 'Hello! How can I assist you today?', sender: 'agent', timestamp: new Date(Date.now() - 90000).toISOString(), status: 'read' },
-                { id: 'm3', text: 'Where is my order?', sender: 'user', timestamp: new Date(Date.now() - 80000).toISOString(), status: 'read' }
-            ],
-            aiSuggestions: {
-                reply: 'I can see Order #1024 is currently Processing and estimated to arrive tomorrow.'
-            }
-        };
-    },
-    sendMessage: async (threadId: string, text: string) => {
-        await new Promise(resolve => setTimeout(resolve, 500));
-        return true;
-    },
-
-    // 3. Approvals
-    getApprovals: async (): Promise<WaApproval[]> => {
-        await new Promise(resolve => setTimeout(resolve, 600));
-        return [
-            {
-                id: 'app_1',
-                type: 'refund',
-                description: 'Refund ₦10,000 for Order #1023',
-                risk: 'medium',
-                details: { amount: 10000 },
-                status: 'pending',
-                createdTime: new Date(Date.now() - 7200000).toISOString(),
-                customerName: 'Emmanuel Kalu'
-            },
-            {
-                id: 'app_2',
-                type: 'delivery_schedule',
-                description: 'Schedule Pickup for tomorrow 10am',
-                risk: 'low',
-                details: { time: '10:00 AM' },
-                status: 'pending',
-                createdTime: new Date(Date.now() - 14400000).toISOString(),
-                customerName: 'Aisha Bello'
-            }
-        ];
-    },
-    actionApproval: async (id: string, action: 'approve' | 'reject') => {
-        await new Promise(resolve => setTimeout(resolve, 800));
-        return true;
-    },
-
-    // 4. Knowledge Base
-    getKnowledgeBase: async (): Promise<KbItem[]> => {
-        await new Promise(resolve => setTimeout(resolve, 600));
-        return [
-            { id: 'kb_1', question: 'What is your return policy?', answer: 'We accept returns within 7 days of delivery.', category: 'Policies', status: 'synced' },
-            { id: 'kb_2', question: 'Do you deliver to Abuja?', answer: 'Yes, we deliver nationwide directly through our logistics partners.', category: 'Shipping', status: 'synced' }
-        ];
-    },
-    updateKnowledgeBase: async (item: KbItem) => {
-        await new Promise(resolve => setTimeout(resolve, 800));
-        return true;
-    },
-
-    // 5. Test Message
-    sendTestMessage: async () => {
-        await new Promise(resolve => setTimeout(resolve, 1000));
-        return true;
-    }
-};

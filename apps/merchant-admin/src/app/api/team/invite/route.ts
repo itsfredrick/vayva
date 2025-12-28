@@ -1,110 +1,30 @@
+
 import { NextResponse } from 'next/server';
-import { requireAuth } from '@/lib/auth/session';
-import { prisma } from '@vayva/db';
+import { checkPermission } from '@/lib/team/rbac';
+import { PERMISSIONS } from '@/lib/team/permissions';
+import { TeamService } from '@/lib/team/teamService';
 
-export async function POST(request: Request) {
+export async function POST(req: Request) {
     try {
-        const session = await requireAuth();
-        const storeId = session.user.storeId;
+        const session = await checkPermission(PERMISSIONS.TEAM_MANAGE);
+        const storeId = (session.user as any).storeId;
+        const userId = session.user.id;
 
-        const body = await request.json();
+        const body = await req.json();
         const { email, role } = body;
 
         if (!email || !role) {
-            return NextResponse.json(
-                { error: 'Email and role are required' },
-                { status: 400 }
-            );
+            return NextResponse.json({ error: 'Missing email or role' }, { status: 400 });
         }
 
-        if (!['OWNER', 'ADMIN', 'SUPPORT'].includes(role)) {
-            return NextResponse.json(
-                { error: 'Invalid role' },
-                { status: 400 }
-            );
-        }
+        await TeamService.inviteMember(storeId, userId, { email, role });
 
-        // Check if user exists
-        let user = await prisma.user.findUnique({
-            where: { email },
-        });
-
-        // Get store info for email
-        const store = await prisma.store.findUnique({
-            where: { id: storeId },
-            select: { name: true },
-        });
-
-        const inviter = await prisma.user.findUnique({
-            where: { id: session.user.id },
-            select: { firstName: true, lastName: true },
-        });
-
-        // If user doesn't exist, send invitation email
-        if (!user) {
-            // Send invitation email
-            const { sendTeamInvite } = await import('@/lib/email/team-invite');
-
-            try {
-                await sendTeamInvite({
-                    email,
-                    storeName: store?.name || 'Your Store',
-                    role,
-                    inviterName: `${inviter?.firstName} ${inviter?.lastName}`,
-                });
-            } catch (emailError) {
-                console.error('Failed to send invitation email:', emailError);
-                // Continue anyway - invitation can be resent
-            }
-
-            return NextResponse.json({
-                success: true,
-                message: 'Invitation sent',
-                inviteId: `invite_${Date.now()}`,
-            });
-        }
-
-        // Check if already a member
-        const existingMembership = await prisma.membership.findUnique({
-            where: {
-                userId_storeId: {
-                    userId: user.id,
-                    storeId,
-                },
-            },
-        });
-
-        if (existingMembership) {
-            return NextResponse.json(
-                { error: 'User is already a team member' },
-                { status: 400 }
-            );
-        }
-
-        // Create membership
-        await prisma.membership.create({
-            data: {
-                userId: user.id,
-                storeId,
-                role,
-                status: 'active',
-            },
-        });
-
-        return NextResponse.json({
-            success: true,
-            message: 'Team member added successfully',
-        });
+        return NextResponse.json({ success: true, message: 'Invite sent' });
     } catch (error: any) {
         console.error('Team invite error:', error);
-
-        if (error.message === 'Unauthorized') {
-            return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+        if (error.message.includes('Forbidden') || error.message.includes('Unauthorized')) {
+            return NextResponse.json({ error: error.message }, { status: error.message.includes('Forbidden') ? 403 : 401 });
         }
-
-        return NextResponse.json(
-            { error: 'Failed to invite team member' },
-            { status: 500 }
-        );
+        return NextResponse.json({ error: error.message || 'Internal Server Error' }, { status: 500 });
     }
 }

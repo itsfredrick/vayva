@@ -1,164 +1,245 @@
 'use client';
 
-import React from 'react';
-import Link from 'next/link';
+import React, { useState, useEffect } from 'react';
+import { useParams } from 'next/navigation';
 import { OpsShell } from '@/components/ops/ops-shell';
 import { RiskChip } from '@/components/ops/risk-chip';
-import { Button, Icon } from '@vayva/ui';
+import { Button, Icon, GlassPanel, cn } from '@vayva/ui';
 
-const MOCK_MERCHANT = {
-    id: '1',
-    name: 'TechDepot',
-    subdomain: 'techdepot',
-    owner: 'John Smith',
-    email: 'john@techdepot.com',
-    phone: '+234 801 234 5678',
-    status: 'Active',
-    risk: 'Low',
-    joined: 'Oct 12, 2024',
-    gmv: '₦ 45.2M'
-};
+export default function OpsMerchantDetailPage() {
+    const { id } = useParams();
+    const [data, setData] = useState<any>(null);
+    const [loading, setLoading] = useState(true);
+    const [activeTab, setActiveTab] = useState<'OVERVIEW' | 'KYC' | 'INTEGRATIONS' | 'PAYOUTS' | 'AUDIT'>('OVERVIEW');
 
-export default function OpsMerchantDetailPage({ params }: { params: Promise<{ id: string }> }) {
-    const { id } = React.use(params);
+    useEffect(() => {
+        fetch(`/api/ops/merchants/${id}/summary`)
+            .then(res => res.json())
+            .then(json => {
+                setData(json);
+                setLoading(false);
+            })
+            .catch(console.error);
+    }, [id]);
+
+    if (loading) return <div className="p-12 text-center text-white">Loading merchant detail...</div>;
+    if (!data) return <div className="p-12 text-center text-red-500">Merchant not found</div>;
+
+    const tabs = [
+        { id: 'OVERVIEW', label: 'Overview', icon: 'LayoutDashboard' },
+        { id: 'KYC', label: 'KYC', icon: 'Shield' },
+        { id: 'INTEGRATIONS', label: 'Integrations', icon: 'Link' },
+        { id: 'PAYOUTS', label: 'Payouts', icon: 'Wallet' },
+        { id: 'AUDIT', label: 'Audit Log', icon: 'Activity' },
+    ];
+
     return (
         <OpsShell
-            title={`Merchant: ${MOCK_MERCHANT.name}`}
-            description={`ID: ${MOCK_MERCHANT.id} • Joined ${MOCK_MERCHANT.joined}`}
+            title={data.name}
+            description={`${data.slug}.vayva.store • ${data.ownerEmail}`}
             actions={
                 <div className="flex gap-2">
-                    <Button variant="outline" className="border-white/10 text-white hover:bg-white/5 gap-2">
-                        <Icon name="LogIn" size={16} /> Impersonate
-                    </Button>
-                    <Button className="bg-red-500/10 text-red-400 border border-red-500/50 hover:bg-red-500/20 gap-2">
-                        <Icon name="Ban" size={16} /> Suspend Store
-                    </Button>
+                    <Button variant="outline" size="sm" className="border-red-500/20 text-red-400 hover:bg-red-500/10">Suspend Store</Button>
+                    <Button size="sm">Edit Profile</Button>
                 </div>
             }
         >
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-
-                {/* Left Column */}
-                <div className="lg:col-span-2 space-y-6">
-
-                    {/* Overview Panel */}
-                    <section className="bg-white/5 border border-white/5 rounded-xl p-6">
-                        <h3 className="text-white font-bold mb-4 flex items-center gap-2">
-                            <Icon name="Info" className="text-text-secondary" /> Overview
-                        </h3>
-                        <div className="grid grid-cols-2 gap-6">
-                            <div>
-                                <div className="text-xs text-text-secondary uppercase font-bold tracking-wider mb-1">Owner Identity</div>
-                                <div className="text-white font-medium">{MOCK_MERCHANT.owner}</div>
-                                <div className="text-sm text-text-secondary">{MOCK_MERCHANT.email}</div>
-                                <div className="text-sm text-text-secondary">{MOCK_MERCHANT.phone}</div>
-                            </div>
-                            <div>
-                                <div className="text-xs text-text-secondary uppercase font-bold tracking-wider mb-1">Store Health</div>
-                                <div className="flex items-center gap-2 mb-2">
-                                    <span className="w-2 h-2 rounded-full bg-emerald-500" />
-                                    <span className="text-white">Storefront Online</span>
-                                </div>
-                                <div className="flex items-center gap-2">
-                                    <span className="w-2 h-2 rounded-full bg-emerald-500" />
-                                    <span className="text-white">Marketplace Enabled</span>
-                                </div>
-                            </div>
-                        </div>
-                    </section>
-
-                    {/* Payments & Payouts */}
-                    <section className="bg-white/5 border border-white/5 rounded-xl p-6">
-                        <h3 className="text-white font-bold mb-4 flex items-center gap-2">
-                            <Icon name="Banknote" className="text-text-secondary" /> Payments & Payouts
-                        </h3>
-                        <div className="grid grid-cols-2 gap-6 mb-6">
-                            <div className="p-4 rounded-lg bg-emerald-500/10 border border-emerald-500/20">
-                                <div className="text-xs text-emerald-400 font-bold uppercase tracking-wider mb-1">Lifetime GMV</div>
-                                <div className="text-2xl font-bold text-white">{MOCK_MERCHANT.gmv}</div>
-                            </div>
-                            <div className="p-4 rounded-lg bg-white/5 border border-white/10">
-                                <div className="text-xs text-text-secondary font-bold uppercase tracking-wider mb-1">Last Payout</div>
-                                <div className="text-2xl font-bold text-white">₦ 1,250,000</div>
-                                <div className="text-xs text-text-secondary mt-1">Processed Yesterday</div>
-                            </div>
-                        </div>
-
-                        <div className="space-y-3">
-                            <h4 className="text-sm font-bold text-white">Recent Transactions</h4>
-                            {[1, 2, 3].map(i => (
-                                <div key={i} className="flex justify-between items-center py-2 border-b border-white/5 last:border-0">
-                                    <div className="flex items-center gap-3">
-                                        <div className="w-8 h-8 rounded bg-white/5 flex items-center justify-center text-xs text-text-secondary">Tx</div>
-                                        <div>
-                                            <div className="text-sm text-white">Order #882{i}</div>
-                                            <div className="text-xs text-text-secondary">Dec 1{i}, 2024</div>
-                                        </div>
-                                    </div>
-                                    <div className="text-sm font-medium text-white">₦ 45,000</div>
-                                </div>
-                            ))}
-                        </div>
-                    </section>
+            {/* Health Bar */}
+            <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8">
+                <div className="p-4 bg-white/5 border border-white/10 rounded-xl">
+                    <div className="text-[10px] uppercase tracking-widest text-text-secondary font-bold mb-1">Status</div>
+                    <div className="flex items-center gap-2">
+                        <div className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+                        <span className="font-bold text-white">Active</span>
+                    </div>
                 </div>
-
-                {/* Right Column */}
-                <div className="space-y-6">
-
-                    {/* Risk Profile */}
-                    <section className="bg-white/5 border border-white/5 rounded-xl p-6">
-                        <div className="flex justify-between items-start mb-4">
-                            <h3 className="text-white font-bold flex items-center gap-2">
-                                <Icon name="Shield" className="text-text-secondary" /> Risk Profile
-                            </h3>
-                            <RiskChip level="Low" />
-                        </div>
-
-                        <div className="space-y-4">
-                            <div className="flex justify-between items-center text-sm">
-                                <span className="text-text-secondary">Refund Rate</span>
-                                <span className="text-white">0.5%</span>
-                            </div>
-                            <div className="flex justify-between items-center text-sm">
-                                <span className="text-text-secondary">Dispute Rate</span>
-                                <span className="text-white">0.1%</span>
-                            </div>
-                            <div className="flex justify-between items-center text-sm">
-                                <span className="text-text-secondary">Chargebacks</span>
-                                <span className="text-white">0</span>
-                            </div>
-                        </div>
-
-                        <div className="mt-6 pt-4 border-t border-white/10">
-                            <Button variant="ghost" size="sm" className="w-full text-red-400 hover:text-red-300 hover:bg-red-500/10 justify-start gap-2">
-                                <Icon name="Flag" size={16} /> Add Internal Flag
-                            </Button>
-                        </div>
-                    </section>
-
-                    {/* Audit Log Snippet */}
-                    <section className="bg-white/5 border border-white/5 rounded-xl p-6">
-                        <h3 className="text-white font-bold mb-4 flex items-center gap-2">
-                            <Icon name="History" className="text-text-secondary" /> Recent Activity
-                        </h3>
-                        <div className="space-y-4 relative pl-2 border-l border-white/10">
-                            {[
-                                { action: 'Payout Processed', user: 'System', time: '1 day ago' },
-                                { action: 'Marketplace Enabled', user: 'Admin (Sarah)', time: '5 days ago' },
-                                { action: 'KYC Verified', user: 'System', time: '5 days ago' },
-                            ].map((log, i) => (
-                                <div key={i} className="relative pl-4">
-                                    <div className="absolute -left-[5px] top-1.5 w-2 h-2 rounded-full bg-white/20" />
-                                    <div className="text-sm text-white font-medium">{log.action}</div>
-                                    <div className="text-xs text-text-secondary">{log.user} • {log.time}</div>
-                                </div>
-                            ))}
-                        </div>
-                    </section>
-
+                <div className="p-4 bg-white/5 border border-white/10 rounded-xl">
+                    <div className="text-[10px] uppercase tracking-widest text-text-secondary font-bold mb-1">KYC</div>
+                    <div className={cn("font-bold", data.health.kyc === 'VERIFIED' ? "text-emerald-400" : "text-amber-400")}>
+                        {data.health.kyc}
+                    </div>
                 </div>
+                <div className="p-4 bg-white/5 border border-white/10 rounded-xl">
+                    <div className="text-[10px] uppercase tracking-widest text-text-secondary font-bold mb-1">Payout Readiness</div>
+                    <div className={cn("font-bold", data.health.payouts ? "text-emerald-400" : "text-red-400")}>
+                        {data.health.payouts ? 'Ready' : 'Blocked'}
+                    </div>
+                </div>
+                <div className="p-4 bg-white/5 border border-white/10 rounded-xl">
+                    <div className="text-[10px] uppercase tracking-widest text-text-secondary font-bold mb-1">Plan</div>
+                    <div className="font-bold text-indigo-400 uppercase tracking-tighter">
+                        {data.health.subscription}
+                    </div>
+                </div>
+            </div>
 
+            {/* Tabs */}
+            <div className="flex gap-1 border-b border-white/5 mb-8">
+                {tabs.map(tab => (
+                    <button
+                        key={tab.id}
+                        onClick={() => setActiveTab(tab.id as any)}
+                        className={cn(
+                            "px-6 py-3 text-sm font-bold transition-all border-b-2",
+                            activeTab === tab.id ? "border-primary text-white" : "border-transparent text-text-secondary hover:text-white"
+                        )}
+                    >
+                        {tab.label}
+                    </button>
+                ))}
+            </div>
+
+            {/* Content Rendering */}
+            <div className="space-y-8 animate-in fade-in duration-500">
+                {activeTab === 'OVERVIEW' && <OverviewTab data={data} />}
+                {activeTab === 'KYC' && <KycTab data={data} />}
+                {activeTab === 'INTEGRATIONS' && <IntegrationsTab data={data} />}
+                {activeTab === 'PAYOUTS' && <PayoutsTab data={data} />}
+                {activeTab === 'AUDIT' && <AuditTab data={data} />}
             </div>
         </OpsShell>
+    );
+}
+
+function OverviewTab({ data }: { data: any }) {
+    return (
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <GlassPanel className="p-6 space-y-4">
+                <h3 className="font-bold text-white border-b border-white/5 pb-2">Business Profile</h3>
+                <div className="space-y-3">
+                    <DetailItem label="Legal Name" value={data.StoreProfile?.businessName} />
+                    <DetailItem label="Category" value={data.StoreProfile?.category} />
+                    <DetailItem label="Address" value={data.StoreProfile?.address} />
+                    <DetailItem label="Onboarding Step" value={data.StoreProfile?.onboardingStep} />
+                </div>
+            </GlassPanel>
+
+            <GlassPanel className="p-6 space-y-4">
+                <h3 className="font-bold text-white border-b border-white/5 pb-2">Technical Summary</h3>
+                <div className="space-y-3">
+                    <DetailItem label="Subdomain" value={`${data.slug}.vayva.store`} />
+                    <DetailItem label="Template" value={data.settings?.template || 'Standard'} />
+                    <DetailItem label="Creation Date" value={new Date(data.createdAt).toLocaleString()} />
+                </div>
+            </GlassPanel>
+        </div>
+    );
+}
+
+function KycTab({ data }: { data: any }) {
+    return (
+        <div className="space-y-8">
+            <GlassPanel className="p-6">
+                <div className="flex justify-between items-center mb-6">
+                    <h3 className="font-bold text-white uppercase tracking-widest text-sm">KYC History</h3>
+                    <div className="flex gap-2">
+                        <Button size="sm" variant="outline" className="border-white/10">Retry Sync</Button>
+                        <Button size="sm" className="bg-emerald-600 hover:bg-emerald-500">Manual Override</Button>
+                    </div>
+                </div>
+                <div className="space-y-4">
+                    {data.KycRecord.length === 0 ? (
+                        <div className="text-center py-8 text-text-secondary">No KYC records found.</div>
+                    ) : (
+                        data.KycRecord.map((rec: any) => (
+                            <div key={rec.id} className="p-4 bg-white/5 border border-white/10 rounded-xl flex items-center justify-between">
+                                <div>
+                                    <div className="font-bold text-white">{rec.method} - {rec.idNumber}</div>
+                                    <div className="text-xs text-text-secondary">{rec.provider} • {new Date(rec.createdAt).toLocaleString()}</div>
+                                </div>
+                                <span className={cn("text-[10px] font-bold px-2 py-0.5 rounded",
+                                    rec.status === 'VERIFIED' ? "bg-emerald-500/10 text-emerald-400" : "bg-red-500/10 text-red-400"
+                                )}>
+                                    {rec.status}
+                                </span>
+                            </div>
+                        ))
+                    )}
+                </div>
+            </GlassPanel>
+        </div>
+    );
+}
+
+function IntegrationsTab({ data }: { data: any }) {
+    return (
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <GlassPanel className="p-6 space-y-4">
+                <h3 className="font-bold text-white">Connectivity Health</h3>
+                <div className="space-y-4">
+                    <IntegrationStatus name="WhatsApp Business API" status="Connected" lastActive="3 mins ago" />
+                    <IntegrationStatus name="Paystack Checkout" status="Connected" lastActive="1 hour ago" />
+                    <IntegrationStatus name="Redelivery Logistics" status="Disconnected" lastActive="Yesterday" />
+                </div>
+            </GlassPanel>
+        </div>
+    );
+}
+
+function PayoutsTab({ data }: { data: any }) {
+    const bank = data.BankBeneficiary?.[0];
+    return (
+        <div className="space-y-8">
+            <GlassPanel className="p-6">
+                <h3 className="font-bold text-white mb-6">Primary Bank Account</h3>
+                {bank ? (
+                    <div className="p-6 bg-emerald-500/5 border border-emerald-500/20 rounded-2xl flex items-center gap-6">
+                        <div className="p-4 bg-emerald-500/20 text-emerald-500 rounded-full">
+                            <Icon name={"Wallet" as any} size={32} />
+                        </div>
+                        <div>
+                            <div className="text-xl font-bold text-white">{bank.bankName}</div>
+                            <div className="text-emerald-500/80 font-mono tracking-widest">{bank.accountNumber} • {bank.accountName}</div>
+                        </div>
+                    </div>
+                ) : (
+                    <div className="p-8 text-center bg-red-500/5 border border-red-500/20 rounded-2xl">
+                        <div className="text-red-400 font-bold mb-2">No Settlement Account Configured</div>
+                        <p className="text-sm text-red-400/60">The merchant has not added a payout destination.</p>
+                    </div>
+                )}
+            </GlassPanel>
+        </div>
+    );
+}
+
+function AuditTab({ data }: { data: any }) {
+    return (
+        <GlassPanel className="p-6 overflow-hidden">
+            <h3 className="font-bold text-white mb-6">Activity Trail</h3>
+            <div className="space-y-1">
+                {data.AuditLog.map((log: any) => (
+                    <div key={log.id} className="p-3 hover:bg-white/5 transition-colors border-l-2 border-white/10 hover:border-primary flex items-center justify-between text-sm">
+                        <div className="flex gap-4 items-center">
+                            <div className="text-text-secondary w-32 shrink-0">{new Date(log.createdAt).toLocaleString()}</div>
+                            <div className="font-bold text-white">{log.action}</div>
+                            <div className="text-text-secondary truncate max-w-md">{log.details ? JSON.stringify(log.details) : '-'}</div>
+                        </div>
+                        <div className="text-[10px] text-white/20 font-mono">IP: {log.ipAddress || 'unknown'}</div>
+                    </div>
+                ))}
+            </div>
+        </GlassPanel>
+    );
+}
+
+function DetailItem({ label, value }: { label: string, value: string }) {
+    return (
+        <div className="flex justify-between items-center text-sm">
+            <span className="text-text-secondary">{label}</span>
+            <span className="text-white font-medium">{value || '-'}</span>
+        </div>
+    );
+}
+
+function IntegrationStatus({ name, status, lastActive }: any) {
+    return (
+        <div className="flex items-center justify-between p-3 bg-white/5 rounded-lg border border-white/10">
+            <div className="flex items-center gap-3">
+                <div className={cn("w-2 h-2 rounded-full", status === 'Connected' ? "bg-emerald-500" : "bg-red-500")} />
+                <span className="text-white font-medium">{name}</span>
+            </div>
+            <div className="text-xs text-text-secondary">{lastActive}</div>
+        </div>
     );
 }

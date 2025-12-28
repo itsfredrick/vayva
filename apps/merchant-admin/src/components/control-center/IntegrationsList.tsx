@@ -39,16 +39,22 @@ export const IntegrationsList = ({ integrations }: IntegrationsListProps) => {
                             <p className="text-sm text-gray-500 leading-relaxed">{integration.description}</p>
                         </div>
 
-                        <Button
-                            variant={integration.status === 'connected' ? "outline" : "primary"}
+                        <a
+                            href={integration.id === 'kwik' ? '/admin/control-center/delivery' : '/admin/settings/billing'}
                             className={cn(
-                                "w-full justify-between group",
-                                integration.status !== 'connected' && "bg-black text-white hover:bg-gray-800"
+                                "w-full flex items-center justify-between group px-4 py-2 rounded-lg border text-sm font-medium transition-all",
+                                integration.status === 'connected'
+                                    ? "border-gray-200 text-gray-700 hover:bg-gray-50"
+                                    : "bg-black text-white hover:bg-gray-800 border-transparent"
                             )}
                         >
                             {integration.status === 'connected' ? 'Manage Settings' : 'Connect'}
-                            <Icon name={integration.status === 'connected' ? "Settings" : "ArrowRight"} size={16} className={cn(integration.status !== 'connected' && "group-hover:translate-x-1 transition-transform")} />
-                        </Button>
+                            <Icon
+                                name={integration.status === 'connected' ? "Settings" : "ArrowRight"}
+                                size={16}
+                                className={cn(integration.status !== 'connected' && "group-hover:translate-x-1 transition-transform")}
+                            />
+                        </a>
                     </div>
                 ))}
             </div>

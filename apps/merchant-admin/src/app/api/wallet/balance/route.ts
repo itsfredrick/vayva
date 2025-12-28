@@ -65,7 +65,7 @@ export async function GET() {
             available: availableNaira,
             pending: pendingNaira,
             total: totalNaira,
-            blocked: 0, // TODO: Implement blocked balance if needed
+            blocked: 0,
             currency: 'NGN',
             virtualAccount,
             lastUpdated: wallet.updatedAt.toISOString()

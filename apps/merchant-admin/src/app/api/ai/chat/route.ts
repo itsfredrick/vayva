@@ -23,7 +23,8 @@ export async function POST(request: NextRequest) {
         }
 
         // Check if Groq API key is configured
-        if (!process.env.GROQ_API_KEY || process.env.GROQ_API_KEY === 'YOUR_GROQ_API_KEY_HERE') {
+        const isConfigured = !!process.env.GROQ_API_KEY && process.env.GROQ_API_KEY !== 'YOUR_GROQ_API_KEY_HERE';
+        if (!isConfigured) {
             return NextResponse.json(
                 {
                     error: 'AI service not configured. Please add GROQ_API_KEY to your .env file.',
@@ -33,8 +34,21 @@ export async function POST(request: NextRequest) {
             );
         }
 
-        // Get AI response
-        const response = await AIService.chat(messages as AIMessage[], context);
+        // Get session for storeId
+        const { requireAuth } = await import('@/lib/auth/session');
+        const session = await requireAuth();
+        const storeId = session.user.storeId;
+
+        if (!storeId) {
+            return NextResponse.json(
+                { error: 'No store associated with this account' },
+                { status: 400 }
+            );
+        }
+
+        // Get AI response using SalesAgent
+        const { SalesAgent } = await import('@/lib/ai/sales-agent');
+        const response = await SalesAgent.handleMessage(storeId, messages, context);
 
         return NextResponse.json({
             success: true,

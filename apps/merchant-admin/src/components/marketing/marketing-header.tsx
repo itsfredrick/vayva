@@ -18,7 +18,7 @@ export function MarketingHeader() {
         <header className="sticky top-0 z-50 bg-white border-b border-[#E5E7EB]">
             <div className="max-w-7xl mx-auto px-4 lg:px-6 h-20 flex items-center justify-between">
                 {/* Logo */}
-                <Link href="/" className="flex items-center gap-2">
+                <Link href="/" className="flex items-center gap-2 relative z-10">
                     <Image
                         src="/vayva-logo.png"
                         alt="Vayva"
@@ -26,7 +26,7 @@ export function MarketingHeader() {
                         height={64}
                         className="object-contain"
                     />
-                    <span className="text-[#0F172A] font-semibold text-xl tracking-tight">Vayva</span>
+                    <span className="text-[#0F172A] font-bold text-2xl tracking-tight">Vayva</span>
                 </Link>
 
                 {/* Desktop Nav */}

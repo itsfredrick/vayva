@@ -1,11 +1,50 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { hash } from 'bcryptjs';
 import { prisma } from '@vayva/db';
+import { logger } from '@/lib/logger';
+import { checkRateLimit } from '@/lib/rate-limit';
+import { FlagService } from '@/lib/flags/flagService';
+import { RevenueService } from '@/lib/ai/revenue.service';
 
 export async function POST(request: NextRequest) {
+    let body: any;
     try {
-        const body = await request.json();
+        body = await request.json();
         const { email, password, firstName, lastName, businessName } = body;
+
+        // 0. Kill Switch & Rate Limit
+        const isEnabled = await FlagService.isEnabled('onboarding.enabled');
+        if (!isEnabled) {
+            return NextResponse.json({ error: 'Registration is temporarily disabled' }, { status: 503 });
+        }
+
+        const ip = request.headers.get('x-forwarded-for') || 'unknown';
+        await checkRateLimit(ip, 'register', 5, 3600);
+
+        // 0.1 AI Anti-Abuse Check
+        const ipHash = Buffer.from(ip).toString('base64'); // Simple hash for demo
+        const abuseCheck = await RevenueService.checkTrialEligibility({
+            ipHash,
+            fingerprintHash: body.deviceFingerprint || 'no-fingerprint',
+            emailDomain: email.split('@')[1]
+        });
+
+        if (!abuseCheck.allowed) {
+            return NextResponse.json({ error: abuseCheck.reason }, { status: 403 });
+        }
+
+        // Soft Launch Protection
+        const launchMode = process.env.LAUNCH_MODE || 'public';
+        if (launchMode === 'soft') {
+            const inviteToken = body.inviteToken;
+            if (!inviteToken) {
+                return NextResponse.json({
+                    error: 'Early Access Only',
+                    message: 'Vayva is currently in soft launch. Please join the waitlist or provide an invitation code.'
+                }, { status: 403 });
+            }
+            // In a real app, verify inviteToken in DB.
+        }
 
         // Validation
         if (!email || !password || !firstName || !lastName) {
@@ -115,6 +154,34 @@ export async function POST(request: NextRequest) {
                 },
             });
 
+            // Initialize AI Subscription
+            const starterPlan = await tx.aiPlan.findUnique({ where: { name: 'STARTER' } });
+            if (starterPlan) {
+                const now = new Date();
+                const expiry = new Date();
+                expiry.setDate(expiry.getDate() + 14); // 14-day trial
+
+                await tx.merchantAiSubscription.create({
+                    data: {
+                        storeId: store.id,
+                        planId: starterPlan.id,
+                        planKey: 'STARTER',
+                        periodStart: now,
+                        periodEnd: expiry,
+                        trialExpiresAt: expiry,
+                        status: 'TRIAL_ACTIVE'
+                    }
+                });
+
+                await tx.merchantAiProfile.create({
+                    data: {
+                        storeId: store.id,
+                        agentName: `${firstName}'s Assistant`,
+                        tonePreset: 'Friendly'
+                    }
+                });
+            }
+
             return newUser;
         });
 
@@ -126,18 +193,13 @@ export async function POST(request: NextRequest) {
             firstName
         );
 
-        // Log to console in development
-        if (process.env.NODE_ENV === 'development') {
-            console.log(`[DEV] Verification code for ${email}: ${otpCode}`);
-        }
-
         return NextResponse.json({
             message: 'Registration successful. Please check your email for verification code.',
             email: user.email,
         });
 
     } catch (error) {
-        console.error('Registration error:', error);
+        logger.error('Registration error', error, { email: body?.email });
         return NextResponse.json(
             { error: 'Registration failed' },
             { status: 500 }

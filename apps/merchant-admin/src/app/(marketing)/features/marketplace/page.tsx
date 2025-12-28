@@ -2,7 +2,7 @@
 
 import React from 'react';
 import Link from 'next/link';
-import { Button , Icon } from '@vayva/ui';
+import { Button, Icon } from '@vayva/ui';
 import { motion } from 'framer-motion';
 
 export default function MarketplaceFeaturePage() {
@@ -21,7 +21,7 @@ export default function MarketplaceFeaturePage() {
                         Don't just sell to your followers. List your products on Vayva Market and reach new customers instantly.
                     </p>
                     {/* @ts-ignore */}
-                    <Link href="/auth/signup">
+                    <Link href="/signup">
                         <Button className="bg-purple-600 hover:bg-purple-700 text-white font-bold h-12 px-8 rounded-full shadow-lg shadow-purple-600/20">
                             Join the Marketplace
                         </Button>

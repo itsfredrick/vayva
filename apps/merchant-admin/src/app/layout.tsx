@@ -1,5 +1,5 @@
 import { Space_Grotesk, Inter } from 'next/font/google';
-import type { Metadata } from 'next';
+import type { Metadata, Viewport } from 'next';
 import { AuthProvider } from '@/context/AuthContext';
 import './globals.css';
 
@@ -19,9 +19,32 @@ const inter = Inter({
     display: 'swap',
 });
 
+export const viewport: Viewport = {
+    themeColor: '#000000',
+    width: 'device-width',
+    initialScale: 1,
+    maximumScale: 1,
+    userScalable: false, // Prevents zoom for native feel, use with caution for a11y
+};
+
 export const metadata: Metadata = {
     title: 'Vayva - Seller Dashboard',
     description: 'Manage your Vayva store',
+    manifest: '/manifest.webmanifest',
+    appleWebApp: {
+        capable: true,
+        statusBarStyle: 'black-translucent',
+        title: 'Vayva',
+    },
+    icons: {
+        icon: [
+            { url: '/icons/icon-192.png', sizes: '192x192', type: 'image/png' },
+            { url: '/icons/icon-512.png', sizes: '512x512', type: 'image/png' },
+        ],
+        apple: [
+            { url: '/apple-touch-icon.png' },
+        ],
+    },
 };
 
 export default function RootLayout({

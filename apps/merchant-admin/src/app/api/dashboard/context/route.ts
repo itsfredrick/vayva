@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 import { getSessionUser } from '@/lib/session';
 import { prisma } from '@vayva/db';
+import { FEATURES } from '@/lib/env-validation';
 
 export async function GET(request: Request) {
     try {
@@ -13,24 +14,46 @@ export async function GET(request: Request) {
             );
         }
 
-        // Get store details
-        const store = await prisma.store.findUnique({
+        // Get store details with integrations
+        const store: any = await prisma.store.findUnique({
             where: { id: user.storeId },
-        });
+            include: {
+                paymentAccounts: true, // For Payment Status
+                waAgentSettings: true  // For WhatsApp Status
+            }
+        } as any);
 
         // Get wallet for KYC status
         const wallet = await prisma.wallet.findUnique({
             where: { storeId: user.storeId },
         });
 
+        // Determine Payment Status
+        let paymentStatus = 'NOT_CONFIGURED';
+        if (store?.paymentAccounts?.some((acc: any) => acc.isActive)) {
+            paymentStatus = 'CONNECTED';
+        }
+
+        // Determine WhatsApp Status
+        let whatsappStatus = 'NOT_CONFIGURED';
+        if (FEATURES.WHATSAPP_ENABLED) {
+            if (store?.waAgentSettings?.isActive) {
+                whatsappStatus = 'ACTIVE';
+            } else if (store?.waAgentSettings) {
+                whatsappStatus = 'ATTENTION'; // Exists but inactive
+            }
+        } else {
+            whatsappStatus = 'DISABLED'; // Feature flag off
+        }
+
         // Real context data from database
         const data = {
             firstName: user.firstName || 'User',
             initials: (user.firstName?.[0] || 'U') + (user.lastName?.[0] || ''),
-            businessType: 'RETAIL', // TODO: Add to store schema
+            businessType: store?.category || 'UNKNOWN',
             storeStatus: store?.onboardingStatus === 'COMPLETE' ? 'LIVE' : 'DRAFT',
-            paymentStatus: 'CONNECTED', // TODO: Check payment integration
-            whatsappStatus: 'ATTENTION', // TODO: Check WhatsApp integration
+            paymentStatus,
+            whatsappStatus,
             kycStatus: wallet?.kycStatus || 'NOT_STARTED',
         };
 

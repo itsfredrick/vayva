@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
-import { Button, Icon, cn } from '@vayva/ui';
+import { Button, Icon, cn, Input } from '@vayva/ui';
 import { useOnboarding } from '@/context/OnboardingContext';
 
 // Master Prompt Step 8: Delivery (Expanded)
@@ -25,13 +25,19 @@ export default function DeliveryPage() {
         { id: 'out', label: 'Out for delivery', visibleToCustomer: true },
         { id: 'delivered', label: 'Delivered', visibleToCustomer: true },
     ]);
+    const [pickupAddress, setPickupAddress] = useState('');
+    const [provider, setProvider] = useState('manual');
+    const [sla, setSla] = useState('24 hours');
 
     const handleContinue = async () => {
         await updateState({
             delivery: {
                 policy: policy,
                 stages: policy !== 'pickup_only' ? stages.map(s => s.label) : ['Ready for Pickup'],
-                proofRequired: proof
+                proofRequired: proof,
+                pickupAddress: policy !== 'required' ? pickupAddress : undefined,
+                defaultProvider: policy !== 'pickup_only' ? provider : undefined,
+                slaExpectation: policy !== 'pickup_only' ? sla : undefined
             }
         });
         await goToStep('team');
@@ -140,6 +146,48 @@ export default function DeliveryPage() {
                         </div>
                     </div>
                 )}
+
+                {/* Logistics Details */}
+                <div className="space-y-6 mt-8">
+                    {policy !== 'required' && (
+                        <div className="space-y-2">
+                            <label className="text-sm font-bold text-gray-900">Pickup Address</label>
+                            <input
+                                placeholder="e.g. 123 Main St, Ikeja"
+                                value={pickupAddress}
+                                onChange={(e) => setPickupAddress(e.target.value)}
+                                className="w-full p-3 rounded-xl border border-gray-200 outline-none focus:border-black transition-all"
+                            />
+                        </div>
+                    )}
+
+                    {policy !== 'pickup_only' && (
+                        <div className="grid grid-cols-2 gap-4">
+                            <div className="space-y-2">
+                                <label className="text-sm font-bold text-gray-900">Delivery Provider</label>
+                                <select
+                                    value={provider}
+                                    onChange={(e) => setProvider(e.target.value)}
+                                    className="w-full p-3 rounded-xl border border-gray-200 outline-none focus:border-black bg-white"
+                                >
+                                    <option value="manual">Self / Manual</option>
+                                    <option value="gokada">Gokada</option>
+                                    <option value="kwik">Kwik</option>
+                                    <option value="fe">Fez Delivery</option>
+                                </select>
+                            </div>
+                            <div className="space-y-2">
+                                <label className="text-sm font-bold text-gray-900">Est. Delivery SLA</label>
+                                <input
+                                    placeholder="e.g. 24 hours"
+                                    value={sla}
+                                    onChange={(e) => setSla(e.target.value)}
+                                    className="w-full p-3 rounded-xl border border-gray-200 outline-none focus:border-black transition-all"
+                                />
+                            </div>
+                        </div>
+                    )}
+                </div>
 
                 <div className="mt-8">
                     <Button

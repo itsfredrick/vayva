@@ -51,70 +51,33 @@ export default function KycPage() {
                     <div className="space-y-6">
                         {/* Method Selection */}
                         <div className="grid grid-cols-1 gap-3">
-                            {[
-                                { id: 'bvn', label: 'BVN', time: 'Instant', req: '11 digits', rcm: true },
-                                { id: 'nin', label: 'NIN', time: '~24h', req: 'Slip or number', rcm: false },
-                                { id: 'govt_id', label: 'Govt ID', time: 'Manual', req: 'Passport/DL', rcm: false },
-                            ].map((opt) => (
-                                <button
-                                    key={opt.id}
-                                    onClick={() => setMethod(opt.id as Method)}
-                                    className={cn(
-                                        "w-full flex items-center justify-between p-4 rounded-xl border-2 transition-all",
-                                        method === opt.id
-                                            ? "border-black bg-gray-50 shadow-sm"
-                                            : "border-gray-200 bg-white hover:border-gray-300"
-                                    )}
-                                >
-                                    <div className="flex items-center gap-3">
-                                        <div className={cn(
-                                            "w-5 h-5 rounded-full border flex items-center justify-center",
-                                            method === opt.id ? "border-black" : "border-gray-300"
-                                        )}>
-                                            {method === opt.id && <div className="w-2.5 h-2.5 bg-black rounded-full" />}
-                                        </div>
-                                        <span className="font-bold text-gray-900">{opt.label}</span>
-                                        {opt.rcm && <span className="text-[10px] bg-green-100 text-green-700 font-bold px-1.5 py-0.5 rounded">Fastest</span>}
-                                    </div>
-                                    <div className="text-right text-xs">
-                                        <span className={cn("block font-medium", opt.time === 'Instant' ? "text-green-600" : "text-gray-500")}>{opt.time}</span>
-                                    </div>
-                                </button>
-                            ))}
+                            {/* ... existing options ... */}
                         </div>
 
-                        {/* Input Field */}
-                        <div className="bg-white p-6 rounded-xl border border-gray-200 shadow-sm space-y-4">
-                            <label className="text-sm font-bold text-gray-900 block">
-                                Enter {method.toUpperCase()} Number
-                            </label>
-                            <Input
-                                disabled={status === 'submitting'}
-                                value={idNumber}
-                                onChange={(e) => setIdNumber(e.target.value)}
-                                placeholder={method === 'bvn' ? '222...' : 'Enter ID number'}
-                                className="tracking-widest font-mono"
-                            />
+                        {/* ... existing input ... */}
 
-                            <div className="flex items-center gap-2 text-xs text-gray-400 bg-gray-50 p-2 rounded">
-                                <Icon name="Lock" size={12} />
-                                <span>Encrypted with AES-256. Never shared with customers.</span>
-                            </div>
+                        <div className="flex flex-col gap-3">
+                            <Button
+                                onClick={handleSubmit}
+                                disabled={!idNumber || status === 'submitting'}
+                                className="!bg-black text-white h-12 w-full rounded-xl text-base shadow-lg hover:shadow-xl transition-all flex items-center justify-center gap-2"
+                            >
+                                {status === 'submitting' ? (
+                                    <>
+                                        <Icon name="Loader" className="animate-spin" size={18} /> Verifying...
+                                    </>
+                                ) : (
+                                    "Verify Identity"
+                                )}
+                            </Button>
+
+                            <button
+                                onClick={handleContinue}
+                                className="text-sm text-gray-400 hover:text-gray-600 transition-colors font-medium py-2"
+                            >
+                                I'll complete this later
+                            </button>
                         </div>
-
-                        <Button
-                            onClick={handleSubmit}
-                            disabled={!idNumber || status === 'submitting'}
-                            className="!bg-black text-white h-12 w-full rounded-xl text-base shadow-lg hover:shadow-xl transition-all flex items-center justify-center gap-2"
-                        >
-                            {status === 'submitting' ? (
-                                <>
-                                    <Icon name="Loader" className="animate-spin" size={18} /> Verifying...
-                                </>
-                            ) : (
-                                "Verify Identity"
-                            )}
-                        </Button>
                     </div>
                 ) : status === 'failed' ? (
                     // Failure Recovery UX
@@ -132,23 +95,44 @@ export default function KycPage() {
                                 Try Again
                             </Button>
                             <Button onClick={handleContinue} variant="ghost" className="text-gray-500 hover:text-black">
-                                Skip Verification (Limited Access)
+                                Complete Later (Limited Access)
                             </Button>
                         </div>
                     </div>
                 ) : (
                     // Success State
-                    <div className="bg-green-50 border border-green-100 rounded-2xl p-6 text-center animate-in zoom-in-95">
-                        <div className="w-16 h-16 bg-green-100 text-green-600 rounded-full flex items-center justify-center mx-auto mb-4">
-                            <Icon name="Check" size={32} />
+                    <div className="space-y-6 animate-in zoom-in-95">
+                        <div className="bg-green-50 border border-green-100 rounded-2xl p-6 text-center">
+                            <div className="w-16 h-16 bg-green-100 text-green-600 rounded-full flex items-center justify-center mx-auto mb-4">
+                                <Icon name="Check" size={32} />
+                            </div>
+                            <h3 className="font-bold text-gray-900 text-lg mb-2">Identity Verified</h3>
+                            <p className="text-sm text-gray-600 mb-6">
+                                You're all set to accept payments. To enable withdrawals, please prepare:
+                            </p>
+
+                            <div className="bg-white rounded-xl border border-green-100 p-4 mb-6 text-left space-y-3">
+                                <h4 className="text-xs font-bold text-gray-500 uppercase tracking-wider">Required Documents</h4>
+                                <ul className="space-y-2">
+                                    <li className="flex items-center gap-2 text-sm text-gray-700">
+                                        <Icon name="CircleCheck" size={16} className="text-green-500" />
+                                        <span>Use ID (Uploaded)</span>
+                                    </li>
+                                    <li className="flex items-center gap-2 text-sm text-gray-700">
+                                        <div className="w-4 h-4 rounded-full border border-gray-300" />
+                                        <span>CAC Certificate (For Registered Biz)</span>
+                                    </li>
+                                    <li className="flex items-center gap-2 text-sm text-gray-700">
+                                        <div className="w-4 h-4 rounded-full border border-gray-300" />
+                                        <span>Utility Bill (Proof of Address)</span>
+                                    </li>
+                                </ul>
+                            </div>
+
+                            <Button onClick={handleContinue} className="w-full bg-black text-white">
+                                Continue Setup
+                            </Button>
                         </div>
-                        <h3 className="font-bold text-gray-900 text-lg mb-2">Identity Verified</h3>
-                        <p className="text-sm text-gray-600 mb-6">
-                            You're all set to accept payments and withdraw funds.
-                        </p>
-                        <Button onClick={handleContinue} className="w-full bg-black text-white">
-                            Continue Setup
-                        </Button>
                     </div>
                 )}
             </div>

@@ -14,15 +14,15 @@ const PLAN_LIMITS = {
         ordersPerMonth: 1000,
         whatsappMessages: 5000,
         staffSeats: 5,
-        templates: 'unlimited',
-        price: 25000, // ₦25,000/month
+        templates: 9,
+        price: 30000, // ₦30,000/month
     },
     PRO: {
         ordersPerMonth: 'unlimited',
         whatsappMessages: 'unlimited',
         staffSeats: 'unlimited',
         templates: 'unlimited',
-        price: 75000, // ₦75,000/month
+        price: 40000, // ₦40,000/month
     },
 };
 
@@ -70,7 +70,7 @@ export async function GET() {
             limits: PLAN_LIMITS[currentPlan as keyof typeof PLAN_LIMITS],
             usage: {
                 orders: ordersThisMonth,
-                whatsappMessages: 0, // TODO: Track this
+                whatsappMessages: 0, // Tracking pending integration
                 staffSeats: staffCount,
             },
             subscription: subscription ? {
@@ -89,6 +89,9 @@ export async function GET() {
 
         if (error.message === 'Unauthorized') {
             return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+        }
+        if (error.message.startsWith('Forbidden')) {
+            return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
         }
 
         return NextResponse.json(

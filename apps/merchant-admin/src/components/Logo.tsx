@@ -9,9 +9,9 @@ interface LogoProps {
 }
 
 const sizeMap = {
-    sm: { width: 24, height: 24, text: 'text-base' },
-    md: { width: 32, height: 32, text: 'text-xl' },
-    lg: { width: 40, height: 40, text: 'text-2xl' },
+    sm: { width: 48, height: 48, text: 'text-lg' },
+    md: { width: 64, height: 64, text: 'text-2xl' },
+    lg: { width: 80, height: 80, text: 'text-3xl' },
 };
 
 export function Logo({ size = 'md', showText = true, href = '/', className = '' }: LogoProps) {
@@ -28,7 +28,7 @@ export function Logo({ size = 'md', showText = true, href = '/', className = '' 
                 priority
             />
             {showText && (
-                <span className={`font-bold tracking-tight ${text}`}>Vayva</span>
+                <span className={`font-bold tracking-tight text-[#0B0B0B] ${text}`}>Vayva</span>
             )}
         </div>
     );

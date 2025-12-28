@@ -3,20 +3,32 @@
 import React, { useState } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { Icon , Button } from '@vayva/ui';
+import { Icon, Button } from '@vayva/ui';
 
 interface StoreShellProps {
     children: React.ReactNode;
     storeName?: string;
     slug?: string;
+    plan?: 'STARTER' | 'GROWTH' | 'PRO';
 }
 
-export function StoreShell({ children, storeName = 'Vayva Store', slug = 'demo-store' }: StoreShellProps) {
+export function StoreShell({ children, storeName = 'Vayva Store', slug = 'demo-store', plan = 'STARTER' }: StoreShellProps) {
     const pathname = usePathname();
     const isCartOpen = false; // Mock state
 
     return (
-        <div className="min-h-screen bg-[#142210] text-white font-sans selection:bg-primary/30">
+        <div className="min-h-screen bg-[#142210] text-white font-sans selection:bg-primary/30 relative">
+
+            {/* Vayva Watermark (Starter Plan Only) */}
+            {plan === 'STARTER' && (
+                <div className="fixed bottom-6 right-6 z-[60] bg-white text-black px-4 py-2.5 rounded-full shadow-2xl flex items-center gap-2 border border-gray-100 animate-in fade-in slide-in-from-bottom-4 duration-500 hover:scale-105 transition-transform cursor-pointer">
+                    <svg width="18" height="18" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M10 10L50 90L90 10" stroke="#059669" strokeWidth="15" strokeLinecap="round" strokeLinejoin="round" />
+                        <path d="M10 10L35 60" stroke="#0B0B0B" strokeWidth="18" strokeLinecap="round" />
+                    </svg>
+                    <span className="text-[10px] font-black uppercase tracking-widest text-[#0B0B0B]">Powered by Vayva</span>
+                </div>
+            )}
 
             {/* Sticky Header */}
             <header className="sticky top-0 z-50 border-b border-white/5 bg-[#142210]/80 backdrop-blur-md">
@@ -24,7 +36,11 @@ export function StoreShell({ children, storeName = 'Vayva Store', slug = 'demo-s
 
                     {/* Left: Logo & Name */}
                     <Link href={`/store/${slug}`} className="flex items-center gap-2 shrink-0">
-                        <div className="w-8 h-8 rounded-lg bg-primary flex items-center justify-center text-black font-bold">V</div>
+                        <div className="w-8 h-8 rounded-lg bg-primary flex items-center justify-center text-black font-bold">
+                            <svg width="14" height="14" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M10 10L50 90L90 10" stroke="black" strokeWidth="20" strokeLinecap="round" strokeLinejoin="round" />
+                            </svg>
+                        </div>
                         <span className="font-bold text-lg tracking-tight hidden md:block">{storeName}</span>
                     </Link>
 
@@ -53,8 +69,6 @@ export function StoreShell({ children, storeName = 'Vayva Store', slug = 'demo-s
                         </Link>
                     </div>
                 </div>
-
-                {/* Mobile Search Bar (if triggered) - Optional for V1 */}
             </header>
 
             {/* Main Content */}
@@ -90,22 +104,27 @@ export function StoreShell({ children, storeName = 'Vayva Store', slug = 'demo-s
                     </div>
                     <div className="col-span-2 md:col-span-1">
                         <div className="flex items-center gap-2 mb-4">
-                            <div className="w-8 h-8 rounded-lg bg-primary flex items-center justify-center text-black font-bold">V</div>
+                            <div className="w-8 h-8 rounded-lg bg-primary flex items-center justify-center text-black font-bold">
+                                <svg width="14" height="14" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M10 10L50 90L90 10" stroke="#000" strokeWidth="20" strokeLinecap="round" strokeLinejoin="round" />
+                                </svg>
+                            </div>
                             <span className="font-bold text-lg">{storeName}</span>
                         </div>
                         <p className="text-xs text-text-secondary mb-4">
-                            Premium shopping experience powered by Vayva.
+                            Premium shopping experience powered by Vayva AI.
                             <br />Lagos, Nigeria.
                         </p>
-                        <div className="flex gap-4">
-                            <Icon name="Globe" className="text-white/30 hover:text-white cursor-pointer" />
-                            <Icon name="Camera" className="text-white/30 hover:text-white cursor-pointer" />
-                        </div>
                     </div>
                 </div>
                 <div className="max-w-7xl mx-auto px-4 pt-8 border-t border-white/5 text-center md:text-left flex flex-col md:flex-row justify-between items-center text-xs text-white/30">
                     <p>&copy; {new Date().getFullYear()} {storeName}. All rights reserved.</p>
-                    <p>Powered by Vayva</p>
+                    <div className="flex items-center gap-2">
+                        <svg width="12" height="12" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M10 10L50 90L90 10" stroke="white" strokeWidth="15" strokeLinecap="round" strokeLinejoin="round" strokeOpacity="0.4" />
+                        </svg>
+                        <p className="font-bold uppercase tracking-widest">Powered by Vayva</p>
+                    </div>
                 </div>
             </footer>
 

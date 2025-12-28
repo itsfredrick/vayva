@@ -2,7 +2,7 @@
 
 import React from 'react';
 import Link from 'next/link';
-import { Icon , Button } from '@vayva/ui';
+import { Icon, Button } from '@vayva/ui';
 import { motion } from 'framer-motion';
 
 export default function StoreBuilderPage() {
@@ -23,7 +23,7 @@ export default function StoreBuilderPage() {
                             Customize themes, manage pages, and connect your own domain in minutes.
                         </p>
                         <div className="flex gap-4">
-                            <Link href="/auth/signup">
+                            <Link href="/signup">
                                 <Button className="bg-blue-500 hover:bg-blue-600 text-white font-bold h-12 px-8 rounded-full shadow-lg shadow-blue-500/20">
                                     Start Building
                                 </Button>

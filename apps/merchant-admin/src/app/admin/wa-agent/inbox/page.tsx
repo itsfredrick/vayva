@@ -8,7 +8,8 @@ import { InboxSidebar, ChatWindow, AiActionsPanel } from '@/components/wa-agent/
 
 export default function WaInboxPage({ params }: { params: { threadId?: string } }) {
     const [threads, setThreads] = useState<WaThread[]>([]);
-    const [activeThread, setActiveThread] = useState<WaThread | undefined>(undefined);
+    // Allow undefined (loading) or null (not selected)
+    const [activeThread, setActiveThread] = useState<WaThread | undefined | null>(undefined);
     const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {

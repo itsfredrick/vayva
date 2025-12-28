@@ -1,5 +1,6 @@
-import { NextResponse } from 'next/server';
+
 import { Resend } from 'resend';
+import { wrapEmail, renderButton, BRAND_COLOR } from './layout';
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
@@ -16,53 +17,47 @@ export async function sendTeamInvite({
     role,
     inviterName,
 }: SendTeamInviteParams) {
+    const inviteUrl = `${process.env.NEXTAUTH_URL}/accept-invite?email=${encodeURIComponent(email)}`;
+
+    // Role Descriptions
+    let roleDesc = '';
+    switch (role) {
+        case 'OWNER': roleDesc = '<li>Full access to all features including billing and team management</li>'; break;
+        case 'ADMIN': roleDesc = '<li>Manage orders, products, and customers</li><li>View analytics and reports</li>'; break;
+        case 'SUPPORT': roleDesc = '<li>View orders and chat with customers</li><li>Process refunds</li>'; break;
+        default: roleDesc = '<li>Access to store management features</li>';
+    }
+
+    const contentHtml = `
+        <h1 style="margin:0 0 12px; font-size:22px; font-weight:600;">
+            You've been invited!
+        </h1>
+        <p style="margin:0 0 24px; font-size:16px; line-height:1.6; color:#444444;">
+            Hi there, <strong>${inviterName}</strong> has invited you to join the team at <strong>${storeName}</strong> on Vayva.
+        </p>
+        
+        <div style="background:#f9fafb; border:1px solid #eeeeee; border-radius:8px; padding:20px; margin:24px 0;">
+            <p style="margin:0 0 12px; font-weight:600; color:#111111; font-size:13px; text-transform:uppercase; letter-spacing:0.5px;">
+                Your Role: ${role}
+            </p>
+            <ul style="margin:0; padding-left:20px; color:#444444; font-size:14px; line-height:1.6;">
+                ${roleDesc}
+            </ul>
+        </div>
+
+        ${renderButton(inviteUrl, 'Accept Invitation')}
+
+        <p style="margin:24px 0 0; font-size:14px; color:#666666; text-align:center;">
+            If you didn't expect this invitation, you can safely ignore this email.
+        </p>
+    `;
+
     try {
         const { data, error } = await resend.emails.send({
-            from: 'Vayva <noreply@vayva.com>',
+            from: process.env.RESEND_FROM_EMAIL || 'Vayva <noreply@vayva.com>',
             to: [email],
             subject: `You've been invited to join ${storeName} on Vayva`,
-            html: `
-                <!DOCTYPE html>
-                <html>
-                <head>
-                    <style>
-                        body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; }
-                        .container { max-width: 600px; margin: 0 auto; padding: 20px; }
-                        .header { background: #22C55E; color: white; padding: 20px; text-align: center; }
-                        .content { padding: 30px 20px; background: #f9f9f9; }
-                        .button { display: inline-block; padding: 12px 30px; background: #22C55E; color: white; text-decoration: none; border-radius: 5px; margin: 20px 0; }
-                        .footer { text-align: center; padding: 20px; color: #666; font-size: 12px; }
-                    </style>
-                </head>
-                <body>
-                    <div class="container">
-                        <div class="header">
-                            <h1>Vayva</h1>
-                        </div>
-                        <div class="content">
-                            <h2>You've been invited!</h2>
-                            <p>Hi there,</p>
-                            <p><strong>${inviterName}</strong> has invited you to join <strong>${storeName}</strong> on Vayva as a <strong>${role}</strong>.</p>
-                            <p>As a ${role}, you'll be able to:</p>
-                            <ul>
-                                ${role === 'OWNER' ? '<li>Full access to all features including billing</li>' : ''}
-                                ${role === 'ADMIN' ? '<li>Manage orders, products, and customers</li><li>View analytics and reports</li>' : ''}
-                                ${role === 'SUPPORT' ? '<li>View orders and chat with customers</li><li>Provide customer support</li>' : ''}
-                            </ul>
-                            <p>Click the button below to accept the invitation and get started:</p>
-                            <a href="${process.env.NEXTAUTH_URL}/accept-invite?email=${encodeURIComponent(email)}" class="button">
-                                Accept Invitation
-                            </a>
-                            <p>If you didn't expect this invitation, you can safely ignore this email.</p>
-                        </div>
-                        <div class="footer">
-                            <p>© ${new Date().getFullYear()} Vayva. All rights reserved.</p>
-                            <p>Lagos, Nigeria</p>
-                        </div>
-                    </div>
-                </body>
-                </html>
-            `,
+            html: wrapEmail(contentHtml, 'Team Invitation'),
         });
 
         if (error) {

@@ -1,5 +1,4 @@
 import { api } from './api';
-
 import { apiClient } from '@vayva/api-client';
 
 export const AuthService = {
@@ -7,31 +6,9 @@ export const AuthService = {
         try {
             return await apiClient.auth.login(credentials);
         } catch (error: any) {
-            // Mock for dev if backend fails, but NOT in E2E
-            if (error.message === 'Request failed' && process.env.NODE_ENV !== 'test') {
-                console.warn('Backend not available, using mock login');
-                await new Promise(resolve => setTimeout(resolve, 500));
-                return {
-                    token: 'mock_token_' + Date.now(),
-                    user: {
-                        id: 'e2e_user_1',
-                        firstName: 'Demo',
-                        lastName: 'Merchant',
-                        email: credentials.email,
-                        role: 'OWNER',
-                        emailVerified: true,
-                        phoneVerified: false,
-                        createdAt: new Date().toISOString()
-                    },
-                    merchant: {
-                        merchantId: 'e2e_user_1',
-                        storeId: 'store_1',
-                        onboardingStatus: 'COMPLETE',
-                        onboardingLastStep: 'COMPLETE',
-                        onboardingUpdatedAt: new Date().toISOString(),
-                        plan: 'STARTER'
-                    }
-                };
+            // NO MOCK FALLBACK - Fail cleanly if backend unavailable
+            if (error.message === 'Request failed') {
+                throw new Error('Authentication service unavailable. Please try again later.');
             }
             throw error;
         }
@@ -45,9 +22,8 @@ export const AuthService = {
         try {
             return await apiClient.auth.register(payload);
         } catch (error: any) {
-            if (error.message === 'Request failed' && process.env.NODE_ENV !== 'test') {
-                await new Promise(resolve => setTimeout(resolve, 500));
-                return { message: 'Registration successful', email: payload.email };
+            if (error.message === 'Request failed') {
+                throw new Error('Registration service unavailable. Please try again later.');
             }
             throw error;
         }
@@ -57,11 +33,9 @@ export const AuthService = {
         try {
             return await apiClient.auth.verifyOtp(payload);
         } catch (error: any) {
-            // No bypass here, we use the API bypass in verify-otp/route.ts
             throw error;
         }
     },
-
 
     resendCode: async (payload: { email: string }) => {
         return await apiClient.auth.resendOtp(payload);
@@ -79,4 +53,3 @@ export const AuthService = {
         return await apiClient.auth.logout();
     }
 };
-

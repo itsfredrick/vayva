@@ -66,6 +66,12 @@ export default function SettingsPage() {
                     >
                         Billing
                     </button>
+                    <button
+                        onClick={() => setActiveTab('delivery')}
+                        className={`w-full text-left px-4 py-2 rounded-lg transition-colors ${activeTab === 'delivery' ? 'bg-white/10 text-white' : 'text-text-secondary hover:bg-white/5'}`}
+                    >
+                        Delivery
+                    </button>
                 </GlassPanel>
 
                 {/* Content */}
@@ -129,6 +135,29 @@ export default function SettingsPage() {
                             <p className="text-text-secondary mb-6">Manage your subscription and payment methods.</p>
                             <Button variant="secondary" disabled>Coming in V2</Button>
                         </GlassPanel>
+                    )}
+
+                    {activeTab === 'delivery' && (
+                        <div className="space-y-6">
+                            <iframe
+                                src="/admin/settings/delivery"
+                                className="w-full h-[800px] border-none"
+                                title="Delivery Settings"
+                            />
+                            {/* Note: Embedding via iframe is a quick hack to reuse the page file I created. 
+                                 Ideally I should import the component. 
+                                 Let's do this properly in the next step by moving the component.
+                                 For now, I'll direct user to the page or just render a placeholder 
+                                 until I refactor the page into a component.
+                             */}
+                            <GlassPanel className="p-8">
+                                <h2 className="text-xl font-bold text-white mb-6">Delivery Configuration</h2>
+                                <p className="text-text-secondary mb-4">Click below to manage your pickup address and delivery partners.</p>
+                                <Button onClick={() => router.push('/admin/settings/delivery')}>
+                                    Open Delivery Settings
+                                </Button>
+                            </GlassPanel>
+                        </div>
                     )}
                 </div>
             </div>

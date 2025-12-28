@@ -23,7 +23,7 @@ export const OnboardingService = {
             if (response.ok) {
                 const data = await response.json();
                 return {
-                    isComplete: data.onboardingStatus === 'COMPLETE',
+                    isComplete: ['COMPLETE', 'REQUIRED_COMPLETE', 'OPTIONAL_INCOMPLETE'].includes(data.onboardingStatus),
                     currentStep: data.currentStep || 'welcome',
                     lastUpdatedAt: new Date().toISOString(),
                     whatsappConnected: data.data?.whatsappConnected || false,

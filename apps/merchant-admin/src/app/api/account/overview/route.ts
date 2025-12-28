@@ -1,3 +1,4 @@
+
 import { NextResponse } from 'next/server';
 import { requireAuth } from '@/lib/auth/session';
 import { prisma } from '@vayva/db';
@@ -7,151 +8,148 @@ export async function GET() {
         const session = await requireAuth();
         const storeId = session.user.storeId;
 
-        // Fetch store data
-        const store = await prisma.store.findUnique({
-            where: { id: storeId },
-            include: {
-                wallet: true,
-                kycRecord: true,
-                whatsAppChannel: true,
-                merchantSubscription: true,
-            },
-        });
+        // Fetch all relevant account data in parallel for performance
+        const [
+            store,
+            bankAccount,
+            security,
+            domain,
+            recentLogs,
+            kyc,
+            subscription,
+            whatsapp,
+        ] = await Promise.all([
+            prisma.store.findUnique({
+                where: { id: storeId },
+                select: {
+                    name: true,
+                    slug: true,
+                    category: true,
+                    plan: true,
+                    isLive: true,
+                    onboardingCompleted: true,
+                    settings: true
+                }
+            }),
+            prisma.bankBeneficiary.findFirst({
+                where: { storeId, isDefault: true }
+            }),
+            prisma.securitySetting.findUnique({
+                where: { storeId }
+            }),
+            prisma.domainMapping.findFirst({
+                where: { storeId }
+            }),
+            prisma.auditLog.findMany({
+                where: { storeId },
+                take: 10,
+                orderBy: { createdAt: 'desc' }
+            }),
+            prisma.kycRecord.findUnique({
+                where: { storeId }
+            }),
+            prisma.merchantSubscription.findUnique({
+                where: { storeId }
+            }),
+            prisma.whatsappChannel.findUnique({
+                where: { storeId }
+            })
+        ]);
 
         if (!store) {
-            return NextResponse.json(
-                { error: 'Store not found' },
-                { status: 404 }
-            );
+            return NextResponse.json({ error: 'Store context not found' }, { status: 404 });
         }
 
-        // Fetch bank account
-        const bankAccount = await prisma.bankBeneficiary.findFirst({
-            where: {
-                storeId,
-                isDefault: true,
-            },
-        });
+        const lastAudit = recentLogs[0];
+        const storeSettings = (store.settings as any) || {};
 
-        // Build response matching the specification
-        const overview = {
-            // Subscription Status
+        const data = {
+            profile: {
+                name: store.name || 'Unset',
+                category: store.category || 'General',
+                plan: subscription?.planSlug || (store as any).plan || 'STARTER',
+                isLive: store.isLive || false,
+                onboardingCompleted: store.onboardingCompleted || false
+            },
             subscription: {
-                plan: store.plan || 'STARTER',
-                status: store.merchantSubscription?.status || 'ACTIVE',
-                renewalDate: store.merchantSubscription?.currentPeriodEnd || null,
-                canUpgrade: store.plan !== 'PRO',
+                plan: subscription?.planSlug || (store as any).plan || 'STARTER',
+                status: subscription?.status || 'ACTIVE',
+                renewalDate: subscription?.currentPeriodEnd || null,
+                canUpgrade: true
             },
-
-            // KYC Status
             kyc: {
-                status: store.kycRecord?.status || 'NOT_STARTED',
-                missingDocs: getMissingKYCDocs(store.kycRecord),
-                canWithdraw: store.kycRecord?.status === 'VERIFIED',
+                status: kyc?.status || 'NOT_STARTED',
+                lastAttempt: kyc?.updatedAt || null,
+                rejectionReason: null,
+                missingDocs: [],
+                canWithdraw: kyc?.status === 'VERIFIED'
             },
-
-            // Payment Readiness
-            payment: {
+            payouts: {
                 bankConnected: !!bankAccount,
-                payoutsEnabled: store.kycRecord?.status === 'VERIFIED' && !!bankAccount,
+                payoutsEnabled: !!bankAccount && kyc?.status === 'VERIFIED',
+                maskedAccount: bankAccount ? `******${bankAccount.accountNumber.slice(-4)}` : null,
+                bankName: bankAccount?.bankName || null
             },
-
-            // WhatsApp Agent Status
-            whatsapp: {
-                connected: !!store.whatsAppChannel,
-                automationEnabled: store.whatsAppChannel?.status === 'active' || false,
+            domains: {
+                customDomain: domain?.domain || null,
+                subdomain: `${store.slug || 'store'}.vayva.ng`,
+                status: domain?.status || 'PENDING',
+                sslEnabled: domain?.status === 'verified'
             },
-
-            // Alerts (blocking issues)
-            alerts: buildAlerts(store, bankAccount),
-
-            // Store info
-            store: {
-                id: store.id,
-                name: store.name,
-                category: store.category,
+            integrations: {
+                whatsapp: whatsapp ? 'CONNECTED' : 'DISCONNECTED',
+                payments: storeSettings.paystack?.connected ? 'CONNECTED' : 'DISCONNECTED',
+                delivery: storeSettings.delivery?.connected ? 'CONNECTED' : 'DISCONNECTED',
+                lastWebhook: lastAudit?.createdAt ? new Date(lastAudit.createdAt).toISOString() : new Date().toISOString()
             },
+            security: {
+                mfaEnabled: security?.mfaRequired || false,
+                recentLogins: recentLogs.filter((l: any) => l.action.toLowerCase().includes('login')).length,
+                apiKeyStatus: storeSettings.api?.active ? 'ACTIVE' : 'INACTIVE'
+            },
+            alerts: buildAlerts(store, bankAccount, kyc)
         };
 
-        return NextResponse.json(overview);
+        return NextResponse.json(data);
     } catch (error: any) {
-        console.error('Account overview error:', error);
-
-        if (error.message === 'Unauthorized') {
-            return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
-        }
-
-        return NextResponse.json(
-            { error: 'Failed to load account overview' },
-            { status: 500 }
-        );
+        console.error('Account overview fetch error:', error);
+        return NextResponse.json({ error: 'Failed to fetch account overview' }, { status: 500 });
     }
 }
 
-function getMissingKYCDocs(kycRecord: any): string[] {
-    if (!kycRecord) {
-        return ['BVN', 'ID', 'CAC'];
-    }
+function buildAlerts(store: any, bankAccount: any, kyc: any) {
+    const alerts = [];
 
-    const missing: string[] = [];
-
-    // Check for required documents based on business type
-    if (!kycRecord.bvnVerified) missing.push('BVN');
-    if (!kycRecord.idVerified) missing.push('ID');
-    if (kycRecord.businessType === 'REGISTERED' && !kycRecord.cacVerified) {
-        missing.push('CAC');
-    }
-
-    return missing;
-}
-
-function buildAlerts(store: any, bankAccount: any): Array<{
-    id: string;
-    severity: 'error' | 'warning' | 'info';
-    message: string;
-    action: string;
-}> {
-    const alerts: any[] = [];
-
-    // KYC incomplete
-    if (store.kycRecord?.status !== 'VERIFIED') {
+    if (!store.onboardingCompleted) {
         alerts.push({
-            id: 'kyc-incomplete',
+            id: 'onboarding',
             severity: 'warning',
-            message: 'KYC verification incomplete — payouts disabled',
-            action: '/admin/account/compliance-kyc',
+            message: 'Onboarding Incomplete. Finish setting up your store to go live.',
+            action: ACCOUNT_ROUTES_PLACEHOLDER.ONBOARDING
         });
     }
 
-    // No bank account
     if (!bankAccount) {
         alerts.push({
-            id: 'no-bank',
-            severity: 'warning',
-            message: 'Bank account required to withdraw funds',
-            action: '/admin/wallet',
-        });
-    }
-
-    // Subscription expired
-    if (store.merchantSubscription?.status === 'EXPIRED') {
-        alerts.push({
-            id: 'subscription-expired',
+            id: 'payouts',
             severity: 'error',
-            message: 'Subscription expired — upgrade to continue',
-            action: '/admin/account/subscription',
+            message: 'Payouts Disabled. Add a bank account to receive your earnings.',
+            action: 'Update Payouts'
         });
     }
 
-    // WhatsApp not connected
-    if (!store.whatsAppChannel) {
+    if (!kyc || kyc.status !== 'VERIFIED') {
         alerts.push({
-            id: 'whatsapp-disconnected',
+            id: 'kyc',
             severity: 'info',
-            message: 'Connect WhatsApp to enable automated messaging',
-            action: '/admin/account/connected-services',
+            message: 'Identity Verification. Verify your identity to increase withdrawal limits.',
+            action: 'Verify Now'
         });
     }
 
     return alerts;
 }
+
+const ACCOUNT_ROUTES_PLACEHOLDER = {
+    ONBOARDING: '/onboarding/resume',
+};

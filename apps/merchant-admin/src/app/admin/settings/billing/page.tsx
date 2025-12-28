@@ -1,146 +1,137 @@
 'use client';
 
-import React from 'react';
-import Link from 'next/link';
-import { AppShell , GlassPanel , Button , Icon } from '@vayva/ui';
+import React, { useState, useEffect } from 'react';
+import { useAuth } from '@/context/AuthContext';
+import { SubscriptionCard } from '@/components/billing/SubscriptionCard';
+import { PaymentMethodCard } from '@/components/billing/PaymentMethodCard';
+import { PlanSelectionModal } from '@/components/billing/PlanSelectionModal';
+import { toast } from 'sonner';
 
-function UsageCard({ title, used, limit, resetDate, link }: { title: string, used: number, limit: number, resetDate: string, link: string }) {
-    const percentage = Math.min((used / limit) * 100, 100);
-    const isWarning = percentage > 80;
-    const isCritical = percentage >= 100;
+// Fallback GlassCard
+const GlassCard = ({ children, className }: { children: React.ReactNode, className?: string }) => (
+    <div className={`bg-white/80 backdrop-blur-md border border-white/20 rounded-2xl shadow-sm ${className}`}>
+        {children}
+    </div>
+);
+
+export default function BillingSettingsPage() {
+    const { user } = useAuth();
+    const [loading, setLoading] = useState(true);
+    const [subscription, setSubscription] = useState<any>(null);
+    const [showUpgradeModal, setShowUpgradeModal] = useState(false);
+    const [processing, setProcessing] = useState(false);
+    const [error, setError] = useState<string | null>(null);
+
+    useEffect(() => {
+        const fetchBilling = async () => {
+            try {
+                const res = await fetch('/api/account/billing');
+                if (!res.ok) throw new Error('Failed to load billing details');
+                const data = await res.json();
+                setSubscription(data.subscription);
+            } catch (err: any) {
+                setError(err.message);
+                toast.error('Failed to load subscription details');
+            } finally {
+                setLoading(false);
+            }
+        };
+        fetchBilling();
+    }, []);
+
+    const handleSelectPlan = async (plan: string) => {
+        setProcessing(true);
+        try {
+            const res = await fetch('/api/billing/subscription', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ newPlan: plan })
+            });
+
+            const data = await res.json();
+
+            if (!res.ok) {
+                throw new Error(data.error || 'Upgrade failed');
+            }
+
+            if (data.paymentUrl) {
+                window.location.href = data.paymentUrl;
+            } else if (data.success) {
+                toast.success(data.message || 'Plan updated successfully');
+                setShowUpgradeModal(false);
+                // Refresh
+                const refreshRes = await fetch('/api/account/billing');
+                if (refreshRes.ok) {
+                    const refreshData = await refreshRes.json();
+                    setSubscription(refreshData.subscription);
+                }
+            }
+        } catch (err: any) {
+            toast.error(err.message);
+        } finally {
+            setProcessing(false);
+        }
+    };
+
+    if (loading) {
+        return (
+            <div className="space-y-6 max-w-4xl animate-pulse">
+                <div className="h-8 w-48 bg-gray-200 rounded mb-4" />
+                <div className="h-64 bg-gray-100 rounded-2xl" />
+            </div>
+        );
+    }
+
+    if (error) {
+        return (
+            <div className="p-6 bg-red-50 text-red-600 rounded-lg">
+                <h3 className="font-bold">Error Loading Billing</h3>
+                <p>{error}</p>
+                <button
+                    onClick={() => window.location.reload()}
+                    className="mt-4 px-4 py-2 bg-white border border-red-200 rounded hover:bg-red-50"
+                >
+                    Retry
+                </button>
+            </div>
+        );
+    }
 
     return (
-        <GlassPanel className="p-6 flex flex-col justify-between">
-            <div className="flex justify-between items-start mb-4">
-                <h3 className="font-bold text-white text-sm">{title}</h3>
-                <Link href={link} className="text-xs text-primary hover:underline">Manage</Link>
-            </div>
+        <div className="space-y-6 max-w-4xl animate-in fade-in duration-500">
             <div>
-                <div className="flex justify-between items-end mb-2">
-                    <div className="text-2xl font-bold text-white">
-                        {used.toLocaleString()} <span className="text-sm text-text-secondary font-normal">/ {limit.toLocaleString()}</span>
-                    </div>
-                    {isCritical && <span className="text-[10px] bg-state-danger/20 text-state-danger px-1.5 py-0.5 rounded font-bold uppercase">Limit Reached</span>}
-                </div>
-                <div className="w-full h-1.5 bg-white/10 rounded-full overflow-hidden mb-2">
-                    <div
-                        className={`h-full rounded-full transition-all duration-500 ${isCritical ? 'bg-state-danger' : isWarning ? 'bg-state-warning' : 'bg-primary'}`}
-                        style={{ width: `${percentage}%` }}
-                    />
-                </div>
-                <div className="text-[10px] text-text-secondary">Resets on {resetDate}</div>
+                <h1 className="text-2xl font-bold tracking-tight">Subscription & Billing</h1>
+                <p className="text-muted-foreground">Manage your plan, payment methods, and invoices.</p>
             </div>
-            {isWarning && (
-                <Link href="/admin/settings/billing/plans">
-                    <Button size="sm" variant="outline" className="w-full mt-4 text-xs">Upgrade Plan</Button>
-                </Link>
-            )}
-        </GlassPanel>
-    );
-}
 
-export default function BillingDashboardPage() {
-    return (
-        <AppShell sidebar={<></>} header={<></>}>
-            <div className="max-w-6xl mx-auto space-y-8">
-                <div className="mb-6">
-                    <h1 className="text-2xl font-bold text-white">Billing & Subscription</h1>
-                    <p className="text-text-secondary">Manage your plan and payment methods.</p>
-                </div>
+            <SubscriptionCard
+                plan={subscription?.plan}
+                status={subscription?.status}
+                amount={subscription?.amount || 0}
+                interval={subscription?.interval || 'monthly'}
+                nextBillingDate={subscription?.renewalDate}
+                onUpgrade={() => setShowUpgradeModal(true)}
+            />
 
-                {/* Top Row: Current Plan & Payment */}
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <GlassPanel className="p-6 relative overflow-hidden">
-                        <div className="absolute top-0 right-0 p-4 opacity-50"><Icon name={"Ticket" as any} size={64} className="text-white/5" /></div>
-                        <div className="relative z-10">
-                            <div className="flex items-center gap-3 mb-2">
-                                <h2 className="text-lg font-bold text-white">Current Plan</h2>
-                                <span className="px-2 py-0.5 rounded bg-state-success/10 text-state-success text-[10px] font-bold uppercase tracking-wider border border-state-success/20">Active</span>
-                            </div>
-                            <div className="text-3xl font-bold text-white mb-1">Growth Tier</div>
-                            <div className="text-sm text-text-secondary mb-6">₦ 15,000 / month • Renews Feb 14, 2026</div>
-                            <div className="flex gap-3">
-                                <Link href="/admin/settings/billing/plans">
-                                    <Button className="bg-white text-black hover:bg-white/90 border-none">Change Plan</Button>
-                                </Link>
-                                <Button variant="ghost" className="text-state-warning hover:bg-state-warning/10 hover:text-state-warning">Cancel</Button>
-                            </div>
-                        </div>
-                    </GlassPanel>
+            <PaymentMethodCard
+                last4={subscription?.paymentMethod?.last4}
+                expiry={subscription?.paymentMethod?.expiry}
+                onAdd={() => setShowUpgradeModal(true)}
+                onRemove={() => { }} // Not implemented yet, explicitly empty
+            />
 
-                    <GlassPanel className="p-6 relative overflow-hidden">
-                        <div className="absolute top-0 right-0 p-4 opacity-50"><Icon name={"CreditCard" as any} size={64} className="text-white/5" /></div>
-                        <div className="relative z-10">
-                            <h2 className="text-lg font-bold text-white mb-4">Payment Method</h2>
-                            <div className="flex items-center gap-4 mb-6">
-                                <div className="w-12 h-8 rounded bg-white/10 flex items-center justify-center">
-                                    <Icon name={"CreditCard" as any} />
-                                </div>
-                                <div>
-                                    <div className="font-bold text-white">Mastercard •••• 4242</div>
-                                    <div className="text-xs text-text-secondary">Expires 12/28</div>
-                                </div>
-                            </div>
-                            <Button variant="outline" size="sm">Update Payment Method</Button>
-                        </div>
-                    </GlassPanel>
-                </div>
+            <GlassCard className="p-6 opacity-60">
+                <h3 className="text-lg font-semibold mb-4">Billing History</h3>
+                <p className="text-sm text-gray-500">No invoices generated yet.</p>
+            </GlassCard>
 
-                {/* Usage & Limits */}
-                <div>
-                    <h2 className="text-lg font-bold text-white mb-4">Usage & Limits</h2>
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                        <UsageCard title="Products" used={124} limit={500} resetDate="N/A" link="/admin/products" />
-                        <UsageCard title="Staff Members" used={3} limit={5} resetDate="N/A" link="/admin/settings/staff" />
-                        <UsageCard title="WhatsApp Conversations" used={1420} limit={1500} resetDate="Feb 1, 2026" link="/admin/whatsapp" />
-                    </div>
-                </div>
-
-                {/* Recent Invoices Snippet */}
-                <div>
-                    <div className="flex items-center justify-between mb-4">
-                        <h2 className="text-lg font-bold text-white">Recent Invoices</h2>
-                        <Link href="/admin/settings/billing/invoices" className="text-sm text-primary hover:underline font-bold">View All</Link>
-                    </div>
-                    <GlassPanel className="p-0 overflow-hidden">
-                        <div className="overflow-x-auto">
-                            <table className="w-full text-left text-sm">
-                                <thead className="bg-white/5 text-text-secondary uppercase text-xs font-bold border-b border-white/5">
-                                    <tr>
-                                        <th className="p-4">Invoice ID</th>
-                                        <th className="p-4">Date</th>
-                                        <th className="p-4">Amount</th>
-                                        <th className="p-4">Status</th>
-                                        <th className="p-4"></th>
-                                    </tr>
-                                </thead>
-                                <tbody className="divide-y divide-white/5">
-                                    {[
-                                        { id: 'INV-2024-001', date: 'Jan 14, 2026', amount: '₦ 15,000', status: 'Paid' },
-                                        { id: 'INV-2023-128', date: 'Dec 14, 2025', amount: '₦ 15,000', status: 'Paid' },
-                                        { id: 'INV-2023-115', date: 'Nov 14, 2025', amount: '₦ 15,000', status: 'Paid' },
-                                    ].map((inv) => (
-                                        <tr key={inv.id} className="hover:bg-white/5 transition-colors">
-                                            <td className="p-4 font-mono text-text-secondary">{inv.id}</td>
-                                            <td className="p-4 text-white">{inv.date}</td>
-                                            <td className="p-4 text-white font-bold">{inv.amount}</td>
-                                            <td className="p-4">
-                                                <span className="px-2 py-0.5 rounded bg-state-success/10 text-state-success text-[10px] font-bold uppercase tracking-wider">
-                                                    {inv.status}
-                                                </span>
-                                            </td>
-                                            <td className="p-4 text-right">
-                                                <Button variant="ghost" size="sm" className="h-8"><Icon name={"Download" as any} size={16} /></Button>
-                                            </td>
-                                        </tr>
-                                    ))}
-                                </tbody>
-                            </table>
-                        </div>
-                    </GlassPanel>
-                </div>
-
-            </div>
-        </AppShell>
+            <PlanSelectionModal
+                isOpen={showUpgradeModal}
+                onClose={() => setShowUpgradeModal(false)}
+                onSelectPlan={handleSelectPlan}
+                currentPlan={subscription?.plan}
+                processing={processing}
+            />
+        </div>
     );
 }

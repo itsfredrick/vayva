@@ -1,10 +1,22 @@
 export interface StoreTemplate {
     id: string;
+    slug: string;
     name: string;
     description: string;
-    thumbnailUrl?: string; // Placeholder for now
-    category: 'minimal' | 'catalog' | 'editorial' | 'enterprise';
-    isPremium: boolean; // For plan gating
+
+    // Normalized Preview Fields (Never Null)
+    previewImageDesktop: string;
+    previewImageMobile: string;
+    previewRoute: string;
+
+    features: string[];
+    isFree: boolean;
+    status: string;
+
+    // Legacy/Transitional
+    category?: string;
+    thumbnailUrl?: string;
+    isPremium?: boolean;
     isLegacy?: boolean;
 }
 

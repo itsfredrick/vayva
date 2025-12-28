@@ -3,6 +3,8 @@
 
 import React, { useState, useEffect } from 'react';
 import { ControlCenterState, SubscriptionPlan } from '@vayva/shared';
+import { Template } from '@/types/templates';
+import { getNormalizedTemplates } from '@/lib/templates-registry';
 import { ControlCenterHeader } from '@/components/control-center/ControlCenterHeader';
 import { TemplateGallery } from '@/components/control-center/TemplateGallery';
 import { DomainSettings } from '@/components/control-center/DomainSettings';
@@ -10,17 +12,21 @@ import { SalesChannels } from '@/components/control-center/SalesChannels';
 import { IntegrationsList } from '@/components/control-center/IntegrationsList';
 import { UsageAndSystem } from '@/components/control-center/UsageAndSystem';
 
+// Local override to use canonical Template type
+interface LocalControlCenterState extends Omit<ControlCenterState, 'templates'> {
+    templates: Template[];
+}
+
 export default function ControlCenterPage() {
-    const [state, setState] = useState<ControlCenterState | null>(null);
+    const [state, setState] = useState<LocalControlCenterState | null>(null);
     const [loading, setLoading] = useState(true);
     // Mock user plan - in real app would come from useAuth/useMerchant
-    const currentPlan = SubscriptionPlan.GROWTH;
+    const currentPlan: 'free' | 'growth' | 'pro' = 'growth';
 
     useEffect(() => {
         const fetchAll = async () => {
             try {
-                const [templates, domains, integrations, channels, usage] = await Promise.all([
-                    fetch('/api/control-center/templates').then(r => r.json()),
+                const [domains, integrations, channels, usage] = await Promise.all([
                     fetch('/api/control-center/domains').then(r => r.json()),
                     fetch('/api/control-center/integrations').then(r => r.json()),
                     fetch('/api/control-center/channels').then(r => r.json()),
@@ -43,7 +49,41 @@ export default function ControlCenterPage() {
                 }
 
                 setState({
-                    templates,
+                    templates: getNormalizedTemplates().map((t: any) => ({
+                        id: t.id,
+                        name: t.name,
+                        slug: t.slug,
+                        category: t.category,
+                        tier: t.requiredPlan,
+                        description: t.description,
+                        previewImageDesktop: t.previewImageDesktop,
+                        previewImageMobile: t.previewImageMobile,
+                        previewRoute: t.previewRoute,
+                        // Legacy/Compat
+                        previewImages: {
+                            cover: t.previewImageDesktop,
+                            desktop: t.previewImageDesktop,
+                            mobile: t.previewImageMobile
+                        },
+                        features: t.compare?.bullets || [],
+                        tags: t.compare?.bestFor || [],
+                        isActive: t.status === 'implemented',
+                        isLocked: false,
+                        author: "Vayva",
+                        currentVersion: "1.0.0",
+                        versions: [],
+                        installCount: 100,
+                        rating: 5,
+                        price: 0,
+                        currency: "NGN",
+                        isPurchased: true,
+                        revenueShare: 0,
+                        demand: 'popular',
+                        setupTime: "5 mins",
+                        stockModel: 'inventory',
+                        checkoutMode: 'website',
+                        modules: { walletSettlement: true }
+                    }) as any),
                     domains,
                     integrations,
                     channels,
@@ -68,10 +108,10 @@ export default function ControlCenterPage() {
         fetchAll();
     }, []);
 
-    const handleUseTemplate = async (id: string) => {
+    const handleUseTemplate = async (template: Template) => {
         // Optimistic update or reload
         // In real app, call API
-        console.log("Use template", id);
+        console.log("Use template", template.id);
     };
 
     const handleAddDomain = () => {

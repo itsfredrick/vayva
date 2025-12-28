@@ -59,13 +59,13 @@ export async function GET(request: NextRequest) {
                 merchantId: user.id,
                 storeId: store.id,
                 storeName: store.name,
-                businessType: 'RETAIL', // TODO: Get from store metadata
-                onboardingStatus: onboarding?.status || 'IN_PROGRESS',
+                businessType: store.category || 'UNKNOWN',
+                onboardingStatus: onboarding?.status || 'UNKNOWN',
                 onboardingLastStep: store.onboardingLastStep || 'welcome',
                 onboardingCompleted: store.onboardingCompleted || false,
                 onboardingUpdatedAt: onboarding?.updatedAt || new Date(),
                 onboardingData: onboarding?.data || {},
-                plan: 'STARTER', // TODO: Get from subscription
+                plan: store.plan || 'UNKNOWN',
             },
         });
 

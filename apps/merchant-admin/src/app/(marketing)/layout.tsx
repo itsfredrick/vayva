@@ -3,11 +3,13 @@ import { MarketingHeader } from '@/components/marketing/marketing-header';
 import { MarketingFooter } from '@/components/marketing/marketing-footer';
 import { MarketingShell } from '@/components/marketing/marketing-shell';
 import { CookieBanner } from '@/components/marketing/CookieBanner';
+import { SchemaOrg } from '@/components/seo/SchemaOrg';
+import { BRAND } from '@/config/brand';
+import { ParticleBackground } from '@/components/marketing/ParticleBackground';
 
-export const metadata: Metadata = {
-    title: 'Vayva | Sell online in Nigeria',
-    description: 'The all-in-one commerce platform for African merchants. Build your store, sell on WhatsApp, and manage deliveries.',
-};
+import { metadataFor } from '@/lib/seo/seo-engine';
+
+export const metadata = metadataFor('/');
 
 export default function MarketingLayout({
     children,
@@ -16,8 +18,11 @@ export default function MarketingLayout({
 }) {
     return (
         <MarketingShell>
+            <ParticleBackground />
+            <SchemaOrg type="Organization" />
+            <SchemaOrg type="WebSite" />
             <MarketingHeader />
-            <main className="pt-20">
+            <main>
                 {children}
             </main>
             <MarketingFooter />

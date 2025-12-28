@@ -55,6 +55,16 @@ export default function BillingPage() {
                 </div>
             )}
 
+            <div className="bg-gray-50 border border-gray-100 rounded-2xl p-6 mb-12 flex items-start gap-4">
+                <div className="w-10 h-10 rounded-full bg-white flex items-center justify-center shadow-sm text-gray-400">
+                    <Icon name={"Info" as any} size={20} />
+                </div>
+                <div>
+                    <h4 className="font-bold text-gray-900">Transaction Disclosure</h4>
+                    <p className="text-sm text-gray-500">A 5% transaction fee is applied to every withdrawal from your Vayva wallet to your bank account, regardless of your plan tier.</p>
+                </div>
+            </div>
+
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
                 {[PLANS.growth, PLANS.pro].map(plan => {
                     const isCurrent = currentPlan === plan.slug;

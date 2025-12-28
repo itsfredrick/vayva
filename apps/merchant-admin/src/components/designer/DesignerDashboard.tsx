@@ -86,7 +86,11 @@ export const DesignerDashboard = () => {
                         <div key={tpl.id} className="bg-white border border-gray-200 rounded-xl p-6 flex flex-col md:flex-row items-start md:items-center justify-between gap-6 hover:shadow-md transition-shadow">
                             <div className="flex items-center gap-6">
                                 <div className="w-24 h-24 bg-gray-100 rounded-lg overflow-hidden shrink-0">
-                                    <img src={tpl.previewImages.cover} alt={tpl.name} className="w-full h-full object-cover" />
+                                    <img
+                                        src={(tpl as any).previewImageDesktop || (tpl as any).previewImages?.cover || '/images/template-previews/default-desktop.png'}
+                                        alt={tpl.name}
+                                        className="w-full h-full object-cover"
+                                    />
                                 </div>
                                 <div>
                                     <h3 className="font-bold text-lg text-gray-900">{tpl.name}</h3>

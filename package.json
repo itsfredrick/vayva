@@ -40,7 +40,8 @@
     "prisma": "5.7.0",
     "tailwindcss": "^4.1.18",
     "turbo": "^1.10.0",
-    "typescript": "^5.0.0"
+    "typescript": "^5.0.0",
+    "vitest": "^1.0.4"
   },
   "engines": {
     "node": "20.x"

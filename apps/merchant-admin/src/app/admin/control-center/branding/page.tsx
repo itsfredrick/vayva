@@ -29,7 +29,7 @@ export default function BrandingPage() {
         const load = async () => {
             const c = await ControlCenterService.getStoreConfig();
             setConfig(c);
-            setBranding(c.branding);
+            if (c) setBranding(c.branding);
         };
         load();
     }, []);

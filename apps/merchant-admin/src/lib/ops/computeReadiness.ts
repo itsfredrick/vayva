@@ -6,17 +6,14 @@ export async function computeMerchantReadiness(storeId: string): Promise<OpsRead
     const store = await prisma.store.findUnique({
         where: { id: storeId },
         include: {
-            merchantPolicies: true, // Use correct relation
-            // deliveryZones: true, // Removed as not in schema
-            // user: { select: { email: true, phone: true } } // Removed as user relation doesn't exist
+            merchantPolicies: true,
+            paymentAccounts: true
         }
     });
 
     if (!store) throw new Error('Store not found');
 
     const issues: ReadinessIssue[] = [];
-
-    // ... lines 19-44 ...
 
     // 4. Policies
     const requiredPolicies = ['terms', 'privacy', 'returns', 'refunds', 'shipping'];
@@ -30,35 +27,41 @@ export async function computeMerchantReadiness(storeId: string): Promise<OpsRead
             description: `Missing: ${missingPolicies.join(', ')}`,
             severity: 'blocker',
             fixable: true,
-            actionUrl: '/dashboard/settings/policies'
+            actionUrl: '/admin/control-center/policies'
         });
     }
 
-    // 5. Delivery
-    // deliveryZones check removed as property missing
-    /* if ((store as any).deliveryZones?.length === 0) {
-        issues.push({ code: 'missing_delivery', title: 'No Delivery Methods', description: 'Set up at least one delivery zone or method.', severity: 'blocker', actionUrl: '/dashboard/settings/delivery' });
-    } */
+    // 6. Payments
+    const paymentConnected = store.paymentAccounts?.some((acc: any) => acc.isActive) ?? false;
 
-    // 6. Payments (Warning)
-    const paymentConnected = false; // TODO: Check actual relation
     if (!paymentConnected) {
-        issues.push({ code: 'payment_disconnected', title: 'Payments not connected', description: 'You cannot accept online payments yet.', severity: 'warning', actionUrl: '/dashboard/settings/payments' });
+        issues.push({
+            code: 'payment_disconnected',
+            title: 'Payments not connected',
+            description: 'You cannot accept online payments yet.',
+            severity: 'warning',
+            actionUrl: '/admin/settings/payments'
+        });
     }
 
-    // summary
+    // Summary calculation
     const blockers = issues.filter(i => i.severity === 'blocker');
     const level: ReadinessLevel = blockers.length > 0 ? 'blocked' : issues.length > 0 ? 'warning' : 'ready';
+
+    const hasPlan = !!store.plan;
+
+    // Strict verification: if we cannot prove delivery is set up, it's UNKNOWN (false/null)
+    const deliveryStatus = false;
 
     return {
         level,
         issues,
         summary: {
             identity: !!store.slug,
-            plan: true,
+            plan: hasPlan,
             template: !issues.some(i => i.code === 'missing_template'),
             policies: missingPolicies.length === 0,
-            delivery: true, // skipped check
+            delivery: deliveryStatus,
             payments: paymentConnected
         }
     };

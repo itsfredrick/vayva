@@ -1,6 +1,7 @@
-
+import { put, del, head } from '@vercel/blob';
 import { TenantContext } from '../auth/tenantContext';
 import { SecurityUtils } from '../security/tokens';
+import { FEATURES } from '../env-validation';
 
 export class StorageService {
 
@@ -19,17 +20,84 @@ export class StorageService {
     }
 
     /**
-     * Validates access before generating a signed URL.
+     * Upload a file to Vercel Blob storage
      */
-    static async generateSignedUrl(ctx: TenantContext, key: string) {
+    static async upload(ctx: TenantContext, filename: string, file: File | Buffer): Promise<string> {
+        if (!FEATURES.STORAGE_ENABLED) {
+            throw new Error('Storage feature is not configured');
+        }
+
+        const key = this.getNamespacedKey(ctx, filename);
+
+        try {
+            const blob = await put(key, file, {
+                access: 'public',
+                addRandomSuffix: false,
+            });
+
+            return blob.url;
+        } catch (error) {
+            console.error('Storage upload failed:', error);
+            throw new Error('Failed to upload file');
+        }
+    }
+
+    /**
+     * Generate a signed URL for secure file access
+     * For Vercel Blob, public URLs are already accessible
+     * This validates access before returning the URL
+     */
+    static async generateSignedUrl(ctx: TenantContext, key: string): Promise<string> {
+        if (!FEATURES.STORAGE_ENABLED) {
+            throw new Error('Storage feature is not configured');
+        }
+
         // 1. Enforce Prefix Check
         const expectedPrefix = `merchants/${ctx.merchantId}`;
         if (!key.startsWith(expectedPrefix)) {
             throw new Error(`Access Denied: Key ${key} does not belong to merchant ${ctx.merchantId}`);
         }
 
-        // 2. Mock Signed URL Generation (e.g., S3 Presigned)
-        // const url = await s3.getSignedUrl(...)
-        return `https://storage.vayva.com/${key}?token=mock_signed_token`;
+        // 2. Verify file exists
+        try {
+            await head(key);
+        } catch (error) {
+            throw new Error('File not found');
+        }
+
+        // 3. For Vercel Blob, construct the public URL
+        // Format: https://[random].public.blob.vercel-storage.com/[key]
+        const blobUrl = `https://${process.env.BLOB_READ_WRITE_TOKEN?.split('_')[1]}.public.blob.vercel-storage.com/${key}`;
+
+        return blobUrl;
+    }
+
+    /**
+     * Delete a file from storage
+     */
+    static async delete(ctx: TenantContext, key: string): Promise<void> {
+        if (!FEATURES.STORAGE_ENABLED) {
+            throw new Error('Storage feature is not configured');
+        }
+
+        // Enforce Prefix Check
+        const expectedPrefix = `merchants/${ctx.merchantId}`;
+        if (!key.startsWith(expectedPrefix)) {
+            throw new Error(`Access Denied: Key ${key} does not belong to merchant ${ctx.merchantId}`);
+        }
+
+        try {
+            await del(key);
+        } catch (error) {
+            console.error('Storage delete failed:', error);
+            throw new Error('Failed to delete file');
+        }
+    }
+
+    /**
+     * Check if storage is configured
+     */
+    static isConfigured(): boolean {
+        return FEATURES.STORAGE_ENABLED;
     }
 }

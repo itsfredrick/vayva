@@ -76,6 +76,7 @@ export const OrdersController = {
         const order = await prisma.order.create({
             data: {
                 refCode: `ORD-${Date.now()}`,
+                orderNumber: `#${Math.floor(1000 + Math.random() * 9000)}-${Date.now().toString().slice(-4)}`, // Simple unique calc
                 storeId,
                 customerId,
                 customerPhone: customer?.phone,
@@ -114,6 +115,29 @@ export const OrdersController = {
             },
             include: { OrderEvent: true }
         });
+
+        // 3. Create Shipment (Stage 1: Delivery Foundation)
+        // Fix: Explicit cast to any for body
+        const bodyAny = req.body as any;
+        if (deliveryMethod && bodyAny.shippingAddress) {
+            const { recipientName, phone, addressLine1, city } = bodyAny.shippingAddress;
+            // We can't use FulfillmentService here easily without importing it or circular deps? 
+            // Actually, Prisma transaction is cleaner if we do it all in one go, but OrdersController uses single prisma calls.
+            // We will just create it directly via Prisma to be safe and consistent with this file's pattern.
+            await prisma.shipment.create({
+                data: {
+                    storeId,
+                    orderId: order.id,
+                    deliveryOptionType: 'MANUAL', // Todo: map from deliveryMethod
+                    provider: 'CUSTOM',
+                    status: 'PENDING',
+                    recipientName: recipientName || `${customer?.firstName} ${customer?.lastName}`,
+                    recipientPhone: phone || customer?.phone,
+                    addressLine1,
+                    addressCity: city
+                }
+            });
+        }
 
         // 3. Reserve Inventory? (Integration 8 call - TODO)
 

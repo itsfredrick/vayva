@@ -11,7 +11,7 @@ export default function TemplateGalleryPage() {
 
     const fetchTemplates = async () => {
         try {
-            const res = await api.get('/themes/templates');
+            const res = await api.get('/api/templates');
             setTemplates(res.data || []);
         } catch (err) {
             console.error(err);
@@ -21,15 +21,31 @@ export default function TemplateGalleryPage() {
     };
 
     useEffect(() => {
+        // Check if we already have a template
+        api.get('/api/storefront/draft')
+            .then(res => {
+                if (res.data?.found) {
+                    // Already have a draft/template -> Redirect to Builder
+                    window.location.href = '/admin/storefront';
+                }
+            })
+            .catch(() => { }); // Ignore 404 or errors
+
         fetchTemplates();
     }, []);
 
-    const handleApply = async (templateKey: string) => {
+    const handleApply = async (templateId: string) => {
+        setIsLoading(true);
         try {
-            await api.post('/themes/theme/apply', { templateKey });
-            window.location.href = '/admin/storefront/customize';
+            // Apply template by creating a new draft
+            await api.post('/api/storefront/draft', {
+                activeTemplateId: templateId
+            });
+            window.location.href = '/admin/storefront';
         } catch (err) {
-            console.error(err);
+            console.error('Failed to apply template:', err);
+            // toast error
+            setIsLoading(false);
         }
     };
 

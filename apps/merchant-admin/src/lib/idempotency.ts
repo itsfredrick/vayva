@@ -1,82 +1,114 @@
+
 import { prisma } from '@vayva/db';
-import { createHash } from 'crypto';
+import { NextResponse } from 'next/server';
+import crypto from 'crypto';
+import { logAuditEvent, AuditEventType } from './audit';
 
-export type IdempotencyStatus = 'started' | 'completed' | 'failed';
-
-export interface IdempotencyResult {
-    status: IdempotencyStatus;
-    response?: any;
-    isNew: boolean;
+interface IdempotencyOptions {
+    key: string;
+    userId: string;
+    merchantId: string;
+    route: string;
+    ttlSeconds?: number;
 }
 
-export class IdempotencyService {
+export class IdempotencyError extends Error {
+    constructor(message: string, public readonly cachedResponse: any) {
+        super(message);
+        this.name = 'IdempotencyError';
+    }
+}
 
-    static generateHash(data: any): string {
-        return createHash('sha256').update(JSON.stringify(data)).digest('hex');
+/**
+ * Check if an idempotency key has been used before.
+ * If yes, return the cached response.
+ * If no, return null (caller should proceed with operation).
+ */
+export async function checkIdempotency(
+    options: IdempotencyOptions
+): Promise<NextResponse | null> {
+    const { key, userId, merchantId, route, ttlSeconds = 86400 } = options;
+
+    // 1. Look up existing record
+    const existing = await prisma.idempotencyRecord.findUnique({
+        where: { key }
+    });
+
+    if (!existing) {
+        return null; // New request, proceed
     }
 
-    /**
-     * Locks a key. If key exists:
-     * - matches hash? -> return status (idempotent)
-     * - different hash? -> return error (conflict)
-     * If key new -> create 'started' and return isNew=true
-     */
-    static async lockKey(key: string, scope: string, merchantId: string | null, payload: any): Promise<IdempotencyResult> {
-        const hash = this.generateHash(payload);
+    // 2. Check expiry
+    if (existing.expiresAt < new Date()) {
+        // Expired, allow retry
+        await prisma.idempotencyRecord.delete({ where: { key } });
+        return null;
+    }
 
-        // Atomic upsert or find logic needed. 
-        // Prisma upsert is atomic for creating.
+    // 3. Verify ownership (security check)
+    if (existing.userId !== userId || existing.merchantId !== merchantId) {
+        throw new Error('Idempotency key conflict: different user');
+    }
 
-        const existing = await prisma.idempotency_key.findUnique({ where: { key } });
+    // 4. Return cached response
+    await logAuditEvent(
+        merchantId,
+        userId,
+        AuditEventType.IDEMPOTENCY_REPLAYED,
+        { route, key: key.substring(0, 8) + '...' }
+    );
 
-        if (existing) {
-            if (existing.requestHash !== hash) {
-                throw new Error(`Idempotency Key Conflict: Key '${key}' used for different payload.`);
-            }
-            if (existing.status === 'started' && new Date() < existing.expiresAt) {
-                // In progress
-                return { status: 'started', isNew: false };
-            }
-            if (existing.status === 'completed') {
-                return { status: 'completed', response: existing.response, isNew: false };
-            }
-            // If failed, we arguably allow retry (re-lock).
-            // For now, simpler to treat as "proceed" or return failure. 
-            // We'll treat failed as "allows retry" -> delete and recreate or update.
-            // Let's implement Re-Lock update.
-            await prisma.idempotency_key.update({
-                where: { key },
-                data: { status: 'started', expiresAt: new Date(Date.now() + 60000), response: null as any }
-            });
-            return { status: 'started', isNew: true };
+    // Return the cached response
+    if (existing.response) {
+        return NextResponse.json(existing.response, {
+            status: 200,
+            headers: { 'X-Idempotency-Replayed': 'true' }
+        });
+    }
+
+    return null;
+}
+
+/**
+ * Store the response for an idempotency key.
+ */
+export async function storeIdempotencyResponse(
+    options: IdempotencyOptions,
+    response: any
+): Promise<void> {
+    const { key, userId, merchantId, route, ttlSeconds = 86400 } = options;
+
+    const responseHash = crypto
+        .createHash('sha256')
+        .update(JSON.stringify(response))
+        .digest('hex');
+
+    const expiresAt = new Date();
+    expiresAt.setSeconds(expiresAt.getSeconds() + ttlSeconds);
+
+    await prisma.idempotencyRecord.upsert({
+        where: { key },
+        create: {
+            key,
+            userId,
+            merchantId,
+            route,
+            responseHash,
+            response,
+            expiresAt
+        },
+        update: {
+            responseHash,
+            response,
+            expiresAt
         }
+    });
+}
 
-        // Create New
-        await prisma.idempotency_key.create({
-            data: {
-                key,
-                scope,
-                merchantId,
-                requestHash: hash,
-                status: 'started',
-                expiresAt: new Date(Date.now() + 60000) // 1 min timeout for processing
-            }
-        });
-
-        return { status: 'started', isNew: true };
-    }
-
-    static async complete(key: string, response: any) {
-        await prisma.idempotency_key.update({
-            where: { key },
-            data: { status: 'completed', response }
-        });
-    }
-
-    static async fail(key: string, error?: string) {
-        await prisma.idempotency_key.update({
-            where: { key },
-            data: { status: 'failed', response: { error } }
-        });
-    }
+/**
+ * Extract idempotency key from request headers.
+ */
+export function getIdempotencyKey(request: Request): string | null {
+    return request.headers.get('Idempotency-Key') ||
+        request.headers.get('idempotency-key');
 }

@@ -271,7 +271,8 @@ export const initiateWithdrawalHandler = async (req: FastifyRequest, reply: Fast
             bankAccountId: body.bankAccountId,
             status: 'PENDING_OTP',
             otpCode: otp,
-            otpExpiresAt: expires
+            otpExpiresAt: expires,
+            referenceCode: 'WD-' + crypto.randomBytes(6).toString('hex').toUpperCase()
         }
     });
 

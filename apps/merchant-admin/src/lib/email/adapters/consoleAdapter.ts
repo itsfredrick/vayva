@@ -14,6 +14,6 @@ export class ConsoleAdapter implements EmailAdapter {
         ${payload.text || '(No Plaintext)'}
         ------------------------------------------
         `);
-        return { providerId: `console-${Date.now()}` };
+        return { success: true, providerId: `console-${Date.now()}` };
     }
 }

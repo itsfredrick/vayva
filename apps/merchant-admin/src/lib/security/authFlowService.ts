@@ -2,6 +2,7 @@
 import { prisma } from '@vayva/db';
 import { SecurityUtils } from '@/lib/security/tokens';
 import { EmailService } from '../email/emailService';
+import { wrapEmail, renderButton } from '../email/layout';
 
 export class AuthFlowService {
 
@@ -19,10 +20,18 @@ export class AuthFlowService {
         });
 
         // 3. Send Email
+        const content = `
+            <h1 style="margin:0 0 12px; font-size:22px; font-weight:600;">Verify your email</h1>
+            <p style="margin:0 0 24px; font-size:16px; line-height:1.6; color:#444444;">
+                Click the button below to verify your email address.
+            </p>
+            ${renderButton(`${process.env.NEXTAUTH_URL}/verify-email?token=${token}`, 'Verify Email')}
+        `;
+
         await EmailService.send({
             to: email,
             subject: 'Verify your email',
-            html: `<p>Click here: <a href="/verify-email?token=${token}">Verify</a></p>`,
+            html: wrapEmail(content, 'Verify Email'),
             text: `Verify: /verify-email?token=${token}`,
             templateKey: 'verify_email',
             userId,
@@ -63,7 +72,37 @@ export class AuthFlowService {
             data: { userId, tokenHash, expiresAt }
         });
 
-        console.log(`[EMAIL] Reset Password for ${email}: /reset-password?token=${token}`);
+        const resetLink = `${process.env.NEXTAUTH_URL}/reset-password?token=${token}`;
+
+        const content = `
+            <h1 style="margin:0 0 12px; font-size:22px; font-weight:600;">Reset your password</h1>
+
+            <p style="margin:0 0 16px; font-size:16px; line-height:1.6; color:#444444;">
+                We received a request to reset your Vayva account password.
+            </p>
+
+            <p style="margin:0 0 24px; font-size:16px; line-height:1.6; color:#444444;">
+                Click the button below to set a new password. This link will expire in 15 minutes.
+            </p>
+
+            ${renderButton(resetLink, 'Reset Password')}
+
+            <p style="margin:24px 0 0; font-size:14px; color:#666666;">
+                If you didn’t request this, you can safely ignore this email.
+            </p>
+        `;
+
+        await EmailService.send({
+            to: email,
+            subject: 'Reset your password',
+            html: wrapEmail(content, 'Reset Password'),
+            text: `Reset Password: ${resetLink}`,
+            templateKey: 'password_reset',
+            userId,
+            correlationId: `pwd_reset_${tokenHash.substring(0, 8)}`
+        });
+
+        console.log(`[EMAIL] Reset Password for ${email}`);
     }
 
     static async confirmPasswordReset(token: string, newPassword: string) {

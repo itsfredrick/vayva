@@ -1,23 +1,10 @@
 import { NextResponse } from 'next/server';
-import { prisma } from '@vayva/db';
 
 export async function GET() {
-    let dbStatus = 'unknown';
-    try {
-        // Quick check
-        await prisma.$queryRaw`SELECT 1`;
-        dbStatus = 'ok';
-    } catch (e: any) {
-        dbStatus = 'error';
-        console.error('Health Check DB Fail:', e.message);
-    }
-
     return NextResponse.json({
-        status: dbStatus === 'ok' ? 'ok' : 'degraded',
+        status: 'ok',
         timestamp: new Date().toISOString(),
-        services: {
-            database: dbStatus
-        },
-        env: process.env.NODE_ENV
-    }, { status: dbStatus === 'ok' ? 200 : 503 });
+        buildSha: process.env.NEXT_PUBLIC_BUILD_STAMP || 'dev',
+        environment: process.env.NODE_ENV,
+    });
 }

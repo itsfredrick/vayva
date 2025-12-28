@@ -1,0 +1,29 @@
+
+> merchant-admin@0.0.0 typecheck /Users/fredrick/.gemini/antigravity/scratch/vayva/apps/merchant-admin
+> tsc --noEmit
+
+.next/types/validator.ts(377,39): error TS2307: Cannot find module '../../src/app/(marketing)/status/page.js' or its corresponding type declarations.
+.next/types/validator.ts(3113,39): error TS2307: Cannot find module '../../src/app/api/debug/mock-whatsapp-order/route.js' or its corresponding type declarations.
+.next/types/validator.ts(3960,31): error TS2344: Type 'typeof import("/Users/fredrick/.gemini/antigravity/scratch/vayva/apps/merchant-admin/src/app/api/orders/[id]/delivery/manual-status/route")' does not satisfy the constraint 'RouteHandlerConfig<"/api/orders/[id]/delivery/manual-status">'.
+  Types of property 'POST' are incompatible.
+    Type '(request: Request, context: { params: { id: string; }; }) => Promise<NextResponse<{ success: boolean; shipment: { id: string; storeId: string; orderId: string; deliveryOptionType: string | null; status: string; ... 14 more ...; updatedAt: Date; }; }> | NextResponse<...>>' is not assignable to type '(request: NextRequest, context: { params: Promise<{ id: string; }>; }) => void | Response | Promise<void | Response>'.
+      Types of parameters 'context' and 'context' are incompatible.
+        Type '{ params: Promise<{ id: string; }>; }' is not assignable to type '{ params: { id: string; }; }'.
+          Types of property 'params' are incompatible.
+            Property 'id' is missing in type 'Promise<{ id: string; }>' but required in type '{ id: string; }'.
+.next/types/validator.ts(4256,39): error TS2307: Cannot find module '../../src/app/api/shipments/create/route.js' or its corresponding type declarations.
+.next/types/validator.ts(4265,39): error TS2307: Cannot find module '../../src/app/api/shipments/update/route.js' or its corresponding type declarations.
+src/app/(marketing)/templates/compare/comparison.test.ts(3,33): error TS2307: Cannot find module './api/me/plan/route' or its corresponding type declarations.
+src/app/admin/control-center/branding/page.tsx(32,25): error TS18047: 'c' is possibly 'null'.
+src/app/admin/control-center/navigation/page.tsx(20,28): error TS18047: 'c' is possibly 'null'.
+src/app/admin/control-center/navigation/page.tsx(21,28): error TS18047: 'c' is possibly 'null'.
+src/app/admin/control-center/pages/new/page.tsx(20,40): error TS2554: Expected 2 arguments, but got 1.
+src/app/admin/control-center/policies/page.tsx(23,25): error TS18047: 'c' is possibly 'null'.
+src/app/admin/settings/audit-logs/page.tsx(105,41): error TS7006: Parameter 'e' implicitly has an 'any' type.
+src/app/admin/settings/jobs/page.tsx(63,37): error TS7006: Parameter 'e' implicitly has an 'any' type.
+src/app/admin/wa-agent/inbox/page.tsx(48,37): error TS2322: Type 'WaThread | null | undefined' is not assignable to type 'WaThread | undefined'.
+  Type 'null' is not assignable to type 'WaThread | undefined'.
+src/app/admin/wa-agent/inbox/page.tsx(49,41): error TS2322: Type 'WaThread | null | undefined' is not assignable to type 'WaThread | undefined'.
+  Type 'null' is not assignable to type 'WaThread | undefined'.
+src/app/ops/audit-logs/page.tsx(71,37): error TS7006: Parameter 'e' implicitly has an 'any' type.
+ ELIFECYCLE  Command failed with exit code 2.

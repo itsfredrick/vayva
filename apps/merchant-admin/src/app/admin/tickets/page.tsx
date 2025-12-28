@@ -103,8 +103,6 @@ export default function TicketsPage() {
                                     <motion.tr
                                         key={t.id}
                                         whileHover={{ backgroundColor: "#F9FAFB" }}
-                                        className="cursor-pointer"
-                                        onClick={() => console.log('View ticket', t.id)} // TODO: Drawer or Page
                                     >
                                         <td className="px-6 py-4 font-mono text-xs text-[#525252]">#{t.ticketNumber}</td>
                                         <td className="px-6 py-4 font-medium text-[#0B0B0B]">{t.subject}</td>
@@ -122,11 +120,8 @@ export default function TicketsPage() {
                                         </td>
                                         <td className="px-6 py-4 text-[#525252]">{new Date(t.createdAt).toLocaleDateString()}</td>
                                         <td className="px-6 py-4 text-right">
-                                            {t.conversationId && (
-                                                <Button size="sm" variant="ghost" className="text-green-600 hover:text-green-700 hover:bg-green-50">
-                                                    <Icon name="MessageCircle" size={16} />
-                                                </Button>
-                                            )}
+                                            {/* Action column is intentionally empty or minimal to avoid dead links */}
+                                            <span className="text-[10px] text-gray-400">Details unavailable</span>
                                         </td>
                                     </motion.tr>
                                 ))

@@ -48,8 +48,8 @@ export default function FeaturesPage() {
                                             key={module.id}
                                             onClick={() => setActiveModule(module.id)}
                                             className={`w-full text-left px-4 py-3 rounded-lg transition-colors ${activeModule === module.id
-                                                    ? 'bg-[#22C55E]/10 text-[#22C55E] font-semibold'
-                                                    : 'text-[#0F172A] hover:bg-gray-50'
+                                                ? 'bg-[#22C55E]/10 text-[#22C55E] font-semibold'
+                                                : 'text-[#0F172A] hover:bg-gray-50'
                                                 }`}
                                         >
                                             {module.label}
@@ -92,7 +92,7 @@ export default function FeaturesPage() {
                                 </div>
                                 <div>
                                     <p className="font-semibold text-[#0F172A] mb-1">Orders connect to payments</p>
-                                    <p className="text-sm text-[#64748B]">Every order tracks its payment status automatically</p>
+                                    <p className="text-sm text-[#64748B]">Every order tracks its payment status for easy reconciliation</p>
                                 </div>
                             </div>
                             <div className="flex items-start gap-3">
@@ -210,7 +210,7 @@ function OrdersModule() {
             <div>
                 <h3 className="font-semibold text-[#0F172A] mb-4">Key capabilities</h3>
                 <ul className="space-y-2 text-[#64748B]">
-                    <li>• Automatic order creation from chat</li>
+                    <li>• Order capture from chat</li>
                     <li>• Order status tracking</li>
                     <li>• Price locking</li>
                     <li>• Edit history</li>
@@ -234,7 +234,7 @@ function PaymentsModule() {
             <div>
                 <h2 className="text-3xl font-bold text-[#0F172A] mb-4">Payments — track every naira</h2>
                 <p className="text-lg text-[#64748B] leading-relaxed">
-                    Know exactly what's been paid, what's pending, and what's owed. Vayva tracks payments across all methods and reconciles automatically.
+                    Know exactly what's been paid, what's pending, and what's owed. Vayva tracks payments across all methods and assists with reconciliation.
                 </p>
             </div>
 
@@ -256,7 +256,7 @@ function PaymentsModule() {
                 <ul className="space-y-2 text-[#64748B]">
                     <li>• Payment tracking across all methods</li>
                     <li>• Partial payment support</li>
-                    <li>• Automatic reconciliation</li>
+                    <li>• Assisted reconciliation</li>
                     <li>• Payment proof attached to orders</li>
                     <li>• Outstanding balance alerts</li>
                 </ul>
@@ -277,7 +277,7 @@ function InventoryModule() {
             <div>
                 <h2 className="text-3xl font-bold text-[#0F172A] mb-4">Inventory — never oversell again</h2>
                 <p className="text-lg text-[#64748B] leading-relaxed">
-                    Real-time stock tracking prevents overselling and alerts you before you run out. Inventory updates automatically with each sale.
+                    Real-time stock tracking prevents overselling and alerts you before you run out. Inventory updates with each confirmed sale.
                 </p>
             </div>
 
@@ -304,7 +304,7 @@ function InventoryModule() {
                     <li>• Real-time stock levels</li>
                     <li>• Low stock alerts</li>
                     <li>• Overselling prevention</li>
-                    <li>• Automatic inventory updates</li>
+                    <li>• Smart inventory updates</li>
                     <li>• Stock history tracking</li>
                 </ul>
             </div>
@@ -395,7 +395,7 @@ function CustomersModule() {
             <div>
                 <h3 className="font-semibold text-[#0F172A] mb-4">Key capabilities</h3>
                 <ul className="space-y-2 text-[#64748B]">
-                    <li>• Automatic customer profiles</li>
+                    <li>• Guided customer profiles</li>
                     <li>• Purchase history</li>
                     <li>• Payment patterns</li>
                     <li>• Conversation threads</li>
@@ -418,7 +418,7 @@ function RecordsModule() {
             <div>
                 <h2 className="text-3xl font-bold text-[#0F172A] mb-4">Records & Reports — clean data</h2>
                 <p className="text-lg text-[#64748B] leading-relaxed">
-                    Automatic record-keeping for every transaction. Export clean data for banks, taxes, or investors anytime.
+                    Streamlined record-keeping for every transaction. Export clean data for banks, taxes, or investors anytime.
                 </p>
             </div>
 
@@ -448,7 +448,7 @@ function RecordsModule() {
             <div>
                 <h3 className="font-semibold text-[#0F172A] mb-4">Key capabilities</h3>
                 <ul className="space-y-2 text-[#64748B]">
-                    <li>• Automatic record generation</li>
+                    <li>• Guided record generation</li>
                     <li>• Exportable data (CSV, PDF)</li>
                     <li>• Daily/weekly/monthly summaries</li>
                     <li>• Business visibility</li>

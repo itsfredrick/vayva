@@ -1,7 +1,8 @@
+import { PLANS as CONFIG_PLANS, PlanKey } from '@/config/pricing';
 
 export const PLAN_PRICING = {
-    GROWTH: 25000,
-    PRO: 40000,
+    GROWTH: CONFIG_PLANS.find(p => p.key === 'growth')?.monthlyAmount || 25000,
+    PRO: CONFIG_PLANS.find(p => p.key === 'pro')?.monthlyAmount || 40000,
 };
 
 export interface PlanLimits {
@@ -18,18 +19,33 @@ export interface PlanFeatures {
 }
 
 export interface PlanDefinition {
-    slug: 'growth' | 'pro';
+    slug: PlanKey;
     name: string;
     priceNgn: number;
     limits: PlanLimits;
     features: PlanFeatures;
-    paystackPlanCode?: string; // To be filled with real codes later
 }
 
 export const PLANS: Record<string, PlanDefinition> = {
+    free: {
+        slug: 'free',
+        name: 'Free',
+        priceNgn: 0,
+        limits: {
+            teamSeats: 1,
+            templatesAvailable: 'limited',
+            monthlyCampaignSends: 100
+        },
+        features: {
+            approvals: false,
+            inboxOps: true,
+            reports: true,
+            advancedAnalytics: false
+        }
+    },
     growth: {
         slug: 'growth',
-        name: 'Growth',
+        name: '₦25,000',
         priceNgn: PLAN_PRICING.GROWTH,
         limits: {
             teamSeats: 1,
@@ -45,7 +61,7 @@ export const PLANS: Record<string, PlanDefinition> = {
     },
     pro: {
         slug: 'pro',
-        name: 'Pro',
+        name: '₦40,000',
         priceNgn: PLAN_PRICING.PRO,
         limits: {
             teamSeats: 5,
@@ -61,4 +77,4 @@ export const PLANS: Record<string, PlanDefinition> = {
     }
 };
 
-export type PlanSlug = keyof typeof PLANS;
+export type PlanSlug = PlanKey;

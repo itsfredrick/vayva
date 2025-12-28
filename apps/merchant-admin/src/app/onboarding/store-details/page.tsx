@@ -20,12 +20,22 @@ const CATEGORIES = [
 export default function StoreDetailsPage() {
     const { state, updateState, goToStep } = useOnboarding();
     const { user } = useAuth(); // Access user info for plan gating check if needed but mainly for context
-    const [formData, setFormData] = useState({
+    const [formData, setFormData] = useState<{
+        storeName: string;
+        category: string;
+        state: string;
+        city: string;
+        slug: string;
+        domainPreference: 'subdomain' | 'custom';
+        publishStatus: 'draft' | 'published';
+    }>({
         storeName: '',
         category: '',
         state: '',
         city: '',
         slug: '',
+        domainPreference: 'subdomain',
+        publishStatus: 'draft'
     });
 
     const [slugAvailable, setSlugAvailable] = useState<boolean | null>(null);
@@ -33,7 +43,15 @@ export default function StoreDetailsPage() {
 
     useEffect(() => {
         if (state?.storeDetails) {
-            setFormData(state.storeDetails);
+            setFormData({
+                storeName: state.storeDetails.storeName || '',
+                category: state.storeDetails.category || '',
+                state: state.storeDetails.state || '',
+                city: state.storeDetails.city || '',
+                slug: state.storeDetails.slug || '',
+                domainPreference: state.storeDetails.domainPreference || 'subdomain',
+                publishStatus: state.storeDetails.publishStatus || 'draft'
+            });
             if (state.storeDetails.slug) {
                 setSlugAvailable(true); // Assume valid if loading from state
             }
@@ -76,7 +94,11 @@ export default function StoreDetailsPage() {
         e.preventDefault();
 
         await updateState({
-            storeDetails: formData
+            storeDetails: {
+                ...formData,
+                domainPreference: formData.domainPreference as 'subdomain' | 'custom',
+                publishStatus: formData.publishStatus as 'draft' | 'published'
+            }
         });
 
         await goToStep('brand');
@@ -99,33 +121,67 @@ export default function StoreDetailsPage() {
                     placeholder="My Awesome Store"
                 />
 
-                <div className="space-y-2">
-                    <label className="text-sm font-medium text-black">Store Link</label>
-                    <div className="flex rounded-xl border border-gray-200 overflow-hidden focus-within:ring-2 focus-within:ring-black/5 focus-within:border-black">
-                        <div className="bg-gray-50 px-3 py-3 text-sm text-gray-500 border-r border-gray-200">
-                            vayva.shop/
+                <div className="space-y-4">
+                    <div className="space-y-2">
+                        <label className="text-sm font-medium text-black">Store Link</label>
+                        <div className="flex rounded-xl border border-gray-200 overflow-hidden focus-within:ring-2 focus-within:ring-black/5 focus-within:border-black">
+                            <div className="bg-gray-50 px-3 py-3 text-sm text-gray-500 border-r border-gray-200">
+                                vayva.shop/
+                            </div>
+                            <input
+                                type="text"
+                                value={formData.slug}
+                                onChange={handleSlugChange}
+                                className="flex-1 px-3 py-3 text-sm outline-none text-black placeholder:text-gray-300"
+                                placeholder="my-store"
+                                required
+                            />
+                            <div className="px-3 flex items-center justify-center">
+                                {isCheckingSlug ? (
+                                    <Icon name={"Loader2" as any} className="animate-spin text-gray-400" size={16} />
+                                ) : slugAvailable === true ? (
+                                    <Icon name={"CircleCheck" as any} className="text-green-500" size={16} />
+                                ) : slugAvailable === false ? (
+                                    <Icon name={"CircleX" as any} className="text-red-500" size={16} />
+                                ) : null}
+                            </div>
                         </div>
-                        <input
-                            type="text"
-                            value={formData.slug}
-                            onChange={handleSlugChange}
-                            className="flex-1 px-3 py-3 text-sm outline-none text-black placeholder:text-gray-300"
-                            placeholder="my-store"
-                            required
-                        />
-                        <div className="px-3 flex items-center justify-center">
-                            {isCheckingSlug ? (
-                                <Icon name={"Loader2" as any} className="animate-spin text-gray-400" size={16} />
-                            ) : slugAvailable === true ? (
-                                <Icon name={"CircleCheck" as any} className="text-green-500" size={16} />
-                            ) : slugAvailable === false ? (
-                                <Icon name={"CircleX" as any} className="text-red-500" size={16} />
-                            ) : null}
+                        {slugAvailable === false && (
+                            <p className="text-xs text-red-500">This URL is not available. Please try another.</p>
+                        )}
+                    </div>
+
+                    <div className="p-4 bg-gray-50 rounded-xl border border-gray-100 space-y-3">
+                        <label className="text-sm font-medium text-black block">Domain Preference</label>
+                        <div className="flex flex-col gap-2">
+                            <label className="flex items-center gap-3 p-3 bg-white border border-gray-200 rounded-lg cursor-pointer hover:border-black transition-colors">
+                                <input
+                                    type="radio"
+                                    name="domainPref"
+                                    checked={formData.domainPreference === 'subdomain'}
+                                    onChange={() => setFormData({ ...formData, domainPreference: 'subdomain' })}
+                                    className="accent-black"
+                                />
+                                <div>
+                                    <span className="block text-sm font-bold text-gray-900">Use Vayva Subdomain (Free)</span>
+                                    <span className="block text-xs text-gray-500">Fastest way to get started.</span>
+                                </div>
+                            </label>
+                            <label className="flex items-center gap-3 p-3 bg-white border border-gray-200 rounded-lg cursor-pointer hover:border-black transition-colors">
+                                <input
+                                    type="radio"
+                                    name="domainPref"
+                                    checked={formData.domainPreference === 'custom'}
+                                    onChange={() => setFormData({ ...formData, domainPreference: 'custom' })}
+                                    className="accent-black"
+                                />
+                                <div>
+                                    <span className="block text-sm font-bold text-gray-900">Connect Custom Domain</span>
+                                    <span className="block text-xs text-gray-500">Professional look (e.g. mystore.com).</span>
+                                </div>
+                            </label>
                         </div>
                     </div>
-                    {slugAvailable === false && (
-                        <p className="text-xs text-red-500">This URL is not available. Please try another.</p>
-                    )}
                 </div>
 
                 <div className="space-y-2">

@@ -128,6 +128,7 @@ export default function ProductsPage() {
                     isLoading={isLoading}
                     onEdit={handleEdit}
                     onDelete={handleDelete}
+                    onCreate={handleCreate}
                 />
             </div>
 

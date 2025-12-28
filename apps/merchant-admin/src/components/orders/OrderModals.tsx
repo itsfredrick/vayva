@@ -20,14 +20,9 @@ export const DeliveryTaskModal = ({ isOpen, onClose, order }: DeliveryTaskModalP
     const handleSubmit = async () => {
         setLoading(true);
         try {
-            const res = await fetch('/api/shipments/create', {
+            const res = await fetch(`/api/orders/${order.id}/delivery/dispatch`, {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    orderId: order.id,
-                    deliveryOptionType: 'KWIK', // Defaulting to Kwik for now
-                    trackingCode: `TASK-${Date.now().toString().slice(-6)}` // Mock tracking
-                })
+                headers: { 'Content-Type': 'application/json' }
             });
 
             if (!res.ok) throw new Error('Failed to create shipment');

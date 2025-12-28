@@ -1,188 +1,248 @@
 import { Resend } from 'resend';
+import { wrapEmail, renderButton, BRAND_COLOR } from './layout';
+import { FEATURES } from '../env-validation';
 
-const resend = new Resend(process.env.RESEND_API_KEY);
+const RESEND_KEY = process.env.NODE_ENV === 'test'
+    ? (process.env.RESEND_API_KEY || 're_mock_test_key_123')
+    : process.env.RESEND_API_KEY;
 
-export interface SendEmailParams {
-    to: string;
-    subject: string;
-    html: string;
-    from?: string;
-}
+const resend = new Resend(RESEND_KEY);
 
 export class ResendEmailService {
-    private static fromEmail = process.env.RESEND_FROM_EMAIL || 'onboarding@vayva.com';
+    private static fromEmail = process.env.RESEND_FROM_EMAIL || 'noreply@vayva.ng';
 
     /**
-     * Send OTP verification email
+     * Check if email service is configured
      */
-    static async sendOTPEmail(to: string, code: string, firstName?: string) {
-        if (!process.env.RESEND_API_KEY) {
-            console.log(`[DEV] OTP Email would be sent to ${to}: ${code}`);
-            return { success: true, messageId: 'dev-mode' };
+    private static assertConfigured() {
+        if (!FEATURES.EMAIL_ENABLED) {
+            throw new Error('Email service is not configured');
         }
+    }
+
+    // --- 1. OTP Verification ---
+    static async sendOTPEmail(to: string, code: string, firstName?: string) {
+        this.assertConfigured();
 
         try {
             const { data, error } = await resend.emails.send({
                 from: this.fromEmail,
                 to,
                 subject: 'Verify your email - Vayva',
-                html: this.getOTPTemplate(code, firstName),
+                html: wrapEmail(this.getOTPTemplate(code, firstName), 'Verify Email'),
             });
 
             if (error) {
-                console.error('[Resend] Error sending OTP:', error);
-                return { success: false, error: error.message };
+                console.error('[Resend] OTP Error:', error);
+                throw new Error(`Failed to send OTP email: ${error.message}`);
             }
 
             return { success: true, messageId: data?.id };
         } catch (error: any) {
-            console.error('[Resend] Exception sending OTP:', error);
-            return { success: false, error: error.message };
+            console.error('[Resend] OTP Error:', error);
+            throw error;
         }
     }
 
-    /**
-     * Send welcome email after verification
-     */
+    // --- 2. Welcome Email ---
     static async sendWelcomeEmail(to: string, firstName: string, storeName: string) {
-        if (!process.env.RESEND_API_KEY) {
-            console.log(`[DEV] Welcome email would be sent to ${to}`);
-            return { success: true, messageId: 'dev-mode' };
-        }
+        this.assertConfigured();
 
         try {
             const { data, error } = await resend.emails.send({
                 from: this.fromEmail,
                 to,
                 subject: `Welcome to Vayva, ${firstName}!`,
-                html: this.getWelcomeTemplate(firstName, storeName),
+                html: wrapEmail(this.getWelcomeTemplate(firstName, storeName), 'Welcome to Vayva'),
             });
 
             if (error) {
-                console.error('[Resend] Error sending welcome email:', error);
-                return { success: false, error: error.message };
+                console.error('[Resend] Welcome Error:', error);
+                throw new Error(`Failed to send welcome email: ${error.message}`);
             }
 
             return { success: true, messageId: data?.id };
         } catch (error: any) {
-            console.error('[Resend] Exception sending welcome email:', error);
-            return { success: false, error: error.message };
+            console.error('[Resend] Welcome Error:', error);
+            throw error;
+        }
+    }
+
+    // --- 3. Password Changed ---
+    static async sendPasswordChangedEmail(to: string) {
+        this.assertConfigured();
+
+        try {
+            const { data, error } = await resend.emails.send({
+                from: this.fromEmail,
+                to,
+                subject: 'Security Alert: Password Changed',
+                html: wrapEmail(this.getPasswordChangedTemplate(), 'Security Alert'),
+            });
+
+            if (error) {
+                console.error('[Resend] Password Change Error:', error);
+                throw new Error(`Failed to send password change email: ${error.message}`);
+            }
+
+            return { success: true, messageId: data?.id };
+        } catch (error: any) {
+            console.error('[Resend] Password Change Error:', error);
+            throw error;
+        }
+    }
+
+    // --- 4. Payment Receipt ---
+    static async sendPaymentReceiptEmail(to: string, amountNgn: number, invoiceNumber: string, storeName: string) {
+        this.assertConfigured();
+
+        try {
+            const { data, error } = await resend.emails.send({
+                from: this.fromEmail,
+                to,
+                subject: `Receipt for ${storeName} - ${invoiceNumber}`,
+                html: wrapEmail(this.getReceiptTemplate(amountNgn, invoiceNumber, storeName), 'Payment Receipt'),
+            });
+
+            if (error) {
+                console.error('[Resend] Receipt Error:', error);
+                throw new Error(`Failed to send receipt email: ${error.message}`);
+            }
+
+            return { success: true, messageId: data?.id };
+        } catch (error: any) {
+            console.error('[Resend] Receipt Error:', error);
+            throw error;
+        }
+    }
+
+    // --- 5. Subscription Expiry Reminder ---
+    static async sendSubscriptionExpiryReminder(to: string, storeName: string, planName: string, expiryDate: string) {
+        this.assertConfigured();
+
+        try {
+            const { billingSubscriptionExpiryReminder } = await import('./templates/core');
+            const billingUrl = `${process.env.NEXTAUTH_URL}/admin/billing`;
+
+            const { data, error } = await resend.emails.send({
+                from: this.fromEmail,
+                to,
+                subject: `Action Required: Your subscription for ${storeName} expires in 3 days`,
+                html: billingSubscriptionExpiryReminder({
+                    store_name: storeName,
+                    plan_name: planName,
+                    expiry_date: expiryDate,
+                    billing_url: billingUrl
+                }),
+            });
+
+            if (error) {
+                console.error('[Resend] Subscription Expiry Error:', error);
+                throw new Error(`Failed to send subscription expiry email: ${error.message}`);
+            }
+
+            return { success: true, messageId: data?.id };
+        } catch (error: any) {
+            console.error('[Resend] Subscription Expiry Error:', error);
+            throw error;
         }
     }
 
     /**
-     * OTP Email Template
+     * Internal Template Generators (Content Body Only)
      */
+
     private static getOTPTemplate(code: string, firstName?: string): string {
         return `
-<!DOCTYPE html>
-<html>
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Verify your email</title>
-</head>
-<body style="margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif; background-color: #f5f5f5;">
-    <table width="100%" cellpadding="0" cellspacing="0" style="background-color: #f5f5f5; padding: 40px 0;">
-        <tr>
-            <td align="center">
-                <table width="600" cellpadding="0" cellspacing="0" style="background-color: #ffffff; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
-                    <tr>
-                        <td style="padding: 40px;">
-                            <h1 style="margin: 0 0 24px 0; font-size: 28px; font-weight: 700; color: #000000;">
-                                ${firstName ? `Hi ${firstName}!` : 'Welcome!'}
-                            </h1>
-                            <p style="margin: 0 0 24px 0; font-size: 16px; line-height: 24px; color: #666666;">
-                                Thanks for signing up with Vayva. To complete your registration, please verify your email address using the code below:
-                            </p>
-                            <div style="background-color: #f8f8f8; border-radius: 8px; padding: 32px; text-align: center; margin: 32px 0;">
-                                <div style="font-size: 36px; font-weight: 700; letter-spacing: 8px; color: #000000; font-family: 'Courier New', monospace;">
-                                    ${code}
-                                </div>
-                            </div>
-                            <p style="margin: 0 0 16px 0; font-size: 14px; line-height: 20px; color: #999999;">
-                                This code will expire in 10 minutes.
-                            </p>
-                            <p style="margin: 0; font-size: 14px; line-height: 20px; color: #999999;">
-                                If you didn't request this code, please ignore this email.
-                            </p>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td style="padding: 24px 40px; border-top: 1px solid #eeeeee; text-align: center;">
-                            <p style="margin: 0; font-size: 12px; color: #999999;">
-                                © ${new Date().getFullYear()} Vayva. All rights reserved.
-                            </p>
-                        </td>
-                    </tr>
-                </table>
-            </td>
-        </tr>
-    </table>
-</body>
-</html>
+            <h1 style="margin:0 0 12px; font-size:22px; font-weight:600;">
+                ${firstName ? `Hi ${firstName}` : 'Hello'}
+            </h1>
+            <p style="margin:0 0 24px; font-size:16px; line-height:1.6; color:#444444;">
+                Use the verification code below to complete your sign up. This code will expire in 10 minutes.
+            </p>
+            <div style="background:#f4f4f5; border-radius:8px; padding:24px; text-align:center; margin:32px 0; letter-spacing: 8px; font-size: 32px; font-weight: 700; font-family: monospace;">
+                ${code}
+            </div>
+            <p style="margin:24px 0 0; font-size:14px; color:#666666;">
+                If you didn't request this code, you can safely ignore this email.
+            </p>
         `;
     }
 
-    /**
-     * Welcome Email Template
-     */
     private static getWelcomeTemplate(firstName: string, storeName: string): string {
+        const dashboardUrl = `${process.env.NEXTAUTH_URL || 'https://vayva.ng'}/onboarding`;
+
         return `
-<!DOCTYPE html>
-<html>
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Welcome to Vayva</title>
-</head>
-<body style="margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif; background-color: #f5f5f5;">
-    <table width="100%" cellpadding="0" cellspacing="0" style="background-color: #f5f5f5; padding: 40px 0;">
-        <tr>
-            <td align="center">
-                <table width="600" cellpadding="0" cellspacing="0" style="background-color: #ffffff; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
+            <h1 style="margin:0 0 12px; font-size:22px; font-weight:600;">
+                Welcome to Vayva!
+            </h1>
+            <p style="margin:0 0 16px; font-size:16px; line-height:1.6; color:#444444;">
+                Hi <strong>${firstName}</strong>, we're thrilled to have you. Your store <strong>${storeName}</strong> is ready to be set up.
+            </p>
+            
+            <div style="margin: 24px 0;">
+                <p style="margin:0 0 8px; font-weight:600; font-size:14px; text-transform:uppercase; letter-spacing:0.5px; color:#666666;">Next Steps</p>
+                <ul style="margin:0; padding-left:20px; color:#444444; font-size:15px; line-height:1.6;">
+                    <li style="margin-bottom:8px;">Complete your business profile</li>
+                    <li style="margin-bottom:8px;">Add your first product</li>
+                    <li>Connect your bank account</li>
+                </ul>
+            </div>
+
+            ${renderButton(dashboardUrl, 'Go to Dashboard')}
+            
+            <p style="margin:24px 0 0; font-size:14px; color:#666666;">
+                Need help? Reply to this email or contact support.
+            </p>
+        `;
+    }
+
+    private static getPasswordChangedTemplate(): string {
+        return `
+            <h1 style="margin:0 0 12px; font-size:22px; font-weight:600;">
+                Password Changed
+            </h1>
+            <p style="margin:0 0 16px; font-size:16px; line-height:1.6; color:#444444;">
+                This is a confirmation that the password for your Vayva account has been changed successfully.
+            </p>
+            <div style="background:#fff1f2; border-radius:8px; padding:16px; margin:24px 0; color:#be123c; font-size:14px; line-height:1.5;">
+                <strong>Note:</strong> If you did not make this change, please contact support immediately to secure your account.
+            </div>
+        `;
+    }
+
+    private static getReceiptTemplate(amount: number, invoiceRef: string, storeName: string): string {
+        const formattedAmount = new Intl.NumberFormat('en-NG', { style: 'currency', currency: 'NGN' }).format(amount);
+
+        return `
+            <h1 style="margin:0 0 4px; font-size:22px; font-weight:600;">Receipt</h1>
+            <p style="margin:0 0 24px; font-size:14px; color:#666666;">For ${storeName}</p>
+
+            <div style="margin-bottom:32px;">
+                <div style="font-size:12px; text-transform:uppercase; color:#666666; font-weight:600; letter-spacing:0.5px; margin-bottom:4px;">Amount Paid</div>
+                <div style="font-size:36px; font-weight:700; color:#111111;">${formattedAmount}</div>
+            </div>
+
+            <div style="background:#f9fafb; border-radius:8px; padding:20px;">
+                <table width="100%" cellpadding="0" cellspacing="0" style="font-size:14px;">
                     <tr>
-                        <td style="padding: 40px;">
-                            <h1 style="margin: 0 0 24px 0; font-size: 28px; font-weight: 700; color: #000000;">
-                                Welcome to Vayva, ${firstName}! 🎉
-                            </h1>
-                            <p style="margin: 0 0 24px 0; font-size: 16px; line-height: 24px; color: #666666;">
-                                Your email has been verified successfully. You're all set to start building ${storeName}!
-                            </p>
-                            <div style="background-color: #f8f8f8; border-radius: 8px; padding: 24px; margin: 24px 0;">
-                                <h3 style="margin: 0 0 16px 0; font-size: 18px; font-weight: 600; color: #000000;">
-                                    Next Steps:
-                                </h3>
-                                <ul style="margin: 0; padding-left: 20px; color: #666666;">
-                                    <li style="margin-bottom: 8px;">Complete your onboarding to set up your store</li>
-                                    <li style="margin-bottom: 8px;">Add your first products or services</li>
-                                    <li style="margin-bottom: 8px;">Connect your payment methods</li>
-                                    <li>Start accepting orders!</li>
-                                </ul>
-                            </div>
-                            <div style="text-align: center; margin: 32px 0;">
-                                <a href="${process.env.NEXTAUTH_URL || 'https://vayva.com'}/onboarding" style="display: inline-block; background-color: #000000; color: #ffffff; text-decoration: none; padding: 14px 32px; border-radius: 6px; font-weight: 600; font-size: 16px;">
-                                    Continue Onboarding
-                                </a>
-                            </div>
-                            <p style="margin: 0; font-size: 14px; line-height: 20px; color: #999999;">
-                                Need help? Reply to this email or visit our help center.
-                            </p>
-                        </td>
+                        <td style="padding:4px 0; color:#666666;">Invoice</td>
+                        <td style="padding:4px 0; text-align:right; color:#111111; font-weight:500; font-family:monospace;">${invoiceRef}</td>
                     </tr>
                     <tr>
-                        <td style="padding: 24px 40px; border-top: 1px solid #eeeeee; text-align: center;">
-                            <p style="margin: 0; font-size: 12px; color: #999999;">
-                                © ${new Date().getFullYear()} Vayva. All rights reserved.
-                            </p>
-                        </td>
+                        <td style="padding:4px 0; color:#666666;">Date</td>
+                        <td style="padding:4px 0; text-align:right; color:#111111; font-weight:500;">${new Date().toLocaleDateString()}</td>
+                    </tr>
+                    <tr>
+                        <td style="padding:4px 0; color:#666666;">Status</td>
+                        <td style="padding:4px 0; text-align:right; color:#111111; font-weight:600;">Paid</td>
                     </tr>
                 </table>
-            </td>
-        </tr>
-    </table>
-</body>
-</html>
+            </div>
+
+            <p style="margin:24px 0 0; font-size:14px; color:#666666;">
+                View your invoice history in <a href="${process.env.NEXTAUTH_URL}/admin/billing" style="color:#111111; text-decoration:underline;">Billing Settings</a>.
+            </p>
         `;
     }
 }

@@ -1,3 +1,4 @@
+'use client';
 
 import React, { useState } from 'react';
 import { Icon, cn } from '@vayva/ui';
@@ -17,7 +18,7 @@ export const TemplatePreview = ({ template, onClose, onUse, userPlan }: Template
     // Determine lock state
     const planLevels = ['starter', 'growth', 'pro'];
     const userLevelIndex = planLevels.indexOf(userPlan);
-    const requiredLevelIndex = planLevels.indexOf(template.planLevel);
+    const requiredLevelIndex = planLevels.indexOf((template as any).tier || (template as any).planLevel);
     const isLocked = requiredLevelIndex > userLevelIndex;
 
     // Point to internal renderer page
@@ -61,7 +62,7 @@ export const TemplatePreview = ({ template, onClose, onUse, userPlan }: Template
                 <div className="flex items-center gap-3">
                     {isLocked ? (
                         <div className="flex items-center gap-2 text-sm font-bold text-gray-500 bg-gray-100 px-3 py-1.5 rounded-lg">
-                            <Icon name="Lock" size={14} /> Available on {template.planLevel}
+                            <Icon name="Lock" size={14} /> Available on {(template as any).tier || (template as any).planLevel}
                         </div>
                     ) : (
                         <button

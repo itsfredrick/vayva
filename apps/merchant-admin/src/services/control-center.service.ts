@@ -1,119 +1,81 @@
+/**
+ * STORE CONFIGURATION SERVICE
+ * 
+ * DISABLED: Control Center requires Prisma schema migration.
+ * Feature is disabled via feature flag until migration complete.
+ */
+
+import { assertFeatureEnabled } from '@/lib/env-validation';
 import {
-    StoreConfig,
-    StoreTemplate,
-    StoreBranding,
-    StorePage,
-    StoreNavigation,
-    StorePolicy
-} from '../types/control-center';
+    StoreConfig, StoreTemplate, StorePage, StoreBranding,
+    StoreNavigation, StorePolicy, StoreDomain
+} from '@/types/control-center';
 
-// MOCK DATA
-const MOCK_TEMPLATES: StoreTemplate[] = [
-    {
-        id: 'vayva-storefront',
-        name: 'Vayva Storefront',
-        description: 'The official, high-performance storefront designed for conversion.',
-        category: 'minimal',
-        isPremium: false,
-    },
-    {
-        id: 'modern-retail',
-        name: 'Modern Retail',
-        description: 'Clean lines and large imagery, perfect for fashion and lifestyle.',
-        category: 'editorial',
-        isPremium: true,
-    },
-    {
-        id: 'catalog-pro',
-        name: 'Catalog Pro',
-        description: 'Dense layout for large inventories.',
-        category: 'catalog',
-        isPremium: true,
-    },
-    {
-        id: 'boutique',
-        name: 'Boutique',
-        description: 'Elegant typeface and whitespace for luxury items.',
-        category: 'minimal',
-        isPremium: false,
-    }
-];
+async function getStoreConfig(storeId?: string): Promise<StoreConfig | null> {
+    assertFeatureEnabled('CONTROL_CENTER_ENABLED');
+    // Stub return to satisfy types
+    return {
+        templateId: 'default',
+        branding: {
+            storeName: 'Vayva Store',
+            accentColor: '#000000',
+            fontHeading: 'Inter',
+            fontBody: 'Inter'
+        },
+        pages: [],
+        navigation: { header: [], footer: [] },
+        policies: [],
+        domains: { subdomain: 'store', status: 'active' },
+        isPublished: false
+    };
+}
 
-let mockStore: StoreConfig = {
-    templateId: 'vayva-storefront',
-    branding: {
-        storeName: 'My Awesome Store',
-        accentColor: '#000000',
-        fontHeading: 'Space Grotesk',
-        fontBody: 'Inter',
-    },
-    pages: [
-        { id: '1', title: 'About Us', slug: 'about', isPublished: true, updatedAt: new Date(), content: 'Welcome to our store.' },
-        { id: '2', title: 'Contact', slug: 'contact', isPublished: true, updatedAt: new Date(), content: 'Contact us at help@example.com' },
-    ],
-    navigation: {
-        header: [
-            { id: 'n1', label: 'Home', path: '/', type: 'page' },
-            { id: 'n2', label: 'Shop', path: '/shop', type: 'collection' },
-        ],
-        footer: [
-            { id: 'n3', label: 'Returns', path: '/policies/returns', type: 'page' },
-        ],
-    },
-    policies: [
-        { type: 'returns', title: 'Return Policy', content: '30-day returns.', isEnabled: true },
-        { type: 'shipping', title: 'Shipping Policy', content: 'We ship worldwide.', isEnabled: true },
-    ],
-    domains: {
-        subdomain: 'my-store',
-        status: 'active'
-    },
-    isPublished: false,
-};
+async function updateTemplate(storeId?: string, templateId?: string) {
+    assertFeatureEnabled('CONTROL_CENTER_ENABLED');
+    throw new Error('Control Center not yet implemented');
+}
+
+import { getNormalizedTemplates } from '@/lib/templates-registry';
+
+// ...
+
+async function getTemplates(storeId?: string): Promise<StoreTemplate[]> {
+    // DO NOT block template browsing behind CONTROL_CENTER_ENABLED.
+    return getNormalizedTemplates() as any;
+}
+
+async function updateBranding(branding: StoreBranding, storeId?: string) {
+    assertFeatureEnabled('CONTROL_CENTER_ENABLED');
+    // Stub
+}
+
+async function getPages(storeId?: string): Promise<StorePage[]> {
+    assertFeatureEnabled('CONTROL_CENTER_ENABLED');
+    return [];
+}
+
+async function createPage(page: any, storeId?: string) {
+    assertFeatureEnabled('CONTROL_CENTER_ENABLED');
+    throw new Error('Control Center not yet implemented');
+}
+
+async function updatePage(pageId: string, updates: any, storeId?: string) {
+    assertFeatureEnabled('CONTROL_CENTER_ENABLED');
+    throw new Error('Control Center not yet implemented');
+}
+
+async function publishStore(storeId?: string) {
+    assertFeatureEnabled('CONTROL_CENTER_ENABLED');
+    throw new Error('Control Center not yet implemented');
+}
 
 export const ControlCenterService = {
-    getTemplates: async (): Promise<StoreTemplate[]> => {
-        await new Promise(resolve => setTimeout(resolve, 500)); // Simulate delay
-        return MOCK_TEMPLATES;
-    },
-
-    getStoreConfig: async (): Promise<StoreConfig> => {
-        await new Promise(resolve => setTimeout(resolve, 300));
-        return { ...mockStore };
-    },
-
-    updateTemplate: async (templateId: string): Promise<void> => {
-        await new Promise(resolve => setTimeout(resolve, 300));
-        mockStore.templateId = templateId;
-    },
-
-    updateBranding: async (branding: Partial<StoreBranding>): Promise<void> => {
-        await new Promise(resolve => setTimeout(resolve, 300));
-        mockStore.branding = { ...mockStore.branding, ...branding };
-    },
-
-    // Pages
-    getPages: async (): Promise<StorePage[]> => {
-        return mockStore.pages;
-    },
-
-    createPage: async (page: Omit<StorePage, 'id' | 'updatedAt'>): Promise<StorePage> => {
-        const newPage: StorePage = {
-            ...page,
-            id: Math.random().toString(36).substr(2, 9),
-            updatedAt: new Date(),
-        };
-        mockStore.pages.push(newPage);
-        return newPage;
-    },
-
-    updatePage: async (id: string, updates: Partial<StorePage>): Promise<void> => {
-        mockStore.pages = mockStore.pages.map(p => p.id === id ? { ...p, ...updates, updatedAt: new Date() } : p);
-    },
-
-    // Mock Publish
-    publishStore: async (): Promise<void> => {
-        await new Promise(resolve => setTimeout(resolve, 1000));
-        mockStore.isPublished = true;
-    }
+    getStoreConfig,
+    getTemplates,
+    updateTemplate,
+    updateBranding,
+    getPages,
+    createPage,
+    updatePage,
+    publishStore
 };

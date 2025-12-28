@@ -17,8 +17,12 @@ export default function NavigationPage() {
         const load = async () => {
             const c = await ControlCenterService.getStoreConfig();
             setConfig(c);
-            setHeaderLinks(c.navigation.header);
-            setFooterLinks(c.navigation.footer);
+            if (c) {
+                // Assuming c.navigation might be null or undefined, provide a default empty object
+                const navigation = c.navigation || { header: [], footer: [] };
+                setHeaderLinks(navigation.header);
+                setFooterLinks(navigation.footer);
+            }
             setLoading(false);
         };
         load();

@@ -2,7 +2,7 @@
 
 import React, { Suspense } from 'react';
 import Link from 'next/link';
-import { Button , Icon } from '@vayva/ui';
+import { Button, Icon } from '@vayva/ui';
 import { motion } from 'framer-motion';
 
 function WhatsAppContent() {
@@ -15,15 +15,15 @@ function WhatsAppContent() {
                         animate={{ opacity: 1, x: 0 }}
                         transition={{ duration: 0.6 }}
                     >
-                        <span className="text-[#46EC13] font-bold tracking-wide uppercase mb-4 block">WhatsApp AI Automation</span>
-                        <h1 className="text-5xl font-bold text-[#1d1d1f] mb-6">Put your sales on autopilot.</h1>
+                        <span className="text-[#46EC13] font-bold tracking-wide uppercase mb-4 block">WhatsApp AI-Assisted Selling</span>
+                        <h1 className="text-5xl font-bold text-[#1d1d1f] mb-6">Master your sales chat.</h1>
                         <p className="text-xl text-[#1d1d1f]/60 mb-8 leading-relaxed">
                             Respond to customers instantly, 24/7. Our AI assistant can answer questions, recommend products, and confirm orders directly on WhatsApp.
                         </p>
                         <div className="flex gap-4">
-                            <Link href="/auth/signup">
+                            <Link href="/signup">
                                 <Button className="bg-[#46EC13] hover:bg-[#3DD10F] text-black font-bold h-12 px-8 rounded-full shadow-lg shadow-[#46EC13]/20">
-                                    Automate Now
+                                    Get Started
                                 </Button>
                             </Link>
                         </div>

@@ -11,6 +11,41 @@ const Link = NextLink as any;
 import { ArrowRight as ArrowRightIcon } from 'lucide-react';
 const ArrowRight = ArrowRightIcon as any;
 
+// Template Imports
+import { AAFashionHome } from '@/templates/aa-fashion/AAFashionHome';
+import { GizmoTechHome } from '@/templates/gizmo-tech/GizmoTechHome';
+import { BloomeHomeLayout } from '@/templates/bloome-home/BloomeHomeLayout';
+import { BooklyLayout } from '@/templates/bookly-pro/BooklyLayout';
+import { ChopnowLayout } from '@/templates/chopnow/ChopnowLayout';
+import { FileVaultLayout } from '@/templates/file-vault/FileVaultLayout';
+import { TicketlyLayout } from '@/templates/ticketly/TicketlyLayout';
+import { EduflowLayout } from '@/templates/eduflow/EduflowLayout';
+import { BulkTradeLayout } from '@/templates/bulktrade/BulkTradeLayout';
+import { MarketHubLayout } from '@/templates/markethub/MarketHubLayout';
+import { GiveFlowLayout } from '@/templates/giveflow/GiveFlowLayout';
+import { HomeListLayout } from '@/templates/homelist/HomeListLayout';
+import { OneProductLayout } from '@/templates/one-product/OneProductLayout';
+
+import { TEMPLATE_REGISTRY } from '@/lib/templates-registry';
+
+// Map registry layout keys to components
+const LAYOUT_COMPONENTS: Record<string, React.ComponentType<any>> = {
+  'AAFashionHome': AAFashionHome,
+  'GizmoTechHome': GizmoTechHome,
+  'BloomeHomeLayout': BloomeHomeLayout,
+  'BooklyLayout': BooklyLayout,
+  'ChopnowLayout': ChopnowLayout,
+  'FileVaultLayout': FileVaultLayout,
+  'TicketlyLayout': TicketlyLayout,
+  'EduflowLayout': EduflowLayout,
+  'BulkTradeLayout': BulkTradeLayout,
+  'MarketHubLayout': MarketHubLayout,
+  'GiveFlowLayout': GiveFlowLayout,
+  'HomeListLayout': HomeListLayout,
+  'OneProductLayout': OneProductLayout,
+  'StoreShell': StoreShell // Fallback/Standard
+};
+
 export default function StoreHome() {
   const { store } = useStore();
   const [products, setProducts] = useState<PublicProduct[]>([]);
@@ -27,9 +62,39 @@ export default function StoreHome() {
     }
   }, [store]);
 
-  // If StoreShell handles "no store", we just return null or loading here until context is ready
-  if (!store) return null; // Logic is inside StoreShell actually
+  if (!store) return null;
 
+  // Resolve Template ID from Store (Theme or Slug)
+  // Priority: 1. store.theme.templateId (if valid), 2. Look up by store slug in registry
+  let activeTemplateId = (store.theme as any).templateId;
+
+  if (!activeTemplateId || !TEMPLATE_REGISTRY[activeTemplateId]) {
+    // Fallback: check if the slug implies a demo template
+    const demoTemplate = Object.values(TEMPLATE_REGISTRY).find(t => t.slug === store.slug);
+    if (demoTemplate) {
+      activeTemplateId = demoTemplate.templateId;
+    } else {
+      activeTemplateId = 'vayva-standard';
+    }
+  }
+
+  const templateDef = TEMPLATE_REGISTRY[activeTemplateId];
+  const componentKey = templateDef?.layoutComponent || 'StoreShell';
+  const ActiveLayout = LAYOUT_COMPONENTS[componentKey];
+
+  // Specific Loading States based on theme (optional polish)
+  if (loadingProducts) {
+    const themeColor = templateDef?.defaultTheme === 'dark' ? 'bg-[#0B0F19] text-white' : 'bg-white text-gray-900';
+    return <div className={`min-h-screen flex items-center justify-center ${themeColor}`}>Loading...</div>;
+  }
+
+  // If it's a specific layout (non-standard), render it securely
+  if (componentKey !== 'StoreShell' && ActiveLayout) {
+    return <ActiveLayout store={store} products={products} />;
+  }
+
+  // DEFAULT STANDARD TEMPLATE (Fallback / StoreShell)
+  // This is technically `vayva-standard`
   return (
     <StoreShell>
       {/* Hero Section */}

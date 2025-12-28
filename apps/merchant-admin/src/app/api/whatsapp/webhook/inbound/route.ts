@@ -32,9 +32,6 @@ export async function POST(req: NextRequest) {
                     reason: `Keyword opt-out: ${cleanText}`
                 }
             );
-
-            // Optional: You would typically queue a reply here: "You have been opted out."
-            console.log(`[Consent] Opted out ${phoneE164} for merchant ${merchantId}`);
         }
     }
 

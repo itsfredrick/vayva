@@ -4,31 +4,37 @@ import { prisma } from '@vayva/db';
 export class DisputeService {
 
     static async handleWebhookEvent(event: any) {
-        // event: { event: 'dispute.create', data: { ... } }
         const { event: eventType, data } = event;
 
-        // 1. Map Paystack Data to our Schema
-        // data usually contains: id, amount, currency, transaction: { reference }, reason, due_at
-
-        const providerDisputeId = data.id.toString(); // Paystack ID is number/string
-        const amount = data.amount; // Paystack is in kobo? Assume passed as normalized or check docs. usually kobo.
+        const providerDisputeId = data.id.toString();
+        const amount = data.amount;
         const amountNgn = amount / 100;
 
-        // 2. Resolve Store/Order
-        // We need to find the store. 
-        // Maybe via transaction reference -> Order -> Store?
-        // Or transaction -> Payment -> ...
-        // For V1, let's try to find an Order by provider reference "data.transaction.reference"
-        // If not found, we might need a fallback or log error.
+        const providerRef = data.transaction?.reference;
+        if (!providerRef) return;
 
-        // Mock lookup:
-        // const order = await prisma.order.findUnique({ where: { providerRef: data.transaction.reference }})
-        // const storeId = order.storeId;
-        const storeId = 'store_mock_id'; // Fallback for V1 ingestion without live orders
+        // Use PaymentTransaction for unique lookup
+        const transaction = await prisma.paymentTransaction.findUnique({
+            where: { reference: providerRef },
+            include: {
+                store: {
+                    include: {
+                        memberships: {
+                            where: { role: 'OWNER' },
+                            take: 1
+                        }
+                    }
+                }
+            }
+        });
 
-        if (!storeId) throw new Error('Store not found for dispute');
+        if (!transaction || !transaction.store) return;
 
-        // 3. Upsert Dispute (Safe check first as providerDisputeId not unique)
+        const storeId = transaction.store.id;
+        // Resolve real merchant owner ID or fallback
+        const merchantId = transaction.store.memberships[0]?.userId || 'system_fallback';
+
+        // Upsert Dispute
         let status = 'OPENED';
         if (eventType === 'dispute.evidence_required') status = 'EVIDENCE_REQUIRED';
         if (eventType === 'dispute.won') status = 'WON';
@@ -42,28 +48,25 @@ export class DisputeService {
             await prisma.dispute.update({
                 where: { id: existingDispute.id },
                 data: {
-                    status: status as any, // Cast to any to bypass strict enum check if mismatched
+                    status: status as any,
                     evidenceDueAt: data.due_at ? new Date(data.due_at) : undefined,
                 }
             });
         } else {
             await prisma.dispute.create({
                 data: {
-                    merchantId: 'user_mock_id', // Needs resolution
-                    storeId: storeId, // Use the resolved storeId
+                    merchantId: merchantId,
+                    storeId: storeId,
                     provider: 'PAYSTACK',
                     providerDisputeId,
                     status: status as any,
-                    amount: amountNgn, // Decimal? Needs Decimal type or number
+                    amount: amountNgn,
                     currency: 'NGN',
                     reasonCode: data.reason || 'General Dispute',
                     evidenceDueAt: data.due_at ? new Date(data.due_at) : undefined,
                 }
             });
         }
-
-        // 4. Notify (Logic Stub)
-        // if (status === 'evidence_required') sendNotification(...)
     }
 
     static async addEvidence(disputeId: string, userId: string, fileData: any) {
@@ -83,24 +86,11 @@ export class DisputeService {
     }
 
     static async submitResponse(disputeId: string, userId: string, note?: string) {
-        await prisma.$transaction(async (tx) => {
-            // Create Submission Record
-            await tx.disputeSubmission.create({
-                data: {
-                    disputeId,
-                    submittedBy: userId,
-                    notes: note
-                }
-            });
-
-            // Update Status
-            await tx.dispute.update({
-                where: { id: disputeId },
-                data: { status: 'SUBMITTED' as any }
-            });
-
-            // TODO: Trigger API call to Paystack to actually submit
-        });
+        // Reject submission if not configured, using structure API can parse
+        const error: any = new Error("Dispute submission is not configured");
+        error.code = "feature_not_configured";
+        error.feature = "DISPUTES_ENABLED";
+        throw error;
     }
 
     static async getRecentDeadlines() {

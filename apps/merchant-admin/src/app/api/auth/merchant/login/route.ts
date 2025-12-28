@@ -2,11 +2,18 @@ import { NextRequest, NextResponse } from 'next/server';
 import { compare } from 'bcryptjs';
 import { prisma } from '@vayva/db';
 import { createSession } from '@/lib/session';
+import { logger } from '@/lib/logger';
+import { checkRateLimit } from '@/lib/rate-limit';
 
 export async function POST(request: NextRequest) {
+    let body: any;
     try {
-        const body = await request.json();
+        body = await request.json();
         const { email, password } = body;
+
+        // Rate Limit: 10 per hour per IP
+        const ip = request.headers.get('x-forwarded-for') || email || 'unknown';
+        await checkRateLimit(ip, 'login', 10, 3600);
 
         // Validation
         if (!email || !password) {
@@ -98,12 +105,12 @@ export async function POST(request: NextRequest) {
                 onboardingLastStep: membership.store.onboardingLastStep || 'welcome',
                 onboardingCompleted: membership.store.onboardingCompleted || false,
                 onboardingUpdatedAt: onboarding?.updatedAt || new Date(),
-                plan: 'STARTER', // TODO: Get from subscription
+                plan: membership.store.plan || 'STARTER',
             },
         });
 
     } catch (error) {
-        console.error('Login error:', error);
+        logger.error('Login failed', error, { email: body?.email });
         return NextResponse.json(
             { error: 'Login failed' },
             { status: 500 }

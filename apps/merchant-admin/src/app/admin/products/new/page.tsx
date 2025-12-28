@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import { AdminShell } from '@/components/admin-shell';
 import { ProductsService, Product } from '@/services/products';
 import { Button, Icon, cn } from '@vayva/ui';
+import { toast } from 'sonner';
 
 export default function AddProductPage() {
     const router = useRouter();
@@ -40,9 +41,10 @@ export default function AddProductPage() {
 
         const res = await ProductsService.createProduct(productData);
         if (res.success) {
+            toast.success("Product created successfully");
             router.push('/admin/products');
         } else {
-            alert(res.error); // Simple error handling for prototype
+            toast.error(res.error || "Failed to create product");
         }
         setIsLoading(false);
     };

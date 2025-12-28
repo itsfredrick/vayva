@@ -1,92 +1,104 @@
+
 'use client';
 
-import React, { useState } from 'react';
-import Link from 'next/link';
-import { Button , Icon } from '@vayva/ui';
+import { useState } from 'react';
+import { useRouter } from 'next/navigation';
+import { ShieldCheck, Loader2 } from 'lucide-react';
 
 export default function OpsLoginPage() {
-    const [step, setStep] = useState<'email' | 'mfa'>('email');
+    const router = useRouter();
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState<string | null>(null);
+
+    const handleLogin = async (e: React.FormEvent) => {
+        e.preventDefault();
+        setLoading(true);
+        setError(null);
+
+        try {
+            const res = await fetch('/api/ops/auth/login', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ email, password })
+            });
+
+            if (!res.ok) {
+                const data = await res.json();
+                throw new Error(data.error || 'Login failed');
+            }
+
+            // Success
+            router.push('/ops');
+            router.refresh(); // Refresh to update server components/middleware state
+        } catch (err: any) {
+            setError(err.message);
+            setLoading(false);
+        }
+    };
 
     return (
-        <div className="min-h-screen bg-[#142210] flex items-center justify-center p-4 selection:bg-red-500/30">
+        <div className="min-h-screen bg-gray-900 flex items-center justify-center p-4">
+            <div className="bg-white w-full max-w-md rounded-2xl shadow-xl overflow-hidden">
+                <div className="p-8">
+                    <div className="flex justify-center mb-6">
+                        <div className="h-12 w-12 bg-indigo-100 rounded-full flex items-center justify-center">
+                            <ShieldCheck className="h-6 w-6 text-indigo-600" />
+                        </div>
+                    </div>
 
-            {/* Background Effects */}
-            <div className="fixed inset-0 overflow-hidden pointer-events-none">
-                <div className="absolute -top-[20%] -left-[10%] w-[50%] h-[50%] bg-red-500/5 rounded-full blur-[120px]" />
-                <div className="absolute top-[20%] right-[10%] w-[40%] h-[40%] bg-blue-500/5 rounded-full blur-[100px]" />
-            </div>
+                    <h1 className="text-2xl font-bold text-center text-gray-900 mb-2">Ops Portal</h1>
+                    <p className="text-center text-gray-500 mb-8">Authorized personnel only</p>
 
-            <div className="w-full max-w-md bg-[#0b141a]/50 backdrop-blur-xl border border-white/10 rounded-2xl p-8 relative z-10 shadow-2xl">
+                    {error && (
+                        <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg mb-6 text-sm">
+                            {error}
+                        </div>
+                    )}
 
-                <div className="text-center mb-8">
-                    <div className="w-12 h-12 rounded bg-red-500/20 text-red-500 flex items-center justify-center font-bold border border-red-500/30 mx-auto mb-4 text-xl">O</div>
-                    <h1 className="text-2xl font-bold text-white">Vayva Ops</h1>
-                    <p className="text-sm text-text-secondary mt-2">Restricted Area. Authorized Personnel Only.</p>
-                </div>
-
-                {step === 'email' ? (
-                    <form className="space-y-4" onSubmit={(e) => { e.preventDefault(); setStep('mfa'); }}>
+                    <form onSubmit={handleLogin} className="space-y-4">
                         <div>
-                            <label className="text-xs text-text-secondary uppercase font-bold tracking-wider mb-2 block">Email Address</label>
+                            <label className="block text-sm font-medium text-gray-700 mb-1">Email</label>
                             <input
                                 type="email"
-                                // autoFocus
-                                className="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-red-500/50 transition-colors"
-                                placeholder="name@vayva.com"
+                                value={email}
+                                onChange={(e) => setEmail(e.target.value)}
+                                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition-all"
+                                placeholder="ops@vayva.com"
+                                required
                             />
                         </div>
                         <div>
-                            <label className="text-xs text-text-secondary uppercase font-bold tracking-wider mb-2 block">Password</label>
+                            <label className="block text-sm font-medium text-gray-700 mb-1">Password</label>
                             <input
                                 type="password"
-                                className="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-red-500/50 transition-colors"
-                                placeholder="••••••••••••"
+                                value={password}
+                                onChange={(e) => setPassword(e.target.value)}
+                                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition-all"
+                                placeholder="••••••••"
+                                required
                             />
                         </div>
-                        <Button className="w-full h-11 bg-red-600 hover:bg-red-500 text-white font-bold rounded-lg mt-2">
-                            Sign In
-                        </Button>
-                        <div className="text-center">
-                            <a href="#" className="text-xs text-text-secondary hover:text-white">Forgot password?</a>
-                        </div>
+                        <button
+                            type="submit"
+                            disabled={loading}
+                            className="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-2.5 rounded-lg transition-colors flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
+                        >
+                            {loading ? (
+                                <>
+                                    <Loader2 className="h-4 w-4 animate-spin" />
+                                    Authenticating...
+                                </>
+                            ) : (
+                                'Sign In'
+                            )}
+                        </button>
                     </form>
-                ) : (
-                    <form className="space-y-6" onSubmit={(e) => e.preventDefault()}>
-                        <div className="text-center">
-                            <h3 className="text-white font-bold">Two-Factor Authentication</h3>
-                            <p className="text-xs text-text-secondary mt-1">Enter the status code from your authenticator app.</p>
-                        </div>
-
-                        <div className="flex gap-2 justify-center">
-                            {[1, 2, 3, 4, 5, 6].map((i) => (
-                                <input
-                                    key={i}
-                                    type="text"
-                                    maxLength={1}
-                                    className="w-10 h-12 bg-white/5 border border-white/10 rounded text-center text-xl font-bold text-white focus:outline-none focus:border-red-500/50 transition-colors"
-                                />
-                            ))}
-                        </div>
-
-                        <Link href="/ops/merchants">
-                            <Button className="w-full h-11 bg-red-600 hover:bg-red-500 text-white font-bold rounded-lg">
-                                Verify & Access
-                            </Button>
-                        </Link>
-
-                        <div className="text-center">
-                            <button onClick={() => setStep('email')} className="text-xs text-text-secondary hover:text-white">Back to login</button>
-                        </div>
-                    </form>
-                )}
-
-                <div className="mt-8 pt-6 border-t border-white/5 text-center">
-                    <div className="inline-flex items-center gap-2 px-3 py-1 bg-white/5 rounded-full border border-white/5">
-                        <div className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-                        <span className="text-[10px] text-text-secondary font-mono">SYSTEM NORMAL</span>
-                    </div>
                 </div>
-
+                <div className="bg-gray-50 px-8 py-4 text-center text-xs text-gray-500 border-t border-gray-100">
+                    &copy; 2025 Vayva Internal Systems. All actions logged.
+                </div>
             </div>
         </div>
     );

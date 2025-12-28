@@ -73,7 +73,10 @@ export {
     ThemeStatus,
     VirtualAccountStatus,
     WebhookDeliveryStatus,
-    WebhookEndpointStatus
+    WebhookEndpointStatus,
+    ExportStatus,
+    DataDeletionStatus,
+    DeletionStatus
 } from '@prisma/client';
 
 // Types are safe to wildcard export as they don't trigger Turbopack re-export warnings

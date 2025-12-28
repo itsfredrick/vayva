@@ -7,7 +7,6 @@ import { EventBus } from '@/lib/events/eventBus';
 // Mock WhatsApp Provider
 const WhatsAppProvider = {
     sendText: async (to: string, text: string) => {
-        console.log(`[WA-MOCK] Sending to ${to}: ${text}`);
         return { messageId: `wa_mid_${Date.now()}` };
     }
 };

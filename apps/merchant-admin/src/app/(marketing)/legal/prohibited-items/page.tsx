@@ -8,7 +8,7 @@ const legalDocuments = [
     { title: 'Acceptable Use Policy', href: '/legal/acceptable-use' },
     { title: 'Prohibited Items', href: '/legal/prohibited-items', active: true },
     { title: 'Refund Policy', href: '/legal/refund-policy' },
-    { title: 'KYC & Safety', href: '/legal/kyc-safety' },
+    { title: 'KYC & Compliance', href: '/legal/kyc-safety' },
     { title: 'Manage Cookies', href: '/legal/cookies' },
 ];
 
@@ -27,8 +27,8 @@ export default function ProhibitedItemsPage() {
                                         <Link
                                             href={doc.href}
                                             className={`block px-3 py-2 text-sm rounded ${doc.active
-                                                    ? 'bg-gray-100 text-gray-900 font-medium'
-                                                    : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'
+                                                ? 'bg-gray-100 text-gray-900 font-medium'
+                                                : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'
                                                 }`}
                                         >
                                             {doc.title}
@@ -46,16 +46,20 @@ export default function ProhibitedItemsPage() {
                         <div className="not-prose mb-8 text-sm text-gray-600">
                             <p><strong>Last Updated:</strong> January 1, 2025</p>
                             <p><strong>Jurisdiction:</strong> Federal Republic of Nigeria</p>
-                            <p><strong>Governing Entity:</strong> Vayva Inc.</p>
+                            <p><strong>Governing Entity:</strong> Vayva Inc. (operating in Nigeria)</p>
                         </div>
 
                         <h2>1. Purpose</h2>
                         <p>
                             This Prohibited Items Policy defines goods and services that may not be sold, promoted, or facilitated using the Vayva platform.
                             This Policy protects Vayva from regulatory and reputational risk and ensures compliance with Nigerian law.
+                            This Policy reflects applicable Nigerian laws and regulations, including NDLEA and NAFDAC restrictions where applicable.
                         </p>
                         <p>
-                            <strong>Violation of this Policy will result in immediate account suspension or termination.</strong>
+                            This Policy should be read in conjunction with the Acceptable Use Policy and Terms of Service.
+                        </p>
+                        <p>
+                            <strong>Violation of this Policy may result in immediate account suspension or termination, at Vayva’s sole discretion.</strong>
                         </p>
 
                         <h2>2. Prohibited Categories</h2>
@@ -95,6 +99,7 @@ export default function ProhibitedItemsPage() {
                             <li>Stolen credit cards, bank accounts, or financial instruments</li>
                             <li>Money laundering services or structuring transactions</li>
                             <li>Cryptocurrency scams or unregistered securities</li>
+                            <li>Sale of stolen financial data or credentials</li>
                         </ul>
 
                         <h3>2.5 Adult Content and Services</h3>
@@ -130,6 +135,14 @@ export default function ProhibitedItemsPage() {
                             <li>Items that violate Nigerian customs or import regulations</li>
                             <li>Items subject to sanctions or trade restrictions</li>
                             <li>Stolen goods or items obtained through illegal means</li>
+                        </ul>
+
+                        <h3>2.9 Digital Abuse and Circumvention Tools</h3>
+                        <ul>
+                            <li>SIM cards, bulk OTP services, or SMS spamming tools</li>
+                            <li>Tools designed to bypass platform safeguards or verification</li>
+                            <li>Fake verification documents or "identity packs"</li>
+                            <li>Account selling or trading services</li>
                         </ul>
 
                         <h2>3. Non-Exhaustive List</h2>
@@ -221,7 +234,7 @@ export default function ProhibitedItemsPage() {
                             For questions about this Policy, please contact:
                         </p>
                         <p>
-                            <strong>Vayva Inc.</strong><br />
+                            <strong>Vayva Inc. (operating in Nigeria)</strong><br />
                             Email: legal@vayva.shop<br />
                             Compliance: compliance@vayva.shop<br />
                             Support: support@vayva.shop

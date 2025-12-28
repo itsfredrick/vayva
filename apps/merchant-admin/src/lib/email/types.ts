@@ -11,6 +11,14 @@ export interface EmailPayload {
     meta?: any;
 }
 
-export interface EmailAdapter {
-    send(payload: EmailPayload): Promise<{ providerId?: string, error?: string }>;
+
+export interface EmailResult {
+    success: boolean;
+    providerId?: string;
+    error?: string;
 }
+
+export interface EmailAdapter {
+    send(payload: EmailPayload): Promise<EmailResult>;
+}
+

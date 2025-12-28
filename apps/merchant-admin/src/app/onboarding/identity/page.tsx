@@ -35,7 +35,9 @@ export default function IdentityPage() {
             identity: {
                 fullName: formData.fullName,
                 email: formData.email,
-                phone: formData.phone
+                phone: formData.phone,
+                role: 'owner',
+                authMethod: user?.email?.includes('gmail') ? 'google' : 'email'
             }
         });
 
@@ -54,6 +56,25 @@ export default function IdentityPage() {
             </div>
 
             <form onSubmit={handleSubmit} className="space-y-6 bg-white p-8 rounded-2xl border border-gray-200 shadow-sm">
+                <div className="grid grid-cols-2 gap-4">
+                    <div className="p-3 bg-gray-50 rounded-lg border border-gray-100">
+                        <span className="text-xs text-gray-500 uppercase font-bold tracking-wider">Role</span>
+                        <div className="flex items-center gap-2 mt-1">
+                            <Icon name="ShieldCheck" size={16} className="text-black" />
+                            <span className="font-medium text-gray-900">Owner</span>
+                        </div>
+                    </div>
+                    <div className="p-3 bg-gray-50 rounded-lg border border-gray-100">
+                        <span className="text-xs text-gray-500 uppercase font-bold tracking-wider">Authentication</span>
+                        <div className="flex items-center gap-2 mt-1">
+                            <Icon name="Lock" size={16} className="text-black" />
+                            <span className="font-medium text-gray-900 capitalize">
+                                {user?.email?.includes('gmail') ? 'Google' : 'Email'}
+                            </span>
+                        </div>
+                    </div>
+                </div>
+
                 <Input
                     label="Full Name"
                     value={formData.fullName}

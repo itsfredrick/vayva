@@ -1,7 +1,9 @@
+
 'use client';
 
-import React, { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
+import { format } from 'date-fns';
 
 const legalDocuments = [
     { title: 'Legal Hub', href: '/legal' },
@@ -10,32 +12,80 @@ const legalDocuments = [
     { title: 'Acceptable Use Policy', href: '/legal/acceptable-use' },
     { title: 'Prohibited Items', href: '/legal/prohibited-items' },
     { title: 'Refund Policy', href: '/legal/refund-policy' },
-    { title: 'KYC & Safety', href: '/legal/kyc-safety' },
+    { title: 'KYC & Compliance', href: '/legal/kyc-safety' },
     { title: 'Manage Cookies', href: '/legal/cookies', active: true },
 ];
 
 export default function ManageCookiesPage() {
     const [essentialEnabled] = useState(true); // Always enabled
     const [analyticsEnabled, setAnalyticsEnabled] = useState(false);
-    const [saved, setSaved] = useState(false);
+    const [marketingEnabled, setMarketingEnabled] = useState(false);
+    const [status, setStatus] = useState<'idle' | 'saving' | 'success' | 'error'>('idle');
+    const [errorMsg, setErrorMsg] = useState('');
+    const [isLoading, setIsLoading] = useState(true);
+    const [updatedAt, setUpdatedAt] = useState<string | null>(null);
 
-    const handleSave = () => {
-        // TODO: Implement actual cookie consent storage
-        localStorage.setItem('vayva_cookie_consent', JSON.stringify({
-            essential: true,
-            analytics: analyticsEnabled,
-            timestamp: new Date().toISOString(),
-        }));
-        setSaved(true);
-        setTimeout(() => setSaved(false), 3000);
+    // Load initial state from API (which reads cookie)
+    useEffect(() => {
+        async function loadConsent() {
+            try {
+                const res = await fetch('/api/consent/cookies');
+                if (res.ok) {
+                    const data = await res.json();
+                    setAnalyticsEnabled(!!data.analytics);
+                    setMarketingEnabled(!!data.marketing);
+                    if (data.updatedAt) setUpdatedAt(data.updatedAt);
+                }
+            } catch (error) {
+                // Silent fail on load, default strict
+            } finally {
+                setIsLoading(false);
+            }
+        }
+        loadConsent();
+    }, []);
+
+    const handleSave = async () => {
+        setStatus('saving');
+        setErrorMsg('');
+
+        try {
+            const res = await fetch('/api/consent/cookies', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    analytics: analyticsEnabled,
+                    marketing: marketingEnabled,
+                    essential: true
+                })
+            });
+
+            if (res.ok) {
+                const data = await res.json();
+                setStatus('success');
+                if (data.updatedAt) setUpdatedAt(data.updatedAt);
+                setTimeout(() => setStatus('idle'), 3000);
+            } else {
+                const err = await res.json().catch(() => ({}));
+                setStatus('error');
+                setErrorMsg(err.message || 'Failed to save preferences');
+            }
+        } catch (error) {
+            setStatus('error');
+            setErrorMsg('Network error occurred');
+        }
     };
+
+    if (isLoading) {
+        return <div className="min-h-screen bg-white flex items-center justify-center">Loading preferences...</div>;
+    }
 
     return (
         <div className="min-h-screen bg-white">
             <div className="max-w-7xl mx-auto px-6 py-16">
                 <div className="flex gap-12">
                     {/* Sidebar Navigation */}
-                    <aside className="w-64 flex-shrink-0">
+                    <aside className="w-64 flex-shrink-0 hidden md:block">
                         <nav className="sticky top-24">
                             <h3 className="text-sm font-semibold text-gray-900 mb-4">Legal Documents</h3>
                             <ul className="space-y-2">
@@ -44,8 +94,8 @@ export default function ManageCookiesPage() {
                                         <Link
                                             href={doc.href}
                                             className={`block px-3 py-2 text-sm rounded ${doc.active
-                                                    ? 'bg-gray-100 text-gray-900 font-medium'
-                                                    : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'
+                                                ? 'bg-gray-100 text-gray-900 font-medium'
+                                                : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'
                                                 }`}
                                         >
                                             {doc.title}
@@ -61,9 +111,9 @@ export default function ManageCookiesPage() {
                         <h1 className="text-4xl font-bold text-gray-900 mb-4">Manage Cookies</h1>
 
                         <div className="mb-8 text-sm text-gray-600">
-                            <p><strong>Last Updated:</strong> January 1, 2025</p>
+                            <p><strong>Last Updated:</strong> {updatedAt ? format(new Date(updatedAt), 'MMMM d, yyyy') : 'Never'}</p>
                             <p><strong>Jurisdiction:</strong> Federal Republic of Nigeria</p>
-                            <p><strong>Governing Entity:</strong> Vayva Inc.</p>
+                            <p><strong>Governing Entity:</strong> Vayva Inc. (operating in Nigeria)</p>
                         </div>
 
                         <div className="prose prose-gray mb-12">
@@ -104,16 +154,6 @@ export default function ManageCookiesPage() {
                                         </div>
                                     </div>
                                 </div>
-
-                                <div className="border-t border-gray-200 pt-4">
-                                    <h4 className="text-sm font-semibold text-gray-900 mb-2">Examples:</h4>
-                                    <ul className="text-sm text-gray-700 space-y-1">
-                                        <li>• Session authentication tokens</li>
-                                        <li>• Security and fraud prevention</li>
-                                        <li>• Load balancing and performance</li>
-                                        <li>• User preferences and settings</li>
-                                    </ul>
-                                </div>
                             </div>
 
                             {/* Analytics Cookies */}
@@ -141,15 +181,31 @@ export default function ManageCookiesPage() {
                                         </div>
                                     </div>
                                 </div>
+                            </div>
 
-                                <div className="border-t border-gray-200 pt-4">
-                                    <h4 className="text-sm font-semibold text-gray-900 mb-2">Examples:</h4>
-                                    <ul className="text-sm text-gray-700 space-y-1">
-                                        <li>• Page views and navigation patterns</li>
-                                        <li>• Feature usage and engagement metrics</li>
-                                        <li>• Error tracking and performance monitoring</li>
-                                        <li>• A/B testing and optimization</li>
-                                    </ul>
+                            {/* Marketing Cookies */}
+                            <div className="border border-gray-200 rounded-lg p-6">
+                                <div className="flex items-start justify-between mb-4">
+                                    <div className="flex-1">
+                                        <h3 className="text-lg font-semibold text-gray-900 mb-2">Marketing Cookies</h3>
+                                        <p className="text-sm text-gray-700 mb-4">
+                                            These cookies are used to track visitors across websites. The intention is to display ads that are relevant
+                                            and engaging for the individual user.
+                                        </p>
+                                    </div>
+                                    <div className="ml-4">
+                                        <div className="flex items-center">
+                                            <input
+                                                type="checkbox"
+                                                checked={marketingEnabled}
+                                                onChange={(e) => setMarketingEnabled(e.target.checked)}
+                                                className="w-5 h-5 text-[#22C55E] border-gray-300 rounded focus:ring-[#22C55E]"
+                                            />
+                                            <span className="ml-2 text-sm text-gray-700">
+                                                {marketingEnabled ? 'Enabled' : 'Disabled'}
+                                            </span>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -158,12 +214,31 @@ export default function ManageCookiesPage() {
                         <div className="flex items-center gap-4 mb-12">
                             <button
                                 onClick={handleSave}
-                                className="px-6 py-3 bg-[#22C55E] hover:bg-[#16A34A] text-white font-semibold rounded transition-colors"
+                                disabled={status === 'saving'}
+                                className={`px-6 py-3 font-semibold rounded transition-colors ${status === 'saving'
+                                    ? 'bg-gray-300 text-gray-500 cursor-not-allowed'
+                                    : 'bg-[#22C55E] hover:bg-[#16A34A] text-white'
+                                    }`}
                             >
-                                Save Preferences
+                                {status === 'saving' ? 'Saving...' : 'Save Preferences'}
                             </button>
-                            {saved && (
-                                <span className="text-sm text-[#22C55E]">✓ Preferences saved successfully</span>
+
+                            {status === 'success' && (
+                                <span className="text-sm text-[#22C55E] flex items-center">
+                                    <svg className="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                                    </svg>
+                                    Saved successfully
+                                </span>
+                            )}
+
+                            {status === 'error' && (
+                                <span className="text-sm text-red-600 flex items-center">
+                                    <svg className="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                                    </svg>
+                                    {errorMsg}
+                                </span>
                             )}
                         </div>
 

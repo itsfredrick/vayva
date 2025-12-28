@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
-import { Button, Icon, cn } from '@vayva/ui';
+import { Button, Icon, cn, Input } from '@vayva/ui';
 import { Switch } from '@/components/ui/Switch';
 import { useOnboarding } from '@/context/OnboardingContext';
 
@@ -22,6 +22,14 @@ export default function PaymentsPage() {
     const [proofRule, setProofRule] = useState<ProofRule>('optional');
     const [activePreview, setActivePreview] = useState<PaymentMethod | null>(null);
 
+    const [bankDetails, setBankDetails] = useState({
+        bankName: '',
+        accountNumber: '',
+        accountName: ''
+    });
+    const [currency, setCurrency] = useState('NGN');
+    const [payoutAcknowledged, setPayoutAcknowledged] = useState(false);
+
     const toggleMethod = (id: PaymentMethod) => {
         if (methods.includes(id)) {
             setMethods(methods.filter(m => m !== id));
@@ -38,7 +46,9 @@ export default function PaymentsPage() {
             payments: {
                 method: methods.length > 1 ? 'mixed' : methods[0],
                 proofRequired: proofRule !== 'optional',
-                // reconcileConfig would go here
+                currency,
+                settlementBank: bankDetails.accountNumber ? bankDetails : undefined,
+                payoutScheduleAcknowledged: payoutAcknowledged
             }
         });
         await goToStep('delivery');
@@ -135,6 +145,71 @@ export default function PaymentsPage() {
                         </div>
                     </div>
                 )}
+
+                <div className="space-y-6 pt-8 border-t border-gray-100">
+                    <div className="space-y-4">
+                        <h4 className="font-bold text-gray-900 text-lg">Payout Settings</h4>
+                        <div className="grid grid-cols-2 gap-4">
+                            <div className="space-y-2">
+                                <label className="text-sm font-medium text-gray-700">Store Currency</label>
+                                <Input value={currency} readOnly className="bg-gray-50 text-gray-500 cursor-not-allowed" />
+                            </div>
+                            <div className="space-y-2">
+                                <label className="text-sm font-medium text-gray-700">Payout Schedule</label>
+                                <div className="p-3 bg-gray-50 rounded-xl border border-gray-200 text-sm text-gray-600 flex items-center justify-between">
+                                    <span>Daily (T+1)</span>
+                                    <Icon name="Calendar" size={16} className="text-gray-400" />
+                                </div>
+                            </div>
+                        </div>
+
+                        <div className="space-y-4 bg-gray-50 p-6 rounded-2xl border border-gray-100">
+                            <h5 className="font-bold text-gray-900 text-sm">Settlement Bank Account</h5>
+                            <div className="space-y-4">
+                                <div className="space-y-2">
+                                    <label className="text-xs font-bold text-gray-500 uppercase">Bank Name</label>
+                                    <Input
+                                        placeholder="e.g. GTBank"
+                                        value={bankDetails.bankName}
+                                        onChange={(e) => setBankDetails({ ...bankDetails, bankName: e.target.value })}
+                                    />
+                                </div>
+                                <div className="grid grid-cols-2 gap-4">
+                                    <div className="space-y-2">
+                                        <label className="text-xs font-bold text-gray-500 uppercase">Account Number</label>
+                                        <Input
+                                            placeholder="0123456789"
+                                            value={bankDetails.accountNumber}
+                                            onChange={(e) => setBankDetails({ ...bankDetails, accountNumber: e.target.value })}
+                                        />
+                                    </div>
+                                    <div className="space-y-2">
+                                        <label className="text-xs font-bold text-gray-500 uppercase">Account Name</label>
+                                        <Input
+                                            placeholder="Auto-fetched..."
+                                            value={bankDetails.accountName}
+                                            onChange={(e) => setBankDetails({ ...bankDetails, accountName: e.target.value })}
+                                        />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <label className="flex items-start gap-3 cursor-pointer">
+                            <div className="pt-0.5">
+                                <input
+                                    type="checkbox"
+                                    className="w-4 h-4 rounded border-gray-300 text-black focus:ring-black"
+                                    checked={payoutAcknowledged}
+                                    onChange={(e) => setPayoutAcknowledged(e.target.checked)}
+                                />
+                            </div>
+                            <span className="text-sm text-gray-500">
+                                I acknowledge that payouts are processed daily for transactions settled before 11:59 PM.
+                            </span>
+                        </label>
+                    </div>
+                </div>
 
                 <Button
                     onClick={handleContinue}

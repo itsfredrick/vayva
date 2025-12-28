@@ -1,17 +1,10 @@
+
 'use client';
 
-import React, { useState } from 'react';
+import React from 'react';
 import Link from 'next/link';
 
 export function MarketingFooter() {
-    const [email, setEmail] = useState('');
-    const [subscribed, setSubscribed] = useState(false);
-
-    const handleSubscribe = async (e: React.FormEvent) => {
-        e.preventDefault();
-        // TODO: Implement newsletter subscription
-        setSubscribed(true);
-    };
 
     return (
         <footer className="bg-white text-black border-t border-gray-200">
@@ -89,7 +82,7 @@ export function MarketingFooter() {
                         <h3 className="text-sm font-semibold text-black mb-4">Product</h3>
                         <ul className="space-y-3">
                             <li>
-                                <Link href="/how-it-works" className="text-sm text-gray-600 hover:text-black transition-colors">
+                                <Link href="/how-vayva-works" className="text-sm text-gray-600 hover:text-black transition-colors">
                                     How Vayva Works
                                 </Link>
                             </li>
@@ -106,11 +99,6 @@ export function MarketingFooter() {
                             <li>
                                 <Link href="/templates" className="text-sm text-gray-600 hover:text-black transition-colors">
                                     Templates
-                                </Link>
-                            </li>
-                            <li>
-                                <Link href="/marketplace" className="text-sm text-gray-600 hover:text-black transition-colors">
-                                    Marketplace <span className="text-xs text-gray-400">(Coming Soon)</span>
                                 </Link>
                             </li>
                             <li>
@@ -158,8 +146,13 @@ export function MarketingFooter() {
                                 </Link>
                             </li>
                             <li>
-                                <Link href="/status" className="text-sm text-gray-600 hover:text-black transition-colors">
+                                <Link href="/system-status" className="text-sm text-gray-600 hover:text-black transition-colors">
                                     System Status
+                                </Link>
+                            </li>
+                            <li>
+                                <Link href="/trust" className="text-sm text-gray-600 hover:text-black transition-colors">
+                                    Trust & Security
                                 </Link>
                             </li>
                             <li>
@@ -210,9 +203,9 @@ export function MarketingFooter() {
                                 </Link>
                             </li>
                             <li>
-                                <button className="text-sm text-gray-600 hover:text-black transition-colors text-left">
+                                <Link href="/legal/cookies" className="text-sm text-gray-600 hover:text-black transition-colors">
                                     Manage Cookies
-                                </button>
+                                </Link>
                             </li>
                         </ul>
                     </div>
@@ -226,30 +219,11 @@ export function MarketingFooter() {
                             Product updates, operational insights, and platform announcements. No noise.
                         </p>
 
-                        {!subscribed ? (
-                            <form onSubmit={handleSubscribe} className="flex gap-2">
-                                <input
-                                    type="email"
-                                    value={email}
-                                    onChange={(e) => setEmail(e.target.value)}
-                                    placeholder="Enter your email"
-                                    required
-                                    className="flex-1 px-4 py-2 bg-white border border-gray-300 rounded text-black placeholder-gray-400 focus:outline-none focus:border-[#22C55E]"
-                                />
-                                <button
-                                    type="submit"
-                                    className="px-6 py-2 bg-[#22C55E] hover:bg-[#16A34A] text-white font-semibold rounded transition-colors"
-                                >
-                                    Subscribe
-                                </button>
-                            </form>
-                        ) : (
-                            <p className="text-sm text-[#22C55E]">✓ Subscribed successfully</p>
-                        )}
-
-                        <p className="text-xs text-gray-500 mt-2">
-                            By subscribing, you agree to receive emails from Vayva. Unsubscribe anytime.
-                        </p>
+                        <div className="p-4 bg-gray-50 border border-gray-200 rounded text-sm text-gray-500">
+                            Newsletter updates are currently paused.
+                            <br />
+                            Contact <a href="mailto:support@vayva.ng" className="text-[#22C55E] hover:underline">support@vayva.ng</a> for inquiries.
+                        </div>
                     </div>
                 </div>
             </div>

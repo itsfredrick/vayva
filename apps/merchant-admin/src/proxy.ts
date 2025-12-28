@@ -2,6 +2,38 @@
 import { NextResponse, type NextRequest } from 'next/server';
 
 export default function proxy(request: NextRequest) {
+    const path = request.nextUrl.pathname;
+
+    // --- 1. OPS AUTH GUARD ---
+    // Protect /ops and /api/ops
+    if (path.startsWith('/ops') || path.startsWith('/api/ops')) {
+        // Whitelist public routes
+        const isPublic =
+            path === '/ops/login' ||
+            path.startsWith('/ops/auth') ||
+            path.startsWith('/api/ops/auth');
+
+        if (!isPublic) {
+            const opsToken = request.cookies.get('ops_session_v1');
+            if (!opsToken) {
+                if (path.startsWith('/api')) {
+                    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+                }
+                const loginUrl = new URL('/ops/login', request.url);
+                return NextResponse.redirect(loginUrl);
+            }
+        }
+    }
+
+    // --- 2. LEGACY PROXY / CSP LOGIC ---
+    // Skip CSP for APIs (Legacy behavior)
+    if (path.startsWith('/api')) {
+        return NextResponse.next();
+    }
+
+    // CSP Generation
+    // Using Buffer because Environment supports it (Node or Polyfill present in repo)
+    // If Buffer fails in Edge, switch to btoa/globalThis.crypto
     const nonce = Buffer.from(crypto.randomUUID()).toString('base64');
 
     // Minimal CSP for V1. In prod, lock this down further.
@@ -41,14 +73,5 @@ export default function proxy(request: NextRequest) {
 }
 
 export const config = {
-    matcher: [
-        /*
-         * Match all request paths except for the ones starting with:
-         * - api (API routes)
-         * - _next/static (static files)
-         * - _next/image (image optimization files)
-         * - favicon.ico (favicon file)
-         */
-        '/((?!api|_next/static|_next/image|favicon.ico).*)',
-    ],
+    matcher: ['/((?!_next/static|_next/image|favicon.ico).*)'],
 };

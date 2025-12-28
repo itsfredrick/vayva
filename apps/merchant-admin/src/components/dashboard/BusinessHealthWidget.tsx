@@ -26,21 +26,21 @@ export const BusinessHealthWidget = ({ data }: { data: BusinessHealthData }) => 
                 <span className="text-xs text-gray-400">Updated just now</span>
             </div>
 
-            <div className="flex items-center gap-6 mb-6">
-                <div className={cn("w-24 h-24 rounded-full flex flex-col items-center justify-center border-4", getScoreColor(data.score))}>
+            <div className="flex flex-col sm:flex-row items-center sm:items-start gap-6 mb-6 text-center sm:text-left">
+                <div className={cn("w-24 h-24 rounded-full flex flex-col items-center justify-center border-4 shrink-0", getScoreColor(data.score))}>
                     <span className="text-3xl font-heading font-bold">{data.score}</span>
                     <span className="text-[10px] font-bold uppercase tracking-wider">{data.status}</span>
                 </div>
 
-                <div className="flex-1">
+                <div className="flex-1 w-full">
                     <p className="text-sm text-gray-500 mb-2">Primary Drivers:</p>
                     <ul className="space-y-2">
                         {data.factors.map(factor => (
-                            <li key={factor.id} className="flex items-start gap-2 text-xs font-medium text-gray-700">
+                            <li key={factor.id} className="flex items-start gap-2 text-xs font-medium text-gray-700 justify-center sm:justify-start">
                                 <Icon
                                     name={factor.sentiment === 'positive' ? 'TrendingUp' : factor.sentiment === 'warning' ? 'CircleAlert' : 'ArrowDown'}
                                     size={14}
-                                    className={factor.sentiment === 'positive' ? 'text-green-500' : factor.sentiment === 'warning' ? 'text-amber-500' : 'text-red-500'}
+                                    className={cn("mt-0.5", factor.sentiment === 'positive' ? 'text-green-500' : factor.sentiment === 'warning' ? 'text-amber-500' : 'text-red-500')}
                                 />
                                 {factor.text}
                             </li>

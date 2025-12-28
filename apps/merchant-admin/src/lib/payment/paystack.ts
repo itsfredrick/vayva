@@ -73,8 +73,8 @@ export class PaystackService {
         // Plan prices in kobo
         const planPrices: Record<string, number> = {
             STARTER: 0,
-            GROWTH: 25000 * 100, // ₦25,000
-            PRO: 75000 * 100,    // ₦75,000
+            GROWTH: 30000 * 100, // ₦30,000
+            PRO: 40000 * 100,    // ₦40,000
         };
 
         const amount = planPrices[newPlan] || 0;
@@ -124,6 +124,32 @@ export class PaystackService {
             success: true,
             storeId,
             newPlan,
+        };
+    }
+
+    static async initiateTemplatePurchase(
+        email: string,
+        templateId: string,
+        storeId: string,
+        amountNgn: number
+    ): Promise<{ authorization_url: string; reference: string }> {
+        const reference = `tpl_${templateId.slice(0, 8)}_${storeId}_${Date.now()}`;
+
+        const response = await this.initializeTransaction({
+            email,
+            amount: amountNgn * 100, // to kobo
+            reference,
+            metadata: {
+                storeId,
+                templateId,
+                type: 'template_purchase',
+            },
+            callback_url: `${process.env.NEXTAUTH_URL}/admin/store/themes?payment=success&tid=${templateId}`,
+        });
+
+        return {
+            authorization_url: response.data.authorization_url,
+            reference: response.data.reference,
         };
     }
 }

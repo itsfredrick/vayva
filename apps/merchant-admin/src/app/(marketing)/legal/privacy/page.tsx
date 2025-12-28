@@ -8,7 +8,7 @@ const legalDocuments = [
     { title: 'Acceptable Use Policy', href: '/legal/acceptable-use' },
     { title: 'Prohibited Items', href: '/legal/prohibited-items' },
     { title: 'Refund Policy', href: '/legal/refund-policy' },
-    { title: 'KYC & Safety', href: '/legal/kyc-safety' },
+    { title: 'KYC & Compliance', href: '/legal/kyc-safety' },
     { title: 'Manage Cookies', href: '/legal/cookies' },
 ];
 
@@ -27,8 +27,8 @@ export default function PrivacyPolicyPage() {
                                         <Link
                                             href={doc.href}
                                             className={`block px-3 py-2 text-sm rounded ${doc.active
-                                                    ? 'bg-gray-100 text-gray-900 font-medium'
-                                                    : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'
+                                                ? 'bg-gray-100 text-gray-900 font-medium'
+                                                : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'
                                                 }`}
                                         >
                                             {doc.title}
@@ -46,229 +46,116 @@ export default function PrivacyPolicyPage() {
                         <div className="not-prose mb-8 text-sm text-gray-600">
                             <p><strong>Last Updated:</strong> January 1, 2025</p>
                             <p><strong>Jurisdiction:</strong> Federal Republic of Nigeria</p>
-                            <p><strong>Governing Entity:</strong> Vayva Inc.</p>
-                            <p><strong>Regulatory Framework:</strong> Nigeria Data Protection Regulation (NDPR)</p>
+                            <p><strong>Governing Entity:</strong> Vayva Inc. (operating in Nigeria)</p>
+                            <p><strong>Primary Framework:</strong> Nigeria Data Protection Act (NDPA) 2023</p>
                         </div>
 
-                        <h2>1. Data Controller Identification</h2>
-                        <p>
-                            Vayva Inc. ("Vayva," "we," "us," or "our") is the data controller responsible for the collection, processing,
-                            and protection of personal data obtained through the Vayva platform.
-                        </p>
-                        <p><strong>Contact Information:</strong></p>
-                        <p>
-                            Vayva Inc.<br />
-                            Email: privacy@vayva.shop<br />
-                            Data Protection Officer: dpo@vayva.shop
-                        </p>
-
-                        <h2>2. Types of Data Collected</h2>
-                        <p>We collect the following categories of personal data:</p>
-
-                        <h3>2.1 Account Information</h3>
+                        <h2>1. Data Protection Roles</h2>
+                        <p>Under the <strong>Nigeria Data Protection Act (NDPA) 2023</strong>, roles are defined as follows:</p>
                         <ul>
-                            <li>Full name</li>
-                            <li>Email address</li>
-                            <li>Phone number</li>
-                            <li>Business name and registration details</li>
-                            <li>Password (encrypted)</li>
+                            <li><strong>Merchant as Data Controller:</strong> You (the Merchant) are the primary controller of your customer data. You decide what data to collect and how it is processed through the platform.</li>
+                            <li><strong>Vayva as Data Processor:</strong> Vayva Inc. acts as a processor for your customer data, handling it solely on your instructions to provide platform services.</li>
+                            <li><strong>Vayva as Data Controller:</strong> Vayva acts as a controller for the data you provide to create and manage your merchant account (e.g., your email and KYC documents).</li>
                         </ul>
 
-                        <h3>2.2 Business Transaction Data</h3>
+                        <h2>2. Lawful Basis for Processing</h2>
+                        <p>We process personal data only when there is a lawful basis under the NDPA, including:</p>
                         <ul>
-                            <li>Customer names and contact information (as entered by you)</li>
-                            <li>Order details (products, quantities, prices)</li>
-                            <li>Payment information (amounts, dates, methods — we do not store payment card details)</li>
-                            <li>Delivery addresses and tracking information</li>
+                            <li><strong>Contractual Necessity:</strong> To provide the services you signed up for.</li>
+                            <li><strong>Legal Obligation:</strong> To comply with tax, accounting, and regulatory requirements.</li>
+                            <li><strong>Legitimate Interests:</strong> For platform security, fraud prevention, and service improvement.</li>
+                            <li><strong>Consent:</strong> Where you have given clear permission for specific processing.</li>
                         </ul>
 
-                        <h3>2.3 Usage and Device Data</h3>
+                        <h2>3. Data Categories Collected</h2>
+                        <p>We process the following categories of data:</p>
                         <ul>
-                            <li>IP address</li>
-                            <li>Browser type and version</li>
-                            <li>Device information</li>
-                            <li>Pages visited and features used</li>
-                            <li>Time and date of access</li>
-                            <li>Referring website</li>
+                            <li><strong>Account Data:</strong> Name, business email, and phone number.</li>
+                            <li><strong>KYC Data:</strong> Identity documents and business registration files (used for platform integrity).</li>
+                            <li><strong>Transactional Metadata:</strong> Timestamps, item names, and status logs.</li>
+                            <li><strong>Customer Content:</strong> Delivery details provided by your customers via integrated channels.</li>
+                            <li><strong>System Logs:</strong> IP addresses and browser types for security auditing.</li>
                         </ul>
 
-                        <h2>3. Lawful Basis for Processing</h2>
-                        <p>We process personal data based on the following lawful grounds under the NDPR:</p>
-
-                        <h3>3.1 Contractual Necessity</h3>
-                        <p>
-                            Processing is necessary to provide the Vayva service to you under our Terms of Service.
-                            This includes account management, order tracking, and platform functionality.
-                        </p>
-
-                        <h3>3.2 Legal Obligations</h3>
-                        <p>
-                            We process data to comply with Nigerian law, including tax regulations, anti-money laundering requirements,
-                            and law enforcement requests.
-                        </p>
-
-                        <h3>3.3 Legitimate Interests</h3>
-                        <p>
-                            We process data for legitimate business purposes, including fraud prevention, security, service improvement,
-                            and customer support. We balance these interests against your privacy rights.
-                        </p>
-
-                        <h3>3.4 Consent</h3>
-                        <p>
-                            For certain processing activities (e.g., marketing communications, non-essential cookies), we obtain your explicit consent.
-                        </p>
-
-                        <h2>4. How Data Is Used</h2>
-                        <p>We use your personal data to:</p>
+                        <h2>4. Use of Category-Based Processors</h2>
+                        <p>We utilize third-party sub-processors categorized as follows:</p>
                         <ul>
-                            <li>Provide and maintain the Vayva service</li>
-                            <li>Process and track your business transactions</li>
-                            <li>Communicate with you about your account and service updates</li>
-                            <li>Provide customer support</li>
-                            <li>Detect and prevent fraud, abuse, and security incidents</li>
-                            <li>Comply with legal obligations</li>
-                            <li>Improve and develop new features</li>
-                            <li>Send marketing communications (with your consent)</li>
+                            <li><strong>Infrastructure:</strong> Secure data storage and server hosting.</li>
+                            <li><strong>Communications:</strong> Integration for WhatsApp and email notifications.</li>
+                            <li><strong>Security & Analytics:</strong> Performance monitoring and audit logging.</li>
                         </ul>
 
-                        <h2>5. Data Sharing</h2>
-                        <p><strong>We do not sell your personal data to third parties.</strong></p>
-                        <p>We may share your data with:</p>
+                        <h2>5. Data Retention</h2>
+                        <p>Retention is governed by necessity and legal mandate. We do not maintain a blanket retention period, but apply the following windows based on the category of record:</p>
 
-                        <h3>5.1 Service Providers</h3>
-                        <p>
-                            We share data with vendors who provide infrastructure, analytics, and support services.
-                            These vendors are bound by data processing agreements and may only use your data to provide services to Vayva.
-                        </p>
-
-                        <h3>5.2 Legal Authorities</h3>
-                        <p>
-                            We may disclose data when required by Nigerian law, court order, or government request.
-                            We will notify you of such requests unless prohibited by law.
-                        </p>
-
-                        <h3>5.3 Business Transfers</h3>
-                        <p>
-                            In the event of a merger, acquisition, or sale of assets, your data may be transferred to the acquiring entity.
-                            We will notify you of any such transfer.
-                        </p>
-
-                        <h2>6. Data Retention</h2>
-                        <p>We retain personal data for the following periods:</p>
-                        <ul>
-                            <li><strong>Account Data:</strong> For the duration of your account plus 2 years after closure</li>
-                            <li><strong>Transaction Records:</strong> 7 years from the date of transaction (for tax and legal compliance)</li>
-                            <li><strong>Usage Data:</strong> 12 months</li>
-                            <li><strong>Marketing Data:</strong> Until you withdraw consent or 3 years of inactivity</li>
-                        </ul>
-                        <p>
-                            After the retention period, we securely delete or anonymize your data.
-                        </p>
-
-                        <h2>7. Security Measures</h2>
-                        <p>We implement industry-standard security measures to protect your data, including:</p>
-                        <ul>
-                            <li>Encryption of data in transit (TLS/SSL) and at rest</li>
-                            <li>Access controls and authentication requirements</li>
-                            <li>Regular security audits and vulnerability assessments</li>
-                            <li>Employee training on data protection</li>
-                            <li>Incident response procedures</li>
-                        </ul>
-                        <p>
-                            While we take reasonable precautions, no system is completely secure.
-                            You are responsible for maintaining the confidentiality of your account credentials.
-                        </p>
-
-                        <h2>8. Your Rights Under NDPR</h2>
-                        <p>As a data subject in Nigeria, you have the following rights:</p>
-
-                        <h3>8.1 Right of Access</h3>
-                        <p>You may request a copy of the personal data we hold about you.</p>
-
-                        <h3>8.2 Right to Correction</h3>
-                        <p>You may request correction of inaccurate or incomplete data.</p>
-
-                        <h3>8.3 Right to Deletion</h3>
-                        <p>
-                            You may request deletion of your data, subject to our legal retention obligations.
-                            Deleting your account will result in loss of access to the Service.
-                        </p>
-
-                        <h3>8.4 Right to Data Portability</h3>
-                        <p>You may request your data in a machine-readable format for transfer to another service.</p>
-
-                        <h3>8.5 Right to Object</h3>
-                        <p>You may object to processing based on legitimate interests or for marketing purposes.</p>
-
-                        <h3>8.6 Right to Withdraw Consent</h3>
-                        <p>Where processing is based on consent, you may withdraw consent at any time.</p>
-
-                        <p><strong>To exercise your rights, contact:</strong> privacy@vayva.shop</p>
-                        <p>We will respond to requests within 30 days.</p>
-
-                        <h2>9. Cross-Border Data Transfers</h2>
-                        <p>
-                            Your data may be processed on servers located outside Nigeria. When we transfer data internationally,
-                            we ensure adequate safeguards are in place, including:
-                        </p>
-                        <ul>
-                            <li>Data processing agreements with standard contractual clauses</li>
-                            <li>Vendor compliance with international data protection standards</li>
-                            <li>Encryption and security measures during transfer</li>
-                        </ul>
-
-                        <h2>10. Cookies and Tracking</h2>
-                        <p>
-                            We use cookies and similar technologies to provide and improve the Service.
-                            For detailed information about our use of cookies, please see our <Link href="/legal/cookies">Cookie Management</Link> page.
-                        </p>
-                        <p>
-                            You can control cookie preferences through your browser settings or our cookie consent tool.
-                        </p>
-
-                        <h2>11. Children's Privacy</h2>
-                        <p>
-                            The Vayva service is not intended for individuals under 18 years of age.
-                            We do not knowingly collect personal data from children. If we become aware that we have collected data from a child,
-                            we will delete it promptly.
-                        </p>
-
-                        <h2>12. Changes to This Privacy Policy</h2>
-                        <p>
-                            We may update this Privacy Policy from time to time. We will notify you of material changes by email or through the Service.
-                            Your continued use of the Service after such notice constitutes acceptance of the updated policy.
-                        </p>
-
-                        <h2>13. Complaints and Regulatory Contact</h2>
-                        <p>
-                            If you have concerns about how we handle your personal data, please contact us at privacy@vayva.shop.
-                            We will investigate and respond to your complaint.
-                        </p>
-                        <p>
-                            You also have the right to lodge a complaint with the Nigeria Data Protection Commission (NDPC):
-                        </p>
-                        <p>
-                            <strong>Nigeria Data Protection Commission (NDPC)</strong><br />
-                            Website: ndpc.gov.ng<br />
-                            Email: info@ndpc.gov.ng
-                        </p>
-
-                        <h2>14. Contact Information</h2>
-                        <p>
-                            For questions about this Privacy Policy or to exercise your data rights, please contact:
-                        </p>
-                        <p>
-                            <strong>Vayva Inc.</strong><br />
-                            Privacy Team: privacy@vayva.shop<br />
-                            Data Protection Officer: dpo@vayva.shop<br />
-                            General Support: support@vayva.shop
-                        </p>
-
-                        <div className="not-prose mt-12 pt-8 border-t border-gray-200">
-                            <p className="text-sm text-gray-600">
-                                This Privacy Policy is compliant with the Nigeria Data Protection Regulation (NDPR) and applicable Nigerian law.
-                            </p>
+                        <div className="not-prose overflow-x-auto my-6">
+                            <table className="w-full text-sm text-left border-collapse border border-gray-200">
+                                <thead className="bg-gray-50 uppercase text-[10px] font-black tracking-widest text-gray-500">
+                                    <tr>
+                                        <th className="px-4 py-3 border border-gray-200">Category</th>
+                                        <th className="px-4 py-3 border border-gray-200">Retention Period</th>
+                                        <th className="px-4 py-3 border border-gray-200">Rationale</th>
+                                    </tr>
+                                </thead>
+                                <tbody className="text-gray-600">
+                                    <tr>
+                                        <td className="px-4 py-3 border border-gray-200 font-bold">Account Identity</td>
+                                        <td className="px-4 py-3 border border-gray-200">Duration of active account + 3 years</td>
+                                        <td className="px-4 py-3 border border-gray-200">Contractual necessity & Dispute resolution</td>
+                                    </tr>
+                                    <tr>
+                                        <td className="px-4 py-3 border border-gray-200 font-bold">Billing & Invoices</td>
+                                        <td className="px-4 py-3 border border-gray-200">7 Years</td>
+                                        <td className="px-4 py-3 border border-gray-200">Statutory accounting & tax compliance</td>
+                                    </tr>
+                                    <tr>
+                                        <td className="px-4 py-3 border border-gray-200 font-bold">Security & Access Logs</td>
+                                        <td className="px-4 py-3 border border-gray-200">1 Year</td>
+                                        <td className="px-4 py-3 border border-gray-200">Platform security auditing & forensics</td>
+                                    </tr>
+                                    <tr>
+                                        <td className="px-4 py-3 border border-gray-200 font-bold">Support History</td>
+                                        <td className="px-4 py-3 border border-gray-200">3 Years</td>
+                                        <td className="px-4 py-3 border border-gray-200">Quality assurance & service improvement</td>
+                                    </tr>
+                                    <tr>
+                                        <td className="px-4 py-3 border border-gray-200 font-bold">Database Backups</td>
+                                        <td className="px-4 py-3 border border-gray-200">30 Days</td>
+                                        <td className="px-4 py-3 border border-gray-200">Disaster recovery & resilience</td>
+                                    </tr>
+                                </tbody>
+                            </table>
                         </div>
+
+                        <h2>6. Security & NDPA 2023 Rights</h2>
+                        <p>We implement technical and organizational measures to protect data. As a data subject under the NDPA, you have rights to:</p>
+                        <ul>
+                            <li><strong>Access:</strong> Confirm if we process your data and receive copies.</li>
+                            <li><strong>Rectification:</strong> Correct inaccurate or incomplete information.</li>
+                            <li><strong>Erasure:</strong> Request deletion, subject to legal retention obligations.</li>
+                            <li><strong>Portability:</strong> Receive your data in a structured, machine-readable format.</li>
+                            <li><strong>Objection:</strong> Object to processing based on legitimate interests.</li>
+                        </ul>
+
+                        <h2>7. Breach Notification</h2>
+                        <p>In the event of a personal data breach likely to result in a high risk to your rights and freedoms, Vayva will notify the Nigeria Data Protection Commission (NDPC) and affected data subjects without undue delay, typically within 72 hours of becoming aware, as required by the NDPA.</p>
+
+                        <h2>8. Cross-Border Transfers</h2>
+                        <p>Vayva uses international cloud infrastructure. We ensure that such transfers comply with NDPA requirements by utilizing countries with adequate data protection levels or by implementing standard contractual clauses that ensure an equivalent level of protection.</p>
+
+                        <h2>9. Cookies</h2>
+                        <p>
+                            We use cookies to improve your experience. For detailed information on the cookies we use and the purposes for which we use them, please see our <Link href="/legal/cookies">Cookie Policy</Link>.
+                        </p>
+
+                        <h2>10. Contact & Data Requests</h2>
+                        <p>
+                            To exercise your rights, please contact:
+                        </p>
+                        <p>
+                            <strong>Data Protection Officer:</strong> dpo@vayva.shop<br />
+                            Response Timeline: Within 30 days.
+                        </p>
                     </main>
                 </div>
             </div>

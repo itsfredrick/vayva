@@ -1,21 +1,43 @@
-
 import { NextResponse } from 'next/server';
-import { getMockPolicies } from '../../../../../lib/mock-db';
+import { prisma } from '@vayva/db';
 
 export async function GET(request: Request) {
     const { searchParams } = new URL(request.url);
     const slug = searchParams.get('slug');
+    const storeId = searchParams.get('storeId');
 
-    // In real app, look up by slug. For now return the singleton mock
-    if (!slug && !searchParams.get('storeId')) {
-        // Allow fetching if just testing endpoint, but ideally require context
+    if (!slug && !storeId) {
+        return NextResponse.json({ error: 'Store identifier required' }, { status: 400 });
     }
 
-    const policies = getMockPolicies();
+    try {
+        const store = await prisma.store.findFirst({
+            where: {
+                OR: [
+                    slug ? { slug } : {},
+                    storeId ? { id: storeId } : {}
+                ]
+            },
+            select: { settings: true }
+        });
 
-    // Add lastUpdated timestamp if not present
-    return NextResponse.json({
-        ...policies,
-        lastUpdated: new Date().toISOString()
-    });
+        if (!store) {
+            return NextResponse.json({ error: 'Store not found' }, { status: 404 });
+        }
+
+        const settings: any = store.settings || {};
+        const policies = settings.policies || {
+            refundPolicy: '',
+            shippingPolicy: '',
+            termsOfService: '',
+            privacyPolicy: ''
+        };
+
+        return NextResponse.json({
+            ...policies,
+            lastUpdated: new Date().toISOString()
+        });
+    } catch (error) {
+        return NextResponse.json({ error: 'Failed to fetch policies' }, { status: 500 });
+    }
 }

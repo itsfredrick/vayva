@@ -7,8 +7,12 @@ export class EmailService {
     private static adapter: EmailAdapter = new ConsoleAdapter(); // Default to Console
 
     static initialize() {
-        if (process.env.EMAIL_PROVIDER === 'resend') {
-            // this.adapter = new ResendAdapter(); // TODO: Import when ready
+        if (process.env.EMAIL_PROVIDER === 'resend' || process.env.NODE_ENV === 'production') {
+            const { ResendAdapter } = require('./adapters/resendAdapter');
+            this.adapter = new ResendAdapter();
+            console.log('[EmailService] Using ResendAdapter');
+        } else {
+            console.log('[EmailService] Using ConsoleAdapter');
         }
     }
 

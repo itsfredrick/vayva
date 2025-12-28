@@ -23,20 +23,9 @@ export default function ReviewPage() {
         await completeOnboarding();
     };
 
-    const handleEdit = (path: string, critical: boolean) => {
-        if (critical) {
-            // In a real app we might show a warning dialog here
-            // For now, prompt: "Changing this might reset dependent settings"
-            if (!confirm("Changing this section might require you to re-do subsequent steps. Continue?")) return;
-        }
-        router.push(path);
-    };
-
     const sections = [
         {
             title: 'Identity & Location',
-            path: '/onboarding/business',
-            critical: false,
             items: [
                 { label: 'Business Name', value: state.business?.name },
                 { label: 'Location', value: state.business?.location?.city },
@@ -44,31 +33,10 @@ export default function ReviewPage() {
         },
         {
             title: 'Operations Model',
-            path: '/onboarding/templates',
-            critical: true, // Changing template resets flow often
             items: [
                 { label: 'Template', value: state.template?.name },
-                { label: 'Complexity', value: 'Standard' }, // derived
             ]
         },
-        {
-            title: 'Money & Logistics',
-            path: '/onboarding/payments',
-            critical: false,
-            items: [
-                { label: 'Payments', value: state.payments?.method === 'mixed' ? 'Multiple' : state.payments?.method },
-                { label: 'Delivery', value: state.delivery?.policy },
-            ]
-        },
-        {
-            title: 'Compliance',
-            path: '/onboarding/kyc',
-            critical: false,
-            items: [
-                { label: 'Verification', value: state.kycStatus === 'verified' ? 'Verified' : 'Pending' },
-                { label: 'Team', value: state.team?.type === 'solo' ? 'Solo' : `${state.team?.invites?.length || 0} Invites` },
-            ]
-        }
     ];
 
     return (
@@ -83,15 +51,9 @@ export default function ReviewPage() {
 
             <div className="grid md:grid-cols-2 gap-6 mb-12">
                 {sections.map((section, idx) => (
-                    <div key={idx} className="bg-white p-6 rounded-2xl border border-gray-200 shadow-sm hover:shadow-md transition-shadow relative overflow-hidden group">
-                        <div className="flex justify-between items-start mb-4">
+                    <div key={idx} className="bg-white p-6 rounded-2xl border border-gray-200 shadow-sm relative overflow-hidden">
+                        <div className="mb-4">
                             <h3 className="font-bold text-gray-900">{section.title}</h3>
-                            <button
-                                onClick={() => handleEdit(section.path, section.critical)}
-                                className="text-gray-400 hover:text-black p-2 rounded-full hover:bg-gray-100 transition-colors"
-                            >
-                                <Icon name="Pencil" size={16} />
-                            </button>
                         </div>
                         <div className="space-y-3 relative z-10">
                             {section.items.map((item, i) => (
@@ -101,8 +63,6 @@ export default function ReviewPage() {
                                 </div>
                             ))}
                         </div>
-                        {/* Subtle background decoration */}
-                        <div className="absolute -bottom-4 -right-4 w-24 h-24 bg-gray-50 rounded-full z-0 group-hover:scale-110 transition-transform" />
                     </div>
                 ))}
             </div>
@@ -131,9 +91,9 @@ export default function ReviewPage() {
                     )}
                 >
                     {isSubmitting ? (
-                        <>Launching Vayva...</>
+                        <>Preparing Dashboard...</>
                     ) : (
-                        <>Finish & Launch <Icon name="ArrowRight" size={20} /></>
+                        <>Finish & Go to Dashboard <Icon name="ArrowRight" size={20} /></>
                     )}
                 </Button>
             </div>

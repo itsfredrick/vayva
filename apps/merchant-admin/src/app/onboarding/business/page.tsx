@@ -22,9 +22,12 @@ export default function BusinessBasicsPage() {
     // Initialize form state from context or defaults
     const [formData, setFormData] = useState({
         name: state?.business?.name || '',
+        legalName: state?.business?.legalName || '',
+        type: state?.business?.type || 'individual',
         category: state?.business?.category || getSegmentLabel(state?.intent?.segment), // Use helper function
         city: state?.business?.location?.city || '',
         state: state?.business?.location?.state || '',
+        country: state?.business?.location?.country || 'Nigeria',
         description: state?.business?.description || ''
     });
 
@@ -84,17 +87,21 @@ export default function BusinessBasicsPage() {
         await updateState({
             business: {
                 name: formData.name,
+                legalName: formData.legalName,
+                type: formData.type as 'individual' | 'registered',
                 email: state?.business?.email || '', // Preserve logic or fetch from auth
                 category: categoryToSave,
                 logo: logoPreview || undefined,
                 location: {
                     city: formData.city,
-                    state: formData.state
+                    state: formData.state,
+                    country: formData.country
                 },
                 description: formData.description
             }
         });
-        await goToStep('whatsapp');
+
+        await goToStep('templates');
     };
 
     const isFormValid = !!formData.name;
@@ -142,18 +149,63 @@ export default function BusinessBasicsPage() {
                         </div>
                     </div>
 
-                    <div className="space-y-2">
-                        <label htmlFor="businessName" className="block text-sm font-medium text-gray-700">
-                            Business Name <span className="text-red-500">*</span>
-                        </label>
-                        <Input
-                            id="businessName"
-                            data-testid="onboarding-business-name"
-                            placeholder="e.g. Lagos Kitchen"
-                            value={formData.name}
-                            onChange={(e) => handleChange('name', e.target.value)}
-                            className="bg-white"
-                        />
+                    <div className="space-y-4">
+                        <div className="space-y-2">
+                            <label htmlFor="businessName" className="block text-sm font-medium text-gray-700">
+                                Business Name <span className="text-red-500">*</span>
+                            </label>
+                            <Input
+                                id="businessName"
+                                data-testid="onboarding-business-name"
+                                placeholder="e.g. Lagos Kitchen"
+                                value={formData.name}
+                                onChange={(e) => handleChange('name', e.target.value)}
+                                className="bg-white"
+                            />
+                        </div>
+
+                        <div className="space-y-2">
+                            <label htmlFor="legalName" className="block text-sm font-medium text-gray-700">
+                                Legal Business Name <span className="text-gray-400 font-normal">(If different)</span>
+                            </label>
+                            <Input
+                                id="legalName"
+                                placeholder="e.g. Lagos Kitchen Ltd"
+                                value={formData.legalName}
+                                onChange={(e) => handleChange('legalName', e.target.value)}
+                                className="bg-white"
+                            />
+                        </div>
+
+                        <div className="space-y-2">
+                            <label className="block text-sm font-medium text-gray-700">Business Type</label>
+                            <div className="grid grid-cols-2 gap-4">
+                                <button
+                                    type="button"
+                                    onClick={() => handleChange('type', 'individual')}
+                                    className={cn(
+                                        "p-3 rounded-lg border text-sm font-medium transition-all",
+                                        formData.type === 'individual'
+                                            ? "border-black bg-gray-50 text-black ring-1 ring-black"
+                                            : "border-gray-200 bg-white text-gray-600 hover:border-gray-300"
+                                    )}
+                                >
+                                    Individual
+                                </button>
+                                <button
+                                    type="button"
+                                    onClick={() => handleChange('type', 'registered')}
+                                    className={cn(
+                                        "p-3 rounded-lg border text-sm font-medium transition-all",
+                                        formData.type === 'registered'
+                                            ? "border-black bg-gray-50 text-black ring-1 ring-black"
+                                            : "border-gray-200 bg-white text-gray-600 hover:border-gray-300"
+                                    )}
+                                >
+                                    Registered Business
+                                </button>
+                            </div>
+                        </div>
                     </div>
 
                     <div className="space-y-2">
@@ -169,28 +221,33 @@ export default function BusinessBasicsPage() {
                         <p className="text-xs text-gray-400">Pre-selected based on your choice.</p>
                     </div>
 
-                    <div className="grid grid-cols-2 gap-4">
-                        <div className="space-y-2">
-                            <label htmlFor="city" className="block text-sm font-medium text-gray-700">
-                                City
-                            </label>
-                            <Input
-                                id="city"
-                                placeholder="e.g. Ikeja"
-                                value={formData.city}
-                                onChange={(e) => handleChange('city', e.target.value)}
-                            />
-                        </div>
-                        <div className="space-y-2">
-                            <label htmlFor="state" className="block text-sm font-medium text-gray-700">
-                                State
-                            </label>
-                            <Input
-                                id="state"
-                                placeholder="e.g. Lagos"
-                                value={formData.state}
-                                onChange={(e) => handleChange('state', e.target.value)}
-                            />
+                    <div className="space-y-2">
+                        <label className="block text-sm font-medium text-gray-700">Location</label>
+                        <div className="grid grid-cols-2 gap-4">
+                            <div className="col-span-2">
+                                <Input
+                                    id="country"
+                                    value="Nigeria"
+                                    readOnly
+                                    className="bg-gray-50 text-gray-500 cursor-not-allowed"
+                                />
+                            </div>
+                            <div className="space-y-2">
+                                <Input
+                                    id="city"
+                                    placeholder="City"
+                                    value={formData.city}
+                                    onChange={(e) => handleChange('city', e.target.value)}
+                                />
+                            </div>
+                            <div className="space-y-2">
+                                <Input
+                                    id="state"
+                                    placeholder="State"
+                                    value={formData.state}
+                                    onChange={(e) => handleChange('state', e.target.value)}
+                                />
+                            </div>
                         </div>
                     </div>
 

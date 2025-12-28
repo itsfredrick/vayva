@@ -1,0 +1,73 @@
+
+> merchant-admin@0.0.0 typecheck /Users/fredrick/.gemini/antigravity/scratch/vayva/apps/merchant-admin
+> tsc --noEmit
+
+.next/types/validator.ts(377,39): error TS2307: Cannot find module '../../src/app/(marketing)/status/page.js' or its corresponding type declarations.
+.next/types/validator.ts(3113,39): error TS2307: Cannot find module '../../src/app/api/debug/mock-whatsapp-order/route.js' or its corresponding type declarations.
+.next/types/validator.ts(3960,31): error TS2344: Type 'typeof import("/Users/fredrick/.gemini/antigravity/scratch/vayva/apps/merchant-admin/src/app/api/orders/[id]/delivery/manual-status/route")' does not satisfy the constraint 'RouteHandlerConfig<"/api/orders/[id]/delivery/manual-status">'.
+  Types of property 'POST' are incompatible.
+    Type '(request: Request, context: { params: { id: string; }; }) => Promise<NextResponse<{ success: boolean; shipment: { id: string; storeId: string; orderId: string; deliveryOptionType: string | null; status: string; ... 14 more ...; updatedAt: Date; }; }> | NextResponse<...>>' is not assignable to type '(request: NextRequest, context: { params: Promise<{ id: string; }>; }) => void | Response | Promise<void | Response>'.
+      Types of parameters 'context' and 'context' are incompatible.
+        Type '{ params: Promise<{ id: string; }>; }' is not assignable to type '{ params: { id: string; }; }'.
+          Types of property 'params' are incompatible.
+            Property 'id' is missing in type 'Promise<{ id: string; }>' but required in type '{ id: string; }'.
+.next/types/validator.ts(4256,39): error TS2307: Cannot find module '../../src/app/api/shipments/create/route.js' or its corresponding type declarations.
+.next/types/validator.ts(4265,39): error TS2307: Cannot find module '../../src/app/api/shipments/update/route.js' or its corresponding type declarations.
+src/app/(marketing)/templates/compare/comparison.test.ts(3,33): error TS2307: Cannot find module './api/me/plan/route' or its corresponding type declarations.
+src/app/admin/control-center/branding/page.tsx(30,50): error TS2554: Expected 1 arguments, but got 0.
+src/app/admin/control-center/branding/page.tsx(31,23): error TS2345: Argument of type 'void' is not assignable to parameter of type 'SetStateAction<StoreConfig | null>'.
+src/app/admin/control-center/branding/page.tsx(32,27): error TS2339: Property 'branding' does not exist on type 'void'.
+src/app/admin/control-center/branding/page.tsx(40,36): error TS2554: Expected 2 arguments, but got 1.
+src/app/admin/control-center/navigation/page.tsx(18,50): error TS2554: Expected 1 arguments, but got 0.
+src/app/admin/control-center/navigation/page.tsx(19,23): error TS2345: Argument of type 'void' is not assignable to parameter of type 'SetStateAction<StoreConfig | null>'.
+src/app/admin/control-center/navigation/page.tsx(20,30): error TS2339: Property 'navigation' does not exist on type 'void'.
+src/app/admin/control-center/navigation/page.tsx(21,30): error TS2339: Property 'navigation' does not exist on type 'void'.
+src/app/admin/control-center/pages/new/page.tsx(20,40): error TS2554: Expected 2 arguments, but got 1.
+src/app/admin/control-center/pages/page.tsx(16,50): error TS2554: Expected 1 arguments, but got 0.
+src/app/admin/control-center/pages/page.tsx(17,22): error TS2345: Argument of type 'void' is not assignable to parameter of type 'SetStateAction<StorePage[]>'.
+src/app/admin/control-center/policies/page.tsx(21,50): error TS2554: Expected 1 arguments, but got 0.
+src/app/admin/control-center/policies/page.tsx(22,23): error TS2345: Argument of type 'void' is not assignable to parameter of type 'SetStateAction<StoreConfig | null>'.
+src/app/admin/control-center/policies/page.tsx(23,27): error TS2339: Property 'policies' does not exist on type 'void'.
+src/app/admin/control-center/templates/page.tsx(30,38): error TS2339: Property 'getTemplates' does not exist on type '{ getStoreConfig: (storeId: string) => Promise<void>; updateTemplate: (storeId: string, templateId: string) => Promise<void>; updateBranding: (storeId: string, branding: any) => Promise<...>; getPages: (storeId: string) => Promise<...>; createPage: (storeId: string, page: any) => Promise<...>; updatePage: (storeId: ...'.
+src/app/admin/control-center/templates/page.tsx(31,38): error TS2554: Expected 1 arguments, but got 0.
+src/app/admin/control-center/templates/page.tsx(48,36): error TS2554: Expected 2 arguments, but got 1.
+src/app/admin/control-center/templates/page.tsx(50,54): error TS2554: Expected 1 arguments, but got 0.
+src/app/admin/control-center/templates/page.tsx(51,19): error TS2345: Argument of type 'void' is not assignable to parameter of type 'SetStateAction<StoreConfig | null>'.
+src/app/admin/settings/audit-logs/page.tsx(104,40): error TS7006: Parameter 'e' implicitly has an 'any' type.
+src/app/admin/settings/audit-logs/page.tsx(105,41): error TS7006: Parameter 'e' implicitly has an 'any' type.
+src/app/admin/settings/exports/page.tsx(166,63): error TS2322: Type '"default"' is not assignable to type '"link" | "primary" | "secondary" | "outline" | "ghost" | "destructive" | null | undefined'.
+src/app/admin/settings/jobs/page.tsx(62,36): error TS7006: Parameter 'e' implicitly has an 'any' type.
+src/app/admin/settings/jobs/page.tsx(63,37): error TS7006: Parameter 'e' implicitly has an 'any' type.
+src/app/admin/settings/team/page.tsx(170,48): error TS7006: Parameter 'e' implicitly has an 'any' type.
+src/app/admin/storefront/section-editor.tsx(27,36): error TS7006: Parameter 'e' implicitly has an 'any' type.
+src/app/admin/storefront/section-editor.tsx(40,40): error TS7006: Parameter 'e' implicitly has an 'any' type.
+src/app/admin/storefront/section-editor.tsx(48,36): error TS7006: Parameter 'e' implicitly has an 'any' type.
+src/app/admin/wa-agent/approvals/page.tsx(52,99): error TS2339: Property 'description' does not exist on type 'WaApproval'.
+src/app/admin/wa-agent/approvals/page.tsx(55,92): error TS2339: Property 'customerName' does not exist on type 'WaApproval'.
+src/app/admin/wa-agent/approvals/page.tsx(58,58): error TS2339: Property 'risk' does not exist on type 'WaApproval'.
+src/app/admin/wa-agent/approvals/page.tsx(59,62): error TS2339: Property 'risk' does not exist on type 'WaApproval'.
+src/app/admin/wa-agent/approvals/page.tsx(62,59): error TS2339: Property 'risk' does not exist on type 'WaApproval'.
+src/app/admin/wa-agent/approvals/page.tsx(65,108): error TS2339: Property 'createdTime' does not exist on type 'WaApproval'.
+src/app/admin/wa-agent/inbox/page.tsx(21,33): error TS2345: Argument of type 'WaThread | null' is not assignable to parameter of type 'SetStateAction<WaThread | undefined>'.
+  Type 'null' is not assignable to type 'SetStateAction<WaThread | undefined>'.
+src/app/admin/wa-agent/knowledge-base/page.tsx(42,151): error TS2339: Property 'category' does not exist on type 'KbItem'.
+src/app/admin/wa-agent/knowledge-base/page.tsx(43,43): error TS2339: Property 'status' does not exist on type 'KbItem'.
+src/app/api/ai/index/route.ts(24,53): error TS2339: Property 'count' does not exist on type '{ indexed: number; skipped: number; }'.
+src/app/ops/audit-logs/page.tsx(70,36): error TS7006: Parameter 'e' implicitly has an 'any' type.
+src/app/ops/audit-logs/page.tsx(71,37): error TS7006: Parameter 'e' implicitly has an 'any' type.
+src/components/wa-agent/WaInbox.tsx(31,140): error TS2339: Property 'customerName' does not exist on type 'WaThread'.
+src/components/wa-agent/WaInbox.tsx(32,90): error TS2551: Property 'lastMessageTime' does not exist on type 'WaThread'. Did you mean 'lastMessage'?
+src/components/wa-agent/WaInbox.tsx(36,37): error TS2339: Property 'status' does not exist on type 'WaThread'.
+src/components/wa-agent/WaInbox.tsx(37,37): error TS2339: Property 'status' does not exist on type 'WaThread'.
+src/components/wa-agent/WaInbox.tsx(63,138): error TS2339: Property 'customerName' does not exist on type 'WaThread'.
+src/components/wa-agent/WaInbox.tsx(65,82): error TS2339: Property 'customerName' does not exist on type 'WaThread'.
+src/components/wa-agent/WaInbox.tsx(66,70): error TS2339: Property 'customerPhone' does not exist on type 'WaThread'.
+src/components/wa-agent/WaInbox.tsx(85,18): error TS2532: Object is possibly 'undefined'.
+src/components/wa-agent/WaInbox.tsx(85,19): error TS18048: 'thread.messages' is possibly 'undefined'.
+src/components/wa-agent/WaInbox.tsx(86,96): error TS2551: Property 'lastMessageTime' does not exist on type 'WaThread'. Did you mean 'lastMessage'?
+src/components/wa-agent/WaInbox.tsx(114,21): error TS2339: Property 'aiSuggestions' does not exist on type 'WaThread'.
+src/components/wa-agent/WaInbox.tsx(120,72): error TS2339: Property 'aiSuggestions' does not exist on type 'WaThread'.
+src/components/wa-agent/WaInbox.tsx(129,21): error TS2339: Property 'aiSuggestions' does not exist on type 'WaThread'.
+src/components/wa-agent/WaInbox.tsx(135,77): error TS2339: Property 'aiSuggestions' does not exist on type 'WaThread'.
+src/components/wa-agent/WaInbox.tsx(136,142): error TS2339: Property 'aiSuggestions' does not exist on type 'WaThread'.
+ ELIFECYCLE  Command failed with exit code 2.

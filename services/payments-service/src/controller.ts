@@ -45,6 +45,17 @@ export const initializeTransactionHandler = async (req: FastifyRequest, reply: F
         }
     });
 
+    // --- Trigger Payout Details Missing Notification ---
+    try {
+        const { NotificationManager } = require('@vayva/shared');
+        const bankCount = await prisma.bankBeneficiary.count({ where: { storeId: order.storeId } });
+        if (bankCount === 0) {
+            await NotificationManager.trigger(order.storeId, 'PAYOUT_DETAILS_MISSING');
+        }
+    } catch (err) {
+        console.error('[PaymentsService] Notification trigger error:', err);
+    }
+
     if (IS_TEST_MODE) {
         return reply.send({
             status: true,

@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import Image from 'next/image';
+import { Logo } from '@/components/Logo';
 import { AuthLeftPanel } from './AuthLeftPanel';
 import { AuthRightPanel } from './AuthRightPanel';
 
@@ -32,16 +32,7 @@ export const SplitAuthLayout = ({
 
             {/* Mobile header - Only visible on mobile */}
             <div className="lg:hidden bg-[#F8F9FA] p-6 border-b border-gray-200">
-                <div className="flex items-center gap-2">
-                    <Image
-                        src="/vayva-logo.png"
-                        alt="Vayva"
-                        width={64}
-                        height={64}
-                        className="object-contain"
-                    />
-                    <span className="text-lg font-heading font-bold text-black">Vayva</span>
-                </div>
+                <Logo size="md" showText={true} />
             </div>
 
             {/* Right Panel - Form area */}
