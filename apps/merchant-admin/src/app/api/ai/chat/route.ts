@@ -23,11 +23,11 @@ export async function POST(request: NextRequest) {
         }
 
         // Check if Groq API key is configured
-        const isConfigured = !!process.env.GROQ_API_KEY && process.env.GROQ_API_KEY !== 'YOUR_GROQ_API_KEY_HERE';
+        const isConfigured = !!process.env.GROQ_ADMIN_KEY;
         if (!isConfigured) {
             return NextResponse.json(
                 {
-                    error: 'AI service not configured. Please add GROQ_API_KEY to your .env file.',
+                    error: 'AI service not configured. Please add GROQ_ADMIN_KEY to your .env file.',
                     setup_url: 'https://console.groq.com/keys'
                 },
                 { status: 503 }
@@ -70,7 +70,7 @@ export async function POST(request: NextRequest) {
 
 // Health check endpoint
 export async function GET() {
-    const isConfigured = process.env.GROQ_API_KEY && process.env.GROQ_API_KEY !== 'YOUR_GROQ_API_KEY_HERE';
+    const isConfigured = !!process.env.GROQ_ADMIN_KEY;
     const isEnabled = process.env.ENABLE_AI_ASSISTANT === 'true';
 
     return NextResponse.json({

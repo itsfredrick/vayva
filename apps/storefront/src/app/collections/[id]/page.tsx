@@ -10,28 +10,28 @@ import { useParams } from 'next/navigation';
 import NextLink from 'next/link';
 const Link = NextLink as any;
 
-export default function CollectionPage() {
+export default function CollectionPage(props: any) {
     const { store } = useStore();
-    const params = useParams();
+    const { id } = useParams() as { id: string };
     const [products, setProducts] = useState<PublicProduct[]>([]);
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         if (store) {
             const load = async () => {
-                // In real app, filter by collection ID (params.id)
+                // In real app, filter by collection ID (id)
                 const data = await StorefrontService.getProducts(store.id);
                 setProducts(data);
                 setLoading(false);
             };
             load();
         }
-    }, [store, params.id]);
+    }, [store, id]);
 
     if (!store) return null;
 
-    const collectionName = params.id === 'all' ? 'All Products' :
-        params.id === 'new' ? 'New Arrivals' :
+    const collectionName = id === 'all' ? 'All Products' :
+        id === 'new' ? 'New Arrivals' :
             'Collection';
 
     return (

@@ -11,3 +11,8 @@ coverage
 .env*.local
 test-results/
 playwright-report/
+*.log
+build_output.txt
+.vscode/
+.tsbuildinfo
+*.txt.bak

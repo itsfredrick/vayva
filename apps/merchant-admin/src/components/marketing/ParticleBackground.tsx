@@ -14,6 +14,9 @@ export const ParticleBackground: React.FC = () => {
     useEffect(() => {
         if (isExcluded || typeof window === 'undefined') return;
 
+        // Performance optimization: Disable on small screens
+        if (window.innerWidth < 768) return;
+
         const canvas = canvasRef.current;
         if (!canvas) return;
 
@@ -22,7 +25,7 @@ export const ParticleBackground: React.FC = () => {
 
         let animationFrameId: number = 0;
         let particles: any[] = [];
-        const particleCount = 150;
+        const particleCount = 50;
         const brandGreen = '#10B981';
         const brandBlack = '#000000';
 

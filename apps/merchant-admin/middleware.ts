@@ -58,10 +58,26 @@ export async function middleware(request: NextRequest) {
     response.headers.set('X-Frame-Options', 'SAMEORIGIN');
     response.headers.set('X-Content-Type-Options', 'nosniff');
     response.headers.set('Referrer-Policy', 'origin-when-cross-origin');
+    response.headers.set('Permissions-Policy', 'camera=(), microphone=(), geolocation=()');
+
+    const cspHeader = `
+        default-src 'self';
+        script-src 'self' 'unsafe-eval' 'unsafe-inline';
+        style-src 'self' 'unsafe-inline';
+        img-src 'self' blob: data: https://images.unsplash.com https://placehold.co;
+        font-src 'self';
+        object-src 'none';
+        base-uri 'self';
+        form-action 'self';
+        frame-ancestors 'none';
+        upgrade-insecure-requests;
+    `.replace(/\s{2,}/g, ' ').trim();
+
+    response.headers.set('Content-Security-Policy', cspHeader);
 
     // 2. Rate Limiting (API & Auth)
-    if (path.startsWith('/api/') || path.startsWith('/signin') || path.startsWith('/signup')) {
-        const isAuth = path.includes('/auth') || path.startsWith('/signin');
+    if (path.startsWith('/api/') || path.startsWith('/signin') || path.startsWith('/signup') || path.startsWith('/login')) {
+        const isAuth = path.includes('/auth') || path.startsWith('/signin') || path.startsWith('/login') || path.startsWith('/signup');
         const limit = isAuth ? AUTH_LIMIT : API_LIMIT;
 
         const key = `${ip}:${isAuth ? 'auth' : 'api'}`;
@@ -92,20 +108,19 @@ export async function middleware(request: NextRequest) {
         }
     }
 
-    // 3. Auth Guard
-    const protectedPaths = ['/admin', '/onboarding', '/app'];
+    // 3. Auth Guard (Merchant Admin)
+    const protectedPaths = ['/admin', '/onboarding', '/dashboard', '/settings', '/control-center'];
     const isProtected = protectedPaths.some(p => path.startsWith(p));
 
     if (isProtected) {
-        // We can't use getToken easily in Edge without polyfills or specific env setup sometimes,
-        // but next-auth V4 supports it if NEXTAUTH_SECRET is set.
-        // We verify session token cookie presence as a lightweight check.
-        // The real check happens in layouts/pages.
-        const token = request.cookies.get('next-auth.session-token') ||
+        // Check for both legacy NextAuth and our new Custom Session
+        const token = request.cookies.get('vayva_session') ||
+            request.cookies.get('next-auth.session-token') ||
             request.cookies.get('__Secure-next-auth.session-token');
 
         if (!token) {
             const url = request.nextUrl.clone();
+            // Redirect to signin if not marketing landing or public routes
             url.pathname = '/signin';
             url.searchParams.set('callbackUrl', path);
             return NextResponse.redirect(url);

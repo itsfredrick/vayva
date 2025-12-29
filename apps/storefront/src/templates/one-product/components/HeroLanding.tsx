@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+import Link from 'next/link';
+import Image from 'next/image';
 import { PublicProduct } from '@/types/storefront';
 import { Star, Check, Zap, Truck, ShieldCheck, Plus, Minus } from 'lucide-react';
 
@@ -37,7 +39,12 @@ export const HeroLanding = ({ product, headline, subHeadline, onBuy }: HeroLandi
                                     onClick={() => setSelectedImg(idx)}
                                     className={`w-20 h-20 rounded-xl overflow-hidden border-2 transition-all ${selectedImg === idx ? 'border-gray-900 opacity-100' : 'border-transparent opacity-60 hover:opacity-100'}`}
                                 >
-                                    <img src={img} className="w-full h-full object-cover" />
+                                    <Image
+                                        src={img}
+                                        alt="Product Highlight"
+                                        fill
+                                        className="object-cover"
+                                    />
                                 </button>
                             ))}
                         </div>

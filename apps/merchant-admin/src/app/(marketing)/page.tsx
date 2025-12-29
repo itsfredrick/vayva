@@ -1,7 +1,6 @@
-'use client';
-
 import React from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { Button } from '@vayva/ui';
 import {
     MessageSquareText,
@@ -60,22 +59,22 @@ export default function LandingPage() {
                     {/* Trust Indicators */}
                     <div className="flex flex-wrap justify-center items-center gap-6 sm:gap-8 text-sm text-[#64748B] font-medium mt-8">
                         <a href="https://paystack.com" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 group">
-                            <img src="/partner-paystack.png" alt="Paystack" className="h-5 w-auto opacity-80 grayscale group-hover:grayscale-0 transition-all" />
+                            <Image src="/partner-paystack.png" alt="Paystack" width={100} height={20} className="h-5 w-auto opacity-80 grayscale group-hover:grayscale-0 transition-all" priority />
                             <span className="font-semibold text-gray-900 group-hover:text-black">Secured Payments</span>
                         </a>
                         <span className="w-1 h-1 rounded-full bg-gray-300 hidden sm:block"></span>
                         <a href="https://youverify.co" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 group">
-                            <img src="/youverify_logo.png" alt="Youverify" className="h-5 w-auto opacity-80 grayscale group-hover:grayscale-0 transition-all" />
+                            <Image src="/youverify_logo.png" alt="Youverify" width={100} height={20} className="h-5 w-auto opacity-80 grayscale group-hover:grayscale-0 transition-all" priority />
                             <span className="font-semibold text-gray-900 group-hover:text-black">Identity Verified</span>
                         </a>
                         <span className="w-1 h-1 rounded-full bg-gray-300 hidden sm:block"></span>
                         <a href="https://123.design" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 group">
-                            <img src="/123design_logo.jpg" alt="123design" className="h-5 w-auto opacity-80 grayscale group-hover:grayscale-0 transition-all mix-blend-multiply" />
+                            <Image src="/123design_logo.jpg" alt="123design" width={120} height={24} className="h-5 w-auto opacity-80 grayscale group-hover:grayscale-0 transition-all mix-blend-multiply" priority />
                             <span className="font-semibold text-gray-900 group-hover:text-black">123design</span>
                         </a>
                         <span className="w-1 h-1 rounded-full bg-gray-300 hidden sm:block"></span>
                         <a href="https://mysparks.shop" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 group">
-                            <img src="/oral4_logo.png" alt="Oral4" className="h-5 w-auto opacity-80 grayscale group-hover:grayscale-0 transition-all object-contain bg-black/10 rounded-sm px-1" />
+                            <Image src="/oral4_logo.png" alt="Oral4" width={60} height={20} className="h-5 w-auto opacity-80 grayscale group-hover:grayscale-0 transition-all object-contain bg-black/10 rounded-sm px-1" priority />
                             <span className="font-semibold text-gray-900 group-hover:text-black">Oral4</span>
                         </a>
                         <span className="w-1 h-1 rounded-full bg-gray-300 hidden sm:block"></span>
@@ -130,9 +129,11 @@ export default function LandingPage() {
                                     </div>
                                     <div className="relative">
                                         <div className="relative rounded-[32px] overflow-hidden shadow-2xl border border-gray-100 group-hover:scale-[1.02] transition-transform duration-700">
-                                            <img
+                                            <Image
                                                 src="/calm-solution.jpg"
                                                 alt="Relaxed merchant managing business on tablet"
+                                                width={800}
+                                                height={600}
                                                 className="w-full h-auto object-cover"
                                             />
                                             <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent flex items-end p-8">
@@ -173,9 +174,11 @@ export default function LandingPage() {
             <section className="py-24 px-4 bg-gray-50/50">
                 <div className="max-w-6xl mx-auto grid md:grid-cols-2 gap-16 items-center">
                     <div className="relative rounded-3xl overflow-hidden shadow-2xl border border-gray-200 rotate-2 hover:rotate-0 transition-all duration-500">
-                        <img
+                        <Image
                             src="/chaos-problem.jpg"
                             alt="Stressed business owner managing orders manually"
+                            width={800}
+                            height={600}
                             className="w-full h-auto object-cover grayscale hover:grayscale-0 transition-all duration-700"
                         />
                         <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent flex items-end p-8">

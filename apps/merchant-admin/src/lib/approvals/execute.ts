@@ -5,19 +5,16 @@ import { EventBus } from '@/lib/events/eventBus';
 const Services = {
     Refund: {
         issue: async (payload: any) => {
-            console.log('[MOCK] RefundService.issue', payload);
             return { refundId: 'ref_mock_123' };
         }
     },
     Campaign: {
         send: async (payload: any) => {
-            console.log('[MOCK] CampaignService.send', payload);
             return { jobId: 'job_camp_123' };
         }
     },
     Policies: {
         publish: async (payload: any) => {
-            console.log('[MOCK] PolicyService.publish', payload);
             return { version: 'v2' };
         }
     }

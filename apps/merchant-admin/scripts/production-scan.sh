@@ -15,14 +15,17 @@ echo ""
 
 FAILED=0
 
-# Define PRIMARY ship target
-SRC_DIR="apps/merchant-admin/src"
-
-# Verify target exists
-if [ ! -d "$SRC_DIR" ]; then
-    echo "❌ ERROR: $SRC_DIR not found"
+# Resolve SRC_DIR relative to script or root
+if [ -d "src" ]; then
+    SRC_DIR="src"
+elif [ -d "apps/merchant-admin/src" ]; then
+    SRC_DIR="apps/merchant-admin/src"
+else
+    echo "❌ ERROR: Could not find merchant-admin source directory"
     exit 1
 fi
+
+echo "Scanning source: $SRC_DIR"
 
 # Color codes
 RED='\033[0;31m'

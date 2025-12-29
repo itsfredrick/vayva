@@ -1,13 +1,15 @@
 'use client';
 
-import { useState } from 'react';
+import React, { useState } from 'react';
+import { useParams } from 'next/navigation';
 import { LocaleKey, LOCALES } from '@/data/locales';
 import { useUserInteractions } from '@/hooks/useUserInteractions';
 import { PaymentMethodModal } from '@/components/account/PaymentMethodModal';
-import { CreditCard, Plus, Trash2, CheckCircle } from 'lucide-react';
+import { CreditCard, Plus, Trash2, Check, Lock, CheckCircle } from 'lucide-react';
 
-export default function PaymentsPage({ params }: { params: { lang: string } }) {
-    const lang = (params.lang === 'tr' ? 'tr' : 'en') as LocaleKey;
+export default function PaymentsPage({ params }: any) {
+    const { lang: rawLang } = useParams() as { lang: string };
+    const lang = (rawLang === 'tr' ? 'tr' : 'en') as LocaleKey;
     const t = LOCALES[lang].account.payments;
     const { paymentMethods, addPaymentMethod, removePaymentMethod, setDefaultPaymentMethod, isLoaded } = useUserInteractions();
 

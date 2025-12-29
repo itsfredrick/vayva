@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+import Link from 'next/link';
+import Image from 'next/image';
 import { PublicStore, PublicProduct } from '@/types/storefront';
 import { MarketHeader } from './components/MarketHeader';
 import { MarketHero } from './components/MarketHero';
@@ -67,12 +69,28 @@ export const MarketHubLayout = ({ store, products }: MarketHubLayoutProps) => {
                     <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
                         {products.map(product => (
                             <div key={product.id} className="bg-white border border-gray-100 rounded-xl overflow-hidden hover:shadow-lg transition-all group">
-                                <div className="h-48 bg-gray-100 relative">
-                                    <img src={product.images?.[0]} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
-                                    {product.vendorDetails && (
-                                        <div className="absolute bottom-2 left-2 bg-white/90 backdrop-blur-sm px-2 py-1 rounded text-[10px] font-bold text-gray-700 shadow-sm flex items-center gap-1">
-                                            <img src={product.vendorDetails.logo} className="w-3 h-3 rounded-full" />
-                                            {product.vendorDetails.name}
+                                <div className="aspect-[4/5] bg-gray-100 relative overflow-hidden">
+                                    <Image
+                                        src={product.images?.[0] || '/placeholder.png'}
+                                        alt={product.name} // Changed alt from product.title to product.name as title is not in PublicProduct
+                                        fill
+                                        className="object-cover group-hover:scale-105 transition-transform duration-500"
+                                    />
+
+                                    {/* Vendor Badge */}
+                                    {product.vendorDetails && ( // Added conditional rendering for the entire badge
+                                        <div className="absolute top-3 left-3 bg-white/90 backdrop-blur px-2 py-1 rounded-full flex items-center gap-1.5 text-xs font-medium shadow-sm z-10">
+                                            {product.vendorDetails?.logo && (
+                                                <div className="relative w-3 h-3 rounded-full overflow-hidden">
+                                                    <Image
+                                                        src={product.vendorDetails.logo}
+                                                        alt={product.vendorDetails.name}
+                                                        fill
+                                                        className="object-cover"
+                                                    />
+                                                </div>
+                                            )}
+                                            {product.vendorDetails?.name}
                                         </div>
                                     )}
                                 </div>

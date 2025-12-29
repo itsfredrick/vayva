@@ -41,6 +41,11 @@ const ENV = {
 
     // Monitoring
     SENTRY_DSN: process.env.SENTRY_DSN,
+
+    // AI (Groq)
+    GROQ_ADMIN_KEY: process.env.GROQ_ADMIN_KEY,
+    GROQ_MARKETING_KEY: process.env.GROQ_MARKETING_KEY,
+    GROQ_WHATSAPP_KEY: process.env.GROQ_WHATSAPP_KEY,
 } as const;
 
 /**
@@ -117,6 +122,22 @@ export const FEATURES = {
      */
     SENTRY_ENABLED: Boolean(
         ENV.SENTRY_DSN
+    ),
+
+    /**
+     * AI Assistant (Core & Support)
+     * Requires: GROQ_ADMIN_KEY
+     */
+    AI_ASSISTANT_ENABLED: Boolean(
+        ENV.GROQ_ADMIN_KEY
+    ),
+
+    /**
+     * Marketing AI Assistant
+     * Requires: GROQ_MARKETING_KEY
+     */
+    MARKETING_AI_ENABLED: Boolean(
+        ENV.GROQ_MARKETING_KEY
     ),
 } as const;
 
@@ -199,6 +220,8 @@ export function getDisabledFeatureMessage(feature: keyof typeof FEATURES): strin
         STORAGE_ENABLED: 'File uploads are currently unavailable.',
         CONTROL_CENTER_ENABLED: 'Control Center requires database migration. Contact support.',
         SENTRY_ENABLED: 'Error monitoring is not configured.',
+        AI_ASSISTANT_ENABLED: 'The core AI assistant is currently disabled.',
+        MARKETING_AI_ENABLED: 'The marketing AI chat is currently disabled.',
     };
 
     return messages[feature];
@@ -240,6 +263,8 @@ export function validateEnvironment(): void {
     console.log(`  KYC: ${FEATURES.KYC_ENABLED ? '✅ ENABLED' : '❌ DISABLED'}`);
     console.log(`  Storage: ${FEATURES.STORAGE_ENABLED ? '✅ ENABLED' : '❌ DISABLED'}`);
     console.log(`  Sentry: ${FEATURES.SENTRY_ENABLED ? '✅ ENABLED' : '❌ DISABLED'}`);
+    console.log(`  AI Assistant: ${FEATURES.AI_ASSISTANT_ENABLED ? '✅ ENABLED' : '❌ DISABLED'}`);
+    console.log(`  Marketing AI: ${FEATURES.MARKETING_AI_ENABLED ? '✅ ENABLED' : '❌ DISABLED'}`);
     console.log('');
 
     // Production validation

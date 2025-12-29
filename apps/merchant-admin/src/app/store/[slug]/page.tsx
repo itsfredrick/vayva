@@ -29,9 +29,9 @@ export default function StoreHomepage({ params }: { params: Promise<{ slug: stri
                     id: item.id,
                     name: item.name,
                     price: `₦ ${item.price.toLocaleString()}`,
-                    image: '', // TODO: Add product images
+                    image: item.images?.[0] || 'https://via.placeholder.com/300?text=Product',
                     slug: item.id,
-                    inStock: item.inventory?.quantity > 0
+                    inStock: (item.inventory?.[0]?.available || 0) > 0
                 }));
                 setProducts(transformedProducts);
                 setLoading(false);

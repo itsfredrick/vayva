@@ -12,19 +12,22 @@ import { ArrowRight as ArrowRightIcon } from 'lucide-react';
 const ArrowRight = ArrowRightIcon as any;
 
 // Template Imports
-import { AAFashionHome } from '@/templates/aa-fashion/AAFashionHome';
-import { GizmoTechHome } from '@/templates/gizmo-tech/GizmoTechHome';
-import { BloomeHomeLayout } from '@/templates/bloome-home/BloomeHomeLayout';
-import { BooklyLayout } from '@/templates/bookly-pro/BooklyLayout';
-import { ChopnowLayout } from '@/templates/chopnow/ChopnowLayout';
-import { FileVaultLayout } from '@/templates/file-vault/FileVaultLayout';
-import { TicketlyLayout } from '@/templates/ticketly/TicketlyLayout';
-import { EduflowLayout } from '@/templates/eduflow/EduflowLayout';
-import { BulkTradeLayout } from '@/templates/bulktrade/BulkTradeLayout';
-import { MarketHubLayout } from '@/templates/markethub/MarketHubLayout';
-import { GiveFlowLayout } from '@/templates/giveflow/GiveFlowLayout';
-import { HomeListLayout } from '@/templates/homelist/HomeListLayout';
-import { OneProductLayout } from '@/templates/one-product/OneProductLayout';
+import dynamic from 'next/dynamic';
+
+// Template Imports - Dynamic to reduce initial bundle size
+const AAFashionHome = dynamic(() => import('@/templates/aa-fashion/AAFashionHome').then(m => m.AAFashionHome));
+const GizmoTechHome = dynamic(() => import('@/templates/gizmo-tech/GizmoTechHome').then(m => m.GizmoTechHome));
+const BloomeHomeLayout = dynamic(() => import('@/templates/bloome-home/BloomeHomeLayout').then(m => m.BloomeHomeLayout));
+const BooklyLayout = dynamic(() => import('@/templates/bookly-pro/BooklyLayout').then(m => m.BooklyLayout));
+const ChopnowLayout = dynamic(() => import('@/templates/chopnow/ChopnowLayout').then(m => m.ChopnowLayout));
+const FileVaultLayout = dynamic(() => import('@/templates/file-vault/FileVaultLayout').then(m => m.FileVaultLayout));
+const TicketlyLayout = dynamic(() => import('@/templates/ticketly/TicketlyLayout').then(m => m.TicketlyLayout));
+const EduflowLayout = dynamic(() => import('@/templates/eduflow/EduflowLayout').then(m => m.EduflowLayout));
+const BulkTradeLayout = dynamic(() => import('@/templates/bulktrade/BulkTradeLayout').then(m => m.BulkTradeLayout));
+const MarketHubLayout = dynamic(() => import('@/templates/markethub/MarketHubLayout').then(m => m.MarketHubLayout));
+const GiveFlowLayout = dynamic(() => import('@/templates/giveflow/GiveFlowLayout').then(m => m.GiveFlowLayout));
+const HomeListLayout = dynamic(() => import('@/templates/homelist/HomeListLayout').then(m => m.HomeListLayout));
+const OneProductLayout = dynamic(() => import('@/templates/one-product/OneProductLayout').then(m => m.OneProductLayout));
 
 import { TEMPLATE_REGISTRY } from '@/lib/templates-registry';
 

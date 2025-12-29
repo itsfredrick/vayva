@@ -13,6 +13,8 @@ const ChevronRight = ChevronRightIcon as any;
 const User = UserIcon as any;
 import { useParams } from 'next/navigation';
 
+import { FlashSaleBanner } from '@/components/FlashSaleBanner';
+
 export function StoreShell({ children }: { children: React.ReactNode }) {
     const { store, isLoading, error } = useStore();
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -46,6 +48,9 @@ export function StoreShell({ children }: { children: React.ReactNode }) {
 
     return (
         <div className="flex flex-col min-h-screen">
+            {/* Flash Sale Banner */}
+            {store?.id && <FlashSaleBanner storeId={store.id} />}
+
             {/* Header */}
             <header className="sticky top-0 z-50 bg-white/80 backdrop-blur-md border-b border-gray-100">
                 <div className="max-w-7xl mx-auto px-4 h-16 flex items-center justify-between">

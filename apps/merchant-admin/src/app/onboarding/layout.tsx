@@ -1,5 +1,4 @@
-import { getServerSession } from "next-auth";
-import { authOptions } from "@/lib/auth";
+import { getSessionUser } from "@/lib/session";
 import { redirect } from "next/navigation";
 import { prisma } from "@vayva/db";
 import { OnboardingClientLayout } from './OnboardingClientLayout';
@@ -8,14 +7,14 @@ import { OnboardingProvider } from '@/context/OnboardingContext';
 export const dynamic = 'force-dynamic';
 
 export default async function OnboardingLayout({ children }: { children: React.ReactNode }) {
-    const session = await getServerSession(authOptions);
+    const user = await getSessionUser();
 
-    if (!session?.user) {
+    if (!user) {
         redirect("/signin");
     }
 
     const store = await prisma.store.findUnique({
-        where: { id: (session.user as any).storeId },
+        where: { id: user.storeId },
         select: { onboardingCompleted: true }
     });
 

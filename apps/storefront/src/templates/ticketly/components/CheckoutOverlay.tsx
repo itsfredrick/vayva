@@ -5,7 +5,7 @@ interface CheckoutOverlayProps {
     total: number;
     count: number;
     onClose: () => void;
-    onComplete: (attendee: any) => void;
+    onComplete: (attendee: { name: string; email: string }) => void;
 }
 
 export const CheckoutOverlay = ({ total, count, onClose, onComplete }: CheckoutOverlayProps) => {

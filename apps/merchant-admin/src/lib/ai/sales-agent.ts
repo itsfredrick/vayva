@@ -5,9 +5,14 @@ import { AiUsageService } from './ai-usage.service';
 import { DataGovernanceService } from '../governance/data-governance.service';
 import { EscalationService, EscalationTrigger } from '../support/escalation.service';
 import { ConversionService } from './conversion.service';
+import { reportError } from '../error';
+
+if (!process.env.GROQ_WHATSAPP_KEY) {
+    throw new Error("Missing GROQ_WHATSAPP_KEY environment variable");
+}
 
 const groq = new Groq({
-    apiKey: process.env.GROQ_API_KEY || '',
+    apiKey: process.env.GROQ_WHATSAPP_KEY,
 });
 
 export interface SalesAgentResponse {
@@ -24,16 +29,21 @@ export class SalesAgent {
     /**
      * Handle a message from a customer
      */
+    /**
+     * Handle a message from a customer
+     */
     static async handleMessage(
         storeId: string,
-        messages: any[],
+        messages: Groq.Chat.ChatCompletionMessageParam[],
         options?: {
             userId?: string;
             requestId?: string;
         }
     ): Promise<SalesAgentResponse> {
         try {
-            const lastMessage = messages[messages.length - 1]?.content || '';
+            // Safe access to last message content
+            const lastMsg = messages[messages.length - 1];
+            const lastMessage = typeof lastMsg?.content === 'string' ? lastMsg.content : '';
 
             // 1. Pre-Check Limits
             const limitCheck = await AiUsageService.checkLimits(storeId);
@@ -49,7 +59,7 @@ export class SalesAgent {
             if (trigger) {
                 await EscalationService.triggerHandoff({
                     storeId,
-                    conversationId: messages[messages.length - 1]?.conversationId || 'manual_handoff',
+                    conversationId: 'manual_handoff', // Todo: Pass real conversationId
                     trigger,
                     reason: `Detected trigger word in message: ${lastMessage.substring(0, 20)}`,
                     aiSummary: `Auto-escalated via trigger: ${trigger}.`
@@ -68,8 +78,8 @@ export class SalesAgent {
                     where: { id: storeId },
                     select: { name: true, category: true }
                 }),
-                (prisma as any).merchantAiProfile.findUnique({ where: { storeId } }),
-                MerchantBrainService.retrieveContext(storeId, lastMessage)
+                prisma.merchantAiProfile.findUnique({ where: { storeId } }),
+                MerchantBrainService.retrieveContext(storeId, lastMessage, 3)
             ]);
 
             // 2.5 Conversion Intelligence (Prompt 9)
@@ -83,10 +93,10 @@ export class SalesAgent {
             });
 
             if (objection) {
-                await (prisma as any).objectionEvent.create({
+                await prisma.objectionEvent.create({
                     data: {
                         storeId,
-                        conversationId: messages[messages.length - 1]?.conversationId || 'anon',
+                        conversationId: 'anon',
                         category: objection,
                         rawText: lastMessage
                     }
@@ -131,7 +141,7 @@ export class SalesAgent {
 
             // Handle Tool Calls
             if (choice.tool_calls) {
-                const toolResults = [];
+                const toolResults: Groq.Chat.ChatCompletionMessageParam[] = [];
                 for (const tool of choice.tool_calls) {
                     if (tool.function.name === 'get_inventory') {
                         const args = JSON.parse(tool.function.arguments);
@@ -141,7 +151,7 @@ export class SalesAgent {
                 }
 
                 const secondResponse = await groq.chat.completions.create({
-                    messages: [{ role: 'system', content: systemPrompt }, ...messages, choice, ...toolResults as any],
+                    messages: [{ role: 'system', content: systemPrompt }, ...messages, choice, ...toolResults],
                     model: 'llama-3.1-70b-versatile'
                 });
                 choice = secondResponse.choices[0].message;
@@ -159,7 +169,7 @@ export class SalesAgent {
 
                 await DataGovernanceService.logAiTrace({
                     storeId,
-                    conversationId: messages[messages.length - 1]?.conversationId,
+                    conversationId: undefined, // FixMe: Pass real ID
                     requestId: options?.requestId,
                     model: 'llama-3.1-70b-versatile',
                     toolsUsed: choice.tool_calls?.map(t => t.function.name) || [],
@@ -177,7 +187,7 @@ export class SalesAgent {
             };
 
         } catch (error) {
-            console.error('[SalesAgent] Error:', error);
+            reportError(error, { context: 'SalesAgent.handleMessage', storeId });
             return {
                 message: "I'm having a quiet moment to think. Please message back in 5 minutes!"
             };

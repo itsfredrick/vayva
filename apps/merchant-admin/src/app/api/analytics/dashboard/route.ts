@@ -1,15 +1,13 @@
-
 import { NextRequest, NextResponse } from 'next/server';
-import { getServerSession } from 'next-auth';
-import { authOptions } from '@/lib/auth';
+import { getSessionUser } from '@/lib/session';
 import { AnalyticsService } from '@/lib/analytics/service';
 
 export async function GET(req: NextRequest) {
     try {
-        const session = await getServerSession(authOptions);
-        if (!session?.user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+        const user = await getSessionUser();
+        if (!user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
 
-        const storeId = (session.user as any).storeId;
+        const storeId = user.storeId;
         if (!storeId) return NextResponse.json({ error: 'No Store Context' }, { status: 400 });
 
         const { searchParams } = new URL(req.url);

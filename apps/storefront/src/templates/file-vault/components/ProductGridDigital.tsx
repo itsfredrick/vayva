@@ -1,4 +1,6 @@
 import React from 'react';
+import Link from 'next/link';
+import Image from 'next/image';
 import { FileText, FileCode, FileImage, Download } from 'lucide-react';
 import { PublicProduct } from '@/types/storefront';
 
@@ -31,11 +33,14 @@ export const ProductGridDigital = ({ products, onSelect }: ProductGridDigitalPro
                         >
                             {/* Thumbnail */}
                             <div className="aspect-video bg-gray-900 relative">
-                                <img
-                                    src={product.images?.[0]}
-                                    alt={product.name}
-                                    className="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-opacity"
-                                />
+                                <div className="absolute inset-0">
+                                    <Image
+                                        src={product.images?.[0] || '/placeholder.png'}
+                                        alt={product.name}
+                                        fill
+                                        className="object-cover transition-transform duration-500 group-hover:scale-105"
+                                    />
+                                </div>
                                 <div className="absolute top-4 right-4 bg-black/60 backdrop-blur-md px-3 py-1.5 rounded-lg flex items-center gap-2 text-xs font-bold text-gray-300 border border-white/10">
                                     <FileIcon type={product.fileDetails?.fileType} />
                                     {product.fileDetails?.fileType}

@@ -1,13 +1,16 @@
 'use client';
 
+import React, { useState, useEffect } from 'react';
+import { useParams } from 'next/navigation';
+import Link from 'next/link';
+import { ArrowRight, Heart, Package, Calendar, MapPin, ChevronRight, Star, RefreshCcw } from 'lucide-react';
 import { MOCK_DELIVERIES } from '@/data/mock-history';
-import { MOCK_MEALS } from '@/data/mock-menu';
 import { LOCALES, LocaleKey } from '@/data/locales';
 import { useUserInteractions } from '@/hooks/useUserInteractions';
 import { HistoryGrid } from '@/components/history/HistoryGrid';
-import Link from 'next/link';
-import { ArrowRight, Heart } from 'lucide-react';
-import { useState } from 'react';
+import { useStore } from '@/context/StoreContext';
+import { Meal } from '@/types/menu';
+import { StorefrontService } from '@/services/storefront.service';
 
 // Simple Toast Component (Internal)
 function Toast({ message, show }: { message: string, show: boolean }) {
@@ -19,10 +22,26 @@ function Toast({ message, show }: { message: string, show: boolean }) {
     );
 }
 
-export default function PastDeliveriesPage({ params }: { params: { lang: string } }) {
-    const lang = (params.lang === 'tr' ? 'tr' : 'en') as LocaleKey;
+export default function PastDeliveriesPage({ params }: any) {
+    const { lang: rawLang } = useParams() as { lang: string };
+    const lang = (rawLang === 'tr' ? 'tr' : 'en') as LocaleKey;
+    const { store } = useStore();
     const t = LOCALES[lang];
     const { ratings, favorites, rateMeal, toggleFavorite, isLoaded } = useUserInteractions();
+
+    const [meals, setMeals] = useState<Meal[]>([]);
+    const [loading, setLoading] = useState(true);
+
+    useEffect(() => {
+        if (!store) return;
+        fetch(`/api/menu?slug=${store.slug}`)
+            .then(res => res.json())
+            .then(data => {
+                if (data.meals) setMeals(data.meals);
+                setLoading(false);
+            })
+            .catch(() => setLoading(false));
+    }, [store]);
 
     const [toast, setToast] = useState('');
 
@@ -44,11 +63,11 @@ export default function PastDeliveriesPage({ params }: { params: { lang: string 
     if (!isLoaded) return null; // Hydration safe
 
     return (
-        <div className="min-h-screen bg-gray-50 pb-20 font-sans">
+        <div className="min-h-screen bg-gray-50 pb-20 font-sans bg-noise">
             <Toast message={toast} show={!!toast} />
 
             {/* Header */}
-            <div className="bg-white border-b border-gray-100 pt-8 pb-4">
+            <div className="glass-panel sticky top-0 z-30 border-b border-white/20 pt-8 pb-4">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex justify-between items-end">
                     <div>
                         <h1 className="text-2xl font-bold text-gray-900">{t.history.title}</h1>
@@ -69,7 +88,7 @@ export default function PastDeliveriesPage({ params }: { params: { lang: string 
                 {MOCK_DELIVERIES.length > 0 ? (
                     <HistoryGrid
                         deliveries={MOCK_DELIVERIES}
-                        meals={MOCK_MEALS}
+                        meals={meals}
                         ratings={ratings}
                         favorites={favorites}
                         lang={lang}

@@ -9,9 +9,8 @@ export function sanitizeMarkdown(markdown: string): string {
     // Convert markdown to HTML
     const html = marked.parse(markdown) as string;
 
-    // Sanitize HTML (Disabled for build fix - JSDOM issue)
-    // const clean = DOMPurify.sanitize(html, { ... });
-    const clean = html;
+    // Sanitize HTML
+    const clean = DOMPurify.sanitize(html);
 
     // Add security attributes to external links
     return clean.replace(

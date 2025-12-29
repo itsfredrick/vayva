@@ -9,7 +9,10 @@ const RESEND_KEY = process.env.NODE_ENV === 'test'
 const resend = new Resend(RESEND_KEY);
 
 export class ResendEmailService {
-    private static fromEmail = process.env.RESEND_FROM_EMAIL || 'noreply@vayva.ng';
+    private static fromEmail = process.env.RESEND_FROM_EMAIL || 'No-reply@vayva.ng';
+    private static billingEmail = process.env.EMAIL_BILLING || 'Billing@vayva.ng';
+    private static helloEmail = process.env.EMAIL_HELLO || 'Hello@vayva.ng';
+    private static supportEmail = process.env.EMAIL_SUPPORT || 'Support@vayva.ng';
 
     /**
      * Check if email service is configured
@@ -50,7 +53,7 @@ export class ResendEmailService {
 
         try {
             const { data, error } = await resend.emails.send({
-                from: this.fromEmail,
+                from: this.helloEmail,
                 to,
                 subject: `Welcome to Vayva, ${firstName}!`,
                 html: wrapEmail(this.getWelcomeTemplate(firstName, storeName), 'Welcome to Vayva'),
@@ -98,7 +101,7 @@ export class ResendEmailService {
 
         try {
             const { data, error } = await resend.emails.send({
-                from: this.fromEmail,
+                from: this.billingEmail,
                 to,
                 subject: `Receipt for ${storeName} - ${invoiceNumber}`,
                 html: wrapEmail(this.getReceiptTemplate(amountNgn, invoiceNumber, storeName), 'Payment Receipt'),
@@ -125,7 +128,7 @@ export class ResendEmailService {
             const billingUrl = `${process.env.NEXTAUTH_URL}/admin/billing`;
 
             const { data, error } = await resend.emails.send({
-                from: this.fromEmail,
+                from: this.billingEmail,
                 to,
                 subject: `Action Required: Your subscription for ${storeName} expires in 3 days`,
                 html: billingSubscriptionExpiryReminder({

@@ -11,23 +11,29 @@
   },
   "dependencies": {
     "@vayva/api-client": "workspace:*",
+    "@vayva/content": "workspace:*",
+    "@vayva/db": "workspace:*",
     "@vayva/schemas": "workspace:*",
     "@vayva/theme": "workspace:*",
     "@vayva/ui": "workspace:*",
-    "@vayva/content": "workspace:*",
     "axios": "^1.6.2",
+    "bcryptjs": "^3.0.3",
     "lucide-react": "^0.294.0",
     "next": "16.1.1",
     "react": "19.2.3",
-    "react-dom": "19.2.3"
+    "react-dom": "19.2.3",
+    "zod": "^3.22.4"
   },
   "devDependencies": {
-    "@types/node": "^20.0.0",
+    "@types/bcryptjs": "^3.0.0",
+    "@types/node": "^22.0.0",
     "@types/react": "19.2.7",
     "@types/react-dom": "19.0.2",
     "autoprefixer": "^10.0.1",
     "postcss": "^8.0.0",
     "tailwindcss": "^3.3.0",
-    "typescript": "^5.0.0"
+    "typescript": "^5.0.0",
+    "vite-tsconfig-paths": "^6.0.3",
+    "vitest": "^1.0.4"
   }
 }

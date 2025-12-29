@@ -12,8 +12,8 @@ import { join } from 'path';
 
 // Bundle size budgets in bytes
 const BUDGETS = {
-    'apps/web/.next/static/chunks': 500 * 1024, // 500KB for client chunks
-    'apps/web/.next/server/app': 2 * 1024 * 1024, // 2MB for server bundles
+    'apps/merchant-admin/.next/static/chunks': 800 * 1024, // 800KB for admin chunks
+    'apps/storefront/.next/static/chunks': 600 * 1024, // 600KB for storefront
 };
 
 function formatSize(bytes) {

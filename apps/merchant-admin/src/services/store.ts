@@ -12,13 +12,11 @@ export const StoreService = {
     },
 
     update: async (storeId: string, data: any) => {
-        console.log('Mocking Store Update:', storeId, data);
         await new Promise(resolve => setTimeout(resolve, 500));
         return { id: storeId, ...data };
     },
 
     get: async (storeId: string) => {
-        console.log('Mocking Store Get:', storeId);
         await new Promise(resolve => setTimeout(resolve, 500));
         return {
             id: storeId,

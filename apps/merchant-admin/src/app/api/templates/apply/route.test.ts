@@ -6,7 +6,9 @@ import { prisma } from '@vayva/db';
 import { NextResponse } from 'next/server';
 
 // Mocks
-vi.mock('next-auth');
+vi.mock('@/lib/team/rbac', () => ({
+    checkPermission: vi.fn(),
+}));
 vi.mock('@vayva/db', () => ({
     prisma: {
         store: {
@@ -16,6 +18,14 @@ vi.mock('@vayva/db', () => ({
     },
 }));
 vi.mock('@/lib/auth', () => ({ authOptions: {} }));
+vi.mock('@/lib/flags/flagService', () => ({
+    FlagService: { isEnabled: vi.fn(() => true) }
+}));
+vi.mock('@/lib/rate-limit', () => ({
+    checkRateLimit: vi.fn()
+}));
+
+import { checkPermission } from '@/lib/team/rbac';
 
 const createRequest = (body: any) =>
     new Request('http://localhost:3000/api/templates/apply', {
@@ -30,7 +40,7 @@ describe('POST /api/templates/apply (Standardized)', () => {
     });
 
     it('returns 401 if not authenticated', async () => {
-        (getServerSession as any).mockResolvedValue(null);
+        (checkPermission as any).mockRejectedValue(new Error('Unauthorized'));
 
         const req = createRequest({ templateId: 'vayva-standard' });
         const res = await POST(req);
@@ -39,7 +49,7 @@ describe('POST /api/templates/apply (Standardized)', () => {
     });
 
     it('returns 403 if Free user tries to apply Growth template', async () => {
-        (getServerSession as any).mockResolvedValue({ user: { id: 'u1', storeId: 's1', role: 'OWNER' } });
+        (checkPermission as any).mockResolvedValue({ user: { id: 'u1', storeId: 's1', role: 'OWNER' } });
         (prisma.store.findUnique as any).mockResolvedValue({
             id: 's1',
             plan: 'free',
@@ -59,7 +69,7 @@ describe('POST /api/templates/apply (Standardized)', () => {
     });
 
     it('returns 403 if Growth user tries to apply Pro template', async () => {
-        (getServerSession as any).mockResolvedValue({ user: { id: 'u2', storeId: 's2', role: 'OWNER' } });
+        (checkPermission as any).mockResolvedValue({ user: { id: 'u2', storeId: 's2', role: 'OWNER' } });
         (prisma.store.findUnique as any).mockResolvedValue({
             id: 's2',
             plan: 'growth',
@@ -78,7 +88,7 @@ describe('POST /api/templates/apply (Standardized)', () => {
     });
 
     it('returns 200 if Growth user applies Growth template', async () => {
-        (getServerSession as any).mockResolvedValue({ user: { id: 'u3', storeId: 's3', role: 'OWNER' } });
+        (checkPermission as any).mockResolvedValue({ user: { id: 'u3', storeId: 's3', role: 'OWNER' } });
         (prisma.store.findUnique as any).mockResolvedValue({
             id: 's3',
             plan: 'growth',
@@ -94,7 +104,7 @@ describe('POST /api/templates/apply (Standardized)', () => {
     });
 
     it('returns 200 if Pro user applies Pro template', async () => {
-        (getServerSession as any).mockResolvedValue({ user: { id: 'u4', storeId: 's4', role: 'OWNER' } });
+        (checkPermission as any).mockResolvedValue({ user: { id: 'u4', storeId: 's4', role: 'OWNER' } });
         // Old 'enterprise' maps to 'pro'
         (prisma.store.findUnique as any).mockResolvedValue({
             id: 's4',

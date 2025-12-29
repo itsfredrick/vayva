@@ -42,7 +42,8 @@ function OrderConfirmationContent() {
                 // However, right after checkout, we might just have the order data in state or session.
                 // For this demo, let's allow lookup by ref if we're on the confirmation page.
 
-                const response = await fetch(`http://localhost:4000/v1/public/orders/status?ref=${reference}`);
+                const apiBase = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4000/v1';
+                const response = await fetch(`${apiBase}/public/orders/status?ref=${reference}`);
                 if (response.ok) {
                     setOrder(await response.json());
                 } else {

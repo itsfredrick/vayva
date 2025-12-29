@@ -2,15 +2,22 @@
 
 import React, { useState } from 'react';
 import Link from 'next/link';
-import { AppShell , GlassPanel , Button , Icon , StatusChip } from '@vayva/ui';
-
-const MOCK_TRANSACTIONS = [
-    { id: 'TX-1001', order: 'VV-1024', customer: 'Chinedu Okafor', amount: '₦ 51,500', status: 'paid', provider: 'Paystack', date: 'Just now' },
-    { id: 'TX-1002', order: 'VV-1023', customer: 'Amina Yusuf', amount: '₦ 12,000', status: 'paid', provider: 'Paystack', date: '2 hours ago' },
-    { id: 'TX-1003', order: 'VV-1022', customer: 'John Doe', amount: '₦ 4,500', status: 'failed', provider: 'Paystack', date: 'Yesterday' },
-];
+import { AppShell, GlassPanel, Button, Icon, StatusChip } from '@vayva/ui';
 
 export default function TransactionsPage() {
+    const [transactions, setTransactions] = useState<any[]>([]);
+    const [loading, setLoading] = useState(true);
+
+    React.useEffect(() => {
+        fetch('/api/finance/transactions')
+            .then(res => res.json())
+            .then(res => {
+                if (res.success) setTransactions(res.data);
+                setLoading(false);
+            })
+            .catch(() => setLoading(false));
+    }, []);
+
     return (
         <AppShell sidebar={<></>} header={<></>}>
             <div className="flex flex-col gap-6">
@@ -67,32 +74,40 @@ export default function TransactionsPage() {
                                 </tr>
                             </thead>
                             <tbody className="divide-y divide-white/5">
-                                {MOCK_TRANSACTIONS.map((tx) => (
-                                    <tr key={tx.id} className="group hover:bg-white/5 transition-colors cursor-pointer">
-                                        <td className="p-4 font-bold text-white font-mono text-xs">{tx.id}</td>
-                                        <td className="p-4 text-white">{tx.customer}</td>
-                                        <td className="p-4">
-                                            <Link href={`/admin/orders/${tx.order}`} className="text-primary hover:underline font-mono text-xs">
-                                                {tx.order}
-                                            </Link>
-                                        </td>
-                                        <td className="p-4 font-mono text-white">{tx.amount}</td>
-                                        <td className="p-4"><StatusChip status={tx.status} /></td>
-                                        <td className="p-4">
-                                            <span className="flex items-center gap-1 text-xs text-text-secondary uppercase font-bold tracking-wider">
-                                                <Icon name={"CreditCard" as any} size={14} /> {tx.provider}
-                                            </span>
-                                        </td>
-                                        <td className="p-4 text-text-secondary text-xs">{tx.date}</td>
-                                        <td className="p-4 text-right">
-                                            <Link href={`/admin/finance/transactions/${tx.id}`}>
-                                                <Button size="icon" variant="ghost" className="h-8 w-8 text-text-secondary hover:text-white">
-                                                    <Icon name={"ChevronRight" as any} size={20} />
-                                                </Button>
-                                            </Link>
-                                        </td>
-                                    </tr>
-                                ))}
+                                {loading ? (
+                                    [1, 2, 3].map(i => (
+                                        <tr key={i}>
+                                            <td colSpan={8} className="p-4"><div className="h-8 bg-white/5 animate-pulse rounded" /></td>
+                                        </tr>
+                                    ))
+                                ) : (
+                                    transactions.map((tx) => (
+                                        <tr key={tx.id} className="group hover:bg-white/5 transition-colors cursor-pointer">
+                                            <td className="p-4 font-bold text-white font-mono text-xs">{tx.id}</td>
+                                            <td className="p-4 text-white">{tx.customer}</td>
+                                            <td className="p-4">
+                                                <Link href={`/admin/orders/${tx.order}`} className="text-primary hover:underline font-mono text-xs">
+                                                    {tx.order}
+                                                </Link>
+                                            </td>
+                                            <td className="p-4 font-mono text-white">{tx.amount}</td>
+                                            <td className="p-4"><StatusChip status={tx.status} /></td>
+                                            <td className="p-4">
+                                                <span className="flex items-center gap-1 text-xs text-text-secondary uppercase font-bold tracking-wider">
+                                                    <Icon name={"CreditCard" as any} size={14} /> {tx.provider}
+                                                </span>
+                                            </td>
+                                            <td className="p-4 text-text-secondary text-xs">{tx.date}</td>
+                                            <td className="p-4 text-right">
+                                                <Link href={`/admin/finance/transactions/${tx.id}`}>
+                                                    <Button size="icon" variant="ghost" className="h-8 w-8 text-text-secondary hover:text-white">
+                                                        <Icon name={"ChevronRight" as any} size={20} />
+                                                    </Button>
+                                                </Link>
+                                            </td>
+                                        </tr>
+                                    ))
+                                )}
                             </tbody>
                         </table>
                     </div>

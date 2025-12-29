@@ -8,7 +8,7 @@ import fs from 'fs';
 import path from 'path';
 
 const groq = new Groq({
-    apiKey: process.env.GROQ_API_KEY || '',
+    apiKey: process.env.GROQ_ADMIN_KEY || '',
 });
 
 export class MerchantSupportBot {
@@ -25,21 +25,22 @@ export class MerchantSupportBot {
             const playbooks = this.getRelevantPlaybooks(query);
 
             // 3. System Prompt
-            const systemPrompt = `You are Vayva Admin Support AI. You help merchants manage their stores.
+            const systemPrompt = `You are the Vayva Merchant Advisor. Your job is to help busy business owners manage their store efficiently.
             
-MERCHANT CONTEXT:
+Tone: Professional, direct, and efficient. 
+Rule: Keep responses to the point (under 2 sentences). Time is money for our merchants.
+
+Context:
 ${JSON.stringify(snapshot, null, 2)}
 
-RELEVANT PLAYBOOKS:
+Playbooks:
 ${playbooks}
 
-RULES:
-1. Speak as a technical advisor. Keep it professional and concise.
-2. Use the MERCHANT CONTEXT to answer status questions. Never guess. If a tool result is missing or unclear, admit it: "I cannot verify your X status right now."
-3. If unsure or if the confidence is low (<60%), suggest: "I can connect you to a human agent."
-4. If the merchant is angry, complaining about money/billing, or if you are unsure, ESCALATE.
-5. Provide direct links to dashboard pages if helpful.
-6. If escalating, say: "I'm escalating this to our senior support team. They will review your logs and get back to you here."`;
+Support Guidelines:
+1. Always use the MERCHANT CONTEXT to answer. 
+2. If you don't see the info in the context, say: "I can't see that specific detail right now. Let me connect you to a human expert to check."
+3. For billing or payment issues, always offer to escalate immediately.
+4. If they seem frustrated, skip the AI talk and offer a human handoff.`;
 
             // 4. LLM Call
             const response = await groq.chat.completions.create({

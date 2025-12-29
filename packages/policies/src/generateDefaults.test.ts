@@ -43,9 +43,9 @@ describe('Policy Generator', () => {
         });
 
         const shippingPolicy = policies.find(p => p.type === 'shipping_delivery');
-        expect(shippingPolicy?.contentMd).toContain('self-dispatch');
+        expect(shippingPolicy?.contentMd).toContain('Self-Dispatch');
         expect(shippingPolicy?.contentMd).toContain('WhatsApp');
-        expect(shippingPolicy?.contentMd).toContain('landmark');
+        expect(shippingPolicy?.contentMd).toContain('landmarks');
     });
 });
 

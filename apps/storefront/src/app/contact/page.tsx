@@ -4,7 +4,8 @@ import { Button, Input, Icon } from '@vayva/ui';
 
 async function getContactDetails() {
     try {
-        const res = await fetch('http://localhost:3000/api/stores/public/policies', { next: { revalidate: 0 } });
+        const apiBase = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4000/v1';
+        const res = await fetch(`${apiBase}/public/stores/policies`, { next: { revalidate: 0 } });
         if (res.ok) return await res.json();
     } catch (e) {
         return null;

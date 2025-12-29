@@ -2,15 +2,22 @@
 
 import React from 'react';
 import Link from 'next/link';
-import { AppShell , GlassPanel , Button , Icon } from '@vayva/ui';
-
-const MOCK_PAYOUTS = [
-    { id: 'PO-8821', amount: '₦ 450,200', status: 'Processing', bank: 'GTBank •••• 1234', period: 'Oct 20 - Oct 27', date: 'Oct 28' },
-    { id: 'PO-8820', amount: '₦ 320,000', status: 'Paid', bank: 'GTBank •••• 1234', period: 'Oct 13 - Oct 20', date: 'Oct 21' },
-    { id: 'PO-8819', amount: '₦ 15,500', status: 'Paid', bank: 'GTBank •••• 1234', period: 'Oct 06 - Oct 13', date: 'Oct 14' },
-];
+import { AppShell, GlassPanel, Button, Icon } from '@vayva/ui';
 
 export default function PayoutsPage() {
+    const [payouts, setPayouts] = React.useState<any[]>([]);
+    const [loading, setLoading] = React.useState(true);
+
+    React.useEffect(() => {
+        fetch('/api/finance/payouts')
+            .then(res => res.json())
+            .then(res => {
+                if (res.success) setPayouts(res.data);
+                setLoading(false);
+            })
+            .catch(() => setLoading(false));
+    }, []);
+
     return (
         <AppShell sidebar={<></>} header={<></>}>
             <div className="flex flex-col gap-6">
@@ -65,29 +72,37 @@ export default function PayoutsPage() {
                                 </tr>
                             </thead>
                             <tbody className="divide-y divide-white/5">
-                                {MOCK_PAYOUTS.map((po) => (
-                                    <tr key={po.id} className="group hover:bg-white/5 transition-colors cursor-pointer">
-                                        <td className="p-4 font-bold text-white font-mono text-xs">{po.id}</td>
-                                        <td className="p-4 font-mono text-white">{po.amount}</td>
-                                        <td className="p-4">
-                                            <span className={`px-2 py-0.5 rounded-md text-[10px] font-bold uppercase tracking-wider ${po.status === 'Paid' ? 'bg-state-success/10 text-state-success' :
-                                                po.status === 'Processing' ? 'bg-primary/10 text-primary' : 'bg-white/10 text-text-secondary'
-                                                }`}>
-                                                {po.status}
-                                            </span>
-                                        </td>
-                                        <td className="p-4 text-text-secondary text-xs">{po.bank}</td>
-                                        <td className="p-4 text-text-secondary text-xs">{po.period}</td>
-                                        <td className="p-4 text-text-secondary text-xs">{po.date}</td>
-                                        <td className="p-4 text-right">
-                                            <Link href={`/admin/finance/payouts/${po.id}`}>
-                                                <Button size="icon" variant="ghost" className="h-8 w-8 text-text-secondary hover:text-white">
-                                                    <Icon name={"ChevronRight" as any} size={20} />
-                                                </Button>
-                                            </Link>
-                                        </td>
-                                    </tr>
-                                ))}
+                                {loading ? (
+                                    [1, 2, 3].map(i => (
+                                        <tr key={i}>
+                                            <td colSpan={7} className="p-4"><div className="h-8 bg-white/5 animate-pulse rounded" /></td>
+                                        </tr>
+                                    ))
+                                ) : (
+                                    payouts.map((po) => (
+                                        <tr key={po.id} className="group hover:bg-white/5 transition-colors cursor-pointer">
+                                            <td className="p-4 font-bold text-white font-mono text-xs">{po.id}</td>
+                                            <td className="p-4 font-mono text-white">{po.amount}</td>
+                                            <td className="p-4">
+                                                <span className={`px-2 py-0.5 rounded-md text-[10px] font-bold uppercase tracking-wider ${po.status === 'Paid' ? 'bg-state-success/10 text-state-success' :
+                                                    po.status === 'Processing' ? 'bg-primary/10 text-primary' : 'bg-white/10 text-text-secondary'
+                                                    }`}>
+                                                    {po.status}
+                                                </span>
+                                            </td>
+                                            <td className="p-4 text-text-secondary text-xs">{po.bank}</td>
+                                            <td className="p-4 text-text-secondary text-xs">{po.period}</td>
+                                            <td className="p-4 text-text-secondary text-xs">{po.date}</td>
+                                            <td className="p-4 text-right">
+                                                <Link href={`/admin/finance/payouts/${po.id}`}>
+                                                    <Button size="icon" variant="ghost" className="h-8 w-8 text-text-secondary hover:text-white">
+                                                        <Icon name={"ChevronRight" as any} size={20} />
+                                                    </Button>
+                                                </Link>
+                                            </td>
+                                        </tr>
+                                    ))
+                                )}
                             </tbody>
                         </table>
                     </div>

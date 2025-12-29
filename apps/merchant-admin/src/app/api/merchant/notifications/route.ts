@@ -1,11 +1,10 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { getServerSession } from 'next-auth';
-import { authOptions } from '@/lib/auth';
+import { getSessionUser } from '@/lib/session';
 import { prisma } from '@vayva/db';
 
 export async function GET(req: NextRequest) {
-    const session = await getServerSession(authOptions);
-    if (!(session?.user as any)?.storeId) {
+    const user = await getSessionUser();
+    if (!user?.storeId) {
         return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
@@ -17,7 +16,7 @@ export async function GET(req: NextRequest) {
     const cursor = searchParams.get('cursor');
 
     const where: any = {
-        storeId: (session!.user as any).storeId
+        storeId: user.storeId
     };
 
     if (status === 'unread') {
@@ -50,7 +49,7 @@ export async function GET(req: NextRequest) {
 
     const unreadCount = await prisma.notification.count({
         where: {
-            storeId: (session!.user as any).storeId,
+            storeId: user.storeId,
             isRead: false
         }
     });

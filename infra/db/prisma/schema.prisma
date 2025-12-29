@@ -470,6 +470,7 @@ model CollectionProduct {
   Product      Product    @relation(fields: [productId], references: [id])
 
   @@id([collectionId, productId])
+  @@index([productId])
 }
 
 model Contact {
@@ -555,6 +556,7 @@ model Customer {
   notes             String?
   tags              String[]
   marketingOptIn    Boolean           @default(false)
+  passwordHash      String?
   createdAt         DateTime          @default(now())
   updatedAt DateTime @updatedAt
   store             Store             @relation(fields: [storeId], references: [id])
@@ -1700,6 +1702,8 @@ model ProductImage {
   updatedAt DateTime @updatedAt
   Product        Product          @relation(fields: [productId], references: [id])
   ProductVariant ProductVariant[]
+
+  @@index([productId])
 }
 
 model ProductVariant {
@@ -2022,6 +2026,26 @@ model Store {
   supportTelemetry         SupportTelemetryEvent[]
   storefrontDraft          StorefrontDraft?
   storefrontPublished      StorefrontPublished?
+  flashSales               FlashSale[]
+}
+
+model FlashSale {
+  id          String   @id @default(uuid())
+  storeId     String
+  name        String
+  startTime   DateTime
+  endTime     DateTime
+  isActive    Boolean  @default(true)
+  discount    Float    @default(0) // Percentage off
+  targetType  String   @default("ALL") // "ALL", "COLLECTION", "PRODUCT"
+  targetId    String?  // Collection ID or Product ID
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  store       Store    @relation(fields: [storeId], references: [id])
+  
+  @@index([storeId])
+  @@index([startTime, endTime])
 }
 
 // PART A: DATA MODEL

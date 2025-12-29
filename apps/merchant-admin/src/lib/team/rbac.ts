@@ -1,21 +1,20 @@
-
-import { getServerSession } from 'next-auth';
-import { authOptions } from '@/lib/auth';
+import { getSessionUser } from '@/lib/session';
 import { can } from './permissions';
 import { NextResponse } from 'next/server';
 
 export async function checkPermission(action: string) {
-    const session = await getServerSession(authOptions);
-    if (!session || !session.user) {
+    const user = await getSessionUser();
+    if (!user) {
         throw new Error('Unauthorized');
     }
 
-    const userRole = (session.user as any).role;
+    const userRole = user.role;
     if (!can(userRole, action)) {
         throw new Error('Forbidden: Insufficient permissions');
     }
 
-    return session;
+    // Mock session object structure for compatibility with existing handlers
+    return { user };
 }
 
 export function withRBAC(action: string, handler: Function) {

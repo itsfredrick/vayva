@@ -1,20 +1,19 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { getServerSession } from 'next-auth'; // Using mock auth
-import { authOptions } from '@/lib/auth'; // Using mock auth
+import { getSessionUser } from '@/lib/session';
 import { prisma } from '@vayva/db';
 import { PLANS } from '@/lib/billing/plans';
 
 export async function GET(req: NextRequest) {
-    const session = await getServerSession(authOptions);
-    if (!(session?.user as any)?.storeId) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    const user = await getSessionUser();
+    if (!user?.storeId) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
 
     try {
         const sub = await prisma.merchantSubscription.findUnique({
-            where: { storeId: (session!.user as any).storeId }
+            where: { storeId: user.storeId }
         });
 
         const invoices = await prisma.invoice.findMany({
-            where: { storeId: (session!.user as any).storeId },
+            where: { storeId: user.storeId },
             orderBy: { issuedAt: 'desc' },
             take: 10
         });

@@ -2,26 +2,46 @@
 
 import React from 'react';
 import { AdminShell } from '@/components/admin-shell';
-import { GlassPanel , Icon } from '@vayva/ui';
+import { GlassPanel, Icon } from '@vayva/ui';
 import { ConversationList } from '@/components/whatsapp/conversation-list';
 
-const MOCK_CONVERSATIONS = [
-    { id: '1', user: 'Chidinma Okeke', avatarVal: 'C', lastMsg: 'I haven’t received my refund yet.', time: '2m', tags: ['Escalated'], unread: true },
-    { id: '2', user: 'Emeka Johnson', avatarVal: 'E', lastMsg: 'Can I change the delivery address?', time: '15m', tags: ['New'], unread: true },
-    { id: '3', user: 'Sarah Kalu', avatarVal: 'S', lastMsg: 'Thanks, that works perfectly!', time: '1h', tags: [], unread: false },
-    { id: '4', user: 'Biodun Adeleke', avatarVal: 'B', lastMsg: 'Is the black t-shirt available in XL?', time: '2h', tags: ['Pending'], unread: false },
-    { id: '5', user: 'Grace Effiong', avatarVal: 'G', lastMsg: 'Okay, I will wait.', time: '3h', tags: [], unread: false },
-    { id: '6', user: 'Samuel K.', avatarVal: 'S', lastMsg: 'How do I return this?', time: '5h', tags: ['New'], unread: false },
-    { id: '7', user: 'Fatima B.', avatarVal: 'F', lastMsg: 'Order #12345 status please.', time: '1d', tags: [], unread: false },
-];
-
 export default function WhatsAppInboxPage() {
+    const [conversations, setConversations] = React.useState<any[]>([]);
+    const [loading, setLoading] = React.useState(true);
+
+    React.useEffect(() => {
+        fetch('/api/merchant/inbox/conversations')
+            .then(res => res.json())
+            .then(res => {
+                if (res.items) {
+                    const mapped = res.items.map((c: any) => ({
+                        id: c.id,
+                        user: c.contact?.displayName || c.contact?.phoneE164 || 'Unknown Customer',
+                        avatarVal: (c.contact?.displayName || '?')[0].toUpperCase(),
+                        lastMsg: c.lastMessage?.textBody || 'No messages yet',
+                        time: new Date(c.lastMessageAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+                        tags: Array.isArray(c.tags) ? c.tags : [],
+                        unread: c.unreadCount > 0
+                    }));
+                    setConversations(mapped);
+                }
+                setLoading(false);
+            })
+            .catch(() => setLoading(false));
+    }, []);
+
     return (
         <AdminShell title="Inbox" breadcrumb="WhatsApp / Inbox">
             <div className="h-[calc(100vh-12rem)] flex rounded-xl overflow-hidden border border-white/5 bg-[#0b141a]">
                 {/* Left: List */}
                 <div className="w-full md:w-[350px] shrink-0">
-                    <ConversationList items={MOCK_CONVERSATIONS} />
+                    {loading ? (
+                        <div className="p-4 space-y-4">
+                            {[1, 2, 3].map(i => <div key={i} className="h-16 bg-white/5 animate-pulse rounded-lg" />)}
+                        </div>
+                    ) : (
+                        <ConversationList items={conversations} />
+                    )}
                 </div>
 
                 {/* Right: Empty State */}

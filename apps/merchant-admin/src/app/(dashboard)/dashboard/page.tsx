@@ -27,18 +27,18 @@ const AiUsageWidget = dynamic(() => import('@/components/dashboard/AiUsageWidget
     loading: () => <Skeleton className="h-64 w-full rounded-xl" />
 });
 
-// Mock Data for BusinessHealthWidget
-const HEALTH_DATA = {
-    score: 85,
-    status: 'healthy' as const,
-    trend: 'up' as const,
-    factors: [
-        { id: '1', text: 'Consistent daily active users', sentiment: 'positive' as const },
-        { id: '2', text: 'Low refund rate (<1%)', sentiment: 'positive' as const }
-    ]
-};
-
 export default function DashboardPage() {
+    const [healthData, setHealthData] = React.useState<any>(null);
+
+    React.useEffect(() => {
+        fetch('/api/dashboard/health')
+            .then(res => res.json())
+            .then(res => {
+                if (res.success) setHealthData(res.data);
+            })
+            .catch(console.error);
+    }, []);
+
     return (
         <div className="p-4 md:p-6 max-w-7xl mx-auto space-y-6">
 
@@ -64,7 +64,11 @@ export default function DashboardPage() {
                     {/* Main Metrics Area */}
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <Suspense fallback={<Skeleton className="h-64 w-full" />}>
-                            <BusinessHealthWidget data={HEALTH_DATA} />
+                            {healthData ? (
+                                <BusinessHealthWidget data={healthData} />
+                            ) : (
+                                <Skeleton className="h-64 w-full rounded-xl" />
+                            )}
                         </Suspense>
                         <Suspense fallback={<Skeleton className="h-64 w-full" />}>
                             <AiUsageWidget />

@@ -1,12 +1,14 @@
 'use client';
 
-import { MOCK_MEALS } from '@/data/mock-menu';
+import React, { useState, useEffect } from 'react';
+import { useParams } from 'next/navigation';
+import Link from 'next/link';
+import { ArrowLeft, Heart } from 'lucide-react';
 import { LOCALES, LocaleKey } from '@/data/locales';
 import { useUserInteractions } from '@/hooks/useUserInteractions';
 import { DeliveryCard } from '@/components/history/DeliveryCard';
-import Link from 'next/link';
-import { ArrowLeft, Heart } from 'lucide-react';
-import { useState } from 'react';
+import { useStore } from '@/context/StoreContext';
+import { Meal } from '@/types/menu';
 
 // Simple Toast Component (Internal) - Copied for simplicity/isolation
 function Toast({ message, show }: { message: string, show: boolean }) {
@@ -18,14 +20,29 @@ function Toast({ message, show }: { message: string, show: boolean }) {
     );
 }
 
-export default function FavoritesPage({ params }: { params: { lang: string } }) {
-    const lang = (params.lang === 'tr' ? 'tr' : 'en') as LocaleKey;
+export default function FavoritesPage({ params }: any) {
+    const { lang: rawLang } = useParams() as { lang: string };
+    const lang = (rawLang === 'tr' ? 'tr' : 'en') as LocaleKey;
+    const { store } = useStore();
     const t = LOCALES[lang];
     const { ratings, favorites, rateMeal, toggleFavorite, isLoaded } = useUserInteractions();
 
+    const [meals, setMeals] = useState<Meal[]>([]);
+    const [loading, setLoading] = useState(true);
+
+    useEffect(() => {
+        if (!store) return;
+        fetch(`/api/menu?slug=${store.slug}`)
+            .then(res => res.json())
+            .then(data => {
+                if (data.meals) setMeals(data.meals);
+                setLoading(false);
+            })
+            .catch(() => setLoading(false));
+    }, [store]);
+
     // Filter favorited meals
-    // In a real app, you'd fetch by IDs. Here we filter mock.
-    const favoritedMeals = MOCK_MEALS.filter(m => favorites.includes(m.id));
+    const favoritedMeals = meals.filter(m => favorites.includes(m.id));
 
     const [toast, setToast] = useState('');
 
@@ -47,11 +64,11 @@ export default function FavoritesPage({ params }: { params: { lang: string } }) 
     if (!isLoaded) return null;
 
     return (
-        <div className="min-h-screen bg-gray-50 pb-20 font-sans">
+        <div className="min-h-screen bg-gray-50 pb-20 font-sans bg-noise">
             <Toast message={toast} show={!!toast} />
 
             {/* Header */}
-            <div className="bg-white border-b border-gray-100 pt-8 pb-4">
+            <div className="glass-panel sticky top-0 z-30 border-b border-white/20 pt-8 pb-4">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <Link
                         href={`/${lang}/menu`}

@@ -59,6 +59,7 @@ describe('Expanded Account API Suite', () => {
     describe('GET /api/account/overview', () => {
         it('enforces tenant isolation', async () => {
             (prisma.store.findUnique as any).mockResolvedValue({ id: mockStoreId, name: 'Isolated Store' });
+            (prisma.auditLog.findMany as any).mockResolvedValue([]);
 
             await getOverview();
 

@@ -1,11 +1,13 @@
 'use client';
 
-import { LocaleKey, LOCALES } from '@/data/locales';
+import React, { useState } from 'react';
+import { useParams } from 'next/navigation';
 import { ChevronDown, Mail, Phone, Plus } from 'lucide-react';
-import { useState } from 'react';
+import { LocaleKey, LOCALES } from '@/data/locales';
 
-export default function HelpPage({ params }: { params: { lang: string } }) {
-    const lang = (params.lang === 'tr' ? 'tr' : 'en') as LocaleKey;
+export default function HelpPage({ params }: any) {
+    const { lang: rawLang } = useParams() as { lang: string };
+    const lang = (rawLang === 'tr' ? 'tr' : 'en') as LocaleKey;
     const t = LOCALES[lang].account.help;
 
     const faqs = [

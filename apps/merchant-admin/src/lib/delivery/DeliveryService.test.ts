@@ -7,8 +7,9 @@ import { prisma } from '@vayva/db';
 vi.mock('@vayva/db', () => ({
     prisma: {
         order: { findUnique: vi.fn() },
-        shipment: { upsert: vi.fn().mockResolvedValue({ id: 'ship_123' }) }, // Mock return value
-        deliveryEvent: { create: vi.fn() }
+        shipment: { upsert: vi.fn().mockResolvedValue({ id: 'ship_123' }) },
+        deliveryEvent: { create: vi.fn() },
+        auditLog: { create: vi.fn().mockResolvedValue({ id: 'audit_123' }) }
     }
 }));
 

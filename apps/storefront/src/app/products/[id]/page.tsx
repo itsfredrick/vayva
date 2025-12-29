@@ -9,23 +9,25 @@ import { useParams } from 'next/navigation';
 import NextLink from 'next/link';
 const Link = NextLink as any;
 
-export default function ProductPage() {
-    const params = useParams();
+import Image from 'next/image';
+
+export default function ProductPage(props: any) {
+    const { id } = useParams() as { id: string };
     const { store, addToCart } = useStore();
     const [product, setProduct] = useState<PublicProduct | null>(null);
     const [loading, setLoading] = useState(true);
     const [selectedVariant, setSelectedVariant] = useState<string | null>(null);
 
     useEffect(() => {
-        if (store && params.id) {
+        if (store && id) {
             const load = async () => {
-                const data = await StorefrontService.getProduct(store.id, params.id as string);
+                const data = await StorefrontService.getProduct(id);
                 setProduct(data);
                 setLoading(false);
             };
             load();
         }
-    }, [store, params.id]);
+    }, [store, id]);
 
     if (!store) return null; // Handled by shell
 
@@ -48,11 +50,13 @@ export default function ProductPage() {
                 <div className="max-w-7xl mx-auto px-4 py-12 grid grid-cols-1 md:grid-cols-2 gap-12">
                     {/* Gallery */}
                     <div className="space-y-4">
-                        <div className="aspect-[4/5] bg-gray-100 rounded-2xl overflow-hidden">
-                            <img
+                        <div className="aspect-[4/5] bg-gray-100 rounded-2xl overflow-hidden relative">
+                            <Image
                                 src={product.images[0]}
                                 alt={product.name}
-                                className="w-full h-full object-cover"
+                                fill
+                                className="object-cover"
+                                priority
                             />
                         </div>
                     </div>

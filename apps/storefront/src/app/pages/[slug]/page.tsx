@@ -5,10 +5,9 @@ import { StoreShell } from '@/components/StoreShell';
 import { useStore } from '@/context/StoreContext';
 import { useParams } from 'next/navigation';
 
-export default function PolicyPage() {
+export default function PolicyPage({ params }: any) {
     const { store } = useStore();
-    const params = useParams();
-    const slug = params.slug as string;
+    const { slug } = useParams() as { slug: string };
 
     if (!store) return null;
 

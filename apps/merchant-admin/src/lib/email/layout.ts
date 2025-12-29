@@ -11,10 +11,11 @@ export const TEXT_COLOR = '#444444';
 export const HEADLINE_COLOR = '#111111';
 
 // Use a placeholder logo if env is not set, but prefer the absolute URL
-const LOGO_URL = `${process.env.NEXTAUTH_URL || 'https://vayva.com'}/logo-black.png`;
+// Use the absolute URL for the logo, fallback to vayva.ng
+const LOGO_URL = `${process.env.NEXT_PUBLIC_APP_URL || 'https://vayva.ng'}/vayva-logo.png`;
 
 export function wrapEmail(contentHtml: string, title: string = 'Vayva Notification'): string {
-    return `
+  return `
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -83,7 +84,7 @@ export function wrapEmail(contentHtml: string, title: string = 'Vayva Notificati
 
 // Helper to generate consistent buttons
 export function renderButton(url: string, label: string): string {
-    return `
+  return `
     <a 
         href="${url}"
         style="

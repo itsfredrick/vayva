@@ -39,16 +39,6 @@ export const PremiumButton: React.FC<PremiumButtonProps> = ({
             <span className="relative z-10 flex items-center justify-center gap-2">
                 {children}
             </span>
-
-            <style jsx global>{`
-                @keyframes shimmer {
-                    0% { transform: translateX(-100%); }
-                    100% { transform: translateX(100%); }
-                }
-                .animate-shimmer {
-                    animation: shimmer 1.5s infinite;
-                }
-            `}</style>
         </Button>
     );
 };

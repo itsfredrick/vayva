@@ -129,3 +129,16 @@ export interface PublicOrder {
     };
     createdAt: string;
 }
+
+export interface PublicWeek {
+    id: string;
+    label: { tr: string; en: string };
+    deliveryDate: string;
+    cutoffDate: string;
+    isLocked: boolean;
+}
+
+export interface PublicMenu {
+    weeks: PublicWeek[];
+    meals: PublicProduct[];
+}

@@ -1,13 +1,15 @@
 'use client';
 
-import { useState } from 'react';
+import React, { useState } from 'react';
+import { useParams } from 'next/navigation';
 import { LocaleKey, LOCALES } from '@/data/locales';
 import { useUserInteractions } from '@/hooks/useUserInteractions';
 import { AddressModal } from '@/components/account/AddressModal';
 import { MapPin, Plus, Trash2, CheckCircle } from 'lucide-react';
 
-export default function AddressesPage({ params }: { params: { lang: string } }) {
-    const lang = (params.lang === 'tr' ? 'tr' : 'en') as LocaleKey;
+export default function AddressesPage({ params }: any) {
+    const { lang: rawLang } = useParams() as { lang: string };
+    const lang = (rawLang === 'tr' ? 'tr' : 'en') as LocaleKey;
     const t = LOCALES[lang].account.addresses;
     const { addresses, addAddress, removeAddress, setDefaultAddress, isLoaded } = useUserInteractions();
 

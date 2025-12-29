@@ -14,10 +14,12 @@ export function ProductCard({ product, storeSlug }: ProductCardProps) {
         <Link href={`/products/${product.id}?store=${storeSlug}`} className="group block">
             <div className="relative aspect-[4/5] bg-gray-100 rounded-xl overflow-hidden mb-4">
                 {product.images[0] ? (
-                    <img // Using img for simplicity in mock, next/image usually requires config for domains
+                    <Image
                         src={product.images[0]}
                         alt={product.name}
-                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                        fill
+                        sizes="(max-width: 768px) 50vw, (max-width: 1200px) 25vw, 20vw"
+                        className="object-cover group-hover:scale-105 transition-transform duration-500"
                     />
                 ) : (
                     <div className="w-full h-full flex items-center justify-center text-gray-300">

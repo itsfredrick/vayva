@@ -17,6 +17,14 @@ const inter = Inter({
 export const metadata: Metadata = {
   title: 'Vayva Storefront',
   description: 'Powered by Vayva',
+  icons: {
+    icon: [
+      { url: '/favicon.svg', type: 'image/svg+xml' },
+    ],
+    apple: [
+      { url: '/apple-touch-icon.png' },
+    ],
+  },
 };
 
 export default function RootLayout({
@@ -26,6 +34,11 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
+      <head>
+        <link rel="preconnect" href={process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4000'} />
+        <link rel="preconnect" href="https://images.unsplash.com" />
+        <link rel="dns-prefetch" href="https://images.unsplash.com" />
+      </head>
       <body className={`${spaceGrotesk.variable} ${inter.variable} font-sans antialiased bg-white text-black min-h-screen flex flex-col`}>
         <Suspense fallback={<div className="p-10 text-center">Loading...</div>}>
           <StoreProvider>

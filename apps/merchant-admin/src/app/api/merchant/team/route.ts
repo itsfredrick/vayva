@@ -1,16 +1,15 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { getServerSession } from 'next-auth';
-import { authOptions } from '@/lib/auth';
+import { getSessionUser } from '@/lib/session';
 import { prisma } from '@vayva/db';
 import { hasPermission, PERMISSIONS } from '@/lib/auth/permissions';
 
 export async function GET(req: NextRequest) {
-    const session = await getServerSession(authOptions);
-    if (!(session?.user as any)?.storeId) {
+    const user = await getSessionUser();
+    if (!user?.storeId) {
         return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
-    const { storeId, id: userId } = (session!.user as any);
+    const { storeId, id: userId } = user;
 
     // View permission check?
     // Team page usually accessible to view if you are a member? Or restricted?

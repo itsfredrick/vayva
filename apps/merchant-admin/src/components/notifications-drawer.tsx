@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
-import { Drawer , Icon , Button , cn } from '@vayva/ui';
+import { Drawer, Icon, Button, cn } from '@vayva/ui';
 
 interface NotificationsDrawerProps {
     isOpen: boolean;
@@ -10,16 +10,20 @@ interface NotificationsDrawerProps {
 
 const TABS = ['All', 'Orders', 'WhatsApp AI', 'Payments', 'System'];
 
-const MOCK_NOTIFICATIONS = [
-    { id: 1, type: 'order', title: 'Order #VV-1024 paid — ₦45,000', time: '5m', unread: true },
-    { id: 2, type: 'ai', title: 'WhatsApp AI needs approval: confirm delivery window', time: '2h', unread: true },
-    { id: 3, type: 'payment', title: 'Payout sent to GTBank — ₦120,500', time: '1d', unread: false },
-    { id: 4, type: 'system', title: 'Welcome to Vayva! Your store is live.', time: '2d', unread: false },
-];
-
 export const NotificationsDrawer = ({ isOpen, onClose }: NotificationsDrawerProps) => {
     const [activeTab, setActiveTab] = useState('All');
-    const [notifications, setNotifications] = useState(MOCK_NOTIFICATIONS);
+    const [notifications, setNotifications] = useState<any[]>([]);
+
+    React.useEffect(() => {
+        if (isOpen) {
+            fetch('/api/notifications')
+                .then(res => res.json())
+                .then(data => {
+                    if (Array.isArray(data)) setNotifications(data);
+                })
+                .catch(console.error);
+        }
+    }, [isOpen]);
 
     const filtered = activeTab === 'All'
         ? notifications

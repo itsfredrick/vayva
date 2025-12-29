@@ -3,15 +3,22 @@
 import React from 'react';
 import Link from 'next/link';
 import { AdminShell } from '@/components/admin-shell';
-import { GlassPanel , Button , Icon } from '@vayva/ui';
-
-const MOCK_COLLECTIONS = [
-    { id: '1', name: 'Summer Essentials', count: 12, visibility: 'Storefront', updated: '2 days ago' },
-    { id: '2', name: 'New Arrivals', count: 45, visibility: 'Hidden', updated: '5 hours ago' },
-    { id: '3', name: 'Accessories', count: 8, visibility: 'Storefront', updated: '1 week ago' },
-];
+import { GlassPanel, Button, Icon } from '@vayva/ui';
 
 export default function CollectionsPage() {
+    const [collections, setCollections] = React.useState<any[]>([]);
+    const [loading, setLoading] = React.useState(true);
+
+    React.useEffect(() => {
+        fetch('/api/collections')
+            .then(res => res.json())
+            .then(res => {
+                if (res.success) setCollections(res.data);
+                setLoading(false);
+            })
+            .catch(() => setLoading(false));
+    }, []);
+
     return (
         <AdminShell title="Collections" breadcrumb="Catalog / Collections">
             <div className="flex flex-col gap-6">
@@ -48,35 +55,43 @@ export default function CollectionsPage() {
                                 </tr>
                             </thead>
                             <tbody className="divide-y divide-white/5">
-                                {MOCK_COLLECTIONS.map((col) => (
-                                    <tr key={col.id} className="group hover:bg-white/5 transition-colors cursor-pointer">
-                                        <td className="p-4 text-center">
-                                            <input type="checkbox" className="checkbox checkbox-xs rounded-sm border-white/20" />
-                                        </td>
-                                        <td className="p-4 font-bold text-white">
-                                            {/* @ts-ignore */}
-                                            <Link href={`/admin/collections/${col.id}`} className="hover:underline hover:text-primary transition-colors">
-                                                {col.name}
-                                            </Link>
-                                        </td>
-                                        <td className="p-4 text-text-secondary">{col.count} products</td>
-                                        <td className="p-4">
-                                            <span className={`px-2 py-0.5 rounded-md text-[10px] font-bold uppercase tracking-wider ${col.visibility === 'Hidden' ? 'bg-white/10 text-text-secondary' : 'bg-state-success/10 text-state-success'
-                                                }`}>
-                                                {col.visibility}
-                                            </span>
-                                        </td>
-                                        <td className="p-4 text-text-secondary text-xs">{col.updated}</td>
-                                        <td className="p-4 text-right">
-                                            {/* @ts-ignore */}
-                                            <Link href={`/admin/collections/${col.id}`}>
-                                                <Button size="icon" variant="ghost" className="h-8 w-8 text-text-secondary hover:text-white">
-                                                    <Icon name={"ChevronRight" as any} size={20} />
-                                                </Button>
-                                            </Link>
-                                        </td>
-                                    </tr>
-                                ))}
+                                {loading ? (
+                                    [1, 2, 3].map(i => (
+                                        <tr key={i}>
+                                            <td colSpan={6} className="p-4"><div className="h-8 bg-white/5 animate-pulse rounded" /></td>
+                                        </tr>
+                                    ))
+                                ) : (
+                                    collections.map((col) => (
+                                        <tr key={col.id} className="group hover:bg-white/5 transition-colors cursor-pointer">
+                                            <td className="p-4 text-center">
+                                                <input type="checkbox" className="checkbox checkbox-xs rounded-sm border-white/20" />
+                                            </td>
+                                            <td className="p-4 font-bold text-white">
+                                                {/* @ts-ignore */}
+                                                <Link href={`/admin/collections/${col.id}`} className="hover:underline hover:text-primary transition-colors">
+                                                    {col.name}
+                                                </Link>
+                                            </td>
+                                            <td className="p-4 text-text-secondary">{col.count || 0} products</td>
+                                            <td className="p-4">
+                                                <span className={`px-2 py-0.5 rounded-md text-[10px] font-bold uppercase tracking-wider ${col.visibility === 'Hidden' ? 'bg-white/10 text-text-secondary' : 'bg-state-success/10 text-state-success'
+                                                    }`}>
+                                                    {col.visibility}
+                                                </span>
+                                            </td>
+                                            <td className="p-4 text-text-secondary text-xs">{col.updated}</td>
+                                            <td className="p-4 text-right">
+                                                {/* @ts-ignore */}
+                                                <Link href={`/admin/collections/${col.id}`}>
+                                                    <Button size="icon" variant="ghost" className="h-8 w-8 text-text-secondary hover:text-white">
+                                                        <Icon name={"ChevronRight" as any} size={20} />
+                                                    </Button>
+                                                </Link>
+                                            </td>
+                                        </tr>
+                                    ))
+                                )}
                             </tbody>
                         </table>
                     </div>

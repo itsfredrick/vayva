@@ -15,7 +15,8 @@ function PaystackMockContent() {
         // Simulate webhook call to backend (Gateway -> Payments Service)
         try {
             if (status === 'success') {
-                await fetch('http://localhost:4000/webhooks/paystack', {
+                const apiBase = (process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4000/v1').replace(/\/v1$/, '');
+                await fetch(`${apiBase}/webhooks/paystack`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({

@@ -64,10 +64,10 @@ export default function CheckoutPage() {
 
             // 2. Initialize Payment
             const payment = await StorefrontService.initializePayment({
-                orderId: order.id,
+                orderId: order.orderId!, // Assert existence as createOrder succeeded
                 email: email,
                 amount: total * 100, // Paystack expects Kobo
-                callbackUrl: `${window.location.origin}/order/confirmation?store=${store.slug}&orderId=${order.id}`
+                callbackUrl: `${window.location.origin}/order/confirmation?store=${store.slug}&orderId=${order.orderId}`
             });
 
             // 3. Clear Cart (or wait for confirmation?)

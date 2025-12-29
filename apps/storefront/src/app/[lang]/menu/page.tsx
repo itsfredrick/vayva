@@ -1,32 +1,65 @@
 'use client';
 
-import { useState, useMemo } from 'react';
-import { MOCK_WEEKS, MOCK_MEALS } from '@/data/mock-menu';
+import React, { useState, useMemo, useEffect } from 'react';
+import { useParams } from 'next/navigation';
 import { LOCALES, LocaleKey } from '@/data/locales';
 import { WeekSelector } from '@/components/menu/WeekSelector';
 import { MenuFilterBar } from '@/components/menu/MenuFilterBar';
 import { MealCard } from '@/components/menu/MealCard';
 import { SelectionSummary } from '@/components/menu/SelectionSummary';
-import { Meal } from '@/types/menu';
+import { Meal, Week } from '@/types/menu';
+import { useStore } from '@/context/StoreContext';
+import { Search, Filter, ShoppingBag, Plus, Minus, ArrowRight } from 'lucide-react';
+import { StorefrontService } from '@/services/storefront.service';
 
-export default function MenuPage({ params }: { params: { lang: string } }) {
-    const lang = (params.lang === 'tr' ? 'tr' : 'en') as LocaleKey;
+export default function MenuPage({ params }: any) {
+    const { lang: rawLang } = useParams() as { lang: string };
+    const lang = (rawLang === 'tr' ? 'tr' : 'en') as LocaleKey;
+    const { store } = useStore();
     const t = LOCALES[lang];
 
-    const [selectedWeekId, setSelectedWeekId] = useState(MOCK_WEEKS[1].id); // Default to first active week
+    const [weeks, setWeeks] = useState<Week[]>([]);
+    const [meals, setMeals] = useState<Meal[]>([]);
+    const [loading, setLoading] = useState(true);
+
+    const [selectedWeekId, setSelectedWeekId] = useState('');
     const [selections, setSelections] = useState<Record<string, string[]>>({}); // weekId -> mealId[]
     const [searchQuery, setSearchQuery] = useState('');
     const [activeFilters, setActiveFilters] = useState<string[]>([]);
 
+    useEffect(() => {
+        if (!store) return;
+
+        fetch(`/api/menu?slug=${store.slug}`)
+            .then(res => res.json())
+            .then(data => {
+                if (data.weeks && data.meals) {
+                    setWeeks(data.weeks);
+                    setMeals(data.meals);
+                    if (data.weeks.length > 0) {
+                        setSelectedWeekId(data.weeks.find((w: Week) => !w.isLocked)?.id || data.weeks[0].id);
+                    }
+                }
+                setLoading(false);
+            })
+            .catch(err => {
+                console.error(err);
+                setLoading(false);
+            });
+    }, [store]);
+
     // Derived State
-    const activeWeek = MOCK_WEEKS.find(w => w.id === selectedWeekId) || MOCK_WEEKS[0];
+    const activeWeek = weeks.find(w => w.id === selectedWeekId) || weeks[0];
     const selectedMealIds = selections[selectedWeekId] || [];
-    const isLocked = activeWeek.isLocked;
+    const isLocked = activeWeek?.isLocked || false;
     const mealsPerWeek = 4; // Mock Config
+
+    if (loading) return <div className="min-h-screen flex items-center justify-center">Loading Menu...</div>;
+    if (!activeWeek) return <div className="min-h-screen flex items-center justify-center">No active menu found.</div>;
 
     // Filter Logic
     const filteredMeals = useMemo(() => {
-        return MOCK_MEALS.filter(meal => {
+        return meals.filter(meal => {
             const matchesSearch = meal.title[lang].toLowerCase().includes(searchQuery.toLowerCase());
 
             // Mock filter logic
@@ -43,8 +76,8 @@ export default function MenuPage({ params }: { params: { lang: string } }) {
     }, [searchQuery, activeFilters, lang]);
 
     const selectedMealsData = useMemo(() => {
-        return MOCK_MEALS.filter(m => selectedMealIds.includes(m.id));
-    }, [selectedMealIds]);
+        return meals.filter(m => selectedMealIds.includes(m.id));
+    }, [selectedMealIds, meals]);
 
     // Handlers
     const handleToggleMeal = (mealId: string) => {
@@ -69,9 +102,9 @@ export default function MenuPage({ params }: { params: { lang: string } }) {
     };
 
     return (
-        <div className="min-h-screen bg-gray-50 pb-20">
+        <div className="min-h-screen bg-gray-50 pb-20 bg-noise">
             {/* Header */}
-            <div className="bg-white border-b border-gray-100 pt-8 pb-4">
+            <div className="glass-panel sticky top-0 z-30 border-b border-white/20 pt-8 pb-4">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <h1 className="text-2xl font-bold text-gray-900">Menüm</h1>
                     <p className="text-gray-500 text-sm mt-1">{t.planSummary}</p>
@@ -80,7 +113,7 @@ export default function MenuPage({ params }: { params: { lang: string } }) {
 
             {/* Week Selector */}
             <WeekSelector
-                weeks={MOCK_WEEKS}
+                weeks={weeks}
                 selectedWeekId={selectedWeekId}
                 onSelectWeek={setSelectedWeekId}
                 lang={lang}
@@ -152,8 +185,8 @@ export default function MenuPage({ params }: { params: { lang: string } }) {
                         onClick={handleSave}
                         disabled={isLocked || selectedMealIds.length !== mealsPerWeek}
                         className={`px-8 py-3 rounded-xl text-sm font-bold transition-all shadow-lg active:scale-95 ${selectedMealIds.length === mealsPerWeek
-                                ? 'bg-black text-white hover:bg-gray-900 shadow-black/20'
-                                : 'bg-gray-200 text-gray-400 cursor-not-allowed'
+                            ? 'bg-black text-white hover:bg-gray-900 shadow-black/20'
+                            : 'bg-gray-200 text-gray-400 cursor-not-allowed'
                             }`}
                         aria-label="Save selection"
                     >
