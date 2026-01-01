@@ -2,7 +2,7 @@ import { TEMPLATE_REGISTRY, OnboardingProfile } from "./templates-registry";
 
 export const TEMPLATE_CONFIGS: Record<string, OnboardingProfile> =
   Object.values(TEMPLATE_REGISTRY).reduce(
-    (acc, t) => {
+    (acc: Record<string, OnboardingProfile>, t) => {
       if (t.onboardingProfile) {
         acc[t.slug] = t.onboardingProfile;
       }

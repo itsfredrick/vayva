@@ -41,7 +41,7 @@ export class LedgerService {
 
       // 3. Update Wallet Balance (Materialized View)
       // We only update wallet balance for specific accounts (e.g., 'wallet_available')
-      const walletImpact = entries.reduce((acc, e) => {
+      const walletImpact = entries.reduce((acc: number, e) => {
         if (e.account === "wallet_available") {
           return acc + (e.direction === "CREDIT" ? e.amount : -e.amount);
         }
