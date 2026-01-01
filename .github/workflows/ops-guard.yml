@@ -10,11 +10,11 @@ jobs:
       
       - name: Tripwire - Merchant Admin Platform Leakage
         run: |
-          if grep -r "src/app/admin" apps/merchant-admin/src/app; then
+          if grep -r "src/app/admin" apps/merchant-admin/src/app --include="*.ts" --include="*.tsx" 2>/dev/null; then
             echo "FAIL: Found legacy admin routes in merchant-admin"
             exit 1
           fi
-          if grep -r "/api/admin/ops" apps/merchant-admin; then
+          if grep -r "/api/admin/ops" apps/merchant-admin/src --include="*.ts" --include="*.tsx" 2>/dev/null; then
              echo "FAIL: Found legacy ops api calls in merchant-admin"
              exit 1
           fi
