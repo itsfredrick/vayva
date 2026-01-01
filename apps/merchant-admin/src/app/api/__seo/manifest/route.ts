@@ -86,7 +86,7 @@ export async function GET() {
       select: { slug: true },
       take: 50,
     });
-    stores.forEach((s) => enumeratedRoutes.push(`/store/${s.slug}`));
+    stores.forEach((s: { slug: string }) => enumeratedRoutes.push(`/store/${s.slug}`));
 
     // Fetch market categories
     const categories = await prisma.marketplaceListing.groupBy({
