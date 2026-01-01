@@ -6,6 +6,7 @@ export type {
   NotificationMetadata,
   NotificationType,
 } from "./notifications/registry";
-export { NotificationManager } from "./notifications/manager";
+// NotificationManager removed - it uses Prisma and must be imported directly in server-side code only
+// Import from "@vayva/shared/notifications/manager" in API routes if needed
 export * from "./brand";
 
