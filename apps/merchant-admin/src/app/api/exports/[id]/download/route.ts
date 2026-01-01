@@ -79,7 +79,7 @@ export async function GET(
         "Fee (NGN)",
         "Net (NGN)",
       ];
-      const rows = withdrawals.map((w) => [
+      const rows = withdrawals.map((w: any) => [
         new Date(w.createdAt).toISOString(),
         w.referenceCode,
         w.status,
@@ -164,7 +164,7 @@ export async function GET(
         "Net (NGN)",
         "Status",
       ];
-      const rows = withdrawals.map((w) => [
+      const rows = withdrawals.map((w: any) => [
         new Date(w.createdAt).toISOString(),
         w.referenceCode,
         (Number(w.amountKobo) / 100).toFixed(2),
