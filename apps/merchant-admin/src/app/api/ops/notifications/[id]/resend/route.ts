@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@vayva/db";
 import { OpsAuthService } from "@/lib/ops-auth";
-import { NotificationManager } from "@vayva/shared";
+import { NotificationManager } from "@vayva/shared/notifications/manager";
 
 export async function POST(
   req: Request,

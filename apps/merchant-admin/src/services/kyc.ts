@@ -183,7 +183,7 @@ export class KycService {
 
     // Trigger Automated Notifications
     try {
-      const { NotificationManager } = require("@vayva/shared");
+      const { NotificationManager } = require("@vayva/shared/notifications/manager");
       if (result.status === "VERIFIED") {
         await NotificationManager.trigger(storeId, "KYC_VERIFIED");
       } else if (result.status === "FAILED") {
