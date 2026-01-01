@@ -9,7 +9,6 @@ export {
   ApiKeyStatus,
   AppRole,
   ApprovalStatus,
-  BankBeneficiary,
   BillingProvider,
   CampaignChannel,
   CampaignSendStatus,
@@ -82,6 +81,7 @@ export {
 
 // Types are safe to wildcard export as they don't trigger Turbopack re-export warnings
 export type * from "@prisma/client";
+export type { BankBeneficiary } from "@prisma/client";
 
 const globalForPrisma = globalThis as unknown as {
   prisma: PrismaClient | undefined;
