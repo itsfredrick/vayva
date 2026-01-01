@@ -39,7 +39,7 @@ export async function GET() {
         conversions: stats.filter((s) => !!s.firstPaymentAt).length,
       },
       pendingDiscount,
-      rewards: rewards.map((r) => ({
+      rewards: rewards.map((r: any) => ({
         id: r.id,
         amount: r.amount,
         createdAt: r.createdAt,

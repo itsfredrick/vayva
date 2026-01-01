@@ -98,7 +98,7 @@ export async function GET(req: NextRequest) {
     ];
 
     await prisma.quick_reply.createMany({
-      data: defaults.map((d) => ({
+      data: defaults.map((d: any) => ({
         merchantId: (session!.user as any).storeId,
         title: d.title,
         content: d.content,

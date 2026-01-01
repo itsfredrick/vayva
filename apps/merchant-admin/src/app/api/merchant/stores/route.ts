@@ -15,7 +15,7 @@ export async function GET(req: NextRequest) {
       include: { store: true },
     });
 
-    const stores = memberships.map((m) => m.store);
+    const stores = memberships.map((m: any) => m.store);
 
     return NextResponse.json({ stores });
   } catch (e: any) {

@@ -34,7 +34,7 @@ export async function POST(req: NextRequest) {
     const today = new Date().toISOString().split("T")[0]; // YYYY-MM-DD
 
     await prisma.$transaction(
-      policyTypes.map((type) =>
+      policyTypes.map((type: any) =>
         prisma.merchantPolicy.updateMany({
           where: {
             storeId: (session!.user as any).storeId,

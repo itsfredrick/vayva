@@ -56,8 +56,8 @@ export async function GET(request: Request) {
 
     const csvContent = [
       header.join(","),
-      ...rows.map((row) =>
-        row.map((field) => `"${String(field).replace(/"/g, '""')}"`).join(","),
+      ...rows.map((row: any) =>
+        row.map((field: any) => `"${String(field).replace(/"/g, '""')}"`).join(","),
       ),
     ].join("\n");
 

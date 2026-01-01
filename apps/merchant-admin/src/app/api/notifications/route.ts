@@ -14,7 +14,7 @@ export async function GET() {
     });
 
     // Map to UI format
-    const formatted = notifications.map((n) => ({
+    const formatted = notifications.map((n: any) => ({
       id: n.id,
       type: n.type.toLowerCase(), // Ensure lowercase for UI mapping (ORDER -> order)
       title: n.title,

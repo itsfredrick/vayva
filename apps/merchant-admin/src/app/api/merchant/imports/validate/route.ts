@@ -44,7 +44,7 @@ export async function POST(req: NextRequest) {
     // I'll use simple split for prototype to avoid install dep step if possible, but CSV is complex.
     // Assuming simple headers.
     const lines = csvContent.split("\n").filter((l) => l.trim().length > 0);
-    const headers = lines[0].split(",").map((h) => h.trim());
+    const headers = lines[0].split(",").map((h: any) => h.trim());
 
     let valid = 0;
     let invalid = 0;
@@ -52,7 +52,7 @@ export async function POST(req: NextRequest) {
     const preview: any[] = [];
 
     for (let i = 1; i < lines.length; i++) {
-      const vals = lines[i].split(",").map((s) => s.trim());
+      const vals = lines[i].split(",").map((s: any) => s.trim());
       const row: any = {};
       headers.forEach((h, idx) => (row[h] = vals[idx]));
 

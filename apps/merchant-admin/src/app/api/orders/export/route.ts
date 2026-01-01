@@ -71,7 +71,7 @@ export async function GET(request: Request) {
 
     const csvContent = [
       header.join(","),
-      ...rows.map((row) =>
+      ...rows.map((row: any) =>
         row
           .map((field: any) => `"${String(field).replace(/"/g, '""')}"`)
           .join(","),
