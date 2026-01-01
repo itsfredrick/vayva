@@ -146,7 +146,7 @@ export class AiUsageService {
     // 3. Calculate dynamic limit: Plan Limit + All Addon Packs
     const planLimit =
       sub.planKey === "STARTER" ? 20 : sub.plan.monthlyRequestLimit;
-    const addonMessages = sub.addonPurchases.reduce(
+    const addonMessages = sub.addonPurchases.reduce<number>(
       (sum, a) => sum + a.messagesAdded,
       0,
     );
