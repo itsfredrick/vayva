@@ -63,7 +63,7 @@ export async function GET() {
           rate: started > 0 ? comp / started : 0,
         };
       })
-      .sort((a: any, b: any) => b.rate - a.rate);
+      .sort((a: { rate: number }, b: { rate: number }) => b.rate - a.rate);
 
     // 3. By Plan
     const planStarts = await prisma.onboardingAnalyticsEvent.groupBy({
@@ -87,7 +87,7 @@ export async function GET() {
       const plan = s.plan || "unknown";
       const started = s._count._all;
       const comp =
-        planCompletes.find((c: any) => (c.plan || "unknown") === plan)?._count
+        planCompletes.find((c: { plan: string | null; _count: { _all: number } }) => (c.plan || "unknown") === plan)?._count
           ._all || 0;
       return {
         plan,
@@ -114,7 +114,7 @@ export async function GET() {
         step: s.step || "unknown",
         views: s._count._all,
       }))
-      .sort((a: any, b: any) => b.views - a.views);
+      .sort((a: { views: number }, b: { views: number }) => b.views - a.views);
 
     // 5. Fast Path vs Normal
     // We'll approximate this by checking 'ONBOARDING_COMPLETED' where fastPath=true vs false

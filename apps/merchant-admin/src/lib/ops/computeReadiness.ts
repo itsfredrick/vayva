@@ -48,7 +48,7 @@ export async function computeMerchantReadiness(
 
   // 6. Payments
   const paymentConnected =
-    store.paymentAccounts?.some((acc: any) => acc.isActive) ?? false;
+    store.paymentAccounts?.some((acc: { status: string }) => acc.status === "ACTIVE") ?? false;
 
   if (!paymentConnected) {
     issues.push({

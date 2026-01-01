@@ -37,7 +37,7 @@ export const GET = withRBAC(
       });
 
       const formattedProducts = products.map((product: any) => {
-        const totalQuantity = product.InventoryItem?.reduce((sum: number, item: any) => sum + item.quantity, 0) || 0;
+        const totalQuantity = product.InventoryItem?.reduce((sum: number, item: { quantity: number }) => sum + item.quantity, 0) || 0;
 
         return {
           id: product.id,

@@ -56,7 +56,7 @@ export async function GET(req: Request) {
     );
 
     const triggerCounts: Record<string, number> = {};
-    rawEscalations.forEach((e: any) => {
+    rawEscalations.forEach((e: { payload?: { trigger?: string } }) => {
       const t = e.payload?.trigger || "UNKNOWN";
       triggerCounts[t] = (triggerCounts[t] || 0) + 1;
     });

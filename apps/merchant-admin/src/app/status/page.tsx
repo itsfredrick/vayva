@@ -62,7 +62,7 @@ export default function PublicStatusPage() {
   };
 
   const isPlatformDown =
-    health && Object.values(health).some((v: any) => v.status === "FAIL");
+    health && (Object.values(health) as Array<{ status: string }>).some((v) => v.status === "FAIL");
 
   return (
     <div className="min-h-screen bg-slate-50 dark:bg-slate-950 flex flex-col items-center p-6 md:p-12">
@@ -83,14 +83,13 @@ export default function PublicStatusPage() {
         </div>
 
         <div
-          className={`p-6 rounded-2xl flex items-center justify-between border-2 transition-all ${
-            isPlatformDown
-              ? "bg-red-50 border-red-200 text-red-900"
-              : health &&
-                  Object.values(health).some((v: any) => v.status === "WARNING")
-                ? "bg-amber-50 border-amber-200 text-amber-900"
-                : "bg-slate-900 border-slate-800 text-white"
-          }`}
+          className={`p-6 rounded-2xl flex items-center justify-between border-2 transition-all ${isPlatformDown
+            ? "bg-red-50 border-red-200 text-red-900"
+            : health &&
+              (Object.values(health) as Array<{ status: string }>).some((v) => v.status === "WARNING")
+              ? "bg-amber-50 border-amber-200 text-amber-900"
+              : "bg-slate-900 border-slate-800 text-white"
+            }`}
         >
           <div className="flex items-center gap-4">
             <div

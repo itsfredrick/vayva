@@ -56,7 +56,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       by: ["category"],
       where: { status: "LISTED" },
     });
-    categories.forEach((c: any) => {
+    categories.forEach((c: { category: string | null }) => {
       if (c.category) {
         const catSlug = c.category.toLowerCase().replace(/\s+/g, "-");
         enumeratedPaths.push(`/market/categories/${catSlug}`);

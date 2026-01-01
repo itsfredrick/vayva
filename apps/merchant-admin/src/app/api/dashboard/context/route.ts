@@ -30,7 +30,7 @@ export async function GET(request: Request) {
 
     // Determine Payment Status
     let paymentStatus = "NOT_CONFIGURED";
-    if (store?.paymentAccounts?.some((acc: any) => acc.isActive)) {
+    if (store?.paymentAccounts?.some((acc: { status: string }) => acc.status === "ACTIVE")) {
       paymentStatus = "CONNECTED";
     }
 

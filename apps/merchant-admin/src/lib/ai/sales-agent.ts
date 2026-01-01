@@ -255,7 +255,7 @@ export class SalesAgent {
           conversationId: conversationId,
           requestId: options?.requestId,
           model: "llama-3.1-70b-versatile",
-          toolsUsed: choice.tool_calls?.map((t: any) => t.function.name) || [],
+          toolsUsed: choice.tool_calls?.map((t: { function: { name: string } }) => t.function.name) || [],
           retrievedDocs: context.map((c: RetrievalResult) => c.sourceId),
           inputSummary: lastMessage,
           outputSummary: choice.content || "",

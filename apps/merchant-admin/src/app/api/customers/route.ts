@@ -49,7 +49,7 @@ export async function GET(request: Request) {
         (sum: any, order: any) => sum + Number(order.total || 0),
         0,
       );
-      const lastOrder = c.orders.sort((a: any, b: any) =>
+      const lastOrder = c.orders.sort((a: { createdAt: Date }, b: { createdAt: Date }) =>
         new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
       )[0];
 

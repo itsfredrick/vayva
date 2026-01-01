@@ -147,7 +147,7 @@ export class AiUsageService {
     const planLimit =
       sub.planKey === "STARTER" ? 20 : sub.plan.monthlyRequestLimit;
     const addonMessages = sub.addonPurchases.reduce<number>(
-      (sum: number, a: any) => sum + a.messagesAdded,
+      (sum: number, addon: { messagesAdded: number }) => sum + addon.messagesAdded,
       0,
     );
     const totalLimit = planLimit + addonMessages;
