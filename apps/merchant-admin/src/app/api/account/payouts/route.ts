@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { requireAuth } from "@/lib/auth/session";
-import { prisma } from "@vayva/db";
+import { prisma, BankBeneficiary } from "@vayva/db";
 
 export async function GET() {
   try {
@@ -12,7 +12,7 @@ export async function GET() {
       orderBy: { isDefault: "desc" },
     });
 
-    const maskedAccounts = accounts.map((acc: any) => ({
+    const maskedAccounts = accounts.map((acc: BankBeneficiary) => ({
       id: acc.id,
       bankName: acc.bankName,
       accountNumber: `******${acc.accountNumber.slice(-4)}`,

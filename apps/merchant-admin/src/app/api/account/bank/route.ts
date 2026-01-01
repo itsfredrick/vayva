@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { prisma } from "@vayva/db";
+import { prisma, BankBeneficiary } from "@vayva/db";
 import { requireAuth } from "@/lib/auth/session";
 import { checkPermission } from "@/lib/team/rbac";
 import { PERMISSIONS } from "@/lib/team/permissions";
@@ -17,7 +17,7 @@ export async function GET() {
     });
 
     // Mask account numbers (show ONLY last 4)
-    const maskedAccounts = accounts.map((acc: any) => ({
+    const maskedAccounts = accounts.map((acc: BankBeneficiary) => ({
       id: acc.id,
       bankName: acc.bankName,
       accountNumber: `******${acc.accountNumber.slice(-4)}`,
