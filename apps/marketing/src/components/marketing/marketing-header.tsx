@@ -1,14 +1,12 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { Button } from "@vayva/ui";
 import { APP_URL } from "@/lib/constants";
 import { useUserPlan } from "@/hooks/useUserPlan";
-
 import { Menu, X } from "lucide-react";
-import { useState } from "react";
 
 const NAV_LINKS = [
   { href: "/features", label: "Features" },

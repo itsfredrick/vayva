@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
     User,
     Building2,
@@ -13,7 +13,6 @@ import {
     Mail
 } from "lucide-react";
 import { Button, Card, Avatar } from "@vayva/ui";
-import { useEffect, useState } from "react";
 import Link from "next/link";
 
 interface AccountData {
