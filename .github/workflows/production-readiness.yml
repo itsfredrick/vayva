@@ -2,9 +2,9 @@ name: Production Readiness Check
 
 on:
   push:
-    branches: [main, production]
+    branches: [vayva-v1, main, production]
   pull_request:
-    branches: [main, production]
+    branches: [vayva-v1, main, production]
 
 jobs:
   production-scan:
