@@ -72,6 +72,12 @@ jobs:
         working-directory: apps/merchant-admin
         run: pnpm test
       
+      # E2E tests disabled - require database setup in CI
+      # Uncomment when database is configured in GitHub Actions
+      # - name: E2E tests
+      #   working-directory: apps/merchant-admin
+      #   run: pnpm test:e2e
+      
       - name: Comment PR with Results
         if: github.event_name == 'pull_request'
         uses: actions/github-script@v7
