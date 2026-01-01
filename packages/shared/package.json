@@ -13,7 +13,14 @@
     },
     "exports": {
         ".": "./src/index.ts",
-        "./notifications/manager": "./src/notifications/manager.ts"
+        "./*": "./src/*.ts"
+    },
+    "typesVersions": {
+        "*": {
+            "*": [
+                "src/*"
+            ]
+        }
     },
     "devDependencies": {
         "typescript": "^5.0.0",
