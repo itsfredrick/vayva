@@ -44,7 +44,7 @@
     "vitest": "^1.0.4"
   },
   "engines": {
-    "node": "22.x"
+    "node": ">=22"
   },
   "prisma": {
     "schema": "infra/db/prisma/schema.prisma"
