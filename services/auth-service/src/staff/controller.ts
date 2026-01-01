@@ -21,7 +21,10 @@ export const inviteStaffHandler = async (
   reply: FastifyReply,
 ) => {
   const user = req.user as any;
-  const { email, role } = inviteSchema.parse(req.body);
+  const { email, role } = inviteSchema.parse(req.body) as {
+    email: string;
+    role: UserRole;
+  };
 
   const membership = await prisma.membership.findFirst({
     where: { userId: user.sub },

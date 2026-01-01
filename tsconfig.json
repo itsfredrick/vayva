@@ -23,6 +23,12 @@
             ],
             "@vayva/extensions/*": [
                 "packages/extensions/src/*"
+            ],
+            "@vayva/shared": [
+                "packages/shared/src/index.ts"
+            ],
+            "@vayva/shared/*": [
+                "packages/shared/src/*"
             ]
         }
     },
