@@ -2,6 +2,25 @@
     "compilerOptions": {
         "target": "es2020",
         "module": "commonjs",
+        "moduleResolution": "node",
+        "baseUrl": "../../",
+        "paths": {
+            "@vayva/db": [
+                "infra/db/src/client.ts"
+            ],
+            "@vayva/extensions": [
+                "packages/extensions/src/index.ts"
+            ],
+            "@vayva/extensions/*": [
+                "packages/extensions/src/*"
+            ],
+            "@vayva/shared": [
+                "packages/shared/src/index.ts"
+            ],
+            "@vayva/shared/*": [
+                "packages/shared/src/*"
+            ]
+        },
         "outDir": "./dist",
         "strict": true,
         "esModuleInterop": true,
