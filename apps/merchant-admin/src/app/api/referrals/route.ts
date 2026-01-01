@@ -36,7 +36,7 @@ export async function GET() {
       code,
       stats: {
         total: stats.length,
-        conversions: stats.filter((s) => !!s.firstPaymentAt).length,
+        conversions: stats.filter((s: any) => !!s.firstPaymentAt).length,
       },
       pendingDiscount,
       rewards: rewards.map((r: any) => ({

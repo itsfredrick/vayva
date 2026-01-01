@@ -39,7 +39,7 @@ export async function GET(request: Request) {
           { orderNumber: { equals: parseInt(q) ? parseInt(q) : undefined } },
           { refCode: { contains: q, mode: "insensitive" } },
           { customerEmail: { contains: q, mode: "insensitive" } },
-        ].filter((c) => Object.values(c)[0] !== undefined);
+        ].filter((c: any) => Object.values(c)[0] !== undefined);
       }
     }
 
