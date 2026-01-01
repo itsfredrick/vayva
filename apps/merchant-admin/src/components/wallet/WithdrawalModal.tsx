@@ -177,7 +177,7 @@ export const WithdrawalModal = ({
               <label className="text-xs font-bold text-gray-500 uppercase">
                 Payout Account
               </label>
-              {accounts.map((acc) => (
+              {accounts.map((acc: any) => (
                 <div
                   key={acc.id}
                   onClick={() => setSelectedAccount(acc.id)}

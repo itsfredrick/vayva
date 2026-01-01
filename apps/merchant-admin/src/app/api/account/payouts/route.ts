@@ -12,7 +12,7 @@ export async function GET() {
       orderBy: { isDefault: "desc" },
     });
 
-    const maskedAccounts = accounts.map((acc) => ({
+    const maskedAccounts = accounts.map((acc: any) => ({
       id: acc.id,
       bankName: acc.bankName,
       accountNumber: `******${acc.accountNumber.slice(-4)}`,

@@ -17,7 +17,7 @@ export async function GET() {
     });
 
     // Mask account numbers (show ONLY last 4)
-    const maskedAccounts = accounts.map((acc) => ({
+    const maskedAccounts = accounts.map((acc: any) => ({
       id: acc.id,
       bankName: acc.bankName,
       accountNumber: `******${acc.accountNumber.slice(-4)}`,
