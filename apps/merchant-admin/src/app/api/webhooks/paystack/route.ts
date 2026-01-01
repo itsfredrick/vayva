@@ -67,7 +67,6 @@ export async function POST(req: NextRequest) {
       backoff: { type: "exponential", delay: 1000 },
     });
 
-    console.log(`[Webhook] Received and Queued: ${eventType} (${providerEventId})`);
     return new NextResponse("OK", { status: 200 });
   } catch (e: any) {
     console.error("Webhook ingestion error:", e);

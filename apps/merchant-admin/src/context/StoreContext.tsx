@@ -70,10 +70,10 @@ export const StoreProvider = ({
       try {
         if (demoMode) {
           // Load Tests
-          const demoProducts = await fetch("/api/products/items").then((r) =>
+          const storeProducts = await fetch("/api/products/items").then((r) =>
             r.json(),
           );
-          setProducts(demoProducts);
+          setProducts(storeProducts);
           setMerchant({
             id: "test_mer_1",
             name: "Demo Merchant Store",

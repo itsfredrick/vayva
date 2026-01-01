@@ -62,10 +62,6 @@ export async function POST(request: NextRequest) {
             }
         });
 
-        // 5. Send OTP (Test for now, or use Email service)
-        // TODO: Integrate with Email Service
-        // console.log(`[Test Email] Sending OTP ${otp} for Withdrawal ${withdrawal.id}`);
-
         // In production: await sendEmail(...)
 
         return NextResponse.json({
