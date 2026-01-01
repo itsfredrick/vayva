@@ -1,16 +1,15 @@
-import { test, expect } from '@playwright/test';
+import { test, expect } from "@playwright/test";
 
-test.describe('Product Import Wizard', () => {
+test.describe("Product Import Wizard", () => {
+  test("navigate to import page", async ({ page }) => {
+    await page.goto("/admin/products/import");
+    await expect(page.getByText("Import Products")).toBeVisible();
+    await expect(page.getByText("1. Upload")).toBeVisible();
+  });
 
-    test('navigate to import page', async ({ page }) => {
-        await page.goto('/admin/products/import');
-        await expect(page.getByText('Import Products')).toBeVisible();
-        await expect(page.getByText('1. Upload')).toBeVisible();
-    });
-
-    // Mocking file upload is tricky without backend
-    // But we implemented a "mock" logic in frontend if file is selected.
-    /*
+  // Mocking file upload is tricky without backend
+  // But we implemented a "mock" logic in frontend if file is selected.
+  /*
     test('simulate upload and preview', async ({ page }) => {
         await page.goto('/admin/products/import');
         
@@ -30,9 +29,8 @@ test.describe('Product Import Wizard', () => {
     });
     */
 
-    test('check UI states', async ({ page }) => {
-        await page.goto('/admin/products/import');
-        await expect(page.locator('input[type="file"]')).toBeAttached();
-    });
-
+  test("check UI states", async ({ page }) => {
+    await page.goto("/admin/products/import");
+    await expect(page.locator('input[type="file"]')).toBeAttached();
+  });
 });

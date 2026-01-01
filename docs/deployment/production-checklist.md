@@ -334,6 +334,7 @@
 ## 9. Rollback Criteria
 
 **Immediate rollback if:**
+
 - Critical security vulnerability discovered
 - Data corruption or loss
 - Complete service outage >30 minutes
@@ -341,6 +342,7 @@
 - Payment processing errors (if applicable)
 
 **Rollback Process:**
+
 1. Incident commander declares rollback
 2. Revert to previous stable version
 3. Verify rollback successful
@@ -377,10 +379,10 @@
 
 ## Final Approval
 
-**Launch Date:** _______________  
-**Launch Time:** _______________  
-**Approved By:** _______________  
-**Signature:** _______________
+**Launch Date:** ******\_\_\_******  
+**Launch Time:** ******\_\_\_******  
+**Approved By:** ******\_\_\_******  
+**Signature:** ******\_\_\_******
 
 ---
 

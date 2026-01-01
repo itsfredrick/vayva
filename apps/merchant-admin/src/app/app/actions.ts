@@ -1,25 +1,25 @@
-'use server';
+"use server";
 
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 import { prisma } from "@vayva/db";
 
 export async function checkAppLaunchStatus() {
-    const session = await getServerSession(authOptions);
+  const session = await getServerSession(authOptions);
 
-    if (!session?.user) {
-        return { status: 'unauthenticated' };
-    }
+  if (!session?.user) {
+    return { status: "unauthenticated" };
+  }
 
-    const store = await prisma.store.findUnique({
-        where: { id: (session.user as any).storeId },
-        select: { onboardingCompleted: true }
-    });
+  const store = await prisma.store.findUnique({
+    where: { id: (session.user as any).storeId },
+    select: { onboardingCompleted: true },
+  });
 
-    if (!store) return { status: 'unauthenticated' }; // Safety fallback
+  if (!store) return { status: "unauthenticated" }; // Safety fallback
 
-    return {
-        status: 'authenticated',
-        onboardingCompleted: store.onboardingCompleted
-    };
+  return {
+    status: "authenticated",
+    onboardingCompleted: store.onboardingCompleted,
+  };
 }

@@ -35,6 +35,7 @@ fi
 
 echo ""
 echo "3️⃣ Testing AI chat..."
+echo "Example: curl -X POST -H 'Content-Type: application/json' -d '{\"message\": \"hi\"}' https://api.vayva.ng/v1/ai/chat"
 RESPONSE=$(curl -s -X POST http://localhost:3000/api/ai/chat \
   -H "Content-Type: application/json" \
   -d '{

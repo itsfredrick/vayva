@@ -3,6 +3,7 @@
 Welcome to the Vayva Monorepo! Follow this guide to get up and running in minutes.
 
 ## Prerequisites
+
 - Node.js >= 18.x
 - pnpm >= 9.x
 - Docker (optional, for real DB)
@@ -10,6 +11,7 @@ Welcome to the Vayva Monorepo! Follow this guide to get up and running in minute
 ## Quick Start (One Command)
 
 1. **Clone & Install**
+
    ```bash
    git clone <repo-url>
    cd vayva
@@ -18,6 +20,7 @@ Welcome to the Vayva Monorepo! Follow this guide to get up and running in minute
 
 2. **Validate Environment**
    Run the doctor script to check port availability and env config.
+
    ```bash
    pnpm doctor
    ```
@@ -30,12 +33,12 @@ Welcome to the Vayva Monorepo! Follow this guide to get up and running in minute
 
 ## Access Points
 
-| App | Port | URL | Description |
-|---|---|---|---|
-| **Merchant Admin** | 3000 | http://localhost:3000 | For Sellers to manage stores |
-| **Storefront** | 3001 | http://localhost:3001 | Public customer shopping experience |
-| **Marketplace** | 3002 | http://localhost:3002 | Global landing & waitlist |
-| **Ops Console** | 3003 | http://localhost:3003 | Internal Vayva administration |
+| App                | Port | URL                   | Description                         |
+| ------------------ | ---- | --------------------- | ----------------------------------- |
+| **Merchant Admin** | 3000 | http://localhost:3000 | For Sellers to manage stores        |
+| **Storefront**     | 3001 | http://localhost:3001 | Public customer shopping experience |
+| **Marketplace**    | 3002 | http://localhost:3002 | Global landing & waitlist           |
+| **Ops Console**    | 3003 | http://localhost:3003 | Internal Vayva administration       |
 
 ## Common Commands
 

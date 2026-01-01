@@ -1,25 +1,24 @@
-
-import { NextResponse } from 'next/server';
+import { NextResponse } from "next/server";
 
 export async function POST(
-    request: Request,
-    { params }: { params: Promise<{ id: string, action: string }> }
+  request: Request,
+  { params }: { params: Promise<{ id: string; action: string }> },
 ) {
-    const { id, action } = await params;
+  const { id, action } = await params;
 
-    // Mock processing delay
-    await new Promise(resolve => setTimeout(resolve, 500));
+  // Test processing delay
+  await new Promise((resolve) => setTimeout(resolve, 500));
 
-    if (action === 'paylink') {
-        return NextResponse.json({
-            payLink: `https://pay.vayva.com/${id}`
-        });
-    }
-
+  if (action === "paylink") {
     return NextResponse.json({
-        success: true,
-        action,
-        id,
-        processed_at: new Date().toISOString()
+      payLink: `https://pay.vayva.ng/${id}`,
     });
+  }
+
+  return NextResponse.json({
+    success: true,
+    action,
+    id,
+    processed_at: new Date().toISOString(),
+  });
 }

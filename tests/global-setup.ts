@@ -4,11 +4,11 @@
  */
 
 async function globalSetup() {
-    console.log('🔧 Global E2E Test Setup');
-    console.log('✅ Test environment ready');
+  console.log("🔧 Global E2E Test Setup");
+  console.log("✅ Test environment ready");
 
-    // Note: Database connection and test users will be created per-test
-    // to avoid conflicts between parallel test runs
+  // Note: Database connection and test users will be created per-test
+  // to avoid conflicts between parallel test runs
 }
 
 export default globalSetup;

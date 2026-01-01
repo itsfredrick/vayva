@@ -9,6 +9,7 @@
 ## Purpose
 
 This Standard Operating Procedure (SOP) defines how Vayva responds to platform incidents to ensure:
+
 - Rapid resolution
 - Clear communication
 - Trust preservation
@@ -19,7 +20,9 @@ This Standard Operating Procedure (SOP) defines how Vayva responds to platform i
 ## Incident Severity Levels
 
 ### SEV-1 (Critical)
+
 **Definition:**
+
 - Platform completely unavailable
 - Payments or orders corrupted
 - Data integrity at risk
@@ -29,6 +32,7 @@ This Standard Operating Procedure (SOP) defines how Vayva responds to platform i
 **Notification:** All hands, leadership, status page
 
 **Examples:**
+
 - Database failure
 - Payment processing down
 - Data breach
@@ -37,7 +41,9 @@ This Standard Operating Procedure (SOP) defines how Vayva responds to platform i
 ---
 
 ### SEV-2 (Major)
+
 **Definition:**
+
 - Partial service disruption
 - Significant feature degradation
 - WhatsApp connectivity issues
@@ -47,6 +53,7 @@ This Standard Operating Procedure (SOP) defines how Vayva responds to platform i
 **Notification:** On-call engineer, incident commander, status page
 
 **Examples:**
+
 - Dashboard slow or intermittent
 - Order creation failing for subset of users
 - WhatsApp message delays
@@ -54,7 +61,9 @@ This Standard Operating Procedure (SOP) defines how Vayva responds to platform i
 ---
 
 ### SEV-3 (Minor)
+
 **Definition:**
+
 - UI bugs
 - Non-critical delays
 - Cosmetic issues
@@ -64,6 +73,7 @@ This Standard Operating Procedure (SOP) defines how Vayva responds to platform i
 **Notification:** Support team, engineering backlog
 
 **Examples:**
+
 - Button misalignment
 - Typos
 - Non-blocking errors
@@ -73,12 +83,15 @@ This Standard Operating Procedure (SOP) defines how Vayva responds to platform i
 ## Incident Response Flow
 
 ### 1. Detection
+
 **How Incidents Are Detected:**
+
 - Automated monitoring alerts
 - User reports via support
 - Internal team discovery
 
 **Immediate Actions:**
+
 - Log incident in tracking system
 - Assign incident commander (IC)
 - Determine severity level
@@ -86,15 +99,18 @@ This Standard Operating Procedure (SOP) defines how Vayva responds to platform i
 ---
 
 ### 2. Containment
+
 **Goal:** Stop further impact
 
 **Actions:**
+
 - Disable affected components if necessary
 - Prevent data corruption
 - Isolate problematic code/service
 - Scale resources if needed
 
 **Communication:**
+
 - Notify incident commander
 - Alert engineering team
 - Prepare status page update
@@ -104,23 +120,29 @@ This Standard Operating Procedure (SOP) defines how Vayva responds to platform i
 ### 3. Communication
 
 #### Internal Communication
+
 - Use dedicated Slack channel: `#incidents`
 - IC provides updates every 15 minutes (SEV-1) or 30 minutes (SEV-2)
 - No speculation, only facts
 
 #### External Communication (Status Page)
+
 **Templates:**
 
 **SEV-1 Initial:**
+
 > We are currently investigating a service disruption affecting [component]. Our team is working to resolve this as quickly as possible. We will provide updates every 30 minutes.
 
 **SEV-2 Initial:**
+
 > We are experiencing degraded performance with [component]. Some users may experience [specific impact]. Our team is investigating.
 
 **Resolution:**
+
 > The issue affecting [component] has been resolved. All systems are now operational. We apologize for any inconvenience.
 
 **Rules:**
+
 - No blame language
 - No technical jargon
 - No promises of specific timelines unless certain
@@ -131,6 +153,7 @@ This Standard Operating Procedure (SOP) defines how Vayva responds to platform i
 ### 4. Resolution
 
 **Steps:**
+
 - Identify root cause
 - Apply fix (hotfix or rollback)
 - Test in staging if possible
@@ -138,6 +161,7 @@ This Standard Operating Procedure (SOP) defines how Vayva responds to platform i
 - Monitor for 30 minutes minimum
 
 **Verification:**
+
 - Confirm metrics return to normal
 - Test affected workflows
 - Get user confirmation if applicable
@@ -149,12 +173,14 @@ This Standard Operating Procedure (SOP) defines how Vayva responds to platform i
 **Timing:** Within 48 hours of resolution
 
 **Attendees:**
+
 - Incident commander
 - Engineering lead
 - Product manager
 - Support lead (if customer-facing)
 
 **Agenda:**
+
 1. **Timeline:** What happened and when
 2. **Root Cause:** Why it happened
 3. **Impact:** Who was affected and how
@@ -162,11 +188,13 @@ This Standard Operating Procedure (SOP) defines how Vayva responds to platform i
 5. **Action Items:** Preventive measures
 
 **Deliverable:**
+
 - Internal incident report (not public)
 - Action items with owners and deadlines
 - Update runbooks if needed
 
 **No Blame:**
+
 - Focus on systems, not individuals
 - Psychological safety is paramount
 
@@ -175,22 +203,26 @@ This Standard Operating Procedure (SOP) defines how Vayva responds to platform i
 ## Roles and Responsibilities
 
 ### Incident Commander (IC)
+
 - Coordinates response
 - Makes decisions
 - Communicates updates
 - Owns post-incident review
 
 ### On-Call Engineer
+
 - First responder
 - Technical investigation
 - Implements fixes
 
 ### Engineering Lead
+
 - Escalation point
 - Resource allocation
 - Strategic decisions
 
 ### Support Lead
+
 - Customer communication
 - Ticket management
 - User impact assessment
@@ -210,16 +242,19 @@ SEV-1 → All Hands → Incident Commander → Engineering Lead → CEO
 ## Tools and Systems
 
 ### Monitoring
+
 - Uptime monitoring: [Tool TBD]
 - Error tracking: [Tool TBD]
 - Performance metrics: [Tool TBD]
 
 ### Communication
+
 - Internal: Slack `#incidents`
 - External: Status page at vayva.shop/status
 - Alerts: PagerDuty or similar
 
 ### Documentation
+
 - Incident log: [System TBD]
 - Runbooks: Internal wiki
 - Post-mortems: Secure storage
@@ -229,16 +264,19 @@ SEV-1 → All Hands → Incident Commander → Engineering Lead → CEO
 ## Status Page Update Cadence
 
 ### SEV-1
+
 - Initial: Within 5 minutes of detection
 - Updates: Every 15-30 minutes
 - Resolution: Immediate
 
 ### SEV-2
+
 - Initial: Within 15 minutes
 - Updates: Every 30-60 minutes
 - Resolution: Within 2 hours of fix
 
 ### SEV-3
+
 - No status page update unless customer-facing
 
 ---
@@ -246,6 +284,7 @@ SEV-1 → All Hands → Incident Commander → Engineering Lead → CEO
 ## Communication Principles
 
 ### Do:
+
 - Be honest and transparent
 - Provide specific impact details
 - Give realistic timelines
@@ -253,6 +292,7 @@ SEV-1 → All Hands → Incident Commander → Engineering Lead → CEO
 - Thank users for patience
 
 ### Don't:
+
 - Speculate on causes
 - Blame individuals or vendors
 - Make promises you can't keep
@@ -264,18 +304,21 @@ SEV-1 → All Hands → Incident Commander → Engineering Lead → CEO
 ## Appendix: Incident Classification Examples
 
 ### SEV-1 Examples
+
 - Complete platform outage
 - Payment processing failure
 - Data breach or leak
 - Database corruption
 
 ### SEV-2 Examples
+
 - Dashboard unavailable
 - WhatsApp sync delays >1 hour
 - Order creation failing for >10% of users
 - Significant performance degradation
 
 ### SEV-3 Examples
+
 - UI rendering issues
 - Single user account problems
 - Non-critical feature bugs
@@ -286,6 +329,7 @@ SEV-1 → All Hands → Incident Commander → Engineering Lead → CEO
 ## Review and Updates
 
 This SOP should be reviewed:
+
 - After every SEV-1 incident
 - Quarterly for continuous improvement
 - When tools or processes change

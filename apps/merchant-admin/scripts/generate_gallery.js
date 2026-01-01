@@ -9,10 +9,10 @@ var core_1 = require("../src/lib/email/templates/core");
 // Mock Data for Core Templates
 var MOCKS = {
     auth_otp_verification: { otp: '482-931', first_name: 'Adewale' },
-    auth_welcome: { first_name: 'Chioma', store_name: 'Luxe Lagos', dashboard_url: 'https://vayva.com/dashboard' },
-    auth_password_reset: { reset_link: 'https://vayva.com/reset?token=abc' },
-    billing_receipt: { store_name: 'Luxe Lagos', amount: '45,000.00', currency: 'NGN', invoice_number: 'INV-2024-001', date: 'Dec 27, 2024', billing_url: 'https://vayva.com/billing' },
-    team_invite: { inviter_name: 'Adewale', store_name: 'Luxe Lagos', role: 'Admin', invite_url: 'https://vayva.com/join', role_description: 'Full access to store settings and orders.' }
+    auth_welcome: { first_name: 'Chioma', store_name: 'Luxe Lagos', dashboard_url: 'https://vayva.ng/dashboard' },
+    auth_password_reset: { reset_link: 'https://vayva.ng/reset?token=abc' },
+    billing_receipt: { store_name: 'Luxe Lagos', amount: '45,000.00', currency: 'NGN', invoice_number: 'INV-2024-001', date: 'Dec 27, 2024', billing_url: 'https://vayva.ng/billing' },
+    team_invite: { inviter_name: 'Adewale', store_name: 'Luxe Lagos', role: 'Admin', invite_url: 'https://vayva.ng/join', role_description: 'Full access to store settings and orders.' }
 };
 var OUTPUT_PATH = path_1.default.join(process.cwd(), 'public', 'email_previews.html');
 function generate() {

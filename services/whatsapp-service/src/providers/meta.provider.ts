@@ -1,16 +1,41 @@
-import { WhatsAppProvider, SendMessageOptions } from './interface';
+import { WhatsAppProvider, SendMessageOptions } from "./interface";
+import axios from "axios";
 
 export class MetaProvider implements WhatsAppProvider {
-    async sendMessage(options: SendMessageOptions): Promise<{ providerMessageId: string }> {
-        console.log(`[MetaProvider] Mocking send to ${options.recipient}: ${options.body || options.templateName}`);
+  async sendMessage(
+    options: SendMessageOptions,
+  ): Promise<{ providerMessageId: string }> {
+    const url = `https://graph.facebook.com/v17.0/${process.env.WHATSAPP_PHONE_ID}/messages`;
 
-        // Mock a provider message ID
-        return {
-            providerMessageId: `wamid.${Math.random().toString(36).substring(7)}`
-        };
-    }
+    try {
+      const response = await axios.post(
+        url,
+        {
+          messaging_product: "whatsapp",
+          recipient_type: "individual",
+          to: options.recipient,
+          type: "text", // Simplify for now
+          text: { body: options.body || "Hello" }
+        },
+        {
+          headers: {
+            "Authorization": `Bearer ${process.env.WHATSAPP_API_TOKEN}`,
+            "Content-Type": "application/json",
+          },
+        }
+      );
 
-    async syncTemplates(): Promise<void> {
-        console.log(`[MetaProvider] Mocking template sync...`);
+      return {
+        providerMessageId: response.data.messages[0].id,
+      };
+    } catch (error: any) {
+      console.error("[MetaProvider] Send Failed:", error.response?.data || error.message);
+      throw new Error(`WhatsApp Send Failed: ${error.message}`);
     }
+  }
+
+  async syncTemplates(): Promise<void> {
+    // Real sync logic to be implemented
+    // console.log(`[MetaProvider] Syncing templates...`);
+  }
 }

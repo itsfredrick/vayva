@@ -1,8 +1,7 @@
-
 export const DEFAULT_TEMPLATES = {
-    PRIVACY: {
-        title: "Privacy Policy",
-        content: `
+  PRIVACY: {
+    title: "Privacy Policy",
+    content: `
 # Privacy Policy
 *Effective Date: {{date}}*
 
@@ -18,11 +17,11 @@ We use your data to process orders, provide support, and (if you agree) send mar
 
 ### 3. Your Rights (NDPR)
 Under the Nigerian Data Protection Regulation (NDPR), you have the right to access, correct, or delete your data. You can request this via our Trust Center.
-        `
-    },
-    TERMS: {
-        title: "Terms of Service",
-        content: `
+        `,
+  },
+  TERMS: {
+    title: "Terms of Service",
+    content: `
 # Terms of Service
 By using our store, you agree to these terms.
 
@@ -31,11 +30,11 @@ You are responsible for the security of any account created on this store.
 
 ### 2. Payments
 We support Pay on Delivery and Online Payments via Vayva. All transactions are in NGN.
-        `
-    },
-    REFUNDS: {
-        title: "Refund Policy",
-        content: `
+        `,
+  },
+  REFUNDS: {
+    title: "Refund Policy",
+    content: `
 # Refund & Return Policy
 We strive for 100% satisfaction.
 
@@ -44,6 +43,6 @@ Items must be unused and in original packaging. Returns must be requested within
 
 ### 2. Refund Process
 Once verified, refunds are processed within 3-5 business days to your original payment method.
-        `
-    }
+        `,
+  },
 };

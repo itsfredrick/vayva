@@ -1,51 +1,90 @@
-'use client';
+"use client";
 
-import React, { useEffect } from 'react';
-import { StoreShell } from '@/components/StoreShell';
-import { useStore } from '@/context/StoreContext';
-import NextLink from 'next/link';
-import { CheckCircle as CheckCircleIcon } from 'lucide-react';
-const CheckCircle = CheckCircleIcon as any;
+import * as React from "react";
+import { StoreShell } from "@/components/StoreShell";
+import { useStore } from "@/context/StoreContext";
+import NextLink from "next/link";
+import { CheckCircle, ShoppingBag, ArrowRight } from "lucide-react";
+import { motion } from "framer-motion";
 
 const Link = NextLink as any;
-const CheckIcon = CheckCircle as any;
 
 export default function OrderSuccessPage() {
-    const { store } = useStore();
+  const { store } = useStore();
 
-    // In a real app we'd read Order ID from query params
+  if (!store) return null;
 
-    if (!store) return null;
+  return (
+    <StoreShell>
+      <div className="max-w-xl mx-auto px-4 py-20 text-center relative">
+        {/* Background Sparkles/Glow */}
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-64 h-64 bg-green-500/10 blur-[80px] rounded-full -z-10" />
 
-    return (
-        <StoreShell>
-            <div className="max-w-xl mx-auto px-4 py-20 text-center">
-                <div className="flex justify-center mb-6">
-                    <CheckIcon size={64} className="text-green-500" />
-                </div>
-                <h1 className="text-3xl font-bold mb-4">Order Confirmed!</h1>
-                <p className="text-gray-500 mb-8">
-                    Thank you for your purchase. We have received your order and will begin processing it shortly.
-                </p>
+        <motion.div
+          initial={{ opacity: 0, scale: 0.8 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ type: "spring", damping: 15 }}
+          className="inline-flex items-center justify-center w-24 h-24 bg-green-50 text-green-600 rounded-[32px] mb-8 shadow-inner border border-green-100"
+        >
+          <CheckCircle size={48} strokeWidth={1.5} />
+        </motion.div>
 
-                <div className="bg-gray-50 p-6 rounded-xl mb-8 text-left">
-                    <p className="text-sm font-bold text-gray-500 uppercase mb-2">Order Reference</p>
-                    <p className="text-2xl font-mono font-bold tracking-wider">ORD-12345</p>
-                </div>
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.1 }}
+        >
+          <h1 className="text-4xl font-black text-gray-900 mb-4 tracking-tight">Order Confirmed!</h1>
+          <p className="text-gray-500 mb-10 text-lg leading-relaxed">
+            Thank you for your purchase. We've received your order and we'll notify you as soon as it's dispatched.
+          </p>
+        </motion.div>
 
-                <div className="flex flex-col gap-3">
-                    <Link href={`/orders?store=${store.slug}`}>
-                        <button className="w-full border border-gray-200 py-3 rounded-lg font-bold hover:border-black transition-colors">
-                            Track Order Status
-                        </button>
-                    </Link>
-                    <Link href={`/?store=${store.slug}`}>
-                        <button className="w-full bg-black text-white py-3 rounded-lg font-bold hover:bg-gray-900 transition-colors">
-                            Continue Shopping
-                        </button>
-                    </Link>
-                </div>
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.2 }}
+          className="bg-white border border-gray-100 p-8 rounded-[32px] mb-10 shadow-xl shadow-gray-200/50 text-left"
+        >
+          <div className="flex justify-between items-center mb-6">
+            <div>
+              <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1">Order Reference</p>
+              <p className="text-2xl font-mono font-bold text-gray-900 tracking-wider font-bold">
+                ORD-77291B
+              </p>
             </div>
-        </StoreShell>
-    );
+            <div className="bg-gray-50 px-3 py-1 rounded-full border border-gray-100">
+              <span className="text-[10px] font-bold text-gray-500 uppercase">Paid</span>
+            </div>
+          </div>
+
+          <div className="space-y-3 pt-6 border-t border-gray-50">
+            <p className="text-sm text-gray-500">A confirmation email has been sent to your inbox.</p>
+            <p className="text-sm text-gray-500">You can track your order status in real-time below.</p>
+          </div>
+        </motion.div>
+
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.3 }}
+          className="flex flex-col gap-4"
+        >
+          <Link href={`/orders?store=${store.slug}`}>
+            <button className="w-full bg-black text-white h-16 rounded-2xl font-bold hover:bg-gray-900 transition-all shadow-lg shadow-black/10 flex items-center justify-center gap-2 group">
+              Track Order Status
+              <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />
+            </button>
+          </Link>
+          <Link href={`/?store=${store.slug}`}>
+            <button className="w-full bg-white text-gray-600 h-16 rounded-2xl font-bold hover:bg-gray-50 border border-gray-100 transition-all flex items-center justify-center gap-2">
+              <ShoppingBag size={18} />
+              Continue Shopping
+            </button>
+          </Link>
+        </motion.div>
+      </div>
+    </StoreShell>
+  );
 }
+

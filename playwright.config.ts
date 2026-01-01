@@ -1,41 +1,62 @@
 import { defineConfig, devices } from '@playwright/test';
 
 export default defineConfig({
-    testDir: './tests/e2e',
-    timeout: 120 * 1000, // Increased from 60s to 120s for complex flows
-    expect: {
-        timeout: 10 * 1000
+  testDir: './tests/e2e',
+  fullyParallel: true,
+  forbidOnly: !!process.env.CI,
+  retries: process.env.CI ? 2 : 0,
+  workers: process.env.CI ? 1 : undefined,
+  reporter: 'html',
+  timeout: 30 * 1000,
+  expect: {
+    timeout: 5000,
+  },
+  use: {
+    trace: 'retain-on-failure',
+    screenshot: 'only-on-failure',
+    video: 'retain-on-failure',
+  },
+  projects: [
+    {
+      name: 'merchant-admin',
+      use: {
+        ...devices['Desktop Chrome'],
+        baseURL: 'http://127.0.0.1:3000',
+      },
     },
-    fullyParallel: false, // Sequential for Golden Path to avoid state collisions
-    forbidOnly: !!process.env.CI,
-    retries: process.env.CI ? 2 : 0,
-    workers: process.env.CI ? 2 : 1, // Use 2 workers in CI to avoid timeouts
-    reporter: [['html'], ['list']],
-    globalSetup: './tests/global-setup.ts',
-    globalTeardown: './tests/global-teardown.ts',
-    use: {
-        actionTimeout: 15 * 1000, // Increased for auth operations
-        trace: 'retain-on-failure',
-        screenshot: 'only-on-failure',
-        video: 'retain-on-failure',
-        baseURL: 'http://localhost:3000',
+    {
+      name: 'storefront',
+      use: {
+        ...devices['Desktop Chrome'],
+        baseURL: 'http://127.0.0.1:3001',
+      },
     },
-    projects: [
-        {
-            name: 'chromium',
-            use: { ...devices['Desktop Chrome'] },
-        },
-    ],
-    webServer: {
-        command: process.env.CI ? 'pnpm --filter merchant-admin start' : 'pnpm --filter merchant-admin dev',
-        url: 'http://localhost:3000',
-        reuseExistingServer: !process.env.CI,
-        timeout: 180 * 1000,
-        env: {
-            DATABASE_URL: process.env.DATABASE_URL || 'postgresql://postgres:postgres@localhost:5432/vayva_test?schema=public',
-            NEXTAUTH_SECRET: process.env.NEXTAUTH_SECRET || 'test-secret-min-32-chars-long-for-ci',
-            NEXTAUTH_URL: process.env.NEXTAUTH_URL || 'http://localhost:3000',
-            NODE_ENV: 'test'
-        },
+    {
+      name: 'ops-console',
+      use: {
+        ...devices['Desktop Chrome'],
+        baseURL: 'http://127.0.0.1:3002',
+      },
     },
+  ],
+  webServer: [
+    {
+      command: 'pnpm --filter merchant-admin start',
+      url: 'http://127.0.0.1:3000/healthz',
+      reuseExistingServer: !process.env.CI,
+      timeout: 120 * 1000,
+    },
+    {
+      command: 'pnpm --filter storefront start',
+      url: 'http://127.0.0.1:3001/healthz',
+      reuseExistingServer: !process.env.CI,
+      timeout: 120 * 1000,
+    },
+    {
+      command: 'pnpm --filter ops-console start',
+      url: 'http://127.0.0.1:3002/healthz',
+      reuseExistingServer: !process.env.CI,
+      timeout: 120 * 1000,
+    },
+  ],
 });

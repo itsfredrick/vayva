@@ -1,34 +1,43 @@
-
-import { Resend } from 'resend';
-import { wrapEmail, renderButton, BRAND_COLOR } from './layout';
+import { Resend } from "resend";
+import { wrapEmail, renderButton, BRAND_COLOR } from "./layout";
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
 interface SendTeamInviteParams {
-    email: string;
-    storeName: string;
-    role: string;
-    inviterName: string;
+  email: string;
+  storeName: string;
+  role: string;
+  inviterName: string;
 }
 
 export async function sendTeamInvite({
-    email,
-    storeName,
-    role,
-    inviterName,
+  email,
+  storeName,
+  role,
+  inviterName,
 }: SendTeamInviteParams) {
-    const inviteUrl = `${process.env.NEXTAUTH_URL}/accept-invite?email=${encodeURIComponent(email)}`;
+  const inviteUrl = `${process.env.NEXTAUTH_URL}/accept-invite?email=${encodeURIComponent(email)}`;
 
-    // Role Descriptions
-    let roleDesc = '';
-    switch (role) {
-        case 'OWNER': roleDesc = '<li>Full access to all features including billing and team management</li>'; break;
-        case 'ADMIN': roleDesc = '<li>Manage orders, products, and customers</li><li>View analytics and reports</li>'; break;
-        case 'SUPPORT': roleDesc = '<li>View orders and chat with customers</li><li>Process refunds</li>'; break;
-        default: roleDesc = '<li>Access to store management features</li>';
-    }
+  // Role Descriptions
+  let roleDesc = "";
+  switch (role) {
+    case "OWNER":
+      roleDesc =
+        "<li>Full access to all features including billing and team management</li>";
+      break;
+    case "ADMIN":
+      roleDesc =
+        "<li>Manage orders, products, and customers</li><li>View analytics and reports</li>";
+      break;
+    case "SUPPORT":
+      roleDesc =
+        "<li>View orders and chat with customers</li><li>Process refunds</li>";
+      break;
+    default:
+      roleDesc = "<li>Access to store management features</li>";
+  }
 
-    const contentHtml = `
+  const contentHtml = `
         <h1 style="margin:0 0 12px; font-size:22px; font-weight:600;">
             You've been invited!
         </h1>
@@ -45,28 +54,28 @@ export async function sendTeamInvite({
             </ul>
         </div>
 
-        ${renderButton(inviteUrl, 'Accept Invitation')}
+        ${renderButton(inviteUrl, "Accept Invitation")}
 
         <p style="margin:24px 0 0; font-size:14px; color:#666666; text-align:center;">
             If you didn't expect this invitation, you can safely ignore this email.
         </p>
     `;
 
-    try {
-        const { data, error } = await resend.emails.send({
-            from: process.env.RESEND_FROM_EMAIL || 'Vayva <noreply@vayva.com>',
-            to: [email],
-            subject: `You've been invited to join ${storeName} on Vayva`,
-            html: wrapEmail(contentHtml, 'Team Invitation'),
-        });
+  try {
+    const { data, error } = await resend.emails.send({
+      from: process.env.RESEND_FROM_EMAIL || "Vayva <noreply@vayva.ng>",
+      to: [email],
+      subject: `You've been invited to join ${storeName} on Vayva`,
+      html: wrapEmail(contentHtml, "Team Invitation"),
+    });
 
-        if (error) {
-            throw new Error(error.message);
-        }
-
-        return { success: true, data };
-    } catch (error: any) {
-        console.error('Email send error:', error);
-        throw error;
+    if (error) {
+      throw new Error(error.message);
     }
+
+    return { success: true, data };
+  } catch (error: any) {
+    console.error("Email send error:", error);
+    throw error;
+  }
 }

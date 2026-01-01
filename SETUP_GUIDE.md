@@ -3,6 +3,7 @@
 ## 📋 What You Need to Complete
 
 ### ✅ Already Configured:
+
 - ✅ Paystack (Test & Live keys)
 - ✅ Resend Email Service
 - ✅ NextAuth Secret
@@ -24,6 +25,7 @@
    ```
 
 **Why Groq?**
+
 - ✅ 100% FREE (14,400 requests/day)
 - ✅ Fastest AI inference (faster than OpenAI)
 - ✅ Llama 3.1 70B model (very capable)
@@ -47,6 +49,7 @@
    ```
 
 **Note:** You can leave WhatsApp disabled for now by keeping:
+
 ```bash
 ENABLE_WHATSAPP="false"
 ```
@@ -58,12 +61,15 @@ ENABLE_WHATSAPP="false"
 For production, you'll need to:
 
 1. **Generate secure NextAuth secret:**
+
    ```bash
    openssl rand -base64 32
    ```
+
    Replace `NEXTAUTH_SECRET` in `.env`
 
 2. **Update URLs:**
+
    ```bash
    NEXTAUTH_URL="https://yourdomain.com"
    NEXT_PUBLIC_APP_URL="https://yourdomain.com"
@@ -83,6 +89,7 @@ For production, you'll need to:
 The AI assistant I've built for you:
 
 ### **Capabilities:**
+
 1. **Customer Service**
    - Answers product questions
    - Provides order status updates
@@ -108,26 +115,28 @@ The AI assistant I've built for you:
    - Understands local payment methods (bank transfer, cash on delivery)
 
 ### **Training:**
+
 The AI is pre-trained with:
+
 - Your store name and products
 - Nigerian e-commerce best practices
 - Professional customer service guidelines
 - Order collection workflows
 
 ### **Usage Example:**
+
 ```typescript
-import { AIService } from '@/lib/ai/aiService';
+import { AIService } from "@/lib/ai/aiService";
 
 // Customer asks: "How much is the iPhone 13?"
-const response = await AIService.chat([
-  { role: 'user', content: 'How much is the iPhone 13?' }
-], {
-  storeName: 'TechHub Nigeria',
-  products: [
-    { name: 'iPhone 13', price: 450000, available: true }
-  ],
-  customerName: 'Chioma'
-});
+const response = await AIService.chat(
+  [{ role: "user", content: "How much is the iPhone 13?" }],
+  {
+    storeName: "TechHub Nigeria",
+    products: [{ name: "iPhone 13", price: 450000, available: true }],
+    customerName: "Chioma",
+  },
+);
 
 // AI responds with price and availability
 console.log(response.message);
@@ -139,15 +148,18 @@ console.log(response.message);
 ## 🎯 Next Steps
 
 ### **Immediate (Required):**
+
 1. Get Groq API key → Add to `.env`
 2. Test the AI assistant
 
 ### **Soon (Recommended):**
+
 1. Set up WhatsApp Business API
 2. Connect WhatsApp to AI assistant
 3. Test full conversation flow
 
 ### **Before Production:**
+
 1. Generate secure NextAuth secret
 2. Update all URLs to production domain
 3. Switch to live Paystack keys
@@ -168,11 +180,10 @@ pnpm dev
 ```
 
 **Test conversation:**
+
 ```json
 {
-  "messages": [
-    { "role": "user", "content": "I want to buy a laptop" }
-  ],
+  "messages": [{ "role": "user", "content": "I want to buy a laptop" }],
   "context": {
     "storeName": "Your Store",
     "customerName": "Test Customer"
@@ -204,6 +215,7 @@ pnpm dev
 ## 📞 Need Help?
 
 If you encounter any issues:
+
 1. Check `.env` file has all required keys
 2. Restart dev server after adding new keys
 3. Check console for error messages

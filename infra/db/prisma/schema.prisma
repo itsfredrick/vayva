@@ -1938,6 +1938,7 @@ model Store {
   updatedAt                DateTime                  @updatedAt
   tenantId                 String?
   isLive                   Boolean                   @default(false)
+  payoutsEnabled           Boolean                   @default(true)
   
   // AI Governance & Consent (Prompt 4)
   aiConsentGivenAt         DateTime?
@@ -2162,6 +2163,7 @@ model StoreProfile {
   isDirectoryListed   Boolean  @default(false)
   isMarketplaceListed Boolean  @default(false)
   pickupAvailable     Boolean  @default(false)
+  pickupAddress       String?  // [Batch 3] Real pickup address
   deliveryMethods     String[] @default(["self_dispatch"])
   createdAt           DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -4223,10 +4225,13 @@ model OpsAuditEvent {
   OpsUser     OpsUser? @relation(fields: [opsUserId], references: [id])
   eventType   String
   metadata    Json?
+  rescueIncidentId String?
+  RescueIncident   RescueIncident? @relation(fields: [rescueIncidentId], references: [id])
   createdAt   DateTime @default(now())
 
   @@index([opsUserId, createdAt])
   @@index([eventType])
+  @@index([rescueIncidentId])
 }
 
 model DataExportRequest {
@@ -4449,4 +4454,40 @@ model ObjectionEvent {
   store            Store    @relation(fields: [storeId], references: [id])
 
   @@index([storeId, category])
+}
+
+model RescueIncident {
+  id            String    @id @default(uuid())
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  severity      String    // LOW, MEDIUM, HIGH, CRITICAL
+  surface       String    // MERCHANT_ADMIN, STOREFRONT, OPS, WORKER
+  route         String?
+  storeId       String?
+  userId        String?
+  errorType     String
+  errorMessage  String
+  fingerprint   String    @unique
+  status        String    @default("OPEN") // OPEN, ACKED, RESOLVED
+  diagnostics   Json?
+  
+  FixActions    RescueFixAction[]
+  AuditLogs     OpsAuditEvent[]
+  
+  @@index([status, severity])
+  @@index([surface, createdAt])
+}
+
+model RescueFixAction {
+  id            String    @id @default(uuid())
+  incidentId    String
+  createdAt     DateTime  @default(now())
+  actionType    String    // RETRY_JOB, REPROCESS_WEBHOOK, CLEAR_CACHE, DISABLE_FEATURE, HEALTH_CHECK
+  actionStatus  String    @default("PENDING") // PENDING, SUCCESS, FAILED
+  summary       String
+  beforeState   Json?
+  afterState    Json?
+  performedBy   String    @default("SYSTEM_RESCUE") // SYSTEM_RESCUE, opsUserId
+  
+  Incident      RescueIncident @relation(fields: [incidentId], references: [id])
 }

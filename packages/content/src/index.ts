@@ -1,36 +1,41 @@
-export * from './types';
+export * from "./types";
 
 // Legal Docs
-import { termsOfService } from './legal/terms-of-service';
-import { privacyPolicy } from './legal/privacy-policy';
-import { cookiePolicy } from './legal/cookie-policy';
-import { acceptableUse } from './legal/acceptable-use';
-import { prohibitedItems } from './legal/prohibited-items';
-import { refundPolicy } from './legal/refund-policy';
-import { merchantAgreement } from './legal/merchant-agreement';
-import { kycExplainer } from './legal/kyc-explainer';
+import { termsOfService } from "./legal/terms-of-service";
+import { privacyPolicy } from "./legal/privacy-policy";
+import { cookiePolicy } from "./legal/cookie-policy";
+import { acceptableUse } from "./legal/acceptable-use";
+import { prohibitedItems } from "./legal/prohibited-items";
+import { refundPolicy } from "./legal/refund-policy";
+import { merchantAgreement } from "./legal/merchant-agreement";
+import { kycExplainer } from "./legal/kyc-explainer";
 
 // Templates
-import { defaultReturnsPolicy, defaultShippingPolicy, defaultStorePrivacy, defaultStoreTerms } from './templates/store-policies';
-import { LegalRegistry } from './types';
+import {
+  defaultReturnsPolicy,
+  defaultShippingPolicy,
+  defaultStorePrivacy,
+  defaultStoreTerms,
+} from "./templates/store-policies";
+import { LegalRegistry } from "./types";
 
 // Registry
 export const legalRegistry: LegalRegistry = {
-    [termsOfService.slug]: termsOfService,
-    [privacyPolicy.slug]: privacyPolicy,
-    [cookiePolicy.slug]: cookiePolicy,
-    [acceptableUse.slug]: acceptableUse,
-    [prohibitedItems.slug]: prohibitedItems,
-    [refundPolicy.slug]: refundPolicy,
-    [merchantAgreement.slug]: merchantAgreement,
-    [kycExplainer.slug]: kycExplainer
+  [termsOfService.slug]: termsOfService,
+  [privacyPolicy.slug]: privacyPolicy,
+  [cookiePolicy.slug]: cookiePolicy,
+  [acceptableUse.slug]: acceptableUse,
+  [prohibitedItems.slug]: prohibitedItems,
+  [refundPolicy.slug]: refundPolicy,
+  [merchantAgreement.slug]: merchantAgreement,
+  [kycExplainer.slug]: kycExplainer,
 };
 
 export const storeTemplates = {
-    returns: defaultReturnsPolicy,
-    shipping: defaultShippingPolicy,
-    privacy: defaultStorePrivacy,
-    terms: defaultStoreTerms
+  returns: defaultReturnsPolicy,
+  shipping: defaultShippingPolicy,
+  privacy: defaultStorePrivacy,
+  terms: defaultStoreTerms,
 };
 
 // Helper

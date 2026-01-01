@@ -1,12 +1,16 @@
-import { api } from './api';
+import { api } from "./api";
 
 export const NotificationService = {
-    list: async () => {
-        const response = await api.get('/notifications');
-        return response.data;
-    },
+  list: async (storeId: string, page = 1) => {
+    const response = await api.get(`/api/notifications?page=${page}&storeId=${storeId}`);
+    return response.data; // { notifications, total, unreadCount }
+  },
 
-    markRead: async (id: string) => {
-        // Todo: implement in backend if needed
-    }
+  markRead: async (id: string, storeId: string) => {
+    await api.post(`/api/notifications/mark-read`, { id, storeId });
+  },
+
+  markAllRead: async (storeId: string) => {
+    await api.post(`/api/notifications/mark-read`, { all: true, storeId });
+  }
 };

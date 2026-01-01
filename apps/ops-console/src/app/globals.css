@@ -54,3 +54,15 @@
         @apply bg-white/60 backdrop-blur-lg border-b border-gray-200/50;
     }
 }
+
+/* Table Density Utility */
+.ops-density-compact table tr td,
+.ops-density-compact table tr th {
+  padding-top: 0.35rem !important;
+  padding-bottom: 0.35rem !important;
+  font-size: 0.8rem !important;
+}
+
+.ops-density-compact .p-8 {
+  padding: 1rem !important;
+}

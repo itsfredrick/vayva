@@ -1,26 +1,60 @@
+import { NextRequest, NextResponse } from "next/server";
+import { prisma } from "@vayva/db";
+import { getServerSession } from "next-auth";
+import { authOptions } from "@/lib/auth";
+import { logAuditEvent, AuditEventType } from "@/lib/audit";
 
-import { NextResponse } from 'next/server';
+/**
+ * Real Audit Export Implementation
+ * Creates a DataExportRequest record for background processing.
+ */
+export async function POST(req: NextRequest) {
+  const session = await getServerSession(authOptions);
+  if (!session?.user?.storeId) {
+    return new NextResponse("Unauthorized", { status: 401 });
+  }
 
-export async function POST(req: Request) {
-    try {
-        const body = await req.json();
-        const { type, filters } = body; // type: 'kyc' | 'ledger' | 'aml'
+  try {
+    const body = await req.json();
+    const { type, filters, format } = body;
+    const storeId = session.user.storeId;
+    const userId = session.user.id;
 
-        // Mock Export Generation
-        // In a real system, this would queue a job to generate a PDF/CSV
-        // and return a download URL or jobId
-
-        const downloadUrl = `https://api.vayva.com/exports/${type}-${Date.now()}.csv`;
-
-        return NextResponse.json({
-            success: true,
-            jobId: `job_${Date.now()}`,
-            downloadUrl,
-            message: `Export for ${type} started.`
-        });
-
-    } catch (error) {
-        console.error("Audit Export Error:", error);
-        return NextResponse.json({ error: "Failed to initiate export" }, { status: 500 });
+    if (!type) {
+      return NextResponse.json({ error: "Export type is required" }, { status: 400 });
     }
+
+    // Map business type to technical scopes if needed
+    // In our schema scopes is a Json array
+    const scopes = [type.toUpperCase()];
+
+    const exportRequest = await prisma.dataExportRequest.create({
+      data: {
+        storeId,
+        requestedBy: userId,
+        scopes: scopes as any,
+        status: "PENDING",
+        format: format || "CSV",
+      },
+    });
+
+    // Audit Log
+    await logAuditEvent(storeId, userId, AuditEventType.EXPORT_CREATED, {
+      requestId: exportRequest.id,
+      type,
+      filters,
+    });
+
+    return NextResponse.json({
+      success: true,
+      jobId: exportRequest.id,
+      message: `Export for ${type} has been queued. You will be notified when it is ready for download.`,
+    });
+  } catch (error: any) {
+    console.error("Audit Export Error:", error);
+    return NextResponse.json(
+      { error: "Failed to initiate export" },
+      { status: 500 },
+    );
+  }
 }

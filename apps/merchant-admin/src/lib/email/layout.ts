@@ -1,20 +1,24 @@
-
 /**
  * Shared Vayva Email Layout
  * Provides a consistent header (Logo), container, and footer.
  */
 
-export const BRAND_COLOR = '#111111'; // Black for premium feel matching the design
-export const ACCENT_COLOR = '#111111';
-export const BG_COLOR = '#f7f7f7';
-export const TEXT_COLOR = '#444444';
-export const HEADLINE_COLOR = '#111111';
+import { BRAND } from "@vayva/shared";
 
-// Use a placeholder logo if env is not set, but prefer the absolute URL
-// Use the absolute URL for the logo, fallback to vayva.ng
-const LOGO_URL = `${process.env.NEXT_PUBLIC_APP_URL || 'https://vayva.ng'}/vayva-logo.png`;
+export const BRAND_COLOR = "#111111"; // Black for premium feel matching the design
+export const ACCENT_COLOR = "#111111";
+export const BG_COLOR = "#f7f7f7";
+export const TEXT_COLOR = "#444444";
+export const HEADLINE_COLOR = "#111111";
 
-export function wrapEmail(contentHtml: string, title: string = 'Vayva Notification'): string {
+// Use the absolute URL for the logo, derived from canonical origin
+const LOGO_URL = `${BRAND.canonicalOrigin}/brand-logo.png`;
+
+
+export function wrapEmail(
+  contentHtml: string,
+  title: string = "Vayva Notification",
+): string {
   return `
 <!DOCTYPE html>
 <html lang="en">
@@ -64,9 +68,9 @@ export function wrapEmail(contentHtml: string, title: string = 'Vayva Notificati
             © ${new Date().getFullYear()} Vayva • Lagos, Nigeria
           </p>
           <div style="margin-top: 8px;">
-            <a href="${process.env.NEXTAUTH_URL}/privacy" style="color: #777777; text-decoration: underline; margin: 0 4px;">Privacy</a>
+            <a href="${BRAND.canonicalOrigin}/privacy" style="color: #777777; text-decoration: underline; margin: 0 4px;">Privacy</a>
             •
-            <a href="${process.env.NEXTAUTH_URL}/terms" style="color: #777777; text-decoration: underline; margin: 0 4px;">Terms</a>
+            <a href="${BRAND.canonicalOrigin}/terms" style="color: #777777; text-decoration: underline; margin: 0 4px;">Terms</a>
           </div>
         </td>
       </tr>

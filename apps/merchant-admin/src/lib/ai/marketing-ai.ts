@@ -1,12 +1,12 @@
-import Groq from 'groq-sdk';
-import { AIMessage } from './aiService';
+import Groq from "groq-sdk";
+import { AIMessage } from "./aiService";
 
 const groq = new Groq({
-    apiKey: process.env.GROQ_MARKETING_KEY || '',
+  apiKey: process.env.GROQ_MARKETING_KEY || "",
 });
 
 export class MarketingAIService {
-    private static SYSTEM_PROMPT = `You are Vayva AI, a friendly and polished assistant for Vayva. 
+  private static SYSTEM_PROMPT = `You are Vayva AI, a friendly and polished assistant for Vayva. 
 Your goal is to help visitors understand how Vayva transforms "messy WhatsApp selling" into a "premium organized business."
 
 Personality:
@@ -22,28 +22,31 @@ Key Facts to drop naturally:
 
 If they seem ready, kindly invite them to click "Start selling for free." If you don't know something, just say: "That's a great question! Our human team at hello@vayva.ng can give you the exact details on that."`;
 
-    static async getResponse(messages: AIMessage[]) {
-        try {
-            const completion = await groq.chat.completions.create({
-                messages: [
-                    { role: 'system', content: this.SYSTEM_PROMPT },
-                    ...messages
-                ],
-                model: process.env.AI_MODEL || 'llama-3.1-70b-versatile',
-                temperature: 0.7,
-                max_tokens: 1024,
-            });
+  static async getResponse(messages: AIMessage[]) {
+    try {
+      const completion = await groq.chat.completions.create({
+        messages: [
+          { role: "system", content: this.SYSTEM_PROMPT },
+          ...messages,
+        ],
+        model: process.env.AI_MODEL || "llama-3.1-70b-versatile",
+        temperature: 0.7,
+        max_tokens: 1024,
+      });
 
-            return {
-                success: true,
-                message: completion.choices[0]?.message?.content || "I'm sorry, I couldn't process that right now. Please try again or contact our support team."
-            };
-        } catch (error) {
-            console.error('Marketing AI Error:', error);
-            return {
-                success: false,
-                message: "I'm having a bit of trouble connecting to my brain right now. Please refresh or try again in a moment!"
-            };
-        }
+      return {
+        success: true,
+        message:
+          completion.choices[0]?.message?.content ||
+          "I'm sorry, I couldn't process that right now. Please try again or contact our support team.",
+      };
+    } catch (error) {
+      console.error("Marketing AI Error:", error);
+      return {
+        success: false,
+        message:
+          "I'm having a bit of trouble connecting to my brain right now. Please refresh or try again in a moment!",
+      };
     }
+  }
 }

@@ -1,7 +1,6 @@
-
-import { NextResponse } from 'next/server';
+import { NextResponse } from "next/server";
 
 export async function POST(request: Request) {
-    // Receive mock status updates (delivered, read)
-    return new NextResponse('OK', { status: 200 });
+  // Receive test status updates (delivered, read)
+  return new NextResponse("OK", { status: 200 });
 }

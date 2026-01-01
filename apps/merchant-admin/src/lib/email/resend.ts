@@ -1,164 +1,195 @@
-import { Resend } from 'resend';
-import { wrapEmail, renderButton, BRAND_COLOR } from './layout';
-import { FEATURES } from '../env-validation';
+import { Resend } from "resend";
+import { wrapEmail, renderButton, BRAND_COLOR } from "./layout";
+import { FEATURES } from "../env-validation";
+import { BRAND, getCanonicalUrl } from "@vayva/shared";
 
-const RESEND_KEY = process.env.NODE_ENV === 'test'
-    ? (process.env.RESEND_API_KEY || 're_mock_test_key_123')
+
+const RESEND_KEY =
+  process.env.NODE_ENV === "test"
+    ? process.env.RESEND_API_KEY || "re_test_test_key_123"
     : process.env.RESEND_API_KEY;
 
 const resend = new Resend(RESEND_KEY);
 
 export class ResendEmailService {
-    private static fromEmail = process.env.RESEND_FROM_EMAIL || 'No-reply@vayva.ng';
-    private static billingEmail = process.env.EMAIL_BILLING || 'Billing@vayva.ng';
-    private static helloEmail = process.env.EMAIL_HELLO || 'Hello@vayva.ng';
-    private static supportEmail = process.env.EMAIL_SUPPORT || 'Support@vayva.ng';
+  private static fromEmail =
+    process.env.RESEND_FROM_EMAIL || `No-reply@${BRAND.domain}`;
+  private static billingEmail = process.env.EMAIL_BILLING || `Billing@${BRAND.domain}`;
+  private static helloEmail = process.env.EMAIL_HELLO || `Hello@${BRAND.domain}`;
+  private static supportEmail = process.env.EMAIL_SUPPORT || `Support@${BRAND.domain}`;
 
-    /**
-     * Check if email service is configured
-     */
-    private static assertConfigured() {
-        if (!FEATURES.EMAIL_ENABLED) {
-            throw new Error('Email service is not configured');
-        }
+
+  /**
+   * Check if email service is configured
+   */
+  private static assertConfigured() {
+    if (!FEATURES.EMAIL_ENABLED) {
+      throw new Error("Email service is not configured");
     }
+  }
 
-    // --- 1. OTP Verification ---
-    static async sendOTPEmail(to: string, code: string, firstName?: string) {
-        this.assertConfigured();
+  // --- 1. OTP Verification ---
+  static async sendOTPEmail(to: string, code: string, firstName?: string) {
+    this.assertConfigured();
 
-        try {
-            const { data, error } = await resend.emails.send({
-                from: this.fromEmail,
-                to,
-                subject: 'Verify your email - Vayva',
-                html: wrapEmail(this.getOTPTemplate(code, firstName), 'Verify Email'),
-            });
+    try {
+      const { data, error } = await resend.emails.send({
+        from: this.fromEmail,
+        to,
+        subject: "Verify your email - Vayva",
+        html: wrapEmail(this.getOTPTemplate(code, firstName), "Verify Email"),
+      });
 
-            if (error) {
-                console.error('[Resend] OTP Error:', error);
-                throw new Error(`Failed to send OTP email: ${error.message}`);
-            }
+      if (error) {
+        console.error("[Resend] OTP Error:", error);
+        throw new Error(`Failed to send OTP email: ${error.message}`);
+      }
 
-            return { success: true, messageId: data?.id };
-        } catch (error: any) {
-            console.error('[Resend] OTP Error:', error);
-            throw error;
-        }
+      return { success: true, messageId: data?.id };
+    } catch (error: any) {
+      console.error("[Resend] OTP Error:", error);
+      throw error;
     }
+  }
 
-    // --- 2. Welcome Email ---
-    static async sendWelcomeEmail(to: string, firstName: string, storeName: string) {
-        this.assertConfigured();
+  // --- 2. Welcome Email ---
+  static async sendWelcomeEmail(
+    to: string,
+    firstName: string,
+    storeName: string,
+  ) {
+    this.assertConfigured();
 
-        try {
-            const { data, error } = await resend.emails.send({
-                from: this.helloEmail,
-                to,
-                subject: `Welcome to Vayva, ${firstName}!`,
-                html: wrapEmail(this.getWelcomeTemplate(firstName, storeName), 'Welcome to Vayva'),
-            });
+    try {
+      const { data, error } = await resend.emails.send({
+        from: this.helloEmail,
+        to,
+        subject: `Welcome to Vayva, ${firstName}!`,
+        html: wrapEmail(
+          this.getWelcomeTemplate(firstName, storeName),
+          "Welcome to Vayva",
+        ),
+      });
 
-            if (error) {
-                console.error('[Resend] Welcome Error:', error);
-                throw new Error(`Failed to send welcome email: ${error.message}`);
-            }
+      if (error) {
+        console.error("[Resend] Welcome Error:", error);
+        throw new Error(`Failed to send welcome email: ${error.message}`);
+      }
 
-            return { success: true, messageId: data?.id };
-        } catch (error: any) {
-            console.error('[Resend] Welcome Error:', error);
-            throw error;
-        }
+      return { success: true, messageId: data?.id };
+    } catch (error: any) {
+      console.error("[Resend] Welcome Error:", error);
+      throw error;
     }
+  }
 
-    // --- 3. Password Changed ---
-    static async sendPasswordChangedEmail(to: string) {
-        this.assertConfigured();
+  // --- 3. Password Changed ---
+  static async sendPasswordChangedEmail(to: string) {
+    this.assertConfigured();
 
-        try {
-            const { data, error } = await resend.emails.send({
-                from: this.fromEmail,
-                to,
-                subject: 'Security Alert: Password Changed',
-                html: wrapEmail(this.getPasswordChangedTemplate(), 'Security Alert'),
-            });
+    try {
+      const { data, error } = await resend.emails.send({
+        from: this.fromEmail,
+        to,
+        subject: "Security Alert: Password Changed",
+        html: wrapEmail(this.getPasswordChangedTemplate(), "Security Alert"),
+      });
 
-            if (error) {
-                console.error('[Resend] Password Change Error:', error);
-                throw new Error(`Failed to send password change email: ${error.message}`);
-            }
+      if (error) {
+        console.error("[Resend] Password Change Error:", error);
+        throw new Error(
+          `Failed to send password change email: ${error.message}`,
+        );
+      }
 
-            return { success: true, messageId: data?.id };
-        } catch (error: any) {
-            console.error('[Resend] Password Change Error:', error);
-            throw error;
-        }
+      return { success: true, messageId: data?.id };
+    } catch (error: any) {
+      console.error("[Resend] Password Change Error:", error);
+      throw error;
     }
+  }
 
-    // --- 4. Payment Receipt ---
-    static async sendPaymentReceiptEmail(to: string, amountNgn: number, invoiceNumber: string, storeName: string) {
-        this.assertConfigured();
+  // --- 4. Payment Receipt ---
+  static async sendPaymentReceiptEmail(
+    to: string,
+    amountNgn: number,
+    invoiceNumber: string,
+    storeName: string,
+  ) {
+    this.assertConfigured();
 
-        try {
-            const { data, error } = await resend.emails.send({
-                from: this.billingEmail,
-                to,
-                subject: `Receipt for ${storeName} - ${invoiceNumber}`,
-                html: wrapEmail(this.getReceiptTemplate(amountNgn, invoiceNumber, storeName), 'Payment Receipt'),
-            });
+    try {
+      const { data, error } = await resend.emails.send({
+        from: this.billingEmail,
+        to,
+        subject: `Receipt for ${storeName} - ${invoiceNumber}`,
+        html: wrapEmail(
+          this.getReceiptTemplate(amountNgn, invoiceNumber, storeName),
+          "Payment Receipt",
+        ),
+      });
 
-            if (error) {
-                console.error('[Resend] Receipt Error:', error);
-                throw new Error(`Failed to send receipt email: ${error.message}`);
-            }
+      if (error) {
+        console.error("[Resend] Receipt Error:", error);
+        throw new Error(`Failed to send receipt email: ${error.message}`);
+      }
 
-            return { success: true, messageId: data?.id };
-        } catch (error: any) {
-            console.error('[Resend] Receipt Error:', error);
-            throw error;
-        }
+      return { success: true, messageId: data?.id };
+    } catch (error: any) {
+      console.error("[Resend] Receipt Error:", error);
+      throw error;
     }
+  }
 
-    // --- 5. Subscription Expiry Reminder ---
-    static async sendSubscriptionExpiryReminder(to: string, storeName: string, planName: string, expiryDate: string) {
-        this.assertConfigured();
+  // --- 5. Subscription Expiry Reminder ---
+  static async sendSubscriptionExpiryReminder(
+    to: string,
+    storeName: string,
+    planName: string,
+    expiryDate: string,
+  ) {
+    this.assertConfigured();
 
-        try {
-            const { billingSubscriptionExpiryReminder } = await import('./templates/core');
-            const billingUrl = `${process.env.NEXTAUTH_URL}/admin/billing`;
+    try {
+      const { billingSubscriptionExpiryReminder } =
+        await import("./templates/core");
+      const billingUrl = getCanonicalUrl("/dashboard/settings/billing");
 
-            const { data, error } = await resend.emails.send({
-                from: this.billingEmail,
-                to,
-                subject: `Action Required: Your subscription for ${storeName} expires in 3 days`,
-                html: billingSubscriptionExpiryReminder({
-                    store_name: storeName,
-                    plan_name: planName,
-                    expiry_date: expiryDate,
-                    billing_url: billingUrl
-                }),
-            });
 
-            if (error) {
-                console.error('[Resend] Subscription Expiry Error:', error);
-                throw new Error(`Failed to send subscription expiry email: ${error.message}`);
-            }
+      const { data, error } = await resend.emails.send({
+        from: this.billingEmail,
+        to,
+        subject: `Action Required: Your subscription for ${storeName} expires in 3 days`,
+        html: billingSubscriptionExpiryReminder({
+          store_name: storeName,
+          plan_name: planName,
+          expiry_date: expiryDate,
+          billing_url: billingUrl,
+        }),
+      });
 
-            return { success: true, messageId: data?.id };
-        } catch (error: any) {
-            console.error('[Resend] Subscription Expiry Error:', error);
-            throw error;
-        }
+      if (error) {
+        console.error("[Resend] Subscription Expiry Error:", error);
+        throw new Error(
+          `Failed to send subscription expiry email: ${error.message}`,
+        );
+      }
+
+      return { success: true, messageId: data?.id };
+    } catch (error: any) {
+      console.error("[Resend] Subscription Expiry Error:", error);
+      throw error;
     }
+  }
 
-    /**
-     * Internal Template Generators (Content Body Only)
-     */
+  /**
+   * Internal Template Generators (Content Body Only)
+   */
 
-    private static getOTPTemplate(code: string, firstName?: string): string {
-        return `
+  private static getOTPTemplate(code: string, firstName?: string): string {
+    return `
             <h1 style="margin:0 0 12px; font-size:22px; font-weight:600;">
-                ${firstName ? `Hi ${firstName}` : 'Hello'}
+                ${firstName ? `Hi ${firstName}` : "Hello"}
             </h1>
             <p style="margin:0 0 24px; font-size:16px; line-height:1.6; color:#444444;">
                 Use the verification code below to complete your sign up. This code will expire in 10 minutes.
@@ -170,12 +201,16 @@ export class ResendEmailService {
                 If you didn't request this code, you can safely ignore this email.
             </p>
         `;
-    }
+  }
 
-    private static getWelcomeTemplate(firstName: string, storeName: string): string {
-        const dashboardUrl = `${process.env.NEXTAUTH_URL || 'https://vayva.ng'}/onboarding`;
+  private static getWelcomeTemplate(
+    firstName: string,
+    storeName: string,
+  ): string {
+    const dashboardUrl = getCanonicalUrl("/onboarding");
 
-        return `
+
+    return `
             <h1 style="margin:0 0 12px; font-size:22px; font-weight:600;">
                 Welcome to Vayva!
             </h1>
@@ -192,16 +227,16 @@ export class ResendEmailService {
                 </ul>
             </div>
 
-            ${renderButton(dashboardUrl, 'Go to Dashboard')}
+            ${renderButton(dashboardUrl, "Go to Dashboard")}
             
             <p style="margin:24px 0 0; font-size:14px; color:#666666;">
                 Need help? Reply to this email or contact support.
             </p>
         `;
-    }
+  }
 
-    private static getPasswordChangedTemplate(): string {
-        return `
+  private static getPasswordChangedTemplate(): string {
+    return `
             <h1 style="margin:0 0 12px; font-size:22px; font-weight:600;">
                 Password Changed
             </h1>
@@ -212,12 +247,19 @@ export class ResendEmailService {
                 <strong>Note:</strong> If you did not make this change, please contact support immediately to secure your account.
             </div>
         `;
-    }
+  }
 
-    private static getReceiptTemplate(amount: number, invoiceRef: string, storeName: string): string {
-        const formattedAmount = new Intl.NumberFormat('en-NG', { style: 'currency', currency: 'NGN' }).format(amount);
+  private static getReceiptTemplate(
+    amount: number,
+    invoiceRef: string,
+    storeName: string,
+  ): string {
+    const formattedAmount = new Intl.NumberFormat("en-NG", {
+      style: "currency",
+      currency: "NGN",
+    }).format(amount);
 
-        return `
+    return `
             <h1 style="margin:0 0 4px; font-size:22px; font-weight:600;">Receipt</h1>
             <p style="margin:0 0 24px; font-size:14px; color:#666666;">For ${storeName}</p>
 
@@ -243,9 +285,10 @@ export class ResendEmailService {
                 </table>
             </div>
 
+&nbsp;</p>
             <p style="margin:24px 0 0; font-size:14px; color:#666666;">
-                View your invoice history in <a href="${process.env.NEXTAUTH_URL}/admin/billing" style="color:#111111; text-decoration:underline;">Billing Settings</a>.
+                View your invoice history in <a href="${getCanonicalUrl("/dashboard/settings/billing")}" style="color:#111111; text-decoration:underline;">Billing Settings</a>.
             </p>
         `;
-    }
+  }
 }

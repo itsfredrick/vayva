@@ -2,7 +2,7 @@
     "name": "Vayva Merchant",
     "short_name": "Vayva",
     "description": "Manage your store on the go",
-    "start_url": "/admin",
+    "start_url": "/",
     "display": "standalone",
     "background_color": "#F7FAF7",
     "theme_color": "#22C55E",

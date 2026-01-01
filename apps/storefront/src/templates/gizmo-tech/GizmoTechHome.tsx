@@ -1,73 +1,81 @@
-import React from 'react';
-import { MobileHeader } from './components/MobileHeader';
-import { HeroTechBanner } from './components/HeroTechBanner';
-import { SectionHeaderRow } from './components/SectionHeaderRow';
-import { HorizontalProductCarousel } from './components/HorizontalProductCarousel';
-import { ProductCardTech } from './components/ProductCardTech';
-import { PublicStore, PublicProduct } from '@/types/storefront';
-import { useStore } from '@/context/StoreContext';
+import React from "react";
+import { MobileHeader } from "./components/MobileHeader";
+import { HeroTechBanner } from "./components/HeroTechBanner";
+import { SectionHeaderRow } from "./components/SectionHeaderRow";
+import { HorizontalProductCarousel } from "./components/HorizontalProductCarousel";
+import { ProductCardTech } from "./components/ProductCardTech";
+import { PublicStore, PublicProduct } from "@/types/storefront";
+import { useStore } from "@/context/StoreContext";
 
 interface GizmoTechHomeProps {
-    store: PublicStore;
-    products: PublicProduct[];
+  store: PublicStore;
+  products: PublicProduct[];
 }
 
 export const GizmoTechHome = ({ store, products }: GizmoTechHomeProps) => {
-    const { cart } = useStore();
-    const cartItemCount = cart.reduce((acc, item) => acc + item.quantity, 0);
+  const { cart } = useStore();
+  const cartItemCount = cart.reduce((acc, item) => acc + item.quantity, 0);
 
-    // Mock Segmentation
-    const topPicks = products.slice(0, 4);
-    const trending = products.slice(4, 8);
+  // Test Segmentation
+  const topPicks = products.slice(0, 4);
+  const trending = products.slice(4, 8);
 
-    return (
-        <div className="min-h-screen bg-white pb-20 font-sans text-[#0B0F19]">
-            <MobileHeader storeName={store.name} cartItemCount={cartItemCount} />
+  return (
+    <div className="min-h-screen bg-white pb-20 font-sans text-[#0B0F19]">
+      <MobileHeader storeName={store.name} cartItemCount={cartItemCount} />
 
-            <main>
-                {/* Hero */}
-                <HeroTechBanner />
+      <main>
+        {/* Hero */}
+        <HeroTechBanner />
 
-                {/* Top Picks Section - Grid */}
-                <SectionHeaderRow
-                    title="Top Picks"
-                    description="Curated best sellers just for you."
-                    actionHref={`/collections/all?store=${store.slug}`}
-                />
-                <div className="grid grid-cols-2 gap-4 px-4 mb-8">
-                    {topPicks.map(product => (
-                        <ProductCardTech key={product.id} product={product} storeSlug={store.slug} />
-                    ))}
-                </div>
-
-                {/* Divider */}
-                <div className="h-2 bg-gray-50 mb-8" />
-
-                {/* Trending Now - Horizontal Scroll */}
-                <SectionHeaderRow
-                    title="Trending Now"
-                    description="What everyone is buying this week."
-                    actionHref={`/collections/trending?store=${store.slug}`}
-                />
-                <HorizontalProductCarousel products={trending} storeSlug={store.slug} />
-
-                {/* Tech Brands Banner / Trust Signals (Optional) */}
-                <div className="mt-8 px-4">
-                    <div className="bg-[#0B0F19] rounded-xl p-6 text-white text-center">
-                        <h4 className="font-bold text-lg mb-2">Build Your Setup</h4>
-                        <p className="text-gray-400 text-sm mb-4">Complete your workstation with our pro accessories.</p>
-                        <button className="bg-blue-600 text-white px-6 py-2 rounded-lg text-sm font-bold w-full hover:bg-blue-500 transition-colors">
-                            View Accessories
-                        </button>
-                    </div>
-                </div>
-
-                {/* Footer / Spacing */}
-                <div className="mt-12 px-4 py-8 bg-gray-50 text-center text-xs text-gray-400">
-                    <p>© {new Date().getFullYear()} {store.name}</p>
-                    <p className="mt-2 text-gray-300">Powered by Vayva</p>
-                </div>
-            </main>
+        {/* Top Picks Section - Grid */}
+        <SectionHeaderRow
+          title="Top Picks"
+          description="Curated best sellers just for you."
+          actionHref={`/collections/all?store=${store.slug}`}
+        />
+        <div className="grid grid-cols-2 gap-4 px-4 mb-8">
+          {topPicks.map((product) => (
+            <ProductCardTech
+              key={product.id}
+              product={product}
+              storeSlug={store.slug}
+            />
+          ))}
         </div>
-    );
+
+        {/* Divider */}
+        <div className="h-2 bg-gray-50 mb-8" />
+
+        {/* Trending Now - Horizontal Scroll */}
+        <SectionHeaderRow
+          title="Trending Now"
+          description="What everyone is buying this week."
+          actionHref={`/collections/trending?store=${store.slug}`}
+        />
+        <HorizontalProductCarousel products={trending} storeSlug={store.slug} />
+
+        {/* Tech Brands Banner / Trust Signals (Optional) */}
+        <div className="mt-8 px-4">
+          <div className="bg-[#0B0F19] rounded-xl p-6 text-white text-center">
+            <h4 className="font-bold text-lg mb-2">Build Your Setup</h4>
+            <p className="text-gray-400 text-sm mb-4">
+              Complete your workstation with our pro accessories.
+            </p>
+            <button className="bg-blue-600 text-white px-6 py-2 rounded-lg text-sm font-bold w-full hover:bg-blue-500 transition-colors">
+              View Accessories
+            </button>
+          </div>
+        </div>
+
+        {/* Footer / Spacing */}
+        <div className="mt-12 px-4 py-8 bg-gray-50 text-center text-xs text-gray-400">
+          <p>
+            © {new Date().getFullYear()} {store.name}
+          </p>
+          <p className="mt-2 text-gray-300">Powered by Vayva</p>
+        </div>
+      </main>
+    </div>
+  );
 };

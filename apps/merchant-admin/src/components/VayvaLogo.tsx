@@ -1,5 +1,5 @@
-import { Logo } from './Logo';
+import { Logo } from "./Logo";
 
 export function VayvaLogo(props: any) {
-    return <Logo {...props} />;
+  return <Logo {...props} />;
 }

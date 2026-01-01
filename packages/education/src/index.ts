@@ -1,29 +1,19 @@
-/**
- * Vayva Education Package
- * 
- * Template-driven in-app education with contextual guidance.
- */
+export interface Tutorial {
+  id: string;
+  title: string;
+  videoUrl?: string;
+  category: "onboarding" | "marketing" | "operations";
+}
 
-// State management
-export { EducationStateManager, StateTransitions } from './state';
-export type { EducationState, UserEducationRecord, GuidanceEligibility } from './state';
+export const EducationService = {
+  getTutorials: async (category?: string): Promise<Tutorial[]> => {
+    // Mock content for now
+    const tutorials: Tutorial[] = [
+      { id: "1", title: "Setting up your Store", category: "onboarding", videoUrl: "https://youtu.be/example" },
+      { id: "2", title: "How to run Ads", category: "marketing" }
+    ];
 
-// Activation adapter
-export { ActivationAdapter, EducationProgression } from './activation-adapter';
-export type { GuidanceLevel, ActivationAwareGuidance } from './activation-adapter';
-
-// Registry
-export {
-    EducationRegistry,
-    getTemplateEducation,
-    getWorkflowGuidance,
-    getEmptyStateGuidance,
-    getFirstActionHint,
-    getWorkflowStallNudge,
-    getExplanation,
-} from './registry';
-export type { EducationMap } from './registry';
-
-// Template maps
-export { RetailSellingEducation } from './templates/retail-selling';
-export { SoloServicesEducation } from './templates/solo-services';
+    if (category) return tutorials.filter(t => t.category === category);
+    return tutorials;
+  }
+}

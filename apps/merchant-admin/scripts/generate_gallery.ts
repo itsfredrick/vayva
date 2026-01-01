@@ -1,28 +1,44 @@
-
-import fs from 'fs';
-import path from 'path';
-import { Templates } from '../src/lib/email/templates/core';
+import fs from "fs";
+import path from "path";
+import { Templates } from "../src/lib/email/templates/core";
 
 // Mock Data for Core Templates
 const MOCKS = {
-    auth_otp_verification: { otp: '482-931', first_name: 'Adewale' },
-    auth_welcome: { first_name: 'Chioma', store_name: 'Luxe Lagos', dashboard_url: 'https://vayva.com/dashboard' },
-    auth_password_reset: { reset_link: 'https://vayva.com/reset?token=abc' },
-    billing_receipt: { store_name: 'Luxe Lagos', amount: '45,000.00', currency: 'NGN', invoice_number: 'INV-2024-001', date: 'Dec 27, 2024', billing_url: 'https://vayva.com/billing' },
-    team_invite: { inviter_name: 'Adewale', store_name: 'Luxe Lagos', role: 'Admin', invite_url: 'https://vayva.com/join', role_description: 'Full access to store settings and orders.' }
+  auth_otp_verification: { otp: "482-931", first_name: "Adewale" },
+  auth_welcome: {
+    first_name: "Chioma",
+    store_name: "Luxe Lagos",
+    dashboard_url: "https://vayva.ng/dashboard",
+  },
+  auth_password_reset: { reset_link: "https://vayva.ng/reset?token=abc" },
+  billing_receipt: {
+    store_name: "Luxe Lagos",
+    amount: "45,000.00",
+    currency: "NGN",
+    invoice_number: "INV-2024-001",
+    date: "Dec 27, 2024",
+    billing_url: "https://vayva.ng/billing",
+  },
+  team_invite: {
+    inviter_name: "Adewale",
+    store_name: "Luxe Lagos",
+    role: "Admin",
+    invite_url: "https://vayva.ng/join",
+    role_description: "Full access to store settings and orders.",
+  },
 };
 
-const OUTPUT_PATH = path.join(process.cwd(), 'public', 'email_previews.html');
+const OUTPUT_PATH = path.join(process.cwd(), "public", "email_previews.html");
 
 function generate() {
-    const galleryItems = Object.entries(Templates).map(([key, renderFn]) => {
-        const data = MOCKS[key as keyof typeof MOCKS] || {};
-        // @ts-ignore
-        const html = renderFn(data);
-        return { key, html, subject: 'Subject Preview' };
-    });
+  const galleryItems = Object.entries(Templates).map(([key, renderFn]) => {
+    const data = MOCKS[key as keyof typeof MOCKS] || {};
+    // @ts-ignore
+    const html = renderFn(data);
+    return { key, html, subject: "Subject Preview" };
+  });
 
-    const html = `
+  const html = `
 <!DOCTYPE html>
 <html>
 <head>
@@ -61,8 +77,8 @@ function generate() {
 </html>
     `;
 
-    fs.writeFileSync(OUTPUT_PATH, html);
-    console.log(`Gallery generated at ${OUTPUT_PATH}`);
+  fs.writeFileSync(OUTPUT_PATH, html);
+  console.log(`Gallery generated at ${OUTPUT_PATH}`);
 }
 
 generate();

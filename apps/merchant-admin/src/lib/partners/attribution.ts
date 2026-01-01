@@ -1,91 +1,90 @@
-import { prisma } from '@vayva/db';
-import { verifyReferralToken } from './referral';
+import { prisma } from "@vayva/db";
+import { verifyReferralToken } from "./referral";
 
 export class AttributionService {
+  static async trackSignup(merchantId: string, token: string) {
+    const payload = verifyReferralToken(token);
+    if (!payload) return null;
 
-    static async trackSignup(merchantId: string, token: string) {
-        const payload = verifyReferralToken(token);
-        if (!payload) return null;
+    // Verify Partner/Code exist
+    const partner = await prisma.partner.findUnique({
+      where: { id: payload.partnerId },
+    });
 
-        // Verify Partner/Code exist
-        const partner = await prisma.partner.findUnique({
-            where: { id: payload.partnerId }
-        });
+    if (!partner || partner.status !== "active") return null;
 
-        if (!partner || partner.status !== 'active') return null;
+    // Idempotency: Ignore if merchant already attributed
+    const existing = await prisma.referralAttribution.findUnique({
+      where: { merchantId },
+    });
+    if (existing) return existing;
 
-        // Idempotency: Ignore if merchant already attributed
-        const existing = await prisma.referralAttribution.findUnique({
-            where: { merchantId }
-        });
-        if (existing) return existing;
+    return prisma.referralAttribution.create({
+      data: {
+        partnerId: payload.partnerId,
+        merchantId,
+        referralCode: payload.code,
+        signupCompletedAt: new Date(),
+      },
+    });
+  }
 
-        return prisma.referralAttribution.create({
-            data: {
-                partnerId: payload.partnerId,
-                merchantId,
-                referralCode: payload.code,
-                signupCompletedAt: new Date()
-            }
-        });
+  static async trackStoreLive(storeId: string) {
+    // Need to link Store -> Merchant.
+    // We assume Store has a 'Subscription' or we look up owner.
+    // For V1, let's assume `storeId` tells us the merchant implicitly via ownership.
+    // Or better: `ReferralAttribution` is keyed by `merchantId`.
+    // We need `merchantId` from `storeId`.
+    const store = await prisma.store.findUnique({
+      where: { id: storeId },
+      include: { memberships: { where: { role: "OWNER" } } },
+    });
+
+    const ownerId = store?.memberships[0]?.userId; // Assuming membership links to User (Merchant)
+    if (!ownerId) return;
+
+    const attr = await prisma.referralAttribution.findUnique({
+      where: { merchantId: ownerId },
+    });
+
+    if (attr && !attr.storeLiveAt) {
+      await prisma.referralAttribution.update({
+        where: { id: attr.id },
+        data: { storeLiveAt: new Date() },
+      });
+      // Optional: Create "activation" ledger entry?
     }
+  }
 
-    static async trackStoreLive(storeId: string) {
-        // Need to link Store -> Merchant. 
-        // We assume Store has a 'Subscription' or we look up owner.
-        // For V1, let's assume `storeId` tells us the merchant implicitly via ownership.
-        // Or better: `ReferralAttribution` is keyed by `merchantId`.
-        // We need `merchantId` from `storeId`.
-        const store = await prisma.store.findUnique({
-            where: { id: storeId },
-            include: { memberships: { where: { role: 'OWNER' } } }
-        });
+  static async trackPayment(storeId: string, amount: number) {
+    const store = await prisma.store.findUnique({
+      where: { id: storeId },
+      include: { memberships: { where: { role: "OWNER" } } },
+    });
+    const ownerId = store?.memberships[0]?.userId;
+    if (!ownerId) return;
 
-        const ownerId = store?.memberships[0]?.userId; // Assuming membership links to User (Merchant)
-        if (!ownerId) return;
+    const attr = await prisma.referralAttribution.findUnique({
+      where: { merchantId: ownerId },
+    });
 
-        const attr = await prisma.referralAttribution.findUnique({
-            where: { merchantId: ownerId }
-        });
-
-        if (attr && !attr.storeLiveAt) {
-            await prisma.referralAttribution.update({
-                where: { id: attr.id },
-                data: { storeLiveAt: new Date() }
-            });
-            // Optional: Create "activation" ledger entry?
-        }
+    if (attr && !attr.firstPaymentAt) {
+      // First payment! Credit generic commission (e.g. 10% or fixed)
+      await prisma.$transaction([
+        prisma.referralAttribution.update({
+          where: { id: attr.id },
+          data: { firstPaymentAt: new Date() },
+        }),
+        prisma.partnerPayoutLedger.create({
+          data: {
+            partnerId: attr.partnerId,
+            merchantId: ownerId,
+            amountNgn: Math.floor(amount * 0.1), // 10% example
+            reason: "subscription_commission",
+            status: "pending",
+          },
+        }),
+      ]);
     }
-
-    static async trackPayment(storeId: string, amount: number) {
-        const store = await prisma.store.findUnique({
-            where: { id: storeId },
-            include: { memberships: { where: { role: 'OWNER' } } }
-        });
-        const ownerId = store?.memberships[0]?.userId;
-        if (!ownerId) return;
-
-        const attr = await prisma.referralAttribution.findUnique({
-            where: { merchantId: ownerId }
-        });
-
-        if (attr && !attr.firstPaymentAt) {
-            // First payment! Credit generic commission (e.g. 10% or fixed)
-            await prisma.$transaction([
-                prisma.referralAttribution.update({
-                    where: { id: attr.id },
-                    data: { firstPaymentAt: new Date() }
-                }),
-                prisma.partnerPayoutLedger.create({
-                    data: {
-                        partnerId: attr.partnerId,
-                        merchantId: ownerId,
-                        amountNgn: Math.floor(amount * 0.1), // 10% example
-                        reason: 'subscription_commission',
-                        status: 'pending'
-                    }
-                })
-            ]);
-        }
-    }
+  }
 }

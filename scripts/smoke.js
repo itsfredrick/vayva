@@ -1,7 +1,12 @@
 const https = require('http');
 
+const CONFIG = {
+    BASE_URL: process.env.VAYVA_CANONICAL_ORIGIN || "https://vayva.ng",
+};
+
 const ENDPOINTS = [
     { name: 'Merchant Admin', url: 'http://localhost:3000/api/health' },
+
     { name: 'Storefront', url: 'http://localhost:3001/api/health' },
     { name: 'Ops Console', url: 'http://localhost:3002/api/health' },
     { name: 'Marketplace', url: 'http://localhost:3004/api/health' }
@@ -15,16 +20,16 @@ const checkEndpoint = (app) => {
     return new Promise((resolve) => {
         const req = https.get(app.url, (res) => {
             if (res.statusCode === 200) {
-                console.log(`✅ ${app.name} is UP (${res.statusCode})`);
+                console.log(`✅ ${app.name} is UP(${res.statusCode})`);
             } else {
-                console.log(`❌ ${app.name} returned status ${res.statusCode}`);
+                console.log(`❌ ${app.name} returned status ${res.statusCode} `);
                 failed++;
             }
             resolve();
         });
 
         req.on('error', (err) => {
-            console.log(`❌ ${app.name} is DOWN (${err.message})`);
+            console.log(`❌ ${app.name} is DOWN(${err.message})`);
             failed++;
             resolve();
         });

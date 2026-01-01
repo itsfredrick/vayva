@@ -4,20 +4,40 @@ const { withSentryConfig } = require("@sentry/nextjs");
 const nextConfig = {
     transpilePackages: ["@vayva/ui", "@vayva/theme", "@vayva/schemas", "@vayva/shared", "@vayva/api-client", "@vayva/content"],
     serverExternalPackages: ["@prisma/client", "bcryptjs", "@vayva/db"],
+    reactCompiler: true,
     experimental: {
-        optimizePackageImports: ["lucide-react", "@vayva/ui", "@vayva/shared", "@vayva/api-client"]
-    }
+        optimizePackageImports: ["lucide-react", "@vayva/ui", "@vayva/shared", "@vayva/api-client", "date-fns", "framer-motion", "recharts"],
+        staleTimes: {
+            dynamic: 30,
+            static: 180,
+        },
+    },
+    async rewrites() {
+        return [
+            {
+                source: "/ops",
+                destination: `${process.env.OPS_CONSOLE_URL || "http://localhost:3002"}/ops`,
+            },
+            {
+                source: "/ops/:path*",
+                destination: `${process.env.OPS_CONSOLE_URL || "http://localhost:3002"}/ops/:path*`,
+            },
+        ];
+    },
 };
 
 const withPWA = require("@ducanh2912/next-pwa").default({
     dest: "public",
-    cacheOnFrontEndNav: true,
-    aggressiveFrontEndNavCaching: true,
+    // Optimized for dashboard data freshness
+    cacheOnFrontEndNav: false,
+    aggressiveFrontEndNavCaching: false,
     reloadOnOnline: true,
     swcMinify: true,
     disable: process.env.NODE_ENV === "development",
     workboxOptions: {
         disableDevLogs: true,
+        skipWaiting: true,
+        clientsClaim: true,
     },
 });
 

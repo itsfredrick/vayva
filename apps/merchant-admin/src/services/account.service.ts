@@ -1,132 +1,143 @@
-import { KycDetails, MerchantProfile, NotificationPrefs, SecurityState, StaffMember, StoreProfile } from '@/types/account';
+import {
+  KycDetails,
+  MerchantProfile,
+  NotificationPrefs,
+  SecurityState,
+  StaffMember,
+  StoreProfile,
+} from "@/types/account";
 
-// Mock Data
+// Test Data
 let profile: MerchantProfile = {
-    firstName: 'Fredrick',
-    lastName: 'Admin',
-    email: 'fredrick@vayva.shop',
-    phone: '+234 800 000 0000'
+  firstName: "Fredrick",
+  lastName: "Admin",
+  email: "fredrick@vayva.shop",
+  phone: "+234 800 000 0000",
 };
 
 let store: StoreProfile = {
-    name: 'Fredrick Store',
-    category: 'Fashion',
-    slug: 'fredrick-store',
-    address: '123 Lagos Way',
-    city: 'Lekki',
-    state: 'Lagos',
-    isPublished: false
+  name: "Fredrick Store",
+  category: "Fashion",
+  slug: "fredrick-store",
+  address: "123 Lagos Way",
+  city: "Lekki",
+  state: "Lagos",
+  isPublished: false,
 };
 
 let staff: StaffMember[] = [
-    {
-        id: '1',
-        name: 'Fredrick Admin',
-        email: 'fredrick@vayva.shop',
-        role: 'admin',
-        status: 'active',
-        joinedAt: new Date().toISOString()
-    }
+  {
+    id: "1",
+    name: "Fredrick Admin",
+    email: "fredrick@vayva.shop",
+    role: "admin",
+    status: "active",
+    joinedAt: new Date().toISOString(),
+  },
 ];
 
 let kyc: KycDetails = {
-    status: 'not_started'
+  status: "not_started",
 };
 
 const security: SecurityState = {
-    lastPasswordChange: new Date(Date.now() - 1000 * 60 * 60 * 24 * 30).toISOString(), // 30 days ago
-    twoFactorEnabled: false,
-    walletPinSet: false,
-    activeSessions: [
-        {
-            id: 'sess_1',
-            device: 'MacBook Pro (Chrome)',
-            location: 'Lagos, NG',
-            lastActive: 'Just now',
-            isCurrent: true
-        }
-    ]
+  lastPasswordChange: new Date(
+    Date.now() - 1000 * 60 * 60 * 24 * 30,
+  ).toISOString(), // 30 days ago
+  twoFactorEnabled: false,
+  walletPinSet: false,
+  activeSessions: [
+    {
+      id: "sess_1",
+      device: "MacBook Pro (Chrome)",
+      location: "Lagos, NG",
+      lastActive: "Just now",
+      isCurrent: true,
+    },
+  ],
 };
 
 let notifications: NotificationPrefs = {
-    email: {
-        orders: true,
-        payouts: true,
-        waApprovals: true,
-        lowStock: false
-    },
-    whatsapp: {
-        orders: false,
-        payouts: false
-    }
+  email: {
+    orders: true,
+    payouts: true,
+    waApprovals: true,
+    lowStock: false,
+  },
+  whatsapp: {
+    orders: false,
+    payouts: false,
+  },
 };
 
 export const AccountService = {
-    getProfile: async (): Promise<MerchantProfile> => {
-        await new Promise(resolve => setTimeout(resolve, 300));
-        return profile;
-    },
+  getProfile: async (): Promise<MerchantProfile> => {
+    await new Promise((resolve) => setTimeout(resolve, 300));
+    return profile;
+  },
 
-    updateProfile: async (data: Partial<MerchantProfile>): Promise<void> => {
-        await new Promise(resolve => setTimeout(resolve, 800));
-        profile = { ...profile, ...data };
-    },
+  updateProfile: async (data: Partial<MerchantProfile>): Promise<void> => {
+    await new Promise((resolve) => setTimeout(resolve, 800));
+    profile = { ...profile, ...data };
+  },
 
-    getStoreProfile: async (): Promise<StoreProfile> => {
-        await new Promise(resolve => setTimeout(resolve, 300));
-        return store;
-    },
+  getStoreProfile: async (): Promise<StoreProfile> => {
+    await new Promise((resolve) => setTimeout(resolve, 300));
+    return store;
+  },
 
-    updateStoreProfile: async (data: Partial<StoreProfile>): Promise<void> => {
-        await new Promise(resolve => setTimeout(resolve, 800));
-        store = { ...store, ...data };
-    },
+  updateStoreProfile: async (data: Partial<StoreProfile>): Promise<void> => {
+    await new Promise((resolve) => setTimeout(resolve, 800));
+    store = { ...store, ...data };
+  },
 
-    getStaff: async (): Promise<StaffMember[]> => {
-        await new Promise(resolve => setTimeout(resolve, 400));
-        return staff;
-    },
+  getStaff: async (): Promise<StaffMember[]> => {
+    await new Promise((resolve) => setTimeout(resolve, 400));
+    return staff;
+  },
 
-    inviteStaff: async (email: string, role: string): Promise<void> => {
-        await new Promise(resolve => setTimeout(resolve, 800));
-        staff.push({
-            id: Math.random().toString(36).substr(2, 9),
-            name: email.split('@')[0],
-            email,
-            role: role as any,
-            status: 'invited',
-            joinedAt: new Date().toISOString()
-        });
-    },
+  inviteStaff: async (email: string, role: string): Promise<void> => {
+    await new Promise((resolve) => setTimeout(resolve, 800));
+    staff.push({
+      id: Math.random().toString(36).substr(2, 9),
+      name: email.split("@")[0],
+      email,
+      role: role as any,
+      status: "invited",
+      joinedAt: new Date().toISOString(),
+    });
+  },
 
-    removeStaff: async (id: string): Promise<void> => {
-        await new Promise(resolve => setTimeout(resolve, 600));
-        staff = staff.filter(s => s.id !== id);
-    },
+  removeStaff: async (id: string): Promise<void> => {
+    await new Promise((resolve) => setTimeout(resolve, 600));
+    staff = staff.filter((s) => s.id !== id);
+  },
 
-    getKycStatus: async (): Promise<KycDetails> => {
-        await new Promise(resolve => setTimeout(resolve, 300));
-        return kyc;
-    },
+  getKycStatus: async (): Promise<KycDetails> => {
+    await new Promise((resolve) => setTimeout(resolve, 300));
+    return kyc;
+  },
 
-    submitKyc: async (data: any): Promise<void> => {
-        await new Promise(resolve => setTimeout(resolve, 1500));
-        kyc = { ...kyc, status: 'pending', ...data };
-    },
+  submitKyc: async (data: any): Promise<void> => {
+    await new Promise((resolve) => setTimeout(resolve, 1500));
+    kyc = { ...kyc, status: "pending", ...data };
+  },
 
-    getSecurityState: async (): Promise<SecurityState> => {
-        await new Promise(resolve => setTimeout(resolve, 300));
-        // Mock linking verified KYC to simulate PIN prompt requirement if needed
-        return security;
-    },
+  getSecurityState: async (): Promise<SecurityState> => {
+    await new Promise((resolve) => setTimeout(resolve, 300));
+    // Test linking verified KYC to simulate PIN prompt requirement if needed
+    return security;
+  },
 
-    getNotifications: async (): Promise<NotificationPrefs> => {
-        await new Promise(resolve => setTimeout(resolve, 300));
-        return notifications;
-    },
+  getNotifications: async (): Promise<NotificationPrefs> => {
+    await new Promise((resolve) => setTimeout(resolve, 300));
+    return notifications;
+  },
 
-    updateNotifications: async (data: Partial<NotificationPrefs>): Promise<void> => {
-        await new Promise(resolve => setTimeout(resolve, 500));
-        notifications = { ...notifications, ...data };
-    }
+  updateNotifications: async (
+    data: Partial<NotificationPrefs>,
+  ): Promise<void> => {
+    await new Promise((resolve) => setTimeout(resolve, 500));
+    notifications = { ...notifications, ...data };
+  },
 };

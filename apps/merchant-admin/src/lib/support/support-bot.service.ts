@@ -1,6 +1,6 @@
-import { SupportContextService } from '@/lib/support/support-context.service';
-import { EscalationService } from '@/lib/support/escalation.service';
-import { MerchantSupportBot } from '@/lib/support/merchant-support-bot.service';
+import { SupportContextService } from "@/lib/support/support-context.service";
+import { EscalationService } from "@/lib/support/escalation.service";
+import { MerchantSupportBot } from "@/lib/support/merchant-support-bot.service";
 
 /**
  * Orchestrator for the entire Support Bot Flow
@@ -9,25 +9,30 @@ import { MerchantSupportBot } from '@/lib/support/merchant-support-bot.service';
  * - DECIDES Escalate vs Reply
  */
 export class SupportBotService {
+  static async processMessage(
+    storeId: string,
+    message: string,
+    history: any[] = [],
+  ) {
+    // 1. Delegate to the Core Bot Logic (which already handles context fetching)
+    const response = await MerchantSupportBot.handleQuery(
+      storeId,
+      message,
+      history,
+    );
 
-    static async processMessage(
-        storeId: string,
-        message: string,
-        history: any[] = []
-    ) {
-        // 1. Delegate to the Core Bot Logic (which already handles context fetching)
-        const response = await MerchantSupportBot.handleQuery(storeId, message, history);
+    // Note: The MerchantSupportBot.handleQuery already:
+    // - Fetches context
+    // - Checks for escalation keywords via shouldEscalate
+    // - Calls EscalationService.triggerHandoff if needed
 
-        // Note: The MerchantSupportBot.handleQuery already:
-        // - Fetches context
-        // - Checks for escalation keywords via shouldEscalate
-        // - Calls EscalationService.triggerHandoff if needed
-
-        return {
-            reply: response.message,
-            actions: response.suggestedActions || [],
-            // You could enhance this to return 'ESCALATED' status if needed
-            status: response.message.includes('escalating') ? 'ESCALATED' : 'CONTINUE'
-        };
-    }
+    return {
+      reply: response.message,
+      actions: response.suggestedActions || [],
+      // You could enhance this to return 'ESCALATED' status if needed
+      status: response.message.includes("escalating")
+        ? "ESCALATED"
+        : "CONTINUE",
+    };
+  }
 }

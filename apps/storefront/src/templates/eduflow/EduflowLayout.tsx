@@ -1,128 +1,146 @@
-import React, { useState } from 'react';
-import { PublicStore, PublicProduct } from '@/types/storefront';
-import { EduHeader } from './components/EduHeader';
-import { CourseHero } from './components/CourseHero';
-import { CurriculumList } from './components/CurriculumList';
-import { LessonPlayer } from './components/LessonPlayer';
-import { CertificateView } from './components/CertificateView';
-import { CheckCircle } from 'lucide-react';
+import React, { useState } from "react";
+import { PublicStore, PublicProduct } from "@/types/storefront";
+import { EduHeader } from "./components/EduHeader";
+import { CourseHero } from "./components/CourseHero";
+import { CurriculumList } from "./components/CurriculumList";
+import { LessonPlayer } from "./components/LessonPlayer";
+import { CertificateView } from "./components/CertificateView";
+import { CheckCircle } from "lucide-react";
 
 interface EduflowLayoutProps {
-    store: PublicStore;
-    products: PublicProduct[];
+  store: PublicStore;
+  products: PublicProduct[];
 }
 
 export const EduflowLayout = ({ store, products }: EduflowLayoutProps) => {
-    // Demo: Select first course
-    const course = products[0];
+  // Demo: Select first course
+  const course = products[0];
 
-    // Mock State
-    const [isEnrolled, setIsEnrolled] = useState(false);
-    const [completedLessons, setCompletedLessons] = useState<string[]>([]);
-    const [activeLesson, setActiveLesson] = useState<{ id: string; title: string; duration: string } | null>(null);
-    const [showCertificate, setShowCertificate] = useState(false);
+  // Test State
+  const [isEnrolled, setIsEnrolled] = useState(false);
+  const [completedLessons, setCompletedLessons] = useState<string[]>([]);
+  const [activeLesson, setActiveLesson] = useState<{
+    id: string;
+    title: string;
+    duration: string;
+  } | null>(null);
+  const [showCertificate, setShowCertificate] = useState(false);
 
-    const lessons = course.courseDetails?.lessons || [];
+  const lessons = course.courseDetails?.lessons || [];
 
-    const handleEnroll = () => {
-        setIsEnrolled(true);
-        // Unlock first lesson logic would happen in backend
-        alert("Enrolled successfully! You can now access the lessons.");
-    };
+  const handleEnroll = () => {
+    setIsEnrolled(true);
+    // Unlock first lesson logic would happen in backend
+    alert("Enrolled successfully! You can now access the lessons.");
+  };
 
-    const handleLessonSelect = (id: string, isLocked: boolean) => {
-        if (!isEnrolled) {
-            alert("Please enroll to access content.");
-            return;
+  const handleLessonSelect = (id: string, isLocked: boolean) => {
+    if (!isEnrolled) {
+      alert("Please enroll to access content.");
+      return;
+    }
+    if (isLocked) {
+      alert("Complete previous lessons to unlock this one.");
+      return;
+    }
+    const lesson = lessons.find((l) => l.id === id);
+    if (lesson)
+      setActiveLesson({
+        id: lesson.id,
+        title: lesson.title,
+        duration: lesson.duration,
+      });
+  };
+
+  const handleLessonComplete = () => {
+    if (activeLesson) {
+      if (!completedLessons.includes(activeLesson.id)) {
+        const newCompleted = [...completedLessons, activeLesson.id];
+        setCompletedLessons(newCompleted);
+
+        // Check for certificate
+        if (
+          newCompleted.length === lessons.length &&
+          course.courseDetails?.certificate
+        ) {
+          setTimeout(() => setShowCertificate(true), 500);
         }
-        if (isLocked) {
-            alert("Complete previous lessons to unlock this one.");
-            return;
-        }
-        const lesson = lessons.find(l => l.id === id);
-        if (lesson) setActiveLesson({ id: lesson.id, title: lesson.title, duration: lesson.duration });
-    };
+      }
+      setActiveLesson(null);
+    }
+  };
 
-    const handleLessonComplete = () => {
-        if (activeLesson) {
-            if (!completedLessons.includes(activeLesson.id)) {
-                const newCompleted = [...completedLessons, activeLesson.id];
-                setCompletedLessons(newCompleted);
+  if (!course) return <div>No courses found.</div>;
 
-                // Check for certificate
-                if (newCompleted.length === lessons.length && course.courseDetails?.certificate) {
-                    setTimeout(() => setShowCertificate(true), 500);
-                }
-            }
-            setActiveLesson(null);
-        }
-    };
+  const progress =
+    Math.round((completedLessons.length / lessons.length) * 100) || 0;
 
-    if (!course) return <div>No courses found.</div>;
+  return (
+    <div className="min-h-screen bg-white font-sans text-gray-900">
+      <EduHeader storeName={store.name} />
 
-    const progress = Math.round((completedLessons.length / lessons.length) * 100) || 0;
+      <main>
+        <CourseHero course={course} onEnroll={handleEnroll} />
 
-    return (
-        <div className="min-h-screen bg-white font-sans text-gray-900">
-            <EduHeader storeName={store.name} />
+        <section className="max-w-5xl mx-auto px-6 py-12 flex flex-col md:flex-row gap-12">
+          {/* Curriculum */}
+          <div className="flex-1">
+            <h2 className="text-2xl font-bold mb-6">Course Content</h2>
+            <CurriculumList
+              lessons={lessons}
+              completedLessons={completedLessons}
+              onLessonSelect={handleLessonSelect}
+            />
+          </div>
 
-            <main>
-                <CourseHero course={course} onEnroll={handleEnroll} />
+          {/* Progress Sidebar */}
+          <div className="w-full md:w-80 space-y-6">
+            <div className="bg-white border border-gray-200 p-6 rounded-2xl shadow-sm">
+              <h3 className="font-bold text-gray-900 mb-4">Your Progress</h3>
 
-                <section className="max-w-5xl mx-auto px-6 py-12 flex flex-col md:flex-row gap-12">
-                    {/* Curriculum */}
-                    <div className="flex-1">
-                        <h2 className="text-2xl font-bold mb-6">Course Content</h2>
-                        <CurriculumList
-                            lessons={lessons}
-                            completedLessons={completedLessons}
-                            onLessonSelect={handleLessonSelect}
-                        />
-                    </div>
+              <div className="w-full bg-gray-100 rounded-full h-2 mb-2">
+                <div
+                  className="bg-green-500 h-2 rounded-full transition-all duration-500"
+                  style={{ width: `${progress}%` }}
+                ></div>
+              </div>
+              <p className="text-sm text-gray-500 mb-6">
+                {progress}% Completed
+              </p>
 
-                    {/* Progress Sidebar */}
-                    <div className="w-full md:w-80 space-y-6">
-                        <div className="bg-white border border-gray-200 p-6 rounded-2xl shadow-sm">
-                            <h3 className="font-bold text-gray-900 mb-4">Your Progress</h3>
+              {progress === 100 ? (
+                <button
+                  onClick={() => setShowCertificate(true)}
+                  className="w-full bg-green-100 text-green-700 font-bold py-2 rounded-lg text-sm hover:bg-green-200 transition-colors flex items-center justify-center gap-2"
+                >
+                  <CheckCircle size={16} /> View Certificate
+                </button>
+              ) : (
+                <div className="text-xs text-gray-400 text-center">
+                  Complete all lessons to earn your certificate.
+                </div>
+              )}
+            </div>
+          </div>
+        </section>
+      </main>
 
-                            <div className="w-full bg-gray-100 rounded-full h-2 mb-2">
-                                <div className="bg-green-500 h-2 rounded-full transition-all duration-500" style={{ width: `${progress}%` }}></div>
-                            </div>
-                            <p className="text-sm text-gray-500 mb-6">{progress}% Completed</p>
+      {/* Modals */}
+      {activeLesson && (
+        <LessonPlayer
+          lesson={activeLesson}
+          onComplete={handleLessonComplete}
+          onClose={() => setActiveLesson(null)}
+        />
+      )}
 
-                            {progress === 100 ? (
-                                <button
-                                    onClick={() => setShowCertificate(true)}
-                                    className="w-full bg-green-100 text-green-700 font-bold py-2 rounded-lg text-sm hover:bg-green-200 transition-colors flex items-center justify-center gap-2"
-                                >
-                                    <CheckCircle size={16} /> View Certificate
-                                </button>
-                            ) : (
-                                <div className="text-xs text-gray-400 text-center">
-                                    Complete all lessons to earn your certificate.
-                                </div>
-                            )}
-                        </div>
-                    </div>
-                </section>
-            </main>
-
-            {/* Modals */}
-            {activeLesson && (
-                <LessonPlayer
-                    lesson={activeLesson}
-                    onComplete={handleLessonComplete}
-                    onClose={() => setActiveLesson(null)}
-                />
-            )}
-
-            {showCertificate && (
-                <CertificateView
-                    course={course}
-                    studentName="Guest Student"
-                    onClose={() => setShowCertificate(false)}
-                />
-            )}
-        </div>
-    );
+      {showCertificate && (
+        <CertificateView
+          course={course}
+          studentName="Guest Student"
+          onClose={() => setShowCertificate(false)}
+        />
+      )}
+    </div>
+  );
 };

@@ -9,26 +9,35 @@ import { GizmoTechHome } from "@/components/storefront/GizmoTechHome";
 import { BloomeHome } from "@/components/storefront/BloomeHome";
 
 const COMPONENT_MAP: Record<string, React.ComponentType<any>> = {
-    'StoreShell': StoreShell,
-    'AAFashionHome': AAFashionHome,
-    'GizmoTechHome': GizmoTechHome,
-    'BloomeHomeLayout': BloomeHome,
+  StoreShell: StoreShell,
+  AAFashionHome: AAFashionHome,
+  GizmoTechHome: GizmoTechHome,
+  BloomeHomeLayout: BloomeHome,
 };
 
-export default function TemplatePreviewPage({ params }: { params: { slug: string } }) {
-    const template = getNormalizedTemplates().find((t) => t.slug === params.slug);
-    if (!template) return notFound();
+export default function TemplatePreviewPage({
+  params,
+}: {
+  params: { slug: string };
+}) {
+  const template = getNormalizedTemplates().find((t) => t.slug === params.slug);
+  if (!template) return notFound();
 
-    const layoutName = (template as any).layoutComponent as string | null | undefined;
-    const LayoutComponent = layoutName ? COMPONENT_MAP[layoutName] ?? null : null;
+  const layoutName = (template as any).layoutComponent as
+    | string
+    | null
+    | undefined;
+  const LayoutComponent = layoutName
+    ? (COMPONENT_MAP[layoutName] ?? null)
+    : null;
 
-    return (
-        <LivePreviewClient
-            templateName={template.name}
-            slug={template.slug}
-            LayoutComponent={LayoutComponent}
-            fallbackDesktopImage={template.previewImageDesktop}
-            fallbackMobileImage={template.previewImageMobile}
-        />
-    );
+  return (
+    <LivePreviewClient
+      templateName={template.name}
+      slug={template.slug}
+      LayoutComponent={LayoutComponent}
+      fallbackDesktopImage={template.previewImageDesktop}
+      fallbackMobileImage={template.previewImageMobile}
+    />
+  );
 }

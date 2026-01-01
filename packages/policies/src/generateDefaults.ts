@@ -1,52 +1,54 @@
 export interface PolicyGeneratorInput {
-    storeName: string;
-    storeSlug: string;
-    merchantSupportWhatsApp?: string;
-    supportEmail?: string;
-    pickupAddress?: string;
-    deliveryCities?: string[];
-    returnsWindowDays?: number;
-    refundWindowDays?: number;
-    dispatchMode?: 'self' | 'partner' | 'both';
-    partnerName?: string;
+  storeName: string;
+  storeSlug: string;
+  merchantSupportWhatsApp?: string;
+  supportEmail?: string;
+  pickupAddress?: string;
+  deliveryCities?: string[];
+  returnsWindowDays?: number;
+  refundWindowDays?: number;
+  dispatchMode?: "self" | "partner" | "both";
+  partnerName?: string;
 }
 
 export interface GeneratedPolicy {
-    type: 'terms' | 'privacy' | 'returns' | 'refunds' | 'shipping_delivery';
-    title: string;
-    contentMd: string;
+  type: "terms" | "privacy" | "returns" | "refunds" | "shipping_delivery";
+  title: string;
+  contentMd: string;
 }
 
-export function generateDefaultPolicies(input: PolicyGeneratorInput): GeneratedPolicy[] {
-    const {
-        storeName,
-        storeSlug,
-        merchantSupportWhatsApp = 'Contact us via WhatsApp',
-        supportEmail = `support@${storeSlug}.com`,
-        pickupAddress = 'Lagos, Nigeria',
-        deliveryCities = ['Lagos'],
-        returnsWindowDays = 7,
-        refundWindowDays = 5,
-        dispatchMode = 'both',
-        partnerName = 'Kwik'
-    } = input;
+export function generateDefaultPolicies(
+  input: PolicyGeneratorInput,
+): GeneratedPolicy[] {
+  const {
+    storeName,
+    storeSlug,
+    merchantSupportWhatsApp = "Contact us via WhatsApp",
+    supportEmail = `support@${storeSlug}.com`,
+    pickupAddress = "Lagos, Nigeria",
+    deliveryCities = ["Lagos"],
+    returnsWindowDays = 7,
+    refundWindowDays = 5,
+    dispatchMode = "both",
+    partnerName = "Kwik",
+  } = input;
 
-    return [
-        generateTermsPolicy(input),
-        generatePrivacyPolicy(input),
-        generateReturnsPolicy(input),
-        generateRefundsPolicy(input),
-        generateShippingDeliveryPolicy(input)
-    ];
+  return [
+    generateTermsPolicy(input),
+    generatePrivacyPolicy(input),
+    generateReturnsPolicy(input),
+    generateRefundsPolicy(input),
+    generateShippingDeliveryPolicy(input),
+  ];
 }
 
 function generateTermsPolicy(input: PolicyGeneratorInput): GeneratedPolicy {
-    const { storeName, merchantSupportWhatsApp, supportEmail } = input;
+  const { storeName, merchantSupportWhatsApp, supportEmail } = input;
 
-    return {
-        type: 'terms',
-        title: 'Store Terms',
-        contentMd: `# Store Terms
+  return {
+    type: "terms",
+    title: "Store Terms",
+    contentMd: `# Store Terms
 
 Welcome to ${storeName}. By placing an order with us, you agree to these terms.
 
@@ -86,17 +88,17 @@ If you have questions about these terms:
 - Email: ${supportEmail}
 
 **Last updated:** This policy was generated as a template. Please review and customize it for your business.
-`
-    };
+`,
+  };
 }
 
 function generatePrivacyPolicy(input: PolicyGeneratorInput): GeneratedPolicy {
-    const { storeName, merchantSupportWhatsApp, supportEmail } = input;
+  const { storeName, merchantSupportWhatsApp, supportEmail } = input;
 
-    return {
-        type: 'privacy',
-        title: 'Store Privacy Notice',
-        contentMd: `# Privacy Notice
+  return {
+    type: "privacy",
+    title: "Store Privacy Notice",
+    contentMd: `# Privacy Notice
 
 ${storeName} respects your privacy. This notice explains how we collect and use your personal information.
 
@@ -145,17 +147,23 @@ For privacy questions:
 - Email: ${supportEmail}
 
 **Last updated:** This policy was generated as a template. Please review and customize it for your business.
-`
-    };
+`,
+  };
 }
 
 function generateReturnsPolicy(input: PolicyGeneratorInput): GeneratedPolicy {
-    const { storeName, merchantSupportWhatsApp, supportEmail, returnsWindowDays = 7, pickupAddress } = input;
+  const {
+    storeName,
+    merchantSupportWhatsApp,
+    supportEmail,
+    returnsWindowDays = 7,
+    pickupAddress,
+  } = input;
 
-    return {
-        type: 'returns',
-        title: 'Returns Policy',
-        contentMd: `# Returns Policy
+  return {
+    type: "returns",
+    title: "Returns Policy",
+    contentMd: `# Returns Policy
 
 At ${storeName}, we want you to be satisfied with your purchase.
 
@@ -208,17 +216,22 @@ For return requests:
 - Email: ${supportEmail}
 
 **Last updated:** This policy was generated as a template. Please review and customize it for your business.
-`
-    };
+`,
+  };
 }
 
 function generateRefundsPolicy(input: PolicyGeneratorInput): GeneratedPolicy {
-    const { storeName, merchantSupportWhatsApp, supportEmail, refundWindowDays = 5 } = input;
+  const {
+    storeName,
+    merchantSupportWhatsApp,
+    supportEmail,
+    refundWindowDays = 5,
+  } = input;
 
-    return {
-        type: 'refunds',
-        title: 'Refund Policy',
-        contentMd: `# Refund Policy
+  return {
+    type: "refunds",
+    title: "Refund Policy",
+    contentMd: `# Refund Policy
 
 ${storeName} processes refunds for approved returns and order cancellations.
 
@@ -268,45 +281,55 @@ For refund inquiries:
 - Email: ${supportEmail}
 
 **Last updated:** This policy was generated as a template. Please review and customize it for your business.
-`
-    };
+`,
+  };
 }
 
-function generateShippingDeliveryPolicy(input: PolicyGeneratorInput): GeneratedPolicy {
-    const {
-        storeName,
-        merchantSupportWhatsApp,
-        supportEmail,
-        deliveryCities = ['Lagos'],
-        dispatchMode = 'both',
-        partnerName = 'Kwik',
-        pickupAddress = 'Lagos, Nigeria'
-    } = input;
+function generateShippingDeliveryPolicy(
+  input: PolicyGeneratorInput,
+): GeneratedPolicy {
+  const {
+    storeName,
+    merchantSupportWhatsApp,
+    supportEmail,
+    deliveryCities = ["Lagos"],
+    dispatchMode = "both",
+    partnerName = "Kwik",
+    pickupAddress = "Lagos, Nigeria",
+  } = input;
 
-    const showSelfDispatch = dispatchMode === 'self' || dispatchMode === 'both';
-    const showPartner = dispatchMode === 'partner' || dispatchMode === 'both';
+  const showSelfDispatch = dispatchMode === "self" || dispatchMode === "both";
+  const showPartner = dispatchMode === "partner" || dispatchMode === "both";
 
-    return {
-        type: 'shipping_delivery',
-        title: 'Shipping & Delivery Policy',
-        contentMd: `# Shipping & Delivery Policy
+  return {
+    type: "shipping_delivery",
+    title: "Shipping & Delivery Policy",
+    contentMd: `# Shipping & Delivery Policy
 
 ${storeName} delivers to locations across Nigeria.
 
 ## Delivery Areas
 
-We currently deliver to: ${deliveryCities.join(', ')}
+We currently deliver to: ${deliveryCities.join(", ")}
 
 If your location is not listed, contact us to check if we can deliver to you.
 
 ## Delivery Methods
 
-${showSelfDispatch ? `### Self-Dispatch
+${
+  showSelfDispatch
+    ? `### Self-Dispatch
 We use our own riders for deliveries. This allows us to provide personalized service and ensure your order arrives safely.
-` : ''}
-${showPartner ? `### Partner Delivery
+`
+    : ""
+}
+${
+  showPartner
+    ? `### Partner Delivery
 We may use delivery partners like ${partnerName} where available. This helps us reach more locations and provide faster delivery.
-` : ''}
+`
+    : ""
+}
 ### Customer Pickup
 You can also pick up your order from: ${pickupAddress}
 
@@ -353,6 +376,6 @@ For delivery questions:
 - Email: ${supportEmail}
 
 **Last updated:** This policy was generated as a template. Please review and customize it for your business.
-`
-    };
+`,
+  };
 }

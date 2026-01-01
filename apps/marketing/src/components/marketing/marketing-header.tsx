@@ -1,0 +1,144 @@
+"use client";
+
+import React from "react";
+import Link from "next/link";
+import Image from "next/image";
+import { Button } from "@vayva/ui";
+import { APP_URL } from "@/lib/constants";
+import { useUserPlan } from "@/hooks/useUserPlan";
+
+import { Menu, X } from "lucide-react";
+import { useState } from "react";
+
+const NAV_LINKS = [
+  { href: "/features", label: "Features" },
+  { href: "/pricing", label: "Pricing" },
+  { href: "/templates", label: "Templates" },
+  { href: "/marketplace", label: "Marketplace" },
+  { href: "/help", label: "Help" },
+];
+
+export function MarketingHeader() {
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+
+  return (
+    <header className="sticky top-0 z-50 bg-white border-b border-[#E5E7EB]">
+      <div className="max-w-7xl mx-auto px-4 lg:px-6 h-20 flex items-center justify-between">
+        {/* Logo */}
+        <Link href="/" className="flex items-center gap-2 relative z-10">
+          <Image
+            src="/logos/vayva-logo.png"
+            alt="Vayva"
+            width={64}
+            height={64}
+            className="object-contain"
+          />
+          <span className="text-[#0F172A] font-bold text-2xl tracking-tight">
+            Vayva
+          </span>
+        </Link>
+
+        {/* Desktop Nav */}
+        <nav className="hidden lg:flex items-center gap-8">
+          {NAV_LINKS.map((link) => (
+            <Link
+              key={link.href}
+              href={link.href}
+              className="text-[#0F172A] hover:text-[#22C55E] transition-colors font-medium flex items-center gap-1"
+            >
+              {link.label}
+              {link.label === "Help" && (
+                <span
+                  className="w-2 h-2 bg-[#22C55E] rounded-full animate-pulse-green"
+                  aria-label="New: Ask Vayva AI available in Help"
+                  title="New AI Assistant"
+                />
+              )}
+            </Link>
+          ))}
+        </nav>
+
+        {/* CTA Buttons & Mobile Toggle */}
+        <div className="flex items-center gap-4">
+          <div className="hidden sm:block">
+            <HeaderActions />
+          </div>
+
+          {/* Mobile Menu Toggle */}
+          <button
+            className="lg:hidden p-2 text-gray-600 hover:bg-gray-100 rounded-lg transition-colors"
+            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+          >
+            {mobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
+          </button>
+        </div>
+      </div>
+
+      {/* Mobile Navigation Menu */}
+      {mobileMenuOpen && (
+        <div className="lg:hidden absolute top-full left-0 w-full bg-white border-b border-gray-200 shadow-xl py-6 px-4 flex flex-col gap-4 animate-in slide-in-from-top-2 duration-200">
+          <nav className="flex flex-col gap-2">
+            {NAV_LINKS.map((link) => (
+              <Link
+                key={link.href}
+                href={link.href}
+                onClick={() => setMobileMenuOpen(false)}
+                className="text-[#0F172A] hover:text-[#22C55E] hover:bg-gray-50 px-4 py-3 rounded-xl transition-all font-bold text-lg flex items-center justify-between group"
+              >
+                {link.label}
+                {link.label === "Help" && (
+                  <span className="text-[10px] bg-green-100 text-green-700 px-2 py-0.5 rounded-full uppercase tracking-wide">New</span>
+                )}
+                <span className="text-gray-300 group-hover:text-[#22C55E]">→</span>
+              </Link>
+            ))}
+          </nav>
+          <div className="h-px bg-gray-100 my-2" />
+          <div className="flex flex-col gap-3 px-2">
+            <div className="flex justify-center w-full" onClick={() => setMobileMenuOpen(false)}>
+              <HeaderActions />
+            </div>
+          </div>
+        </div>
+      )}
+    </header>
+  );
+}
+
+function HeaderActions() {
+  const { isAuthenticated, loading } = useUserPlan();
+
+  if (loading) {
+    return (
+      <div className="flex items-center gap-4 animate-pulse">
+        <div className="h-10 w-20 bg-gray-100 rounded-lg hidden sm:block"></div>
+        <div className="h-10 w-32 bg-gray-100 rounded-lg"></div>
+      </div>
+    );
+  }
+
+  if (isAuthenticated) {
+    return (
+      <a href={`${APP_URL}/dashboard`} className="w-full sm:w-auto">
+        <Button className="w-full sm:w-auto bg-[#22C55E] hover:bg-[#16A34A] text-white font-medium">
+          Go to Dashboard
+        </Button>
+      </a>
+    );
+  }
+
+  return (
+    <div className="flex w-full sm:w-auto items-center gap-3">
+      <a href={`${APP_URL}/signin`} className="flex-1 sm:flex-none">
+        <Button variant="ghost" className="w-full sm:w-auto text-[#0F172A] border border-gray-200 sm:border-transparent">
+          Login
+        </Button>
+      </a>
+      <a href={`${APP_URL}/signup`} className="flex-1 sm:flex-none">
+        <Button className="w-full sm:w-auto bg-[#22C55E] hover:bg-[#16A34A] text-white shadow-lg shadow-green-100">
+          Get Started
+        </Button>
+      </a>
+    </div>
+  );
+}

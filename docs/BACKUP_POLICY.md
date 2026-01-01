@@ -4,10 +4,12 @@
 **Owner**: Ops Team
 
 ## Objectives
+
 - **RPO (Recovery Point Objective)**: **24 Hours** (Maximum data loss tolerated).
 - **RTO (Recovery Time Objective)**: **4 Hours** (Maximum time to restore service).
 
 ## Strategy
+
 1.  **Daily Full Backups**:
     - Automated daily snapshot of the primary Postgres instance.
     - Retained for **30 Days**.
@@ -19,8 +21,10 @@
     - Stored in a separate region from the primary DB if possible (DR region).
 
 ## Access Control
+
 - Access to backup artifacts is restricted to `Ops` and `Admin` roles.
 - Restore operations require Audit Logging.
 
 ## Verification
+
 - **Weekly Restore Drill**: A restore simulation is run against the staging environment to verify backup integrity.

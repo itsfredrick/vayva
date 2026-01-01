@@ -20,11 +20,14 @@ ENABLE_PAYSTACK="false"
 ## Service Specifics
 
 ### Storefront
+
 - `NEXT_PUBLIC_API_URL`: URL of the backend service (or mock).
 
 ### Ops Console
+
 - `OPS_ADMIN_EMAILS`: Comma-separated list of allowed emails.
 
 ## Notes
+
 - By default, apps run in **Mock Mode** if external keys are missing.
 - `pnpm doctor` will verify if your `.env` file exists.

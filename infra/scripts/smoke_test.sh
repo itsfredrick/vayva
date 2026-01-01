@@ -12,7 +12,7 @@ echo "🔥 Starting Smoke Test against $API_URL..."
 # 2. Login Flow (Mock)
 echo "Attempting Login..."
 # In real scenario, would capture token
-# TOKEN=$(curl -s -X POST "$API_URL/auth/login" -d '{"email":"owner@vayva.com", "password":"password"}' | jq -r .accessToken)
+# TOKEN=$(curl -s -X POST "$API_URL/auth/login" -d '{"email":"owner@vayva.ng", "password":"password"}' | jq -r .accessToken)
 
 # 3. List Products (Public)
 echo "Fetching Public Products..."

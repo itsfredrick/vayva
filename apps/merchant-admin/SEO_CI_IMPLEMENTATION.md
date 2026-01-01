@@ -32,11 +32,11 @@ When creating a new page type (e.g. `src/app/blog/[slug]/page.tsx`):
 
 ```tsx
 export async function generateMetadata({ params }) {
-    return constructMetadata({
-        title: '...',
-        type: 'blog',
-        path: `/blog/${params.slug}`
-    });
+  return constructMetadata({
+    title: "...",
+    type: "blog",
+    path: `/blog/${params.slug}`,
+  });
 }
 ```
 

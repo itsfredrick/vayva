@@ -24,6 +24,7 @@ Address: [To be provided]
 ## 3. Data We Collect
 
 ### Account Information
+
 - Full name
 - Email address
 - Phone number
@@ -31,12 +32,14 @@ Address: [To be provided]
 - Payment information
 
 ### Business Transaction Records
+
 - Customer names and contact details
 - Order details and amounts
 - Payment records
 - Delivery information
 
 ### Usage and Device Metadata
+
 - IP address
 - Device type and operating system
 - Browser type
@@ -50,22 +53,28 @@ Address: [To be provided]
 We process personal data based on:
 
 ### Contractual Necessity
+
 To provide the Service you have subscribed to.
 
 ### Legal Obligations
+
 To comply with Nigerian laws, including:
+
 - Tax reporting requirements
 - Anti-money laundering (AML) regulations
 - Know Your Customer (KYC) requirements
 
 ### Legitimate Business Interests
+
 To:
+
 - Improve platform functionality
 - Prevent fraud and abuse
 - Ensure platform security
 - Conduct business analytics
 
 ### Consent
+
 Where required by law, we obtain explicit consent for specific processing activities.
 
 ---
@@ -73,18 +82,21 @@ Where required by law, we obtain explicit consent for specific processing activi
 ## 5. How We Use Your Data
 
 ### To Operate the Platform
+
 - Process orders and payments
 - Manage your account
 - Provide customer support
 - Send service notifications
 
 ### To Improve the Service
+
 - Analyze usage patterns
 - Develop new features
 - Enhance security measures
 - Optimize performance
 
 ### To Comply with Legal Requirements
+
 - Respond to legal requests
 - Prevent fraud and illegal activity
 - Enforce our Terms of Service
@@ -99,16 +111,19 @@ Where required by law, we obtain explicit consent for specific processing activi
 ### We May Share Data With:
 
 **Infrastructure Providers**
+
 - Cloud hosting services
 - Payment processors
 - Analytics providers
 
 **Regulators and Law Enforcement**
+
 - When legally required
 - To comply with court orders
 - To protect against fraud
 
 **Business Transfers**
+
 - In the event of merger, acquisition, or sale of assets
 
 All third parties are contractually obligated to protect your data.
@@ -118,12 +133,14 @@ All third parties are contractually obligated to protect your data.
 ## 7. Data Retention
 
 We retain personal data only as long as necessary for:
+
 - Providing the Service
 - Complying with legal obligations
 - Resolving disputes
 - Enforcing agreements
 
 ### Retention Periods:
+
 - **Account data**: Duration of account + 2 years
 - **Transaction records**: 7 years (tax compliance)
 - **Usage logs**: 1 year
@@ -136,24 +153,31 @@ We retain personal data only as long as necessary for:
 You have the right to:
 
 ### Access
+
 Request a copy of your personal data.
 
 ### Correction
+
 Request correction of inaccurate data.
 
 ### Deletion
+
 Request deletion of your data (subject to legal retention duties).
 
 ### Objection
+
 Object to processing based on legitimate interests.
 
 ### Data Portability
+
 Receive your data in a structured, machine-readable format.
 
 ### Withdraw Consent
+
 Withdraw consent for processing (where applicable).
 
 ### Lodge a Complaint
+
 File a complaint with the Nigeria Data Protection Commission (NDPC).
 
 ---
@@ -188,6 +212,7 @@ However, no system is completely secure. We cannot guarantee absolute security.
 Your data is primarily stored and processed in Nigeria.
 
 If data is transferred outside Nigeria, we ensure:
+
 - Adequate safeguards are in place
 - Compliance with NDPR requirements
 - Contractual protections with recipients
@@ -197,6 +222,7 @@ If data is transferred outside Nigeria, we ensure:
 ## 12. Cookies and Tracking Technologies
 
 We use cookies and similar technologies to:
+
 - Remember your preferences
 - Analyze usage patterns
 - Improve user experience
@@ -220,6 +246,7 @@ We do not knowingly collect data from children. If we discover such data, we wil
 We may update this Privacy Policy from time to time.
 
 Changes will be effective:
+
 - Immediately for new users
 - 30 days after notification for existing users
 

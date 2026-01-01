@@ -5,10 +5,10 @@ const fs = require('fs');
 const BRAND_COLOR = '#111111';
 const HEADLINE_COLOR = '#111111';
 const BG_COLOR = '#f7f7f7';
-const LOGO_URL = 'https://vayva.com/logo-black.png'; // Hardcoded for preview
+const LOGO_URL = 'https://vayva.ng/logo-black.png'; // Hardcoded for preview
 
 function wrapEmail(contentHtml, title = 'Vayva Notification') {
-    return `
+  return `
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -55,7 +55,7 @@ function wrapEmail(contentHtml, title = 'Vayva Notification') {
 }
 
 function renderButton(url, label) {
-    return `
+  return `
     <a href="${url}" style="display:inline-block; background:${BRAND_COLOR}; color:#ffffff; text-decoration:none; padding:14px 26px; border-radius:8px; font-size:15px; font-weight:500; margin-top: 8px; margin-bottom: 8px;">
         ${label} →
     </a>
