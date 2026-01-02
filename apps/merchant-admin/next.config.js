@@ -2,7 +2,7 @@
 const { withSentryConfig } = require("@sentry/nextjs");
 
 const nextConfig = {
-    output: "standalone",
+    output: "standalone", // Ensures Vercel generates required .nft.json artifacts for middleware tracing
     transpilePackages: ["@vayva/ui", "@vayva/theme", "@vayva/schemas", "@vayva/shared", "@vayva/api-client", "@vayva/content"],
     serverExternalPackages: ["@prisma/client", "bcryptjs", "@vayva/db", "bullmq", "ioredis"],
     reactCompiler: true,
