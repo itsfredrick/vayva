@@ -94,7 +94,7 @@ Support Guidelines:
         message: reply,
         suggestedActions: this.deriveSupportActions(reply),
       };
-    } catch (error) {
+    } catch (error: any) {
       logger.error("[SupportBot] Error", error);
       return {
         message:
@@ -116,7 +116,7 @@ Support Guidelines:
         }
       }
       return context;
-    } catch (e) {
+    } catch (e: any) {
       return "No playbooks found.";
     }
   }

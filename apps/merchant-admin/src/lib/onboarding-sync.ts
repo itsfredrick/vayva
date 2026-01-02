@@ -186,7 +186,7 @@ export async function syncOnboardingData(
       }
     });
     console.log(`[Sync] Onboarding sync completed for ${storeId}`);
-  } catch (error) {
+  } catch (error: any) {
     console.error("[Sync] Failed to sync onboarding data:", error);
     // We log but maybe allow completion logic to proceed or fail?
     // Throwing allows caller to handle it.

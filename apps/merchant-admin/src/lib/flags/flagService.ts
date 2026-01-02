@@ -53,7 +53,7 @@ export class FlagService {
       }
 
       return flag.enabled;
-    } catch (e) {
+    } catch (e: any) {
       console.error(`[FlagService] Error evaluating ${key}`, e);
       return false; // Fail safe
     }

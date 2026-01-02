@@ -75,7 +75,7 @@ export async function checkFeatureAccess(
           requiredAction: "VERIFY_PIN",
         };
       }
-    } catch (e) {
+    } catch (e: any) {
       return {
         allowed: false,
         reason: "Security session expired",

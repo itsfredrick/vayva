@@ -124,7 +124,7 @@ export class EventBus {
     if (ops.length > 0) {
       try {
         await prisma.$transaction(ops);
-      } catch (error) {
+      } catch (error: any) {
         console.error(
           `[EventBus] Failed to process event ${event.type}:`,
           error,

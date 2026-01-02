@@ -59,7 +59,7 @@ class AuthClient {
       }
 
       return data as T;
-    } catch (error) {
+    } catch (error: any) {
       throw error;
     }
   }

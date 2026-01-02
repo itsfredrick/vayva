@@ -39,7 +39,7 @@ export class StorageService {
       });
 
       return blob.url;
-    } catch (error) {
+    } catch (error: any) {
       console.error("Storage upload failed:", error);
       throw new Error("Failed to upload file");
     }
@@ -69,7 +69,7 @@ export class StorageService {
     // 2. Verify file exists
     try {
       await head(key);
-    } catch (error) {
+    } catch (error: any) {
       throw new Error("File not found");
     }
 
@@ -98,7 +98,7 @@ export class StorageService {
 
     try {
       await del(key);
-    } catch (error) {
+    } catch (error: any) {
       console.error("Storage delete failed:", error);
       throw new Error("Failed to delete file");
     }

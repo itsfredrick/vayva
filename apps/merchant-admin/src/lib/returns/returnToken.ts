@@ -44,7 +44,7 @@ export class ReturnTokenService {
       if (data.exp < Date.now()) return null; // Expired
 
       return { orderId: data.o, customerPhone: data.p };
-    } catch (e) {
+    } catch (e: any) {
       return null; // Invalid
     }
   }

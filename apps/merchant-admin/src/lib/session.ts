@@ -43,7 +43,7 @@ export function verifyToken(token: string): SessionPayload | null {
   try {
     const decoded = jwt.verify(token, JWT_SECRET) as SessionPayload;
     return decoded;
-  } catch (error) {
+  } catch (error: any) {
     console.error("Token verification failed:", error);
     return null;
   }
@@ -181,7 +181,7 @@ export async function clearSession(): Promise<void> {
       await prisma.merchantSession.delete({
         where: { token },
       });
-    } catch (error) {
+    } catch (error: any) {
       // Session might not exist, ignore error
       console.warn("Session deletion failed:", error);
     }

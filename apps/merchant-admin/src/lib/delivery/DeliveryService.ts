@@ -218,7 +218,7 @@ export class DeliveryService {
           entity: { type: "ORDER", id: order.id },
           after: { mode: "CONFIRM", channel },
         });
-      } catch (ignore) { }
+      } catch (ignore: any) { }
 
       return {
         success: true,
@@ -313,7 +313,7 @@ export class DeliveryService {
             trackingUrl: result.trackingUrl,
           },
         });
-      } catch (ignore) {
+      } catch (ignore: any) {
         /* non-blocking */
       }
 

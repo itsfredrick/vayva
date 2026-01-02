@@ -51,7 +51,7 @@ export function verifyPreferencesToken(token: string): TokenPayload | null {
     }
 
     return payload;
-  } catch (e) {
+  } catch (e: any) {
     return null;
   }
 }

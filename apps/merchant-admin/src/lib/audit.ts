@@ -51,7 +51,7 @@ export async function logAudit(params: {
         correlationId: params.correlationId || `req_${Date.now()}`,
       },
     });
-  } catch (error) {
+  } catch (error: any) {
     console.error("[Audit] Failed to log action:", params.action, error);
   }
 }

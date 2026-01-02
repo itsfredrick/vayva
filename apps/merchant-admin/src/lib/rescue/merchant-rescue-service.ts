@@ -118,7 +118,7 @@ export class MerchantRescueService {
                     },
                 },
             });
-        } catch (error) {
+        } catch (error: any) {
             console.error("Rescue Analysis Error", error);
         }
     }

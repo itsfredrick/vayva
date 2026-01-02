@@ -8,7 +8,7 @@ export class ServiceHealth {
     try {
       await prisma.$queryRaw`SELECT 1`;
       results.database = true;
-    } catch (e) {
+    } catch (e: any) {
       results.database = false;
     }
 

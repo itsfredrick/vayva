@@ -65,7 +65,7 @@ export class DataGovernanceService {
           latencyMs: params.latencyMs,
         },
       });
-    } catch (error) {
+    } catch (error: any) {
       console.error("[DataGovernance] Failed to log AI trace:", error);
     }
   }

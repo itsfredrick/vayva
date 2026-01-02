@@ -56,7 +56,7 @@ export class EscalationService {
         ...params,
       });
       return ticket;
-    } catch (error) {
+    } catch (error: any) {
       logger.error("[EscalationService] Failed to trigger handoff", error);
       throw error; // Rethrow so the bot knows it failed
     }

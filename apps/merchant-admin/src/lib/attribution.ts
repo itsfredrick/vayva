@@ -22,7 +22,7 @@ export function saveAttribution(data: Partial<AttributionData>) {
 
     // Also log to console for debugging/telemetry verification
     console.log("[ATTRIBUTION] Saved:", merged);
-  } catch (e) {
+  } catch (e: any) {
     console.error("Failed to save attribution", e);
   }
 }
@@ -32,7 +32,7 @@ export function getAttribution(): AttributionData {
   try {
     const raw = localStorage.getItem(STORAGE_KEY);
     return raw ? JSON.parse(raw) : {};
-  } catch (e) {
+  } catch (e: any) {
     return {};
   }
 }

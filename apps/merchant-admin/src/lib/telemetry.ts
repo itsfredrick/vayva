@@ -22,7 +22,7 @@ export const telemetry = {
           },
         }),
       });
-    } catch (err) {
+    } catch (err: any) {
       // fail silently
       console.warn("Telemetry error:", err);
     }
