@@ -15,6 +15,7 @@ const nextConfig = {
             dynamic: 60,
             static: 180,
         },
+        turbo: {}, // Opt-in to Turbopack to resolve webpack config warning
     },
     images: {
         formats: ["image/avif", "image/webp"],
