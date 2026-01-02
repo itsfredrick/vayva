@@ -6,9 +6,9 @@ import { metadataFor, jsonLdFor } from "@/lib/seo/seo-engine";
 import { FEATURES } from "@/lib/seo/features-data";
 
 interface PageProps {
-  params: {
+  params: Promise<{
     slug: string;
-  };
+  }>;
 }
 
 /**
@@ -17,10 +17,11 @@ interface PageProps {
 export async function generateMetadata({
   params,
 }: PageProps): Promise<Metadata> {
-  const data = FEATURES[params.slug];
+  const { slug } = await params;
+  const data = FEATURES[slug];
   if (!data) return {};
 
-  return metadataFor(`/features/${params.slug}`, {
+  return metadataFor(`/features/${slug}`, {
     pageTitle: data.title,
     pageDescription: data.description,
   });
@@ -32,14 +33,15 @@ export function generateStaticParams() {
   }));
 }
 
-export default function FeaturePage({ params }: PageProps) {
-  const data = FEATURES[params.slug];
+export default async function FeaturePage({ params }: PageProps) {
+  const { slug } = await params;
+  const data = FEATURES[slug];
 
   if (!data) {
     notFound();
   }
 
-  const jsonLd = jsonLdFor(`/features/${params.slug}`);
+  const jsonLd = jsonLdFor(`/features/${slug}`);
 
   return (
     <div className="bg-white min-h-screen">

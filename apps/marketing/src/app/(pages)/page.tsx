@@ -90,10 +90,13 @@ export default function LandingPage() {
           viewport={{ once: true }}
           className="max-w-6xl mx-auto grid md:grid-cols-2 gap-16 items-center"
         >
-          <div className="relative rounded-3xl overflow-hidden shadow-2xl border border-gray-200 rotate-2 hover:rotate-0 transition-all duration-500">
-            <div className="bg-gray-200 aspect-video flex items-center justify-center">
-              <p className="text-gray-400">Chaos Visual Placeholder</p>
-            </div>
+          <div className="relative aspect-video rounded-3xl overflow-hidden shadow-2xl border border-gray-200 rotate-2 hover:rotate-0 transition-all duration-500">
+            <Image
+              src="/images/chaos-problem.jpg"
+              alt="Chaos without Vayva"
+              fill
+              className="object-cover"
+            />
           </div>
           <div>
             <h2 className="text-4xl font-bold text-[#0F172A] mb-8 leading-tight">

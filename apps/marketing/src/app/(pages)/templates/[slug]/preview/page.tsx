@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, use } from "react";
 import { notFound, useRouter } from "next/navigation";
 import { TEMPLATES } from "@/lib/templates-registry";
 import { Icon } from "@vayva/ui";
@@ -8,10 +8,11 @@ import { Icon } from "@vayva/ui";
 export default function TemplatePreviewPage({
   params,
 }: {
-  params: { slug: string };
+  params: Promise<{ slug: string }>;
 }) {
   const router = useRouter();
-  const template = TEMPLATES.find((t) => t.slug === params.slug);
+  const { slug } = use(params);
+  const template = TEMPLATES.find((t) => t.slug === slug);
   const [previewDevice, setPreviewDevice] = useState<"desktop" | "mobile">(
     "desktop",
   );
@@ -75,11 +76,10 @@ export default function TemplatePreviewPage({
       {/* Iframe Area */}
       <div className="flex-1 flex items-center justify-center p-4 bg-gray-200/50 backdrop-blur-sm">
         <div
-          className={`bg-white transition-all duration-500 ease-in-out shadow-2xl relative overflow-hidden ${
-            previewDevice === "mobile"
+          className={`bg-white transition-all duration-500 ease-in-out shadow-2xl relative overflow-hidden ${previewDevice === "mobile"
               ? "w-[375px] h-[750px] rounded-[3rem] border-8 border-gray-900 ring-2 ring-gray-900/10"
               : "w-full h-full rounded-xl border border-gray-200"
-          }`}
+            }`}
         >
           {/* Safe Area for Mobile */}
           {previewDevice === "mobile" && (

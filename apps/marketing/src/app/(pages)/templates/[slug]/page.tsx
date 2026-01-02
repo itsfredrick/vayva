@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { use } from "react";
 import { notFound, useRouter } from "next/navigation"; // Correct import for App Router
 import { TEMPLATES } from "@/lib/templates-registry";
 import { Template } from "@/types/templates";
@@ -14,13 +14,14 @@ import { Icon } from "@vayva/ui";
 export default function TemplateDetailPage({
   params,
 }: {
-  params: { slug: string };
+  params: Promise<{ slug: string }>;
 }) {
   const router = useRouter();
 
   // Find template (we iterate because slug might differ from ID key, though in registry they are mostly same)
   // Actually registry keys are IDs.
-  const template = TEMPLATES.find((t) => t.slug === params.slug);
+  const { slug } = use(params);
+  const template = TEMPLATES.find((t) => t.slug === slug);
 
   if (!template) {
     notFound();

@@ -6,9 +6,9 @@ import { metadataFor, jsonLdFor } from "@/lib/seo/seo-engine";
 import { COMPETITORS } from "@/lib/seo/comparisons";
 
 interface PageProps {
-  params: {
+  params: Promise<{
     competitor: string;
-  };
+  }>;
 }
 
 /**
@@ -18,10 +18,11 @@ interface PageProps {
 export async function generateMetadata({
   params,
 }: PageProps): Promise<Metadata> {
-  const data = COMPETITORS[params.competitor];
+  const { competitor } = await params;
+  const data = COMPETITORS[competitor];
   if (!data) return {};
 
-  return metadataFor(`/compare/${params.competitor}`, {
+  return metadataFor(`/compare/${competitor}`, {
     compareTitle: data.title,
     pageDescription: data.description,
   });
@@ -33,14 +34,15 @@ export function generateStaticParams() {
   }));
 }
 
-export default function ComparisonPage({ params }: PageProps) {
-  const data = COMPETITORS[params.competitor];
+export default async function ComparisonPage({ params }: PageProps) {
+  const { competitor } = await params;
+  const data = COMPETITORS[competitor];
 
   if (!data) {
     notFound();
   }
 
-  const jsonLd = jsonLdFor(`/compare/${params.competitor}`, {
+  const jsonLd = jsonLdFor(`/compare/${competitor}`, {
     faqs: data.faqs,
   });
 
