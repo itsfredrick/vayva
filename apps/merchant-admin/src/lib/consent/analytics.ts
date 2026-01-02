@@ -1,6 +1,5 @@
 import {
   prisma,
-  compliance_event,
   ConsentChannel,
   ConsentSource,
 } from "@vayva/db";
