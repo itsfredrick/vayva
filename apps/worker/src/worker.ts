@@ -1,22 +1,16 @@
 import { Worker, Queue } from "bullmq";
 import * as dotenv from "dotenv";
 import { prisma, Direction, MessageStatus, MessageType, OrderStatus } from "@vayva/db";
-import IORedis from "ioredis";
+
 import { metaProvider, kwikProvider } from "./lib/providers";
 import { AIProvider } from "./lib/ai";
 import { WorkerRescueService } from "./lib/worker-rescue";
 
 dotenv.config();
 
-const REDIS_URL = process.env.REDIS_URL || (process.env.NODE_ENV === "production" ? "" : "redis://localhost:6379");
-if (process.env.NODE_ENV === "production" && !REDIS_URL) {
-  console.error("REDIS_URL is required in production");
-  process.exit(1);
-}
+import { getRedis } from "@vayva/shared/redis";
 
-const connection = new IORedis(REDIS_URL, {
-  maxRetriesPerRequest: null,
-});
+const connection = getRedis();
 
 // Queue names
 const QUEUES = {

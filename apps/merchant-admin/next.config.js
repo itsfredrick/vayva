@@ -2,8 +2,9 @@
 const { withSentryConfig } = require("@sentry/nextjs");
 
 const nextConfig = {
+    output: "standalone",
     transpilePackages: ["@vayva/ui", "@vayva/theme", "@vayva/schemas", "@vayva/shared", "@vayva/api-client", "@vayva/content"],
-    serverExternalPackages: ["@prisma/client", "bcryptjs", "@vayva/db"],
+    serverExternalPackages: ["@prisma/client", "bcryptjs", "@vayva/db", "bullmq", "ioredis"],
     reactCompiler: true,
     experimental: {
         optimizePackageImports: ["lucide-react", "@vayva/ui", "@vayva/shared", "@vayva/api-client", "date-fns", "framer-motion", "recharts"],

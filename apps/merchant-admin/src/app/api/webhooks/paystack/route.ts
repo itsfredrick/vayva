@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { verifyPaystackSignature } from "@/lib/webhooks/verify";
 import { prisma } from "@vayva/db";
-import { paymentsQueue } from "@/lib/queue";
+import { getPaymentsQueue } from "@/lib/queue";
 
 /**
  * Paystack Webhook Handler (Asynchronous)
@@ -54,6 +54,7 @@ export async function POST(req: NextRequest) {
     });
 
     // 2. Hand-off to Background Worker
+    const paymentsQueue = getPaymentsQueue();
     await paymentsQueue.add(eventType, {
       provider: "PAYSTACK",
       providerEventId,

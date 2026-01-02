@@ -765,6 +765,9 @@ importers:
       '@vayva/db':
         specifier: workspace:*
         version: link:../../infra/db
+      ioredis:
+        specifier: ^5.8.2
+        version: 5.8.2
       zod:
         specifier: ^3.22.4
         version: 3.25.76
