@@ -15,29 +15,29 @@ const testStoreId = "store_test_999";
 const testUserId = "user_test_999";
 const testSession = { user: { id: testUserId, storeId: testStoreId } };
 
-// Global Tests
-vi.test("@/lib/auth/session", () => ({
+// Global Mocks
+vi.mock("@/lib/auth/session", () => ({
   requireAuth: vi.fn(),
 }));
 
-vi.test("@/lib/audit", () => ({
+vi.mock("@/lib/audit", () => ({
   logAudit: vi.fn(),
   AuditAction: { PASSWORD_CHANGED: "PASSWORD_CHANGED" },
 }));
 
-vi.test("@/lib/rate-limit", () => ({
-  checkRateLimit: vi.fn().testResolvedValue({ success: true }),
+vi.mock("@/lib/rate-limit", () => ({
+  checkRateLimit: vi.fn().mockResolvedValue({ success: true }),
 }));
 
-// Tests
-vi.test("@/lib/email/resend", () => ({
+// Mocks
+vi.mock("@/lib/email/resend", () => ({
   ResendEmailService: {
-    sendPasswordChangedEmail: vi.fn().testResolvedValue({ success: true }),
+    sendPasswordChangedEmail: vi.fn().mockResolvedValue({ success: true }),
     assertConfigured: vi.fn(),
   },
 }));
 
-vi.test("@vayva/db", () => ({
+vi.mock("@vayva/db", () => ({
   prisma: {
     account: { findUnique: vi.fn() },
     store: { findUnique: vi.fn(), update: vi.fn() },
@@ -58,17 +58,17 @@ vi.test("@vayva/db", () => ({
 
 describe("Expanded Account API Suite", () => {
   beforeEach(() => {
-    vi.clearAllTests();
-    vi.simulated(requireAuth).testResolvedValue(testSession as any);
+    vi.clearAllMocks();
+    vi.mocked(requireAuth).mockResolvedValue(testSession as any);
   });
 
   describe("GET /api/account/overview", () => {
     it("enforces tenant isolation", async () => {
-      (prisma.store.findUnique as any).testResolvedValue({
+      (prisma.store.findUnique as any).mockResolvedValue({
         id: testStoreId,
         name: "Isolated Store",
       });
-      (prisma.auditLog.findMany as any).testResolvedValue([]);
+      (prisma.auditLog.findMany as any).mockResolvedValue([]);
 
       await getOverview();
 
@@ -82,7 +82,7 @@ describe("Expanded Account API Suite", () => {
 
   describe("GET /api/account/domains", () => {
     it("returns verification tokens and status", async () => {
-      (prisma.domainMapping.findFirst as any).testResolvedValue({
+      (prisma.domainMapping.findFirst as any).mockResolvedValue({
         id: "dm1",
         domain: "custom.com",
         status: "pending",
@@ -101,7 +101,7 @@ describe("Expanded Account API Suite", () => {
 
   describe("POST /api/account/domains/verify", () => {
     it("starts verification only for owner store", async () => {
-      (prisma.domainMapping.findUnique as any).testResolvedValue({
+      (prisma.domainMapping.findUnique as any).mockResolvedValue({
         id: "dm1",
         storeId: "OTHER_STORE",
         domain: "hacker.com",
@@ -118,7 +118,7 @@ describe("Expanded Account API Suite", () => {
     });
 
     it("triggers verification for valid ownership", async () => {
-      (prisma.domainMapping.findUnique as any).testResolvedValue({
+      (prisma.domainMapping.findUnique as any).mockResolvedValue({
         id: "dm1",
         storeId: testStoreId,
         domain: "valid.shop",
@@ -139,7 +139,7 @@ describe("Expanded Account API Suite", () => {
   describe("POST /api/account/security/change-password", () => {
     it("validates current password before updating", async () => {
       const oldHash = await bcrypt.hash("old-password", 10);
-      (prisma.user.findUnique as any).testResolvedValue({
+      (prisma.user.findUnique as any).mockResolvedValue({
         id: testUserId,
         password: oldHash,
         email: "test@vayva.ng",
@@ -162,7 +162,7 @@ describe("Expanded Account API Suite", () => {
 
     it("updates password and logs audit on success", async () => {
       const oldHash = await bcrypt.hash("old-password", 10);
-      (prisma.user.findUnique as any).testResolvedValue({
+      (prisma.user.findUnique as any).mockResolvedValue({
         id: testUserId,
         password: oldHash,
         email: "test@vayva.ng",

@@ -3,21 +3,21 @@ import { MerchantBrainService } from "./merchant-brain.service";
 import { prisma } from "@vayva/db";
 
 
-// Test Prisma
-const testFindMany = vi.fn();
-const testFindUnique = vi.fn();
-const testGroupBy = vi.fn();
+// Mock Prisma
+const mockFindMany = vi.fn();
+const mockFindUnique = vi.fn();
+const mockGroupBy = vi.fn();
 
-vi.test("@vayva/db", () => ({
+vi.mock("@vayva/db", () => ({
   prisma: {
     knowledgeEmbedding: {
-      findMany: (...args: any[]) => testFindMany(...args),
+      findMany: (...args: any[]) => mockFindMany(...args),
     },
     product: {
-      findUnique: (...args: any[]) => testFindUnique(...args),
+      findUnique: (...args: any[]) => mockFindUnique(...args),
     },
     inventoryItem: {
-      groupBy: (...args: any[]) => testGroupBy(...args),
+      groupBy: (...args: any[]) => mockGroupBy(...args),
     },
     deliveryZone: {
       findMany: vi.fn(),
@@ -29,8 +29,8 @@ vi.test("@vayva/db", () => ({
 }));
 
 
-// Test logger
-vi.test("@/lib/logger", () => ({
+// Mock logger
+vi.mock("@/lib/logger", () => ({
   logger: {
     error: vi.fn(),
   },
@@ -40,18 +40,18 @@ describe("MerchantBrainService", () => {
   const TEST_STORE_A = "store-a-uuid";
 
   beforeEach(() => {
-    vi.clearAllTests();
+    vi.clearAllMocks();
   });
 
   describe("retrieveContext", () => {
     it("should return mapped results from knowledge embeddings", async () => {
-      testFindMany.testResolvedValue([
+      mockFindMany.mockResolvedValue([
         { content: "Return policy", sourceType: "POLICY", sourceId: "pol-1", metadata: {} }
       ]);
 
       const results = await MerchantBrainService.retrieveContext(TEST_STORE_A, "policy");
 
-      expect(testFindMany).toHaveBeenCalledWith(expect.objectContaining({
+      expect(mockFindMany).toHaveBeenCalledWith(expect.objectContaining({
         where: expect.objectContaining({
           storeId: TEST_STORE_A,
           content: expect.objectContaining({ contains: "policy" })
@@ -62,7 +62,7 @@ describe("MerchantBrainService", () => {
     });
 
     it("should handle errors gracefully", async () => {
-      testFindMany.testRejectedValue(new Error("DB Error"));
+      mockFindMany.mockRejectedValue(new Error("DB Error"));
       const results = await MerchantBrainService.retrieveContext(TEST_STORE_A, "fail");
       expect(results).toEqual([]);
     });
@@ -70,8 +70,8 @@ describe("MerchantBrainService", () => {
 
   describe("getInventoryStatus", () => {
     it("should return IN_STOCK if items available", async () => {
-      testFindUnique.testResolvedValue({ id: "prod-1", title: "Test Product", trackInventory: true });
-      testGroupBy.testResolvedValue([
+      mockFindUnique.mockResolvedValue({ id: "prod-1", title: "Test Product", trackInventory: true });
+      mockGroupBy.mockResolvedValue([
         { _sum: { available: 5 } }
       ]);
 
@@ -85,8 +85,8 @@ describe("MerchantBrainService", () => {
     });
 
     it("should return OUT_OF_STOCK if 0 items available", async () => {
-      testFindUnique.testResolvedValue({ id: "prod-1", title: "Test Product", trackInventory: true });
-      testGroupBy.testResolvedValue([
+      mockFindUnique.mockResolvedValue({ id: "prod-1", title: "Test Product", trackInventory: true });
+      mockGroupBy.mockResolvedValue([
         { _sum: { available: 0 } }
       ]);
 
@@ -99,8 +99,8 @@ describe("MerchantBrainService", () => {
     });
 
     it("should return OUT_OF_STOCK (0) if groupBy returns empty array (no record)", async () => {
-      testFindUnique.testResolvedValue({ id: "prod-1", title: "Test Product", trackInventory: true });
-      testGroupBy.testResolvedValue([]);
+      mockFindUnique.mockResolvedValue({ id: "prod-1", title: "Test Product", trackInventory: true });
+      mockGroupBy.mockResolvedValue([]);
 
       const result = await MerchantBrainService.getInventoryStatus(TEST_STORE_A, "prod-1");
 
@@ -112,9 +112,9 @@ describe("MerchantBrainService", () => {
 
     it("should ALWAYS return IN_STOCK if trackInventory is false", async () => {
       // If trackInventory is false, we don't care about inventory items count (logic in service: available: product.trackInventory ? quantity : 999)
-      testFindUnique.testResolvedValue({ id: "prod-1", title: "Digital Product", trackInventory: false });
+      mockFindUnique.mockResolvedValue({ id: "prod-1", title: "Digital Product", trackInventory: false });
       // Even if DB says 0 available or whatever
-      testGroupBy.testResolvedValue([]);
+      mockGroupBy.mockResolvedValue([]);
 
       const result = await MerchantBrainService.getInventoryStatus(TEST_STORE_A, "prod-1");
 
@@ -127,7 +127,7 @@ describe("MerchantBrainService", () => {
 
   describe("getDeliveryQuote", () => {
     it("should match a specific delivery zone", async () => {
-      (prisma.deliveryZone.findMany as any).testResolvedValue([
+      (prisma.deliveryZone.findMany as any).mockResolvedValue([
         { name: "Lekki Zone", states: ["Lagos"], cities: ["Lekki"], feeAmount: 2000, etaMinDays: 1, etaMaxDays: 1 }
       ]);
 
@@ -138,7 +138,7 @@ describe("MerchantBrainService", () => {
     });
 
     it("should fallback to Lagos default cost if no zone matches", async () => {
-      (prisma.deliveryZone.findMany as any).testResolvedValue([]);
+      (prisma.deliveryZone.findMany as any).mockResolvedValue([]);
 
       const result = await MerchantBrainService.getDeliveryQuote(TEST_STORE_A, "Ikeja, Lagos");
 
@@ -149,7 +149,7 @@ describe("MerchantBrainService", () => {
 
   describe("getActivePromotions", () => {
     it("should return active promotions", async () => {
-      (prisma.discountRule.findMany as any).testResolvedValue([
+      (prisma.discountRule.findMany as any).mockResolvedValue([
         { id: "promo-1", name: "Summer Sale", type: "PERCENTAGE", valuePercent: 10, valueAmount: null, requiresCoupon: false }
       ]);
 

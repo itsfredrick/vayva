@@ -2,22 +2,22 @@ import { describe, it, expect, vi, beforeEach } from "vitest";
 import { DeliveryService } from "./DeliveryService"; // Ensure this path is correct
 import { prisma } from "@vayva/db";
 
-// Test prisma
-vi.test("@vayva/db", () => ({
+// Mock prisma
+vi.mock("@vayva/db", () => ({
   prisma: {
     order: { findUnique: vi.fn() },
-    shipment: { upsert: vi.fn().testResolvedValue({ id: "ship_123" }) },
+    shipment: { upsert: vi.fn().mockResolvedValue({ id: "ship_123" }) },
     deliveryEvent: { create: vi.fn() },
-    auditLog: { create: vi.fn().testResolvedValue({ id: "audit_123" }) },
+    auditLog: { create: vi.fn().mockResolvedValue({ id: "audit_123" }) },
   },
 }));
 
-// Test DeliveryProvider factory
-vi.test("./DeliveryProvider", () => ({
+// Mock DeliveryProvider factory
+vi.mock("./DeliveryProvider", () => ({
   getDeliveryProvider: () => ({
     dispatch: vi
       .fn()
-      .testResolvedValue({
+      .mockResolvedValue({
         success: true,
         providerJobId: "JOB_123",
         trackingUrl: "http://track.me",
@@ -60,7 +60,7 @@ describe("DeliveryService", () => {
   };
 
   beforeEach(() => {
-    vi.clearAllTests();
+    vi.clearAllMocks();
   });
 
   it("should return SKIPPED if auto-dispatch is disabled", async () => {
@@ -73,7 +73,7 @@ describe("DeliveryService", () => {
         },
       },
     };
-    (prisma.order.findUnique as any).testResolvedValue(order);
+    (prisma.order.findUnique as any).mockResolvedValue(order);
 
     const result = await DeliveryService.autoDispatch(
       "ord_1",
@@ -92,7 +92,7 @@ describe("DeliveryService", () => {
       Customer: null,
       Shipment: null,
     };
-    (prisma.order.findUnique as any).testResolvedValue(order);
+    (prisma.order.findUnique as any).mockResolvedValue(order);
 
     const result = await DeliveryService.autoDispatch(
       "ord_1",
@@ -104,7 +104,7 @@ describe("DeliveryService", () => {
   });
 
   it("should return PENDING_CONFIRMATION and create DRAFT shipment in CONFIRM mode", async () => {
-    (prisma.order.findUnique as any).testResolvedValue(testOrder);
+    (prisma.order.findUnique as any).mockResolvedValue(testOrder);
 
     const result = await DeliveryService.autoDispatch(
       "ord_1",
@@ -139,7 +139,7 @@ describe("DeliveryService", () => {
         provider: "CUSTOM",
       },
     };
-    (prisma.order.findUnique as any).testResolvedValue(order);
+    (prisma.order.findUnique as any).mockResolvedValue(order);
 
     const result = await DeliveryService.autoDispatch(
       "ord_1",

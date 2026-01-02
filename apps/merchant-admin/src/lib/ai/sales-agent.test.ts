@@ -5,29 +5,29 @@ import { MerchantBrainService } from "./merchant-brain.service";
 import { prisma } from "@vayva/db";
 
 // Test dependencies
-const { testChatCompletion } = vi.hoisted(() => ({
-    testChatCompletion: vi.fn()
+const { mockChatCompletion } = vi.hoisted(() => ({
+    mockChatCompletion: vi.fn()
 }));
 
-vi.test("./groq-client", () => {
+vi.mock("./groq-client", () => {
     return {
-        GroqClient: vi.fn().testImplementation(() => ({
-            chatCompletion: testChatCompletion,
+        GroqClient: vi.fn().mockImplementation(() => ({
+            chatCompletion: mockChatCompletion,
             client: { apiKey: "test-key" }
         }))
     };
 });
 
 
-vi.test("./merchant-brain.service");
-vi.test("../support/escalation.service", () => ({
+vi.mock("./merchant-brain.service");
+vi.mock("../support/escalation.service", () => ({
     EscalationService: {
-        triggerHandoff: vi.fn().testResolvedValue({}),
+        triggerHandoff: vi.fn().mockResolvedValue({}),
     },
 }));
 
 
-vi.test("@vayva/db", () => ({
+vi.mock("@vayva/db", () => ({
     prisma: {
         store: { findUnique: vi.fn() },
         merchantAiProfile: { findUnique: vi.fn() },
@@ -37,23 +37,23 @@ vi.test("@vayva/db", () => ({
 }));
 
 
-vi.test("./ai-usage.service", () => ({
+vi.mock("./ai-usage.service", () => ({
     AiUsageService: {
-        checkLimits: vi.fn().testResolvedValue({ allowed: true }),
-        logUsage: vi.fn().testResolvedValue({}),
+        checkLimits: vi.fn().mockResolvedValue({ allowed: true }),
+        logUsage: vi.fn().mockResolvedValue({}),
     },
 }));
 
-vi.test("../governance/data-governance.service", () => ({
+vi.mock("../governance/data-governance.service", () => ({
     DataGovernanceService: {
-        logAiTrace: vi.fn().testResolvedValue({}),
+        logAiTrace: vi.fn().mockResolvedValue({}),
     },
 }));
 
-vi.test("./conversion.service", () => ({
+vi.mock("./conversion.service", () => ({
     ConversionService: {
-        classifyObjection: vi.fn().testReturnValue(null),
-        decidePersuasion: vi.fn().testResolvedValue("NONE"),
+        classifyObjection: vi.fn().mockReturnValue(null),
+        decidePersuasion: vi.fn().mockResolvedValue("NONE"),
     },
 }));
 
@@ -61,15 +61,15 @@ describe("SalesAgent", () => {
     const STORE_ID = "test-store";
 
     beforeEach(() => {
-        vi.clearAllTests();
+        vi.clearAllMocks();
     });
 
     it("handles a simple message and returns a response", async () => {
-        // Setup tests
-        (prisma.store.findUnique as any).testResolvedValue({ name: "Test Store", category: "Retail" });
-        (MerchantBrainService.retrieveContext as any).testResolvedValue([]);
+        // Setup mocks
+        (prisma.store.findUnique as any).mockResolvedValue({ name: "Test Store", category: "Retail" });
+        (MerchantBrainService.retrieveContext as any).mockResolvedValue([]);
 
-        testChatCompletion.testResolvedValue({
+        mockChatCompletion.mockResolvedValue({
             choices: [{ message: { content: "Hello! How can I help you today?" } }],
             usage: { prompt_tokens: 10, completion_tokens: 5 },
         });
@@ -79,7 +79,7 @@ describe("SalesAgent", () => {
         ]);
 
         expect(response.message).toBe("Hello! How can I help you today?");
-        expect(testChatCompletion).toHaveBeenCalled();
+        expect(mockChatCompletion).toHaveBeenCalled();
     });
 
 
@@ -91,12 +91,12 @@ describe("SalesAgent", () => {
 
         expect(response.data?.status).toBe("HANDED_OFF");
         expect(response.data?.trigger).toBe("FRAUD_RISK");
-        expect(testChatCompletion).not.toHaveBeenCalled();
+        expect(mockChatCompletion).not.toHaveBeenCalled();
     });
 
 
     it("returns a safe fallback if Groq call fails", async () => {
-        testChatCompletion.testResolvedValue(null);
+        mockChatCompletion.mockResolvedValue(null);
 
         const response = await SalesAgent.handleMessage(STORE_ID, [
             { role: "user", content: "Tell me about products" }
