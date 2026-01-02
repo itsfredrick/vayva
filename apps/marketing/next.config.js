@@ -15,7 +15,6 @@ const nextConfig = {
             dynamic: 60,
             static: 180,
         },
-        turbopack: false,
     },
     images: {
         formats: ["image/avif", "image/webp"],
