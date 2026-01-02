@@ -102,7 +102,7 @@ export class GroqClient {
                         success: true,
                         channel: this.context === "MERCHANT" ? "INAPP" : "WHATSAPP",
                     }
-                }).catch(e => logger.warn("[GroqClient] Audit log failed", { error: e }));
+                }).catch((e: unknown) => logger.warn("[GroqClient] Audit log failed", { error: e }));
             }
 
 
