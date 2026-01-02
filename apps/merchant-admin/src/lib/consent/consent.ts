@@ -3,8 +3,8 @@ import {
   ConsentEventType,
   ConsentChannel,
   ConsentSource,
+  type communication_consent,
 } from "@vayva/db";
-import type { communication_consent } from "@vayva/db";
 
 export enum MessageIntent {
   TRANSACTIONAL = "TRANSACTIONAL",
