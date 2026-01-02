@@ -4,83 +4,8 @@ import {
   WhatsAppMessageSender,
   WhatsAppLinkedEntityType,
 } from "@vayva/shared";
-
-// Test Messages Store (In-memory for dev session)
-let MESSAGES: WhatsAppMessage[] = [
-  // Alice (conv_1)
-  {
-    id: "msg_1",
-    conversationId: "conv_1",
-    sender: WhatsAppMessageSender.CUSTOMER,
-    content: "Hi, I placed an order yesterday.",
-    linkedType: WhatsAppLinkedEntityType.NONE,
-    timestamp: new Date(Date.now() - 1000 * 60 * 15).toISOString(),
-  },
-  {
-    id: "msg_2",
-    conversationId: "conv_1",
-    sender: WhatsAppMessageSender.SYSTEM,
-    content: "Order #1024 confirmed. Status: Processing.",
-    linkedType: WhatsAppLinkedEntityType.ORDER,
-    linkedId: "ord_1024",
-    timestamp: new Date(Date.now() - 1000 * 60 * 14).toISOString(),
-    isAutomated: true,
-  },
-  {
-    id: "msg_3",
-    conversationId: "conv_1",
-    sender: WhatsAppMessageSender.CUSTOMER,
-    content: "Is my order ready for pickup?",
-    linkedType: WhatsAppLinkedEntityType.NONE,
-    timestamp: new Date(Date.now() - 1000 * 60 * 5).toISOString(),
-  },
-
-  // Chioma (conv_2)
-  {
-    id: "msg_4",
-    conversationId: "conv_2",
-    sender: WhatsAppMessageSender.SYSTEM,
-    content: "Booking #BK-502 confirmed for Tuesday, 2pm.",
-    linkedType: WhatsAppLinkedEntityType.BOOKING,
-    linkedId: "bk_502",
-    timestamp: new Date(Date.now() - 1000 * 60 * 60 * 5).toISOString(),
-    isAutomated: true,
-  },
-  {
-    id: "msg_5",
-    conversationId: "conv_2",
-    sender: WhatsAppMessageSender.CUSTOMER,
-    content: "I would like to reschedule my appointment.",
-    linkedType: WhatsAppLinkedEntityType.NONE,
-    timestamp: new Date(Date.now() - 1000 * 60 * 60 * 2).toISOString(),
-  },
-
-  // Emeka (conv_3)
-  {
-    id: "msg_6",
-    conversationId: "conv_3",
-    sender: WhatsAppMessageSender.CUSTOMER,
-    content: "Do you sell laptop chargers?",
-    linkedType: WhatsAppLinkedEntityType.NONE,
-    timestamp: new Date(Date.now() - 1000 * 60 * 60 * 25).toISOString(),
-  },
-  {
-    id: "msg_7",
-    conversationId: "conv_3",
-    sender: WhatsAppMessageSender.MERCHANT,
-    content: "Yes we do! For which model?",
-    linkedType: WhatsAppLinkedEntityType.NONE,
-    timestamp: new Date(Date.now() - 1000 * 60 * 60 * 24.5).toISOString(),
-  },
-  {
-    id: "msg_8",
-    conversationId: "conv_3",
-    sender: WhatsAppMessageSender.CUSTOMER,
-    content: "Thanks for the quick response!",
-    linkedType: WhatsAppLinkedEntityType.NONE,
-    timestamp: new Date(Date.now() - 1000 * 60 * 60 * 24).toISOString(),
-  },
-];
+import { prisma, MessageType, Direction, MessageStatus } from "@vayva/db";
+import { getSessionUser } from "@/lib/session";
 
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
@@ -93,8 +18,46 @@ export async function GET(request: Request) {
     );
   }
 
-  const filtered = MESSAGES.filter((m) => m.conversationId === conversationId);
-  return NextResponse.json(filtered);
+  // Auth check
+  const user = await getSessionUser();
+  if (!user) {
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  }
+
+  try {
+    const messages = await prisma.message.findMany({
+      where: {
+        conversationId: conversationId,
+        // Ensure store ownership
+        Conversation: {
+          storeId: user.storeId,
+        },
+      },
+      orderBy: { createdAt: "asc" },
+      take: 100,
+    });
+
+    const mappedMessages: WhatsAppMessage[] = messages.map((m: any) => ({
+      id: m.id,
+      conversationId: m.conversationId,
+      sender:
+        m.direction === Direction.OUTBOUND
+          ? WhatsAppMessageSender.MERCHANT
+          : WhatsAppMessageSender.CUSTOMER,
+      linkedType: WhatsAppLinkedEntityType.NONE,
+      content: m.textBody || "[Media message]",
+      timestamp: m.createdAt.toISOString(),
+      isAutomated: false,
+    }));
+
+    return NextResponse.json(mappedMessages);
+  } catch (error) {
+    console.error("Fetch Messages Error", error);
+    return NextResponse.json(
+      { error: "Failed to fetch messages" },
+      { status: 500 },
+    );
+  }
 }
 
 export async function POST(request: Request) {
@@ -105,18 +68,51 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "Missing fields" }, { status: 400 });
   }
 
-  const newMessage: WhatsAppMessage = {
-    id: `msg_${Date.now()}`,
-    conversationId: body.conversationId,
-    sender: body.sender || WhatsAppMessageSender.MERCHANT,
-    content: body.content,
-    linkedType: body.linkedType || WhatsAppLinkedEntityType.NONE,
-    linkedId: body.linkedId,
-    timestamp: new Date().toISOString(),
-    isAutomated: body.isAutomated || false,
-  };
+  const user = await getSessionUser();
+  if (!user) {
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  }
 
-  MESSAGES.push(newMessage);
+  try {
+    // Verify conversation ownership
+    const conversation = await prisma.conversation.findUnique({
+      where: { id: body.conversationId },
+    });
 
-  return NextResponse.json(newMessage);
+    if (!conversation || conversation.storeId !== user.storeId) {
+      return NextResponse.json({ error: "Forbidden" }, { status: 403 });
+    }
+
+    // Create Message
+    const created = await prisma.message.create({
+      data: {
+        storeId: user.storeId,
+        conversationId: body.conversationId,
+        direction: Direction.OUTBOUND,
+        type: MessageType.TEXT,
+        textBody: body.content,
+        status: MessageStatus.QUEUED, // Worker will pick up
+        receivedAt: new Date(),
+      },
+    });
+
+    const newMessage: WhatsAppMessage = {
+      id: created.id,
+      conversationId: created.conversationId,
+      sender: WhatsAppMessageSender.MERCHANT,
+      content: created.textBody || "",
+      linkedType: WhatsAppLinkedEntityType.NONE,
+      linkedId: undefined,
+      timestamp: created.createdAt.toISOString(),
+      isAutomated: false,
+    };
+
+    return NextResponse.json(newMessage);
+  } catch (error) {
+    console.error("Create Message Error", error);
+    return NextResponse.json(
+      { error: "Failed to send message" },
+      { status: 500 },
+    );
+  }
 }

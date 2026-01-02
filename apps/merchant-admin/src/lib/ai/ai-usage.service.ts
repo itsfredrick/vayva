@@ -1,4 +1,5 @@
 import { prisma } from "@vayva/db";
+import { logger } from "@/lib/logger";
 
 export interface UsageReport {
   messagesUsed: number;
@@ -78,7 +79,7 @@ export class AiUsageService {
         },
       });
     } catch (error: any) {
-      console.error("[AiUsageService] Log failure:", error);
+      logger.error("[AiUsageService] Log failure", error, { storeId });
     }
   }
 

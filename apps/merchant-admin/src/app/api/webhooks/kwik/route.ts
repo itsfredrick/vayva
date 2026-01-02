@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@vayva/db";
 import { FEATURES } from "@/lib/env-validation";
+import { logger } from "@/lib/logger";
 
 // Kwik Webhook Receiver
 export async function POST(request: Request) {
@@ -30,7 +31,7 @@ export async function POST(request: Request) {
     });
 
     if (!shipment) {
-      console.warn(`Kwik Webhook: Shipment not found for Job ID ${job_id}`);
+      logger.warn(`[Kwik Webhook] Shipment not found for Job ID ${job_id}`);
       return NextResponse.json({ message: "Ignored: Shipment not found" });
     }
 
@@ -57,7 +58,7 @@ export async function POST(request: Request) {
 
     return NextResponse.json({ success: true });
   } catch (error: any) {
-    console.error("Webhook Error:", error);
+    logger.error("[Kwik Webhook] Error", error);
     return NextResponse.json({ error: error.message }, { status: 500 });
   }
 }

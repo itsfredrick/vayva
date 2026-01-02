@@ -9,6 +9,8 @@ import { SITE_ORIGIN } from "@/lib/seo/route-policy";
  * DYNAMIC SITEMAP V2 (DB-BACKED)
  * Matches the logic in /api/__seo/manifest to ensure SERP consistency.
  */
+export const dynamic = "force-dynamic";
+
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const baseUrl = SITE_ORIGIN;
 

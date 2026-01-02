@@ -3,6 +3,7 @@ import { z } from "zod";
 const envSchema = z.object({
   // Database
   DATABASE_URL: z.string().url(),
+  REDIS_URL: z.string().url().optional().default("redis://localhost:6379"),
 
   // App URLs
   NEXT_PUBLIC_APP_URL: z.string().url(),

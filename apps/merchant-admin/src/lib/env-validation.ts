@@ -14,6 +14,7 @@ const ENV = {
   NEXTAUTH_SECRET: process.env.NEXTAUTH_SECRET,
   NEXTAUTH_URL: process.env.NEXTAUTH_URL,
   DATABASE_URL: process.env.DATABASE_URL,
+  REDIS_URL: process.env.REDIS_URL,
 
   // Payment
   PAYSTACK_SECRET_KEY: process.env.PAYSTACK_SECRET_KEY,

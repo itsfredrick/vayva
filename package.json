@@ -19,7 +19,8 @@
     "check:bundle": "node scripts/check-bundle-size.mjs",
     "db:seed": "node infra/db/prisma/seed.ts",
     "db:generate": "turbo run db:generate",
-    "db:push": "turbo run db:push"
+    "db:push": "turbo run db:push",
+    "postinstall": "turbo run db:generate"
   },
   "devDependencies": {
     "@playwright/test": "^1.57.0",
@@ -44,7 +45,7 @@
     "vitest": "^1.0.4"
   },
   "engines": {
-    "node": ">=22"
+    "node": ">=20"
   },
   "prisma": {
     "schema": "infra/db/prisma/schema.prisma"

@@ -4,6 +4,7 @@ import React from "react";
 import { WaThread, WaMessage } from "@/services/wa-agent";
 import { useRouter, useParams } from "next/navigation";
 import { Icon, Button, cn } from "@vayva/ui";
+import { TimeDisplay } from "@/components/shared/TimeDisplay";
 
 // --- Sidebar List ---
 export const InboxSidebar = ({
@@ -49,10 +50,7 @@ export const InboxSidebar = ({
                 {thread.customerName}
               </span>
               <span className="text-[10px] text-gray-400">
-                {new Date(thread.lastMessageTime).toLocaleTimeString([], {
-                  hour: "2-digit",
-                  minute: "2-digit",
-                })}
+                <TimeDisplay date={thread.lastMessageTime} format="time" />
               </span>
             </div>
             <p className="text-xs text-gray-500 line-clamp-1 group-hover:text-gray-700">
@@ -127,13 +125,13 @@ export const ChatWindow = ({ thread }: { thread?: WaThread | null }) => {
         {(thread.messages.length > 0
           ? thread.messages
           : [
-              {
-                id: "test1",
-                text: thread.lastMessage,
-                sender: "user",
-                timestamp: thread.lastMessageTime,
-              },
-            ]
+            {
+              id: "test1",
+              text: thread.lastMessage,
+              sender: "user",
+              timestamp: thread.lastMessageTime,
+            },
+          ]
         ).map((msg: any) => (
           <div
             key={msg.id}
@@ -146,10 +144,7 @@ export const ChatWindow = ({ thread }: { thread?: WaThread | null }) => {
           >
             <p className="text-[#0B0B0B]">{msg.text}</p>
             <span className="text-[10px] text-gray-400 block text-right mt-1 opacity-70 border-t border-black/5 pt-1">
-              {new Date(msg.timestamp).toLocaleTimeString([], {
-                hour: "2-digit",
-                minute: "2-digit",
-              })}
+              <TimeDisplay date={msg.timestamp} format="time" />
             </span>
           </div>
         ))}
