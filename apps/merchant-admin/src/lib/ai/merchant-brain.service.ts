@@ -29,7 +29,7 @@ export class MerchantBrainService {
         take: limit,
       });
 
-      return embeddings.map((e) => ({
+      return embeddings.map((e: any) => ({
         content: e.content,
         sourceType: e.sourceType,
         sourceId: e.sourceId,
