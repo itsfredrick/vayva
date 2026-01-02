@@ -40,7 +40,7 @@ If they seem ready, kindly invite them to click "Start selling for free." If you
           completion.choices[0]?.message?.content ||
           "I'm sorry, I couldn't process that right now. Please try again or contact our support team.",
       };
-    } catch (error) {
+    } catch (error: any) {
       console.error("Marketing AI Error:", error);
       return {
         success: false,

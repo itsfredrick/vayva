@@ -102,12 +102,12 @@ export class GroqClient {
                         success: true,
                         channel: this.context === "MERCHANT" ? "INAPP" : "WHATSAPP",
                     }
-                }).catch((e: unknown) => logger.warn("[GroqClient] Audit log failed", { error: e }));
+                }).catch((e: any) => logger.warn("[GroqClient] Audit log failed", { error: e }));
             }
 
 
             return response;
-        } catch (error) {
+        } catch (error: any) {
             logger.error("[GroqClient] API call failed", { error });
             return null; // Graceful degradation
         }

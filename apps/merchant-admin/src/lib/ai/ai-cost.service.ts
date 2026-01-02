@@ -56,7 +56,7 @@ export class AiCostService {
           requestsCount: 1,
         },
       });
-    } catch (error) {
+    } catch (error: any) {
       logger.error("[CostService] Failed to record usage", { storeId, error });
     }
   }

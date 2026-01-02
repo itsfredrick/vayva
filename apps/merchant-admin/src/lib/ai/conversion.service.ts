@@ -83,7 +83,7 @@ export class ConversionService {
           confidenceScore: data.confidence,
         },
       });
-    } catch (error) {
+    } catch (error: any) {
       logger.error("[ConversionService] Failed to log persuasion", error);
     }
   }
@@ -107,7 +107,7 @@ export class ConversionService {
           aiAttributionScore: 1.0, // Simple for now
         },
       });
-    } catch (error) {
+    } catch (error: any) {
       logger.error("[ConversionService] Failed to record conversion", error);
     }
   }

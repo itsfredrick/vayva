@@ -268,7 +268,7 @@ export class SalesAgent {
         message: choice.content || "I'm checking that for you right now.",
         suggestedActions: this.deriveActions(choice.content),
       };
-    } catch (error) {
+    } catch (error: any) {
       reportError(error, { context: "SalesAgent.handleMessage", storeId });
       return {
         message:

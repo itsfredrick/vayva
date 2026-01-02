@@ -77,7 +77,7 @@ export class AiUsageService {
           tokensCount: inputTokens + outputTokens,
         },
       });
-    } catch (error) {
+    } catch (error: any) {
       console.error("[AiUsageService] Log failure:", error);
     }
   }
