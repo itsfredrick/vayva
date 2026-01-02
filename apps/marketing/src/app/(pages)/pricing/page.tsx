@@ -18,15 +18,16 @@ export default function PricingPage() {
       {/* Header */}
       <section className="pt-12 pb-20 px-4">
         <div className="max-w-4xl mx-auto text-center">
-          <h1 className="text-5xl md:text-6xl font-black text-[#0F172A] mb-6 tracking-tight">
-            Predictable pricing.
-            <br />
-            <span className="text-[#22C55E]">No hidden surprises.</span>
-          </h1>
           <p className="text-xl text-[#64748B] max-w-2xl mx-auto mb-8">
             Choose a plan that matches your business volume. Every plan includes
             our core WhatsApp capture engine.
           </p>
+
+          <Link href={`${APP_URL}/signup`}>
+            <Button className="mb-10 bg-[#22C55E] hover:bg-[#16A34A] text-white px-8 py-4 rounded-xl text-lg font-bold shadow-lg shadow-green-100 transition-all hover:scale-105">
+              Start Selling for Free
+            </Button>
+          </Link>
 
           {/* FEE DISCLOSURE - CLEAR & HONEST */}
           <div className="inline-flex items-center gap-3 px-6 py-3 bg-red-50 border border-red-100 rounded-2xl animate-in fade-in slide-in-from-top-4 duration-700">

@@ -6,6 +6,7 @@ import Image from "next/image";
 import { Button } from "@vayva/ui";
 import { APP_URL } from "@/lib/constants";
 import { useUserPlan } from "@/hooks/useUserPlan";
+import { Logo } from "@/components/Logo";
 import { Menu, X } from "lucide-react";
 
 const NAV_LINKS = [
@@ -23,18 +24,7 @@ export function MarketingHeader() {
     <header className="sticky top-0 z-50 bg-white border-b border-[#E5E7EB]">
       <div className="max-w-7xl mx-auto px-4 lg:px-6 h-20 flex items-center justify-between">
         {/* Logo */}
-        <Link href="/" className="flex items-center gap-2 relative z-10">
-          <Image
-            src="/vayva-logo.png"
-            alt="Vayva"
-            width={64}
-            height={64}
-            className="object-contain"
-          />
-          <span className="text-[#0F172A] font-bold text-2xl tracking-tight">
-            Vayva
-          </span>
-        </Link>
+        <Logo href="/" size="sm" showText={true} />
 
         {/* Desktop Nav */}
         <nav className="hidden lg:flex items-center gap-8">
