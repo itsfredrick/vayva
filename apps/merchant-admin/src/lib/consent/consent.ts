@@ -1,11 +1,10 @@
 import {
   prisma,
-  communication_consent,
-  compliance_event,
   ConsentEventType,
   ConsentChannel,
   ConsentSource,
 } from "@vayva/db";
+import type { communication_consent } from "@vayva/db";
 
 export enum MessageIntent {
   TRANSACTIONAL = "TRANSACTIONAL",
