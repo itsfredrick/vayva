@@ -49,7 +49,7 @@ export async function POST(req: NextRequest) {
 
         return NextResponse.json({ message: reply });
     } catch (error: any) {
-        console.error("Help AI Error:", error);
+        console.error("AI Chat Error:", error);
         return NextResponse.json(
             { error: "Failed to process AI request" },
             { status: 500 }

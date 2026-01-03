@@ -12,7 +12,8 @@ import { metadataFor } from "@/lib/seo/seo-engine";
 
 export const metadata = metadataFor("/");
 
-import { PWAInstallPrompt } from "@vayva/ui";
+import { DownloadModalProvider } from "@/context/DownloadModalContext";
+import { PWAInstallToast } from "@/components/marketing/PWAInstallToast";
 
 // ... existing imports
 
@@ -23,14 +24,16 @@ export default function MarketingLayout({
 }) {
   return (
     <MarketingShell>
-      <ParticleBackground />
-      <SchemaOrg type="Organization" />
-      <SchemaOrg type="WebSite" />
-      <MarketingHeader />
-      <main>{children}</main>
-      <MarketingFooter />
-      <PWAInstallPrompt />
-      <CookieBanner />
+      <DownloadModalProvider>
+        <ParticleBackground />
+        <SchemaOrg type="Organization" />
+        <SchemaOrg type="WebSite" />
+        <MarketingHeader />
+        <main>{children}</main>
+        <MarketingFooter />
+        <PWAInstallToast />
+        <CookieBanner />
+      </DownloadModalProvider>
     </MarketingShell>
   );
 }

@@ -78,7 +78,7 @@ export default function HowItWorksPage() {
               <div className="flex justify-center order-1 md:order-2">
                 <div className="relative group">
                   <Image
-                    src="/step-1-whatsapp.png"
+                    src="/images/step-1-whatsapp.png"
                     alt="African merchant holding smartphone showing WhatsApp Business with green checkmark in modern shop"
                     width={500}
                     height={375}
@@ -94,7 +94,7 @@ export default function HowItWorksPage() {
               <div className="flex justify-center md:justify-end">
                 <div className="relative group">
                   <Image
-                    src="/step-2-templates.png"
+                    src="/images/step-2-templates.png"
                     alt="Nigerian entrepreneur browsing store templates on MacBook showing template gallery"
                     width={500}
                     height={375}
@@ -135,7 +135,7 @@ export default function HowItWorksPage() {
               <div className="flex justify-center order-1 md:order-2">
                 <div className="relative group">
                   <Image
-                    src="/step-3-builder.png"
+                    src="/images/step-3-builder.png"
                     alt="African female business owner customizing store on iPad Pro with Store Builder interface in boutique"
                     width={500}
                     height={375}
@@ -150,7 +150,7 @@ export default function HowItWorksPage() {
               <div className="flex justify-center md:justify-end">
                 <div className="relative group">
                   <Image
-                    src="/step-4-payments.png"
+                    src="/images/step-4-payments.png"
                     alt="Smartphone showing Paystack payment confirmation with Nigerian Naira amount in Lagos market"
                     width={500}
                     height={375}
@@ -191,7 +191,7 @@ export default function HowItWorksPage() {
               <div className="flex justify-center order-1 md:order-2">
                 <div className="relative group">
                   <Image
-                    src="/step-5-delivery.png"
+                    src="/images/step-5-delivery.png"
                     alt="Vayva-branded delivery rider on motorcycle checking smartphone in Lagos traffic"
                     width={500}
                     height={375}

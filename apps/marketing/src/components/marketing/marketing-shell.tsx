@@ -1,5 +1,4 @@
 import React from "react";
-import { InstallPrompt } from "./InstallPrompt";
 
 interface MarketingShellProps {
   children: React.ReactNode;
@@ -24,9 +23,7 @@ export function MarketingShell({
         <div className="absolute inset-0 bg-gradient-to-b from-white/50 to-transparent" />
       </div>
 
-      {/* Content Content - strictly z-indexed above background */}
       <div className="relative z-10 w-full">{children}</div>
-      <InstallPrompt />
     </div>
   );
 }

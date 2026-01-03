@@ -68,8 +68,43 @@ export default function LandingPage() {
             <HeroDownloadButton />
           </div>
 
+          <p className="text-sm font-semibold text-gray-500 uppercase tracking-wider mb-6">
+            Trusted by modern businesses
+          </p>
+
+          <div className="flex flex-wrap justify-center items-center gap-8 md:gap-12 opacity-80 grayscale hover:grayscale-0 transition-all duration-500">
+            <Image
+              src="/logos/partner-paystack.png"
+              alt="Paystack"
+              width={120}
+              height={40}
+              className="h-8 w-auto object-contain"
+            />
+            <Image
+              src="/logos/youverify_logo.png"
+              alt="YouVerify"
+              width={120}
+              height={40}
+              className="h-8 w-auto object-contain"
+            />
+            <Image
+              src="/logos/123design_logo.jpg"
+              alt="123Design"
+              width={120}
+              height={40}
+              className="h-10 w-auto object-contain mix-blend-multiply"
+            />
+            <Image
+              src="/logos/oral4_logo.png"
+              alt="Oral4"
+              width={120}
+              height={40}
+              className="h-10 w-auto object-contain mix-blend-multiply"
+            />
+          </div>
+
           {/* Trust Indicators */}
-          <div className="flex flex-wrap justify-center items-center gap-6 sm:gap-8 text-sm text-[#64748B] font-medium mt-8">
+          <div className="flex flex-wrap justify-center items-center gap-6 sm:gap-8 text-sm text-[#64748B] font-medium mt-12">
             <span className="flex items-center gap-2"> Secured Payments </span>
             <span className="w-1 h-1 rounded-full bg-gray-300 hidden sm:block"></span>
             <span className="flex items-center gap-2"> Identity Verified </span>
@@ -90,12 +125,13 @@ export default function LandingPage() {
           viewport={{ once: true }}
           className="max-w-6xl mx-auto grid md:grid-cols-2 gap-16 items-center"
         >
-          <div className="relative aspect-video rounded-3xl overflow-hidden shadow-2xl border border-gray-200 rotate-2 hover:rotate-0 transition-all duration-500">
+          <div className="relative rounded-[32px] overflow-hidden shadow-2xl border border-gray-200 rotate-2 hover:rotate-0 transition-all duration-500 group-hover:scale-[1.02]">
             <Image
               src="/images/chaos-problem.jpg"
               alt="Chaos without Vayva"
-              fill
-              className="object-cover"
+              width={800}
+              height={600}
+              className="w-full h-auto object-cover"
             />
           </div>
           <div>

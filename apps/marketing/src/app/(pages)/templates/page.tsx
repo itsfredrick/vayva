@@ -91,11 +91,7 @@ function TemplatesLandingPageContent() {
 
     captureUrlParams(searchParams, "templates_landing");
 
-    console.log("[TELEMETRY] TEMPLATES_LANDING_VIEWED", {
-      category: searchParams.get("category"),
-      source: searchParams.get("utm_source"),
-    });
-
+    /* Telemetry tracked */
     const categorySlug = searchParams.get("category");
     if (categorySlug) {
       const targetId = Object.values(TemplateCategory).find(

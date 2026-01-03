@@ -19,9 +19,6 @@ export function saveAttribution(data: Partial<AttributionData>) {
     const existing = getAttribution();
     const merged = { ...existing, ...data, timestamp: Date.now() };
     localStorage.setItem(STORAGE_KEY, JSON.stringify(merged));
-
-    // Also log to console for debugging/telemetry verification
-    console.log("[ATTRIBUTION] Saved:", merged);
   } catch (e) {
     console.error("Failed to save attribution", e);
   }
