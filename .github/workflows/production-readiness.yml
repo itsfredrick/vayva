@@ -76,7 +76,7 @@ jobs:
         run: |
           echo "DATABASE_URL length: ${#DATABASE_URL}"
           echo "DATABASE_URL first 20 chars: ${DATABASE_URL:0:20}..."
-          pnpm exec tsx scripts/qa_verify_onboarding.ts
+          node ../../node_modules/.bin/tsx scripts/qa_verify_onboarding.ts
 
       - name: ✅ Build Project
         run: pnpm build --filter=merchant-admin...
