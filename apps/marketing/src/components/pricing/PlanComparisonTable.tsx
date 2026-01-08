@@ -7,32 +7,32 @@ import { PLANS, FEES } from "@/config/pricing";
 interface FeatureRow {
     name: string;
     free: string | boolean;
-    growth: string | boolean;
+    starter: string | boolean;
     pro: string | boolean;
     tooltip?: string;
     isComingSoon?: boolean;
 }
 
 const COMPARISON_DATA: FeatureRow[] = [
-    { name: "Monthly Orders", free: "100", growth: "1,000", pro: "Unlimited" },
-    { name: "Products / SKUs", free: "50", growth: "500", pro: "Unlimited" },
-    { name: "Team members", free: "1 seat", growth: "1 seat", pro: "5 seats" },
+    { name: "Monthly Orders", free: "100", starter: "1,000", pro: "Unlimited" },
+    { name: "Products / SKUs", free: "50", starter: "500", pro: "Unlimited" },
+    { name: "Team members", free: "1 seat", starter: "1 seat", pro: "5 seats" },
     {
         name: "WhatsApp order capture",
         free: true,
-        growth: true,
+        starter: true,
         pro: true,
         tooltip: "Automated extraction of orders from WhatsApp chats.",
     },
-    { name: "Blueprint templates", free: "Basic", growth: "All", pro: "All" },
-    { name: "Inventory tracking", free: false, growth: true, pro: true },
-    { name: "Custom domain", free: false, growth: true, pro: true },
-    { name: "Advanced Audit logs", free: false, growth: false, pro: true },
-    { name: "Priority Support", free: false, growth: false, pro: true },
+    { name: "Blueprint templates", free: "Basic", starter: "All", pro: "All" },
+    { name: "Inventory tracking", free: false, starter: true, pro: true },
+    { name: "Custom domain", free: false, starter: true, pro: true },
+    { name: "Advanced Audit logs", free: false, starter: false, pro: true },
+    { name: "Priority Support", free: false, starter: false, pro: true },
     {
         name: "Withdrawal Transaction Fee",
         free: `${FEES.WITHDRAWAL_PERCENTAGE}%`,
-        growth: `${FEES.WITHDRAWAL_PERCENTAGE}%`,
+        starter: `${FEES.WITHDRAWAL_PERCENTAGE}%`,
         pro: `${FEES.WITHDRAWAL_PERCENTAGE}%`,
         tooltip: "Charged on every payout to your bank account.",
     },
@@ -91,7 +91,7 @@ export const PlanComparisonTable = () => {
                             </td>
                             <td className="p-6 text-center">{renderValue(row.free)}</td>
                             <td className="p-6 text-center bg-green-50/10">
-                                {renderValue(row.growth)}
+                                {renderValue(row.starter)}
                             </td>
                             <td className="p-6 text-center">{renderValue(row.pro)}</td>
                         </tr>

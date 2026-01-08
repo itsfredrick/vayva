@@ -3,26 +3,27 @@ import { requireAuth } from "@/lib/auth/session";
 import { prisma } from "@vayva/db";
 
 const PLAN_LIMITS = {
+  FREE: {
+    ordersPerMonth: 0,
+    whatsappMessages: 100,
+    staffSeats: 0,
+    templates: 2,
+    price: 0,
+    isTrial: true,
+  },
   STARTER: {
     ordersPerMonth: 100,
-    whatsappMessages: 1000,
-    staffSeats: 2,
+    whatsappMessages: 500,
+    staffSeats: 1,
     templates: 5,
-    price: 0,
-  },
-  GROWTH: {
-    ordersPerMonth: 1000,
-    whatsappMessages: 5000,
-    staffSeats: 5,
-    templates: 9,
-    price: 30000, // ₦30,000/month
+    price: 30000,
   },
   PRO: {
     ordersPerMonth: "unlimited",
     whatsappMessages: "unlimited",
-    staffSeats: "unlimited",
+    staffSeats: 3,
     templates: "unlimited",
-    price: 40000, // ₦40,000/month
+    price: 40000,
   },
 };
 
@@ -42,41 +43,49 @@ export async function GET() {
       return NextResponse.json({ error: "Store not found" }, { status: 404 });
     }
 
-    const currentPlan = store.plan || "STARTER";
+    const currentPlan = store.plan || "FREE";
     const subscription = store.merchantSubscription;
 
-    // Get usage stats
-    const ordersThisMonth = await prisma.order.count({
-      where: {
-        storeId,
-        createdAt: {
-          gte: new Date(new Date().getFullYear(), new Date().getMonth(), 1),
+    const [ordersThisMonth, staffCount, productsCount, leadsCount] = await Promise.all([
+      prisma.order.count({
+        where: {
+          storeId,
+          createdAt: {
+            gte: new Date(new Date().getFullYear(), new Date().getMonth(), 1),
+          },
         },
-      },
-    });
-
-    const staffCount = await prisma.membership.count({
-      where: {
-        storeId,
-        status: "active",
-      },
-    });
+      }),
+      prisma.membership.count({
+        where: {
+          storeId,
+          status: "active",
+        },
+      }),
+      prisma.product.count({
+        where: { storeId },
+      }),
+      prisma.customer.count({
+        where: { storeId },
+      }),
+    ]);
 
     return NextResponse.json({
       currentPlan,
       limits: PLAN_LIMITS[currentPlan as keyof typeof PLAN_LIMITS],
       usage: {
         orders: ordersThisMonth,
-        whatsappMessages: 0, // Tracking pending integration
+        whatsappMessages: 0,
         staffSeats: staffCount,
+        products: productsCount,
+        leads: leadsCount,
       },
       subscription: subscription
         ? {
-            status: subscription.status,
-            currentPeriodStart: subscription.currentPeriodStart,
-            currentPeriodEnd: subscription.currentPeriodEnd,
-            cancelAtPeriodEnd: subscription.cancelAtPeriodEnd,
-          }
+          status: subscription.status,
+          currentPeriodStart: subscription.currentPeriodStart,
+          currentPeriodEnd: subscription.currentPeriodEnd,
+          cancelAtPeriodEnd: subscription.cancelAtPeriodEnd,
+        }
         : null,
       availablePlans: Object.entries(PLAN_LIMITS).map(([name, limits]) => ({
         name,
@@ -108,7 +117,7 @@ export async function POST(request: Request) {
     const body = await request.json();
     const { newPlan } = body;
 
-    if (!["STARTER", "GROWTH", "PRO"].includes(newPlan)) {
+    if (!["FREE", "STARTER", "PRO"].includes(newPlan)) {
       return NextResponse.json({ error: "Invalid plan" }, { status: 400 });
     }
 

@@ -1,7 +1,7 @@
 import { PLANS as CONFIG_PLANS, PlanKey } from "@/config/pricing";
 
 export const PLAN_PRICING = {
-  GROWTH: CONFIG_PLANS.find((p) => p.key === "growth")?.monthlyAmount || 25000,
+  STARTER: CONFIG_PLANS.find((p) => p.key === "starter")?.monthlyAmount || 30000,
   PRO: CONFIG_PLANS.find((p) => p.key === "pro")?.monthlyAmount || 40000,
 };
 
@@ -43,12 +43,12 @@ export const PLANS: Record<string, PlanDefinition> = {
       advancedAnalytics: false,
     },
   },
-  growth: {
-    slug: "growth",
-    name: "₦25,000",
-    priceNgn: PLAN_PRICING.GROWTH,
+  starter: {
+    slug: "starter",
+    name: "Starter",
+    priceNgn: PLAN_PRICING.STARTER,
     limits: {
-      teamSeats: 1,
+      teamSeats: 2,
       templatesAvailable: "limited",
       monthlyCampaignSends: 1000,
     },

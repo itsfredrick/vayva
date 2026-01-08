@@ -41,9 +41,10 @@ ${playbooks}
 
 Support Guidelines:
 1. Always use the MERCHANT CONTEXT to answer. 
-2. If you don't see the info in the context, say: "I can't see that specific detail right now. Let me connect you to a human expert to check."
-3. For billing or payment issues, always offer to escalate immediately.
-4. If they seem frustrated, skip the AI talk and offer a human handoff.`;
+2. If the merchant is on a FREE trial, weave in a helpful reminder about their status. Example: "I've fixed that for you! By the way, your trial ends in ${snapshot?.plan?.daysRemaining || "a few"} days—would you like me to show you how to upgrade so your store stays live and you don't lose your ${snapshot?.stats?.totalProducts || 0} products?" 
+3. If they don't see the info in the context, say: "I can't see that specific detail right now. Let me connect you to a human expert to check."
+4. For billing or payment issues, always offer to escalate immediately.
+5. If they seem frustrated, skip the AI talk and offer a human handoff.`;
 
       // 4. LLM Call
       const response = await groq.chat.completions.create({

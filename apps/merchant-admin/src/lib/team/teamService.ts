@@ -6,9 +6,9 @@ import { wrapEmail, renderButton } from "../email/layout";
 
 export class TeamService {
   static SEAT_LIMITS: Record<string, number> = {
-    STARTER: 1, // Only Owner
-    GROWTH: 2, // Owner + 1
-    PRO: 6, // Owner + 5
+    FREE: 0,
+    STARTER: 1,
+    PRO: 3,
     ENTERPRISE: 100,
   };
 
@@ -36,7 +36,7 @@ export class TeamService {
 
     if (currentSeats >= limit) {
       throw new Error(
-        `Seat limit reached for your ${store.plan} plan (${limit} seats). Upgrade required.`,
+        `Seat limit reached for your ${store.plan} plan (${limit} seats). Upgrade required to add more staff.`,
       );
     }
 

@@ -110,10 +110,10 @@ export default function OrderDetailPage() {
                                 <Box size={18} />
                                 Order Items
                             </h3>
-                            <span className="text-sm text-gray-500">{order.OrderItem?.length || 0} items</span>
+                            <span className="text-sm text-gray-500">{order.items?.length || 0} items</span>
                         </div>
                         <div className="divide-y divide-gray-100">
-                            {order.OrderItem?.map((item: any) => (
+                            {order.items?.map((item: any) => (
                                 <div key={item.id} className="px-6 py-4 flex justify-between items-center hover:bg-gray-50">
                                     <div className="flex items-center gap-4">
                                         <div className="h-10 w-10 bg-gray-100 rounded-lg flex items-center justify-center text-gray-400">

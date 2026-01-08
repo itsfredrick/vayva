@@ -12,15 +12,27 @@ export function SchemaOrg({ type }: SchemaOrgProps) {
         return {
           "@context": "https://schema.org",
           "@type": "Organization",
+          "legalName": "Vayva",
           name: "Vayva",
           url: BRAND.canonicalOrigin,
-          logo: `${BRAND.canonicalOrigin}/icon.png`,
+          logo: `${BRAND.canonicalOrigin}/brand/logo.png`,
           description:
-            "The all-in-one commerce platform for African merchants. Build your store, sell on WhatsApp, and manage deliveries.",
+            "Nigeria's #1 AI-powered commerce platform. Build, sell, and grow on WhatsApp with automated ordering and payments.",
           address: {
             "@type": "PostalAddress",
-            addressCountry: "NG",
+            "streetAddress": "123 Herbert Macaulay Way",
+            "addressLocality": "Yaba, Lagos",
+            "addressRegion": "Lagos",
+            "addressCountry": "NG",
           },
+          "areaServed": {
+            "@id": "https://www.wikidata.org/wiki/Q1033"
+          },
+          "sameAs": [
+            "https://www.instagram.com/Vayva.ng",
+            "https://twitter.com/Vayva_ng",
+            "https://www.linkedin.com/company/vayva"
+          ],
           contactPoint: {
             "@type": "ContactPoint",
             contactType: "Customer Support",
@@ -34,11 +46,19 @@ export function SchemaOrg({ type }: SchemaOrgProps) {
           "@type": "WebSite",
           name: "Vayva",
           url: BRAND.canonicalOrigin,
-          description: "The all-in-one commerce platform for African merchants",
+          description: "Nigeria's #1 AI Commerce Platform",
           publisher: {
             "@type": "Organization",
             name: "Vayva",
           },
+          "potentialAction": {
+            "@type": "SearchAction",
+            "target": {
+              "@type": "EntryPoint",
+              "urlTemplate": `${BRAND.canonicalOrigin}/marketplace?q={search_term_string}`
+            },
+            "query-input": "required name=search_term_string"
+          }
         };
 
       case "SoftwareApplication":
@@ -55,8 +75,12 @@ export function SchemaOrg({ type }: SchemaOrgProps) {
             url: `${BRAND.canonicalOrigin}/pricing`,
           },
           description:
-            "WhatsApp commerce platform for Nigerian merchants. Build stores, accept payments, and manage orders.",
+            "AI-powered commerce platform for Nigerian merchants. Automate WhatsApp orders, accept payments, and manage logistics.",
           screenshot: `${BRAND.canonicalOrigin}/og-image.png`,
+          "author": {
+            "@type": "Organization",
+            "name": "Vayva"
+          }
         };
 
       default:

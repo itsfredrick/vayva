@@ -362,6 +362,7 @@ model BankBeneficiary {
   store         Store    @relation(fields: [storeId], references: [id])
 
   @@index([storeId])
+  @@index([isDefault])
 }
 
 model BillingProfile {
@@ -956,6 +957,7 @@ model InventoryItem {
   ProductVariant    ProductVariant    @relation(fields: [variantId], references: [id])
 
   @@unique([locationId, variantId])
+  @@index([productId])
 }
 
 model InventoryLocation {
@@ -1053,6 +1055,7 @@ model KycRecord {
   bvnLast4         String
   fullNinEncrypted String?
   fullBvnEncrypted String?
+  cacNumberEncrypted String?
   status           KycStatus @default(NOT_STARTED)
   submittedAt      DateTime  @default(now())
   reviewedAt       DateTime?
@@ -1187,6 +1190,8 @@ model MerchantOnboarding {
   currentStepKey String?
   completedSteps String[]         @default([])
   data           Json             @default("{}")
+  setupPath      String?          @default("guided") // "guided" | "blank"
+  hasDelivery    Boolean?         @default(true)
   completedAt    DateTime?
   createdAt      DateTime         @default(now())
   updatedAt DateTime @updatedAt
@@ -1678,6 +1683,7 @@ model Product {
   depth              Float?
   seoTitle           String?
   seoDescription     String?
+  metadata           Json?    // Stores flexible category-specific data (e.g. ingredients, sizeChart)
   createdAt          DateTime            @default(now())
   updatedAt DateTime @updatedAt
   CollectionProduct  CollectionProduct[]
@@ -1943,6 +1949,13 @@ model Store {
   tenantId                 String?
   isLive                   Boolean                   @default(false)
   payoutsEnabled           Boolean                   @default(true)
+  walletPin                String?                   // Hashed PIN for wallet security
+  
+  // SEO & Social (Prompt 4 - Search Console Dominance)
+  seoTitle         String?
+  seoDescription   String?
+  seoKeywords      String[]
+  socialImage      String?
   
   // AI Governance & Consent (Prompt 4)
   aiConsentGivenAt         DateTime?
@@ -2204,6 +2217,7 @@ model Subscription {
   currentPeriodEnd       DateTime
   cancelAtPeriodEnd      Boolean            @default(false)
   trialEndsAt            DateTime?
+  gracePeriodEndsAt      DateTime?
   createdAt              DateTime           @default(now())
   updatedAt DateTime @updatedAt
   InvoiceV2              InvoiceV2[]
@@ -3058,6 +3072,8 @@ model MerchantSubscription {
   lastPaymentStatus      String?
   lastPaymentAt          DateTime?
   lastReminderSentAt     DateTime?
+  trialStartedAt         DateTime? @default(now())
+  trialEndsAt           DateTime?
   createdAt              DateTime  @default(now())
   updatedAt              DateTime  @updatedAt
   store                  Store     @relation(fields: [storeId], references: [id])
@@ -3390,12 +3406,25 @@ model SupportTicket {
   store          Store            @relation(fields: [storeId], references: [id])
   ticketMessages TicketMessage[]
   handoffEvents  HandoffEvent[]
+  feedback       SupportTicketFeedback?
 
   @@index([storeId])
   @@index([storeId, status])
   @@index([slaDueAt])
 
   @@map("support_ticket")
+}
+
+model SupportTicketFeedback {
+  id               String         @id @default(uuid())
+  ticketId         String         @unique
+  rating           String         // GREAT, OKAY, BAD
+  comment          String?        @db.Text
+  createdAt        DateTime       @default(now())
+  
+  supportTicket    SupportTicket  @relation(fields: [ticketId], references: [id])
+
+  @@map("support_ticket_feedback")
 }
 
 model SupportBotFeedback {
@@ -4132,8 +4161,8 @@ enum RiskStatus {
 }
 
 enum SubscriptionPlan {
+  FREE
   STARTER
-  GROWTH
   PRO
 }
 
@@ -4144,6 +4173,7 @@ enum SubscriptionStatus {
   CANCELED
   INCOMPLETE
   PAUSED
+  GRACE_PERIOD
 }
 
 enum SupportCaseCategory {

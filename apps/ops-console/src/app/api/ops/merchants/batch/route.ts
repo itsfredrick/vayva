@@ -51,13 +51,17 @@ export async function POST(req: NextRequest) {
 
             case "force_kyc":
                 // Reset KYC status to force re-submission or review
-                // We update the KycRecord associated with these stores
-                // Check if KycRecord exists for these stores, if not we might typically ignore or create.
-                // updateMany only updates existing.
-                await prisma.kycRecord.updateMany({
-                    where: { storeId: { in: merchantIds } },
-                    data: { status: "NOT_STARTED" }
-                });
+                // Update both KycRecord and Wallet for consistency
+                await prisma.$transaction([
+                    prisma.kycRecord.updateMany({
+                        where: { storeId: { in: merchantIds } },
+                        data: { status: "NOT_STARTED" }
+                    }),
+                    prisma.wallet.updateMany({
+                        where: { storeId: { in: merchantIds } },
+                        data: { kycStatus: "NOT_STARTED" }
+                    })
+                ]);
                 updatedCount = merchantIds.length;
                 break;
 

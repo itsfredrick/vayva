@@ -10,6 +10,7 @@ import {
     Activity
 } from "lucide-react";
 import Link from "next/link";
+import { cn } from "@vayva/ui";
 // import { formatCurrency } from "@/lib/utils"; 
 
 const formatCurrency = (amount: number) => {
@@ -19,6 +20,42 @@ const formatCurrency = (amount: number) => {
         minimumFractionDigits: 0,
     }).format(amount);
 };
+
+function GatewayHealthCard() {
+    const { data: health, isLoading } = useOpsQuery(["gateway-health"], () =>
+        fetch("/api/ops/health/ping").then(res => res.json())
+    );
+
+    const isHealthy = health?.checks?.whatsapp_gateway === "UP";
+
+    return (
+        <div className={cn(
+            "p-6 rounded-2xl border border-gray-100 shadow-sm transition-all",
+            isLoading ? "bg-gray-50 animate-pulse" : isHealthy ? "bg-green-50/30" : "bg-red-50"
+        )}>
+            <div className="flex items-start justify-between mb-4">
+                <div className={cn(
+                    "p-2 rounded-lg",
+                    isHealthy ? "bg-green-100 text-green-700" : "bg-red-100 text-red-700"
+                )}>
+                    <Activity className="h-5 w-5" />
+                </div>
+                {!isLoading && (
+                    <span className={cn(
+                        "text-[10px] font-black uppercase tracking-widest px-2 py-1 rounded-full",
+                        isHealthy ? "bg-green-100 text-green-700" : "bg-red-100 text-red-700"
+                    )}>
+                        {isHealthy ? "Operational" : "Degraded"}
+                    </span>
+                )}
+            </div>
+            <div className="text-2xl font-black text-gray-900 mb-1">
+                {isLoading ? "..." : isHealthy ? "99.9% Up" : "Gateway Down"}
+            </div>
+            <div className="text-sm text-gray-500 font-medium">WhatsApp Infrastructure</div>
+        </div>
+    );
+}
 
 function MetricCard({
     title,
@@ -102,12 +139,7 @@ export default function OpsDashboardPage() {
                     icon={AlertCircle}
                     color="bg-orange-50"
                 />
-                <MetricCard
-                    title="Pending Disputes"
-                    value={operations?.disputes || 0}
-                    icon={ShieldAlert}
-                    color="bg-red-50"
-                />
+                <GatewayHealthCard />
             </div>
 
             {/* Quick Actions & Feed */}

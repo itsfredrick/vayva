@@ -275,7 +275,7 @@ async function start() {
           store: {
             include: { deliverySettings: true }
           },
-          OrderItem: true,
+          items: true,
           Shipment: true,
         },
       });
@@ -348,7 +348,7 @@ async function start() {
             phone: address.phone,
             address: address.address,
           },
-          items: order.OrderItem.map((i) => ({
+          items: order.items.map((i) => ({
             description: i.title,
             quantity: i.quantity,
           })),
@@ -510,6 +510,47 @@ async function start() {
               // Trigger Delivery
               await deliveryQueue.add("schedule", { orderId });
               console.log(`[DELIVERY] Enqueued for Order ${orderId}`);
+            }
+          }
+        } else if (eventType === "charge.failed" || eventType === "invoice.payment_failed" || eventType === "subscription.disable") {
+          const storeId = metadata?.storeId;
+          const purchaseType = metadata?.type;
+
+          if (storeId && purchaseType === "subscription") {
+            const gracePeriodDays = 5;
+            const gracePeriodEndsAt = new Date();
+            gracePeriodEndsAt.setDate(gracePeriodEndsAt.getDate() + gracePeriodDays);
+
+            await prisma.subscription.update({
+              where: { storeId },
+              data: {
+                status: "GRACE_PERIOD" as any,
+                gracePeriodEndsAt,
+                updatedAt: new Date(),
+              },
+            });
+
+            console.log(`[DUNNING] Store ${storeId} entered GRACE_PERIOD until ${gracePeriodEndsAt.toISOString()}`);
+
+            // Trigger WhatsApp Alert to Merchant
+            // We need to fetch the store owner's phone or use the default notification logic
+            const store = await prisma.store.findUnique({
+              where: { id: storeId },
+              include: {
+                memberships: {
+                  where: { role: "OWNER" },
+                  include: { User: true }
+                }
+              }
+            });
+
+            const ownerPhone = (store?.memberships[0] as any)?.User?.phone;
+            if (ownerPhone) {
+              await whatsappOutboundQueue.add("send", {
+                to: ownerPhone,
+                body: `🚨 Your Vayva subscription payment failed. We've kept your store LIVE for now, but you have a 5-day grace period to update your card. \n\nClick here to fix it: ${process.env.NEXT_PUBLIC_APP_URL}/dashboard/billing`,
+                storeId,
+              });
             }
           }
         }

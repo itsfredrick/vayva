@@ -15,7 +15,7 @@ export const FEES = {
     WITHDRAWAL_PERCENTAGE: 5, // 5% fee on every withdrawal
 };
 
-export type PlanKey = "free" | "growth" | "pro";
+export type PlanKey = "free" | "starter" | "pro";
 
 export type Plan = {
     key: PlanKey;
@@ -44,8 +44,8 @@ export const PLANS: Plan[] = [
         ctaLabel: "Start Free",
     },
     {
-        key: "growth",
-        name: "Growth",
+        key: "starter",
+        name: "Starter",
         monthlyAmount: 30000,
         tagline: "For growing brands.",
         bullets: [
@@ -54,7 +54,7 @@ export const PLANS: Plan[] = [
             "Service & Digital Modules",
             "Remove Branding",
         ],
-        ctaLabel: "Upgrade to Growth",
+        ctaLabel: "Upgrade to Starter",
         featured: true,
     },
     {

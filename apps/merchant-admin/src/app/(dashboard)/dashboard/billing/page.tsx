@@ -71,16 +71,15 @@ export default function BillingPage() {
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
-        {[PLANS.growth, PLANS.pro].map((plan) => {
+        {([PLANS.starter, PLANS.pro] as any[]).map((plan) => {
           const isCurrent = currentPlan === plan.slug;
           return (
             <div
               key={plan.slug}
-              className={`border rounded-2xl p-8 relative ${
-                isCurrent
+              className={`border rounded-2xl p-8 relative ${isCurrent
                   ? "border-black ring-1 ring-black bg-gray-50"
                   : "border-gray-200 bg-white"
-              }`}
+                }`}
             >
               {isCurrent && (
                 <div className="absolute top-4 right-4 bg-black text-white text-xs px-2 py-1 rounded font-bold uppercase">
@@ -92,6 +91,9 @@ export default function BillingPage() {
               <div className="text-3xl font-bold mb-4">
                 {formatMoneyNGN(plan.priceNgn)}
                 <span className="text-sm font-normal text-gray-500">/mo</span>
+                <div className="text-xs text-blue-600 mt-1 font-medium italic">
+                  + 7.5% VAT ({formatMoneyNGN(Math.round(plan.priceNgn * 0.075))})
+                </div>
               </div>
 
               <ul className="space-y-3 mb-8 text-sm text-gray-600">
@@ -114,11 +116,10 @@ export default function BillingPage() {
               <button
                 onClick={() => handleSubscribe(plan.slug)}
                 disabled={isCurrent || !!processing}
-                className={`w-full py-3 rounded-lg font-bold ${
-                  isCurrent
+                className={`w-full py-3 rounded-lg font-bold ${isCurrent
                     ? "bg-gray-200 text-gray-500 cursor-default"
                     : "bg-black text-white hover:bg-gray-800"
-                }`}
+                  }`}
               >
                 {isCurrent
                   ? "Active"

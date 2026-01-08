@@ -12,3 +12,6 @@ export * from "./Stepper";
 export * from "./StatusChip";
 export * from "./GlassPanel";
 export * from "./PWAInstallPrompt";
+export * from "./Label";
+export * from "./Textarea";
+export * from "./Select";

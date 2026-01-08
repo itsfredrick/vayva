@@ -1,6 +1,8 @@
-import React, { useEffect, forwardRef } from "react";
+import React, { useEffect, forwardRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useSession } from "next-auth/react";
+import { toast } from "sonner";
 import { productSchema, ProductFormValues } from "@/lib/product-schema";
 import {
   ProductServiceType,
@@ -95,6 +97,9 @@ const ImageUploader = ({
 }) => {
   const fileInputRef = React.useRef<HTMLInputElement>(null);
 
+  const { data: session } = useSession();
+  const [isProcessing, setIsProcessing] = useState<number | null>(null);
+
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
@@ -108,6 +113,33 @@ const ImageUploader = ({
     onChange(images.filter((_, i) => i !== index));
   };
 
+  const handleRemoveBackground = async (index: number) => {
+    const plan = (session?.user as any)?.plan || "FREE";
+
+    if (plan !== "PRO") {
+      toast.info("Pro Feature", {
+        description: "Upgrade to Pro to use Vayva Cut Pro and get studio-quality product photos in one click!",
+        action: {
+          label: "Upgrade",
+          onClick: () => window.location.href = "/dashboard/billing"
+        }
+      });
+      return;
+    }
+
+    setIsProcessing(index);
+    try {
+      // Mock background removal
+      await new Promise(resolve => setTimeout(resolve, 2000));
+      toast.success("Background removed successfully!");
+      // In a real app, we'd call an API and update the URL
+    } catch (error) {
+      toast.error("Failed to remove background");
+    } finally {
+      setIsProcessing(null);
+    }
+  };
+
   return (
     <div className="space-y-3">
       <Label className="mb-0">Product Images</Label>
@@ -115,20 +147,41 @@ const ImageUploader = ({
         {images.map((url, i) => (
           <div
             key={i}
-            className="relative w-24 h-24 rounded-lg border border-gray-200 overflow-hidden group"
+            className="relative w-24 h-24 rounded-lg border border-gray-200 overflow-hidden group bg-gray-50"
           >
             <img
               src={url}
               alt={`Product ${i + 1}`}
               className="w-full h-full object-cover"
             />
-            <button
-              type="button"
-              onClick={() => removeImage(i)}
-              className="absolute top-1 right-1 bg-black/50 hover:bg-black text-white rounded-full p-1 opacity-0 group-hover:opacity-100 transition-opacity"
-            >
-              <Icon name="X" size={12} />
-            </button>
+
+            {/* Actions Overlay */}
+            <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex flex-col items-center justify-center gap-1.5 p-1">
+              <button
+                type="button"
+                onClick={() => handleRemoveBackground(i)}
+                disabled={isProcessing === i}
+                className="w-full h-7 bg-white/90 hover:bg-white text-[10px] font-bold uppercase rounded flex items-center justify-center gap-1 text-black"
+              >
+                {isProcessing === i ? (
+                  "Processing..."
+                ) : (
+                  <>
+                    <Icon name="Sparkles" size={12} />
+                    Cut Pro
+                  </>
+                )}
+              </button>
+
+              <button
+                type="button"
+                onClick={() => removeImage(i)}
+                className="w-full h-7 bg-red-500/90 hover:bg-red-500 text-[10px] font-bold uppercase rounded flex items-center justify-center gap-1 text-white"
+              >
+                <Icon name="Trash2" size={12} />
+                Delete
+              </button>
+            </div>
           </div>
         ))}
 

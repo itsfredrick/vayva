@@ -2,6 +2,7 @@
 
 import React from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { Button, Icon } from "@vayva/ui";
 import { PLANS, formatNGN, FEES } from "@/config/pricing";
 import { APP_URL } from "@/lib/constants";
@@ -105,14 +106,21 @@ export default function PricingPage() {
                       <span className="text-5xl font-black text-[#0F172A]">
                         {formatNGN(plan.monthlyAmount)}
                       </span>
-                      {plan.monthlyAmount > 0 && (
-                        <span className="text-gray-400 font-bold">/mo</span>
+                      {plan.monthlyAmount > 0 ? (
+                        <div className="flex flex-col">
+                          <span className="text-gray-400 font-bold ml-1">/mo</span>
+                          <span className="text-[10px] text-gray-400 font-bold ml-1 font-mono">+ 7.5% VAT</span>
+                        </div>
+                      ) : (
+                        <span className="text-gray-400 font-bold ml-1">Free</span>
                       )}
                     </div>
-                    {plan.trialDays && !isAuthenticated && (
-                      <p className="text-xs font-bold text-[#22C55E] mt-2 italic">
-                        Includes {plan.trialDays} days full trial access
-                      </p>
+                    {plan.key === "free" && (
+                      <div className="inline-flex items-center gap-1 bg-green-50 px-2 py-1 rounded-md mt-2">
+                        <span className="text-[10px] font-black text-[#22C55E] uppercase tracking-wider italic">
+                          Includes 7-Day Full Pro Access
+                        </span>
+                      </div>
                     )}
                   </div>
 
@@ -160,6 +168,23 @@ export default function PricingPage() {
                 </div>
               )
             })}
+          </div>
+
+          {/* Trust Signal: Paystack Badge */}
+          <div className="mt-16 flex flex-col items-center justify-center gap-4 py-8 border-t border-gray-100">
+            <div className="flex items-center gap-3 opacity-60">
+              <span className="text-xs font-bold text-gray-400 uppercase tracking-widest">Payments Secured & Processed by</span>
+              <Image
+                src="/logos/partner-paystack.png"
+                alt="Paystack Verified"
+                width={100}
+                height={30}
+                className="grayscale hover:grayscale-0 transition-all opacity-80"
+              />
+            </div>
+            <p className="text-[10px] text-gray-400 max-w-md text-center">
+              All subscriptions are managed securely via Paystack. We do not store your card details on our servers. 7.5% VAT is added to all local transactions.
+            </p>
           </div>
         </div>
       </section>

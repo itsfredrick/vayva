@@ -60,7 +60,7 @@ function computeTitle(path: string, ctx?: Record<string, any>) {
   const pt = pageTypeFor(path);
   switch (pt) {
     case "home":
-      return "Vayva | Build, Sell & Scale Online in Nigeria";
+      return "Vayva | Nigeria's #1 AI Commerce Platform";
     case "templates_hub":
       return "Website Templates for Online Selling | Vayva";
     case "template_detail":
@@ -70,7 +70,7 @@ function computeTitle(path: string, ctx?: Record<string, any>) {
     case "market_category":
       return `${ctx?.categoryName ?? "Marketplace Category"} Stores in Nigeria | Vayva`;
     case "storefront":
-      return `${ctx?.storeName ?? "Store"} on Vayva`;
+      return `${ctx?.storeName ?? "Store"} | Buy Online in ${ctx?.city || "Nigeria"} via Vayva AI`;
     case "blog_hub":
       return "Vayva Blog | Guides for Selling Online";
     case "blog_post":
@@ -84,7 +84,7 @@ function computeDescription(path: string, ctx?: Record<string, any>) {
   const pt = pageTypeFor(path);
   switch (pt) {
     case "home":
-      return "Launch a professional online store with payments, delivery, and mobile-first templates built for Nigeria.";
+      return "Build, sell, and scale with Vayva—Nigeria's #1 AI-powered commerce platform. Professional storefronts, WhatsApp ordering, and automated payments for modern vendors.";
     case "template_detail":
       return (
         ctx?.templateDescription ??
@@ -93,7 +93,7 @@ function computeDescription(path: string, ctx?: Record<string, any>) {
     case "storefront":
       return (
         ctx?.storeDescription ??
-        "Shop products, pay securely, and get delivery updates—powered by Vayva."
+        `Shop at ${ctx?.storeName ?? "this store"} on Vayva—Nigeria's #1 AI Commerce platform. Fast WhatsApp ordering, secure payments, and reliable delivery in ${ctx?.city || "Nigeria"}.`
       );
     default:
       return (

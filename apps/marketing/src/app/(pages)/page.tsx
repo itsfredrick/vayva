@@ -23,17 +23,41 @@ import { PremiumButton } from "@/components/marketing/PremiumButton";
 import { APP_URL } from "@/lib/constants";
 import * as motion from "framer-motion/client";
 import dynamic from "next/dynamic";
+import { useSearchParams } from "next/navigation";
+
+const INDUSTRY_VARIANTS: Record<string, { headline: string; sub: string }> = {
+  food: {
+    headline: "Turn your Menu into a 24/7 Ordering Machine.",
+    sub: "Let Vayva's AI handle the back-and-forth orders on WhatsApp while you focus on the kitchen."
+  },
+  fashion: {
+    headline: "Sell Out your Collections on WhatsApp.",
+    sub: "Manage orders, sizes, and payments automatically. Your store stays open while you design."
+  },
+  realestate: {
+    headline: "Your WhatsApp is now a Property Showroom.",
+    sub: "Let AI filter leads and book viewings while you close the deals."
+  },
+  default: {
+    headline: "Turn your WhatsApp into a 24/7 Sales Machine.",
+    sub: "Stop fighting with chat bubbles. Let Vayva's AI auto-capture orders, track payments, and organize your business."
+  }
+};
 
 const TrustVisualSection = dynamic(() => import("@/components/marketing/sections/TrustVisualSection"), { ssr: false });
 const TemplatesDiscoverySection = dynamic(() => import("@/components/marketing/sections/TemplatesDiscoverySection"), { ssr: false });
 
 export default function LandingPage() {
+  const searchParams = useSearchParams();
+  const industry = searchParams.get("industry") || "default";
+  const content = INDUSTRY_VARIANTS[industry] || INDUSTRY_VARIANTS.default;
+
   return (
     <div className="min-h-screen bg-white" style={{ backgroundColor: "#ffffff", color: "#0f172a" }}>
       <SchemaOrg type="SoftwareApplication" />
 
       {/* Hero Section */}
-      <section className="pt-4 pb-20 px-4">
+      <section className="pt-12 pb-20 px-4">
         <motion.div
           initial={{ opacity: 0, scale: 0.95 }}
           animate={{ opacity: 1, scale: 1 }}
@@ -49,23 +73,53 @@ export default function LandingPage() {
           </div>
 
           <h1 className="text-5xl md:text-7xl font-bold text-[#0F172A] mb-8 leading-[1.1] tracking-tight">
-            WhatsApp is for chat.
-            <br />
-            <span className="text-[#22C55E]">Vayva</span> is for business.
+            {content.headline}
           </h1>
 
           <p className="text-xl text-[#64748B] mb-10 max-w-3xl mx-auto leading-relaxed">
-            Stop fighting with chat bubbles. Let Vayva's AI auto-capture orders,
-            track payments, and organize your business so you can finally relax.
+            {content.sub}
           </p>
 
-          <div className="flex flex-col sm:flex-row gap-4 justify-center mb-6 items-center">
+          <div className="flex flex-col sm:flex-row gap-4 justify-center mb-12 items-center">
             <a href={`${APP_URL}/signup`}>
               <PremiumButton data-testid="landing-get-started">
                 Start selling for free
               </PremiumButton>
             </a>
             <HeroDownloadButton />
+          </div>
+
+          {/* Mini-Preview / "Aha!" Moment */}
+          <div className="relative max-w-5xl mx-auto mb-20">
+            <div className="absolute -inset-0.5 bg-gradient-to-r from-[#22C55E] to-blue-500 rounded-[40px] blur opacity-20 animate-pulse"></div>
+            <div className="relative bg-white border border-gray-100 rounded-[40px] shadow-2xl p-4 md:p-8">
+              <div className="aspect-[16/10] md:aspect-[16/8] bg-gray-50 rounded-[32px] overflow-hidden relative border border-gray-100">
+                <Image
+                  src="/images/dashboard-demo-alt.png"
+                  alt="Vayva AI Demo"
+                  fill
+                  priority
+                  className="object-cover"
+                />
+                {/* Floating Notification Simulation */}
+                <motion.div
+                  initial={{ x: 100, opacity: 0 }}
+                  animate={{ x: 0, opacity: 1 }}
+                  transition={{ delay: 2, duration: 0.5 }}
+                  className="absolute top-8 right-8 bg-white/90 backdrop-blur-md p-4 rounded-2xl shadow-xl border border-green-100 max-w-[240px]"
+                >
+                  <div className="flex items-center gap-3">
+                    <div className="w-8 h-8 rounded-full bg-green-500 flex items-center justify-center">
+                      <MessageSquareText className="w-4 h-4 text-white" />
+                    </div>
+                    <div>
+                      <p className="text-[10px] font-black text-gray-400 uppercase">Incoming Order</p>
+                      <p className="text-sm font-bold text-gray-900">Captured via WhatsApp AI</p>
+                    </div>
+                  </div>
+                </motion.div>
+              </div>
+            </div>
           </div>
 
           <p className="text-sm font-semibold text-gray-500 uppercase tracking-wider mb-6">

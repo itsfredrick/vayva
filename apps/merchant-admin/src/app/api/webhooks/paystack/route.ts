@@ -68,6 +68,51 @@ export async function POST(req: NextRequest) {
       backoff: { type: "exponential", delay: 1000 },
     });
 
+    // 3. INTEGRATION: WhatsApp Receipt (If 'charge.success')
+    // We do this immediately here for Reliability in this specific task scope
+    // Ideally this goes into the Worker, but we are ensuring it works now.
+    if (eventType === "charge.success" && data.customer?.phone) {
+      try {
+        // Attempt to find Order ID from metadata or fetch via reference
+        // Metadata often has { orderId: "..." }
+        const orderId = data.metadata?.orderId || data.reference;
+        const amount = Number(data.amount) / 100; // Paystack is in Kobo
+        const currency = data.currency;
+
+        // Fetch Store if possible? Metadata should ideally have storeId
+        // For demo, we might need to lookup or pass minimal info.
+        // Assuming we have subdomain in metadata or we let the receipt API handle defaults.
+
+        let storeName = "Vayva Store";
+        let subdomain = "";
+
+        // Optimization: If metadata has storeId, fetch name?
+        // Avoiding prisma Store fetch here to keep webhook fast? 
+        // Let's fire-and-forget the receipt call.
+
+        // The Receipt API is internal, so we need full URL if calling it via fetch
+        // OR we define a shared function? simpler to fetch for now.
+        const appUrl = process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000";
+
+        fetch(`${appUrl}/api/integrations/whatsapp/send-receipt`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            orderId,
+            amount,
+            currency,
+            customerName: data.metadata?.customerName || data.customer?.first_name,
+            customerPhone: data.customer?.phone, // Paystack standard field
+            storeName: data.metadata?.storeName, // Expecting this in payment metadata
+            subdomain: data.metadata?.subdomain // Expecting this in payment metadata
+          })
+        }).catch(err => console.error("Receipt Send Trigger Failed", err));
+
+      } catch (receiptErr) {
+        console.error("Receipt logic error", receiptErr);
+      }
+    }
+
     return new NextResponse("OK", { status: 200 });
   } catch (e: any) {
     console.error("Webhook ingestion error:", e);

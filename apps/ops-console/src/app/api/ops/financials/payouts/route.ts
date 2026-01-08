@@ -19,20 +19,39 @@ export async function GET(request: Request) {
         orderBy: { createdAt: "desc" },
         include: {
             store: {
-                select: { id: true, name: true, slug: true }
+                select: {
+                    id: true,
+                    name: true,
+                    slug: true,
+                    bankBeneficiaries: {
+                        where: { isDefault: true },
+                        take: 1
+                    },
+                    walletPin: true // Check for security (existence or changedAt if we added that, current schema only has string)
+                }
             }
         },
         take: 100
     });
 
-    // Handle BigInt serialization
-    const data = withdrawals.map(w => ({
-        ...w,
-        amountKobo: w.amountKobo.toString(),
-        feeKobo: w.feeKobo.toString(),
-        amountNetKobo: w.amountNetKobo.toString(),
-        feePercent: w.feePercent.toString()
-    }));
+    // Handle BigInt serialization & Attach Bank Details
+    const data = withdrawals.map(w => {
+        const bank = w.store.bankBeneficiaries[0];
+        return {
+            ...w,
+            amountKobo: w.amountKobo.toString(),
+            feeKobo: w.feeKobo.toString(),
+            amountNetKobo: w.amountNetKobo.toString(),
+            feePercent: w.feePercent.toString(),
+            // Flatten bank details for UI
+            bankDetails: bank ? {
+                bankName: bank.bankName,
+                accountNumber: bank.accountNumber,
+                accountName: bank.accountName
+            } : null,
+            hasWalletPin: !!w.store.walletPin
+        };
+    });
 
     return NextResponse.json({ data });
 }

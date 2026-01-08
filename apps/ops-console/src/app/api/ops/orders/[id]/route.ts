@@ -18,7 +18,7 @@ export async function GET(
             include: {
                 store: { select: { id: true, name: true, logoUrl: true } },
                 Customer: { select: { id: true, firstName: true, lastName: true, email: true, phone: true } },
-                OrderItem: true,
+                items: true,
                 Shipment: true,
                 PaymentTransaction: { orderBy: { createdAt: "desc" } },
                 OrderEvent: { orderBy: { createdAt: "desc" } }

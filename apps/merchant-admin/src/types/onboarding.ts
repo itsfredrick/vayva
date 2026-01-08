@@ -1,165 +1,164 @@
 export type PlanType = "free" | "growth" | "pro";
 
 export type OnboardingStepId =
-  | "welcome"
-  | "setup-path"
-  | "identity"
-  | "business"
-  | "whatsapp"
-  | "templates"
-  | "products"
-  | "store-details"
-  | "brand"
-  | "order-flow"
-  | "payments"
-  | "delivery"
-  | "team"
-  | "kyc"
-  | "review"
-  | "resume"
-  | "store"
-  | "storefront"
+  | "welcome" // 1. Industry & Path
+  | "business" // 2. Business Profile
+  | "communication" // 3. Communication & Team
+  | "visuals" // 4. Visual Storefront
+  | "finance" // 5. Finance & Payments
+  | "logistics" // 6. Logistics
+  | "inventory" // 7. Product Entry
+  | "kyc" // 8. Verification (New)
+  | "review" // 9. Final Review
   | "complete";
 
+export interface InventoryProduct {
+  name: string;
+  price: number;
+  description?: string;
+  image?: string;
+  segment?: string;
+  attributes?: Record<string, any>;
+}
+
 export interface OnboardingState {
-  schemaVersion?: number; // Guardrail for schema evolution
+  schemaVersion?: number;
   isComplete: boolean;
   requiredComplete?: boolean;
+  isEditingMode?: boolean; // New Edit Loop flag
   currentStep: OnboardingStepId;
   lastUpdatedAt: string; // ISO date
   completedSteps?: string[]; // Track completed steps
   skippedSteps?: OnboardingStepId[]; // Steps skipped due to template fast path
   requiredSteps?: OnboardingStepId[]; // Steps strictly required by template
+  templateSelected?: boolean; // Legacy/Compat check
 
-  // Master Prompt Global State
-  whatsappConnected: boolean;
-  templateSelected: boolean;
-  kycStatus: "not_started" | "pending" | "verified" | "failed";
+  // Global / Cross-cutting
   referralCode?: string;
   plan: PlanType;
 
   // Step 1: Welcome & Intent
   intent?: {
-    segment: "retail" | "food" | "services" | "mixed";
+    segment:
+    | "retail"
+    | "food"
+    | "services"
+    | "digital"
+    | "wholesale"
+    | "real-estate"
+    | "events"
+    | "education"
+    | "non-profit"
+    | "other";
+    hasDelivery?: boolean; // Derived from segment
   };
 
-  // Step 2: Setup Path
+  // Step 1b: Setup Path
   setupPath?: "guided" | "blank";
 
-  // Step 3: Business Basics
+  // Step 2: Business Basics
   business?: {
-    name: string;
-    legalName?: string;
+    name: string; // Legal Name
+    storeName?: string; // Public name
+    slug?: string; // Store URL slug
     type?: "individual" | "registered";
     email: string; // Pre-filled where possible
-    category: string;
-    logo?: string; // Base64 or URL
-    location: {
+    description?: string;
+    location?: {
       city: string;
       state: string;
       country: string;
     };
-    description?: string;
+    category?: string; // Legacy/Compat
+    legalName?: string; // Alias for name
   };
 
-  // Step 4: WhatsApp (See whatsappConnected flag)
+  // Meta Settings
+  storeDetails?: {
+    slug?: string;
+    domainPreference?: "subdomain" | "custom";
+    publishStatus?: "draft" | "published";
+    storeName?: string;
+  };
+
+  // Step 3: Communication
+  whatsappConnected?: boolean;
   whatsapp?: {
     number?: string;
   };
+  team?: {
+    type: "solo" | "small" | "large";
+    invites: { email: string; role: "viewer" | "staff" | "admin" }[];
+    skipped?: boolean;
+  };
 
-  // Step 5: Template (Only if setupPath === 'guided')
+  // Step 4: Visuals
   template?: {
     id: string;
     name: string;
   };
-
-  // Step 5.5: Products
-  products?: {
-    hasAddedProducts: boolean;
-    count: number;
+  branding?: {
+    colors?: { primary: string; secondary: string };
+    brandColor?: string; // Legacy/Simple
+    logoUrl?: string;
+    coverUrl?: string;
   };
 
-  // Step 6: Order Flow
-  orderFlow?: {
-    statuses: string[]; // e.g. ['New', 'Confirmed', 'Paid', ...]
-  };
 
-  // Step 7: Payments
-  payments?: {
-    method: "transfer" | "cash" | "pos" | "mixed";
-    details?: {
-      bankName?: string;
-      accountNumber?: string;
-      accountName?: string;
+
+  // Step 5: Finance
+  finance?: {
+    bankName: string;
+    accountNumber: string;
+    accountName: string;
+    bankCode?: string; // Audit Fix: Added strict type
+    methods: {
+      bankTransfer: boolean;
+      cash: boolean;
+      pos: boolean;
     };
-    proofRequired: boolean; // "Attach proof"
     currency?: string;
-    settlementBank?: {
+    payoutScheduleAcknowledged?: boolean;
+    settlementBank?: { // Legacy/Compat for onboaring-sync
       bankName: string;
       accountNumber: string;
       accountName: string;
     };
-    payoutScheduleAcknowledged?: boolean;
   };
 
-  // Step 8: Delivery
-  delivery?: {
-    policy: "required" | "sometimes" | "pickup_only";
-    stages: string[]; // e.g. ['Preparing', 'Out for delivery', 'Delivered']
-    proofRequired: boolean;
+  // Step 6: Logistics
+  logistics?: {
+    policy: "pickup" | "delivery" | "both";
+    providers?: {
+      manual: boolean;
+      kwik: boolean;
+      gokada: boolean;
+    };
     pickupAddress?: string;
     defaultProvider?: string;
-    slaExpectation?: string;
   };
 
-  // Step 9: Team
-  team?: {
-    type: "solo" | "small" | "large";
-    invites?: Array<{ email: string; role: "viewer" | "staff" | "admin" }>;
-    skipped?: boolean;
-  };
+  // Step 7: Inventory
+  inventory?: InventoryProduct[];
 
-  // Step 10: KYC (See kycStatus flag)
-  kyc?: {
-    method?: "bvn" | "nin" | "govt_id";
-    data?: Record<string, any>;
-  };
-
-  // Branding
-  branding?: {
-    logo?: string;
-    logoUrl?: string; // Legacy support
-    coverUrl?: string; // Legacy support
-    brandColor?: string; // Legacy support
-    colors?: {
-      primary: string;
-      secondary: string;
-    };
-  };
-
-  // Store Details (Legacy/Parallel)
-  storeDetails?: {
-    storeName: string;
-    category: string;
-    state: string;
-    city: string;
-    slug: string;
-    domainPreference?: "subdomain" | "custom";
-    publishStatus?: "draft" | "published";
-  };
-
-  // Identity
+  // Step 8: KYC
+  // Step 8: KYC
+  kycStatus?: "not_started" | "pending" | "verified" | "failed";
   identity?: {
-    fullName?: string;
-    email?: string;
-    phone?: string;
-    role?: "owner" | "admin";
-    authMethod?: "email" | "google";
-    dob?: string;
+    fullName: string;
     bvn?: string;
     nin?: string;
-    idType?: string;
-    idNumber?: string;
-    idImage?: string;
+    cacNumber?: string;
+    dob?: string;
+    address?: string;
+    phone?: string;
+  };
+  kyc?: { // Legacy / specific step data container if needed, but identity is better
+    fullName?: string;
+    dob?: string;
+    address?: string;
+    nin?: string;
+    cacNumber?: string;
+    status?: "verified" | "pending" | "failed";
   };
 }

@@ -36,6 +36,24 @@ export async function GET(request: Request) {
         skip,
         orderBy: { createdAt: "desc" },
         include: {
+          merchantSubscription: true,
+          wallet: {
+            select: {
+              kycStatus: true,
+              isLocked: true
+            }
+          },
+          orders: {
+            where: {
+              createdAt: {
+                gte: new Date(Date.now() - 30 * 24 * 60 * 60 * 1000)
+              },
+              paymentStatus: "SUCCESS" // Assuming SUCCESS means paid volume
+            },
+            select: {
+              total: true
+            }
+          },
           tenant: {
             include: {
               TenantMembership: {
@@ -63,15 +81,18 @@ export async function GET(request: Request) {
     ]);
 
     const data = stores.map((store: any) => {
-      // Find owner from tenant memberships
+      // Find owner
       const members = store.tenant?.TenantMembership || [];
-      // Assuming default owner role string "OWNER", adjust if it is strictly typed enum
       const ownerMember = members.find((m: any) => m.role === "OWNER") || members[0];
       const owner = ownerMember?.User;
+      const ownerName = owner ? `${owner.firstName || ""} ${owner.lastName || ""}`.trim() : "Unknown";
 
-      const ownerName = owner
-        ? `${owner.firstName || ""} ${owner.lastName || ""}`.trim()
-        : "Unknown";
+      // Calculate GMV
+      const gmv30d = store.orders.reduce((sum: number, o: any) => sum + Number(o.total), 0);
+
+      // Determine Risk
+      const riskFlags = [];
+      if (store.wallet?.isLocked) riskFlags.push("WALLET_LOCKED");
 
       return {
         id: store.id,
@@ -79,11 +100,14 @@ export async function GET(request: Request) {
         slug: store.slug,
         ownerName: ownerName || "Unknown",
         ownerEmail: owner?.email || "Unknown",
-        status: "ACTIVE", // TODO: Map from store.onboardingStatus or similar?
+        status: "ACTIVE",
         plan: store.plan || "FREE",
-        kycStatus: "APPROVED", // Placeholder
-        riskFlags: [],
-        gmv30d: 0, // Placeholder needs aggregation
+        trialEndsAt: store.merchantSubscription?.trialEndsAt
+          ? store.merchantSubscription.trialEndsAt.toISOString()
+          : null,
+        kycStatus: store.wallet?.kycStatus || "NOT_SUBMITTED",
+        riskFlags,
+        gmv30d: gmv30d,
         lastActive: store.createdAt.toISOString(),
         createdAt: store.createdAt.toISOString(),
         location: "N/A",

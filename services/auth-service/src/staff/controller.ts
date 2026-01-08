@@ -49,7 +49,7 @@ export const inviteStaffHandler = async (
   const staffCount = await prisma.membership.count({
     where: { storeId: store.id },
   });
-  if (store.plan === "STARTER" || store.plan === "GROWTH") {
+  if (store.plan === "STARTER" || store.plan === "FREE") {
     return reply
       .status(403)
       .send({ error: "PLAN_LIMIT", message: "Upgrade to PRO to invite staff" });

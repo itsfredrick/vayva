@@ -28,6 +28,131 @@ interface AccountData {
     };
 }
 
+import {
+    Dialog,
+    DialogContent,
+    DialogDescription,
+    DialogFooter,
+    DialogHeader,
+    DialogTitle,
+    DialogTrigger,
+} from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { toast } from "sonner";
+import { Lock } from "lucide-react";
+
+// Inline Dialog Component for simplicity or move to separate file if cleaner
+function WalletPinDialog() {
+    const [open, setOpen] = useState(false);
+    const [loading, setLoading] = useState(false);
+
+    // For Change PIN
+    const [currentPin, setCurrentPin] = useState("");
+    const [newPin, setNewPin] = useState("");
+    const [confirmPin, setConfirmPin] = useState("");
+
+    const handleSubmit = async (e: React.FormEvent) => {
+        e.preventDefault();
+
+        if (newPin !== confirmPin) {
+            toast.error("New PINs do not match");
+            return;
+        }
+        if (newPin.length < 4 || newPin.length > 6) {
+            toast.error("PIN must be 4-6 digits");
+            return;
+        }
+
+        setLoading(true);
+        try {
+            const res = await fetch("/api/wallet/pin/setup", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ currentPin, newPin, confirmPin })
+            });
+            const data = await res.json();
+
+            if (res.ok) {
+                toast.success(data.message);
+                setOpen(false);
+                // Reset form
+                setCurrentPin("");
+                setNewPin("");
+                setConfirmPin("");
+            } else {
+                toast.error(data.error || "Failed to set PIN");
+            }
+        } catch (err) {
+            toast.error("Something went wrong");
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    return (
+        <Dialog open={open} onOpenChange={setOpen}>
+            <DialogTrigger asChild>
+                <Button variant="ghost" size="sm" className="w-full justify-between text-blue-600 px-0 hover:bg-transparent">
+                    Manage Wallet PIN <ChevronRight className="w-4 h-4" />
+                </Button>
+            </DialogTrigger>
+            <DialogContent>
+                <DialogHeader>
+                    <DialogTitle>Wallet Security PIN</DialogTitle>
+                    <DialogDescription>
+                        Set a 4-6 digit PIN to secure your wallet transactions. If changing, provide old PIN.
+                    </DialogDescription>
+                </DialogHeader>
+                <form onSubmit={handleSubmit} className="space-y-4 py-4">
+                    <div className="space-y-2">
+                        <Label htmlFor="current">Current PIN (Optional if setting first time)</Label>
+                        <Input
+                            id="current"
+                            type="password"
+                            placeholder="Current PIN"
+                            value={currentPin}
+                            onChange={(e: React.ChangeEvent<HTMLInputElement>) => setCurrentPin(e.target.value)}
+                            maxLength={6}
+                        />
+                    </div>
+                    <div className="grid grid-cols-2 gap-4">
+                        <div className="space-y-2">
+                            <Label htmlFor="new">New PIN</Label>
+                            <Input
+                                id="new"
+                                type="password"
+                                placeholder="New PIN"
+                                value={newPin}
+                                onChange={(e: React.ChangeEvent<HTMLInputElement>) => setNewPin(e.target.value)}
+                                maxLength={6}
+                                required
+                            />
+                        </div>
+                        <div className="space-y-2">
+                            <Label htmlFor="confirm">Confirm PIN</Label>
+                            <Input
+                                id="confirm"
+                                type="password"
+                                placeholder="Confirm"
+                                value={confirmPin}
+                                onChange={(e: React.ChangeEvent<HTMLInputElement>) => setConfirmPin(e.target.value)}
+                                maxLength={6}
+                                required
+                            />
+                        </div>
+                    </div>
+                    <DialogFooter>
+                        <Button type="submit" disabled={loading}>
+                            {loading ? "Saving..." : "Save PIN"}
+                        </Button>
+                    </DialogFooter>
+                </form>
+            </DialogContent>
+        </Dialog>
+    )
+}
+
 export default function AccountHubPage() {
     const [data, setData] = useState<AccountData | null>(null);
     const [loading, setLoading] = useState(true);
@@ -90,7 +215,7 @@ export default function AccountHubPage() {
             {/* Business Section */}
             <section className="space-y-4">
                 <h2 className="text-sm font-semibold text-gray-400 uppercase tracking-wider">Business Details</h2>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                     <Card className="p-6 flex flex-col justify-between space-y-4">
                         <div className="flex items-center gap-3">
                             <div className="p-2 bg-indigo-50 rounded-lg">
@@ -123,6 +248,20 @@ export default function AccountHubPage() {
                                 Manage Subscription <ChevronRight className="w-4 h-4" />
                             </Button>
                         </Link>
+                    </Card>
+
+                    {/* NEW: Wallet Security Card */}
+                    <Card className="p-6 flex flex-col justify-between space-y-4">
+                        <div className="flex items-center gap-3">
+                            <div className="p-2 bg-blue-50 rounded-lg">
+                                <Lock className="w-5 h-5 text-blue-600" />
+                            </div>
+                            <div>
+                                <p className="text-xs text-gray-500 font-medium">Wallet Security</p>
+                                <p className="font-bold text-gray-900">4-Digit PIN</p>
+                            </div>
+                        </div>
+                        <WalletPinDialog />
                     </Card>
                 </div>
             </section>

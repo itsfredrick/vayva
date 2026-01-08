@@ -81,17 +81,19 @@ export class PaystackService {
   ): Promise<{ authorization_url: string; reference: string }> {
     // Plan prices in kobo
     const planPrices: Record<string, number> = {
-      STARTER: 0,
-      GROWTH: 30000 * 100, // ₦30,000
+      FREE: 0,
+      STARTER: 30000 * 100, // ₦30,000
       PRO: 40000 * 100, // ₦40,000
     };
 
-    const amount = planPrices[newPlan] || 0;
+    const baseAmount = planPrices[newPlan] || 0;
 
-    if (amount === 0) {
+    if (baseAmount === 0) {
       throw new Error("Cannot create payment for free plan");
     }
 
+    const vatAmount = Math.round(baseAmount * 0.075);
+    const amount = baseAmount + vatAmount;
     const reference = `sub_${storeId}_${Date.now()}`;
 
     const response = await this.initializeTransaction({
@@ -102,6 +104,9 @@ export class PaystackService {
         storeId,
         newPlan,
         type: "subscription",
+        baseAmountKobo: baseAmount,
+        vatAmountKobo: vatAmount,
+        vatRate: 7.5,
       },
       callback_url: `${process.env.NEXTAUTH_URL}/dashboard/settings/subscription?payment=success`,
     });

@@ -5,17 +5,37 @@ import { CheckCircle, ArrowRight } from "lucide-react";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import Image from "next/image";
+import confetti from "canvas-confetti";
 
 export default function OnboardingSuccessPage() {
     const [windowSize, setWindowSize] = useState({ width: 0, height: 0 });
 
     useEffect(() => {
         setWindowSize({ width: window.innerWidth, height: window.innerHeight });
+
+        // Trigger Welcome Notification
+        const hasNotified = sessionStorage.getItem("has_notified_onboarding");
+        if (!hasNotified) {
+            fetch("/api/notifications/trigger", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ event: "onboarding_complete" })
+            }).catch(e => console.error("Notification trigger failed", e));
+            sessionStorage.setItem("has_notified_onboarding", "true");
+        }
+
+        // Fire Confetti!
+        confetti({
+            particleCount: 150,
+            spread: 70,
+            origin: { y: 0.6 },
+            colors: ['#46ec13', '#000000', '#ffffff'] // Brand colors
+        });
     }, []);
 
     return (
         <div className="min-h-screen flex flex-col items-center justify-center bg-white p-6 relative overflow-hidden">
-            {/* Celebration Effect - Confetti removed for simplicity */}
+            {/* Celebration Effect Active */}
 
             <div className="max-w-md w-full text-center space-y-8 z-10">
                 <div className="flex justify-center mb-6">

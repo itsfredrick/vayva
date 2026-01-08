@@ -12,12 +12,18 @@ export async function GET(
       where: { id: id },
       include: {
         ProductImage: true,
+        InventoryItem: {
+          select: { available: true }
+        }
       },
     });
 
     if (!product) {
       return NextResponse.json({ error: "Product not found" }, { status: 404 });
     }
+
+    // Calculate total stock from all inventory locations
+    const stockLevel = product.InventoryItem.reduce((sum: number, item: any) => sum + item.available, 0);
 
     const publicProduct = {
       id: product.id,
@@ -34,7 +40,7 @@ export async function GET(
       options: [],
       variants: [],
       trackInventory: product.trackInventory,
-      stockLevel: 100,
+      stockLevel: stockLevel,
     };
 
     return NextResponse.json(publicProduct);

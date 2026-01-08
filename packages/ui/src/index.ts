@@ -23,3 +23,6 @@ export * from "./components/Modal";
 export * from "./components/Avatar";
 export * from "./components/PWAInstallPrompt";
 export * from "./components/ErrorBoundary";
+export * from "./components/Label";
+export * from "./components/Textarea";
+export * from "./components/Select";

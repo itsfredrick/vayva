@@ -73,7 +73,7 @@ export async function POST(req: NextRequest) {
           customerPhone: customer?.phone,
           customerNote: customer?.note,
           deliveryMethod: deliveryMethod || "shipping",
-          OrderItem: {
+          items: {
             create: items.map((item: any) => ({
               title: item.title,
               quantity: item.quantity,

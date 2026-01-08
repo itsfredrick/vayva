@@ -39,6 +39,8 @@ interface SupportTicket {
     storeId: string;
     storeSlug: string;
     ticketMessages: TicketMessage[];
+    aiSummary?: string;
+    assignedToUserId?: string;
     createdAt: string;
 }
 
@@ -52,6 +54,7 @@ export default function TicketDetailPage() {
     const [replyText, setReplyText] = useState("");
     const [sending, setSending] = useState(false);
     const [updatingStatus, setUpdatingStatus] = useState(false);
+    const [performingAction, setPerformingAction] = useState(false);
 
     useEffect(() => {
         fetchTicket();
@@ -79,6 +82,27 @@ export default function TicketDetailPage() {
             toast.error("Failed to load ticket details");
         } finally {
             setLoading(false);
+        }
+    };
+
+    const handleAction = async (action: string, data: any = {}) => {
+        setPerformingAction(true);
+        try {
+            const res = await fetch(`/api/ops/support/${id}`, {
+                method: "PATCH",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(data),
+            });
+
+            if (!res.ok) throw new Error(`Failed to perform ${action}`);
+
+            const json = await res.json();
+            setTicket(prev => prev ? ({ ...prev, ...data }) : null);
+            toast.success(`${action} successful`);
+        } catch (error: any) {
+            toast.error(error.message);
+        } finally {
+            setPerformingAction(false);
         }
     };
 
@@ -112,27 +136,13 @@ export default function TicketDetailPage() {
     const toggleStatus = async () => {
         if (!ticket) return;
         const newStatus = ticket.status === "open" ? "closed" : "open";
-
-        setUpdatingStatus(true);
-        try {
-            const res = await fetch(`/api/ops/support/${id}`, {
-                method: "PATCH",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ status: newStatus }),
-            });
-
-            if (!res.ok) throw new Error("Failed to update status");
-
-            setTicket(prev => prev ? ({ ...prev, status: newStatus }) : null);
-            toast.success(`Ticket ${newStatus === 'closed' ? 'Closed' : 'Re-opened'}`);
-        } catch (error) {
-            toast.error("Failed to update status");
-        } finally {
-            setUpdatingStatus(false);
-        }
+        await handleAction(newStatus === 'closed' ? 'Close Ticket' : 'Re-open Ticket', { status: newStatus });
     };
 
-    if (loading) return <div className="p-12 text-center text-gray-500">Loading conversation...</div>;
+    if (loading) return <div className="p-12 text-center text-gray-500 flex flex-col items-center gap-3">
+        <RefreshCw className="animate-spin text-indigo-600" />
+        Loading conversation...
+    </div>;
     if (!ticket) return <div className="p-12 text-center text-red-500">Ticket not found</div>;
 
     return (
@@ -147,15 +157,23 @@ export default function TicketDetailPage() {
                         <h1 className="text-lg font-bold text-gray-900 flex items-center gap-2">
                             {ticket.subject}
                             <span className={`px-2 py-0.5 rounded text-xs uppercase font-bold tracking-wide ${ticket.status === 'open'
-                                    ? 'bg-green-100 text-green-700'
-                                    : 'bg-gray-100 text-gray-600'
+                                ? 'bg-green-100 text-green-700'
+                                : 'bg-gray-100 text-gray-600'
                                 }`}>
                                 {ticket.status}
                             </span>
+                            <span className={cn(
+                                "text-[10px] px-2 py-0.5 rounded font-bold uppercase",
+                                ticket.priority === 'urgent' ? 'bg-red-100 text-red-700' :
+                                    ticket.priority === 'high' ? 'bg-orange-100 text-orange-700' :
+                                        'bg-blue-100 text-blue-700'
+                            )}>
+                                {ticket.priority}
+                            </span>
                         </h1>
                         <div className="flex items-center gap-3 text-xs text-gray-500 mt-1">
-                            <span className="flex items-center gap-1">
-                                <Building2 size={12} /> {ticket.storeName}
+                            <span className="flex items-center gap-1 font-medium text-indigo-600 hover:underline">
+                                <Building2 size={12} /> <Link href={`/ops/merchants/${ticket.storeSlug}`}>{ticket.storeName}</Link>
                             </span>
                             <span>•</span>
                             <span>ID: {ticket.id}</span>
@@ -167,23 +185,31 @@ export default function TicketDetailPage() {
 
                 <div className="flex items-center gap-3">
                     <button
-                        onClick={fetchTicket}
-                        className="p-2 text-gray-400 hover:text-gray-600 hover:bg-gray-100 rounded-full transition-colors"
-                        title="Refresh"
+                        onClick={() => handleAction('Assign to Me', { assignedToUserId: 'current-user-id' })} // Mock ID
+                        disabled={performingAction || !!ticket.assignedToUserId}
+                        className="px-3 py-1.5 border border-gray-200 rounded text-xs font-semibold text-gray-700 hover:bg-gray-50 disabled:opacity-50"
                     >
-                        <RefreshCw size={18} />
+                        {ticket.assignedToUserId ? 'Assigned' : 'Assign to Me'}
                     </button>
                     <button
+                        onClick={() => handleAction('Escalate to Engineering', { priority: 'urgent' })}
+                        disabled={performingAction || ticket.priority === 'urgent'}
+                        className="px-3 py-1.5 border border-red-200 text-red-700 rounded text-xs font-semibold hover:bg-red-50 disabled:opacity-50"
+                    >
+                        Escalate to Engineering
+                    </button>
+                    <div className="h-6 w-px bg-gray-200 mx-1" />
+                    <button
                         onClick={toggleStatus}
-                        disabled={updatingStatus}
+                        disabled={performingAction}
                         className={`px-4 py-2 rounded-lg text-sm font-medium flex items-center gap-2 border transition-colors ${ticket.status === 'open'
-                                ? 'bg-white border-gray-200 text-gray-700 hover:bg-gray-50'
-                                : 'bg-green-600 border-transparent text-white hover:bg-green-700'
+                            ? 'bg-white border-gray-200 text-gray-700 hover:bg-gray-50'
+                            : 'bg-green-600 border-transparent text-white hover:bg-green-700'
                             }`}
                     >
                         {ticket.status === 'open' ? (
                             <>
-                                <Archive size={16} /> Close Ticket
+                                <CheckCircle2 size={16} /> Mark Resolved
                             </>
                         ) : (
                             <>
@@ -193,6 +219,19 @@ export default function TicketDetailPage() {
                     </button>
                 </div>
             </div>
+
+            {/* AI Summary Banner */}
+            {ticket.aiSummary && (
+                <div className="bg-purple-50 border-b border-purple-100 px-6 py-3 flex items-start gap-3">
+                    <Bot className="text-purple-600 shrink-0 mt-0.5" size={18} />
+                    <div>
+                        <span className="text-[10px] font-bold text-purple-600 uppercase tracking-wider block mb-0.5">AI Insights (Llama3-70B)</span>
+                        <p className="text-sm text-purple-900 font-medium leading-tight italic">
+                            "{ticket.aiSummary}"
+                        </p>
+                    </div>
+                </div>
+            )}
 
             {/* Messages Area */}
             <div className="flex-1 overflow-y-auto p-6 space-y-6">

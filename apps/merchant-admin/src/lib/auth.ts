@@ -33,7 +33,13 @@ export const authOptions: any = {
           include: {
             memberships: {
               where: { status: "active" },
-              include: { store: true },
+              include: {
+                store: {
+                  include: {
+                    merchantSubscription: true,
+                  },
+                },
+              },
             },
           },
         });
@@ -67,6 +73,8 @@ export const authOptions: any = {
           storeId: primaryMembership.storeId,
           storeName: primaryMembership.store.name,
           role: primaryMembership.role,
+          plan: primaryMembership.store.plan || "FREE",
+          trialEndsAt: (primaryMembership.store as any).merchantSubscription?.trialEndsAt,
         };
       },
     }),
@@ -78,6 +86,8 @@ export const authOptions: any = {
         token.storeId = user.storeId;
         token.storeName = user.storeName;
         token.role = user.role;
+        token.plan = user.plan;
+        token.trialEndsAt = user.trialEndsAt;
       }
       return token;
     },
@@ -88,6 +98,8 @@ export const authOptions: any = {
         (session.user as any).storeId = token.storeId;
         (session.user as any).storeName = token.storeName;
         (session.user as any).role = token.role;
+        (session.user as any).plan = token.plan;
+        (session.user as any).trialEndsAt = token.trialEndsAt;
       }
       return session;
     },

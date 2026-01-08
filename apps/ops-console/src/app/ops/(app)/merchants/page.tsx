@@ -30,6 +30,7 @@ interface Merchant {
     lastActive: string;
     createdAt: string;
     location: string;
+    trialEndsAt: string | null;
 }
 
 interface Meta {
@@ -264,6 +265,7 @@ export default function MerchantsListPage() {
                             <th className="px-6 py-3">Plan</th>
                             <th className="px-6 py-3">KYC</th>
                             <th className="px-6 py-3">GMV (30d)</th>
+                            <th className="px-6 py-3">Trial Status</th>
                             <th className="px-6 py-3">Risk</th>
                             <th className="px-6 py-3">Last Active</th>
                             <th className="px-6 py-3 text-right">Actions</th>
@@ -308,6 +310,24 @@ export default function MerchantsListPage() {
                                             <TrendingUp className="h-4 w-4 text-green-500" />
                                             <span className="font-medium text-gray-900">₦{merchant.gmv30d.toLocaleString()}</span>
                                         </div>
+                                    </td>
+                                    <td className="px-6 py-4">
+                                        {merchant.plan === "FREE" && merchant.trialEndsAt ? (() => {
+                                            const remaining = new Date(merchant.trialEndsAt).getTime() - Date.now();
+                                            const days = Math.floor(remaining / (1000 * 60 * 60 * 24));
+                                            const hours = Math.floor((remaining % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+
+                                            const isUrgent = remaining < (48 * 60 * 60 * 1000) && remaining > 0;
+                                            const isExpired = remaining <= 0;
+
+                                            if (isExpired) return <span className="text-red-600 font-bold border border-red-200 bg-red-50 px-2 py-0.5 rounded text-xs">Expired</span>;
+
+                                            return (
+                                                <div className={`text-xs font-medium px-2 py-0.5 rounded border ${isUrgent ? "bg-orange-50 text-orange-700 border-orange-200 animate-pulse" : "bg-blue-50 text-blue-700 border-blue-200"}`}>
+                                                    {days}d {hours}h left
+                                                </div>
+                                            );
+                                        })() : <span className="text-gray-400 text-xs">—</span>}
                                     </td>
                                     <td className="px-6 py-4">
                                         {merchant.riskFlags.length > 0 ? (

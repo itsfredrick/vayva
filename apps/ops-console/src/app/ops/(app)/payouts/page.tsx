@@ -91,12 +91,26 @@ export default function PayoutsPage() {
                                         <span className="block text-[10px] text-gray-400">({w.feePercent}%)</span>
                                     </td>
                                     <td className="px-6 py-4">
-                                        <div className="flex items-center gap-2 text-gray-600">
-                                            <Landmark size={14} />
-                                            <span className="text-xs">
-                                                {w.bankAccountId ? "Saved Bank Acct" : "N/A"}
-                                            </span>
-                                        </div>
+                                        {(w as any).bankDetails ? (
+                                            <div className="flex flex-col text-xs">
+                                                <span className="font-bold text-gray-900">{(w as any).bankDetails.bankName}</span>
+                                                <span className="font-mono text-gray-600">{(w as any).bankDetails.accountNumber}</span>
+                                                <span className="text-gray-400 truncate max-w-[150px]" title={(w as any).bankDetails.accountName}>
+                                                    {(w as any).bankDetails.accountName}
+                                                </span>
+                                            </div>
+                                        ) : (
+                                            <div className="flex items-center gap-1 text-red-600 bg-red-50 px-2 py-1 rounded w-fit">
+                                                <AlertTriangle size={14} />
+                                                <span className="text-xs font-bold">MISSING BENEFICIARY</span>
+                                            </div>
+                                        )}
+                                        {!(w as any).hasWalletPin && (
+                                            <div className="mt-1 flex items-center gap-1 text-amber-600">
+                                                <AlertTriangle size={10} />
+                                                <span className="text-[10px]">No Security PIN</span>
+                                            </div>
+                                        )}
                                     </td>
                                     <td className="px-6 py-4">{getStatusBadge(w.status)}</td>
                                     <td className="px-6 py-4 text-gray-500 text-xs">{new Date(w.createdAt).toLocaleDateString()}</td>

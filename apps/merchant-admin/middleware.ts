@@ -1,5 +1,6 @@
 import { NextResponse, type NextRequest } from "next/server";
 import { resolveRequest } from "@/lib/routing/tenant-engine";
+import { getToken } from "next-auth/jwt";
 
 // TODO: In production, move this to a Redis fetch or Edge Config.
 const getTenantMap = async () => ({
@@ -45,9 +46,49 @@ export async function middleware(request: NextRequest) {
     }
   }
 
+  // 1. Auth Guard (Merchant Admin)
+  const protectedPaths = [
+    "/onboarding",
+    "/dashboard",
+    "/settings",
+    "/control-center",
+    "/", // Protect root to force auth check/redirect
+  ];
+  const isProtected =
+    path === "/" || protectedPaths.some((p) => path.startsWith(p) && p !== "/");
+
+  const tokenData = await getToken({
+    req: request,
+    secret: process.env.NEXTAUTH_SECRET,
+  });
+
+  if (isProtected && !tokenData) {
+    const url = request.nextUrl.clone();
+    url.pathname = "/signin";
+    url.searchParams.set("callbackUrl", path);
+    return NextResponse.redirect(url);
+  }
+
+  // 2. Trial Expiry Hard-Lock
+  if (tokenData && tokenData.plan === "FREE" && tokenData.trialEndsAt) {
+    const trialEndsAt = new Date(tokenData.trialEndsAt as string);
+    const isExpired = new Date() > trialEndsAt;
+
+    // Allow only billing page if expired
+    const isBillingPage = path.startsWith("/dashboard/billing");
+    const isTrialExpiredPage = path === "/billing/trial-expired";
+
+    if (isExpired && !isBillingPage && !isTrialExpiredPage) {
+      const url = request.nextUrl.clone();
+      url.pathname = "/billing/trial-expired";
+      url.searchParams.set("expired", "true");
+      return NextResponse.redirect(url);
+    }
+  }
+
   const response = NextResponse.next();
 
-  // 1. Security Headers
+  // 3. Security Headers
   response.headers.set("X-DNS-Prefetch-Control", "on");
   response.headers.set(
     "Strict-Transport-Security",
@@ -78,39 +119,9 @@ export async function middleware(request: NextRequest) {
 
   response.headers.set("Content-Security-Policy", cspHeader);
 
-  // 2. Auth Guard (Merchant Admin)
-  const protectedPaths = [
-    "/onboarding",
-    "/dashboard",
-    "/settings",
-    "/control-center",
-    "/", // Protect root to force auth check/redirect
-  ];
-  // Strict check for root path to avoid matching everything
-  const isProtected =
-    path === "/" || protectedPaths.some((p) => path.startsWith(p) && p !== "/");
-
-  if (isProtected) {
-    // Check for both legacy NextAuth and our new Custom Session
-    const token =
-      request.cookies.get("vayva_session") ||
-      request.cookies.get("next-auth.session-token") ||
-      request.cookies.get("__Secure-next-auth.session-token");
-
-    if (!token) {
-      const url = request.nextUrl.clone();
-      // Redirect to signin if not marketing landing or public routes
-      url.pathname = "/signin";
-      url.searchParams.set("callbackUrl", path);
-      return NextResponse.redirect(url);
-    }
-  }
-
   return response;
 }
 
 export const config = {
-  matcher: [
-    "/((?!_next/static|_next/image|favicon.ico).*)",
-  ],
+  matcher: ["/((?!_next/static|_next/image|favicon.ico).*)"],
 };

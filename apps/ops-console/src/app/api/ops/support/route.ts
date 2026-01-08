@@ -9,55 +9,59 @@ export async function GET(request: Request) {
     }
 
     const { searchParams } = new URL(request.url);
-    const status = searchParams.get("status") || "OPEN";
-    const category = searchParams.get("category");
+    const page = parseInt(searchParams.get("page") || "1");
+    const limit = parseInt(searchParams.get("limit") || "20");
+    const status = searchParams.get("status") || "open";
+    const q = searchParams.get("q") || "";
+    const priority = searchParams.get("priority") || "";
+
+    const skip = (page - 1) * limit;
 
     const where: any = {};
-    if (status !== "ALL") where.status = status;
-    if (category) where.category = category;
-
-    const cases = await prisma.supportCase.findMany({
-        where,
-        orderBy: { updatedAt: "desc" },
-        take: 50
-    });
-
-    // Manual join to fetch stores
-    const storeIds = [...new Set(cases.map(c => c.storeId))];
-    const stores = await prisma.store.findMany({
-        where: { id: { in: storeIds } },
-        select: { id: true, name: true, slug: true, logoUrl: true }
-    });
-
-    const storeMap = new Map(stores.map(s => [s.id, s]));
-
-    const data = cases.map(c => ({
-        ...c,
-        store: storeMap.get(c.storeId)
-    }));
-
-    return NextResponse.json({ data });
-}
-
-export async function POST(request: Request) {
-    const { user } = await OpsAuthService.requireSession();
-    if (!["OPS_OWNER", "OPS_ADMIN", "OPS_SUPPORT"].includes(user.role)) {
-        return NextResponse.json({ error: "Unauthorized" }, { status: 403 });
+    if (status !== "all") where.status = status;
+    if (priority) where.priority = priority;
+    if (q) {
+        where.OR = [
+            { subject: { contains: q, mode: 'insensitive' } },
+            { id: { contains: q, mode: 'insensitive' } },
+            { store: { name: { contains: q, mode: 'insensitive' } } }
+        ];
     }
 
-    const body = await request.json();
-    const { storeId, category, summary, description } = body;
+    const [tickets, total] = await Promise.all([
+        prisma.supportTicket.findMany({
+            where,
+            include: {
+                store: {
+                    select: { id: true, name: true, slug: true }
+                }
+            },
+            orderBy: [
+                { priority: 'desc' }, // Logic might be needed for actual priority sorting if it's enum-like
+                { createdAt: 'desc' }
+            ],
+            skip,
+            take: limit,
+        }),
+        prisma.supportTicket.count({ where })
+    ]);
 
-    const supportCase = await prisma.supportCase.create({
-        data: {
-            storeId,
-            category,
-            summary,
-            status: "OPEN",
-            createdByAdminId: user.id,
-            links: description ? { description } : undefined
+    const totalPages = Math.ceil(total / limit);
+
+    return NextResponse.json({
+        data: tickets.map(t => ({
+            ...t,
+            storeName: t.store.name,
+            lastMessageAt: t.lastMessageAt.toISOString(),
+            createdAt: t.createdAt.toISOString(),
+            // Mock messageCount for now
+            messageCount: 1
+        })),
+        meta: {
+            total,
+            page,
+            limit,
+            totalPages
         }
     });
-
-    return NextResponse.json({ success: true, data: supportCase });
 }

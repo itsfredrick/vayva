@@ -56,6 +56,14 @@ export async function POST(req: NextRequest) {
             role: "OWNER",
           },
         },
+        merchantSubscription: {
+          create: {
+            planSlug: "FREE",
+            status: "trial",
+            trialStartedAt: new Date(),
+            trialEndsAt: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000), // 7 days from now
+          } as any
+        }
       },
     });
 

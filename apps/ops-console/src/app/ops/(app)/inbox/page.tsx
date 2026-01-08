@@ -12,8 +12,12 @@ import {
     CheckCircle2,
     AlertCircle,
     MoreHorizontal,
+    MessageCircle,
+    Heart
 } from "lucide-react";
 import { formatDistanceToNow } from "date-fns";
+import { MerchantHappinessWidget } from "@/components/analytics/csat-widget";
+import { cn } from "@/lib/utils";
 
 interface SupportTicket {
     id: string;
@@ -119,14 +123,28 @@ export default function SupportInboxPage() {
 
     return (
         <div className="p-8 space-y-6">
-            {/* Header */}
-            <div className="flex justify-between items-center">
-                <div>
-                    <h1 className="text-3xl font-bold text-gray-900">Support Inbox</h1>
-                    <p className="text-gray-500 mt-1">Manage merchant support requests</p>
+            {/* Header & Stats */}
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start">
+                <div className="lg:col-span-2">
+                    <h1 className="text-4xl font-black text-gray-900 tracking-tight">Support Inbox</h1>
+                    <p className="text-gray-500 mt-1 text-lg">Manage and resolve merchant support requests.</p>
+
+                    <div className="flex items-center gap-6 mt-6">
+                        <div className="flex flex-col">
+                            <span className="text-2xl font-bold text-gray-900">{meta?.total || 0}</span>
+                            <span className="text-xs font-bold text-gray-400 uppercase tracking-widest">Total Tickets</span>
+                        </div>
+                        <div className="h-8 w-px bg-gray-200" />
+                        <div className="flex flex-col">
+                            <span className="text-2xl font-bold text-green-600">
+                                {data.filter(t => t.status === 'open').length}
+                            </span>
+                            <span className="text-xs font-bold text-gray-400 uppercase tracking-widest">Active Now</span>
+                        </div>
+                    </div>
                 </div>
-                <div className="text-sm text-gray-500">
-                    {meta && `${meta.total} tickets`}
+                <div className="lg:col-start-3">
+                    <MerchantHappinessWidget />
                 </div>
             </div>
 
@@ -147,8 +165,8 @@ export default function SupportInboxPage() {
                     <button
                         onClick={() => setShowFilters(!showFilters)}
                         className={`px-4 py-2.5 rounded-lg border text-sm font-medium transition-colors flex items-center gap-2 ${showFilters || (status !== "open") || priority
-                                ? "bg-indigo-50 border-indigo-200 text-indigo-700"
-                                : "bg-white border-gray-200 text-gray-700 hover:bg-gray-50"
+                            ? "bg-indigo-50 border-indigo-200 text-indigo-700"
+                            : "bg-white border-gray-200 text-gray-700 hover:bg-gray-50"
                             }`}
                     >
                         <Filter className="h-4 w-4" />

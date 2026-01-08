@@ -71,6 +71,8 @@ export const TemplateGallery = ({
               demand: "popular",
               setupTime: "5 mins",
               checkoutMode: "website",
+              layoutComponent: t.layoutComponent,
+              componentProps: t.componentProps,
             }) as any,
         );
         if (categoryTemplates.length === 0) return null;
@@ -104,11 +106,11 @@ export const TemplateGallery = ({
                   recommendation={
                     template.id === recommendedTemplateId
                       ? ({
-                          reason:
-                            recommendationReason ||
-                            "Recommended for your business",
-                          expectedImpact: "Best Match",
-                        } as any)
+                        reason:
+                          recommendationReason ||
+                          "Recommended for your business",
+                        expectedImpact: "Best Match",
+                      } as any)
                       : undefined
                   }
                 />
