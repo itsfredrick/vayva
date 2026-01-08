@@ -11,6 +11,9 @@ jobs:
     name: Production Readiness Scan
     runs-on: ubuntu-latest
     
+    env:
+      DATABASE_URL: ${{ secrets.DATABASE_URL }}
+    
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -70,8 +73,6 @@ jobs:
       
       - name: 🏃 Run Onboarding QA Audit (Headless)
         working-directory: apps/merchant-admin
-        env:
-          DATABASE_URL: ${{ secrets.DATABASE_URL }}
         run: |
           echo "DATABASE_URL length: ${#DATABASE_URL}"
           echo "DATABASE_URL first 20 chars: ${DATABASE_URL:0:20}..."
