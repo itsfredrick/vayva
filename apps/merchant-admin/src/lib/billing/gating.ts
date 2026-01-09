@@ -38,7 +38,7 @@ export const Gating = {
         requiredPlan: context?.requiredPlan,
         currentPlan: context?.currentPlan,
         // Default upgrade URL, can be overridden if we have specific flows
-        upgradeUrl: `/dashboard/billing?upgrade=${context?.requiredPlan || "pro"}`,
+        upgradeUrl: `/dashboard/billing?upgrade=${context?.requiredPlan || "PRO"}`,
         details: context?.details,
       },
     };
@@ -48,7 +48,7 @@ export const Gating = {
     return Gating.deny(
       "PLAN_REQUIRED",
       `${featureName} is only available on the Pro plan.`,
-      { requiredPlan: "pro", currentPlan },
+      { requiredPlan: "PRO", currentPlan },
     );
   },
 
@@ -56,7 +56,7 @@ export const Gating = {
     return Gating.deny(
       "SEAT_LIMIT",
       `You have reached the limit of ${limit} seats on your ${currentPlan} plan.`,
-      { requiredPlan: "pro", currentPlan, details: { limit } },
+      { requiredPlan: "PRO", currentPlan, details: { limit } },
     );
   },
 };

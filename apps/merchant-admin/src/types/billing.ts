@@ -62,8 +62,8 @@ export interface AddOn {
   featureKey: string; // e.g. 'custom_domain'
 }
 
-const growthPlan = PLANS.find((p) => p.key === "growth");
-const proPlan = PLANS.find((p) => p.key === "pro");
+const growthPlan = PLANS.find((p) => p.key === "GROWTH");
+const proPlan = PLANS.find((p) => p.key === "PRO");
 
 export const GROWTH_PRICE_NUM = growthPlan?.monthlyAmount || 25000;
 export const PRO_PRICE_NUM = proPlan?.monthlyAmount || 40000;

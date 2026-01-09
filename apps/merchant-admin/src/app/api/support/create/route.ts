@@ -29,9 +29,14 @@ export async function POST(request: Request) {
             // Quick look up for user's store
             const userWithStore = await prisma.user.findUnique({
                 where: { id: session.user.id },
-                include: { stores: { take: 1 } } // Assuming relation exist
+                include: {
+                    memberships: {
+                        take: 1,
+                        include: { store: true }
+                    }
+                }
             });
-            storeId = userWithStore?.stores[0]?.id;
+            storeId = userWithStore?.memberships[0]?.store?.id;
         }
 
         if (!storeId) {
@@ -82,7 +87,7 @@ export async function POST(request: Request) {
         // Send Email Notification
         if (session.user.email) {
             await resend.emails.send({
-                from: process.env.RESEND_FROM_EMAIL || "support@vayva.com",
+                from: process.env.RESEND_FROM_EMAIL || "support@vayva.ng",
                 to: session.user.email,
                 subject: `Ticket Received: ${subject} (#${ticket.id.slice(0, 8)})`,
                 html: `<p>Hi there,</p>

@@ -12,7 +12,7 @@ export async function POST(req: NextRequest) {
         const body = await req.json();
 
         // Log basic heartbeat (remove in prod high volume)
-        // console.log("[Webhook] Received event:", body.event);
+        // Log basic heartbeat (remove in prod high volume)
 
         if (body.event !== "messages.upsert") {
             return NextResponse.json({ status: "ignored_event" });
@@ -46,7 +46,7 @@ export async function POST(req: NextRequest) {
             return NextResponse.json({ status: "no_text_content" });
         }
 
-        // console.log(`[Webhook] Processing message for ${instance}: "${messageContent.substring(0, 20)}..."`);
+
 
         // 4. Identify Store
         // Format: "merchant_{storeId}" -> extract storeId

@@ -27,7 +27,7 @@ export async function GET(req: Request) {
                     lte: endOfWindow
                 },
                 store: {
-                    plan: "FREE"
+                    plan: "FREE" as any
                 }
             },
             include: {
@@ -42,7 +42,7 @@ export async function GET(req: Request) {
                         },
                         memberships: {
                             where: { role: "OWNER" },
-                            include: { user: true }
+                            include: { User: true }
                         }
                     }
                 }
@@ -53,7 +53,7 @@ export async function GET(req: Request) {
 
         for (const sub of targetSubscriptions) {
             const store = sub.store;
-            const owner = store.memberships[0]?.user;
+            const owner = store.memberships[0]?.User;
             if (!owner || !owner.phone) continue;
 
             const stats = {

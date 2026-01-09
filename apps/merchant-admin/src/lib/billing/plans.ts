@@ -1,8 +1,8 @@
 import { PLANS as CONFIG_PLANS, PlanKey } from "@/config/pricing";
 
 export const PLAN_PRICING = {
-  STARTER: CONFIG_PLANS.find((p) => p.key === "starter")?.monthlyAmount || 30000,
-  PRO: CONFIG_PLANS.find((p) => p.key === "pro")?.monthlyAmount || 40000,
+  GROWTH: CONFIG_PLANS.find((p) => p.key === "GROWTH")?.monthlyAmount || 30000,
+  PRO: CONFIG_PLANS.find((p) => p.key === "PRO")?.monthlyAmount || 40000,
 };
 
 export interface PlanLimits {
@@ -27,8 +27,8 @@ export interface PlanDefinition {
 }
 
 export const PLANS: Record<string, PlanDefinition> = {
-  free: {
-    slug: "free",
+  STARTER: {
+    slug: "STARTER",
     name: "Free",
     priceNgn: 0,
     limits: {
@@ -43,10 +43,10 @@ export const PLANS: Record<string, PlanDefinition> = {
       advancedAnalytics: false,
     },
   },
-  starter: {
-    slug: "starter",
+  GROWTH: {
+    slug: "GROWTH",
     name: "Starter",
-    priceNgn: PLAN_PRICING.STARTER,
+    priceNgn: PLAN_PRICING.GROWTH,
     limits: {
       teamSeats: 2,
       templatesAvailable: "limited",
@@ -59,8 +59,8 @@ export const PLANS: Record<string, PlanDefinition> = {
       advancedAnalytics: false,
     },
   },
-  pro: {
-    slug: "pro",
+  PRO: {
+    slug: "PRO",
     name: "₦40,000",
     priceNgn: PLAN_PRICING.PRO,
     limits: {

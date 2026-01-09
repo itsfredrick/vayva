@@ -92,9 +92,9 @@ export default function TrialExpiredPage() {
 
                 {/* Pricing Bridge */}
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mt-12">
-                    {PLANS.filter(p => p.key !== 'free').map((plan) => (
-                        <Card key={plan.key} className={`p-8 bg-white flex flex-col relative ${plan.key === 'pro' ? 'border-2 border-black scale-105 z-10' : 'border border-gray-200'}`}>
-                            {plan.key === 'pro' && (
+                    {PLANS.filter(p => p.key !== 'STARTER').map((plan) => (
+                        <Card key={plan.key} className={`p-8 bg-white flex flex-col relative ${plan.key === 'PRO' ? 'border-2 border-black scale-105 z-10' : 'border border-gray-200'}`}>
+                            {plan.key === 'PRO' && (
                                 <div className="absolute -top-4 left-1/2 -translate-x-1/2 bg-black text-white px-4 py-1 rounded-full text-xs font-bold uppercase tracking-widest shadow-lg">
                                     Best for Growth & Team
                                 </div>
@@ -117,7 +117,7 @@ export default function TrialExpiredPage() {
                                         <span>{bullet}</span>
                                     </li>
                                 ))}
-                                {plan.key === 'pro' && (
+                                {plan.key === 'PRO' && (
                                     <li className="flex items-start gap-3 text-sm text-black font-bold">
                                         <Icon name="Sparkles" size={18} className="text-orange-500 flex-shrink-0 mt-0.5" />
                                         <span>Includes Vayva Cut Pro</span>
@@ -126,7 +126,7 @@ export default function TrialExpiredPage() {
                             </ul>
 
                             <Button
-                                className={`w-full h-14 text-lg font-bold rounded-xl transition-transform active:scale-95 ${plan.key === 'pro' ? 'bg-black text-white hover:bg-gray-900 shadow-xl' : 'bg-white text-black border-2 border-gray-200 hover:border-black'}`}
+                                className={`w-full h-14 text-lg font-bold rounded-xl transition-transform active:scale-95 ${plan.key === 'PRO' ? 'bg-black text-white hover:bg-gray-900 shadow-xl' : 'bg-white text-black border-2 border-gray-200 hover:border-black'}`}
                                 onClick={() => handleUpgrade(plan.key)}
                                 isLoading={isProcessing === plan.key}
                             >

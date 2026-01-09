@@ -14,7 +14,8 @@ export const FEES = {
   WITHDRAWAL_PERCENTAGE: 5, // 5% fee on every withdrawal
 };
 
-export type PlanKey = "free" | "starter" | "pro";
+// 1:1 Mapping to Prisma SubscriptionPlan enum
+export type PlanKey = "STARTER" | "GROWTH" | "PRO";
 
 export type Plan = {
   key: PlanKey;
@@ -29,13 +30,13 @@ export type Plan = {
 
 export const PLANS: Plan[] = [
   {
-    key: "free",
+    key: "STARTER",
     name: "Free",
     monthlyAmount: 0,
     trialDays: 7,
     tagline: "Perfect for testing ideas.",
     bullets: [
-      "4 Included Templates", // User mentioned '4 Included'
+      "4 Included Templates",
       "Basic Storefront",
       "Vayva Branding",
       "Standard Analytics",
@@ -43,8 +44,8 @@ export const PLANS: Plan[] = [
     ctaLabel: "Start Free",
   },
   {
-    key: "starter",
-    name: "Starter",
+    key: "GROWTH",
+    name: "Starter", // Marketing name "Starter" maps to "GROWTH" plan technically (paid tier 1)
     monthlyAmount: 30000,
     tagline: "For growing brands.",
     bullets: [
@@ -57,7 +58,7 @@ export const PLANS: Plan[] = [
     featured: true,
   },
   {
-    key: "pro",
+    key: "PRO",
     name: "Pro",
     monthlyAmount: 40000,
     tagline: "High volume scaling.",

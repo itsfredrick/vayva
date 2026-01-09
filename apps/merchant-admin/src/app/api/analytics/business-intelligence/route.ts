@@ -23,18 +23,18 @@ export async function GET() {
                 status: "PAID",
             },
             include: {
-                OrderItem: true,
+                items: true,
             },
         });
 
         // 2. Prepare Data for AI
-        const totalSales = orders.reduce((sum, o) => sum + Number(o.totalAmount), 0);
+        const totalSales = orders.reduce((sum, o) => sum + Number(o.total), 0);
         const totalOrders = orders.length;
         const avgOrderValue = totalOrders > 0 ? totalSales / totalOrders : 0;
 
         const itemFrequency: Record<string, number> = {};
         orders.forEach(o => {
-            o.OrderItem.forEach(item => {
+            o.items.forEach((item: any) => {
                 itemFrequency[item.title] = (itemFrequency[item.title] || 0) + item.quantity;
             });
         });

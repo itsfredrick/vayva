@@ -87,12 +87,13 @@ export default function FinancePage() {
 
                     <div className="bg-white rounded-3xl border border-gray-100 p-8 shadow-sm">
                         <h3 className="text-xl font-black text-gray-900 mb-6">Recent Transactions</h3>
-                        <EmptyState
-                            title="No transactions yet"
-                            icon="Wallet"
-                            className="py-12"
-                            description="Your earnings and payouts will appear here once you start making sales."
-                        />
+                        <div className="py-12">
+                            <EmptyState
+                                title="No transactions yet"
+                                icon="Wallet"
+                                description="Your earnings and payouts will appear here once you start making sales."
+                            />
+                        </div>
                     </div>
                 </div>
             ) : (

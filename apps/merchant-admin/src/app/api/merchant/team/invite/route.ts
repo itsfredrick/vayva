@@ -23,7 +23,7 @@ export async function POST(req: NextRequest) {
       where: { storeId },
     });
     const entitlement = {
-      planSlug: (subscription?.planSlug || "growth") as "growth" | "pro",
+      planSlug: (subscription?.planSlug || "GROWTH") as "GROWTH" | "PRO",
       status: (subscription?.status || "trial") as any,
     };
 
@@ -31,7 +31,8 @@ export async function POST(req: NextRequest) {
     const seatsUsed = await prisma.membership.count({ where: { storeId } });
 
     // 3. Check Gate
-    const gate = gateLimit(entitlement, "teamSeats", seatsUsed);
+    // Cast strict keys to match Plan definition
+    const gate = gateLimit(entitlement as any, "teamSeats", seatsUsed);
     if (!gate.ok) {
       return NextResponse.json(gate.error, { status: 403 }); // Standard Gate Error
     }

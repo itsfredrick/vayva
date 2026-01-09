@@ -1,5 +1,5 @@
 import type { Metadata, ResolvingMetadata } from "next";
-import { Inter, Space_Grotesk } from "next/font/google"; // eslint-disable-line @typescript-eslint/no-unused-vars
+import { Inter, Space_Grotesk } from "next/font/google";
 import "./globals.css";
 import { StoreProvider } from "@/context/StoreContext";
 import { Suspense } from "react";

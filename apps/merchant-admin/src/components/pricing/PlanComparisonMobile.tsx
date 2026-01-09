@@ -4,8 +4,8 @@ import React, { useState } from "react";
 import { PLANS, FEES } from "@/config/pricing";
 
 export const PlanComparisonMobile = () => {
-  const [selectedPlan, setSelectedPlan] = useState<"free" | "growth" | "pro">(
-    "growth",
+  const [selectedPlan, setSelectedPlan] = useState<"STARTER" | "GROWTH" | "PRO">(
+    "GROWTH",
   );
 
   return (
@@ -16,13 +16,12 @@ export const PlanComparisonMobile = () => {
           <button
             key={plan.key}
             onClick={() => setSelectedPlan(plan.key)}
-            className={`flex-1 py-3 text-xs font-black uppercase tracking-widest rounded-lg transition-all ${
-              selectedPlan === plan.key
-                ? "bg-white text-[#0F172A] shadow-sm"
-                : "text-gray-400 hover:text-gray-600"
-            }`}
+            className={`flex-1 py-3 text-xs font-black uppercase tracking-widest rounded-lg transition-all ${selectedPlan === plan.key
+              ? "bg-white text-[#0F172A] shadow-sm"
+              : "text-gray-400 hover:text-gray-600"
+              }`}
           >
-            {plan.key === "free"
+            {plan.key === "STARTER"
               ? "Free"
               : plan.monthlyAmount === 30000
                 ? "₦30k"
@@ -41,29 +40,29 @@ export const PlanComparisonMobile = () => {
             {
               name: "Monthly Orders",
               val:
-                selectedPlan === "free"
+                selectedPlan === "STARTER"
                   ? "100"
-                  : selectedPlan === "growth"
+                  : selectedPlan === "GROWTH"
                     ? "1,000"
                     : "Unlimited",
             },
             {
               name: "Products / SKUs",
               val:
-                selectedPlan === "free"
+                selectedPlan === "STARTER"
                   ? "50"
-                  : selectedPlan === "growth"
+                  : selectedPlan === "GROWTH"
                     ? "500"
                     : "Unlimited",
             },
-            { name: "Team Seats", val: selectedPlan === "pro" ? "5" : "1" },
+            { name: "Team Seats", val: selectedPlan === "PRO" ? "5" : "1" },
             {
               name: "Blueprint Templates",
-              val: selectedPlan === "free" ? "Basic" : "All",
+              val: selectedPlan === "STARTER" ? "Basic" : "All",
             },
-            { name: "Inventory tracking", val: selectedPlan !== "free" },
-            { name: "Audit Logs", val: selectedPlan === "pro" },
-            { name: "Priority Support", val: selectedPlan === "pro" },
+            { name: "Inventory tracking", val: selectedPlan !== "STARTER" },
+            { name: "Audit Logs", val: selectedPlan === "PRO" },
+            { name: "Priority Support", val: selectedPlan === "PRO" },
             { name: "Withdrawal Fee", val: `${FEES.WITHDRAWAL_PERCENTAGE}%` },
           ].map((feat) => (
             <div

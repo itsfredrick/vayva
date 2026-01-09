@@ -10,7 +10,7 @@ interface PaywallModalProps {
   onClose: () => void;
   title: string;
   message: string;
-  requiredPlan?: "pro";
+  requiredPlan?: "PRO";
 }
 
 export function PaywallModal({
@@ -18,11 +18,11 @@ export function PaywallModal({
   onClose,
   title,
   message,
-  requiredPlan = "pro",
+  requiredPlan = "PRO",
 }: PaywallModalProps) {
   if (!isOpen) return null;
 
-  const price = requiredPlan === "pro" ? PLAN_PRICING.PRO : PLAN_PRICING.GROWTH;
+  const price = requiredPlan === "PRO" ? PLAN_PRICING.PRO : PLAN_PRICING.GROWTH;
   const formattedPrice = new Intl.NumberFormat("en-NG", {
     style: "currency",
     currency: "NGN",

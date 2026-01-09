@@ -98,7 +98,6 @@ export const StoreProvider = ({
               phone: merchantInfo.merchant.phone || "",
               currency: merchantInfo.store?.currency || "NGN",
             });
-            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
             // @ts-ignore
             setStore(merchantInfo.store);
           } else {
