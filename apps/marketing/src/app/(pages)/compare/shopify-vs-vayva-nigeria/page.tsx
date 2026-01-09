@@ -12,7 +12,7 @@ export const metadata = {
 export default function ComparePage() {
     return (
         <div className="min-h-screen bg-white">
-            <SchemaOrg type="Article" />
+            <SchemaOrg type="SoftwareApplication" />
             <LandingHero
                 headline="Shopify is built for America. Vayva is built for you."
                 sub="Don't pay in dollars for features you can't use. Switch to the platform designed for Nigerian commerce."

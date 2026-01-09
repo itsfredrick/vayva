@@ -93,7 +93,7 @@ export async function POST(req: NextRequest) {
               trialEndsAt: null,
             }
           });
-          console.log(`Updated subscription for store ${storeId} to ${newPlan}`);
+
         } catch (subErr) {
           console.error("Failed to update merchant subscription", subErr);
         }

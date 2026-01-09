@@ -27,11 +27,10 @@ const INDUSTRY_VARIANTS: Record<string, { headline: string; sub: string }> = {
   }
 };
 
-export default async function LandingPage({
-  searchParams,
-}: {
-  searchParams: { industry?: string };
+export default async function LandingPage(props: {
+  searchParams: Promise<{ industry?: string }>;
 }) {
+  const searchParams = await props.searchParams;
   const industry = searchParams.industry || "default";
   const content = INDUSTRY_VARIANTS[industry] || INDUSTRY_VARIANTS.default;
 
