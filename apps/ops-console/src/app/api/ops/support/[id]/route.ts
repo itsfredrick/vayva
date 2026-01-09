@@ -3,9 +3,11 @@ import { prisma } from "@vayva/db";
 import { OpsAuthService } from "@/lib/ops-auth";
 import { Groq } from "groq-sdk";
 
-const groq = new Groq({
-    apiKey: process.env.GROQ_API_KEY_RESCUE
-});
+const getGroqClient = () => {
+    const apiKey = process.env.GROQ_API_KEY_RESCUE || process.env.GROQ_API_KEY;
+    if (!apiKey) return null;
+    return new Groq({ apiKey });
+};
 
 export async function GET(request: Request, { params }: { params: Promise<{ id: string }> }) {
     const { user } = await OpsAuthService.requireSession();
@@ -32,22 +34,25 @@ export async function GET(request: Request, { params }: { params: Promise<{ id: 
     let summary = ticket.summary;
     if (!summary && ticket.description) {
         try {
-            const completion = await groq.chat.completions.create({
-                messages: [
-                    { role: "system", content: "You are a support supervisor. Summarize the following merchant support ticket in exactly ONE concise sentence." },
-                    { role: "user", content: `Subject: ${ticket.subject}\n\nDescription: ${ticket.description}` }
-                ],
-                model: "llama3-70b-8192",
-                temperature: 0.1,
-                max_tokens: 100
-            });
-
-            summary = completion.choices[0]?.message?.content || null;
-            if (summary) {
-                await prisma.supportTicket.update({
-                    where: { id },
-                    data: { summary }
+            const groq = getGroqClient();
+            if (groq) {
+                const completion = await groq.chat.completions.create({
+                    messages: [
+                        { role: "system", content: "You are a support supervisor. Summarize the following merchant support ticket in exactly ONE concise sentence." },
+                        { role: "user", content: `Subject: ${ticket.subject}\n\nDescription: ${ticket.description}` }
+                    ],
+                    model: "llama3-70b-8192",
+                    temperature: 0.1,
+                    max_tokens: 100
                 });
+
+                summary = completion.choices[0]?.message?.content || null;
+                if (summary) {
+                    await prisma.supportTicket.update({
+                        where: { id },
+                        data: { summary }
+                    });
+                }
             }
         } catch (e) {
             console.error("Groq Summary Error:", e);

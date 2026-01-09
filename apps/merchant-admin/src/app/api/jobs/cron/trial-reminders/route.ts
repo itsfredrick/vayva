@@ -99,7 +99,6 @@ async function dispatchWhatsApp(phone: string, text: string) {
     const instanceName = process.env.EVOLUTION_INSTANCE_NAME || "vayva_global";
 
     if (!EVOLUTION_API_URL || !EVOLUTION_API_KEY) {
-        // console.log("Mocking WhatsApp Send:", text);
         return { success: true, mocked: true };
     }
 

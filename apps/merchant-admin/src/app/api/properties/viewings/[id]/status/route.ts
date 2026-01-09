@@ -20,7 +20,6 @@ export async function PATCH(request: NextRequest, { params }: { params: Promise<
             data: { status }
         });
 
-        // TODO: Send email notification to customer here
 
         return NextResponse.json({ success: true, booking });
     } catch (e) {
