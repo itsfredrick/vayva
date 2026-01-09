@@ -1,6 +1,7 @@
 "use client";
 
 import { EmptyState, Button } from "@vayva/ui";
+import { ZeroOrdersState } from "@/components/orders/ZeroOrdersState";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
@@ -75,12 +76,7 @@ export default function OrdersPage() {
         return (
             <div className="p-6">
                 <h1 className="text-2xl font-bold mb-6 text-gray-900">Orders</h1>
-                <EmptyState
-                    title="No orders yet"
-                    icon="ShoppingBag"
-                    description="When you receive your first order, it will appear here. Share your store link to get started!"
-                    action={<Button className="px-8" onClick={handleShareStore}>Share Store Link</Button>}
-                />
+                <ZeroOrdersState />
             </div>
         );
     }

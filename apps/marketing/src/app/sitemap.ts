@@ -53,6 +53,15 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
         priority: 0.7,
     }));
 
+    const highIntentComparison = [
+        "/compare/shopify-vs-vayva-nigeria"
+    ].map((p) => ({
+        url: `${SITE_ORIGIN}${p}`,
+        lastModified: new Date(),
+        changeFrequency: "weekly" as const,
+        priority: 0.9,
+    }));
+
     // Fetch live merchant slugs (Search Console Dominance)
     let merchantPages: MetadataRoute.Sitemap = [];
     try {
@@ -72,5 +81,5 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
         console.error("Failed to fetch merchant slugs for sitemap:", error);
     }
 
-    return [...corePages, ...programmaticPages, ...dropshippingPages, ...comparisonPages, ...merchantPages];
+    return [...corePages, ...programmaticPages, ...dropshippingPages, ...comparisonPages, ...highIntentComparison, ...merchantPages];
 }

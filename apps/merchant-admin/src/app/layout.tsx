@@ -24,7 +24,7 @@ export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
   maximumScale: 1,
-  userScalable: false, // Prevents zoom for native feel, use with caution for a11y
+  userScalable: true,
 };
 
 export const metadata: Metadata = {
