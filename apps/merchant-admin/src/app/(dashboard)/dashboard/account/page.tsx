@@ -40,7 +40,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { toast } from "sonner";
-import { Lock } from "lucide-react";
+// import { Lock } from "lucide-react"; // Removed duplicate
 
 // Inline Dialog Component for simplicity or move to separate file if cleaner
 function WalletPinDialog() {
@@ -254,7 +254,7 @@ export default function AccountHubPage() {
                     <Card className="p-6 flex flex-col justify-between space-y-4">
                         <div className="flex items-center gap-3">
                             <div className="p-2 bg-blue-50 rounded-lg">
-                                <Lock className="w-5 h-5 text-blue-600" />
+                                <Shield className="w-5 h-5 text-blue-600" />
                             </div>
                             <div>
                                 <p className="text-xs text-gray-500 font-medium">Wallet Security</p>

@@ -43,7 +43,7 @@ export async function generateMetadata(
         where: { slug },
         select: {
           name: true,
-          tagline: true, // Legacy field
+          // tagline: true, // Legacy field removed
           seoTitle: true,
           seoDescription: true,
           seoKeywords: true,
@@ -54,7 +54,7 @@ export async function generateMetadata(
 
       if (store) {
         const title = store.seoTitle || store.name;
-        const description = store.seoDescription || store.tagline || `Powered by Vayva`;
+        const description = store.seoDescription || `Powered by Vayva`;
         const images = store.socialImage ? [store.socialImage] : (store.logoUrl ? [store.logoUrl] : []);
 
         return {

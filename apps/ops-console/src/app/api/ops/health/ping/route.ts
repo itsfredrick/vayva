@@ -1,8 +1,11 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@vayva/db";
+import { OpsAuthService } from "@/lib/ops-auth";
 
 export async function GET() {
     try {
+        await OpsAuthService.requireSession();
+
         // 1. Check Database
         await prisma.$queryRaw`SELECT 1`;
 

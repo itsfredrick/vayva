@@ -46,7 +46,7 @@ export async function POST(req: NextRequest) {
             return NextResponse.json({ status: "no_text_content" });
         }
 
-        console.log(`[Webhook] Processing message for ${instance}: "${messageContent.substring(0, 20)}..."`);
+        // console.log(`[Webhook] Processing message for ${instance}: "${messageContent.substring(0, 20)}..."`);
 
         // 4. Identify Store
         // Format: "merchant_{storeId}" -> extract storeId

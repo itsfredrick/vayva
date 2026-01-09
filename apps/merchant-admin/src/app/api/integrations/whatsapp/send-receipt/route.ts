@@ -39,7 +39,7 @@ export async function POST(request: NextRequest) {
 
         const instanceName = process.env.EVOLUTION_INSTANCE_NAME || "vayva_global";
 
-        console.log(`Sending WhatsApp Receipt to ${customerPhone} via ${instanceName}`);
+        // console.log(`Sending WhatsApp Receipt to ${customerPhone} via ${instanceName}`);
 
         if (EVOLUTION_API_URL) {
             try {
@@ -63,7 +63,7 @@ export async function POST(request: NextRequest) {
                 });
 
                 const responseData = await response.json();
-                console.log("Evolution API Response:", responseData);
+                // console.log("Evolution API Response:", responseData);
 
                 if (!response.ok) {
                     console.error("Evolution API Failed:", responseData);
@@ -75,7 +75,7 @@ export async function POST(request: NextRequest) {
                 // Fallback/Mock for Dev if API is unreachable
             }
         } else {
-            console.log("Mocking WhatsApp Send:", message);
+            // console.log("Mocking WhatsApp Send:", message);
         }
 
         return NextResponse.json({ success: true, message: "Receipt sent" });

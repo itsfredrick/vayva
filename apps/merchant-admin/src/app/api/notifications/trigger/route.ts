@@ -16,13 +16,18 @@ export async function POST(req: NextRequest) {
             where: { id: user.storeId },
         });
 
-        // Fallback if relation not ideal, basic user data
-        const phone = "2348000000000"; // Mock or fetch from User/Store details
-        // In real app, user.phone should exist.
+        // Fetch user for phone
+        const fullUser = await prisma.user.findUnique({
+            where: { id: user.id },
+            select: { phone: true, firstName: true }
+        });
+
+        const phone = fullUser?.phone || "2348000000000";
+        const merchantName = fullUser?.firstName || (user as any).name || "Merchant";
 
         await NotificationService.sendMilestone(event as NotificationEvent, {
-            name: (user as any).name || "Merchant",
-            phone: phone, // TODO: Ensure we store phone in User table
+            name: merchantName,
+            phone: phone,
             storeName: store?.name || "Your Store",
             storeSlug: store?.slug || "store"
         });
