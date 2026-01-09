@@ -4,7 +4,7 @@ import { authOptions } from "@/lib/auth"; // Assumed path based on convention
 import { prisma } from "@vayva/db";
 import { Resend } from "resend";
 
-const resend = new Resend(process.env.RESEND_API_KEY);
+
 
 export async function POST(request: Request) {
     const session = await getServerSession(authOptions);
@@ -85,17 +85,22 @@ export async function POST(request: Request) {
         });
 
         // Send Email Notification
-        if (session.user.email) {
-            await resend.emails.send({
-                from: process.env.RESEND_FROM_EMAIL || "support@vayva.ng",
-                to: session.user.email,
-                subject: `Ticket Received: ${subject} (#${ticket.id.slice(0, 8)})`,
-                html: `<p>Hi there,</p>
-                       <p>We received your support request. Our team is looking into it.</p>
-                       <p><strong>Ticket ID:</strong> ${ticket.id}</p>
-                       <p><strong>Priority:</strong> ${finalPriority.toUpperCase()}</p>
-                       <p>Best,<br/>Vayva Support Team</p>`
-            });
+        if (session.user.email && process.env.RESEND_API_KEY) {
+            try {
+                const resend = new Resend(process.env.RESEND_API_KEY);
+                await resend.emails.send({
+                    from: process.env.RESEND_FROM_EMAIL || "support@vayva.ng",
+                    to: session.user.email,
+                    subject: `Ticket Received: ${subject} (#${ticket.id.slice(0, 8)})`,
+                    html: `<p>Hi there,</p>
+                           <p>We received your support request. Our team is looking into it.</p>
+                           <p><strong>Ticket ID:</strong> ${ticket.id}</p>
+                           <p><strong>Priority:</strong> ${finalPriority.toUpperCase()}</p>
+                           <p>Best,<br/>Vayva Support Team</p>`
+                });
+            } catch (emailError) {
+                console.error("Failed to send support email:", emailError);
+            }
         }
 
         return NextResponse.json({ success: true, ticket });
