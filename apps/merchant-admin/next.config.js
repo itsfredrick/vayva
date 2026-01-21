@@ -13,9 +13,10 @@ const nextConfig = {
             static: 180,
         },
     },
-    turbopack: {
-        root: "/Users/fredrick/Documents/GitHub/vayva-platform"
-    },
+    /* Removing absolute path root to fix CI/Turbopack error */
+    // turbopack: {
+    //     root: "/Users/fredrick/Documents/GitHub/vayva-platform"
+    // },
     webpack: (config, { isServer }) => {
         if (!isServer) {
             // Don't resolve server-only modules on the client

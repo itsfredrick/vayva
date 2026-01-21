@@ -63,13 +63,15 @@ export function MobileAppWaitlist() {
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4 animate-in fade-in duration-200">
             <div className="bg-white rounded-2xl p-6 max-w-md w-full shadow-2xl relative animate-in slide-in-from-bottom-4 duration-300">
                 {/* Close button */}
-                <button
+                <Button
+                    variant="ghost"
+                    size="icon"
                     onClick={handleClose}
                     className="absolute top-4 right-4 text-gray-400 hover:text-gray-600 transition-colors"
                     aria-label="Close"
                 >
                     <X size={20} />
-                </button>
+                </Button>
 
                 {/* Icon */}
                 <div className="w-16 h-16 bg-gradient-to-br from-vayva-green to-emerald-600 rounded-2xl flex items-center justify-center mx-auto mb-4">

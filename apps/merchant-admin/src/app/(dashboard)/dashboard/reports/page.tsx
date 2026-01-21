@@ -17,6 +17,7 @@ import {
     Area
 } from "recharts";
 import { toast } from "sonner";
+import { Button } from "@vayva/ui";
 import { Loader2, TrendingUp, DollarSign, ShoppingBag } from "lucide-react";
 
 interface ReportData {
@@ -65,9 +66,12 @@ export default function ReportsPage() {
                     <TrendingUp className="mx-auto h-12 w-12 text-amber-500 mb-4" />
                     <h2 className="text-2xl font-black text-gray-900 mb-2">Upgrade to Pro</h2>
                     <p className="text-gray-600 mb-8">Detailed sales analytics and custom reports are available on our Pro plan.</p>
-                    <button className="bg-black text-white px-8 py-3 rounded-full font-bold hover:bg-gray-800 transition-colors">
+                    <Button
+                        onClick={() => window.location.href = "/pricing"}
+                        className="bg-black text-white px-8 py-3 rounded-full font-bold hover:bg-gray-800 transition-colors"
+                    >
                         View Pricing
-                    </button>
+                    </Button>
                 </div>
             </div>
         );
@@ -82,13 +86,14 @@ export default function ReportsPage() {
                 </div>
                 <div className="flex bg-gray-100 p-1 rounded-full">
                     {["7d", "30d", "90d"].map((r) => (
-                        <button
+                        <Button
                             key={r}
+                            variant="ghost"
                             onClick={() => setRange(r)}
-                            className={`px-4 py-1.5 rounded-full text-xs font-bold transition-all ${range === r ? "bg-white text-black shadow-sm" : "text-gray-500 hover:text-gray-700"}`}
+                            className={`px-4 py-1.5 rounded-full text-xs font-bold transition-all h-auto ${range === r ? "bg-white text-black shadow-sm" : "text-gray-500 hover:text-gray-700 hover:bg-transparent"}`}
                         >
                             {r.toUpperCase()}
-                        </button>
+                        </Button>
                     ))}
                 </div>
             </div>
