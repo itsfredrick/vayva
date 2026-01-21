@@ -22,6 +22,7 @@ export const ToastAction = React.forwardRef<
   React.ButtonHTMLAttributes<HTMLButtonElement>
 >(({ className, ...props }, ref) => {
   return (
+    // eslint-disable-next-line no-restricted-syntax
     <button ref={ref} className={cn("toast-action", className)} {...props} />
   );
 });

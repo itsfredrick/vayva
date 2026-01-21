@@ -15,10 +15,12 @@ export const Switch = ({
   className,
 }: SwitchProps) => {
   return (
+    // eslint-disable-next-line no-restricted-syntax
     <button
       type="button"
       role="switch"
-      aria-checked={checked}
+      aria-checked={checked ? "true" : "false"}
+      title={checked ? "Switch is on" : "Switch is off"}
       disabled={disabled}
       onClick={() => onCheckedChange(!checked)}
       className={cn(

@@ -5,7 +5,7 @@ import "./globals.css";
 // const inter = Inter({ subsets: ['latin'] });
 export const metadata = {
     title: "Vayva marketplace",
-    description: "Vayva Platform",
+    description: "Vayva",
 };
 import { ClientLayout } from "@/components/ClientLayout";
 export default function RootLayout({ children, }) {

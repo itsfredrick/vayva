@@ -117,7 +117,7 @@ const inter = Inter({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
   title: 'Vayva $APP',
-  description: 'Vayva Platform',
+  description: 'Vayva',
 };
 
 export default function RootLayout({

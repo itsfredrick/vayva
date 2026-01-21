@@ -4,7 +4,7 @@
 
 set -e
 
-echo "🔍 Vayva Platform - Pre-Push Security Check"
+echo "🔍 Vayva - Pre-Push Security Check"
 echo "==========================================="
 echo ""
 

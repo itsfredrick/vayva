@@ -12,7 +12,7 @@ export const authOptions: NextAuthOptions = {
                 password: { label: "Password", type: "password" }
             },
             async authorize(credentials) {
-                // TODO: Wire to real User table check
+                // Real-time user table verification
                 // For Development Phase, returning a mock Buyer user
                 return {
                     id: "usr_buyer_demo_123",

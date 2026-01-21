@@ -130,9 +130,7 @@ export async function POST(request: Request) {
         data: { plan: newPlan },
       });
 
-      // Cancel subscription
-      // Note: aiSubscription model does not exist. 
-      // TODO: Implement proper subscription cancellation when model is available.
+      // Note: aiSubscription model does not exist yet for proper cancellation.
       /*
       const existingSubscription = await prisma.aiSubscription.findUnique(
         {

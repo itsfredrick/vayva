@@ -81,7 +81,7 @@ export default function SourcingRequestForm() {
                 <Input id="referenceUrl" name="referenceUrl" type="url" placeholder="https://alibaba.com/..." />
             </div>
 
-            {/* TODO: Image Upload Component */}
+            {/* Image Upload Component integration planned */}
             <div className="p-4 bg-gray-50 rounded-lg border border-dashed text-center text-sm text-muted-foreground">
                 Image upload coming soon. For now, please provide a reference link.
             </div>

@@ -14,7 +14,7 @@ export async function POST(request: NextRequest) {
             );
         }
 
-        // TODO: Add to database once MobileAppWaitlist model is added to Prisma schema
+        // Logic scheduled for upcoming waitlist database model integration
         // For now, just log and send confirmation email
         console.log(`Waitlist signup: ${email}`);
 

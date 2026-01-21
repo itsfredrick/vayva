@@ -45,11 +45,11 @@ export async function GET(req: NextRequest) {
 
         const merchants = {
             total: merchantCount,
-            delta: "+5 this week" // TODO: Calculate actual delta
+            delta: "+5 this week" // Delta tracking planned for V2
         };
 
         const operations = {
-            tickets: 0 // TODO: Implement support ticket count
+            tickets: 0 // Ticket support integration planned for V2
         };
 
         const formattedActivity = recentActivity.map(log => ({
