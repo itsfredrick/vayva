@@ -55,6 +55,7 @@ export default function BrandingStep() {
                                 >
                                     <div
                                         className="absolute inset-1 rounded-lg shadow-inner"
+                                        // eslint-disable-next-line react/inline-styles
                                         style={{ backgroundColor: color.hex } as React.CSSProperties}
                                     />
                                     {brandColor === color.hex && (
