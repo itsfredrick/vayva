@@ -10,7 +10,7 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "@sentry/nextjs": "^10.34.0",
+    "@sentry/nextjs": "^10.36.0",
     "@vayva/api-client": "workspace:*",
     "@vayva/content": "workspace:*",
     "@vayva/db": "workspace:*",
@@ -20,9 +20,9 @@
     "axios": "^1.13.2",
     "bcryptjs": "^3.0.3",
     "clsx": "^2.1.1",
-    "framer-motion": "^12.26.2",
+    "framer-motion": "^12.28.1",
     "lucide-react": "^0.562.0",
-    "next": "16.1.1",
+    "next": "16.1.4",
     "react": "19.2.3",
     "react-dom": "19.2.3",
     "tailwind-merge": "^3.4.0",

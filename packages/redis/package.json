@@ -8,7 +8,7 @@
         "typecheck": "tsc --noEmit"
     },
     "dependencies": {
-        "ioredis": "^5.9.1"
+        "ioredis": "^5.9.2"
     },
     "devDependencies": {
         "@types/node": "^20.10.4",
