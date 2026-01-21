@@ -1,34 +1,22 @@
-import { NextResponse } from "next/server";
-import { prisma } from "@vayva/db";
-import { withRBAC } from "@/lib/team/rbac";
+import { NextRequest, NextResponse } from "next/server";
+import { prisma } from "@/lib/prisma";
+import { withVayvaAPI, HandlerContext } from "@/lib/api-handler";
 import { PERMISSIONS } from "@/lib/team/permissions";
+import { sanitizeHtml } from "@/lib/input-sanitization";
 
-function sanitizeHtml(html: string) {
-  if (!html) return "";
-  // Simple regex-based sanitization for high-risk tags
-  return html
-    .replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, "")
-    .replace(/on\w+="[^"]*"/gi, "")
-    .replace(/on\w+='[^']*'/gi, "");
-}
 
-export const GET = withRBAC(
+export const GET = withVayvaAPI(
   PERMISSIONS.COMMERCE_VIEW,
-  async (
-    session: any,
-    request: Request,
-    props: { params: Promise<{ id: string }> },
-  ) => {
+  async (request: NextRequest, { storeId, params }: HandlerContext) => {
     try {
-      const storeId = session.user.storeId;
-      const { id } = await props.params;
+      const { id } = await params;
 
       const product = await prisma.product.findUnique({
         where: { id, storeId },
         include: {
-          ProductVariant: {
+          productVariants: {
             include: {
-              InventoryItem: true,
+              inventoryItems: true,
             },
           },
         },
@@ -47,17 +35,17 @@ export const GET = withRBAC(
         description: product.description,
         status: product.status === "ACTIVE" ? "active" : "draft",
         price: Number(product.price),
-        inventory: product.ProductVariant.reduce(
-          (acc: number, v: any) => acc + (v.InventoryItem[0]?.available || 0),
+        inventory: product.productVariants.reduce(
+          (acc: number, v: any) => acc + (v.inventoryItems[0]?.available || 0),
           0,
         ),
         category: product.productType,
         images: [],
-        variants: product.ProductVariant.map((v: any) => ({
+        variants: product.productVariants.map((v: any) => ({
           id: v.id,
           name: v.title,
           price: Number(v.price),
-          inventory: v.InventoryItem[0]?.available || 0,
+          inventory: v.inventoryItems[0]?.available || 0,
           sku: v.sku,
         })),
         updatedAt: product.updatedAt.toISOString(),
@@ -74,16 +62,11 @@ export const GET = withRBAC(
   },
 );
 
-export const PUT = withRBAC(
+export const PUT = withVayvaAPI(
   PERMISSIONS.COMMERCE_MANAGE,
-  async (
-    session: any,
-    request: Request,
-    props: { params: Promise<{ id: string }> },
-  ) => {
+  async (request: NextRequest, { storeId, params }: HandlerContext) => {
     try {
-      const storeId = session.user.storeId;
-      const { id } = await props.params;
+      const { id } = await params;
       const body = await request.json();
 
       // 1. Get Default Location
@@ -153,16 +136,11 @@ export const PUT = withRBAC(
   },
 );
 
-export const DELETE = withRBAC(
+export const DELETE = withVayvaAPI(
   PERMISSIONS.COMMERCE_MANAGE,
-  async (
-    session: any,
-    request: Request,
-    props: { params: Promise<{ id: string }> },
-  ) => {
+  async (request: NextRequest, { storeId, params }: HandlerContext) => {
     try {
-      const storeId = session.user.storeId;
-      const { id } = await props.params;
+      const { id } = await params;
 
       // Clean up inventory items first (FK constraint)
       await prisma.inventoryItem.deleteMany({ where: { productId: id } });

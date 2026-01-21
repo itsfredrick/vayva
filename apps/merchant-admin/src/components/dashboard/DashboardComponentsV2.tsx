@@ -1,129 +1,107 @@
-"use client";
-
-import React from "react";
+import { format } from "date-fns";
+import {
+  ShoppingBag,
+  Users,
+  MessageSquare,
+  TrendingUp,
+  Clock,
+  ChevronRight,
+  ExternalLink,
+  Package,
+  AlertCircle
+} from "lucide-react";
 import Link from "next/link";
-import { Icon, cn } from "@vayva/ui";
-import { motion } from "framer-motion";
+import React from "react";
 
-// Generic Hover Wrapper for "Physics"
-const MotionCard = ({
-  children,
-  className,
-  onClick,
-}: {
-  children: React.ReactNode;
-  className?: string;
-  onClick?: () => void;
+// Types
+export interface DashboardStats {
+  orders: { count: number; growth: number };
+  customers: { count: number; growth: number };
+  revenue: { amount: string; growth: number };
+  avgOrderValue: { amount: string; growth: number };
+}
+
+export interface RecentOrder {
+  id: string;
+  customer: string;
+  amount: string;
+  status: "PAID" | "PENDING" | "FAILED" | "CANCELLED";
+  createdAt: Date;
+}
+
+export interface Activity {
+  id: string;
+  type: "ORDER" | "CUSTOMER" | "INVENTORY" | "SYSTEM";
+  message: string;
+  createdAt: Date;
+}
+
+export interface StoreContext {
+  id: string;
+  slug: string;
+  storeName: string;
+  logoUrl?: string;
+  brandColor?: string;
+  status: string;
+}
+
+// Components
+export const StatCard = ({ title, value, growth, icon: Icon, color }: {
+  title: string;
+  value: string;
+  growth: number;
+  icon: React.ElementType;
+  color: string;
 }) => (
-  <motion.div
-    className={cn(
-      "bg-white rounded-xl border border-gray-100 shadow-sm overflow-hidden cursor-pointer",
-      className,
-    )}
-    whileHover={{
-      y: -3,
-      scale: 1.01,
-      boxShadow: "0 10px 30px -10px rgba(0,0,0,0.05)",
-    }}
-    whileTap={{ scale: 0.98 }}
-    onClick={onClick}
-  >
-    {children}
-  </motion.div>
-);
-
-// B2) KPI Card V2
-export const KPICardV2 = ({
-  title,
-  value,
-  delta,
-  isPositive,
-  isPrimary,
-}: any) => (
-  <motion.div
-    className={cn(
-      "bg-white rounded-xl border p-5 flex flex-col gap-2 relative overflow-hidden group hover:shadow-md transition-shadow",
-      isPrimary ? "border-gray-200" : "border-gray-100",
-    )}
-    whileHover={{ y: -2 }}
-  >
-    <div className="flex items-center justify-between">
-      <span className="text-xs font-semibold uppercase tracking-wide text-gray-400">
-        {title}
-      </span>
-      {isPrimary && (
-        <div className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
-      )}
-    </div>
-    <div className="flex items-baseline gap-3">
-      <span className="text-3xl font-bold text-[#0B0B0B] tracking-tight">
-        {value}
-      </span>
-      {delta && (
-        <span
-          className={cn(
-            "text-xs font-bold px-1.5 py-0.5 rounded flex items-center gap-0.5",
-            isPositive
-              ? "text-green-600 bg-green-50"
-              : "text-gray-400 bg-gray-50",
-          )}
-        >
-          {isPositive ? "↑" : ""} {delta}
-        </span>
-      )}
-    </div>
-  </motion.div>
-);
-
-// B3) Action Tile V2
-export const ActionTileV2 = ({ icon, label, href, available = true }: any) => {
-  const Content = (
-    <MotionCard
-      className={cn(
-        "p-5 flex flex-col items-center justify-center gap-3 h-full text-center group",
-        !available &&
-        "opacity-60 grayscale cursor-not-allowed hover:y-0 hover:scale-100",
-      )}
-    >
-      <div
-        className={cn(
-          "w-10 h-10 rounded-full flex items-center justify-center transition-colors",
-          available
-            ? "bg-gray-50 text-[#0B0B0B] group-hover:bg-[#0B0B0B] group-hover:text-white"
-            : "bg-gray-100 text-gray-400",
-        )}
-      >
-        {/* @ts-ignore */}
-        <Icon name={icon} size={20} />
+  <div className="bg-white p-6 rounded-xl border border-gray-100 shadow-sm transition-all hover:shadow-md">
+    <div className="flex justify-between items-start mb-4">
+      <div className={`p-2.5 rounded-lg ${color} bg-opacity-10`}>
+        <Icon className={`w-5 h-5 ${color.replace('bg-', 'text-')}`} />
       </div>
-      <span className="text-sm font-semibold text-[#525252] group-hover:text-[#0B0B0B] transition-colors">
-        {label}
-      </span>
-      {!available && (
-        <span className="text-[10px] font-bold uppercase tracking-widest text-gray-400">
-          Soon
-        </span>
-      )}
-    </MotionCard>
-  );
+      <div className={`flex items-center text-sm font-medium ${growth >= 0 ? 'text-green-600' : 'text-red-500'}`}>
+        {growth >= 0 ? '+' : ''}{growth}%
+        <TrendingUp className={`w-4 h-4 ml-1 ${growth < 0 ? 'rotate-180' : ''}`} />
+      </div>
+    </div>
+    <div className="text-sm text-gray-500 font-medium mb-1">{title}</div>
+    <div className="text-2xl font-bold text-gray-900 tracking-tight">{value}</div>
+  </div>
+);
 
-  if (available && href) {
-    return (
-      <Link href={href} className="flex-1">
-        {Content}
-      </Link>
-    );
-  }
-  return <div className="flex-1">{Content}</div>;
+export const OrderStatusBadge = ({ status }: { status: RecentOrder["status"] }) => {
+  const styles = {
+    PAID: "bg-green-50 text-green-700 border-green-100",
+    PENDING: "bg-amber-50 text-amber-700 border-amber-100",
+    FAILED: "bg-red-50 text-red-700 border-red-100",
+    CANCELLED: "bg-gray-50 text-gray-600 border-gray-100",
+  };
+  return (
+    <span className={`px-2.5 py-1 rounded-full text-xs font-semibold border ${styles[status]}`}>
+      {status}
+    </span>
+  );
 };
 
-// B4) Storefront Snapshot V2
-export const StorefrontSnapshotV2 = ({ store }: any) => {
-  if (!store) return null;
+export const ActivityIcon = ({ type }: { type: Activity["type"] }) => {
+  switch (type) {
+    case "ORDER": return <ShoppingBag className="w-4 h-4 text-blue-500" />;
+    case "CUSTOMER": return <Users className="w-4 h-4 text-purple-500" />;
+    case "INVENTORY": return <Package className="w-4 h-4 text-orange-500" />;
+    default: return <Clock className="w-4 h-4 text-gray-400" />;
+  }
+};
 
-  const isPublished = store.status === "published";
-  const APP_DOMAIN = process.env.NEXT_PUBLIC_APP_DOMAIN || "vayva.ng";
-  const storefrontBase = process.env.NEXT_PUBLIC_STOREFRONT_URL || "http://localhost:3001";
+/**
+ * Modern Store Summary Card
+ */
+interface CustomCSSProperties extends React.CSSProperties {
+  "--brand-opacity-10"?: string;
+}
+
+export const StoreSummaryCard = ({ store, isPublished }: { store: StoreContext; isPublished: boolean }) => {
+  const APP_DOMAIN = process.env.NEXT_PUBLIC_APP_DOMAIN || "vayva.app";
+  const storefrontBase = process.env.NEXT_PUBLIC_STOREFRONT_URL ||
+    (process.env.NODE_ENV === "production" ? "https://vayva.store" : "http://localhost:3001");
   const storeUrl = isPublished
     ? `https://${store.slug}.${APP_DOMAIN}`
     : `${storefrontBase}?store=${store.slug}`;
@@ -133,12 +111,8 @@ export const StorefrontSnapshotV2 = ({ store }: any) => {
     <div className="bg-white rounded-xl border border-gray-100 shadow-sm p-6 flex flex-col h-full gap-6">
       <div className="flex items-center gap-4">
         <div
-          className="w-16 h-16 rounded-lg border border-gray-100 flex items-center justify-center overflow-hidden bg-gray-50 text-2xl font-bold text-[#0B0B0B]"
-          style={{
-            backgroundColor: store.brandColor
-              ? `${store.brandColor}10`
-              : undefined,
-          }}
+          style={{ "--brand-opacity-10": store.brandColor ? `${store.brandColor}10` : "transparent" } as CustomCSSProperties}
+          className="w-16 h-16 rounded-lg border border-gray-100 flex items-center justify-center overflow-hidden bg-gray-50 text-2xl font-bold text-black bg-[var(--brand-opacity-10)]"
         >
           {store.logoUrl ? (
             <img
@@ -150,76 +124,49 @@ export const StorefrontSnapshotV2 = ({ store }: any) => {
             store.storeName[0]
           )}
         </div>
-        <div>
-          <h3 className="text-lg font-bold text-[#0B0B0B]">
-            {store.storeName}
-          </h3>
+        <div className="flex-1 min-w-0">
+          <div className="flex items-center gap-2 mb-1">
+            <h2 className="text-xl font-bold text-gray-900 truncate">{store.storeName}</h2>
+            {isPublished ? (
+              <span className="px-2 py-0.5 bg-green-50 text-green-700 text-[10px] font-bold uppercase rounded border border-green-100 leading-tight">Live</span>
+            ) : (
+              <span className="px-2 py-0.5 bg-gray-50 text-gray-500 text-[10px] font-bold uppercase rounded border border-gray-100 leading-tight">Draft</span>
+            )}
+          </div>
           <a
             href={storeUrl}
             target="_blank"
-            className="text-sm text-gray-500 hover:text-[#0B0B0B] hover:underline flex items-center gap-1"
+            rel="noopener noreferrer"
+            className="text-sm text-gray-500 hover:text-gray-900 flex items-center gap-1 group transition-colors"
           >
             {store.slug}.{APP_DOMAIN}
-
-            <Icon name="ExternalLink" size={12} />
+            <ExternalLink className="w-3.5 h-3.5 opacity-0 group-hover:opacity-100 transition-opacity" />
           </a>
         </div>
       </div>
 
-      <div className="flex gap-2">
-        <div
-          className={cn(
-            "px-2.5 py-1 rounded-full text-xs font-bold border",
-            isPublished
-              ? "bg-green-50 text-green-700 border-green-200"
-              : "bg-yellow-50 text-yellow-700 border-yellow-200",
-          )}
-        >
-          {isPublished ? "Live" : "Draft"}
+      <div className="grid grid-cols-2 gap-4">
+        <div className="bg-gray-50 rounded-lg p-3 border border-gray-100">
+          <div className="text-[10px] uppercase font-bold text-gray-400 mb-1">Status</div>
+          <div className="text-sm font-semibold text-gray-700">{store.status}</div>
         </div>
-        <div className="px-2.5 py-1 rounded-full text-xs font-bold border border-gray-200 text-gray-600 bg-gray-50 capitalize">
-          {store.selectedTemplateId || "Default"} Theme
+        <div className="bg-gray-50 rounded-lg p-3 border border-gray-100">
+          <div className="text-[10px] uppercase font-bold text-gray-400 mb-1">Last Update</div>
+          <div className="text-sm font-semibold text-gray-700">Today</div>
         </div>
       </div>
 
-      <div className="flex flex-col gap-2 mt-auto">
-        <a href={storeUrl} target="_blank" className="w-full">
-          <button className="w-full h-10 rounded-lg border border-gray-200 text-[#0B0B0B] font-semibold text-sm hover:bg-gray-50 transition-colors">
-            Preview Storefront
-          </button>
-        </a>
-        <Link href="/dashboard/control-center">
-          <button className="w-full h-10 rounded-lg bg-[#0B0B0B] text-white font-semibold text-sm hover:bg-black/90 transition-colors flex items-center justify-center gap-2">
-            <Icon name="Palette" size={16} />
-            Customize Design
-          </button>
-        </Link>
-      </div>
-    </div>
-  );
-};
-
-// B5) Recent Activity Feed
-export const RecentActivityList = () => {
-  return (
-    <div className="bg-white rounded-xl border border-gray-100 shadow-sm overflow-hidden flex flex-col h-full">
-      <div className="p-5 border-b border-gray-50 flex items-center justify-between">
-        <h3 className="font-bold text-[#0B0B0B]">Recent Activity</h3>
-        <button className="text-xs font-semibold text-gray-500 hover:text-[#0B0B0B]">
-          View All
-        </button>
-      </div>
-
-      {/* Empty State */}
-      <div className="flex-1 flex flex-col items-center justify-center py-12 text-center">
-        <div className="w-12 h-12 bg-gray-50 rounded-full flex items-center justify-center mb-3">
-          <Icon name="Activity" className="text-gray-300" size={24} />
+      {!isPublished && (
+        <div className="mt-auto bg-amber-50 border border-amber-100 rounded-lg p-4 flex gap-3 items-start">
+          <AlertCircle className="w-5 h-5 text-amber-600 shrink-0 mt-0.5" />
+          <div>
+            <div className="text-sm font-bold text-amber-900 mb-1">Finish Publishing</div>
+            <p className="text-xs text-amber-800 leading-relaxed opacity-80">
+              Your store is currently in draft mode and not visible to customers. Complete your profile to go live.
+            </p>
+          </div>
         </div>
-        <p className="text-sm font-medium text-[#0B0B0B]">No recent activity</p>
-        <p className="text-xs text-gray-400 max-w-[200px]">
-          Orders and payouts will appear here once you start selling.
-        </p>
-      </div>
+      )}
     </div>
   );
 };

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { X, Minus, Plus, ShoppingBag } from "lucide-react";
+import { Button } from "@vayva/ui";
 import { PublicProduct } from "@/types/storefront";
 
 interface ItemModalProps {
@@ -59,14 +60,18 @@ export const ItemModal = ({ item, onClose, onAddToCart }: ItemModalProps) => {
         <div className="relative h-48 bg-gray-100 flex-shrink-0">
           <img
             src={item.images?.[0]}
+            alt={item.name}
             className="w-full h-full object-cover sm:rounded-t-2xl"
           />
-          <button
+          <Button
+            variant="ghost"
+            size="icon"
             onClick={onClose}
-            className="absolute top-4 right-4 bg-white/90 p-2 rounded-full text-gray-900 shadow-sm"
+            className="absolute top-4 right-4 bg-white/90 p-2 rounded-full text-gray-900 shadow-sm h-auto"
+            aria-label="Close modal"
           >
             <X size={20} />
-          </button>
+          </Button>
         </div>
 
         {/* Content */}
@@ -124,32 +129,39 @@ export const ItemModal = ({ item, onClose, onAddToCart }: ItemModalProps) => {
         {/* Footer Action */}
         <div className="absolute bottom-0 left-0 right-0 bg-white border-t border-gray-100 p-4 pb-8 space-y-4 shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.05)] rounded-b-2xl">
           <div className="flex items-center justify-center gap-6 mb-2">
-            <button
+            <Button
+              variant="ghost"
+              size="icon"
               onClick={() => setQty(Math.max(1, qty - 1))}
-              className="p-2 bg-gray-100 rounded-full hover:bg-gray-200"
+              className="p-2 bg-gray-100 rounded-full hover:bg-gray-200 h-auto"
+              aria-label="Decrease quantity"
             >
               <Minus size={20} />
-            </button>
+            </Button>
             <span className="text-xl font-extrabold w-8 text-center">
               {qty}
             </span>
-            <button
+            <Button
+              variant="ghost"
+              size="icon"
               onClick={() => setQty(qty + 1)}
-              className="p-2 bg-gray-100 rounded-full hover:bg-gray-200"
+              className="p-2 bg-gray-100 rounded-full hover:bg-gray-200 h-auto"
+              aria-label="Increase quantity"
             >
               <Plus size={20} />
-            </button>
+            </Button>
           </div>
 
-          <button
+          <Button
             onClick={() =>
               onAddToCart({ ...item, qty, modifiers: selectedModifiers }, total)
             }
-            className="w-full bg-red-600 text-white font-bold py-4 rounded-xl flex items-center justify-between px-6 hover:bg-red-700 active:scale-[0.98] transition-all"
+            className="w-full bg-red-600 text-white font-bold py-4 rounded-xl flex items-center justify-between px-6 hover:bg-red-700 active:scale-[0.98] transition-all h-auto"
+            aria-label={`Add to order - ₦${total.toLocaleString()}`}
           >
             <span>Add to Order</span>
             <span>₦{total.toLocaleString()}</span>
-          </button>
+          </Button>
         </div>
       </div>
     </div>

@@ -4,6 +4,7 @@ import { Meal } from "@/types/menu";
 import { LocaleKey, LOCALES } from "@/data/locales";
 import { Clock, Flame, Check } from "lucide-react";
 import Image from "next/image";
+import { Button } from "@vayva/ui";
 
 interface MealCardProps {
   meal: Meal;
@@ -29,9 +30,9 @@ export function MealCard({
       className={`group relative bg-white rounded-2xl shadow-sm border overflow-hidden transition-all hover:shadow-md ${isSelected ? "ring-2 ring-[#22C55E] border-transparent" : "border-gray-100"}`}
     >
       {/* Image */}
-      <button
-        type="button"
-        className="w-full aspect-[4/3] relative cursor-pointer block text-left"
+      <Button
+        variant="ghost"
+        className="w-full aspect-[4/3] relative cursor-pointer block text-left p-0 rounded-none h-auto"
         onClick={() => onViewDetails(meal)}
         aria-label={`View details for ${meal.title[lang]}`}
       >
@@ -39,6 +40,7 @@ export function MealCard({
           src={meal.image}
           alt={meal.title[lang]}
           fill
+          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
           className="object-cover group-hover:scale-105 transition-transform duration-500"
         />
         {meal.isPro && (
@@ -51,7 +53,7 @@ export function MealCard({
             {meal.tags.category}
           </div>
         )}
-      </button>
+      </Button>
 
       {/* Content */}
       <div className="p-4">
@@ -75,19 +77,19 @@ export function MealCard({
         </div>
 
         {/* Action */}
-        <button
+        <Button
           onClick={() => !isLocked && onToggle(meal.id)}
           disabled={isLocked && !isSelected}
           className={`
-                        w-full py-2.5 rounded-xl font-bold text-sm transition-all flex items-center justify-center gap-2
-                        ${
-                          isSelected
-                            ? "bg-[#22C55E] text-white hover:bg-[#16A34A]"
-                            : isLocked
-                              ? "bg-gray-100 text-gray-400 cursor-not-allowed"
-                              : "bg-gray-50 text-gray-700 hover:bg-gray-100 hover:text-gray-900"
-                        }
+                        w-full py-2.5 rounded-xl font-bold text-sm transition-all flex items-center justify-center gap-2 h-auto
+                        ${isSelected
+              ? "bg-[#22C55E] text-white hover:bg-[#16A34A]"
+              : isLocked
+                ? "bg-gray-100 text-gray-400 cursor-not-allowed"
+                : "bg-gray-50 text-gray-700 hover:bg-gray-100 hover:text-gray-900"
+            }
                     `}
+          aria-label={isSelected ? `Remove ${meal.title[lang]} from selection` : `Add ${meal.title[lang]} to selection`}
         >
           {isSelected ? (
             <>
@@ -97,7 +99,7 @@ export function MealCard({
           ) : (
             t.add
           )}
-        </button>
+        </Button>
       </div>
     </div>
   );

@@ -19,8 +19,7 @@ export async function POST(req: NextRequest) {
         }
 
         if (type === "tag") {
-            // @ts-ignore - TS signature mismatch with next/cache in this env
-            revalidateTag(String(target));
+            revalidateTag(String(target), "force-cache");
         } else {
             revalidatePath(target);
         }

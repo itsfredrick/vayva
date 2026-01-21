@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
+import { Button } from "@vayva/ui";
 import { ChevronLeft, ChevronRight, Clock, Loader2 } from "lucide-react";
 
 interface BookingCalendarProps {
@@ -52,10 +53,6 @@ export function BookingCalendar({ storeSlug, onSelectDate, onSelectTime, classNa
     // Fetch availability when selectedDate changes
     useEffect(() => {
         if (!selectedDate || !storeSlug) {
-            // If no storeSlug provided (e.g. preview mode), use mock data
-            if (!storeSlug && selectedDate) {
-                setAvailableSlots(["09:00", "10:00", "11:30", "14:00", "15:30"]);
-            }
             return;
         }
 
@@ -91,12 +88,12 @@ export function BookingCalendar({ storeSlug, onSelectDate, onSelectTime, classNa
                     {currentDate.toLocaleDateString("en-US", { month: "long", year: "numeric" })}
                 </h3>
                 <div className="flex gap-2">
-                    <button onClick={handlePrevMonth} className="p-2 hover:bg-gray-100 rounded-full">
+                    <Button onClick={handlePrevMonth} className="p-2 hover:bg-gray-100 rounded-full">
                         <ChevronLeft className="w-5 h-5" />
-                    </button>
-                    <button onClick={handleNextMonth} className="p-2 hover:bg-gray-100 rounded-full">
+                    </Button>
+                    <Button onClick={handleNextMonth} className="p-2 hover:bg-gray-100 rounded-full">
                         <ChevronRight className="w-5 h-5" />
-                    </button>
+                    </Button>
                 </div>
             </div>
 
@@ -116,7 +113,7 @@ export function BookingCalendar({ storeSlug, onSelectDate, onSelectTime, classNa
                     const isToday = new Date().getDate() === day && new Date().getMonth() === currentDate.getMonth();
 
                     return (
-                        <button
+                        <Button
                             key={day}
                             onClick={() => handleDateClick(day)}
                             className={`
@@ -126,7 +123,7 @@ export function BookingCalendar({ storeSlug, onSelectDate, onSelectTime, classNa
               `}
                         >
                             {day}
-                        </button>
+                        </Button>
                     );
                 })}
             </div>
@@ -146,7 +143,7 @@ export function BookingCalendar({ storeSlug, onSelectDate, onSelectTime, classNa
                     ) : (
                         <div className="grid grid-cols-3 gap-2 max-h-48 overflow-y-auto custom-scrollbar">
                             {availableSlots.map((time) => (
-                                <button
+                                <Button
                                     key={time}
                                     onClick={() => handleTimeClick(time)}
                                     className={`
@@ -158,7 +155,7 @@ export function BookingCalendar({ storeSlug, onSelectDate, onSelectTime, classNa
                                 >
                                     <Clock className="w-3 h-3" />
                                     {time}
-                                </button>
+                                </Button>
                             ))}
                         </div>
                     )}

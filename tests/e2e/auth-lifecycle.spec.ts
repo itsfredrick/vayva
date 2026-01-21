@@ -11,8 +11,8 @@ test.describe("Account Lifecycle & Security", () => {
   test.beforeAll(async () => {
     // Cleanup with safe checks in case schema is partial (though we fixed it)
     try {
-      await prisma.user_email_verification.deleteMany({ where: { userId } });
-      await prisma.password_reset_token.deleteMany({ where: { userId } });
+      await prisma.userEmailVerification.deleteMany({ where: { userId } });
+      await prisma.passwordResetToken.deleteMany({ where: { userId } });
       await prisma.merchantAccountLifecycle.deleteMany({
         where: { merchantId },
       });
@@ -28,7 +28,7 @@ test.describe("Account Lifecycle & Security", () => {
     // Request
     await AuthFlowService.requestEmailVerification(userId, email);
 
-    const record = await prisma.user_email_verification.findUnique({
+    const record = await prisma.userEmailVerification.findUnique({
       where: { userId },
     });
     expect(record).toBeTruthy();
@@ -44,7 +44,7 @@ test.describe("Account Lifecycle & Security", () => {
   test("password reset flow", async () => {
     await AuthFlowService.requestPasswordReset(email);
 
-    const tokens = await prisma.password_reset_token.findMany({
+    const tokens = await prisma.passwordResetToken.findMany({
       where: { userId: "mock_user_id" },
     });
     expect(tokens.length).toBeGreaterThan(0);

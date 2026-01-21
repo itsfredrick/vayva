@@ -24,7 +24,7 @@ export async function POST(
             include: {
                 tenant: {
                     include: {
-                        TenantMembership: {
+                        tenantMemberships: {
                             where: { role: "OWNER" },
                             take: 1
                         }
@@ -33,11 +33,11 @@ export async function POST(
             }
         });
 
-        if (!store || !store.tenant?.TenantMembership[0]) {
+        if (!store || !store.tenant?.tenantMemberships[0]) {
             return NextResponse.json({ error: "Store owner not found" }, { status: 404 });
         }
 
-        const ownerUserId = store.tenant.TenantMembership[0].userId;
+        const ownerUserId = store.tenant.tenantMemberships[0].userId;
 
         // Generate Merchant Session Token
         const token = crypto.randomBytes(32).toString("hex");

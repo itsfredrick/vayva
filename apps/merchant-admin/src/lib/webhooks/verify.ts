@@ -1,12 +1,12 @@
 import { createHmac } from "crypto";
 
 export function verifyPaystackSignature(
-  payload: any,
+  payload: string,
   signature: string,
   secret: string,
 ): boolean {
   const hash = createHmac("sha512", secret)
-    .update(JSON.stringify(payload))
+    .update(payload)
     .digest("hex");
   return hash === signature;
 }

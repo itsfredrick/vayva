@@ -1,8 +1,13 @@
+const path = require("path");
+
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   transpilePackages: ["@vayva/ui", "@vayva/theme", "@vayva/schemas", "@vayva/api-client", "@vayva/content"],
   experimental: {
     optimizePackageImports: ["lucide-react", "@vayva/ui", "@vayva/shared", "@vayva/api-client"]
+  },
+  turbopack: {
+    root: path.resolve(__dirname, "../../"),
   },
   images: {
     remotePatterns: [

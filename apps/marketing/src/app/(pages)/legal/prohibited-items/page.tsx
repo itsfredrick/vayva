@@ -53,7 +53,7 @@ export default function ProhibitedItemsPage() {
                 <strong>Jurisdiction:</strong> Federal Republic of Nigeria
               </p>
               <p>
-                <strong>Governing Entity:</strong> Vayva Inc. (operating in
+                <strong>Governing Entity:</strong> Vayva Tech (operating in
                 Nigeria)
               </p>
             </div>
@@ -272,7 +272,7 @@ export default function ProhibitedItemsPage() {
             <h2>8. Contact Information</h2>
             <p>For questions about this Policy, please contact:</p>
             <p>
-              <strong>Vayva Inc. (operating in Nigeria)</strong>
+              <strong>Vayva Tech (operating in Nigeria)</strong>
               <br />
               Email: legal@vayva.shop
               <br />

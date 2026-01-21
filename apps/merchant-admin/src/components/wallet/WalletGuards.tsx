@@ -12,7 +12,7 @@ export const KycBlockScreen = () => (
     <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mb-6 text-gray-500">
       <Icon name="ShieldAlert" size={32} />
     </div>
-    <h2 className="text-2xl font-bold text-[#0B0B0B] mb-2">
+    <h2 className="text-2xl font-bold text-black mb-2">
       Complete KYC to unlock your wallet
     </h2>
     <p className="text-[#525252] mb-8">
@@ -49,7 +49,7 @@ export const PinSetupScreen = () => {
       <div className="w-16 h-16 bg-blue-50 rounded-full flex items-center justify-center mb-6 text-blue-600">
         <Icon name="LockKeyhole" size={32} />
       </div>
-      <h2 className="text-2xl font-bold text-[#0B0B0B] mb-2">
+      <h2 className="text-2xl font-bold text-black mb-2">
         Create Wallet PIN
       </h2>
       <p className="text-[#525252] mb-8">
@@ -98,10 +98,10 @@ export const UnlockScreen = () => {
 
   return (
     <div className="flex flex-col items-center justify-center h-[60vh] text-center max-w-sm mx-auto p-6">
-      <div className="w-16 h-16 bg-gray-50 rounded-full flex items-center justify-center mb-6 text-[#0B0B0B]">
+      <div className="w-16 h-16 bg-gray-50 rounded-full flex items-center justify-center mb-6 text-black">
         <Icon name="Lock" size={32} />
       </div>
-      <h2 className="text-2xl font-bold text-[#0B0B0B] mb-2">Unlock Wallet</h2>
+      <h2 className="text-2xl font-bold text-black mb-2">Unlock Wallet</h2>
       <p className="text-[#525252] mb-8">
         Enter your 4-digit PIN to access your funds.
       </p>
@@ -127,12 +127,13 @@ export const UnlockScreen = () => {
           {loading ? "Unlocking..." : "Unlock"}
         </Button>
         {error && <p className="text-red-500 text-sm">Incorrect PIN</p>}
-        <button
+        <Button
+          variant="link"
           type="button"
-          className="text-xs text-gray-500 hover:text-black hover:underline"
+          className="text-xs text-gray-500 hover:text-black hover:underline h-auto p-0 font-normal"
         >
           Forgot PIN?
-        </button>
+        </Button>
       </form>
     </div>
   );

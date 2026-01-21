@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { getSessionUser } from "@/lib/session";
-import { prisma } from "@vayva/db";
+import { prisma } from "@/lib/prisma";
 import { logAuditEvent, AuditEventType } from "@/lib/audit";
 
 export async function GET(
@@ -188,7 +188,11 @@ export async function GET(
         user.storeId,
         user.id,
         AuditEventType.COMPLIANCE_REPORT_DOWNLOADED,
-        { reportType: "withdrawals", jobId: job.id },
+        {
+          targetType: "EXPORT_JOB",
+          targetId: job.id,
+          meta: { reportType: "withdrawals", jobId: job.id }
+        }
       );
     } else if (job.type === "compliance_activity") {
       const filters = (job.filters as any) || {};
@@ -244,7 +248,11 @@ export async function GET(
         user.storeId,
         user.id,
         AuditEventType.COMPLIANCE_REPORT_DOWNLOADED,
-        { reportType: "activity", jobId: job.id },
+        {
+          targetType: "EXPORT_JOB",
+          targetId: job.id,
+          meta: { reportType: "activity", jobId: job.id }
+        }
       );
     }
 
@@ -264,7 +272,11 @@ export async function GET(
       user.storeId,
       user.id,
       AuditEventType.EXPORT_DOWNLOADED,
-      { type: job.type, jobId: job.id },
+      {
+        targetType: "EXPORT_JOB",
+        targetId: job.id,
+        meta: { type: job.type, jobId: job.id }
+      }
     );
 
     return new NextResponse(csvContent, {

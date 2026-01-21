@@ -1,5 +1,6 @@
 import React from "react";
 import { X, Play } from "lucide-react";
+import { Button } from "@vayva/ui";
 
 interface LessonPlayerProps {
   lesson: { id: string; title: string; duration: string };
@@ -16,9 +17,9 @@ export const LessonPlayer = ({
     <div className="fixed inset-0 z-[100] bg-black flex flex-col">
       <div className="h-16 flex items-center justify-between px-6 bg-gray-900 border-b border-gray-800">
         <h3 className="text-white font-bold">{lesson.title}</h3>
-        <button onClick={onClose} className="text-gray-400 hover:text-white">
+        <Button variant="ghost" size="icon" onClick={onClose} className="text-gray-400 hover:text-white h-auto" aria-label="Close lesson player">
           <X size={24} />
-        </button>
+        </Button>
       </div>
 
       <div className="flex-1 flex items-center justify-center bg-black relative group">
@@ -33,18 +34,21 @@ export const LessonPlayer = ({
       </div>
 
       <div className="h-20 bg-gray-900 border-t border-gray-800 flex items-center justify-end px-6 gap-4">
-        <button
+        <Button
+          variant="ghost"
           onClick={onClose}
-          className="text-gray-400 hover:text-white text-sm font-bold"
+          className="text-gray-400 hover:text-white text-sm font-bold h-auto"
+          aria-label="Close"
         >
           Close
-        </button>
-        <button
+        </Button>
+        <Button
           onClick={onComplete}
-          className="bg-green-600 hover:bg-green-700 text-white px-6 py-2.5 rounded-lg font-bold text-sm transition-colors"
+          className="bg-green-600 hover:bg-green-700 text-white px-6 py-2.5 rounded-lg font-bold text-sm transition-colors h-auto"
+          aria-label="Mark lesson as completed"
         >
           Mark as Completed
-        </button>
+        </Button>
       </div>
     </div>
   );

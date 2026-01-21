@@ -21,7 +21,7 @@ export function saveAttribution(data: Partial<AttributionData>) {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(merged));
 
     // Also log to console for debugging/telemetry verification
-    console.log("[ATTRIBUTION] Saved:", merged);
+    
   } catch (e: any) {
     console.error("Failed to save attribution", e);
   }

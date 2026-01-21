@@ -17,7 +17,7 @@ export async function GET(request: NextRequest) {
     const products = await prisma.product.findMany({
       where: { storeId: storeId as string },
       include: {
-        ProductImage: true,
+        productImages: true,
       },
     });
 
@@ -31,7 +31,7 @@ export async function GET(request: NextRequest) {
       compareAtPrice: p.compareAtPrice ? Number(p.compareAtPrice) : undefined,
       // Explicitly cast the image map to avoid implicit any errors on 'a', 'b', 'img'
       images:
-        p.ProductImage?.sort((a: any, b: any) => a.position - b.position).map(
+        p.productImages?.sort((a: any, b: any) => a.position - b.position).map(
           (img: any) => img.url,
         ) || [],
       variants: [],

@@ -3,6 +3,9 @@ import NextLink from "next/link";
 const Link = NextLink as any;
 import Image from "next/image";
 import { PublicProduct } from "@/types/storefront";
+import { useStore } from "@/context/StoreContext";
+import { FoodProductCard } from "./FoodProductCard";
+import { ServiceCard } from "./ServiceCard";
 
 interface ProductCardProps {
   product: PublicProduct;
@@ -10,6 +13,19 @@ interface ProductCardProps {
 }
 
 export function ProductCard({ product, storeSlug }: ProductCardProps) {
+  const { store } = useStore();
+  const industry = store?.industry || "RETAIL"; // Default to retail
+
+  // Variant Routing
+  if (industry.startsWith("FOOD") || industry === "RESTAURANT") {
+    return <FoodProductCard product={product} storeSlug={storeSlug} />;
+  }
+
+  if (industry === "SERVICES" || industry === "BEAUTY" || industry === "CLINIC") {
+    return <ServiceCard product={product} storeSlug={storeSlug} />;
+  }
+
+  // Standard Retail Card
   return (
     <Link
       href={`/products/${product.id}?store=${storeSlug}`}

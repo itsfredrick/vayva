@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import { Icon } from "@vayva/ui"; // Assuming this exists or using lucide-react directly
+import { Icon, Button, cn } from "@vayva/ui";
 import { motion, AnimatePresence } from "framer-motion";
 
 type ApprovalRequest = {
@@ -85,24 +85,32 @@ export default function ApprovalsPage() {
     <div className="space-y-6">
       {/* Header */}
       <div>
-        <h1 className="text-2xl font-bold text-[#0B0B0B]">Approvals Queue</h1>
+        <h1 className="text-2xl font-bold text-black">Approvals Queue</h1>
         <p className="text-gray-500">Review and authorize sensitive actions</p>
       </div>
 
       {/* Tabs */}
       <div className="flex border-b border-gray-100">
-        <button
+        <Button
+          variant="ghost"
           onClick={() => setActiveTab("pending")}
-          className={`px-4 py-2 text-sm font-medium border-b-2 transition-colors ${activeTab === "pending" ? "border-black text-black" : "border-transparent text-gray-400 hover:text-black"}`}
+          className={cn(
+            "px-4 py-2 text-sm font-medium border-b-2 rounded-none transition-colors h-auto hover:bg-transparent",
+            activeTab === "pending" ? "border-black text-black" : "border-transparent text-gray-400 hover:text-black hover:border-gray-200"
+          )}
         >
           Pending Reviews
-        </button>
-        <button
+        </Button>
+        <Button
+          variant="ghost"
           onClick={() => setActiveTab("history")}
-          className={`px-4 py-2 text-sm font-medium border-b-2 transition-colors ${activeTab === "history" ? "border-black text-black" : "border-transparent text-gray-400 hover:text-black"}`}
+          className={cn(
+            "px-4 py-2 text-sm font-medium border-b-2 rounded-none transition-colors h-auto hover:bg-transparent",
+            activeTab === "history" ? "border-black text-black" : "border-transparent text-gray-400 hover:text-black hover:border-gray-200"
+          )}
         >
           History
-        </button>
+        </Button>
       </div>
 
       {/* List */}
@@ -130,21 +138,20 @@ export default function ApprovalsPage() {
               <div className="flex items-center gap-4">
                 {/* Status Icon */}
                 <div
-                  className={`w-10 h-10 rounded-full flex items-center justify-center shrink-0 ${
-                    item.status === "pending"
+                  className={`w-10 h-10 rounded-full flex items-center justify-center shrink-0 ${item.status === "pending"
                       ? "bg-blue-50 text-blue-600"
                       : item.status === "approved" || item.status === "executed"
                         ? "bg-green-50 text-green-600"
                         : "bg-red-50 text-red-600"
-                  }`}
+                    }`}
                 >
                   {item.status === "pending" && (
                     <Icon name={"Clock" as any} size={20} />
                   )}
                   {(item.status === "approved" ||
                     item.status === "executed") && (
-                    <Icon name={"CheckCircle" as any} size={20} />
-                  )}
+                      <Icon name={"CheckCircle" as any} size={20} />
+                    )}
                   {(item.status === "rejected" || item.status === "failed") && (
                     <Icon name={"XCircle" as any} size={20} />
                   )}
@@ -152,7 +159,7 @@ export default function ApprovalsPage() {
 
                 <div>
                   <div className="flex items-center gap-2">
-                    <h3 className="font-bold text-sm text-[#0B0B0B] capitalize">
+                    <h3 className="font-bold text-sm text-black capitalize">
                       {item.actionType.replace(".", " ")}
                     </h3>
                     {item.entityType && (
@@ -163,7 +170,7 @@ export default function ApprovalsPage() {
                   </div>
                   <p className="text-xs text-gray-500">
                     Requested by{" "}
-                    <span className="text-[#0B0B0B] font-medium">
+                    <span className="text-black font-medium">
                       {item.requestedByLabel}
                     </span>{" "}
                     &bull; {new Date(item.createdAt).toLocaleDateString()}
@@ -179,15 +186,14 @@ export default function ApprovalsPage() {
                 )}
                 {activeTab === "history" && (
                   <span
-                    className={`text-xs font-bold uppercase ${
-                      item.status === "executed"
+                    className={`text-xs font-bold uppercase ${item.status === "executed"
                         ? "text-green-600"
                         : item.status === "failed"
                           ? "text-red-600"
                           : item.status === "rejected"
                             ? "text-gray-500"
                             : "text-gray-400"
-                    }`}
+                      }`}
                   >
                     {item.status}
                   </span>
@@ -231,12 +237,14 @@ export default function ApprovalsPage() {
                     {selectedItem.id}
                   </p>
                 </div>
-                <button
+                <Button
+                  variant="ghost"
+                  size="icon"
                   onClick={() => setSelectedItem(null)}
-                  className="p-2 hover:bg-gray-200 rounded-full transition"
+                  className="rounded-full hover:bg-gray-200"
                 >
                   <Icon name={"X" as any} size={20} />
-                </button>
+                </Button>
               </div>
 
               {/* Content */}
@@ -318,20 +326,21 @@ export default function ApprovalsPage() {
                     onChange={(e) => setDecisionReason(e.target.value)}
                   />
                   <div className="flex gap-3">
-                    <button
+                    <Button
                       onClick={() => handleDecision("reject")}
                       disabled={actionLoading}
-                      className="flex-1 py-3 px-4 border border-gray-200 bg-white text-red-600 font-bold rounded-lg hover:bg-red-50 transition active:scale-95 text-sm"
+                      variant="outline"
+                      className="flex-1 py-6 border-gray-200 bg-white text-red-600 font-bold rounded-lg hover:bg-red-50 hover:text-red-700 hover:border-red-100"
                     >
                       Reject
-                    </button>
-                    <button
+                    </Button>
+                    <Button
                       onClick={() => handleDecision("approve")}
                       disabled={actionLoading}
-                      className="flex-1 py-3 px-4 bg-black text-white font-bold rounded-lg hover:bg-gray-800 transition active:scale-95 text-sm"
+                      className="flex-1 py-6 bg-black text-white font-bold rounded-lg hover:bg-gray-800"
                     >
                       {actionLoading ? "Processing..." : "Approve & Execute"}
-                    </button>
+                    </Button>
                   </div>
                 </div>
               )}

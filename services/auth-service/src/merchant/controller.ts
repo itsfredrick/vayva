@@ -2,6 +2,7 @@ import { FastifyRequest, FastifyReply } from "fastify";
 import { prisma } from "@vayva/db";
 import { z } from "zod"; // Import zod
 import * as bcrypt from "bcryptjs";
+import { storeOtp } from "../utils/otp";
 
 const hashPassword = async (password: string) => {
   return bcrypt.hash(password, 10);
@@ -71,18 +72,7 @@ export const registerHandler = async (
   });
 
   // Create a 6-digit OTP for email verification
-  const otp = Math.floor(100000 + Math.random() * 900000).toString();
-  await prisma.otpCode.create({
-    data: {
-      identifier: email,
-      code: otp,
-      type: "VERIFY",
-      expiresAt: new Date(Date.now() + 10 * 60 * 1000), // 10 mins
-    },
-  });
-
-  // TODO: Implement sending email via Resend
-  console.log(`[AUTH] OTP for ${email}: ${otp}`);
+  await storeOtp(email, "VERIFY");
 
   return reply.status(201).send({
     message: "Registration successful. Please verify your email.",
@@ -130,7 +120,7 @@ export const loginHandler = async (
       firstName: user.firstName,
       lastName: user.lastName,
       email: user.email,
-      role: user.memberships[0]?.role || "OWNER",
+      role: user.memberships[0]?.role_enum || "OWNER",
       emailVerified: user.isEmailVerified,
       phoneVerified: user.isPhoneVerified,
       createdAt: user.createdAt.toISOString(),
@@ -187,17 +177,7 @@ export const resendOtpHandler = async (
   const { email } = (req.body as any) || {};
 
   // Create new OTP
-  const otp = Math.floor(100000 + Math.random() * 900000).toString();
-  await prisma.otpCode.create({
-    data: {
-      identifier: email,
-      code: otp,
-      type: "VERIFY",
-      expiresAt: new Date(Date.now() + 10 * 60 * 1000),
-    },
-  });
-
-  console.log(`[AUTH] Resent OTP for ${email}: ${otp}`);
+  await storeOtp(email, "VERIFY");
   return reply.send({ message: "OTP resent" });
 };
 
@@ -233,7 +213,7 @@ export const getMeHandler = async (
       firstName: user.firstName,
       lastName: user.lastName,
       email: user.email,
-      role: user.memberships[0]?.role || "OWNER",
+      role: user.memberships[0]?.role_enum || "OWNER",
       emailVerified: user.isEmailVerified,
       phoneVerified: user.isPhoneVerified,
       createdAt: user.createdAt.toISOString(),

@@ -1,6 +1,6 @@
 import dns from "node:dns/promises";
 import { prisma } from "@vayva/db";
-import { logAudit, AuditAction } from "../audit";
+import { logAuditEvent as logAudit } from "@/lib/audit";
 
 export async function verifyDomainDns(domainMappingId: string) {
   const mapping = await prisma.domainMapping.findUnique({
@@ -19,7 +19,7 @@ export async function verifyDomainDns(domainMappingId: string) {
   let error: string | null = null;
 
   console.log(
-    `[DomainJob] Starting verification for ${domain} (Expected TXT: vayva-verification=${token})`,
+    `[DomainJob] Starting verification for ${domain} (${domainMappingId})`,
   );
 
   try {
@@ -33,9 +33,7 @@ export async function verifyDomainDns(domainMappingId: string) {
 
     if (isVerified) {
       status = "verified";
-      console.log(
-        `[DomainJob] ${domain} successfully verified via TXT record.`,
-      );
+
     } else {
       status = "failed";
       error = "Verification TXT record not found.";
@@ -63,15 +61,15 @@ export async function verifyDomainDns(domainMappingId: string) {
   });
 
   // Audit log via standardized helper
-  await logAudit({
-    storeId: mapping.storeId,
-    actor: {
-      type: "SYSTEM",
-      id: "worker-dns",
-      label: "Domain Verification Service",
-    },
-    action: "DOMAIN_VERIFICATION_CHECK",
-    entity: { type: "DOMAIN_MAPPING", id: mapping.id },
-    after: { domain, status, error },
-  });
+  await logAudit(
+    mapping.storeId,
+    "worker-dns",
+    "DOMAIN_VERIFICATION_CHECK",
+    {
+      targetType: "DOMAIN_MAPPING",
+      targetId: mapping.id,
+      after: { domain, status, error },
+      meta: { actor: { type: "SYSTEM", label: "Domain Verification Service" } }
+    }
+  );
 }

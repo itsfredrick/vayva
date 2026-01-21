@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { Button } from "@vayva/ui";
 import { CartItem } from "@/hooks/storefront/useStorefrontCart";
 import {
   Dialog,
@@ -162,14 +163,14 @@ export function CheckoutModal({
               <span className="text-gray-500">Subtotal</span>
               <span>₦{total.toLocaleString()}</span>
             </div>
-            <button
+            <Button
               type="submit"
               disabled={isLoading}
               className="w-full bg-black text-white py-3 rounded-lg font-bold hover:bg-gray-800 disabled:opacity-50 flex items-center justify-center gap-2"
             >
               {isLoading ? <Loader2 className="animate-spin w-4 h-4" /> : null}
               Pay ₦{total.toLocaleString()}
-            </button>
+            </Button>
           </div>
         </form>
       </DialogContent>

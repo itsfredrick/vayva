@@ -9,16 +9,9 @@ export const metadata = {
     description: "Why Nigerian businesses are moving from Shopify to Vayva. Lower costs, local payments, and native WhatsApp features.",
 };
 
+// DEPRECATED - Use /vs/[competitor] instead
+import { redirect } from 'next/navigation';
+
 export default function ComparePage() {
-    return (
-        <div className="min-h-screen bg-white">
-            <SchemaOrg type="SoftwareApplication" />
-            <LandingHero
-                headline="Shopify is built for America. Vayva is built for you."
-                sub="Don't pay in dollars for features you can't use. Switch to the platform designed for Nigerian commerce."
-            />
-            <ComparisonTable />
-            <FinalCTASection />
-        </div>
-    );
+    redirect('/vs/shopify');
 }

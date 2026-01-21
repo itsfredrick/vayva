@@ -3,7 +3,8 @@
 import React, { useState } from "react";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
-import { MessageSquare, Send, AlertCircle, FileText, LifeBuoy } from "lucide-react";
+import { MessageSquare, Send, AlertCircle, FileText, LifeBuoy, Loader2 } from "lucide-react";
+import { Button } from "@vayva/ui";
 
 export default function CreateTicketPage() {
     const router = useRouter();
@@ -67,8 +68,9 @@ export default function CreateTicketPage() {
                     <div className="space-y-2">
                         <label className="text-sm font-semibold text-gray-700">Category</label>
                         <select
+                            title="Category"
                             value={formData.category}
-                            onChange={(e) => setFormData({ ...formData, category: e.target.value })}
+                            onChange={(e: React.ChangeEvent<HTMLSelectElement>) => setFormData({ ...formData, category: e.target.value })}
                             className="w-full p-3 border border-gray-200 rounded-lg bg-gray-50 focus:bg-white focus:ring-2 focus:ring-indigo-100 outline-none transition-all"
                         >
                             {categories.map(c => <option key={c.value} value={c.value}>{c.label}</option>)}
@@ -78,8 +80,9 @@ export default function CreateTicketPage() {
                     <div className="space-y-2">
                         <label className="text-sm font-semibold text-gray-700">Priority</label>
                         <select
+                            title="Priority"
                             value={formData.priority}
-                            onChange={(e) => setFormData({ ...formData, priority: e.target.value })}
+                            onChange={(e: React.ChangeEvent<HTMLSelectElement>) => setFormData({ ...formData, priority: e.target.value })}
                             className="w-full p-3 border border-gray-200 rounded-lg bg-gray-50 focus:bg-white focus:ring-2 focus:ring-indigo-100 outline-none transition-all"
                         >
                             <option value="LOW">Low - General Question</option>
@@ -96,7 +99,7 @@ export default function CreateTicketPage() {
                         placeholder="e.g. Cannot process payments"
                         required
                         value={formData.subject}
-                        onChange={(e) => setFormData({ ...formData, subject: e.target.value })}
+                        onChange={(e: React.ChangeEvent<HTMLInputElement>) => setFormData({ ...formData, subject: e.target.value })}
                         className="w-full p-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-indigo-100 outline-none transition-all"
                     />
                 </div>
@@ -108,7 +111,7 @@ export default function CreateTicketPage() {
                         placeholder="Please describe the issue in detail..."
                         required
                         value={formData.description}
-                        onChange={(e) => setFormData({ ...formData, description: e.target.value })}
+                        onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => setFormData({ ...formData, description: e.target.value })}
                         className="w-full p-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-indigo-100 outline-none transition-all resize-y"
                     />
                     <p className="text-xs text-gray-400 flex items-center gap-1">
@@ -118,20 +121,20 @@ export default function CreateTicketPage() {
                 </div>
 
                 <div className="pt-4 border-t border-gray-100 flex justify-end">
-                    <button
+                    <Button
                         type="submit"
                         disabled={isLoading}
-                        className="bg-indigo-600 hover:bg-indigo-700 text-white px-8 py-3 rounded-lg font-semibold shadow-sm hover:shadow-md transition-all flex items-center gap-2 disabled:opacity-70 disabled:cursor-not-allowed"
+                        className="bg-indigo-600 hover:bg-indigo-700 text-white px-8 py-3 rounded-lg font-semibold shadow-sm"
                     >
                         {isLoading ? (
-                            <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                            <Loader2 className="h-5 w-5 animate-spin" />
                         ) : (
                             <>
-                                <Send size={18} />
+                                <Send className="h-4 w-4 mr-2" />
                                 Submit Ticket
                             </>
                         )}
-                    </button>
+                    </Button>
                 </div>
             </form>
         </div>

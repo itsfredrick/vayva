@@ -19,7 +19,7 @@ export async function POST(req: NextRequest) {
         const transaction = await prisma.paymentTransaction.findUnique({
             where: { reference },
             include: {
-                Order: true,
+                order: true,
             },
         });
 

@@ -1,6 +1,7 @@
 "use client";
 
 import React, { createContext, useContext, useState, ReactNode } from "react";
+import { Button } from "@vayva/ui";
 import { X } from "lucide-react";
 
 interface DownloadModalContextType {
@@ -51,17 +52,17 @@ export function DownloadModalProvider({ children }: { children: ReactNode }) {
                                 <h3 className="text-xl font-bold text-gray-900">
                                     {installStep === "select" ? "Select your device" : "How to install"}
                                 </h3>
-                                <button
+                                <Button
                                     onClick={closeDownloadModal}
                                     className="p-2 hover:bg-gray-100 rounded-full transition-colors text-gray-500"
                                 >
                                     <X size={20} />
-                                </button>
+                                </Button>
                             </div>
 
                             {installStep === "select" ? (
                                 <div className="grid grid-cols-2 gap-4">
-                                    <button
+                                    <Button
                                         onClick={handleIOSClick}
                                         className="flex flex-col items-center justify-center gap-4 p-8 rounded-2xl border-2 border-gray-100 hover:border-gray-900 hover:bg-gray-50 transition-all group"
                                     >
@@ -69,9 +70,9 @@ export function DownloadModalProvider({ children }: { children: ReactNode }) {
                                             <span className="font-bold text-xl">iOS</span>
                                         </div>
                                         <span className="font-bold text-gray-900">iPhone</span>
-                                    </button>
+                                    </Button>
 
-                                    <button
+                                    <Button
                                         onClick={handleAndroidClick}
                                         className="flex flex-col items-center justify-center gap-4 p-8 rounded-2xl border-2 border-gray-100 hover:border-[#22C55E] hover:bg-green-50 transition-all group"
                                     >
@@ -79,7 +80,7 @@ export function DownloadModalProvider({ children }: { children: ReactNode }) {
                                             <span className="font-bold text-xl">And</span>
                                         </div>
                                         <span className="font-bold text-gray-900">Android</span>
-                                    </button>
+                                    </Button>
                                 </div>
                             ) : (
                                 <div className="bg-gray-50 rounded-2xl p-6">
@@ -104,12 +105,12 @@ export function DownloadModalProvider({ children }: { children: ReactNode }) {
                                             <p>Select <span className="font-bold">Add to Home Screen</span>.</p>
                                         </div>
                                     </div>
-                                    <button
+                                    <Button
                                         onClick={() => setInstallStep("select")}
                                         className="w-full mt-6 text-gray-500 hover:text-gray-900 text-sm font-medium"
                                     >
                                         Back to selection
-                                    </button>
+                                    </Button>
                                 </div>
                             )}
                         </div>

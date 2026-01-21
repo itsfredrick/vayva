@@ -3,6 +3,7 @@
 import { useState, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { ShieldCheck, Loader2, Eye, EyeOff, AlertCircle } from "lucide-react";
+import { Button } from "@vayva/ui";
 
 function LoginContent() {
   const router = useRouter();
@@ -119,24 +120,26 @@ function LoginContent() {
                 placeholder="••••••••"
                 required
               />
-              <button
+              <Button
                 type="button"
+                variant="ghost"
+                size="icon"
                 onClick={() => setShowPassword(!showPassword)}
                 disabled={loading}
-                className="absolute right-3 top-2.5 text-gray-400 hover:text-gray-600"
+                className="absolute right-1 top-1 text-gray-400 hover:text-gray-600 h-8 w-8"
               >
                 {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
-              </button>
+              </Button>
             </div>
           </div>
 
-          <button
+          <Button
             type="submit"
             disabled={loading}
-            className="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-medium py-2.5 rounded-lg transition-colors flex items-center justify-center gap-2 disabled:opacity-70 mt-2"
+            className="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-medium py-2.5 rounded-lg transition-colors flex items-center justify-center gap-2 disabled:opacity-70 mt-2 h-auto"
           >
             {loading ? <Loader2 className="animate-spin" size={18} /> : "Sign In"}
-          </button>
+          </Button>
 
           {/* 4. Security Helper Text */}
           <div className="text-center pt-2">

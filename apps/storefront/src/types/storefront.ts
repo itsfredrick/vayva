@@ -20,6 +20,7 @@ export interface PublicStore {
     returns: string;
     privacy: string;
   };
+  industry?: string;
 }
 
 export interface PublicProduct {
@@ -39,16 +40,16 @@ export interface PublicProduct {
   rituals?: { step: string; description: string }[];
   subscriptionOptions?: { available: boolean; frequencies: string[] };
   type?:
-    | "physical"
-    | "service"
-    | "food"
-    | "digital"
-    | "ticket"
-    | "course"
-    | "wholesale"
-    | "marketplace"
-    | "donation"
-    | "property";
+  | "physical"
+  | "service"
+  | "food"
+  | "digital"
+  | "ticket"
+  | "course"
+  | "wholesale"
+  | "marketplace"
+  | "donation"
+  | "property";
   serviceDetails?: {
     duration: number; // minutes
     hasDeposit: boolean;
@@ -120,6 +121,7 @@ export interface PublicProduct {
   };
   licenseType?: "standard" | "extended";
   isAvailable?: boolean;
+  metadata?: any;
 }
 
 export interface ProductVariant {

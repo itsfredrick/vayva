@@ -1,73 +1,77 @@
 import { NextRequest, NextResponse } from "next/server";
-import { getServerSession } from "next-auth";
-import { authOptions } from "@/lib/auth";
-import { prisma } from "@vayva/db";
-import { hasPermission, PERMISSIONS } from "@/lib/auth/permissions";
+import { prisma } from "@/lib/prisma";
+import { withVayvaAPI, HandlerContext } from "@/lib/api-handler";
+import { PERMISSIONS } from "@/lib/team/permissions";
 import { EventBus } from "@/lib/events/eventBus";
 import { logAuditEvent, AuditEventType } from "@/lib/audit";
 
-export async function POST(req: NextRequest) {
-  const session = await getServerSession(authOptions);
-  if (!(session?.user as any)?.storeId) {
-    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+export const POST = withVayvaAPI(
+  PERMISSIONS.TEAM_MANAGE,
+  async (req: NextRequest, { storeId, user, correlationId }: HandlerContext) => {
+    try {
+      const { userId: targetUserId, role } = await req.json();
+
+      const targetMembership = await prisma.membership.findUnique({
+        where: { userId_storeId: { userId: targetUserId, storeId } },
+        select: { role_enum: true, id: true },
+      });
+
+      if (!targetMembership)
+        return new NextResponse("Member not found", { status: 404 });
+
+      // Cannot change OWNER role
+      if (targetMembership.role_enum === "OWNER") {
+        return new NextResponse("Cannot modify owner role", { status: 400 });
+      }
+
+      // Cannot assign OWNER role via this route (transfer ownership is separate flow)
+      if (role.toUpperCase() === "OWNER") {
+        return new NextResponse("Cannot assign owner role directly", {
+          status: 400,
+        });
+      }
+
+      const isCustomRole = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(role);
+
+      await prisma.membership.update({
+        where: { userId_storeId: { userId: targetUserId, storeId } },
+        data: {
+          role_enum: isCustomRole ? "STAFF" : role.toUpperCase() as any,
+          roleId: isCustomRole ? role : null
+        },
+      });
+
+      // Log audit event
+      await logAuditEvent(storeId, user.id, AuditEventType.TEAM_ROLE_CHANGED, {
+        targetType: "USER",
+        targetId: targetUserId,
+        meta: {
+          oldRole: targetMembership.role_enum,
+          newRole: role,
+        }
+      });
+
+      const actorLabel =
+        `${user.firstName || ""} ${user.lastName || ""}`.trim() ||
+        user.email ||
+        "System";
+
+      await EventBus.publish({
+        merchantId: storeId,
+        type: "team.role_updated",
+        payload: { targetUserId, oldRole: targetMembership.role_enum, newRole: role },
+        ctx: {
+          actorId: user.id,
+          actorType: "merchant_user",
+          actorLabel,
+          correlationId,
+        },
+      });
+
+      return NextResponse.json({ ok: true });
+    } catch (error) {
+      console.error("Update Role API Error:", error);
+      return NextResponse.json({ error: "Internal Error" }, { status: 500 });
+    }
   }
-
-  const { storeId, id: userId } = session!.user as any;
-  const hasPerm = await hasPermission(userId, storeId, PERMISSIONS.TEAM_MANAGE);
-  if (!hasPerm) {
-    return new NextResponse("Forbidden", { status: 403 });
-  }
-
-  const { userId: targetUserId, role } = await req.json();
-
-  const targetMembership = await prisma.membership.findUnique({
-    where: { userId_storeId: { userId: targetUserId, storeId } },
-    select: { role: true, id: true },
-  });
-
-  if (!targetMembership)
-    return new NextResponse("Member not found", { status: 404 });
-
-  // Cannot change OWNER role
-  if (targetMembership.role === "owner") {
-    return new NextResponse("Cannot modify owner role", { status: 400 });
-  }
-
-  // Cannot assign OWNER role via this route (transfer ownership is separate flow)
-  if (role === "owner") {
-    return new NextResponse("Cannot assign owner role directly", {
-      status: 400,
-    });
-  }
-
-  await prisma.membership.update({
-    where: { userId_storeId: { userId: targetUserId, storeId } },
-    data: { role },
-  });
-
-  // Log audit event
-  await logAuditEvent(storeId, userId, AuditEventType.TEAM_ROLE_CHANGED, {
-    targetUserId,
-    oldRole: targetMembership.role,
-    newRole: role,
-  });
-
-  const user = session!.user as any;
-  const actorLabel =
-    `${user.firstName || ""} ${user.lastName || ""}`.trim() ||
-    user.email ||
-    "System";
-  await EventBus.publish({
-    merchantId: storeId,
-    type: "team.role_updated",
-    payload: { targetUserId, oldRole: targetMembership.role, newRole: role },
-    ctx: {
-      actorId: userId,
-      actorType: "merchant_user",
-      actorLabel,
-      correlationId: req.headers.get("x-correlation-id") || `req-${Date.now()}`,
-    },
-  });
-
-  return NextResponse.json({ ok: true });
-}
+);

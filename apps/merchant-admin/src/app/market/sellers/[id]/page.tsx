@@ -97,18 +97,18 @@ export default function SellerProfilePage({
       <div className="max-w-5xl mx-auto px-4 py-8">
         {/* Tabs */}
         <div className="flex gap-8 border-b border-white/5 mb-8 overflow-x-auto">
-          <button className="pb-4 text-primary font-bold border-b-2 border-primary whitespace-nowrap">
+          <Button className="pb-4 text-primary font-bold border-b-2 border-primary whitespace-nowrap">
             Products (24)
-          </button>
-          <button className="pb-4 text-text-secondary hover:text-white font-medium whitespace-nowrap">
+          </Button>
+          <Button className="pb-4 text-text-secondary hover:text-white font-medium whitespace-nowrap">
             About
-          </button>
-          <button className="pb-4 text-text-secondary hover:text-white font-medium whitespace-nowrap">
+          </Button>
+          <Button className="pb-4 text-text-secondary hover:text-white font-medium whitespace-nowrap">
             Policies
-          </button>
-          <button className="pb-4 text-text-secondary hover:text-white font-medium whitespace-nowrap">
+          </Button>
+          <Button className="pb-4 text-text-secondary hover:text-white font-medium whitespace-nowrap">
             Reviews
-          </button>
+          </Button>
         </div>
 
         {/* Content */}

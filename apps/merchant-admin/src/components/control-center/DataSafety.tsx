@@ -1,5 +1,5 @@
 import React from "react";
-import { Icon } from "@vayva/ui";
+import { Icon, Button } from "@vayva/ui";
 import { SubscriptionPlan } from "@vayva/shared";
 
 interface DataSafetyProps {
@@ -32,9 +32,9 @@ export const DataSafety = ({ plan }: DataSafetyProps) => {
             <span className="text-xs font-bold text-gray-400">Pro Feature</span>
           </div>
         ) : (
-          <button className="px-4 py-2 border border-gray-200 rounded-xl text-sm font-bold hover:bg-gray-50">
+          <Button className="px-4 py-2 border border-gray-200 text-sm hover:bg-gray-50">
             Export CSV
-          </button>
+          </Button>
         )}
       </div>
 
@@ -59,9 +59,9 @@ export const DataSafety = ({ plan }: DataSafetyProps) => {
             <span className="text-xs font-bold text-gray-400">Pro Feature</span>
           </div>
         ) : (
-          <button className="px-4 py-2 border border-gray-200 rounded-xl text-sm font-bold hover:bg-gray-50">
+          <Button className="px-4 py-2 border border-gray-200 text-sm hover:bg-gray-50">
             View Log
-          </button>
+          </Button>
         )}
       </div>
     </div>

@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { prisma } from "@vayva/db";
+import { prisma } from "@/lib/prisma";
 import Groq from "groq-sdk";
 
 const groq = new Groq({
@@ -20,9 +20,9 @@ export async function GET(req: Request) {
         const endOfWindow = new Date(fortyEightHoursFromNow.setHours(23, 59, 59, 999));
 
         // 1. Find target merchants
-        const targetSubscriptions = await prisma.merchantSubscription.findMany({
+        const targetSubscriptions = await prisma.merchantAiSubscription.findMany({
             where: {
-                trialEndsAt: {
+                trialExpiresAt: {
                     gte: startOfWindow,
                     lte: endOfWindow
                 },
@@ -41,8 +41,8 @@ export async function GET(req: Request) {
                             }
                         },
                         memberships: {
-                            where: { role: "OWNER" },
-                            include: { User: true }
+                            where: { role_enum: "OWNER" },
+                            include: { user: true }
                         }
                     }
                 }
@@ -53,7 +53,7 @@ export async function GET(req: Request) {
 
         for (const sub of targetSubscriptions) {
             const store = sub.store;
-            const owner = store.memberships[0]?.User;
+            const owner = store.memberships[0]?.user;
             if (!owner || !owner.phone) continue;
 
             const stats = {

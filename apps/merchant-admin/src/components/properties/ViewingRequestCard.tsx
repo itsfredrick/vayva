@@ -1,6 +1,6 @@
 "use client";
 
-import { Card, Button, StatusChip } from "@vayva/ui";
+import { Button, Card, StatusChip } from "@vayva/ui";
 import { format } from "date-fns";
 import { Check, X, Calendar, User, Phone, Mail } from "lucide-react";
 import { useState } from "react";

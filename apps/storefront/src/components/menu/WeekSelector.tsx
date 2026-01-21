@@ -3,6 +3,7 @@
 import { Week } from "@/types/menu";
 import { ChevronLeft, ChevronRight, Lock } from "lucide-react";
 import { LocaleKey, LOCALES } from "@/data/locales";
+import { Button } from "@vayva/ui";
 
 interface WeekSelectorProps {
   weeks: Week[];
@@ -28,17 +29,18 @@ export function WeekSelector({
             const isLocked = week.isLocked;
 
             return (
-              <button
+              <Button
                 key={week.id}
+                variant="ghost"
                 onClick={() => onSelectWeek(week.id)}
                 className={`
-                                    flex flex-col items-center justify-center min-w-[100px] px-4 py-2 rounded-xl transition-all border-2
-                                    ${
-                                      isSelected
-                                        ? "border-[#22C55E] bg-[#22C55E]/5 text-[#22C55E]"
-                                        : "border-transparent hover:bg-gray-50 text-gray-500"
-                                    }
+                                    flex flex-col items-center justify-center min-w-[100px] px-4 py-2 rounded-xl transition-all border-2 h-auto
+                                    ${isSelected
+                    ? "border-[#22C55E] bg-[#22C55E]/5 text-[#22C55E] hover:bg-[#22C55E]/10"
+                    : "border-transparent hover:bg-gray-50 text-gray-500"
+                  }
                                 `}
+                aria-label={`Select week ${week.label[lang]}`}
               >
                 <span className="text-xs font-semibold uppercase tracking-wider mb-1">
                   {t.week}
@@ -49,7 +51,7 @@ export function WeekSelector({
                   {week.label[lang]}
                 </span>
                 {isLocked && <Lock className="w-3 h-3 mt-1 text-gray-400" />}
-              </button>
+              </Button>
             );
           })}
         </div>

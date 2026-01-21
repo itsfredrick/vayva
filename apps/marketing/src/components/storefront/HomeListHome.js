@@ -1,0 +1,39 @@
+"use client";
+import { jsx as _jsx, jsxs as _jsxs } from "react/jsx-runtime";
+import { Search, MapPin, Bed, Bath } from "lucide-react";
+import { Button } from "@vayva/ui";
+import { useStorefrontStore } from "@/hooks/storefront/useStorefront";
+export default function HomeListHome({ storeName: initialStoreName, storeSlug, }) {
+    const { store } = useStorefrontStore(storeSlug);
+    const displayName = store?.name || initialStoreName || "HomeList Realty";
+    const properties = [
+        {
+            id: 1,
+            name: "Modern Loft in Lekki",
+            price: 85000000,
+            beds: 3,
+            baths: 2,
+            location: "Lekki Phase 1, Lagos",
+            image: "https://images.unsplash.com/photo-1600596542815-22b5c010deb7?auto=format&fit=crop&q=80&w=800",
+        },
+        {
+            id: 2,
+            name: "Seaside Villa",
+            price: 120000000,
+            beds: 5,
+            baths: 4,
+            location: "Victoria Island, Lagos",
+            image: "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&q=80&w=800",
+        },
+        {
+            id: 3,
+            name: "Cozy Apartment",
+            price: 45000000,
+            beds: 2,
+            baths: 2,
+            location: "Yaba, Lagos",
+            image: "https://images.unsplash.com/photo-1600566753086-00f18fb6b3ea?auto=format&fit=crop&q=80&w=800",
+        },
+    ];
+    return (_jsxs("div", { className: "min-h-screen bg-gray-50 font-sans text-slate-800", children: [_jsx("nav", { className: "bg-white border-b border-gray-200 sticky top-0 z-40", children: _jsxs("div", { className: "max-w-7xl mx-auto px-4 h-20 flex items-center justify-between", children: [_jsx("div", { className: "text-2xl font-serif font-bold tracking-tight text-slate-900", children: displayName }), _jsxs("div", { className: "hidden md:flex gap-6 font-medium text-slate-600", children: [_jsx("a", { href: "#", children: "Buy" }), _jsx("a", { href: "#", children: "Rent" }), _jsx("a", { href: "#", children: "Sell" })] }), _jsx(Button, { variant: "outline", className: "border border-slate-300 px-4 py-2 rounded-lg font-medium hover:bg-slate-50 h-auto", children: "Contact Us" })] }) }), _jsxs("div", { className: "relative h-[50vh] bg-slate-900 flex flex-col items-center justify-center p-4", children: [_jsx("img", { src: "https://images.unsplash.com/photo-1564013799919-ab600027ffc6?auto=format&fit=crop&q=80&w=2000", alt: "Home Hero", className: "absolute inset-0 w-full h-full object-cover opacity-50" }), _jsxs("div", { className: "relative z-10 w-full max-w-4xl text-center", children: [_jsx("h1", { className: "text-white text-4xl md:text-5xl font-bold mb-8 shadow-black/50 drop-shadow-lg", children: "Find Your Dream Home" }), _jsxs("div", { className: "bg-white p-2 rounded-xl flex shadow-xl", children: [_jsx("input", { type: "text", placeholder: "Search by city, neighborhood, or address...", className: "flex-1 px-4 py-3 outline-none text-lg rounded-l-lg" }), _jsxs(Button, { className: "bg-indigo-600 text-white px-8 py-3 rounded-lg font-bold hover:bg-indigo-700 flex items-center gap-2 h-auto", children: [_jsx(Search, { className: "w-5 h-5" }), "Search"] })] })] })] }), _jsxs("div", { className: "max-w-7xl mx-auto px-4 py-16", children: [_jsx("h2", { className: "text-3xl font-bold mb-8", children: "Latest Listings" }), _jsx("div", { className: "grid grid-cols-1 md:grid-cols-3 gap-8", children: properties.map(p => (_jsxs("div", { className: "bg-white border border-gray-200 rounded-xl overflow-hidden hover:shadow-lg transition-all group cursor-pointer", children: [_jsx("div", { className: "h-64 overflow-hidden", children: _jsx("img", { src: p.image, alt: p.name, className: "w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" }) }), _jsxs("div", { className: "p-6", children: [_jsx("h3", { className: "text-xl font-bold text-slate-900 mb-1", children: p.name }), _jsxs("div", { className: "flex items-center text-slate-500 text-sm mb-4", children: [_jsx(MapPin, { className: "w-4 h-4 mr-1" }), p.location] }), _jsxs("div", { className: "flex items-center gap-6 mb-6 text-sm font-medium text-slate-700", children: [_jsxs("span", { className: "flex items-center gap-2", children: [_jsx(Bed, { className: "w-4 h-4" }), " ", p.beds, " Beds"] }), _jsxs("span", { className: "flex items-center gap-2", children: [_jsx(Bath, { className: "w-4 h-4" }), " ", p.baths, " Baths"] })] }), _jsxs("div", { className: "flex items-center justify-between border-t border-slate-100 pt-4", children: [_jsxs("span", { className: "text-2xl font-bold text-indigo-600", children: ["\u20A6", (p.price / 1000000).toFixed(1), "M"] }), _jsx(Button, { variant: "outline", className: "text-sm font-bold border border-indigo-600 text-indigo-600 px-3 py-2 rounded hover:bg-indigo-50 h-auto", children: "Details" })] })] })] }, p.id))) })] })] }));
+}

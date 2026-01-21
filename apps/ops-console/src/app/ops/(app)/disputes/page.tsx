@@ -18,6 +18,7 @@ import {
 } from "lucide-react";
 import { toast } from "sonner";
 import { useRouter, useSearchParams } from "next/navigation";
+import { Button } from "@vayva/ui";
 
 interface Dispute {
     id: string;
@@ -48,8 +49,9 @@ export default function DisputesPage() {
 
     const fetchDisputes = async () => {
         setLoading(true);
+        const q = searchParams.get("q") || "";
         try {
-            const res = await fetch(`/api/ops/financials/disputes?status=${status}`);
+            const res = await fetch(`/api/ops/financials/disputes?status=${status}${q ? `&q=${q}` : ""}`);
             const json = await res.json();
             if (res.ok) {
                 setData(json.data || []);
@@ -102,22 +104,46 @@ export default function DisputesPage() {
                     </h1>
                     <p className="text-gray-500 mt-1">Manage financial disputes and evidence submission.</p>
                 </div>
-                <button onClick={fetchDisputes} className="p-2 hover:bg-gray-100 rounded-full">
-                    <RefreshCw className={`w-5 h-5 text-gray-400 ${loading ? 'animate-spin' : ''}`} />
-                </button>
+                <div className="flex items-center gap-4">
+                    <div className="relative">
+                        <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
+                        <input
+                            placeholder="Search disputes..."
+                            className="pl-10 pr-4 py-2 bg-white border border-gray-200 rounded-lg text-sm focus:ring-2 focus:ring-indigo-500 outline-none w-64"
+                            defaultValue={searchParams.get("q") || ""}
+                            onChange={(e) => {
+                                const q = e.target.value;
+                                const params = new URLSearchParams(window.location.search);
+                                if (q) params.set("q", q); else params.delete("q");
+                                router.push(`?${params.toString()}`);
+                            }}
+                        />
+                    </div>
+                    <Button
+                        variant="ghost"
+                        size="icon"
+                        onClick={fetchDisputes}
+                        className="rounded-full h-10 w-10 flex items-center justify-center"
+                        aria-label="Refresh disputes list"
+                    >
+                        <RefreshCw className={`w-5 h-5 text-gray-400 ${loading ? 'animate-spin' : ''}`} />
+                    </Button>
+                </div>
             </div>
 
             {/* Filter Tabs */}
             <div className="flex gap-2 border-b border-gray-200">
                 {["OPENED", "UNDER_REVIEW", "WON", "LOST"].map(s => (
-                    <button
+                    <Button
                         key={s}
+                        variant="ghost"
                         onClick={() => router.push(`?status=${s}`)}
-                        className={`px-4 py-2 text-sm font-medium border-b-2 transition-colors ${status === s ? "border-indigo-600 text-indigo-600" : "border-transparent text-gray-500 hover:text-gray-700"
+                        className={`px-4 py-2 text-sm font-medium border-b-2 rounded-none transition-colors h-auto ${status === s ? "border-indigo-600 text-indigo-600 bg-transparent hover:bg-transparent" : "border-transparent text-gray-500 hover:text-gray-700 bg-transparent hover:bg-transparent"
                             }`}
+                        aria-label={`Filter by ${s.replace("_", " ")} status`}
                     >
                         {s.replace("_", " ")}
-                    </button>
+                    </Button>
                 ))}
             </div>
 
@@ -159,22 +185,52 @@ export default function DisputesPage() {
                                         {getStatusBadge(d.status)}
                                     </td>
                                     <td className="px-6 py-4 text-right">
-                                        {d.status === "OPENED" && (
-                                            <div className="flex justify-end gap-2">
-                                                <button
-                                                    onClick={() => handleAction(d.id, "ACCEPT_LIABILITY")}
+                                        {(d.status === "OPENED" || d.status === "UNDER_REVIEW") && (
+                                            <div className="flex justify-end gap-2 flex-wrap">
+                                                {d.status === "OPENED" && (
+                                                    <>
+                                                        <Button
+                                                            variant="destructive"
+                                                            size="sm"
+                                                            onClick={() => handleAction(d.id, "ACCEPT_LIABILITY")}
+                                                            disabled={!!actionLoading}
+                                                            className="h-8 px-3 text-xs font-bold bg-red-50 text-red-600 border border-red-200 hover:bg-red-100 shadow-none h-auto"
+                                                            aria-label={`Accept liability for dispute ${d.id}`}
+                                                        >
+                                                            Accept Liability
+                                                        </Button>
+                                                        <Button
+                                                            variant="primary"
+                                                            size="sm"
+                                                            onClick={() => handleAction(d.id, "SUBMIT_EVIDENCE_MOCK")}
+                                                            disabled={!!actionLoading}
+                                                            className="h-8 px-3 text-xs font-bold whitespace-nowrap h-auto"
+                                                            aria-label={`Submit evidence for dispute ${d.id}`}
+                                                        >
+                                                            Submit Evidence
+                                                        </Button>
+                                                    </>
+                                                )}
+                                                <Button
+                                                    variant="secondary"
+                                                    size="sm"
+                                                    onClick={() => handleAction(d.id, "REFUND")}
                                                     disabled={!!actionLoading}
-                                                    className="px-3 py-1.5 text-xs font-bold text-red-600 bg-red-50 hover:bg-red-100 rounded border border-red-200"
+                                                    className="h-8 px-3 text-xs font-bold bg-orange-50 text-orange-600 border border-orange-200 hover:bg-orange-100 h-auto"
+                                                    aria-label={`Refund dispute ${d.id}`}
                                                 >
-                                                    Accept Liability
-                                                </button>
-                                                <button
-                                                    onClick={() => handleAction(d.id, "SUBMIT_EVIDENCE_MOCK")}
+                                                    Refund
+                                                </Button>
+                                                <Button
+                                                    variant="secondary"
+                                                    size="sm"
+                                                    onClick={() => handleAction(d.id, "MARK_WON")}
                                                     disabled={!!actionLoading}
-                                                    className="px-3 py-1.5 text-xs font-bold text-white bg-indigo-600 hover:bg-indigo-700 rounded shadow-sm"
+                                                    className="h-8 px-3 text-xs font-bold bg-green-50 text-green-600 border border-green-200 hover:bg-green-100 h-auto"
+                                                    aria-label={`Force win dispute ${d.id}`}
                                                 >
-                                                    Submit Evidence
-                                                </button>
+                                                    Force Win
+                                                </Button>
                                             </div>
                                         )}
                                     </td>

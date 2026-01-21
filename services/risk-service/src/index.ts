@@ -1,6 +1,6 @@
 import Fastify from "fastify";
 import cors from "@fastify/cors";
-import { prisma } from "@vayva/db";
+import { prisma, RiskScope, RiskSeverity } from "@vayva/db";
 
 const server = Fastify({
   logger: true,
@@ -13,7 +13,6 @@ server.get("/health", async () => {
 });
 
 import { riskEngine } from "./lib/risk-engine";
-import { RiskScope, RiskSeverity } from "@prisma/client";
 
 // Risk Evaluation Endpoint
 server.post<{

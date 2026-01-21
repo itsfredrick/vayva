@@ -53,7 +53,7 @@ export default function PrivacyPolicyPage() {
                 <strong>Jurisdiction:</strong> Federal Republic of Nigeria
               </p>
               <p>
-                <strong>Governing Entity:</strong> Vayva Inc. (operating in
+                <strong>Governing Entity:</strong> Vayva Tech (operating in
                 Nigeria)
               </p>
               <p>
@@ -75,7 +75,7 @@ export default function PrivacyPolicyPage() {
                 platform.
               </li>
               <li>
-                <strong>Vayva as Data Processor:</strong> Vayva Inc. acts as a
+                <strong>Vayva as Data Processor:</strong> Vayva Tech acts as a
                 processor for your customer data, handling it solely on your
                 instructions to provide platform services.
               </li>
@@ -288,7 +288,7 @@ export default function PrivacyPolicyPage() {
             <h2>10. Contact & Data Requests</h2>
             <p>To exercise your rights, please contact:</p>
             <p>
-              <strong>Data Protection Officer:</strong> dpo@vayva.shop
+              <strong>Data Protection Officer:</strong> dpo@vayva.ng
               <br />
               Response Timeline: Within 30 days.
             </p>

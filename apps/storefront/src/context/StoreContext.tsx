@@ -29,9 +29,9 @@ const StoreContext = createContext<StoreContextType>({
   isLoading: true,
   error: null,
   cart: [],
-  addToCart: () => {},
-  removeFromCart: () => {},
-  clearCart: () => {},
+  addToCart: () => { },
+  removeFromCart: () => { },
+  clearCart: () => { },
 });
 
 export const useStore = () => useContext(StoreContext);
@@ -121,6 +121,29 @@ export function StoreProvider({ children }: { children: any }) {
 
     initStore();
   }, [searchParams]);
+
+  // LIVE PREVIEW SYNCING (For Merchant Admin Designer)
+  useEffect(() => {
+    const handleMessage = (event: MessageEvent) => {
+      if (event.data?.type === "VAYVA_PREVIEW_UPDATE") {
+        setStore((prev: any) => {
+          if (!prev) return prev;
+          return {
+            ...prev,
+            theme: {
+              ...prev.theme,
+              theme: event.data.config, // Sync the nested theme config
+              // Or if your schema puts it top level:
+              ...event.data.config
+            }
+          };
+        });
+      }
+    };
+
+    window.addEventListener("message", handleMessage);
+    return () => window.removeEventListener("message", handleMessage);
+  }, []);
 
   return (
     <StoreContext.Provider

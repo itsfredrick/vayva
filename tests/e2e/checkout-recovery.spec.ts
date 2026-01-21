@@ -9,7 +9,7 @@ test.describe("Checkout & Recovery", () => {
 
   test.beforeAll(async () => {
     // Setup Settings
-    await prisma.checkout_recovery_settings.upsert({
+    await prisma.checkoutRecoverySettings.upsert({
       where: { merchantId },
       update: { enabled: true },
       create: { merchantId, enabled: true },
@@ -59,7 +59,7 @@ test.describe("Checkout & Recovery", () => {
     });
 
     // Verify Message Scheduled
-    const msgs = await prisma.checkout_recovery_message.findMany({
+    const msgs = await prisma.checkoutRecoveryMessage.findMany({
       where: { checkoutSessionId: session!.id },
     });
     expect(msgs.length).toBeGreaterThan(0);
@@ -67,7 +67,7 @@ test.describe("Checkout & Recovery", () => {
 
     // Verify Cancellation
     await RecoveryService.cancelRecovery(session!.id);
-    const cancelled = await prisma.checkout_recovery_message.findUnique({
+    const cancelled = await prisma.checkoutRecoveryMessage.findUnique({
       where: { id: msgs[0].id },
     });
     expect(cancelled?.status).toBe("cancelled");

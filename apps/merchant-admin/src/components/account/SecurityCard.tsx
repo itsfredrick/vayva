@@ -1,5 +1,5 @@
 import React from "react";
-import { Icon, Button } from "@vayva/ui";
+import { Button, Icon } from "@vayva/ui";
 
 export const SecurityCard = () => {
   return (

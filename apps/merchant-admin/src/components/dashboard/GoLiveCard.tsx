@@ -1,11 +1,13 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import { Icon } from "@vayva/ui";
+import { Icon, Button } from "@vayva/ui";
 import { useRouter } from "next/navigation";
+import { useToast } from "@/components/ui/use-toast";
 
 export function GoLiveCard() {
   const router = useRouter();
+  const { toast } = useToast();
   const [status, setStatus] = useState<any>(null);
   const [loading, setLoading] = useState(true);
   const [processing, setProcessing] = useState(false);
@@ -36,14 +38,25 @@ export function GoLiveCard() {
       if (res.ok) {
         // Success
         fetchStatus();
-        // Optionally show confetti
+        toast({
+          title: "Store is Live!",
+          description: "Your store is now visible to the public.",
+        });
       } else {
         if (res.status === 409) {
           // Blocked
-          alert("Cannot go live. Please fix blockers.");
+          toast({
+            title: "Cannot Go Live",
+            description: "Please fix the blockers listed below.",
+            variant: "destructive",
+          });
           fetchStatus(); // Refresh to ensure we see latest blockers
         } else {
-          alert("Error: " + (data.message || "Failed"));
+          toast({
+            title: "Publication Failed",
+            description: data.message || "Failed to publish store.",
+            variant: "destructive",
+          });
         }
       }
     } catch (err) {
@@ -85,9 +98,8 @@ export function GoLiveCard() {
           <p className="text-sm text-gray-500">Manage your public presence.</p>
         </div>
         <div
-          className={`px-3 py-1 rounded-full text-xs font-bold uppercase ${
-            isLive ? "bg-green-100 text-green-700" : "bg-gray-100 text-gray-500"
-          }`}
+          className={`px-3 py-1 rounded-full text-xs font-bold uppercase ${isLive ? "bg-green-100 text-green-700" : "bg-gray-100 text-gray-500"
+            }`}
         >
           {isLive ? "Live" : "Offline"}
         </div>
@@ -108,13 +120,13 @@ export function GoLiveCard() {
                 vayva.ng/store
               </a>
             </div>
-            <button
+            <Button
               onClick={handleUnpublish}
               disabled={processing}
               className="text-xs text-red-600 font-bold hover:underline"
             >
               Unpublish
-            </button>
+            </Button>
           </div>
         </div>
       ) : (
@@ -146,18 +158,17 @@ export function GoLiveCard() {
             </div>
           )}
 
-          <button
+          <Button
             onClick={handleGoLive}
             disabled={!isReady || processing}
-            className={`w-full py-3 rounded-lg font-bold flex items-center justify-center gap-2 ${
-              !isReady
-                ? "bg-gray-100 text-gray-400 cursor-not-allowed"
-                : "bg-black text-white hover:bg-gray-800"
-            }`}
+            className={`w-full py-3 rounded-lg font-bold flex items-center justify-center gap-2 ${!isReady
+              ? "bg-gray-100 text-gray-400 cursor-not-allowed"
+              : "bg-black text-white hover:bg-gray-800"
+              }`}
           >
             {processing ? "Publishing..." : "Go Live Now"}
             <Icon name={"ArrowRight" as any} size={16} />
-          </button>
+          </Button>
         </div>
       )}
     </div>

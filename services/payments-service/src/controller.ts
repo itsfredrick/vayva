@@ -63,6 +63,7 @@ export const initializeTransactionHandler = async (
     console.error("[PaymentsService] Notification trigger error:", err);
   }
 
+  // --- Paystack Logic (Existing) ---
   if (IS_TEST_MODE) {
     const storefrontUrl = process.env.STOREFRONT_URL || "http://localhost:3001";
     return reply.send({
@@ -234,8 +235,27 @@ async function processSuccessfulPayment(tx: any, paystackData: any) {
     },
   });
 
-  // 5. Trigger Notifications (Emit event or direct call)
-  // TODO: Notify Notifications Service
+  // 5. Trigger Notifications
+  try {
+    const notificationServiceUrl = process.env.NOTIFICATIONS_SERVICE_URL || "http://notifications-service:3000";
+
+    await fetch(`${notificationServiceUrl}/v1/internal/event`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        type: "PAYMENT_CONFIRMED",
+        storeId: tx.storeId,
+        payload: {
+          amount: tx.amount,
+          currency: tx.currency,
+          reference: tx.reference,
+          orderId: tx.orderId
+        }
+      })
+    });
+  } catch (error) {
+    console.error("Failed to trigger payment notification:", error);
+  }
 }
 
 export const listTransactionsHandler = async (
@@ -248,8 +268,8 @@ export const listTransactionsHandler = async (
   const transactions = await prisma.paymentTransaction.findMany({
     where: { storeId },
     include: {
-      Order: {
-        include: { Customer: true },
+      order: {
+        include: { customer: true },
       },
     },
     orderBy: { createdAt: "desc" },

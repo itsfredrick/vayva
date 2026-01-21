@@ -1,116 +1,63 @@
-import { prisma } from "@vayva/db";
-import { NextResponse } from "next/server";
-import crypto from "crypto";
-import { logAuditEvent, AuditEventType } from "./audit";
+import { NextRequest, NextResponse } from "next/server";
+import { redis } from "@/lib/redis";
 
-interface IdempotencyOptions {
-  key: string;
-  userId: string;
-  merchantId: string;
-  route: string;
-  ttlSeconds?: number;
+const IDEMPOTENCY_HEADER = "x-idempotency-key";
+const EXPIRY_SECONDS = 60 * 60 * 24; // 24 hours
+
+export interface IdempotencyRecord {
+  status: number;
+  body: any;
+  headers: Record<string, string>;
+  createdAt: number;
 }
 
-export class IdempotencyError extends Error {
-  constructor(
-    message: string,
-    public readonly cachedResponse: any,
-  ) {
-    super(message);
-    this.name = "IdempotencyError";
-  }
-}
+export async function verifyIdempotency(
+  req: NextRequest
+): Promise<{ cached: NextResponse | null; key: string | null }> {
+  const key = req.headers.get(IDEMPOTENCY_HEADER);
+  if (!key) return { cached: null, key: null };
 
-/**
- * Check if an idempotency key has been used before.
- * If yes, return the cached response.
- * If no, return null (caller should proceed with operation).
- */
-export async function checkIdempotency(
-  options: IdempotencyOptions,
-): Promise<NextResponse | null> {
-  const { key, userId, merchantId, route, ttlSeconds = 86400 } = options;
+  const compositeKey = `idempotency:${key}`;
+  const data = await redis.get(compositeKey);
 
-  // 1. Look up existing record
-  const existing = await prisma.idempotencyRecord.findUnique({
-    where: { key },
-  });
-
-  if (!existing) {
-    return null; // New request, proceed
-  }
-
-  // 2. Check expiry
-  if (existing.expiresAt < new Date()) {
-    // Expired, allow retry
-    await prisma.idempotencyRecord.delete({ where: { key } });
-    return null;
-  }
-
-  // 3. Verify ownership (security check)
-  if (existing.userId !== userId || existing.merchantId !== merchantId) {
-    throw new Error("Idempotency key conflict: different user");
-  }
-
-  // 4. Return cached response
-  await logAuditEvent(merchantId, userId, AuditEventType.IDEMPOTENCY_REPLAYED, {
-    route,
-    key: key.substring(0, 8) + "...",
-  });
-
-  // Return the cached response
-  if (existing.response) {
-    return NextResponse.json(existing.response, {
-      status: 200,
-      headers: { "X-Idempotency-Replayed": "true" },
-    });
-  }
-
-  return null;
-}
-
-/**
- * Store the response for an idempotency key.
- */
-export async function storeIdempotencyResponse(
-  options: IdempotencyOptions,
-  response: any,
-): Promise<void> {
-  const { key, userId, merchantId, route, ttlSeconds = 86400 } = options;
-
-  const responseHash = crypto
-    .createHash("sha256")
-    .update(JSON.stringify(response))
-    .digest("hex");
-
-  const expiresAt = new Date();
-  expiresAt.setSeconds(expiresAt.getSeconds() + ttlSeconds);
-
-  await prisma.idempotencyRecord.upsert({
-    where: { key },
-    create: {
+  if (data) {
+    const record: IdempotencyRecord = JSON.parse(data);
+    return {
+      cached: NextResponse.json(record.body, {
+        status: record.status,
+        headers: {
+          ...record.headers,
+          "x-idempotency-hit": "true"
+        },
+      }),
       key,
-      userId,
-      merchantId,
-      route,
-      responseHash,
-      response,
-      expiresAt,
-    },
-    update: {
-      responseHash,
-      response,
-      expiresAt,
-    },
-  });
+    };
+  }
+
+  // Set a "Processing" lock? 
+  // For simplicity, we assume we process and save at end.
+  // Ideally we use SETNX with short TTL to block concurrent.
+
+  return { cached: null, key: compositeKey };
 }
 
-/**
- * Extract idempotency key from request headers.
- */
-export function getIdempotencyKey(request: Request): string | null {
-  return (
-    request.headers.get("Idempotency-Key") ||
-    request.headers.get("idempotency-key")
-  );
+export async function saveIdempotencyResponse(
+  key: string | null,
+  response: NextResponse,
+  bodyData: any // Pass explicit data since we can't easily read response stream twice
+) {
+  if (!key) return;
+
+  // Only cache successful or definitive failures (e.g. 400, 401). 
+  // Do not cache 500s usually? 
+  // For strict idempotency, we MUST cache whatever happened.
+
+  const record: IdempotencyRecord = {
+    status: response.status,
+    body: bodyData,
+    headers: {}, // Serialize essential headers if needed
+    createdAt: Date.now(),
+  };
+
+  await redis.setex(key, EXPIRY_SECONDS, JSON.stringify(record));
 }

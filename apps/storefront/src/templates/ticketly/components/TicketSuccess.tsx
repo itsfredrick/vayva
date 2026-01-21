@@ -1,5 +1,6 @@
 import React from "react";
 import { X, CheckCircle, Download, Calendar } from "lucide-react";
+import { Button } from "@vayva/ui";
 import { PublicProduct } from "@/types/storefront";
 
 interface TicketSuccessProps {
@@ -22,12 +23,15 @@ export const TicketSuccess = ({
   return (
     <div className="fixed inset-0 z-[110] flex items-center justify-center bg-purple-900/90 backdrop-blur-sm p-4">
       <div className="bg-white rounded-3xl w-full max-w-sm overflow-hidden shadow-2xl animate-in zoom-in-95 duration-500 relative">
-        <button
+        <Button
+          variant="ghost"
+          size="icon"
           onClick={onClose}
-          className="absolute top-4 right-4 z-10 bg-black/10 p-2 rounded-full hover:bg-black/20 text-white"
+          className="absolute top-4 right-4 z-10 bg-black/10 p-2 rounded-full hover:bg-black/20 text-white h-auto"
+          aria-label="Close success modal"
         >
           <X size={20} />
-        </button>
+        </Button>
 
         {/* Header Pattern */}
         <div className="h-32 bg-purple-600 relative overflow-hidden flex items-center justify-center">
@@ -90,9 +94,9 @@ export const TicketSuccess = ({
             </p>
           </div>
 
-          <button className="w-full bg-gray-900 text-white font-bold py-3 rounded-xl flex items-center justify-center gap-2 hover:bg-gray-800 transition-colors">
+          <Button className="w-full bg-gray-900 text-white font-bold py-3 rounded-xl flex items-center justify-center gap-2 hover:bg-gray-800 transition-colors h-auto" aria-label="Save ticket">
             <Download size={18} /> Save Ticket
-          </button>
+          </Button>
         </div>
       </div>
     </div>

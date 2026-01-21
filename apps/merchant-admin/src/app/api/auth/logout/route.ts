@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
+import { clearSession } from "@/lib/session";
 
 export async function POST() {
-  // In a real app, this would clear cookies
+  await clearSession();
   return new NextResponse(null, { status: 204 });
 }

@@ -74,10 +74,7 @@ export class WebhookService {
       timestamp,
     );
 
-    console.log(`[Webhook] Sending to ${sub.url} `, {
-      "X-Vayva-Event": payload.type,
-      "X-Vayva-Signature": signature,
-    });
+    
 
     // Test update
     await prisma.webhookDelivery.update({

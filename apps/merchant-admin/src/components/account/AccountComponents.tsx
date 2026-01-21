@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { Icon, cn } from "@vayva/ui";
+import { Icon, cn, Button } from "@vayva/ui";
 import Link from "next/link";
 import { motion } from "framer-motion";
 
@@ -19,7 +19,7 @@ export const SettingsSection = ({
 }) => (
   <section className={cn("flex flex-col gap-6 mb-10 last:mb-0", className)}>
     <div className="flex flex-col gap-1">
-      <h3 className="text-lg font-bold text-[#0B0B0B]">{title}</h3>
+      <h3 className="text-lg font-bold text-black">{title}</h3>
       {description && <p className="text-sm text-[#525252]">{description}</p>}
     </div>
     {children}
@@ -97,19 +97,20 @@ export const ActionRow = ({
 }: any) => (
   <div className="flex items-center justify-between py-4 border-b border-gray-50 last:border-0">
     <div>
-      <p className="text-sm font-medium text-[#0B0B0B]">{label}</p>
+      <p className="text-sm font-medium text-black">{label}</p>
       {description && (
         <p className="text-xs text-[#525252] mt-0.5">{description}</p>
       )}
     </div>
-    <button
+    <Button
+      variant="link"
       onClick={onAction}
       className={cn(
-        "text-sm font-semibold hover:underline",
-        destructive ? "text-red-600" : "text-[#0B0B0B]",
+        "text-sm font-semibold hover:underline h-auto p-0",
+        destructive ? "text-red-600" : "text-black",
       )}
     >
       {actionLabel}
-    </button>
+    </Button>
   </div>
 );

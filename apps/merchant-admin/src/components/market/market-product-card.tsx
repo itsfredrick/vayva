@@ -1,6 +1,6 @@
 import React from "react";
 import Link from "next/link";
-import { Icon, Button } from "@vayva/ui";
+import { Button, Icon } from "@vayva/ui";
 
 export interface MarketProduct {
   id: string;

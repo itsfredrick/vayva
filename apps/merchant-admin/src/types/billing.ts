@@ -7,7 +7,7 @@ export interface PlanDetails {
   name: string;
   price: number; // in Naira
   formattedPrice: string;
-  transactionFee: number; // percentage, e.g. 5 for 5%
+  transactionFee: number; // percentage, e.g. 3 for 3%
   productLimit: number; // -1 for unlimited
   staffLimit: number;
   description: string;
@@ -18,7 +18,7 @@ export interface PlanDetails {
 export interface Subscription {
   status: "active" | "past_due" | "canceled" | "trialing";
   planId: PlanTier;
-  currentPeriodEnd: string; // ISO date
+  periodEnd: string; // ISO date
   cancelAtPeriodEnd: boolean;
   paymentMethod?: {
     brand: string; // e.g. 'visa'
@@ -82,7 +82,7 @@ export const PLANS_DETAILS: Record<PlanTier, PlanDetails> = {
     staffLimit: 1, // Self only
     description: "For new businesses starting out.",
     features: [
-      "5% transaction fee",
+      "3% transaction fee",
       "5 product limit",
       "vayva.shop subdomain",
       "Basic store builder",

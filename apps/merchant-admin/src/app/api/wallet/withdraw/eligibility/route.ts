@@ -3,7 +3,7 @@ import { WithdrawalEligibility } from "@vayva/shared";
 
 export async function GET() {
   // Simulate complex check
-  await new Promise((resolve) => setTimeout(resolve, 600));
+
 
   // Test Logic: vary based on random or fixed state for now
   // In a real app, check Auth User's Merchant -> KYC Status

@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { requireAuth } from "@/lib/auth/session";
-import { prisma } from "@vayva/db";
+import { prisma } from "@/lib/prisma";
 import { logAuditEvent, AuditEventType } from "@/lib/audit";
 
 export async function GET() {
@@ -74,9 +74,13 @@ export async function PATCH(req: Request) {
 
     // Log audit event
     await logAuditEvent(storeId, session.user.id, AuditEventType.ACCOUNT_SECURITY_ACTION, {
-      action: "SECURITY_SETTINGS_UPDATED",
-      mfaRequired,
-      sessionTimeoutMinutes,
+      targetType: "STORE",
+      targetId: storeId,
+      meta: {
+        action: "SECURITY_SETTINGS_UPDATED",
+        mfaRequired,
+        sessionTimeoutMinutes,
+      }
     });
 
     return NextResponse.json({ success: true });

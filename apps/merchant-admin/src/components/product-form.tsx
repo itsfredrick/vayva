@@ -3,7 +3,8 @@
 import React, { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { GlassPanel, Button, Input, Icon } from "@vayva/ui";
+import { Button, GlassPanel, Icon, Input } from "@vayva/ui";
+import { CalendarSyncSettings } from "./products/calendar-sync-settings";
 
 interface ProductFormProps {
   initialData?: any;
@@ -126,6 +127,8 @@ export const ProductForm = ({
                   Product Name
                 </label>
                 <Input
+                  id="product-name"
+                  aria-label="Product Name"
                   defaultValue={initialData?.name}
                   placeholder="e.g. Nike Air Max 90"
                 />
@@ -138,6 +141,7 @@ export const ProductForm = ({
                   className="w-full bg-white/5 border border-white/10 rounded-xl p-3 text-sm text-white resize-none focus:outline-none focus:border-primary transition-colors min-h-[120px]"
                   defaultValue={initialData?.description}
                   placeholder="Describe your product..."
+                  aria-label="Description"
                 ></textarea>
               </div>
             </div>
@@ -153,10 +157,12 @@ export const ProductForm = ({
                 </p>
               </div>
               <input
+                id="variant-toggle"
                 type="checkbox"
                 className="toggle toggle-primary"
                 checked={hasVariants}
                 onChange={(e) => setHasVariants(e.target.checked)}
+                aria-label="Enable variants"
               />
             </div>
 
@@ -169,7 +175,7 @@ export const ProductForm = ({
                     <div key={idx} className="bg-white/5 p-4 rounded-xl border border-white/10">
                       <div className="flex justify-between mb-2">
                         <span className="font-bold text-white">{opt.name}</span>
-                        <button onClick={() => removeOption(idx)} className="text-xs text-red-400 hover:text-red-300">Remove</button>
+                        <Button variant="link" onClick={() => removeOption(idx)} className="text-xs text-red-400 hover:text-red-300 h-auto p-0">Remove</Button>
                       </div>
                       <div className="flex flex-wrap gap-2">
                         {opt.values.map((val, vIdx) => (
@@ -186,6 +192,7 @@ export const ProductForm = ({
                         placeholder="e.g. Size"
                         value={newOptionName}
                         onChange={(e) => setNewOptionName(e.target.value)}
+                        aria-label="New Option Name"
                       />
                     </div>
                     <div>
@@ -201,6 +208,7 @@ export const ProductForm = ({
                               handleAddOption();
                             }
                           }}
+                          aria-label="New Option Values"
                         />
                         <Button onClick={handleAddOption} disabled={!newOptionName || !newOptionValues}>Add</Button>
                       </div>
@@ -229,6 +237,7 @@ export const ProductForm = ({
                                 className="h-8 w-24 text-right font-mono"
                                 defaultValue={initialData?.price || 0}
                                 onChange={(e) => updateVariant(idx, 'price', e.target.value)}
+                                aria-label={`Price for ${variant.name}`}
                               />
                             </td>
                             <td className="p-3">
@@ -236,6 +245,7 @@ export const ProductForm = ({
                                 className="h-8 w-20 text-right font-mono"
                                 defaultValue={0}
                                 onChange={(e) => updateVariant(idx, 'inventory', e.target.value)}
+                                aria-label={`Stock for ${variant.name}`}
                               />
                             </td>
                             <td className="p-3">
@@ -243,6 +253,7 @@ export const ProductForm = ({
                                 className="h-8 w-32 font-mono text-xs"
                                 placeholder="SKU"
                                 onChange={(e) => updateVariant(idx, 'sku', e.target.value)}
+                                aria-label={`SKU for ${variant.name}`}
                               />
                             </td>
                           </tr>
@@ -266,8 +277,10 @@ export const ProductForm = ({
                 <input
                   type="radio"
                   name="status"
+                  id="status-active"
                   className="radio radio-primary"
                   defaultChecked={initialData?.status === "active"}
+                  aria-label="Set status to Active"
                 />
                 <span className="label-text text-white">Active</span>
               </label>
@@ -275,8 +288,10 @@ export const ProductForm = ({
                 <input
                   type="radio"
                   name="status"
+                  id="status-draft"
                   className="radio radio-primary"
                   defaultChecked={initialData?.status !== "active"}
+                  aria-label="Set status to Draft"
                 />
                 <span className="label-text text-white">Draft</span>
               </label>
@@ -295,6 +310,7 @@ export const ProductForm = ({
                   defaultValue={initialData?.price}
                   placeholder="0.00"
                   className="font-mono text-lg"
+                  aria-label="Price"
                 />
               </div>
               <div className="grid grid-cols-2 gap-4">
@@ -302,7 +318,7 @@ export const ProductForm = ({
                   <label className="text-xs text-text-secondary uppercase font-bold tracking-wider mb-2 block">
                     Cost
                   </label>
-                  <Input placeholder="0.00" />
+                  <Input placeholder="0.00" aria-label="Cost" />
                 </div>
                 <div>
                   <label className="text-xs text-text-secondary uppercase font-bold tracking-wider mb-2 block">
@@ -324,7 +340,7 @@ export const ProductForm = ({
                 <label className="text-xs text-text-secondary uppercase font-bold tracking-wider mb-2 block">
                   SKU (Optional)
                 </label>
-                <Input defaultValue={initialData?.sku} />
+                <Input defaultValue={initialData?.sku} aria-label="SKU" />
               </div>
               <div className="flex items-center justify-between">
                 <span className="text-white text-sm">Track quantity</span>
@@ -332,6 +348,7 @@ export const ProductForm = ({
                   type="checkbox"
                   className="toggle toggle-sm toggle-primary"
                   defaultChecked
+                  aria-label="Track quantity"
                 />
               </div>
               <div>
@@ -341,6 +358,7 @@ export const ProductForm = ({
                 <Input
                   type="number"
                   defaultValue={initialData?.inventory || 0}
+                  aria-label="Available Quantity"
                 />
               </div>
             </div>
@@ -354,7 +372,7 @@ export const ProductForm = ({
                 <label className="text-xs text-text-secondary uppercase font-bold tracking-wider mb-2 block">
                   Category
                 </label>
-                <select className="h-12 w-full rounded-full bg-white/5 border border-white/10 px-4 text-white outline-none focus:border-primary">
+                <select className="h-12 w-full rounded-full bg-white/5 border border-white/10 px-4 text-white outline-none focus:border-primary" aria-label="Category">
                   <option>Select...</option>
                   <option>Apparel</option>
                   <option>Accessories</option>
@@ -364,10 +382,21 @@ export const ProductForm = ({
                 <label className="text-xs text-text-secondary uppercase font-bold tracking-wider mb-2 block">
                   Collections
                 </label>
-                <Input placeholder="Search collections..." />
+                <Input placeholder="Search collections..." aria-label="Collections" />
               </div>
             </div>
           </GlassPanel>
+
+          {/* Availability / Calendar Sync (Edit Mode Only) */}
+          {isEdit && initialData?.id && (
+            <GlassPanel className="p-6">
+              <h3 className="font-bold text-white mb-4">Availability Sync</h3>
+              <p className="text-xs text-text-secondary mb-4">
+                Connect external calendars (Airbnb, Booking.com) to prevent double bookings.
+              </p>
+              <CalendarSyncSettings productId={initialData.id} initialSyncs={initialData.calendarSyncs} />
+            </GlassPanel>
+          )}
         </div>
       </div>
     </div>

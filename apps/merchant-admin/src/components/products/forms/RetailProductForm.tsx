@@ -1,23 +1,11 @@
 "use client";
 
 import { useForm } from "react-hook-form";
-import { Button, Input, Textarea, Label, Badge, Icon } from "@vayva/ui";
+import { Badge, Button, Icon, Input, Label, Textarea } from "@vayva/ui";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { X, Plus, Trash2 } from "lucide-react";
-
-interface RetailProductFormProps {
-    productId?: string;
-    initialData?: any;
-    storeCategory?: string;
-}
-
-interface ProductOption {
-    id: string;
-    name: string;
-    values: string[];
-}
 
 interface GeneratedVariant {
     id: string; // internal temp id
@@ -26,6 +14,43 @@ interface GeneratedVariant {
     price: number;
     sku: string;
     stock: number;
+}
+
+interface RetailProductFormValues {
+    title: string;
+    description: string;
+    price: number | string;
+    sku: string;
+    trackInventory: boolean;
+    stockQuantity: number;
+    vehicle?: {
+        year?: number;
+        make?: string;
+        model?: string;
+        vin?: string;
+        mileage?: number;
+        fuelType?: string;
+        transmission?: string;
+    };
+    accommodation?: {
+        type?: string;
+        maxGuests?: number;
+        bedCount?: number;
+        bathrooms?: number;
+        totalUnits?: number;
+    };
+}
+
+interface RetailProductFormProps {
+    productId?: string;
+    initialData?: Partial<RetailProductFormValues>;
+    storeCategory?: string;
+}
+
+interface ProductOption {
+    id: string;
+    name: string;
+    values: string[];
 }
 
 export function RetailProductForm({ productId, initialData, storeCategory }: RetailProductFormProps) {
@@ -86,10 +111,10 @@ export function RetailProductForm({ productId, initialData, storeCategory }: Ret
             return;
         }
 
-        const cartesian = (args: ProductOption[]): any[] => {
-            const r: any[] = [];
+        const cartesian = (args: ProductOption[]): Record<string, string>[][] => {
+            const r: Record<string, string>[][] = [];
             const max = args.length - 1;
-            function helper(arr: any[], i: number) {
+            function helper(arr: Record<string, string>[], i: number) {
                 for (let j = 0, l = args[i].values.length; j < l; j++) {
                     const a = arr.slice(0); // clone arr
                     a.push({ [args[i].name]: args[i].values[j] });
@@ -117,7 +142,7 @@ export function RetailProductForm({ productId, initialData, storeCategory }: Ret
                 id: existing?.id || crypto.randomUUID(),
                 title,
                 options: optionsMap,
-                price: existing?.price || getValues("price") || 0,
+                price: Number(existing?.price || getValues("price") || 0),
                 sku: existing?.sku || "",
                 stock: existing?.stock || 0
             };
@@ -127,8 +152,8 @@ export function RetailProductForm({ productId, initialData, storeCategory }: Ret
 
     }, [options]); // Depend only on options structure changing
 
-    const { register, handleSubmit, getValues, formState: { errors } } = useForm({
-        defaultValues: initialData || {
+    const { register, handleSubmit, getValues, formState: { errors } } = useForm<RetailProductFormValues>({
+        defaultValues: (initialData as any) || {
             title: "",
             description: "",
             price: 0,
@@ -138,7 +163,7 @@ export function RetailProductForm({ productId, initialData, storeCategory }: Ret
         }
     });
 
-    const onSubmit = async (data: any) => {
+    const onSubmit = async (data: RetailProductFormValues) => {
         setIsSubmitting(true);
         try {
             const endpoint = productId
@@ -177,10 +202,11 @@ export function RetailProductForm({ productId, initialData, storeCategory }: Ret
         return variants.map((v, i) => updateVariantField(i, 'sku', `${getValues('sku')}-${i + 1}`));
     }
 
-    const updateVariantField = (index: number, field: keyof GeneratedVariant, value: any) => {
+    const updateVariantField = <K extends keyof GeneratedVariant>(index: number, field: K, value: GeneratedVariant[K]) => {
         const newVariants = [...variants];
-        // @ts-ignore
-        newVariants[index][field] = value;
+        if (field === 'options' || field === 'id' || field === 'title') return; // protect readonly/structural fields
+
+        newVariants[index] = { ...newVariants[index], [field]: value };
         setVariants(newVariants);
     }
 
@@ -402,13 +428,15 @@ export function RetailProductForm({ productId, initialData, storeCategory }: Ret
                 <div className="space-y-4">
                     {options.map((option, idx) => (
                         <div key={option.id} className="bg-white border rounded-xl p-4 shadow-sm relative group">
-                            <button
+                            <Button
                                 type="button"
                                 onClick={() => removeOption(idx)}
                                 className="absolute top-2 right-2 text-gray-400 hover:text-red-500 opacity-0 group-hover:opacity-100 transition-opacity"
+                                title="Remove Option"
+                                aria-label="Remove Option"
                             >
                                 <X size={16} />
-                            </button>
+                            </Button>
 
                             <div className="grid md:grid-cols-[200px_1fr] gap-6">
                                 <div>
@@ -426,13 +454,15 @@ export function RetailProductForm({ productId, initialData, storeCategory }: Ret
                                         {option.values.map((val, vIdx) => (
                                             <Badge key={vIdx} variant="default" className="bg-gray-100 text-gray-700 hover:bg-gray-200 transition-colors py-1.5 px-3">
                                                 {val}
-                                                <button
+                                                <Button
                                                     type="button"
                                                     onClick={() => removeValueFromOption(idx, vIdx)}
                                                     className="ml-2 hover:text-red-500"
+                                                    title="Remove Value"
+                                                    aria-label="Remove Value"
                                                 >
                                                     <X size={12} />
-                                                </button>
+                                                </Button>
                                             </Badge>
                                         ))}
                                         <div className="relative">

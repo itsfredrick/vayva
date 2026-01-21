@@ -1,32 +1,25 @@
 "use client";
 
 import React, { createContext, useContext, useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 import { OnboardingState, OnboardingStepId } from "@/types/onboarding";
 import { OnboardingService } from "@/services/onboarding";
-import { useRouter } from "next/navigation";
-import { telemetry } from "@/lib/telemetry";
-import { getAttribution } from "@/lib/attribution";
-import { ONBOARDING_PROFILES } from "@/lib/onboarding-profiles";
+import { INDUSTRY_CONFIG } from "@/config/industry";
 
 interface OnboardingContextType {
   state: OnboardingState | null;
   loading: boolean;
   updateState: (data: Partial<OnboardingState>) => Promise<void>;
   goToStep: (step: OnboardingStepId) => Promise<void>;
-  startEditing: (step: OnboardingStepId) => Promise<void>; // New
   completeOnboarding: () => Promise<void>;
-  handleSaveExit: () => void;
+  handleSaveExit: () => Promise<void>;
 }
 
 const OnboardingContext = createContext<OnboardingContextType | undefined>(
   undefined,
 );
 
-export function OnboardingProvider({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export function OnboardingProvider({ children }: { children: React.ReactNode }) {
   const [state, setState] = useState<OnboardingState | null>(null);
   const [loading, setLoading] = useState(true);
   const router = useRouter();
@@ -36,135 +29,18 @@ export function OnboardingProvider({
   }, []);
 
   const loadState = async () => {
+    setLoading(true);
     try {
-      // Race between actual load and a safety timeout
-      // This ensures we never get stuck on "Loading setup..." for more than 2 seconds
-      const dataPromise = OnboardingService.getState();
-      const timeoutPromise = new Promise<OnboardingState>((resolve) => {
-        setTimeout(() => {
-          console.warn("Onboarding state load timed out, using default");
-          resolve(OnboardingService.getState()); // Fallback to default state generator
-        }, 2000);
-      });
-
-      let data = await Promise.race([dataPromise, timeoutPromise]);
-
-      // FAST PATH LOGIC: Check attribution for template context
-      try {
-        const attribution = getAttribution();
-        const initialTemplate = attribution.initial_template; // Slug or ID
-
-        // If we have a template in attribution but not in state (or state is fresh), apply profile
-        // We only do this if the user hasn't explicitly selected a different template in the flow yet
-        if (
-          initialTemplate &&
-          (!data.template?.id || data.template.id === initialTemplate)
-        ) {
-          console.log(
-            "[ONBOARDING] Found initial template context:",
-            initialTemplate,
-          );
-          const profile = ONBOARDING_PROFILES[initialTemplate];
-
-          if (profile) {
-            console.log("[ONBOARDING] Applying fast path profile:", profile);
-
-            // Apply Skip & Require Steps
-            // Apply Skip & Require Steps
-            // Cast to any if needed during migration or ensure profile types align
-            data.skippedSteps = (profile.skipSteps as OnboardingStepId[]) || [];
-            data.requiredSteps = (profile.requireSteps as OnboardingStepId[]) || [];
-
-            // Apply Prefills
-            if (profile.prefill) {
-              // Business Category
-              if (
-                profile.prefill.industryCategory &&
-                !data.business?.category
-              ) {
-                data.business = {
-                  ...data.business,
-                  category: profile.prefill.industryCategory,
-                } as any;
-              }
-
-              // Delivery
-              if (profile.prefill.deliveryEnabled !== undefined) {
-                // If delivery is disabled by default (e.g. digital), set policy efficiently
-                if (profile.prefill.deliveryEnabled === false) {
-                  // Maybe set a flag or implicit policy, schema calls for 'policy' enum
-                  // We won't force 'pickup_only' but we might note it.
-                  // Actually, if skipped, we don't need to populate detailed fields unless required.
-                }
-              }
-
-              // Payments
-              if (profile.prefill.paymentsEnabled) {
-                // Maybe pre-select a method?
-              }
-
-              // Set template in state so UI knows
-              if (!data.template) {
-                data.template = { id: initialTemplate, name: initialTemplate };
-                // data.templateSelected = true; // REMOVED
-              }
-            }
-
-            // Telemetry
-            telemetry.track("onboarding_fast_path_activated", {
-              template: initialTemplate,
-              skipped: data.skippedSteps,
-              required: data.requiredSteps,
-            });
-
-            // Start Event
-            telemetry.track("ONBOARDING_STARTED", {
-              templateSlug: initialTemplate,
-              entryPoint: attribution?.entry_point,
-              fastPath: true,
-            });
-          }
-        }
-      } catch (e) {
-        console.error("[ONBOARDING] Error applying fast path:", e);
-      }
-
-      // Fetch user data from auth to pre-populate business name
-      try {
-        const response = await fetch("/api/auth/merchant/me", {
-          credentials: "include",
-        });
-        if (response.ok) {
-          const userData = await response.json();
-          // Merge user's businessName into onboarding state if not already set
-          if (userData.user?.businessName && !data.business?.name) {
-            data.business = {
-              name: userData.user.businessName,
-              email: userData.user?.email || "",
-              category: data.business?.category || "",
-              location: data.business?.location || {
-                city: "",
-                state: "",
-                country: "Nigeria",
-              },
-              ...data.business,
-            };
-          }
-        }
-      } catch (error) {
-        console.warn("Could not fetch user data for onboarding:", error);
-      }
-
-      setState(data);
+      const data = await OnboardingService.getState();
+      const profiled = applyIndustryProfile(data);
+      setState(profiled);
     } catch (error) {
-      console.error("Failed to load onboarding state:", error);
-      // Even on error, we should try to set a safe default or at least stop loading
+      console.error("[Onboarding] failed to load state", error);
       setState({
         isComplete: false,
         currentStep: "welcome",
         lastUpdatedAt: new Date().toISOString(),
         whatsappConnected: false,
-        kycStatus: "pending",
         plan: "free",
       });
     } finally {
@@ -174,157 +50,45 @@ export function OnboardingProvider({
 
   const updateState = async (data: Partial<OnboardingState>) => {
     if (!state) return;
-
-    const newState = { ...state, ...data };
-    setState(newState);
-
-    // Persist
-    await OnboardingService.saveStep(newState.currentStep, data);
-  };
-
-  const startEditing = async (step: OnboardingStepId) => {
-    if (!state) return;
-    await updateState({ isEditingMode: true });
-    await goToStep(step);
+    const nextState = applyIndustryProfile({ ...state, ...data });
+    setState(nextState);
+    try {
+      await OnboardingService.saveStep(nextState.currentStep, nextState);
+    } catch (error) {
+      console.error("[Onboarding] save step failed", error);
+    }
   };
 
   const goToStep = async (step: OnboardingStepId) => {
     if (!state) return;
-
-    // Edit Mode Logic: 
-    // If we are in edit mode, any navigation usually implies finishing the edit.
-    // However, we need to be careful. The pages call goToStep('nextStep').
-    // If we are editing 'business', we want 'Continue' to go back to 'review', not 'communication'.
-
-    let targetStep = step;
-    let shouldExitEditMode = false;
-
-    if (state.isEditingMode) {
-      // If we are navigating AWAY from the step we were editing, return to review.
-      // Note: This is a simplification. Ideally pages should explicitly call "completeEdit()" but 
-      // reuse of existing 'handleContinue' which calls 'goToStep' is required.
-      // Strategies:
-      // 1. If targetStep is NOT 'review', redirect to 'review'.
-      // 2. Be smart about which step we are on.
-
-      if (step !== "review") {
-        targetStep = "review";
-        shouldExitEditMode = true; // We are done editing
-      }
-    }
-
-    // 2. Final Fix Protocol: Sector 5 (Logistics Skip)
-    // If we are heading TO 'logistics', check if we should skip it.
-    if (targetStep === "logistics") {
-      const category = state.business?.category?.toLowerCase() || "";
-      const shouldSkipLogistics = ["services", "digital", "events", "education"].includes(category);
-
-      if (shouldSkipLogistics) {
-        console.log("[Onboarding] Auto-skipping Logistics for category:", category);
-        targetStep = "kyc"; // Jump over logistics to KYC
-      }
-    }
-
-    // Telemetry: Step Complete (for the previous step)
-    telemetry.track("ONBOARDING_STEP_COMPLETED", {
-      step: state.currentStep,
-      nextStep: targetStep,
-      templateSlug: state.template?.id,
-      plan: state.plan,
-      fastPath: !!state.skippedSteps?.length,
-      isEditing: state.isEditingMode
-    });
-
-    // Update state
-    const updates: Partial<OnboardingState> = { currentStep: targetStep };
-    if (shouldExitEditMode) {
-      updates.isEditingMode = false;
-    }
-
-    await updateState(updates);
-
-    // Route to page
-    router.push(`/onboarding/${targetStep}`);
+    await updateState({ currentStep: step });
+    router.push(`/onboarding/${step}`);
   };
 
   const completeOnboarding = async () => {
-    // Telemetry: Required Flow Complete
-    // Telemetry: Required Flow Complete
-    telemetry.track("ONBOARDING_COMPLETED", {
-      timeToDashboardMs: 0, // Placeholder
-      templateId: state?.template?.id,
-      templateSlug: state?.template?.id,
-      plan: state?.plan,
-      fastPath: !!state?.skippedSteps?.length,
-      whatsappConnected: state?.whatsappConnected,
-    });
-
     try {
-      // 1. Get Store ID (needed for install)
-      // We fetch simple me endpoint to get store context
-      const userRes = await fetch("/api/auth/merchant/me");
-      if (!userRes.ok) throw new Error("Failed to get user context");
-      const userData = await userRes.json();
-      const storeId = userData.store?.id;
-
-      if (storeId && state?.template?.id) {
-        // 2. Call Install API
-        const installRes = await fetch("/api/templates/install", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            storeId: storeId,
-            templateId: state.template.id,
-          }),
-        });
-
-        if (!installRes.ok) {
-          console.error(
-            "Template install failed, continuing anyway...",
-            await installRes.text(),
-          );
-        } else {
-          console.log("Template installed successfully");
-        }
-      }
-    } catch (e) {
-      console.error("Error during template installation:", e);
-      // We don't block completion on this, as we want to get them to dashboard regardless
+      await OnboardingService.complete();
+      await loadState();
+      router.push("/onboarding/complete");
+    } catch (error) {
+      console.error("[Onboarding] complete error", error);
+      throw error;
     }
-
-    // Save final state
-    const finalState: OnboardingState = {
-      ...state!,
-      isComplete: true,
-      currentStep: state!.currentStep || "complete",
-    };
-    setState(finalState);
-    await OnboardingService.complete();
-
-    // Redirect to success celebration page
-    router.push("/onboarding/complete");
   };
 
   const handleSaveExit = async () => {
-    try {
-      // Save current progress to backend
-      if (state) {
+    if (state) {
+      try {
         await OnboardingService.saveStep(state.currentStep, state);
+      } catch (error) {
+        console.error("[Onboarding] save & exit failed", error);
       }
-
-      // Log user out
-      await fetch("/api/auth/merchant/logout", {
-        method: "POST",
-        credentials: "include",
-      });
-
-      // Redirect to login page
-      router.push("/signin");
-    } catch (error) {
-      console.error("Error during save & exit:", error);
-      // Still redirect to login even if save fails
-      router.push("/signin");
     }
+    await fetch("/api/auth/merchant/logout", {
+      method: "POST",
+      credentials: "include",
+    });
+    router.push("/signin");
   };
 
   return (
@@ -334,7 +98,6 @@ export function OnboardingProvider({
         loading,
         updateState,
         goToStep,
-        startEditing,
         completeOnboarding,
         handleSaveExit,
       }}
@@ -344,9 +107,51 @@ export function OnboardingProvider({
   );
 }
 
+function applyIndustryProfile(state: OnboardingState): OnboardingState {
+  const segment = (state.intent?.segment || state.industrySlug) as string | undefined;
+  if (!segment) return state;
+
+  const industrySlug =
+    segment === "wholesale"
+      ? "b2b"
+      : segment === "real-estate"
+        ? "real_estate"
+        : segment === "non-profit"
+          ? "nonprofit"
+          : segment;
+
+  const profile = (INDUSTRY_CONFIG as any)[industrySlug];
+  if (!profile) {
+    return { ...state, industrySlug };
+  }
+
+  const requiredSteps: OnboardingStepId[] = ["business", "visuals", "finance", "kyc", "review"];
+  const skippedSteps: OnboardingStepId[] = [];
+
+  const needsInventory = ["product", "menu_item", "service", "digital_asset", "listing", "course", "event"].includes(
+    profile.primaryObject,
+  );
+  if (needsInventory) requiredSteps.unshift("inventory");
+
+  if (segment === "services" || segment === "digital") {
+    skippedSteps.push("logistics");
+  }
+
+  if (segment !== "services" && segment !== "digital" && segment !== "education" && segment !== "blog_media") {
+    requiredSteps.push("logistics");
+  }
+
+  return {
+    ...state,
+    industrySlug,
+    requiredSteps,
+    skippedSteps,
+  };
+}
+
 export function useOnboarding() {
   const context = useContext(OnboardingContext);
-  if (context === undefined) {
+  if (!context) {
     throw new Error("useOnboarding must be used within an OnboardingProvider");
   }
   return context;

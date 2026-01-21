@@ -1,7 +1,9 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import { Button, Icon, cn, Drawer } from "@vayva/ui";
+import { Button, Drawer, Icon, cn } from "@vayva/ui";
+import { useToast } from "@/components/ui/use-toast";
+import styles from "./ChecklistSystem.module.css";
 
 // Master Prompt System 3: Checklist Engine
 // Dynamic, Contextual, Dismissible, Self-healing/Updating
@@ -23,6 +25,7 @@ export function ChecklistEngine({
   startProductFlow: () => void;
   startWhatsAppFlow: () => void;
 }) {
+  const { toast } = useToast();
   const [collapsed, setCollapsed] = useState(false);
   const [dismissed, setDismissed] = useState(false);
   const [items, setItems] = useState<ChecklistItem[]>([
@@ -33,7 +36,7 @@ export function ChecklistEngine({
       status: "completed",
       priority: 10,
       actionLabel: "Review",
-      onClick: () => {},
+      onClick: () => { },
     },
     {
       id: "product",
@@ -60,7 +63,12 @@ export function ChecklistEngine({
       status: "pending",
       priority: 7,
       actionLabel: "Create Order",
-      onClick: () => console.log("Create order"),
+      onClick: () => {
+        toast({
+          title: "Create Order",
+          description: "Use the Point of Sale or Storefront to create your first order.",
+        });
+      },
     },
   ]);
 
@@ -68,18 +76,21 @@ export function ChecklistEngine({
   const progress = Math.round(
     ((items.length - pendingCount) / items.length) * 100,
   );
+  const progressBucket = Math.max(0, Math.min(100, Math.round(progress / 5) * 5));
+  const progressClass = styles[`w${progressBucket}`] || styles.w0;
 
   if (dismissed && pendingCount === 0) return null; // Fully hidden if done and dismissed
 
   if (collapsed || dismissed) {
     return (
       <div className="fixed bottom-6 right-6 z-40">
-        <button
+        <Button
           onClick={() => {
             setCollapsed(false);
             setDismissed(false);
           }}
-          className="bg-black text-white h-12 w-12 rounded-full shadow-xl flex items-center justify-center hover:scale-110 transition-transform relative"
+          aria-label="Toggle Checklist"
+          className="bg-black text-white h-12 w-12 rounded-full shadow-xl flex items-center justify-center hover:scale-110 transition-transform relative p-0"
         >
           <Icon name="ListChecks" size={20} />
           {pendingCount > 0 && (
@@ -87,7 +98,7 @@ export function ChecklistEngine({
               {pendingCount}
             </div>
           )}
-        </button>
+        </Button>
       </div>
     );
   }
@@ -102,27 +113,30 @@ export function ChecklistEngine({
             <p className="text-[10px] text-gray-400">{progress}% Complete</p>
           </div>
           <div className="flex items-center gap-2">
-            <button
+            <Button
+              variant="ghost"
+              size="icon"
               onClick={() => setCollapsed(true)}
-              className="hover:bg-white/20 p-1 rounded transition-colors"
+              aria-label="Minimize"
+              className="hover:bg-white/20 p-1 rounded transition-colors text-white hover:text-white"
             >
               <Icon name="Minimize2" size={14} />
-            </button>
-            <button
+            </Button>
+            <Button
+              variant="ghost"
+              size="icon"
               onClick={() => setDismissed(true)}
-              className="hover:bg-white/20 p-1 rounded transition-colors"
+              aria-label="Close"
+              className="hover:bg-white/20 p-1 rounded transition-colors text-white hover:text-white"
             >
               <Icon name="X" size={14} />
-            </button>
+            </Button>
           </div>
         </div>
 
         {/* Progress Bar */}
         <div className="h-1 w-full bg-gray-100">
-          <div
-            className="h-full bg-green-500 transition-all duration-500"
-            style={{ width: `${progress}%` }}
-          />
+          <div className={cn("h-full", styles.progressBar, progressClass)} />
         </div>
 
         {/* Items */}
@@ -155,7 +169,7 @@ export function ChecklistEngine({
                     className={cn(
                       "text-sm font-bold text-gray-900",
                       item.status === "completed" &&
-                        "line-through text-gray-500",
+                      "line-through text-gray-500",
                     )}
                   >
                     {item.title}

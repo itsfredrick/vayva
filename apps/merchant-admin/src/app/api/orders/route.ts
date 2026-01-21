@@ -1,25 +1,33 @@
-import { NextResponse } from "next/server";
-import { prisma } from "@vayva/db";
-import { withRBAC } from "@/lib/team/rbac";
+import { NextRequest, NextResponse } from "next/server";
+import { prisma, OrderStatus, PaymentStatus, FulfillmentStatus } from "@vayva/db";
+import { withVayvaAPI, HandlerContext } from "@/lib/api-handler";
 import { PERMISSIONS } from "@/lib/team/permissions";
+import type { OrderListRequest } from "@/types/api";
 
-export const GET = withRBAC(
-  PERMISSIONS.COMMERCE_VIEW,
-  async (session: any, request: Request) => {
+export const GET = withVayvaAPI(
+  PERMISSIONS.ORDERS_VIEW,
+  async (req: NextRequest, { storeId }: HandlerContext) => {
     try {
-      const storeId = session.user.storeId;
-      const { searchParams } = new URL(request.url);
-      const limit = parseInt(searchParams.get("limit") || "50");
+      const { searchParams } = new URL(req.url);
+      const limit = Math.min(parseInt(searchParams.get("limit") || "50"), 100);
       const offset = parseInt(searchParams.get("offset") || "0");
 
-      const status = searchParams.get("status");
-      const paymentStatus = searchParams.get("paymentStatus");
-      const fulfillmentStatus = searchParams.get("fulfillmentStatus");
+      const status = searchParams.get("status") as OrderStatus | "ALL";
+      const paymentStatus = searchParams.get("paymentStatus") as PaymentStatus | "ALL";
+      const fulfillmentStatus = searchParams.get("fulfillmentStatus") as FulfillmentStatus | "ALL";
       const q = searchParams.get("q");
       const fromDate = searchParams.get("from");
       const toDate = searchParams.get("to");
 
-      const where: any = { storeId };
+      // Build where clause with proper typing
+      const where: {
+        storeId: string;
+        status?: OrderStatus;
+        paymentStatus?: PaymentStatus;
+        fulfillmentStatus?: FulfillmentStatus;
+        OR?: Array<{ [key: string]: any }>;
+        createdAt?: { gte?: Date; lte?: Date };
+      } = { storeId };
 
       if (status && status !== "ALL") where.status = status;
       if (paymentStatus && paymentStatus !== "ALL")
@@ -41,14 +49,17 @@ export const GET = withRBAC(
         if (toDate) where.createdAt.lte = new Date(toDate);
       }
 
-      const orders = await prisma.order.findMany({
-        where,
-        orderBy: { createdAt: "desc" },
-        take: limit,
-        skip: offset,
-      });
+      const [orders, total] = await Promise.all([
+        prisma.order.findMany({
+          where,
+          orderBy: { createdAt: "desc" },
+          take: limit,
+          skip: offset,
+        }),
+        prisma.order.count({ where })
+      ]);
 
-      const transformedOrders = orders.map((order: any) => ({
+      const transformedOrders = orders.map((order) => ({
         id: order.id,
         merchantId: order.storeId,
         orderNumber: order.orderNumber,
@@ -76,7 +87,15 @@ export const GET = withRBAC(
         },
       }));
 
-      return NextResponse.json(transformedOrders);
+      return NextResponse.json({
+        success: true,
+        data: transformedOrders,
+        meta: {
+          total,
+          limit,
+          offset,
+        },
+      });
     } catch (error) {
       console.error("Fetch Orders Error:", error);
       return NextResponse.json(
@@ -87,18 +106,27 @@ export const GET = withRBAC(
   },
 );
 
-export const POST = withRBAC(
-  PERMISSIONS.COMMERCE_MANAGE,
-  async (session: any, request: Request) => {
+export const POST = withVayvaAPI(
+  PERMISSIONS.ORDERS_MANAGE,
+  async (req: NextRequest, { storeId }: HandlerContext) => {
     try {
-      const storeId = session.user.storeId;
-      const userId = session.user.id;
-      const body = await request.json();
-      const isTestMode = body.mode === "test";
+      const body = await req.json();
 
-      const result = await prisma.$transaction(async (tx: any) => {
-        // 1. Atomic Upsert & Return Sequence (Postgres)
-        const [counter]: any = await tx.$queryRaw`
+      // Basic Validation
+      if (!body.items || !Array.isArray(body.items) || body.items.length === 0) {
+        if (!body.total) {
+          return NextResponse.json({ error: "Order must have items or explicit totals" }, { status: 400 });
+        }
+      }
+
+      const total = Number(body.total);
+      if (isNaN(total) || total < 0) {
+        return NextResponse.json({ error: "Invalid total amount" }, { status: 400 });
+      }
+
+      const result = await prisma.$transaction(async (tx) => {
+        // 1. Atomic Upsert & Return Sequence
+        const counter = await tx.$queryRaw<Array<{ orderSeq: number }>>`
                 INSERT INTO "StoreCounter" ("storeId", "orderSeq")
                 VALUES (${storeId}, 1)
                 ON CONFLICT ("storeId")
@@ -106,28 +134,36 @@ export const POST = withRBAC(
                 RETURNING "orderSeq"
             `;
 
-        const orderNumber = `ORD-${counter.orderSeq.toString().padStart(6, "0")}`;
+        const orderNumber = `ORD-${counter[0].orderSeq.toString().padStart(6, "0")}`;
 
-        // 2. Create Order
+        // 2. Create Order (Using storeId from context for isolation)
         const order = await tx.order.create({
           data: {
             storeId,
-            orderNumber: orderNumber as any,
-            total: body.total || 5000,
-            subtotal: body.subtotal || 4500,
-            tax: body.tax || 0,
-            shippingTotal: body.shipping || 500,
-            discountTotal: 0,
-            currency: "NGN",
-            status: "PENDING_PAYMENT" as any,
-            paymentStatus: "INITIATED" as any,
-            fulfillmentStatus: "UNFULFILLED" as any,
-            source: isTestMode ? "TEST_MODE" : "MANUAL",
+            orderNumber,
+            total: total,
+            subtotal: Number(body.subtotal) || total,
+            tax: Number(body.tax) || 0,
+            shippingTotal: Number(body.shipping) || 0,
+            discountTotal: Number(body.discount) || 0,
+            currency: body.currency || "NGN",
+            status: "PENDING_PAYMENT",
+            paymentStatus: "INITIATED",
+            fulfillmentStatus: "UNFULFILLED",
+            source: "MANUAL",
             refCode: `ORD-${Date.now()}-${Math.random().toString(36).substring(7)}`,
+            customerEmail: body.customer?.email?.toLowerCase() || null,
+            customerPhone: body.customer?.phone || null,
+            items: body.items ? {
+              create: body.items.map((item: any) => ({
+                productId: item.productId,
+                productName: item.title || "Item",
+                quantity: Number(item.quantity) || 1,
+                price: Number(item.price) || 0
+              }))
+            } : undefined
           },
         });
-
-        // Deprecated firstOrderAt logic removed
 
         return { order };
       });

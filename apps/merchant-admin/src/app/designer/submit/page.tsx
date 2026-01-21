@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import { Icon, cn } from "@vayva/ui";
+import { Icon, cn, Button } from "@vayva/ui";
 import { useRouter } from "next/navigation";
 
 export default function SubmitTemplatePage() {
@@ -52,25 +52,27 @@ export default function SubmitTemplatePage() {
                 Basic Info
               </h2>
               <div>
-                <label className="block text-sm font-bold text-gray-700 mb-2">
+                <label htmlFor="template-name" className="block text-sm font-bold text-gray-700 mb-2">
                   Template Name
                 </label>
                 <input
+                  id="template-name"
                   type="text"
                   value={formData.name}
                   onChange={(e) =>
                     setFormData({ ...formData, name: e.target.value })
                   }
                   className="w-full border-gray-300 rounded-lg p-3 text-sm focus:ring-black focus:border-black"
-                  placeholder="e.g. Modern Retail V1"
+                  placeholder="Modern Retail V1"
                 />
               </div>
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-sm font-bold text-gray-700 mb-2">
+                  <label htmlFor="category" className="block text-sm font-bold text-gray-700 mb-2">
                     Category
                   </label>
                   <select
+                    id="category"
                     className="w-full border-gray-300 rounded-lg p-3 text-sm"
                     value={formData.category}
                     onChange={(e) =>
@@ -83,10 +85,11 @@ export default function SubmitTemplatePage() {
                   </select>
                 </div>
                 <div>
-                  <label className="block text-sm font-bold text-gray-700 mb-2">
+                  <label htmlFor="plan-level" className="block text-sm font-bold text-gray-700 mb-2">
                     Plan Level
                   </label>
                   <select
+                    id="plan-level"
                     className="w-full border-gray-300 rounded-lg p-3 text-sm"
                     value={formData.plan}
                     onChange={(e) =>
@@ -99,13 +102,13 @@ export default function SubmitTemplatePage() {
                   </select>
                 </div>
               </div>
-              <button
+              <Button
                 onClick={() => setStep(2)}
                 disabled={!formData.name}
                 className="w-full bg-black text-white py-3 rounded-xl font-bold hover:bg-gray-800 disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 Continue
-              </button>
+              </Button>
             </div>
           )}
 
@@ -142,18 +145,18 @@ export default function SubmitTemplatePage() {
               </div>
 
               <div className="flex gap-4">
-                <button
+                <Button
                   onClick={() => setStep(1)}
                   className="flex-1 bg-gray-100 text-gray-900 py-3 rounded-xl font-bold"
                 >
                   Back
-                </button>
-                <button
+                </Button>
+                <Button
                   onClick={handleSubmit}
                   className="flex-1 bg-black text-white py-3 rounded-xl font-bold hover:bg-gray-800"
                 >
                   {loading ? "Analyzing..." : "Submit for Review"}
-                </button>
+                </Button>
               </div>
             </div>
           )}

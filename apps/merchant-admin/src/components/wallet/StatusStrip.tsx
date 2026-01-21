@@ -1,8 +1,7 @@
-import React from "react";
-import { Icon, cn } from "@vayva/ui";
+import { Icon, IconName, cn } from "@vayva/ui";
 
 export const StatusStrip = () => {
-  const statuses = [
+  const statuses: { label: string; status: string; type: "success" | "neutral"; icon: IconName }[] = [
     {
       label: "Payments",
       status: "Active",
@@ -25,7 +24,7 @@ export const StatusStrip = () => {
       label: "Disputes",
       status: "0 Open",
       type: "neutral",
-      icon: "AlertCircle", // Using AlertCircle instead of Scale since Scale might not exist
+      icon: "AlertCircle",
     },
   ];
 
@@ -44,7 +43,6 @@ export const StatusStrip = () => {
                 : "bg-gray-50 text-gray-500",
             )}
           >
-            {/* @ts-ignore */}
             <Icon name={item.icon} size={20} />
           </div>
           <div>

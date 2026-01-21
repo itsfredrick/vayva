@@ -8,6 +8,7 @@ import {
 import { useStorefrontCart } from "@/hooks/storefront/useStorefrontCart";
 import { CheckoutModal } from "./CheckoutModal";
 import { ShoppingBag, Menu, X, ArrowRight, ShieldCheck, Truck, RotateCcw, Plus, Minus } from "lucide-react";
+import { Button } from "@vayva/ui";
 
 export function StandardRetailHome({
   storeName: initialStoreName,
@@ -31,7 +32,7 @@ export function StandardRetailHome({
       <header className="sticky top-0 z-50 bg-white/80 backdrop-blur-md border-b border-gray-100">
         <div className="max-w-7xl mx-auto px-4 h-16 flex items-center justify-between">
           <div className="flex items-center gap-4">
-            <button className="md:hidden"><Menu className="w-5 h-5" /></button>
+            <Button variant="ghost" size="icon" className="md:hidden p-0 h-auto" aria-label="Open menu"><Menu className="w-5 h-5" /></Button>
             <span className="text-xl font-bold tracking-tight">{displayName}</span>
           </div>
           <nav className="hidden md:flex gap-8 text-sm font-medium text-gray-600">
@@ -40,9 +41,12 @@ export function StandardRetailHome({
             <a href="#" className="hover:text-black transition-colors">About</a>
           </nav>
           <div className="flex items-center gap-4">
-            <button
+            <Button
+              variant="ghost"
+              size="icon"
               onClick={() => setIsCartOpen(true)}
-              className="relative p-2 hover:bg-gray-100 rounded-full transition-colors"
+              className="relative p-2 hover:bg-gray-100 rounded-full transition-colors h-10 w-10 flex items-center justify-center"
+              aria-label={`View cart with ${cart.length} items`}
             >
               <ShoppingBag className="w-5 h-5" />
               {cart.length > 0 && (
@@ -50,7 +54,7 @@ export function StandardRetailHome({
                   {cart.length}
                 </span>
               )}
-            </button>
+            </Button>
           </div>
         </div>
       </header>
@@ -64,9 +68,9 @@ export function StandardRetailHome({
           <p className="text-lg text-gray-500 max-w-xl mx-auto">
             Discover our curated collection of premium goods designed for modern living.
           </p>
-          <button className="bg-black text-white px-8 py-3 rounded-full font-medium hover:bg-gray-800 transition-all flex items-center gap-2 mx-auto">
+          <Button className="bg-black text-white px-8 py-6 rounded-full font-medium hover:bg-gray-800 transition-all flex items-center gap-2 mx-auto h-auto">
             Shop Collection <ArrowRight className="w-4 h-4" />
-          </button>
+          </Button>
         </div>
       </section>
 
@@ -108,14 +112,18 @@ export function StandardRetailHome({
                 <div className="aspect-square bg-gray-100 rounded-2xl mb-4 overflow-hidden relative">
                   <img
                     src={product.image || `https://via.placeholder.com/400?text=${product.name}`}
+                    alt={product.name}
                     className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                   />
-                  <button
+                  <Button
+                    variant="ghost"
+                    size="icon"
                     onClick={() => addToCart(product)}
-                    className="absolute bottom-4 right-4 bg-white shadow-lg p-3 rounded-full opacity-0 translate-y-2 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-300"
+                    className="absolute bottom-4 right-4 bg-white shadow-lg p-3 rounded-full opacity-0 translate-y-2 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-300 h-10 w-10 flex items-center justify-center"
+                    aria-label={`Add ${product.name} to bag`}
                   >
                     <Plus className="w-5 h-5" />
-                  </button>
+                  </Button>
                 </div>
                 <h3 className="font-medium text-gray-900">{product.name}</h3>
                 <p className="text-sm text-gray-500 mt-1">₦{product.price.toLocaleString()}</p>
@@ -132,13 +140,13 @@ export function StandardRetailHome({
           <div className="relative w-full max-w-sm bg-white h-full p-6 flex flex-col shadow-2xl animate-in slide-in-from-right">
             <div className="flex justify-between items-center mb-6">
               <h2 className="text-lg font-bold">Your Bag</h2>
-              <button onClick={() => setIsCartOpen(false)}><X className="w-5 h-5" /></button>
+              <Button variant="ghost" size="icon" onClick={() => setIsCartOpen(false)} aria-label="Close cart sidebar" className="p-0 h-auto"><X className="w-5 h-5" /></Button>
             </div>
             <div className="flex-1 overflow-auto space-y-6">
               {cart.map(item => (
                 <div key={item.id} className="flex gap-4">
                   <div className="w-16 h-16 bg-gray-100 rounded-lg overflow-hidden flex-shrink-0">
-                    {item.image && <img src={item.image} className="w-full h-full object-cover" />}
+                    {item.image && <img src={item.image} alt={item.name} className="w-full h-full object-cover" />}
                   </div>
                   <div className="flex-1">
                     <div className="flex justify-between font-medium text-sm">
@@ -146,10 +154,10 @@ export function StandardRetailHome({
                       <span>₦{(item.price * item.quantity).toLocaleString()}</span>
                     </div>
                     <div className="flex items-center gap-3 mt-2">
-                      <button onClick={() => updateQuantity(item.id, -1)} className="p-1 hover:bg-gray-100 rounded"><Minus className="w-3 h-3" /></button>
+                      <Button variant="ghost" size="icon" onClick={() => updateQuantity(item.id, -1)} className="p-1 hover:bg-gray-100 rounded h-6 w-6" aria-label="Decrease quantity"><Minus className="w-3 h-3" /></Button>
                       <span className="text-sm">{item.quantity}</span>
-                      <button onClick={() => updateQuantity(item.id, 1)} className="p-1 hover:bg-gray-100 rounded"><Plus className="w-3 h-3" /></button>
-                      <button onClick={() => removeFromCart(item.id)} className="ml-auto text-xs text-red-500">Remove</button>
+                      <Button variant="ghost" size="icon" onClick={() => updateQuantity(item.id, 1)} className="p-1 hover:bg-gray-100 rounded h-6 w-6" aria-label="Increase quantity"><Plus className="w-3 h-3" /></Button>
+                      <Button variant="link" onClick={() => removeFromCart(item.id)} className="ml-auto text-xs text-red-500 p-0 h-auto">Remove</Button>
                     </div>
                   </div>
                 </div>
@@ -160,7 +168,7 @@ export function StandardRetailHome({
                 <span>Total</span>
                 <span>₦{total.toLocaleString()}</span>
               </div>
-              <button onClick={() => { setIsCartOpen(false); setIsCheckoutOpen(true); }} className="w-full bg-black text-white py-4 rounded-xl font-bold hover:bg-gray-800 transition-colors">Checkout</button>
+              <Button onClick={() => { setIsCartOpen(false); setIsCheckoutOpen(true); }} className="w-full bg-black text-white py-6 h-auto rounded-xl font-bold hover:bg-gray-800 transition-colors">Checkout</Button>
             </div>
           </div>
         </div>

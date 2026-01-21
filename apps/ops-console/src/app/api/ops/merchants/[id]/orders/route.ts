@@ -30,7 +30,7 @@ export async function GET(
                 skip,
                 orderBy: { createdAt: "desc" },
                 include: {
-                    Customer: {
+                    customer: {
                         select: { firstName: true, lastName: true, email: true }
                     }
                 }
@@ -46,7 +46,7 @@ export async function GET(
                 status: o.status,
                 paymentStatus: o.paymentStatus,
                 fulfillmentStatus: o.fulfillmentStatus,
-                customer: o.Customer ? `${o.Customer.firstName || ""} ${o.Customer.lastName || ""}`.trim() : "Guest",
+                customer: o.customer ? `${o.customer.firstName || ""} ${o.customer.lastName || ""}`.trim() : "Guest",
                 createdAt: o.createdAt
             })),
             meta: {

@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { MerchantBrainService } from "@/lib/ai/merchant-brain.service";
-import { prisma } from "@vayva/db";
+import { prisma } from "@/lib/prisma";
 
 /**
  * POST /api/ai/retrieve

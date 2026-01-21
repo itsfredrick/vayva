@@ -31,6 +31,9 @@
             ],
             "@vayva/db": [
                 "../../infra/db/src/client.ts"
+            ],
+            "@vayva/compliance": [
+                "../../packages/compliance/src/index.ts"
             ]
         }
     },

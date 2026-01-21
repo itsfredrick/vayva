@@ -1,0 +1,36 @@
+"use client";
+import { jsx as _jsx, jsxs as _jsxs } from "react/jsx-runtime";
+import { PLANS, FEES } from "@/config/pricing";
+const COMPARISON_DATA = [
+    { name: "Monthly Orders", free: "100", starter: "1,000", pro: "Unlimited" },
+    { name: "Products / SKUs", free: "50", starter: "500", pro: "Unlimited" },
+    { name: "Team members", free: "1 seat", starter: "1 seat", pro: "5 seats" },
+    {
+        name: "WhatsApp order capture",
+        free: true,
+        starter: true,
+        pro: true,
+        tooltip: "Automated extraction of orders from WhatsApp chats.",
+    },
+    { name: "Blueprint templates", free: "Basic", starter: "All", pro: "All" },
+    { name: "Inventory tracking", free: false, starter: true, pro: true },
+    { name: "Custom domain", free: false, starter: true, pro: true },
+    { name: "Advanced Audit logs", free: false, starter: false, pro: true },
+    { name: "Priority Support", free: false, starter: false, pro: true },
+    {
+        name: "Withdrawal Transaction Fee",
+        free: `${FEES.WITHDRAWAL_PERCENTAGE}%`,
+        starter: `${FEES.WITHDRAWAL_PERCENTAGE}%`,
+        pro: `${FEES.WITHDRAWAL_PERCENTAGE}%`,
+        tooltip: "Charged on every payout to your bank account.",
+    },
+];
+export const PlanComparisonTable = () => {
+    return (_jsx("div", { className: "hidden lg:block w-full overflow-hidden rounded-3xl border border-gray-100 bg-white shadow-2xl shadow-gray-200/50", children: _jsxs("table", { className: "w-full text-left border-collapse", children: [_jsx("thead", { children: _jsxs("tr", { className: "bg-gray-50 border-b border-gray-100", children: [_jsx("th", { className: "p-8 text-sm font-black text-gray-400 uppercase tracking-widest w-1/4", children: "Features" }), PLANS.map((plan) => (_jsx("th", { className: `p-8 text-xl font-black text-[#0F172A] text-center ${plan.featured ? "bg-green-50/30" : ""}`, children: plan.name }, plan.key)))] }) }), _jsx("tbody", { className: "divide-y divide-gray-50", children: COMPARISON_DATA.map((row) => (_jsxs("tr", { className: "hover:bg-gray-50/50 transition-colors", children: [_jsx("td", { className: "p-6", children: _jsxs("div", { className: "flex items-center gap-2 group relative px-2", children: [_jsx("span", { className: "text-sm font-bold text-gray-700", children: row.name }), row.tooltip && (_jsx("div", { className: "relative", children: _jsx("span", { className: "cursor-help text-gray-300 hover:text-[#22C55E] transition-colors", children: _jsx("svg", { className: "w-4 h-4", fill: "none", stroke: "currentColor", viewBox: "0 0 24 24", children: _jsx("path", { strokeLinecap: "round", strokeLinejoin: "round", strokeWidth: 2, d: "M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" }) }) }) }))] }) }), _jsx("td", { className: "p-6 text-center", children: renderValue(row.free) }), _jsx("td", { className: "p-6 text-center bg-green-50/10", children: renderValue(row.starter) }), _jsx("td", { className: "p-6 text-center", children: renderValue(row.pro) })] }, row.name))) })] }) }));
+};
+function renderValue(val) {
+    if (typeof val === "boolean") {
+        return val ? (_jsx("span", { className: "inline-flex items-center justify-center w-8 h-8 rounded-full bg-green-50 text-[#22C55E]", children: _jsx("svg", { className: "w-5 h-5", fill: "none", stroke: "currentColor", viewBox: "0 0 24 24", children: _jsx("path", { strokeLinecap: "round", strokeLinejoin: "round", strokeWidth: 3, d: "M5 13l4 4L19 7" }) }) })) : (_jsx("span", { className: "text-gray-200", children: "\u2014" }));
+    }
+    return _jsx("span", { className: "text-sm font-black text-[#0F172A]", children: val });
+}

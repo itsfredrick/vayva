@@ -4,7 +4,7 @@ _Effective Date: December 28, 2025_
 
 ## 1. Introduction
 
-Vayva ("we", "us", "our") is committed to protecting your privacy. This policy explains how we collect, use, and safeguard your data when using the Vayva Platform ("Service").
+Vayva ("we", "us", "our") is committed to protecting your privacy. This policy explains how we collect, use, and safeguard your data when using Vayva ("Service").
 
 ## 2. Data We Collect
 
@@ -41,4 +41,4 @@ You have the right to:
 
 ## 6. Contact
 
-For privacy concerns, contact: privacy@vayva.ng
+For privacy concerns, contact: <privacy@vayva.ng>

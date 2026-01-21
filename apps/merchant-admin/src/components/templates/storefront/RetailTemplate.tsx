@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import { Button, Icon, cn, Input } from "@vayva/ui";
+import { Button, Icon, Input, cn } from "@vayva/ui";
 import { StorefrontConfig, StorefrontProduct } from "@/types/storefront";
 import { getThemeStyles } from "@/utils/theme-utils";
 import { WhatsAppPreviewModal } from "./WhatsAppPreviewModal";
@@ -33,20 +33,25 @@ const RetailHeader = ({
           className="flex items-center gap-2 cursor-pointer"
           onClick={() => navigate("home")}
         >
-          <img
-            src="/logo-icon.png"
-            alt="Vayva"
-            className="w-16 h-16 object-contain"
-          />
-          <span className="font-bold text-lg tracking-tight">Vayva</span>
+          {(config.branding?.logoUrl || config.branding?.logo) ? (
+            <img
+              src={config.branding?.logoUrl || config.branding?.logo}
+              alt={config.content.headline || "Store Logo"}
+              className="w-16 h-16 object-contain"
+            />
+          ) : (
+            <span className="font-bold text-xl">{config.content.headline || "Vayva Store"}</span>
+          )}
         </div>
 
         <div className="flex items-center gap-2">
-          <button className="p-2 hover:bg-black/5 rounded-full md:hidden">
+          <Button variant="ghost" size="icon" className="p-2 hover:bg-black/5 rounded-full md:hidden h-auto w-auto">
             <Icon name="Search" size={20} />
-          </button>
-          <button
-            className="relative p-2 hover:bg-black/5 rounded-full transition-colors group"
+          </Button>
+          <Button
+            variant="ghost"
+            size="icon"
+            className="relative p-2 hover:bg-black/5 rounded-full transition-colors group h-auto w-auto"
             onClick={() => navigate("cart")}
           >
             <Icon
@@ -59,10 +64,10 @@ const RetailHeader = ({
                 {cartCount}
               </span>
             )}
-          </button>
-          <button className="md:hidden p-2 -mr-2 text-gray-400">
+          </Button>
+          <Button variant="ghost" size="icon" className="md:hidden p-2 -mr-2 text-gray-400 h-auto w-auto">
             <Icon name="Menu" size={24} />
-          </button>
+          </Button>
         </div>
       </div>
     </header>
@@ -108,9 +113,13 @@ const RetailHome = ({ config }: { config: StorefrontConfig }) => {
       <section id="products-grid" className="max-w-4xl mx-auto px-4 pb-20 pt-8">
         <div className="flex justify-between items-center mb-8 px-2">
           <h2 className="text-xl font-bold">New Drops</h2>
-          <button className="text-xs font-bold opacity-50 hover:opacity-100 flex items-center gap-1">
+          <Button
+            variant="ghost"
+            size="sm"
+            className="text-xs font-bold opacity-50 hover:opacity-100 flex items-center gap-1 h-auto p-0"
+          >
             Filters <Icon name="Settings2" size={12} />
-          </button>
+          </Button>
         </div>
         <div className="grid grid-cols-2 lg:grid-cols-3 gap-x-4 gap-y-10">
           {products.map((p) => (
@@ -208,12 +217,14 @@ const RetailProduct = ({
   return (
     <div className="bg-white min-h-screen animate-in slide-in-from-right-8 duration-300">
       <div className="sticky top-[86px] z-30 bg-white/80 backdrop-blur-md px-4 py-2 border-b flex items-center gap-2 mb-4">
-        <button
+        <Button
+          variant="ghost"
+          size="icon"
           onClick={() => navigate("home")}
-          className="p-1 hover:bg-gray-100 rounded-full"
+          className="p-1 hover:bg-gray-100 rounded-full h-auto w-auto"
         >
           <Icon name="ArrowLeft" size={20} />
-        </button>
+        </Button>
         <span className="font-bold text-sm truncate flex-1">
           {currentProduct.name}
         </span>
@@ -248,8 +259,9 @@ const RetailProduct = ({
               </label>
               <div className="flex flex-wrap gap-3">
                 {v.options.map((opt) => (
-                  <button
+                  <Button
                     key={opt}
+                    variant="outline"
                     onClick={() =>
                       setSelectedVariants((prev) => ({
                         ...prev,
@@ -259,12 +271,12 @@ const RetailProduct = ({
                     className={cn(
                       "min-w-[48px] h-10 px-4 rounded-lg text-sm font-medium border-2 transition-all",
                       selectedVariants[v.name] === opt
-                        ? "border-black bg-black text-white"
-                        : "border-gray-100 bg-white text-gray-600 hover:border-gray-200",
+                        ? "border-black bg-black text-white hover:bg-black/90 hover:text-white"
+                        : "border-gray-100 bg-white text-gray-600 hover:border-gray-200 hover:bg-white",
                     )}
                   >
                     {opt}
-                  </button>
+                  </Button>
                 ))}
               </div>
             </div>
@@ -275,19 +287,23 @@ const RetailProduct = ({
               Quantity
             </label>
             <div className="flex items-center gap-4 bg-gray-50 w-fit p-1 rounded-xl border">
-              <button
+              <Button
+                variant="ghost"
+                size="icon"
                 onClick={() => setQty((q) => Math.max(1, q - 1))}
-                className="w-8 h-8 flex items-center justify-center bg-white rounded-lg shadow-sm font-bold hover:bg-gray-100"
+                className="w-8 h-8 flex items-center justify-center bg-white rounded-lg shadow-sm font-bold hover:bg-gray-100 p-0"
               >
                 -
-              </button>
+              </Button>
               <span className="w-6 text-center font-bold text-sm">{qty}</span>
-              <button
+              <Button
+                variant="ghost"
+                size="icon"
                 onClick={() => setQty((q) => q + 1)}
-                className="w-8 h-8 flex items-center justify-center bg-white rounded-lg shadow-sm font-bold hover:bg-gray-100"
+                className="w-8 h-8 flex items-center justify-center bg-white rounded-lg shadow-sm font-bold hover:bg-gray-100 p-0"
               >
                 +
-              </button>
+              </Button>
             </div>
           </div>
 
@@ -329,21 +345,24 @@ const RetailCart = ({ config }: { config: StorefrontConfig }) => {
     <div className="animate-in slide-in-from-right-8 duration-300 min-h-screen bg-gray-50 pb-24">
       <div className="sticky top-[86px] z-30 bg-white/80 backdrop-blur-md px-4 py-3 border-b flex justify-between items-center mb-4">
         <div className="flex items-center gap-2">
-          <button
+          <Button
+            variant="ghost"
+            size="icon"
             onClick={() => navigate("home")}
-            className="p-1 hover:bg-gray-100 rounded-full"
+            className="p-1 hover:bg-gray-100 rounded-full h-auto w-auto"
           >
             <Icon name="ArrowLeft" size={20} />
-          </button>
+          </Button>
           <span className="font-bold">Your Cart ({cart.length})</span>
         </div>
         {cart.length > 0 && (
-          <button
-            onClick={() => {}}
-            className="text-xs text-red-500 font-medium"
+          <Button
+            variant="ghost"
+            onClick={() => { }}
+            className="text-xs text-red-500 font-medium h-auto p-0 hover:bg-transparent hover:text-red-700 hover:no-underline"
           >
             Clear
-          </button>
+          </Button>
         )}
       </div>
 
@@ -374,12 +393,14 @@ const RetailCart = ({ config }: { config: StorefrontConfig }) => {
                   <h3 className="font-bold text-sm truncate pr-2">
                     {item.product.name}
                   </h3>
-                  <button
+                  <Button
+                    variant="ghost"
+                    size="icon"
                     onClick={() => removeFromCart(i)}
-                    className="text-gray-300 hover:text-red-500"
+                    className="text-gray-300 hover:text-red-500 h-auto w-auto p-0"
                   >
                     <Icon name="X" size={14} />
-                  </button>
+                  </Button>
                 </div>
                 <p className="text-xs text-gray-500 mb-2">
                   {Object.values(item.selectedVariants).join(" / ")}
@@ -389,21 +410,25 @@ const RetailCart = ({ config }: { config: StorefrontConfig }) => {
                     ₦{(item.product.price * item.quantity).toLocaleString()}
                   </p>
                   <div className="flex items-center gap-3 bg-gray-50 px-2 py-1 rounded-lg border">
-                    <button
+                    <Button
+                      variant="ghost"
+                      size="icon"
                       onClick={() => updateQuantity(i, -1)}
-                      className="text-gray-500 hover:text-black"
+                      className="text-gray-500 hover:text-black h-auto w-auto p-0"
                     >
                       -
-                    </button>
+                    </Button>
                     <span className="text-xs font-bold w-4 text-center">
                       {item.quantity}
                     </span>
-                    <button
+                    <Button
+                      variant="ghost"
+                      size="icon"
                       onClick={() => updateQuantity(i, 1)}
-                      className="text-gray-500 hover:text-black"
+                      className="text-gray-500 hover:text-black h-auto w-auto p-0"
                     >
                       +
-                    </button>
+                    </Button>
                   </div>
                 </div>
               </div>
@@ -448,12 +473,14 @@ const RetailCheckout = ({
   return (
     <div className="animate-in slide-in-from-right-8 duration-300 min-h-screen bg-gray-50">
       <div className="sticky top-[86px] z-30 bg-white/80 backdrop-blur-md px-4 py-3 border-b flex items-center gap-2 mb-4">
-        <button
+        <Button
+          variant="ghost"
+          size="icon"
           onClick={() => navigate("cart")}
-          className="p-1 hover:bg-gray-100 rounded-full"
+          className="p-1 hover:bg-gray-100 rounded-full h-auto w-auto"
         >
           <Icon name="ArrowLeft" size={20} />
-        </button>
+        </Button>
         <span className="font-bold">Checkout</span>
       </div>
 
@@ -550,7 +577,7 @@ function RetailShell({ config }: { config: StorefrontConfig }) {
         Preview mode — your store will look like this after setup.
       </div>
 
-      <RetailHeader config={config} onScan={() => {}} />
+      <RetailHeader config={config} onScan={() => { }} />
 
       <div className="flex-1 flex flex-col relative w-full">
         {route === "home" && <RetailHome config={config} />}
@@ -575,7 +602,7 @@ function RetailShell({ config }: { config: StorefrontConfig }) {
         >
           <div className="flex flex-col gap-4">
             <p className="font-bold text-sm">Vayva Store</p>
-            <p>+234 800 123 4567 • hello@vayva.store</p>
+            <p>+234 800 123 4567 • hello@vayva.ng</p>
             <p className="mt-4">&copy; 2025 Storefront. Powered by Vayva.</p>
           </div>
         </footer>

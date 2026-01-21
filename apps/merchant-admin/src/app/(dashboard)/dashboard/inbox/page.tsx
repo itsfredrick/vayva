@@ -1,8 +1,11 @@
 "use client";
 
 import React, { useState, useEffect, useRef } from "react";
-import { Icon } from "@vayva/ui"; // Test or lucide
+import { useRouter, useSearchParams } from "next/navigation";
+import { Icon, Button } from "@vayva/ui"; // Test or lucide
 import { motion, AnimatePresence } from "framer-motion";
+import { ChatWindow } from "@/components/whatsapp/ChatWindow";
+import { WhatsAppMessage } from "@vayva/shared";
 
 // --- Types ---
 type Conversation = {
@@ -26,8 +29,10 @@ type QuickReply = {
 
 export default function InboxPage() {
   const [conversations, setConversations] = useState<Conversation[]>([]);
+  const [messages, setMessages] = useState<WhatsAppMessage[]>([]);
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
+  const [loadingMessages, setLoadingMessages] = useState(false);
 
   // Quick Replies
   const [quickReplies, setQuickReplies] = useState<QuickReply[]>([]);
@@ -41,10 +46,30 @@ export default function InboxPage() {
   const [showNotesInput, setShowNotesInput] = useState(false);
   const [noteText, setNoteText] = useState("");
 
+  // URL Sync
+  const searchParams = useSearchParams();
+  const router = useRouter();
+
   useEffect(() => {
     fetchConversations();
     fetchQuickReplies();
   }, []);
+
+  useEffect(() => {
+    const id = searchParams.get("conversationId");
+    if (id) {
+      setSelectedId(id);
+      fetchMessages(id);
+    } else {
+      setSelectedId(null);
+      setMessages([]);
+    }
+  }, [searchParams]);
+
+  // Update URL when selection changes manually (e.g. from list click if not using Request Link)
+  const handleSelect = (id: string) => {
+    router.push(`?conversationId=${id}`);
+  };
 
   const fetchConversations = async () => {
     try {
@@ -64,6 +89,19 @@ export default function InboxPage() {
       const data = await res.json();
       setQuickReplies(data.items || []);
     } catch (e) { }
+  };
+
+  const fetchMessages = async (id: string) => {
+    setLoadingMessages(true);
+    try {
+      const res = await fetch(`/api/merchant/inbox/conversations/${id}`);
+      const data = await res.json();
+      setMessages(data.messages || []);
+    } catch (e) {
+      console.error(e);
+    } finally {
+      setLoadingMessages(false);
+    }
   };
 
   const handleSend = async () => {
@@ -113,7 +151,7 @@ export default function InboxPage() {
           {conversations.map((c) => (
             <div
               key={c.id}
-              onClick={() => setSelectedId(c.id)}
+              onClick={() => handleSelect(c.id)}
               className={`p-4 border-b border-gray-100 cursor-pointer hover:bg-gray-100 transition relative ${selectedId === c.id ? "bg-blue-50/50" : ""}`}
             >
               <div className="flex justify-between items-start mb-1">
@@ -160,119 +198,27 @@ export default function InboxPage() {
             {/* Header */}
             <div className="h-14 border-b border-gray-100 flex items-center px-6 justify-between">
               <h3 className="font-bold">Chat</h3>
-              <h3 className="font-bold">Chat</h3>
               <div className="flex items-center gap-2">
-                <button className="text-xs font-bold text-gray-500 hover:text-black border border-gray-200 px-3 py-1.5 rounded-lg transition-colors flex items-center gap-2">
+                <Button className="text-xs font-bold text-gray-500 hover:text-black border border-gray-200 px-3 py-1.5 rounded-lg transition-colors flex items-center gap-2">
                   <div className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
                   AI Active
-                </button>
-                <button className="text-xs font-bold text-gray-500 hover:text-black border border-gray-200 px-3 py-1.5 rounded-lg transition-colors">
+                </Button>
+                <Button className="text-xs font-bold text-gray-500 hover:text-black border border-gray-200 px-3 py-1.5 rounded-lg transition-colors">
                   Resolve
-                </button>
+                </Button>
               </div>
             </div>
 
             {/* Messages Area */}
-            <div className="flex-1 bg-[#F5F5F5] p-6 overflow-y-auto space-y-4">
-              {/* Test Bubble */}
-              <div className="flex justify-start">
-                <div className="bg-white p-3 rounded-tr-xl rounded-br-xl rounded-bl-xl shadow-sm text-sm max-w-[70%]">
-                  Hello! Where isn my order?
-                </div>
-              </div>
-              <div className="flex justify-end">
-                <div className="bg-[#DCF8C6] p-3 rounded-tl-xl rounded-bl-xl rounded-br-xl shadow-sm text-sm max-w-[70%]">
-                  Checking now!
-                </div>
-              </div>
+            <div className="flex-1 min-h-0">
+              <ChatWindow
+                conversation={conversations.find(c => c.id === selectedId) as any}
+                messages={messages}
+                isLoadingMessages={loadingMessages}
+                onSendMessage={handleSend}
+              />
             </div>
 
-            {/* Composer */}
-            <div className="p-4 border-t border-gray-100 bg-white">
-              {/* Internal Note Toggle */}
-              <div className="flex justify-between items-center mb-2 px-1">
-                <button
-                  onClick={() => setShowNotesInput(!showNotesInput)}
-                  className={`text-xs font-bold uppercase tracking-wide flex items-center gap-1 ${showNotesInput ? "text-yellow-600" : "text-gray-400 hover:text-gray-600"}`}
-                >
-                  <Icon name="Lock" size={12} />
-                  {showNotesInput ? "Writing Internal Note" : "Internal Note"}
-                </button>
-
-                <button
-                  onClick={() => setShowQuickReplies(!showQuickReplies)}
-                  className="text-xs font-bold uppercase tracking-wide text-blue-600 hover:text-blue-700 flex items-center gap-1"
-                >
-                  <Icon name="Zap" size={12} />
-                  Quick Reply
-                </button>
-              </div>
-
-              {/* Quick Replies Popup */}
-              <AnimatePresence>
-                {showQuickReplies && (
-                  <motion.div
-                    initial={{ opacity: 0, y: 10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: 10 }}
-                    className="absolute bottom-20 left-4 right-4 md:right-[400px] bg-white shadow-xl border border-gray-100 rounded-xl p-2 max-h-60 overflow-y-auto z-10 grid grid-cols-1 gap-1"
-                  >
-                    {quickReplies.map((qr) => (
-                      <button
-                        key={qr.id}
-                        onClick={() => insertQuickReply(qr.content)}
-                        className="text-left w-full p-2 hover:bg-gray-50 rounded-lg text-sm"
-                      >
-                        <span className="font-bold block text-xs">
-                          {qr.title}
-                        </span>
-                        <span className="text-gray-500 truncate block text-xs">
-                          {qr.content}
-                        </span>
-                      </button>
-                    ))}
-                    {quickReplies.length === 0 && (
-                      <div className="p-2 text-xs text-gray-400">
-                        No templates found.
-                      </div>
-                    )}
-                  </motion.div>
-                )}
-              </AnimatePresence>
-
-              {/* Input Area */}
-              <div
-                className={`relative rounded-xl border ${showNotesInput ? "border-yellow-300 bg-yellow-50" : "border-gray-200 bg-white"}`}
-              >
-                <textarea
-                  className="w-full p-3 bg-transparent outline-none text-sm resize-none rounded-xl"
-                  placeholder={
-                    showNotesInput
-                      ? "Add a private note for your team..."
-                      : "Type a message..."
-                  }
-                  rows={2}
-                  value={showNotesInput ? noteText : messageText}
-                  onChange={(e) =>
-                    showNotesInput
-                      ? setNoteText(e.target.value)
-                      : setMessageText(e.target.value)
-                  }
-                />
-                <div className="flex justify-end p-2 border-t border-gray-100/50">
-                  <button
-                    onClick={handleSend} // Handle Note vs User Send logic
-                    disabled={sending}
-                    className={`px-4 py-1.5 rounded-lg text-sm font-bold text-white transition-opacity ${sending ? "opacity-50" : ""} ${showNotesInput
-                        ? "bg-yellow-600 hover:bg-yellow-700"
-                        : "bg-green-600 hover:bg-green-700"
-                      }`}
-                  >
-                    {showNotesInput ? "Save Note" : "Send"}
-                  </button>
-                </div>
-              </div>
-            </div>
           </>
         ) : (
           <div className="flex-1 flex flex-col items-center justify-center text-gray-300">
@@ -319,9 +265,9 @@ export default function InboxPage() {
               Tags & Labels
             </h4>
             <div className="flex flex-wrap gap-2">
-              <button className="text-[10px] border border-dashed border-gray-300 px-2 py-1 rounded text-gray-400 hover:border-gray-400">
+              <Button className="text-[10px] border border-dashed border-gray-300 px-2 py-1 rounded text-gray-400 hover:border-gray-400">
                 + Add Tag
-              </button>
+              </Button>
             </div>
           </div>
         </div>

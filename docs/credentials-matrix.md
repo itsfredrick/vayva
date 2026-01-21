@@ -1,4 +1,4 @@
-# Vayva Platform: Credential Matrix (Authoritative)
+# Vayva: Credential Matrix (Authoritative)
 
 **Usage Rule:** secrets must NEVER be committed. This document maps *Environment Variables* to their purpose.
 

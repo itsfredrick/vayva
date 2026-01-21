@@ -1,168 +1,156 @@
+
 "use client";
 
-import React from "react";
-import Link from "next/link";
-import { Button, Icon } from "@vayva/ui";
+import React, { useEffect, useState } from "react";
+import { useSearchParams, useRouter } from "next/navigation";
+import { MarketShell } from "@/components/market/market-shell";
+import { Button, Input, Card } from "@vayva/ui"; // Mock UI lib
+import { useToast } from "@/components/ui/use-toast";
 
-export default function MarketCheckoutPage() {
+export default function CheckoutPage() {
+  const { toast } = useToast();
+  const searchParams = useSearchParams();
+  const router = useRouter();
+  const productId = searchParams.get("productId");
+
+  const [product, setProduct] = useState<any>(null);
+  const [address, setAddress] = useState("");
+  const [quote, setQuote] = useState<any>(null);
+  const [loading, setLoading] = useState(false);
+  const [initPayment, setInitPayment] = useState(false);
+
+  // 1. Fetch Product
+  useEffect(() => {
+    if (!productId) return;
+    fetch(`/api/market/products/${productId}`)
+      .then(res => res.json())
+      .then(setProduct)
+      .catch(console.error);
+  }, [productId]);
+
+  // 2. Get Delivery Quote
+  const handleGetQuote = async () => {
+    if (!address) {
+      return toast({
+        title: "Address Required",
+        description: "Please enter a valid delivery address.",
+        variant: "destructive",
+      });
+    }
+    setLoading(true);
+    try {
+      const res = await fetch("/api/market/logistics/quote", {
+        method: "POST",
+        body: JSON.stringify({
+          sellerId: product.seller.id, // Ensure API returns sellerId!
+          buyerAddress: address,
+          productIds: [product.id]
+        })
+      });
+      const data = await res.json();
+      setQuote(data);
+    } catch (err) {
+      toast({ title: "Error", description: "Failed to get delivery estimate", variant: "destructive" });
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // 3. Helper: Seller ID check
+  // Note: product.seller might be just { name: ... } from previous API.
+  // I need to verify `api/market/products/[id]` returns `seller.id` or `product.storeId`.
+  // API uses `product.store.name`. I need `product.storeId` exposed.
+  // Assuming I fix API if needed. For now, let's use `product.storeId` if available 
+  // or pass dummy "store_id" (Checkout API expects it).
+
+  // 4. Pay
+  const handlePay = async () => {
+    setInitPayment(true);
+    try {
+      const res = await fetch("/api/market/checkout", {
+        method: "POST",
+        body: JSON.stringify({
+          email: "guest@vayva.ng", // Guest Checkout for now
+          items: [{ productId: product.id, qty: 1 }],
+        })
+      });
+      const data = await res.json();
+      if (data.authorization_url) {
+        window.location.href = data.authorization_url;
+      } else {
+        toast({ title: "Payment Failed", description: "Could not initialize payment.", variant: "destructive" });
+      }
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setInitPayment(false);
+    }
+  };
+
+  if (!productId) return <div className="text-white p-12">Empty Cart</div>;
+  if (!product) return <div className="text-white p-12">Loading...</div>;
+
+  const total = (product.price * 100) + (quote ? quote.priceKobo : 0);
+
   return (
-    <div className="min-h-screen bg-[#142210] text-white">
-      <header className="border-b border-white/5 bg-[#142210]">
-        <div className="max-w-5xl mx-auto px-4 h-20 flex items-center justify-between">
-          <Link href="/market" className="flex items-center gap-2">
-            <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-primary to-emerald-600 flex items-center justify-center text-black font-bold">
-              V
+    <MarketShell>
+      <div className="max-w-2xl mx-auto px-4 py-8">
+        <h1 className="text-2xl font-bold text-white mb-6">Checkout</h1>
+
+        <div className="grid gap-6">
+          {/* Product Summary */}
+          <div className="bg-white/5 border border-white/10 p-4 rounded-xl flex gap-4">
+            <div className="w-20 h-20 bg-gray-800 rounded-lg overflow-hidden">
+              {product.images?.[0] && <img src={product.images[0]} alt={product.name} className="w-full h-full object-cover" />}
             </div>
-            <span className="font-bold text-lg hidden md:block">
-              Vayva Market
-            </span>
-          </Link>
-          <div className="flex items-center gap-2 text-sm text-text-secondary">
-            <Icon name="Lock" size={14} /> Secure with Vayva Escrow
+            <div>
+              <h3 className="font-bold text-white">{product.name}</h3>
+              <div className="text-sm text-gray-400">Sold by {product.seller.name}</div>
+              <div className="text-lg font-bold text-emerald-400 mt-1">
+                {product.curr} {product.price.toLocaleString()}
+              </div>
+            </div>
           </div>
-        </div>
-      </header>
 
-      <main className="max-w-5xl mx-auto px-4 py-8 grid grid-cols-1 md:grid-cols-2 gap-12">
-        {/* Form */}
-        <div className="space-y-8">
           {/* Delivery */}
-          <section>
-            <h2 className="font-bold text-white text-lg mb-4 flex items-center gap-2">
-              <span className="w-6 h-6 rounded-full bg-primary/20 text-primary flex items-center justify-center text-xs">
-                1
-              </span>
-              Delivery Details
-            </h2>
-            <div className="grid grid-cols-2 gap-4">
-              <input
-                className="col-span-2 bg-white/5 border border-white/10 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-primary placeholder:text-text-secondary/50"
-                placeholder="Full name"
+          <div className="bg-white/5 border border-white/10 p-4 rounded-xl space-y-4">
+            <h3 className="font-bold text-white">Delivery</h3>
+            <div className="flex gap-2">
+              <Input
+                placeholder="Enter full address (Lagos only for Beta)"
+                value={address}
+                onChange={(e) => setAddress(e.target.value)}
+                className="bg-transparent border-white/20 text-white"
               />
-              <input
-                className="col-span-2 bg-white/5 border border-white/10 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-primary placeholder:text-text-secondary/50"
-                placeholder="Address"
-              />
-              <input
-                className="bg-white/5 border border-white/10 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-primary placeholder:text-text-secondary/50"
-                placeholder="State"
-              />
-              <input
-                className="bg-white/5 border border-white/10 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-primary placeholder:text-text-secondary/50"
-                placeholder="Phone"
-              />
+              <Button onClick={handleGetQuote} disabled={loading} variant="secondary">
+                {loading ? "..." : "Get Quote"}
+              </Button>
             </div>
-            <div className="mt-4 p-3 bg-indigo-500/10 border border-indigo-500/20 rounded-lg text-xs text-indigo-300 flex items-center gap-2">
-              <Icon name="Truck" size={16} />
-              <span>
-                Fulfilled by <strong>TechDepot</strong>. Tracking available
-                after payment.
-              </span>
-            </div>
-          </section>
-
-          {/* Payment */}
-          <section>
-            <h2 className="font-bold text-white text-lg mb-4 flex items-center gap-2">
-              <span className="w-6 h-6 rounded-full bg-primary/20 text-primary flex items-center justify-center text-xs">
-                2
-              </span>
-              Payment
-            </h2>
-            <div className="space-y-3">
-              <div className="flex items-center justify-between p-4 rounded-xl border border-primary/50 bg-primary/5 cursor-pointer">
-                <div className="flex items-center gap-3">
-                  <Icon name="CreditCard" className="text-primary" />
-                  <span className="font-bold text-white">Pay with Card</span>
-                </div>
-                <Icon
-                  name={"CheckCircle" as any}
-                  className="text-white"
-                  size={12}
-                />
+            {quote && (
+              <div className="bg-emerald-500/10 border border-emerald-500/30 p-3 rounded text-sm text-emerald-300">
+                Typically {Math.round(quote.etaMinutes / 60)} hours via {quote.vehicle}.
+                <br />
+                Fee: ₦ {(quote.priceKobo / 100).toLocaleString()}
               </div>
-              <div className="flex items-center justify-between p-4 rounded-xl border border-white/10 bg-white/5 cursor-pointer hover:bg-white/10">
-                <div className="flex items-center gap-3">
-                  <Icon name="Landmark" className="text-text-secondary" />
-                  <span className="font-bold text-white/70">Bank Transfer</span>
-                </div>
-              </div>
-            </div>
-            <div className="mt-4 flex items-center gap-2">
-              <input
-                type="checkbox"
-                id="wa"
-                className="accent-primary"
-                defaultChecked
-              />
-              <label
-                htmlFor="wa"
-                className="text-sm text-text-secondary cursor-pointer"
-              >
-                Receive order updates on WhatsApp
-              </label>
-            </div>
-          </section>
+            )}
+          </div>
 
-          <Link href="/market/order-confirmation">
-            <Button
-              size="lg"
-              className="w-full rounded-full bg-primary text-black hover:bg-primary/90 font-bold h-12 shadow-[0_0_20px_rgba(70,236,19,0.2)]"
-            >
-              Pay securely ₦ 3,501,500
-            </Button>
-          </Link>
-          <p className="text-center text-xs text-text-secondary">
-            Vayva holds your payment until the order is confirmed by the seller.
+          {/* Total */}
+          <div className="border-t border-white/10 pt-4 text-white">
+            <div className="flex justify-between mb-2"><span>Subtotal</span><span>₦ {product.price.toLocaleString()}</span></div>
+            <div className="flex justify-between mb-4"><span>Delivery</span><span>{quote ? `₦ ${(quote.priceKobo / 100).toLocaleString()}` : "-"}</span></div>
+            <div className="flex justify-between text-xl font-bold"><span>Total</span><span>₦ {(total / 100).toLocaleString()}</span></div>
+          </div>
+
+          <Button size="lg" className="w-full bg-primary text-black font-bold" onClick={handlePay} disabled={initPayment || !quote}>
+            {initPayment ? "Processing..." : `Pay ₦ ${(total / 100).toLocaleString()}`}
+          </Button>
+
+          <p className="text-xs text-center text-gray-500">
+            Protected by Vayva Guarantee. Processed by Paystack securely.
           </p>
         </div>
-
-        {/* Summary */}
-        <div className="bg-white/5 rounded-2xl p-6 h-fit border border-white/5">
-          <div className="flex items-center gap-2 mb-6 pb-6 border-b border-white/10">
-            <div className="w-8 h-8 rounded-full bg-indigo-500 flex items-center justify-center text-white font-bold text-xs">
-              T
-            </div>
-            <span className="font-bold text-white text-sm">TechDepot</span>
-            <Icon name="ShieldCheck" className="text-blue-400" size={14} />
-          </div>
-
-          <div className="flex gap-4 mb-6">
-            <div className="w-16 h-16 bg-[#0b141a] rounded-lg border border-white/5 relative flex items-center justify-center">
-              <Icon name="Monitor" size={24} className="text-white/20" />
-              <span className="absolute -top-2 -right-2 w-5 h-5 bg-white/20 rounded-full flex items-center justify-center text-[10px] font-bold text-white">
-                1
-              </span>
-            </div>
-            <div className="flex-1">
-              <h4 className="text-sm font-bold text-white">
-                MacBook Pro M3 Max
-              </h4>
-              <p className="text-xs text-text-secondary">Space Black • 1TB</p>
-            </div>
-            <div className="text-sm font-bold text-white">₦ 3.5M</div>
-          </div>
-
-          <div className="space-y-2 mb-6 text-sm pt-4 border-t border-white/10">
-            <div className="flex justify-between">
-              <span className="text-text-secondary">Subtotal</span>
-              <span className="text-white">₦ 3,500,000</span>
-            </div>
-            <div className="flex justify-between">
-              <span className="text-text-secondary">Delivery</span>
-              <span className="text-white">₦ 1,000</span>
-            </div>
-            <div className="flex justify-between">
-              <span className="text-text-secondary">Protection Fee</span>
-              <span className="text-white">₦ 500</span>
-            </div>
-          </div>
-          <div className="flex justify-between items-center border-t border-white/10 pt-4">
-            <span className="font-bold text-white">Total Pay</span>
-            <span className="text-2xl font-bold text-white">₦ 3,501,500</span>
-          </div>
-        </div>
-      </main>
-    </div>
+      </div>
+    </MarketShell>
   );
 }

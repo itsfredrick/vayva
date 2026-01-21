@@ -1,6 +1,7 @@
 import React from "react";
 import { ShoppingBag } from "lucide-react";
 import Link from "next/link";
+import { Button } from "@vayva/ui";
 
 interface OneHeaderProps {
   storeName?: string;
@@ -37,14 +38,14 @@ export const OneHeader = ({ storeName }: OneHeaderProps) => {
             FAQ
           </a>
 
-          <button className="flex items-center gap-2 bg-gray-100 hover:bg-gray-200 text-gray-900 px-4 py-2 rounded-full text-xs font-bold transition-colors">
+          <Button variant="outline" className="flex items-center gap-2 bg-gray-100 hover:bg-gray-200 text-gray-900 px-4 py-2 rounded-full text-xs font-bold transition-colors h-auto" aria-label="Track order">
             <ShoppingBag size={14} />
             <span className="hidden sm:inline">Track Order</span>
-          </button>
+          </Button>
 
-          <button className="bg-[#111827] text-white px-5 py-2 rounded-full text-xs font-bold hover:bg-black transition-colors md:hidden">
+          <Button className="bg-[#111827] text-white px-5 py-2 rounded-full text-xs font-bold hover:bg-black transition-colors md:hidden h-auto" aria-label="Buy now">
             Buy Now
-          </button>
+          </Button>
         </div>
       </div>
     </header>

@@ -1,22 +1,14 @@
 import { NextResponse } from "next/server";
 import { requireAuth } from "@/lib/auth/session";
-import { prisma } from "@vayva/db";
+import { prisma } from "@/lib/prisma";
 
-const PLAN_PRICING = {
-  STARTER: 0,
-  GROWTH: 30000,
-  PRO: 40000,
-};
+// NOTE: Disabled - aiSubscription model does not exist in current schema
+// This route needs to be refactored to use the correct subscription model
 
 export async function GET() {
   try {
     const session = await requireAuth();
     const storeId = session.user.storeId;
-
-    // Fetch subscription
-    const subscription = await prisma.merchantSubscription.findUnique({
-      where: { storeId },
-    });
 
     // Fetch billing profile
     const billingProfile = await prisma.billingProfile.findUnique({
@@ -24,26 +16,15 @@ export async function GET() {
     });
 
     return NextResponse.json({
-      subscription: subscription
-        ? {
-            plan: subscription.planSlug,
-            status: subscription.status,
-            renewalDate: subscription.currentPeriodEnd,
-            provider: subscription.provider,
-            amount:
-              PLAN_PRICING[
-                subscription.planSlug as keyof typeof PLAN_PRICING
-              ] || 0,
-            interval: "monthly",
-          }
-        : {
-            plan: "FREE",
-            status: "active",
-            renewalDate: null,
-            provider: "none",
-            amount: 0,
-            interval: "monthly",
-          },
+      subscription: {
+        plan: "GROWTH",
+        status: "active",
+        renewalDate: null,
+        provider: "none",
+        amount: 0,
+        interval: "monthly",
+        message: "Subscription management not implemented"
+      },
       billing: {
         legalName: billingProfile?.legalName || "",
         email: billingProfile?.billingEmail || "",
@@ -94,7 +75,9 @@ export async function PUT(request: Request) {
       session.user.id,
       AuditEventType.SETTINGS_CHANGED,
       {
-        keysChanged: ["billing_profile"],
+        targetType: "STORE",
+        targetId: storeId,
+        meta: { keysChanged: ["billing_profile"] }
       },
     );
 

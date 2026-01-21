@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 import { Button, Icon, cn } from "@vayva/ui";
-import { Switch } from "@/components/ui/Switch";
+import { Switch } from "@/components/ui/switch";
 
 // Master Prompt System 2: WhatsApp Templates
 // State-bound templates (not time-based)
@@ -17,32 +17,7 @@ interface Template {
   variables: string[];
 }
 
-const DEFAULT_TEMPLATES: Template[] = [
-  {
-    id: "new",
-    stateName: "Order Confirmed",
-    defaultMessage:
-      "Hi {{customer_name}}, thanks for your order #{{order_id}}. We've received it and will start processing shortly.",
-    autoSend: true,
-    variables: ["customer_name", "order_id", "total_amount"],
-  },
-  {
-    id: "shipped",
-    stateName: "Out for Delivery",
-    defaultMessage:
-      "Great news {{customer_name}}! Your order #{{order_id}} is on the way. Our rider will call you.",
-    autoSend: false,
-    variables: ["customer_name", "order_id", "rider_phone"],
-  },
-  {
-    id: "delivered",
-    stateName: "Delivered",
-    defaultMessage:
-      "Hi {{customer_name}}, your order has been delivered. Enjoy! Let us know if you need anything else.",
-    autoSend: false,
-    variables: ["customer_name"],
-  },
-];
+const DEFAULT_TEMPLATES: Template[] = [];
 
 export function WhatsAppTemplateSystem() {
   const [selectedId, setSelectedId] = useState(DEFAULT_TEMPLATES[0].id);
@@ -70,13 +45,14 @@ export function WhatsAppTemplateSystem() {
           Order States
         </h3>
         {templates.map((t) => (
-          <button
+          <Button
             key={t.id}
+            variant="ghost"
             onClick={() => setSelectedId(t.id)}
             className={cn(
-              "w-full text-left p-3 rounded-xl transition-all flex items-center justify-between text-sm group",
+              "w-full justify-between h-auto py-3 px-3 rounded-xl transition-all font-normal",
               selectedId === t.id
-                ? "bg-black text-white"
+                ? "bg-black text-white hover:bg-black/90 hover:text-white"
                 : "hover:bg-gray-50 text-gray-600",
             )}
           >
@@ -90,7 +66,7 @@ export function WhatsAppTemplateSystem() {
                 }
               />
             )}
-          </button>
+          </Button>
         ))}
       </div>
 
@@ -120,16 +96,19 @@ export function WhatsAppTemplateSystem() {
             className="w-full h-full bg-transparent border-none outline-none resize-none text-sm leading-relaxed p-2"
             value={activeTemplate.defaultMessage}
             onChange={(e) => updateTemplate({ defaultMessage: e.target.value })}
+            aria-label="Template message content"
           />
           <div className="absolute bottom-4 left-4 flex gap-2">
             {activeTemplate.variables.map((v) => (
-              <button
+              <Button
                 key={v}
+                variant="outline"
+                size="sm"
                 onClick={() => insertVariable(v)}
-                className="text-[10px] bg-white border border-gray-200 px-2 py-1 rounded-full shadow-sm hover:border-black transition-colors"
+                className="text-[10px] bg-white border-gray-200 px-2 py-1 h-auto rounded-full shadow-sm hover:border-black transition-colors"
               >
                 {`{{${v}}}`}
-              </button>
+              </Button>
             ))}
           </div>
         </div>

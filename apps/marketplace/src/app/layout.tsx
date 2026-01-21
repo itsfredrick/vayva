@@ -7,8 +7,10 @@ import type { Metadata } from "next";
 
 export const metadata: Metadata = {
   title: "Vayva marketplace",
-  description: "Vayva Platform",
+  description: "Vayva",
 };
+
+import { ClientLayout } from "@/components/ClientLayout";
 
 export default function RootLayout({
   children,
@@ -17,7 +19,9 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className="font-sans">{children}</body>
+      <body className="font-sans">
+        <ClientLayout>{children}</ClientLayout>
+      </body>
     </html>
   );
 }

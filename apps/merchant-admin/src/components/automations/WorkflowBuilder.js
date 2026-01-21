@@ -1,0 +1,57 @@
+"use client";
+import { jsx as _jsx, jsxs as _jsxs } from "react/jsx-runtime";
+import { useCallback } from "react";
+import ReactFlow, { addEdge, Background, Controls, MiniMap, useNodesState, useEdgesState, } from "reactflow";
+import "reactflow/dist/style.css";
+import { Button, Icon } from "@vayva/ui";
+const initialNodes = [
+    {
+        id: "trigger-1",
+        type: "input",
+        data: { label: "When Order is Paid" },
+        position: { x: 250, y: 50 },
+        className: "bg-black text-white rounded-xl p-4 border-2 border-gray-800 shadow-xl font-bold",
+    },
+    {
+        id: "condition-1",
+        data: { label: "Total Amount > 50,000 NGN" },
+        position: { x: 250, y: 150 },
+        className: "bg-white text-black rounded-xl p-4 border border-gray-200 shadow-lg",
+    },
+    {
+        id: "action-1",
+        type: "output",
+        data: { label: "Send WhatsApp Coupon" },
+        position: { x: 250, y: 250 },
+        className: "bg-indigo-600 text-white rounded-xl p-4 border border-indigo-500 shadow-xl",
+    },
+];
+const initialEdges = [
+    { id: "e1-2", source: "trigger-1", target: "condition-1", animated: true },
+    { id: "e2-3", source: "condition-1", target: "action-1" },
+];
+export function WorkflowBuilder() {
+    const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
+    const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
+    const onConnect = useCallback((params) => setEdges((eds) => addEdge(params, eds)), [setEdges]);
+    return (_jsxs("div", { className: "h-[700px] w-full border border-gray-200 rounded-3xl overflow-hidden bg-white/50 backdrop-blur-sm relative group", children: [_jsxs("div", { className: "absolute top-6 left-6 z-10 flex gap-2", children: [_jsxs(Button, { variant: "outline", size: "sm", className: "bg-white/80 backdrop-blur shadow-sm", children: [_jsx(Icon, { name: "Plus", size: 16, className: "mr-2" }), "Add Trigger"] }), _jsxs(Button, { variant: "outline", size: "sm", className: "bg-white/80 backdrop-blur shadow-sm", children: [_jsx(Icon, { name: "Plus", size: 16, className: "mr-2" }), "Add Action"] })] }), _jsx("div", { className: "absolute top-6 right-6 z-10 flex gap-2", children: _jsxs(Button, { variant: "primary", size: "sm", className: "shadow-lg", children: [_jsx(Icon, { name: "Save", size: 16, className: "mr-2" }), "Save Workflow"] }) }), _jsxs(ReactFlow, { nodes: nodes, edges: edges, onNodesChange: onNodesChange, onEdgesChange: onEdgesChange, onConnect: onConnect, fitView: true, className: "bg-dot-pattern", children: [_jsx(Background, { gap: 20, color: "#f1f1f1" }), _jsx(Controls, { showInteractive: false, className: "bg-white border-gray-200 rounded-lg shadow-sm" }), _jsx(MiniMap, { className: "bg-white border-gray-200 rounded-lg shadow-sm", nodeColor: (n) => {
+                            if (n.type === 'input')
+                                return '#000';
+                            if (n.type === 'output')
+                                return '#4f46e5';
+                            return '#fff';
+                        } })] }), _jsx("style", { jsx: true, global: true, children: `
+        .bg-dot-pattern {
+          background-image: radial-gradient(#e5e7eb 1px, transparent 1px);
+          background-size: 20px 20px;
+        }
+        .react-flow__node {
+            font-family: inherit;
+        }
+        .react-flow__handle {
+            width: 8px;
+            height: 8px;
+            background: #9ca3af;
+        }
+      ` })] }));
+}

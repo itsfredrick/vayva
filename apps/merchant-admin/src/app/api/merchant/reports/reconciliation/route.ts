@@ -1,22 +1,26 @@
 import { NextRequest, NextResponse } from "next/server";
-import { getServerSession } from "next-auth";
-import { authOptions } from "@/lib/auth";
 import { ReportsService } from "@/lib/reports";
+import { withVayvaAPI, HandlerContext } from "@/lib/api-handler";
+import { PERMISSIONS } from "@/lib/team/permissions";
 
-export async function GET(req: NextRequest) {
-  const session = await getServerSession(authOptions);
-  if (!session?.user)
-    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+export const GET = withVayvaAPI(
+  PERMISSIONS.METRICS_VIEW,
+  async (req: NextRequest, { storeId }: HandlerContext) => {
+    try {
+      const { searchParams } = new URL(req.url);
+      const cursor = searchParams.get("cursor") || undefined;
+      const limit = parseInt(searchParams.get("limit") || "20");
 
-  const { searchParams } = new URL(req.url);
-  const cursor = searchParams.get("cursor") || undefined;
-  const limit = parseInt(searchParams.get("limit") || "20");
+      const data = await ReportsService.getReconciliation(
+        storeId,
+        limit,
+        cursor
+      );
 
-  const data = await ReportsService.getReconciliation(
-    (session!.user as any).storeId,
-    limit,
-    cursor,
-  );
-
-  return NextResponse.json(data);
-}
+      return NextResponse.json(data);
+    } catch (error) {
+      console.error("Reconciliation Report Error:", error);
+      return NextResponse.json({ error: "Internal Error" }, { status: 500 });
+    }
+  }
+);

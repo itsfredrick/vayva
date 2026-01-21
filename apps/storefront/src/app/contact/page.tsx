@@ -29,8 +29,7 @@ export default async function ContactPage() {
             GET IN TOUCH
           </div>
           <h1
-            className="text-5xl md:text-6xl font-bold text-[#0B0B0B] mb-8 tracking-tighter"
-            style={{ fontFamily: "Space Grotesk, sans-serif" }}
+            className="text-5xl md:text-6xl font-bold text-[#0B0B0B] mb-8 tracking-tighter font-serif"
           >
             Contact Us
           </h1>
@@ -109,20 +108,22 @@ export default async function ContactPage() {
             <form className="space-y-8">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                 <div className="space-y-2">
-                  <label className="text-xs font-bold text-gray-400 uppercase tracking-wider ml-1">
+                  <label htmlFor="contact-name" className="text-xs font-bold text-gray-400 uppercase tracking-wider ml-1">
                     Your Name
                   </label>
                   <input
+                    id="contact-name"
                     type="text"
                     placeholder="John Doe"
                     className="w-full h-14 bg-white rounded-2xl border border-gray-100 px-6 text-sm focus:outline-none focus:ring-2 focus:ring-black/5 transition-shadow"
                   />
                 </div>
                 <div className="space-y-2">
-                  <label className="text-xs font-bold text-gray-400 uppercase tracking-wider ml-1">
+                  <label htmlFor="contact-email" className="text-xs font-bold text-gray-400 uppercase tracking-wider ml-1">
                     Email Address
                   </label>
                   <input
+                    id="contact-email"
                     type="email"
                     placeholder="john@example.com"
                     className="w-full h-14 bg-white rounded-2xl border border-gray-100 px-6 text-sm focus:outline-none focus:ring-2 focus:ring-black/5 transition-shadow"
@@ -131,10 +132,11 @@ export default async function ContactPage() {
               </div>
 
               <div className="space-y-2">
-                <label className="text-xs font-bold text-gray-400 uppercase tracking-wider ml-1">
+                <label htmlFor="contact-order-number" className="text-xs font-bold text-gray-400 uppercase tracking-wider ml-1">
                   Order Number (Optional)
                 </label>
                 <input
+                  id="contact-order-number"
                   type="text"
                   placeholder="#12345"
                   className="w-full h-14 bg-white rounded-2xl border border-gray-100 px-6 text-sm focus:outline-none focus:ring-2 focus:ring-black/5 transition-shadow"
@@ -142,10 +144,11 @@ export default async function ContactPage() {
               </div>
 
               <div className="space-y-2">
-                <label className="text-xs font-bold text-gray-400 uppercase tracking-wider ml-1">
+                <label htmlFor="contact-message" className="text-xs font-bold text-gray-400 uppercase tracking-wider ml-1">
                   Message
                 </label>
                 <textarea
+                  id="contact-message"
                   className="w-full min-h-[180px] bg-white rounded-3xl border border-gray-100 p-6 text-sm focus:outline-none focus:ring-2 focus:ring-black/5 transition-shadow resize-none"
                   placeholder="How can we help you today?"
                 ></textarea>

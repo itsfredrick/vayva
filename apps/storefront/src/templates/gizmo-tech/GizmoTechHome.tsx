@@ -1,4 +1,5 @@
 import React from "react";
+import { Button } from "@vayva/ui";
 import { MobileHeader } from "./components/MobileHeader";
 import { HeroTechBanner } from "./components/HeroTechBanner";
 import { SectionHeaderRow } from "./components/SectionHeaderRow";
@@ -62,9 +63,9 @@ export const GizmoTechHome = ({ store, products }: GizmoTechHomeProps) => {
             <p className="text-gray-400 text-sm mb-4">
               Complete your workstation with our pro accessories.
             </p>
-            <button className="bg-blue-600 text-white px-6 py-2 rounded-lg text-sm font-bold w-full hover:bg-blue-500 transition-colors">
+            <Button className="bg-blue-600 text-white px-6 py-2 rounded-lg text-sm font-bold w-full hover:bg-blue-500 transition-colors">
               View Accessories
-            </button>
+            </Button>
           </div>
         </div>
 

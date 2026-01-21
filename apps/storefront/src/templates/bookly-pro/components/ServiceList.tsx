@@ -1,6 +1,7 @@
 import React from "react";
 import { Clock, Check } from "lucide-react";
 import { PublicProduct } from "@/types/storefront";
+import { Button } from "@vayva/ui";
 
 interface ServiceListProps {
   services: PublicProduct[];
@@ -50,12 +51,13 @@ export const ServiceList = ({ services, onBook }: ServiceListProps) => {
               </div>
             </div>
 
-            <button
+            <Button
               onClick={() => onBook(service)}
-              className="w-full bg-white border-2 border-gray-900 text-gray-900 py-3 rounded-lg font-bold hover:bg-gray-900 hover:text-white transition-all text-sm uppercase tracking-wide"
+              className="w-full bg-white border-2 border-gray-900 text-gray-900 py-3 rounded-lg font-bold hover:bg-gray-900 hover:text-white transition-all text-sm uppercase tracking-wide h-auto"
+              aria-label={`Book appointment for ${service.name}`}
             >
               Book Appointment
-            </button>
+            </Button>
           </div>
         ))}
       </div>

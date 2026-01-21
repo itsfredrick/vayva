@@ -10,7 +10,7 @@ export const listProductsHandler = async (
 
   const products = await prisma.product.findMany({
     where: { storeId },
-    include: { ProductVariant: true },
+    include: { productVariants: true },
   });
   return reply.send(products);
 };
@@ -29,7 +29,7 @@ export const listPublicProductsHandler = async (
       storeId,
       status: "ACTIVE", // Only active products
     },
-    include: { ProductVariant: true },
+    include: { productVariants: true },
   });
   return reply.send(products);
 };
@@ -55,7 +55,7 @@ export const createProductHandler = async (
       handle: handle + "-" + Date.now(), // Ensure unique
       description,
       status: "ACTIVE",
-      ProductVariant: {
+      productVariants: {
         create: {
           title: "Default",
           price: parseFloat(price),
@@ -64,13 +64,13 @@ export const createProductHandler = async (
         },
       },
     },
-    include: { ProductVariant: true },
+    include: { productVariants: true },
   });
 
   // Log Inventory Event
   await prisma.inventoryEvent.create({
     data: {
-      variantId: (product as any).ProductVariant[0].id,
+      variantId: (product as any).productVariants[0].id,
       quantity: parseInt(stock || "0"),
       action: "ADJUSTMENT",
       reason: "Initial stock",
@@ -88,7 +88,7 @@ export const getProductHandler = async (
   const { id } = req.params as { id: string };
   const product = await prisma.product.findUnique({
     where: { id },
-    include: { ProductVariant: true },
+    include: { productVariants: true },
   });
   if (!product) return reply.status(404).send({ error: "Product not found" });
   return reply.send(product);
@@ -110,13 +110,13 @@ export const updateProductHandler = async (
       title: name,
       description,
     },
-    include: { ProductVariant: true },
+    include: { productVariants: true },
   });
 
   // Update default variant price/stock if provided
-  if (product.ProductVariant.length > 0) {
+  if (product.productVariants.length > 0) {
     await prisma.productVariant.update({
-      where: { id: (product as any).ProductVariant[0].id },
+      where: { id: (product as any).productVariants[0].id },
       data: {
         price: price ? parseFloat(price) : undefined,
         // inventory removed as it's not on variant model
@@ -127,7 +127,7 @@ export const updateProductHandler = async (
   // Return updated
   const updated = await prisma.product.findUnique({
     where: { id },
-    include: { ProductVariant: true },
+    include: { productVariants: true },
   });
   return reply.send(updated);
 };

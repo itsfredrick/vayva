@@ -14,8 +14,8 @@ console.log("✅ VALIDATING EMAIL SYSTEM CONFIGURATION...\n");
 let hasErrors = false;
 
 // 1. Verify Templates vs Registry
-const implementedKeys = Object.keys(Templates);
-const registryKeys = registry.templates.map((t) => t.key);
+const implementedKeys = Object.keys(Templates) as Array<keyof typeof Templates>;
+const registryKeys = registry.templates.map((t) => t.key) as Array<keyof typeof Templates>;
 
 console.log("--- 1. Registry vs Implementation ---");
 registryKeys.forEach((key) => {
@@ -24,7 +24,6 @@ registryKeys.forEach((key) => {
     hasErrors = true;
   } else {
     // Double check it returns a string
-    // @ts-ignore
     const tmpl = Templates[key];
     if (typeof tmpl !== "function") {
       console.error(`❌ Template ${key} is not a function`);
@@ -66,9 +65,9 @@ const MOCK_DATA = {
 };
 
 implementedKeys.forEach((key) => {
+  const tmpl = (Templates as Record<string, (data: any) => string>)[key];
   try {
-    // @ts-ignore
-    const html = Templates[key](MOCK_DATA);
+    const html = tmpl(MOCK_DATA);
     const sizeKB = Buffer.byteLength(html, "utf8") / 1024;
 
     if (sizeKB > 150) {
@@ -99,7 +98,7 @@ const routingTable = getFullRoutingTable();
 // Ensure all registry keys are covered (getRouteForTemplate defaults to SECURITY if missing)
 // But we want to ensure explicit coverage if possible, or at least that it resolves valid senders.
 registryKeys.forEach((key) => {
-  const route = getRouteForTemplate(key);
+  const route = getRouteForTemplate(key as any);
   if (!route.sender || !route.sender.email.includes("@vayva.ng")) {
     console.error(
       `❌ Invalid sender for ${key}: ${JSON.stringify(route.sender)}`,

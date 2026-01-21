@@ -21,7 +21,7 @@ export default async function SeoSettingsPage() {
         select: {
             seoTitle: true,
             seoDescription: true,
-            seoKeywords: true,
+            // seoKeywords: true, // Not supported in schema
             socialImage: true,
         },
     });

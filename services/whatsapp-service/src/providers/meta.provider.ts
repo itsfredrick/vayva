@@ -14,8 +14,23 @@ export class MetaProvider implements WhatsAppProvider {
           messaging_product: "whatsapp",
           recipient_type: "individual",
           to: options.recipient,
-          type: "text", // Simplify for now
-          text: { body: options.body || "Hello" }
+          type: options.templateName ? "template" : "text",
+          ...(options.templateName ? {
+            template: {
+              name: options.templateName,
+              language: { code: "en_US" }, // Default to US English
+              components: options.body ? [
+                {
+                  type: "body",
+                  parameters: [
+                    { type: "text", text: options.body }
+                  ]
+                }
+              ] : []
+            }
+          } : {
+            text: { body: options.body || "Hello" }
+          })
         },
         {
           headers: {

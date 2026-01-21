@@ -10,6 +10,7 @@ const legalDocuments = [
   { title: "Refund Policy", href: "/legal/refund-policy" },
   { title: "KYC & Compliance", href: "/legal/kyc-safety" },
   { title: "Manage Cookies", href: "/legal/cookies" },
+  { title: "EULA", href: "/legal/eula" },
 ];
 
 export default function TermsOfServicePage() {
@@ -28,11 +29,10 @@ export default function TermsOfServicePage() {
                   <li key={doc.href}>
                     <Link
                       href={doc.href}
-                      className={`block px-3 py-2 text-sm rounded ${
-                        doc.active
-                          ? "bg-gray-100 text-gray-900 font-medium"
-                          : "text-gray-600 hover:bg-gray-50 hover:text-gray-900"
-                      }`}
+                      className={`block px-3 py-2 text-sm rounded ${doc.active
+                        ? "bg-gray-100 text-gray-900 font-medium"
+                        : "text-gray-600 hover:bg-gray-50 hover:text-gray-900"
+                        }`}
                     >
                       {doc.title}
                     </Link>
@@ -57,7 +57,7 @@ export default function TermsOfServicePage() {
                 <strong>Jurisdiction:</strong> Federal Republic of Nigeria
               </p>
               <p>
-                <strong>Governing Entity:</strong> Vayva Inc. (operating in
+                <strong>Governing Entity:</strong> Vayva Tech (operating in
                 Nigeria)
               </p>
             </div>
@@ -100,14 +100,14 @@ export default function TermsOfServicePage() {
                 WhatsApp (Meta), Paystack, and logistics providers.
               </p>
               <p>
-                <strong>“Transaction Fee”</strong> refers to the 5% fee charged
+                <strong>“Transaction Fee”</strong> refers to the 3% fee charged
                 per withdrawal transaction.
               </p>
             </div>
 
             <h2>2. Nature of the Service</h2>
             <p>
-              Vayva Inc. provides software infrastructure to help Merchants
+              Vayva Tech provides software infrastructure to help Merchants
               organize and manage commercial activity conducted via WhatsApp.
               <strong>Vayva is a software platform provider only.</strong>
             </p>
@@ -137,7 +137,7 @@ export default function TermsOfServicePage() {
               </li>
               <li>
                 <strong>Withdrawal Fee:</strong> A{" "}
-                <strong>5% Transaction Fee</strong> is applied to every
+                <strong>3% Transaction Fee</strong> is applied to every
                 withdrawal. This fee covers settlement processing and platform
                 security.
               </li>
@@ -217,9 +217,24 @@ export default function TermsOfServicePage() {
               </li>
             </ul>
 
+
+            <h2>6a. Content Moderation & Safety</h2>
+            <div className="bg-red-50 p-4 border-l-4 border-red-500 my-4 text-sm">
+              <p className="font-bold text-red-900">Zero Tolerance Policy</p>
+              <p>
+                Vayva has zero tolerance for objectionable content. We reserve the right to
+                <strong> immediately delete</strong> any content and <strong>block</strong> any user/merchant who posts:
+                defamatory, pornographic, violent, hateful, or illegal material.
+              </p>
+            </div>
+            <p>
+              Users may report objectionable content via the "Report" function on any store or product page.
+              Vayva commits to reviewing such reports within 24 hours.
+            </p>
+
             <h2>7. Limitation of Liability</h2>
             <p>
-              To the maximum extent permitted by Nigerian law, Vayva Inc. is not
+              To the maximum extent permitted by Nigerian law, Vayva Tech is not
               liable for:
             </p>
             <ul>
@@ -241,7 +256,7 @@ export default function TermsOfServicePage() {
 
             <div className="not-prose mt-12 pt-8 border-t border-gray-200">
               <p className="text-sm text-gray-400 italic">
-                By using the Vayva Platform, you acknowledge that you have read,
+                By using Vayva, you acknowledge that you have read,
                 understood, and agree to these authoritatively versioned Terms.
               </p>
             </div>

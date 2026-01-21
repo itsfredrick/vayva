@@ -1,25 +1,15 @@
 "use client";
 
-import { Button, Input, Label, Textarea, Card } from "@vayva/ui";
+import { Button, Card, Input, Label, Textarea } from "@vayva/ui";
 import { ArrowLeft, Save, Upload, Lock, Clock, Eye, Trash2, GripVertical, Check } from "lucide-react";
 import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
 import { useEffect, useState, useRef } from "react";
 import { toast } from "sonner";
 import { format } from "date-fns";
+import { Switch } from "@/components/ui/switch";
 
-// Simple Switch Component if standard UI one is missing
-function Toggle({ enabled, onChange }: { enabled: boolean; onChange: (val: boolean) => void }) {
-    return (
-        <button
-            type="button"
-            className={`${enabled ? 'bg-black' : 'bg-gray-200'} relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none`}
-            onClick={() => onChange(!enabled)}
-        >
-            <span className={`${enabled ? 'translate-x-6' : 'translate-x-1'} inline-block h-4 w-4 transform rounded-full bg-white transition-transform`} />
-        </button>
-    );
-}
+
 
 export default function ProjectEditorPage() {
     const params = useParams();
@@ -142,6 +132,7 @@ export default function ProjectEditorPage() {
                         {/* Empty State / Upload Zone */}
                         <div className="border-2 border-dashed border-gray-300 rounded-xl p-12 text-center bg-white hover:bg-gray-50 transition-colors cursor-pointer relative">
                             <input
+                                title="Upload project images"
                                 type="file"
                                 multiple
                                 accept="image/*"
@@ -198,7 +189,7 @@ export default function ProjectEditorPage() {
                                 <Label className="text-base">Client Mode</Label>
                                 <p className="text-xs text-gray-500">Enable private access & commenting.</p>
                             </div>
-                            <Toggle enabled={clientMode} onChange={setClientMode} />
+                            <Switch checked={clientMode} onCheckedChange={setClientMode} />
                         </div>
 
                         {clientMode && (

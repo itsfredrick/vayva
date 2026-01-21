@@ -44,25 +44,77 @@
     }
 }
 
-/* Glass Utilities */
+/* Glass Utilities & Surfaces */
 @layer utilities {
-    .glass-card {
-        @apply bg-white/70 backdrop-blur-md border border-white/20 shadow-sm rounded-xl;
+
+    /* Surface Primitives */
+    .surface-base {
+        @apply bg-background text-foreground;
     }
 
-    .glass-header {
-        @apply bg-white/60 backdrop-blur-lg border-b border-gray-200/50;
+    .surface-muted {
+        @apply bg-muted text-muted-foreground;
+    }
+
+    .surface-glass {
+        @apply bg-white/60 backdrop-blur-md border border-white/20 shadow-glass;
+    }
+
+    .surface-elevated {
+        @apply bg-white shadow-elevated border border-gray-100;
+    }
+
+    /* Typography Roles */
+    .text-display {
+        @apply font-heading text-4xl font-bold tracking-tight;
+    }
+
+    .text-title {
+        @apply font-heading text-2xl font-semibold tracking-tight;
+    }
+
+    .text-section {
+        @apply font-sans text-lg font-medium text-foreground;
+    }
+
+    .text-body {
+        @apply font-sans text-base text-foreground leading-relaxed;
+    }
+
+    .text-meta {
+        @apply font-sans text-sm text-muted-foreground;
+    }
+
+    .text-link {
+        @apply font-sans text-sm font-medium text-primary hover:underline underline-offset-4 cursor-pointer;
+    }
+
+    /* Layout Primitives */
+    .divider-h {
+        @apply h-px w-full bg-border/40 my-4;
     }
 }
 
-/* Table Density Utility */
-.ops-density-compact table tr td,
-.ops-density-compact table tr th {
-  padding-top: 0.35rem !important;
-  padding-bottom: 0.35rem !important;
-  font-size: 0.8rem !important;
-}
+/* Density Systems - Global overrides for standard components */
+@layer components {
 
-.ops-density-compact .p-8 {
-  padding: 1rem !important;
+    /* Compact Mode (Ops Console Default) */
+    .density-compact table tr td,
+    .density-compact table tr th {
+        @apply py-2 px-3 text-xs;
+    }
+
+    .density-compact .btn-std {
+        @apply h-8 px-3 text-xs;
+    }
+
+    /* Comfortable Mode */
+    .density-comfortable table tr td,
+    .density-comfortable table tr th {
+        @apply py-4 px-6 text-sm;
+    }
+
+    .density-comfortable .btn-std {
+        @apply h-10 px-4 text-sm;
+    }
 }

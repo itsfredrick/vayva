@@ -1,4 +1,4 @@
-# Vercel Deployment Guide for Vayva Platform
+# Vercel Deployment Guide for Vayva
 
 This guide will walk you through deploying all three Vayva applications to Vercel.
 

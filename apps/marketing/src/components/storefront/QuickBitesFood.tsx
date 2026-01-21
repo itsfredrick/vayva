@@ -19,6 +19,7 @@ import {
   X,
   Menu
 } from "lucide-react";
+import { Button } from "@vayva/ui";
 
 export interface QuickBitesFoodProps {
   storeName?: string;
@@ -97,13 +98,14 @@ export function QuickBitesFood({
               Menu
             </div>
             {categories.map((cat) => (
-              <button
+              <Button
                 key={cat}
+                variant={selectedCategory === cat ? "primary" : "ghost"}
                 onClick={() => setSelectedCategory(cat)}
-                className={`w-full text-left px-4 py-3 rounded-xl text-sm font-medium transition-colors ${selectedCategory === cat ? "bg-orange-500 text-white shadow-lg shadow-orange-200" : "text-gray-500 hover:bg-gray-50"}`}
+                className={`w-full justify-start px-4 py-3 rounded-xl text-sm font-medium transition-colors h-auto ${selectedCategory === cat ? "bg-orange-500 text-white shadow-lg shadow-orange-200" : "text-gray-500 hover:bg-gray-50 bg-transparent"}`}
               >
                 {cat}
-              </button>
+              </Button>
             ))}
           </nav>
         </div>
@@ -117,9 +119,9 @@ export function QuickBitesFood({
             <p className="text-xs text-blue-100 mb-3">
               On all orders over ₦5,000
             </p>
-            <button className="text-xs bg-white text-blue-500 px-4 py-2 rounded-lg font-bold hover:bg-blue-50 transition-colors">
+            <Button className="text-xs bg-white text-blue-500 px-4 py-2 rounded-lg font-bold hover:bg-blue-50 transition-colors h-auto">
               Details
-            </button>
+            </Button>
           </div>
         </div>
       </aside>
@@ -130,17 +132,18 @@ export function QuickBitesFood({
           <aside className="w-64 bg-white h-full p-6 animate-in slide-in-from-left" onClick={e => e.stopPropagation()}>
             <div className="flex justify-between items-center mb-8">
               <span className="font-bold text-xl">{displayName}</span>
-              <button onClick={() => setIsMobileMenuOpen(false)}><X className="w-5 h-5" /></button>
+              <Button variant="ghost" size="icon" onClick={() => setIsMobileMenuOpen(false)} aria-label="Close mobile menu"><X className="w-5 h-5" /></Button>
             </div>
             <nav className="space-y-2">
               {categories.map((cat) => (
-                <button
+                <Button
                   key={cat}
+                  variant={selectedCategory === cat ? "primary" : "ghost"}
                   onClick={() => { setSelectedCategory(cat); setIsMobileMenuOpen(false); }}
-                  className={`w-full text-left px-4 py-3 rounded-xl text-sm font-medium ${selectedCategory === cat ? "bg-orange-500 text-white" : "text-gray-500"}`}
+                  className={`w-full justify-start px-4 py-3 rounded-xl text-sm font-medium h-auto ${selectedCategory === cat ? "bg-orange-500 text-white" : "text-gray-500 bg-transparent"}`}
                 >
                   {cat}
-                </button>
+                </Button>
               ))}
             </nav>
           </aside>
@@ -152,9 +155,15 @@ export function QuickBitesFood({
         {/* Header */}
         <header className="h-20 bg-white border-b border-gray-100 flex items-center justify-between px-4 md:px-8 flex-shrink-0">
           <div className="flex items-center gap-4">
-            <button className="md:hidden p-2 text-gray-500" onClick={() => setIsMobileMenuOpen(true)}>
+            <Button
+              variant="ghost"
+              size="icon"
+              className="md:hidden p-2 text-gray-500"
+              onClick={() => setIsMobileMenuOpen(true)}
+              aria-label="Open mobile menu"
+            >
               <Menu className="w-6 h-6" />
-            </button>
+            </Button>
             <div className="flex items-center gap-4 bg-gray-100 px-4 py-2 rounded-xl w-full md:w-96 transition-all focus-within:ring-2 focus-within:ring-orange-200 focus-within:bg-white">
               <Search className="w-5 h-5 text-gray-400" />
               <input
@@ -165,13 +174,16 @@ export function QuickBitesFood({
             </div>
           </div>
 
-          <button
+          <Button
+            variant="ghost"
+            size="icon"
             className="md:hidden p-2 bg-orange-100 text-orange-600 rounded-lg relative"
             onClick={() => setIsCartOpen(true)}
+            aria-label={`View cart with ${cart.length} items`}
           >
             <ShoppingBag className="w-5 h-5" />
             {cart.length > 0 && <span className="absolute -top-1 -right-1 bg-red-500 text-white w-4 h-4 text-[10px] rounded-full flex items-center justify-center font-bold">{cart.length}</span>}
-          </button>
+          </Button>
         </header>
 
         {/* Content Scroll Area */}
@@ -188,7 +200,7 @@ export function QuickBitesFood({
                 </span>
               </p>
             </div>
-            <div className="text-4xl md:text-6xl animate-bounce duration-[3000ms]">🍔</div>
+            <div className="text-4xl md:text-6xl animate-bounce duration-3000">🍔</div>
           </div>
 
           <div className="flex items-center justify-between mb-6">
@@ -217,11 +229,17 @@ export function QuickBitesFood({
                         p.image ||
                         `https://via.placeholder.com/300x200?text=${p.name}`
                       }
+                      alt={p.name}
                       className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                     />
-                    <button className="absolute bottom-2 right-2 bg-white rounded-full p-2 shadow-md opacity-0 translate-y-2 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-300 hover:bg-orange-500 hover:text-white">
+                    <Button
+                      variant="primary"
+                      size="icon"
+                      className="absolute bottom-2 right-2 bg-white rounded-full p-2 shadow-md opacity-0 translate-y-2 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-300 hover:bg-orange-500 hover:text-white h-8 w-8"
+                      aria-label="Add to bag"
+                    >
                       <Plus className="w-4 h-4" />
-                    </button>
+                    </Button>
                   </div>
                   <div className="flex justify-between items-start mb-2">
                     <h3 className="font-bold text-gray-900 leading-tight">{p.name}</h3>
@@ -249,9 +267,15 @@ export function QuickBitesFood({
             <div className="text-xs bg-orange-100 text-orange-600 px-2 py-1 rounded font-bold">
               {cart.length}
             </div>
-            <button onClick={() => setIsCartOpen(false)} className="hover:bg-gray-100 p-1 rounded-full text-gray-500">
+            <Button
+              variant="ghost"
+              size="icon"
+              onClick={() => setIsCartOpen(false)}
+              className="hover:bg-gray-100 p-1 rounded-full text-gray-500"
+              aria-label="Close bag sidebar"
+            >
               <X className="w-5 h-5" />
-            </button>
+            </Button>
           </div>
         </div>
 
@@ -268,6 +292,7 @@ export function QuickBitesFood({
                   {item.image && (
                     <img
                       src={item.image}
+                      alt={item.name}
                       className="w-full h-full object-cover"
                     />
                   )}
@@ -281,21 +306,27 @@ export function QuickBitesFood({
                   </div>
                 </div>
                 <div className="flex items-center gap-2 bg-gray-100 rounded-lg p-1">
-                  <button
+                  <Button
+                    variant="ghost"
+                    size="icon"
                     onClick={() => updateQuantity(item.id, -1)}
-                    className="p-1 hover:bg-white rounded transition-colors text-gray-600"
+                    className="p-1 hover:bg-white rounded transition-colors text-gray-600 h-6 w-6"
+                    aria-label="Decrease quantity"
                   >
                     <Minus className="w-3 h-3" />
-                  </button>
+                  </Button>
                   <span className="text-xs font-bold w-4 text-center">
                     {item.quantity}
                   </span>
-                  <button
+                  <Button
+                    variant="ghost"
+                    size="icon"
                     onClick={() => updateQuantity(item.id, 1)}
-                    className="p-1 hover:bg-white rounded transition-colors text-gray-600"
+                    className="p-1 hover:bg-white rounded transition-colors text-gray-600 h-6 w-6"
+                    aria-label="Increase quantity"
                   >
                     <Plus className="w-3 h-3" />
-                  </button>
+                  </Button>
                 </div>
               </div>
             ))
@@ -313,13 +344,13 @@ export function QuickBitesFood({
               <span>₦{total.toLocaleString()}</span>
             </div>
           </div>
-          <button
+          <Button
             disabled={cart.length === 0}
             onClick={() => { setIsCartOpen(false); setIsCheckoutOpen(true); }}
-            className="w-full bg-orange-500 text-white py-4 rounded-xl font-bold shadow-lg shadow-orange-200 hover:bg-orange-600 disabled:opacity-50 disabled:shadow-none transition-all flex items-center justify-center gap-2 active:scale-95"
+            className="w-full bg-orange-500 text-white py-6 h-auto rounded-xl font-bold shadow-lg shadow-orange-200 hover:bg-orange-600 disabled:opacity-50 disabled:shadow-none transition-all flex items-center justify-center gap-2 active:scale-95"
           >
             Checkout <ChevronRight className="w-4 h-4" />
-          </button>
+          </Button>
         </div>
       </aside>
     </div>

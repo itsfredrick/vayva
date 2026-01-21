@@ -12,6 +12,7 @@ import {
 } from "../support/escalation.service";
 import { ConversionService } from "./conversion.service";
 import { reportError } from "../error";
+import { NotificationService } from "@/services/notifications";
 // Types
 import Groq from "groq-sdk";
 
@@ -82,7 +83,7 @@ export class SalesAgent {
       const [store, profile, context] = await Promise.all([
         prisma.store.findUnique({
           where: { id: storeId },
-          select: { name: true, category: true, settings: true, id: true } as any,
+          select: { name: true, category: true, settings: true, id: true },
         }),
         prisma.merchantAiProfile.findUnique({ where: { storeId } }),
         MerchantBrainService.retrieveContext(storeId, lastMessage, 3),
@@ -102,7 +103,7 @@ export class SalesAgent {
         await prisma.objectionEvent.create({
           data: {
             storeId,
-            conversationId: "anon",
+            conversationId,
             category: objection,
             rawText: lastMessage,
           },
@@ -118,19 +119,25 @@ export class SalesAgent {
           ? `STRATEGY: Use ${strategy}. Focus on benefits and trust. No pressure.`
           : "STRATEGY: Be helpful but stay neutral. No active selling.";
 
+      interface StoreSettings {
+        hours?: string;
+        returnPolicy?: string;
+        supportPhone?: string;
+        description?: string;
+      }
+
+      const settings = (store?.settings as unknown as StoreSettings) || {};
+
       const storeMetadata = {
-        description: (store as any)?.description,
-        // @ts-ignore
-        hours: store?.settings?.hours,
-        // @ts-ignore
-        returnPolicy: store?.settings?.returnPolicy,
-        // @ts-ignore
-        phone: store?.settings?.supportPhone
+        description: settings.description,
+        hours: settings.hours,
+        returnPolicy: settings.returnPolicy,
+        phone: settings.supportPhone
       };
 
       const systemPrompt = this.getSystemPrompt(
-        ((store as any)?.name as string) || "the store",
-        (store as any)?.category,
+        store?.name || "the store",
+        store?.category,
         profile,
         contextString + "\n" + persuasionAdvice,
         storeMetadata
@@ -174,8 +181,16 @@ export class SalesAgent {
 
 
       // 5. LLM Execution
+      const llmMessages = [
+        { role: "system" as const, content: systemPrompt },
+        ...messages.map(m => ({
+          role: m.role === "system" ? "system" : m.role === "assistant" ? "assistant" : m.role === "tool" ? "tool" : "user" as any,
+          content: typeof m.content === "string" ? m.content : null
+        }))
+      ];
+
       let response = await groqClient.chatCompletion(
-        [{ role: "system", content: systemPrompt }, ...(messages as any)],
+        llmMessages,
         {
           model: "llama-3.1-70b-versatile",
           temperature: 0.1,
@@ -195,7 +210,7 @@ export class SalesAgent {
 
       // Handle Tool Calls
       if (choice.tool_calls) {
-        const toolResults: any[] = [];
+        const toolResults: Groq.Chat.ChatCompletionToolMessageParam[] = [];
         for (const tool of choice.tool_calls) {
           if (tool.function.name === "get_inventory") {
             const args = JSON.parse(tool.function.arguments);
@@ -233,9 +248,9 @@ export class SalesAgent {
         const secondResponse = await groqClient.chatCompletion(
           [
             { role: "system", content: systemPrompt },
-            ...(messages as any),
-            choice as any,
-            ...toolResults,
+            ...(messages as any[]),
+            choice,
+            ...(toolResults as any[]),
           ],
           {
             model: "llama-3.1-70b-versatile",
@@ -281,15 +296,29 @@ export class SalesAgent {
         choice.content?.includes("vayva.shop") ||
         choice.content?.includes("/checkout")
       ) {
-        // We catch this async to not block the user reply
-        import("@/services/notifications").then(({ NotificationService }) => {
-          NotificationService.sendMilestone("lead_hot", {
-            name: "Merchant", // Ideally fetch name
-            phone: "MERCHANT_PHONE_PLACEHOLDER", // We need to fetch this from Store/User
-            storeName: store?.name,
-            storeId: storeId
-          } as any).catch(e => console.error("Failed to notify merchant of lead", e));
+        // Fire and forget - use store data for context
+        NotificationService.sendMilestone("lead_hot", {
+          name: store?.name || "Merchant",
+          phone: settings.supportPhone || "",
+          storeName: store?.name,
+        } as any).catch(e => console.error("Failed to notify merchant of lead", e));
+      }
+
+      // 5.5. AI-Driven Escalation Filter
+      if (choice.content?.includes("[HANDOFF_REQUIRED]")) {
+        const trigger = "SENTIMENT"; // Default as proxy
+        await EscalationService.triggerHandoff({
+          storeId,
+          conversationId: conversationId,
+          trigger,
+          reason: "AI agent determined handoff was required.",
+          aiSummary: choice.content,
         });
+
+        return {
+          message: this.getHandoffCopy(trigger),
+          data: { status: "HANDED_OFF", trigger },
+        };
       }
 
       return {

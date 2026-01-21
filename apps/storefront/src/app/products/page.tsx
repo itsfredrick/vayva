@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
+import { Button } from "@vayva/ui";
 import { StoreShell } from "@/components/StoreShell";
 import { ProductCard } from "@/components/ProductCard";
 import { useStore } from "@/context/StoreContext";
@@ -58,7 +59,7 @@ export default function ProductsPage() {
           {/* Simple Category Filter */}
           <div className="flex flex-wrap gap-2">
             {categories.map((cat) => (
-              <button
+              <Button
                 key={cat}
                 onClick={() => setSelectedCategory(cat as string)}
                 className={`px-4 py-2 rounded-full text-sm font-medium transition-all ${selectedCategory === cat
@@ -67,7 +68,7 @@ export default function ProductsPage() {
                   }`}
               >
                 {cat.charAt(0).toUpperCase() + cat.slice(1)}
-              </button>
+              </Button>
             ))}
           </div>
         </div>
@@ -90,12 +91,12 @@ export default function ProductsPage() {
             <p className="text-gray-500">
               No products found for this selection.
             </p>
-            <button
+            <Button
               onClick={() => setSelectedCategory("all")}
               className="mt-4 text-sm font-bold underline"
             >
               View all products
-            </button>
+            </Button>
           </div>
         )}
       </div>

@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Icon, cn } from "@vayva/ui";
+import { Icon, cn, Button } from "@vayva/ui";
 import { CheckoutOptimizationStatus } from "@/types/checkout";
 
 export const PaymentOptimizationCard = ({
@@ -36,7 +36,7 @@ export const PaymentOptimizationCard = ({
             Smart retry logic and fraud prevention.
           </p>
         </div>
-        <button
+        <Button
           onClick={handleToggle}
           disabled={loading}
           className={cn(
@@ -50,7 +50,7 @@ export const PaymentOptimizationCard = ({
               status.active ? "translate-x-5" : "translate-x-0",
             )}
           />
-        </button>
+        </Button>
       </div>
 
       {status.active ? (

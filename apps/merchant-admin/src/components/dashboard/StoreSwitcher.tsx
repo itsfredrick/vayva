@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import { Icon } from "@vayva/ui";
+import { Icon, Button } from "@vayva/ui";
 
 interface Store {
   id: string;
@@ -73,8 +73,9 @@ export function StoreSwitcher() {
 
   return (
     <div className="relative">
-      <button
+      <Button
         onClick={() => setIsOpen(!isOpen)}
+        variant="ghost"
         className="flex items-center gap-2 px-3 py-2 hover:bg-gray-100 rounded-lg transition-colors text-sm font-bold text-gray-700"
       >
         <div className="w-6 h-6 bg-black rounded flex items-center justify-center text-white text-xs">
@@ -82,7 +83,7 @@ export function StoreSwitcher() {
         </div>
         <span className="max-w-[120px] truncate">{activeStore.name}</span>
         <Icon name="ChevronDown" size={12} className="text-gray-400" />
-      </button>
+      </Button>
 
       {isOpen && (
         <div className="absolute top-full left-0 mt-2 w-64 bg-white border border-gray-200 rounded-xl shadow-lg p-2 z-50">
@@ -91,30 +92,31 @@ export function StoreSwitcher() {
           </div>
 
           {stores.map((s) => (
-            <button
+            <Button
               key={s.id}
               onClick={() => handleSwitch(s)}
-              className={`w-full text-left px-3 py-2 rounded-lg text-sm flex items-center gap-2 ${
-                s.id === activeStore.id
+              variant="ghost"
+              className={`w-full text-left px-3 py-2 rounded-lg text-sm flex items-center gap-2 ${s.id === activeStore.id
                   ? "bg-gray-50 font-bold text-black"
                   : "text-gray-500 hover:bg-gray-50"
-              }`}
+                }`}
             >
               <span
                 className={`w-2 h-2 rounded-full ${s.id === activeStore.id ? "bg-green-500" : "bg-gray-300"}`}
               />
               {s.name}
-            </button>
+            </Button>
           ))}
 
           <div className="h-px bg-gray-100 my-2" />
 
-          <button
+          <Button
             onClick={() => setShowCreate(true)}
+            variant="ghost"
             className="w-full text-left px-3 py-2 rounded-lg text-sm font-bold text-blue-600 hover:bg-blue-50 flex items-center gap-2"
           >
             <Icon name="Plus" size={14} /> Create New Store
-          </button>
+          </Button>
         </div>
       )}
 
@@ -157,20 +159,22 @@ export function StoreSwitcher() {
               </div>
             </div>
             <div className="flex justify-end gap-2">
-              <button
+              <Button
                 type="button"
                 onClick={() => setShowCreate(false)}
+                variant="ghost"
                 className="px-4 py-2 text-gray-500 font-bold"
               >
                 Cancel
-              </button>
-              <button
+              </Button>
+              <Button
                 type="submit"
                 disabled={creating}
+                variant="primary"
                 className="bg-black text-white px-4 py-2 rounded-lg font-bold"
               >
                 {creating ? "Creating..." : "Create Store"}
-              </button>
+              </Button>
             </div>
           </form>
         </div>

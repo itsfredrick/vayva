@@ -1,5 +1,8 @@
+const path = require('path');
+
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+    outputFileTracingRoot: path.join(__dirname, '../../'),
     transpilePackages: ["@vayva/ui", "@vayva/shared"],
     reactCompiler: true,
     experimental: {
@@ -19,6 +22,21 @@ const nextConfig = {
     images: {
         formats: ["image/avif", "image/webp"],
         deviceSizes: [640, 750, 828, 1080, 1200, 1920, 2048, 3840],
+        remotePatterns: [
+            {
+                protocol: "https",
+                hostname: "randomuser.me",
+            },
+        ],
+    },
+    async redirects() {
+        return [
+            {
+                source: "/vs/:competitor*",
+                destination: "/compare/:competitor*",
+                permanent: true,
+            },
+        ];
     },
 };
 

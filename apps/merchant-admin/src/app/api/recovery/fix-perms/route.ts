@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
-import { logAudit } from "@/lib/audit";
+import { logAuditEvent as logAudit, AuditEventType } from "@/lib/audit";
 
 export async function POST() {
   try {
@@ -17,16 +17,16 @@ export async function POST() {
     // (Simulated for MVP)
     await new Promise((resolve) => setTimeout(resolve, 1000));
 
-    await logAudit({
+    await logAudit(
       storeId,
-      actor: {
-        type: "USER",
-        id: userId,
-        label: session.user.email || "Merchant",
-      },
-      action: "RECOVERY_PERMISSIONS_FIXED",
-      correlationId: `recovery-${Date.now()}`,
-    });
+      userId,
+      AuditEventType.SETTINGS_CHANGED, // Generic fallback
+      {
+        targetType: "USER",
+        targetId: userId,
+        meta: { correlationId: `recovery-${Date.now()}` }
+      }
+    );
 
     return NextResponse.json({ success: true });
   } catch (error: any) {

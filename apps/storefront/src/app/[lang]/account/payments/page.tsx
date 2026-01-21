@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
+import { Button } from "@vayva/ui";
 import { useParams } from "next/navigation";
 import { LocaleKey, LOCALES } from "@/data/locales";
 import { useUserInteractions } from "@/hooks/useUserInteractions";
@@ -34,13 +35,13 @@ export default function PaymentsPage({ params }: any) {
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <h1 className="text-2xl font-bold">{t.title}</h1>
-        <button
+        <Button
           onClick={() => setIsModalOpen(true)}
           className="flex items-center gap-2 bg-black text-white px-4 py-2 rounded-xl font-bold text-sm hover:bg-gray-800 transition-colors"
         >
           <Plus size={16} />
           {t.add}
-        </button>
+        </Button>
       </div>
 
       {paymentMethods.length === 0 ? (
@@ -74,19 +75,19 @@ export default function PaymentsPage({ params }: any) {
                 </div>
                 <div className="flex gap-2">
                   {!pm.isDefault && (
-                    <button
+                    <Button
                       onClick={() => setDefaultPaymentMethod(pm.id)}
                       className="text-xs font-bold text-gray-400 hover:text-black transition-colors"
                     >
                       {t.setDefault}
-                    </button>
+                    </Button>
                   )}
-                  <button
+                  <Button
                     onClick={() => removePaymentMethod(pm.id)}
                     className="text-gray-400 hover:text-red-500 transition-colors"
                   >
                     <Trash2 size={16} />
-                  </button>
+                  </Button>
                 </div>
               </div>
               <div className="text-sm font-medium text-gray-500 uppercase tracking-widest">

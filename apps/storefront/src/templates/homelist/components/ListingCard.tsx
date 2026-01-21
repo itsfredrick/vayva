@@ -1,4 +1,5 @@
 import React from "react";
+import { Button } from "@vayva/ui";
 import { PublicProduct } from "@/types/storefront";
 import { Bed, Bath, Square, MapPin, Heart } from "lucide-react";
 
@@ -35,9 +36,9 @@ export const ListingCard = ({ product, onViewClick }: ListingCardProps) => {
           )}
         </div>
 
-        <button className="absolute top-4 right-4 w-8 h-8 rounded-full bg-white/90 backdrop-blur-sm flex items-center justify-center text-gray-400 hover:text-red-500 hover:scale-110 transition-all">
+        <Button className="absolute top-4 right-4 w-8 h-8 rounded-full bg-white/90 backdrop-blur-sm flex items-center justify-center text-gray-400 hover:text-red-500 hover:scale-110 transition-all">
           <Heart size={16} fill={false ? "currentColor" : "none"} />
-        </button>
+        </Button>
 
         <div className="absolute bottom-0 left-0 w-full bg-gradient-to-t from-black/60 to-transparent p-4 text-white">
           <p className="text-2xl font-black">
@@ -98,7 +99,7 @@ export const ListingCard = ({ product, onViewClick }: ListingCardProps) => {
         </div>
 
         {onViewClick && (
-          <button
+          <Button
             onClick={(e) => {
               e.stopPropagation();
               onViewClick();
@@ -106,7 +107,7 @@ export const ListingCard = ({ product, onViewClick }: ListingCardProps) => {
             className="w-full mt-5 bg-white border-2 border-gray-100 hover:border-[#2563EB] text-gray-700 hover:text-[#2563EB] font-bold py-2.5 rounded-lg transition-colors"
           >
             Schedule Viewing
-          </button>
+          </Button>
         )}
       </div>
     </div>

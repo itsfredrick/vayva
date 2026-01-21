@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
+import { Button } from "@vayva/ui";
 import {
     useStorefrontProducts,
     useStorefrontStore,
@@ -34,7 +35,7 @@ export function StandardFoodHome({
                     <a href="#" className="hover:text-black">Menu</a>
                     <a href="#" className="hover:text-black">Reservations</a>
                 </div>
-                <button
+                <Button
                     onClick={() => setIsCartOpen(true)}
                     className="relative group"
                 >
@@ -44,7 +45,7 @@ export function StandardFoodHome({
                             {cart.length}
                         </div>
                     </div>
-                </button>
+                </Button>
             </nav>
 
             {/* Hero */}
@@ -96,7 +97,7 @@ export function StandardFoodHome({
                                         <span className="font-bold text-lg">₦{item.price.toLocaleString()}</span>
                                     </div>
                                     <p className="text-[#888] text-sm leading-relaxed mb-3 line-clamp-2">{item.description}</p>
-                                    <button className="text-xs font-bold uppercase tracking-widest border-b border-transparent hover:border-black transition-all">Add to Order</button>
+                                    <Button className="text-xs font-bold uppercase tracking-widest border-b border-transparent hover:border-black transition-all">Add to Order</Button>
                                 </div>
                             </div>
                         ))}
@@ -111,7 +112,7 @@ export function StandardFoodHome({
                     <div className="relative w-full max-w-md bg-white h-full p-8 flex flex-col shadow-2xl animate-in slide-in-from-right">
                         <div className="flex justify-between items-center mb-10">
                             <h2 className="text-2xl font-serif italic">Your Order</h2>
-                            <button onClick={() => setIsCartOpen(false)}><X className="w-6 h-6 hover:rotate-90 transition-transform" /></button>
+                            <Button onClick={() => setIsCartOpen(false)}><X className="w-6 h-6 hover:rotate-90 transition-transform" /></Button>
                         </div>
 
                         <div className="flex-1 space-y-6 overflow-y-auto">
@@ -126,9 +127,9 @@ export function StandardFoodHome({
                                             <span>₦{(item.price * item.quantity).toLocaleString()}</span>
                                         </div>
                                         <div className="flex items-center gap-3">
-                                            <button onClick={() => updateQuantity(item.id, -1)} className="hover:bg-[#FDFBF7] p-1 rounded"><Minus className="w-3 h-3" /></button>
+                                            <Button onClick={() => updateQuantity(item.id, -1)} className="hover:bg-[#FDFBF7] p-1 rounded"><Minus className="w-3 h-3" /></Button>
                                             <span className="font-mono text-sm">{item.quantity}</span>
-                                            <button onClick={() => updateQuantity(item.id, 1)} className="hover:bg-[#FDFBF7] p-1 rounded"><Plus className="w-3 h-3" /></button>
+                                            <Button onClick={() => updateQuantity(item.id, 1)} className="hover:bg-[#FDFBF7] p-1 rounded"><Plus className="w-3 h-3" /></Button>
                                         </div>
                                     </div>
                                 </div>
@@ -140,12 +141,12 @@ export function StandardFoodHome({
                                 <span>Total</span>
                                 <span>₦{total.toLocaleString()}</span>
                             </div>
-                            <button
+                            <Button
                                 onClick={() => setIsCheckoutOpen(true)}
                                 className="w-full bg-[#2C2C2C] text-white py-4 rounded-full font-bold uppercase tracking-widest hover:bg-black transition-colors"
                             >
                                 Confirm Order
-                            </button>
+                            </Button>
                         </div>
                     </div>
                 </div>

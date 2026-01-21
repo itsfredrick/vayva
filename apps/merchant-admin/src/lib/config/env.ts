@@ -29,6 +29,30 @@ const envSchema = z.object({
 
   // Admin Break Glass
   ADMIN_ALLOWLIST: z.string().optional().describe("Comma separated emails"),
+
+  // Email (Resend)
+  RESEND_API_KEY: z.string().min(1).optional(),
+  RESEND_FROM_EMAIL: z.string().email().optional(),
+
+  // Delivery (Kwik)
+  KWIK_API_KEY: z.string().optional(),
+  KWIK_MERCHANT_ID: z.string().optional(),
+  KWIK_EMAIL: z.string().email().optional(),
+  KWIK_PASSWORD: z.string().optional(),
+
+  // KYC (YouVerify)
+  YOUVERIFY_API_KEY: z.string().optional(),
+
+  // Storage (Vercel Blob)
+  BLOB_READ_WRITE_TOKEN: z.string().optional(),
+
+  // Monitoring (Sentry)
+  SENTRY_DSN: z.string().url().optional(),
+
+  // AI (Groq)
+  GROQ_ADMIN_KEY: z.string().optional(),
+  GROQ_MARKETING_KEY: z.string().optional(),
+  GROQ_WHATSAPP_KEY: z.string().optional(),
 });
 
 const _env = envSchema.safeParse(process.env);

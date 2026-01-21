@@ -26,7 +26,7 @@ export const FEATURES: Record<string, FeatureData> = {
     benefits: [
       "Instant NGN payouts",
       "Card, Bank Transfer, and USSD support",
-      "Zero platform transaction fees",
+      "Low 3% platform transaction fee",
       "Automated payment confirmation",
     ],
     primaryKeyword: "Paystack online store",
@@ -60,27 +60,11 @@ export const FEATURES: Record<string, FeatureData> = {
     benefits: [
       "Secure expiring links",
       "PDF Watermarking",
-      "Large file hosting",
-      "License key management",
+      "Automated e-mail delivery",
+      "Secure file hosting",
     ],
     primaryKeyword: "sell ebooks online Nigeria",
-    relatedTemplateSlug: "online-courses",
-  },
-  "ticketing-qr-checkin": {
-    slug: "ticketing-qr-checkin",
-    title: "Event Ticketing & QR Check-in Platform | Vayva",
-    description:
-      "Sell event tickets online and manage entry with our QR scanner app. Perfect for concerts, classes, and conferences in Nigeria.",
-    h1: "Professional Event Ticketing Made Easy",
-    intro: "A complete ticketing system—from sales to front-of-house check-in.",
-    benefits: [
-      "Unique QR code tickets",
-      "Mobile scanner for staff",
-      "Real-time attendee stats",
-      "Integrated guest list",
-    ],
-    primaryKeyword: "event ticketing platform Nigeria",
-    relatedTemplateSlug: "event-ticketing",
+    relatedTemplateSlug: "digital-products",
   },
   "b2b-wholesale-pricing": {
     slug: "b2b-wholesale-pricing",
@@ -98,22 +82,5 @@ export const FEATURES: Record<string, FeatureData> = {
     ],
     primaryKeyword: "wholesale ecommerce Nigeria",
     relatedTemplateSlug: "wholesale",
-  },
-  "multi-vendor-payouts": {
-    slug: "multi-vendor-payouts",
-    title: "Multi-Vendor Marketplace Builder | Vayva",
-    description:
-      "Build your own marketplace like Jumia or Konga. Manage multiple sellers and automate commission-based payouts.",
-    h1: "Launch a Multi-Vendor Marketplace",
-    intro:
-      "Create a platform where hundreds of vendors can list, sell, and get paid automatically.",
-    benefits: [
-      "Vendor dashboards",
-      "Automated commission rules",
-      "Paystack Split Payments",
-      "Centralized inventory control",
-    ],
-    primaryKeyword: "marketplace builder Nigeria",
-    relatedTemplateSlug: "marketplace",
   },
 };

@@ -1,106 +1,115 @@
 import React from "react";
-import Link from "next/link";
-import { Icon } from "@vayva/ui";
+import { WhatsAppConversation, WhatsAppLinkedEntityType } from "@vayva/shared";
+import { Icon, cn } from "@vayva/ui";
 
-type Conversation = {
-  id: string;
-  user: string;
-  avatarVal: string;
-  lastMsg: string;
-  time: string;
-  tags: string[];
-  unread?: boolean;
-  active?: boolean;
-};
+interface ConversationListProps {
+  conversations: WhatsAppConversation[];
+  selectedId: string | null;
+  onSelect?: (id: string) => void;
+  getHref?: (id: string) => string;
+  isLoading: boolean;
+}
 
-export function ConversationList({
-  items,
-  activeId,
-}: {
-  items: Conversation[];
-  activeId?: string;
-}) {
+export const ConversationList = ({
+  conversations,
+  selectedId,
+  onSelect,
+  getHref,
+  isLoading,
+}: ConversationListProps) => {
+  // Sort: Unread > Open > Recent
+  const sorted = [...conversations].sort((a, b) => {
+    if (a.unreadCount !== b.unreadCount) return b.unreadCount - a.unreadCount;
+    return (
+      new Date(b.lastMessageAt).getTime() - new Date(a.lastMessageAt).getTime()
+    );
+  });
+
+  if (isLoading) {
+    return (
+      <div className="p-4 text-center text-gray-400">
+        Loading conversations...
+      </div>
+    );
+  }
+
+  if (conversations.length === 0) {
+    return (
+      <div className="p-8 text-center text-gray-400">No messages yet.</div>
+    );
+  }
+
   return (
-    <div className="flex flex-col h-full bg-white/5 border-r border-white/5">
-      {/* Toolbar */}
-      <div className="p-4 border-b border-white/5 space-y-3">
-        <div className="relative">
-          <Icon
-            name="Search"
-            size={16}
-            className="absolute left-3 top-1/2 -translate-y-1/2 text-text-secondary"
-          />
-          <input
-            className="w-full bg-white/5 border border-white/5 rounded-full pl-9 pr-4 py-2 text-sm text-white focus:outline-none focus:border-primary placeholder:text-text-secondary/50"
-            placeholder="Search conversations..."
-          />
-        </div>
-        <div className="flex gap-2 overflow-x-auto pb-1 scrollbar-hide">
-          {["All", "New", "Escalated", "Pending"].map((filter, i) => (
-            <button
-              key={filter}
-              className={`px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider whitespace-nowrap ${i === 0 ? "bg-white text-black" : "bg-white/5 text-text-secondary hover:bg-white/10"}`}
-            >
-              {filter}
-            </button>
-          ))}
-        </div>
-      </div>
+    <div className="flex flex-col h-full overflow-y-auto custom-scrollbar">
+      {sorted.map((conv) => {
+        const Wrapper = getHref ? require("next/link").default : "button";
+        const props = getHref
+          ? { href: getHref(conv.id) }
+          : { onClick: () => onSelect?.(conv.id) };
 
-      {/* List */}
-      <div className="flex-1 overflow-y-auto">
-        {items.map((item) => {
-          const isActive = item.id === activeId;
-          return (
-            <Link key={item.id} href={`/dashboard/whatsapp/inbox/${item.id}`}>
-              <div
-                className={`p-4 border-b border-white/5 hover:bg-white/5 transition-colors cursor-pointer ${isActive ? "bg-white/5 border-l-2 border-l-primary" : "border-l-2 border-l-transparent"}`}
+        return (
+          <Wrapper
+            key={conv.id}
+            {...props}
+            className={cn(
+              "flex flex-col gap-1 p-4 border-b border-gray-100 hover:bg-gray-50 transition-colors text-left group relative",
+              selectedId === conv.id && "bg-[#F3F4F6]",
+            )}
+          >
+          <div className="flex justify-between items-start w-full">
+            <span
+              className={cn(
+                "font-medium text-sm text-gray-900 truncate",
+                conv.unreadCount > 0 && "font-bold",
+              )}
+            >
+              {conv.customerName || conv.customerPhone}
+            </span>
+            <span className="text-[10px] text-gray-400 whitespace-nowrap ml-2">
+              {new Date(conv.lastMessageAt).toLocaleTimeString([], {
+                hour: "2-digit",
+                minute: "2-digit",
+              })}
+            </span>
+          </div>
+
+          <p
+            className={cn(
+              "text-xs truncate w-full pr-6",
+              conv.unreadCount > 0
+                ? "text-gray-900 font-medium"
+                : "text-gray-500",
+            )}
+          >
+            {conv.lastMessagePreview}
+          </p>
+
+          {/* Badges Row */}
+          <div className="flex items-center gap-2 mt-2">
+            {conv.tags?.map((tag) => (
+              <span
+                key={tag}
+                className={cn(
+                  "text-[10px] px-1.5 py-0.5 rounded-full font-medium uppercase tracking-wide",
+                  tag === "order" && "bg-blue-50 text-blue-600",
+                  tag === "booking" && "bg-purple-50 text-purple-600",
+                  tag === "inquiry" && "bg-gray-100 text-gray-500",
+                )}
               >
-                <div className="flex justify-between items-start mb-1">
-                  <div className="flex items-center gap-3">
-                    <div
-                      className={`w-10 h-10 rounded-full flex items-center justify-center font-bold text-sm ${isActive ? "bg-primary text-black" : "bg-white/10 text-text-secondary"}`}
-                    >
-                      {item.avatarVal}
-                    </div>
-                    <div>
-                      <div
-                        className={`text-sm font-bold ${isActive ? "text-white" : item.unread ? "text-white" : "text-text-secondary"}`}
-                      >
-                        {item.user}
-                      </div>
-                      {item.tags.length > 0 && (
-                        <div className="flex gap-1 mt-0.5">
-                          {item.tags.map((tag) => (
-                            <span
-                              key={tag}
-                              className={`text-[9px] px-1 rounded uppercase font-bold tracking-wider 
-                                                            ${tag === "New" ? "bg-blue-500/20 text-blue-400" : ""}
-                                                            ${tag === "Escalated" ? "bg-state-danger/20 text-state-danger" : ""}
-                                                            ${tag === "Pending" ? "bg-state-warning/20 text-state-warning" : ""}
-                                                        `}
-                            >
-                              {tag}
-                            </span>
-                          ))}
-                        </div>
-                      )}
-                    </div>
-                  </div>
-                  <span className="text-[10px] text-text-secondary">
-                    {item.time}
-                  </span>
-                </div>
-                <div
-                  className={`text-xs pl-[52px] truncate ${item.unread ? "text-white font-medium" : "text-text-secondary"}`}
-                >
-                  {item.lastMsg}
-                </div>
-              </div>
-            </Link>
-          );
-        })}
-      </div>
+                {tag}
+              </span>
+            ))}
+          </div>
+
+          {/* Unread Badge */}
+          {conv.unreadCount > 0 && (
+            <div className="absolute right-4 top-10 w-5 h-5 rounded-full bg-green-500 text-white text-[10px] font-bold flex items-center justify-center shadow-sm">
+              {conv.unreadCount}
+            </div>
+          )}
+        </Wrapper>
+        );
+      })}
     </div>
   );
-}
+};

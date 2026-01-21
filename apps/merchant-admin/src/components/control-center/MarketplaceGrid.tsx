@@ -1,5 +1,5 @@
 import React from "react";
-import { Icon, cn } from "@vayva/ui";
+import { Icon, cn, Button } from "@vayva/ui";
 import { MarketplaceTemplate } from "@/types/intelligence";
 
 export const MarketplaceGrid = ({
@@ -16,12 +16,14 @@ export const MarketplaceGrid = ({
         </h3>
         <div className="flex gap-2 text-sm overflow-x-auto pb-2 sm:pb-0 no-scrollbar w-full sm:w-auto">
           {["All", "Retail", "Food", "Services", "Free"].map((filter) => (
-            <button
+            <Button
               key={filter}
-              className="px-3 py-1.5 rounded-full border border-gray-200 text-gray-600 whitespace-nowrap hover:bg-gray-50 hover:border-black hover:text-black transition-all font-medium"
+              variant="outline"
+              size="sm"
+              className="whitespace-nowrap hover:border-black hover:text-black"
             >
               {filter}
-            </button>
+            </Button>
           ))}
         </div>
       </div>
@@ -64,9 +66,9 @@ export const MarketplaceGrid = ({
 
               {/* Overlay Actions */}
               <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-3">
-                <button className="bg-white text-black px-4 py-2 rounded-xl text-xs font-bold shadow-lg transform translate-y-2 group-hover:translate-y-0 transition-transform">
+                <Button size="sm" className="bg-white text-black shadow-lg transform translate-y-2 group-hover:translate-y-0">
                   Preview
-                </button>
+                </Button>
               </div>
             </div>
 
@@ -102,9 +104,9 @@ export const MarketplaceGrid = ({
                 ))}
               </div>
 
-              <button className="w-full py-2.5 bg-black text-white rounded-xl text-sm font-bold hover:bg-gray-800 transition-colors">
+              <Button variant="primary" className="w-full py-2.5 text-sm">
                 {tpl.price === 0 ? "Install Template" : "Purchase & Install"}
-              </button>
+              </Button>
             </div>
           </div>
         ))}

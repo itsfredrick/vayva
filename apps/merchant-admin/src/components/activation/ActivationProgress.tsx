@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
+import { Button } from "@vayva/ui";
 
 interface ActivationProgressProps {
   firstOrder: boolean;
@@ -30,14 +31,14 @@ export function ActivationProgress({
   return (
     <div className="bg-white border border-gray-200 rounded-lg p-4 shadow-sm">
       <div className="flex justify-between items-start mb-3">
-        <h3 className="text-sm font-semibold text-[#0F172A]">Setup progress</h3>
-        <button
+        <h3 className="text-sm font-semibold text-black">Setup progress</h3>
+        <Button
           onClick={handleDismiss}
-          className="text-[#64748B] hover:text-[#0F172A] text-sm"
+          className="text-[#64748B] hover:text-black text-sm"
           aria-label="Dismiss"
         >
           ×
-        </button>
+        </Button>
       </div>
 
       <div className="space-y-2">
@@ -50,7 +51,7 @@ export function ActivationProgress({
             {firstOrder && <span className="text-white text-xs">✓</span>}
           </div>
           <span
-            className={`text-sm ${firstOrder ? "text-[#0F172A]" : "text-[#64748B]"}`}
+            className={`text-sm ${firstOrder ? "text-black" : "text-[#64748B]"}`}
           >
             Receive first order
           </span>
@@ -65,7 +66,7 @@ export function ActivationProgress({
             {firstPayment && <span className="text-white text-xs">✓</span>}
           </div>
           <span
-            className={`text-sm ${firstPayment ? "text-[#0F172A]" : "text-[#64748B]"}`}
+            className={`text-sm ${firstPayment ? "text-black" : "text-[#64748B]"}`}
           >
             Record a payment
           </span>
@@ -80,7 +81,7 @@ export function ActivationProgress({
             {firstCompletion && <span className="text-white text-xs">✓</span>}
           </div>
           <span
-            className={`text-sm ${firstCompletion ? "text-[#0F172A]" : "text-[#64748B]"}`}
+            className={`text-sm ${firstCompletion ? "text-black" : "text-[#64748B]"}`}
           >
             Complete an order
           </span>

@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
+import { Button } from "@vayva/ui";
 import { ArrowUp } from "lucide-react";
 
 export function ScrollToTop() {
@@ -30,12 +31,12 @@ export function ScrollToTop() {
     if (!isVisible) return null;
 
     return (
-        <button
+        <Button
             onClick={scrollToTop}
             className="fixed bottom-24 right-5 z-[80] p-3 rounded-full bg-black text-white shadow-lg hover:bg-gray-800 hover:scale-110 transition-all duration-300 animate-in fade-in zoom-in"
             aria-label="Scroll to top"
         >
             <ArrowUp size={20} />
-        </button>
+        </Button>
     );
 }

@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { requireAuth } from "@/lib/auth/session";
 import { PaystackService } from "@/lib/payment/paystack";
-import { prisma } from "@vayva/db";
+import { prisma } from "@/lib/prisma";
 
 export async function POST(request: Request) {
   try {

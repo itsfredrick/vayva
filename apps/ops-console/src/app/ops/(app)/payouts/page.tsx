@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { Landmark, ArrowUpRight, CheckCircle, Clock, AlertTriangle, RefreshCw, XCircle } from "lucide-react";
 import { useOpsQuery } from "@/hooks/useOpsQuery";
 import { toast } from "sonner";
+import { Button } from "@vayva/ui";
 
 export default function PayoutsPage() {
     const router = useRouter();
@@ -39,21 +40,29 @@ export default function PayoutsPage() {
                     </h1>
                     <p className="text-gray-500 mt-1">Audit and process merchant withdrawal requests.</p>
                 </div>
-                <button onClick={() => refetch()} className="p-2 hover:bg-gray-100 rounded-full text-gray-500">
+                <Button
+                    variant="ghost"
+                    size="icon"
+                    onClick={() => refetch()}
+                    className="rounded-full h-8 w-8 text-gray-500 hover:bg-gray-100"
+                    aria-label="Refresh payouts list"
+                >
                     <RefreshCw className={`w-5 h-5 ${isLoading ? 'animate-spin' : ''}`} />
-                </button>
+                </Button>
             </div>
 
             {/* Filter Tabs */}
             <div className="flex items-center gap-4 border-b border-gray-200 pb-1">
                 {["PENDING", "PROCESSED", "FAILED", "ALL"].map(s => (
-                    <button
+                    <Button
                         key={s}
+                        variant="ghost"
                         onClick={() => setFilter(s)}
-                        className={`px-4 py-3 text-sm font-medium border-b-2 transition-colors -mb-1.5 ${filter === s ? "border-indigo-600 text-indigo-600" : "border-transparent text-gray-500 hover:text-gray-700"}`}
+                        className={`px-4 py-3 text-sm font-medium border-b-2 rounded-none transition-colors -mb-1.5 h-auto hover:bg-transparent ${filter === s ? "border-indigo-600 text-indigo-600" : "border-transparent text-gray-500 hover:text-gray-700"}`}
+                        aria-label={`Filter by ${s} status`}
                     >
                         {s}
-                    </button>
+                    </Button>
                 ))}
             </div>
 

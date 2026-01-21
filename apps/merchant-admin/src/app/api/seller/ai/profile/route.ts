@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { requireAuth } from "@/lib/auth/session";
-import { prisma } from "@vayva/db";
+import { prisma } from "@/lib/prisma";
 import { z } from "zod";
 
 export async function GET(request: NextRequest) {

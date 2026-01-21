@@ -123,21 +123,21 @@ export default function ProductDetailPage({
               {/* Qty & Actions */}
               <div className="flex gap-4">
                 <div className="flex items-center bg-white/5 border border-white/10 rounded-full h-12 px-2">
-                  <button
+                  <Button
                     onClick={() => setQty(Math.max(1, qty - 1))}
                     className="w-8 h-full flex items-center justify-center text-white/50 hover:text-white"
                   >
                     <Icon name="Minus" size={16} />
-                  </button>
+                  </Button>
                   <span className="w-8 text-center text-white font-bold">
                     {qty}
                   </span>
-                  <button
+                  <Button
                     onClick={() => setQty(qty + 1)}
                     className="w-8 h-full flex items-center justify-center text-white/50 hover:text-white"
                   >
                     <Icon name="Plus" size={16} />
-                  </button>
+                  </Button>
                 </div>
                 <Button className="flex-1 h-12 rounded-full bg-primary text-black hover:bg-primary/90 font-bold text-base shadow-[0_0_20px_rgba(70,236,19,0.2)]">
                   Add to Cart

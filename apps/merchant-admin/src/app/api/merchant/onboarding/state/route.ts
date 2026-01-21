@@ -1,6 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getSessionUser } from "@/lib/session";
-import { prisma } from "@vayva/db";
+import { prisma } from "@/lib/prisma";
+import { applyRateLimit, RATE_LIMITS } from "@/lib/rate-limit-enhanced";
+import { sanitizeFormData } from "@/lib/input-sanitization";
 
 // GET /api/merchant/onboarding/state - Retrieve onboarding state
 export async function GET(request: NextRequest) {
@@ -60,6 +62,12 @@ export async function GET(request: NextRequest) {
 // POST /api/merchant/onboarding/state - Save onboarding progress
 export async function POST(request: NextRequest) {
   try {
+    // Apply rate limiting
+    const rateLimitResult = await applyRateLimit(request, "onboarding-update", RATE_LIMITS.ONBOARDING_UPDATE);
+    if (!rateLimitResult.allowed) {
+      return rateLimitResult.response!;
+    }
+
     // Get authenticated user from session
     const sessionUser = await getSessionUser();
 
@@ -70,12 +78,15 @@ export async function POST(request: NextRequest) {
     const body = await request.json();
     const { currentStep, data, completedSteps } = body;
 
+    // Sanitize input data
+    const sanitizedData = data ? sanitizeFormData(data) : undefined;
+
     // Update onboarding state
     const onboarding = await prisma.merchantOnboarding.upsert({
       where: { storeId: sessionUser.storeId },
       update: {
         currentStepKey: currentStep || undefined,
-        data: data || undefined,
+        data: sanitizedData || undefined,
         completedSteps: completedSteps || undefined,
         updatedAt: new Date(),
       },
@@ -83,31 +94,31 @@ export async function POST(request: NextRequest) {
         storeId: sessionUser.storeId,
         status: "IN_PROGRESS",
         currentStepKey: currentStep || "welcome",
-        data: data || {},
+        data: sanitizedData || {},
         completedSteps: completedSteps || [],
       },
     });
 
-    // Update store's onboarding last step
+    // Also update store's onboarding metadata
     if (currentStep) {
       await prisma.store.update({
         where: { id: sessionUser.storeId },
-        data: { onboardingLastStep: currentStep },
+        data: {
+          onboardingLastStep: currentStep,
+          onboardingUpdatedAt: new Date()
+        },
       });
     }
 
     return NextResponse.json({
-      message: "Onboarding progress saved",
-      onboarding: {
-        status: onboarding.status,
-        currentStep: onboarding.currentStepKey,
-        completedSteps: onboarding.completedSteps,
-      },
+      success: true,
+      onboardingStatus: onboarding.status,
+      currentStep: onboarding.currentStepKey,
     });
   } catch (error) {
     console.error("Save onboarding state error:", error);
     return NextResponse.json(
-      { error: "Failed to save onboarding progress" },
+      { error: "Failed to save onboarding state" },
       { status: 500 },
     );
   }

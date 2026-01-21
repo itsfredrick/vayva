@@ -1,5 +1,6 @@
 import React from "react";
 import { TemplateProps } from "../registry";
+import { Button } from "@vayva/ui";
 
 export const CosmeticsBeautyTemplate: React.FC<TemplateProps> = ({
   businessName,
@@ -33,9 +34,9 @@ export const CosmeticsBeautyTemplate: React.FC<TemplateProps> = ({
             <p className="text-sm opacity-90 mb-6 font-sans">
               Restore your natural barrier with our 3-step routine.
             </p>
-            <button className="bg-white text-[#4A0E1F] w-max px-6 py-3 rounded-full font-bold text-xs uppercase tracking-widest hover:bg-[#FFE4E1]">
+            <Button className="bg-white text-[#4A0E1F] w-max px-6 py-3 rounded-full font-bold text-xs uppercase tracking-widest hover:bg-[#FFE4E1] h-auto">
               Shop Routine
-            </button>
+            </Button>
           </div>
         </div>
       </section>
@@ -88,9 +89,9 @@ export const CosmeticsBeautyTemplate: React.FC<TemplateProps> = ({
                 <span className="text-xs font-bold text-[#D88CA3] bg-white px-2 py-1 rounded-md">
                   {item.price}
                 </span>
-                <button className="w-6 h-6 bg-[#4A0E1F] text-white rounded-full flex items-center justify-center text-xs">
+                <Button className="w-6 h-6 bg-[#4A0E1F] text-white rounded-full flex items-center justify-center text-xs h-auto p-0 min-w-[1.5rem]">
                   +
-                </button>
+                </Button>
               </div>
             </div>
           ))}
@@ -110,9 +111,9 @@ export const CosmeticsBeautyTemplate: React.FC<TemplateProps> = ({
             Chat with our aesthetician for a personalized routine.
           </p>
         </div>
-        <button className="bg-[#D88CA3] text-white px-4 py-2 rounded-full text-[10px] font-bold uppercase hover:bg-[#C06C84]">
+        <Button className="bg-[#D88CA3] text-white px-4 py-2 rounded-full text-[10px] font-bold uppercase hover:bg-[#C06C84] h-auto">
           Chat
-        </button>
+        </Button>
       </div>
     </div>
   );

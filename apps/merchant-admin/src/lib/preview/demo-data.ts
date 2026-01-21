@@ -31,6 +31,11 @@ function pick<T>(arr: T[], idx: number): T {
 }
 
 export function getDemoStore(templateSlug: string): DemoStore {
+  // SAFETY: Prevent demo data leakage in production unless explicitly enabled for Preview Deployment
+  if (process.env.NODE_ENV === "production" && process.env.NEXT_PUBLIC_ENABLE_DEMO_PREVIEW !== "true") {
+    throw new Error("Demo data generation is disabled in production.");
+  }
+
   const seed = hashString(templateSlug);
 
   const storeNames = [
@@ -99,7 +104,7 @@ export function getDemoStore(templateSlug: string): DemoStore {
 
   return {
     storeName: pick(storeNames, seed),
-    slug: "demo-store",
+    slug: `demo-store-${seed}`, // Unique slug to avoid collisions
     plan: pick(plans, seed),
     categories,
     products,

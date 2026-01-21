@@ -20,7 +20,7 @@ export async function GET(req: NextRequest) {
                 skip,
                 orderBy: { createdAt: "desc" },
                 include: {
-                    OpsUser: {
+                    opsUser: {
                         select: { name: true, email: true, role: true },
                     },
                 },
@@ -33,11 +33,11 @@ export async function GET(req: NextRequest) {
             eventType: e.eventType,
             metadata: e.metadata,
             createdAt: e.createdAt,
-            actor: e.OpsUser
+            actor: e.opsUser
                 ? {
-                    name: e.OpsUser.name,
-                    email: e.OpsUser.email,
-                    role: e.OpsUser.role,
+                    name: e.opsUser.name,
+                    email: e.opsUser.email,
+                    role: e.opsUser.role,
                 }
                 : { name: "System", email: "system", role: "SYSTEM" },
         }));

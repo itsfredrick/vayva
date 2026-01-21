@@ -4,7 +4,7 @@ import {
   ProductServiceType,
   ProductServiceStatus,
 } from "@vayva/shared";
-import { Icon, cn } from "@vayva/ui";
+import { Icon, cn, Button } from "@vayva/ui";
 
 interface ProductCardProps {
   item: ProductServiceItem;
@@ -61,9 +61,9 @@ export const ProductCard = ({ item }: ProductCardProps) => {
 
         {/* Edit Actions Checkbox (Optional) */}
         <div className="absolute top-3 right-3 opacity-0 group-hover:opacity-100 transition-opacity">
-          <button className="w-8 h-8 bg-white rounded-full shadow flex items-center justify-center text-gray-600 hover:text-black">
+          <Button className="w-8 h-8 bg-white rounded-full shadow flex items-center justify-center text-gray-600 hover:text-black" variant="ghost">
             <Icon name="MoveHorizontal" size={16} />
-          </button>
+          </Button>
         </div>
       </div>
 
@@ -117,15 +117,15 @@ export const ProductCard = ({ item }: ProductCardProps) => {
 
         {/* Quick Actions Row */}
         <div className="flex items-center gap-2 mt-4 pt-2">
-          <button className="flex-1 py-1.5 border border-gray-200 rounded-lg text-xs font-bold text-gray-700 hover:bg-gray-50 flex items-center justify-center gap-1">
+          <Button className="flex-1 py-1.5 border border-gray-200 rounded-lg text-xs font-bold text-gray-700 hover:bg-gray-50 flex items-center justify-center gap-1" variant="outline">
             <Icon name="Pencil" size={12} /> Edit
-          </button>
-          <button
+          </Button>
+          <Button
             className="p-1.5 border border-gray-200 rounded-lg text-gray-500 hover:bg-gray-50 hover:text-gray-900"
             title="Duplicate"
-          >
+           variant="outline">
             <Icon name="Copy" size={12} />
-          </button>
+          </Button>
         </div>
       </div>
     </div>

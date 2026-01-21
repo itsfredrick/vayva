@@ -1,6 +1,7 @@
 import React from "react";
 import { Calendar, Menu, Phone } from "lucide-react";
 import Link from "next/link";
+import { Button } from "@vayva/ui";
 
 interface BooklyHeaderProps {
   storeName?: string;
@@ -35,9 +36,9 @@ export const BooklyHeader = ({
           <Phone size={18} />
           <span>{phone}</span>
         </a>
-        <button className="bg-blue-600 text-white px-5 py-2.5 rounded-full text-sm font-semibold hover:bg-blue-700 transition-colors shadow-md shadow-blue-200">
+        <Button className="bg-blue-600 text-white px-5 py-2.5 rounded-full text-sm font-semibold hover:bg-blue-700 transition-colors shadow-md shadow-blue-200 h-auto" aria-label="Book Now">
           Book Now
-        </button>
+        </Button>
       </div>
     </header>
   );

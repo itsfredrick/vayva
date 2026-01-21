@@ -1,10 +1,9 @@
 import { NextResponse } from "next/server";
-import { prisma } from "@vayva/db";
+import { prisma } from "@/lib/prisma";
 
 export async function GET() {
   try {
-    // @ts-ignore
-    const incidents = await prisma.incident.findMany({
+    const incidents = await prisma.rescueIncident.findMany({
       where: {
         status: {
           not: "resolved",

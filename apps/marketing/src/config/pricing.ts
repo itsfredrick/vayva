@@ -12,7 +12,7 @@ export const CURRENCY = "NGN";
 
 // Transaction Fees
 export const FEES = {
-    WITHDRAWAL_PERCENTAGE: 5, // 5% fee on every withdrawal
+    WITHDRAWAL_PERCENTAGE: 3, // 3% fee on every withdrawal
 };
 
 export type PlanKey = "free" | "starter" | "pro";
@@ -20,7 +20,9 @@ export type PlanKey = "free" | "starter" | "pro";
 export type Plan = {
     key: PlanKey;
     name: string;
-    monthlyAmount: number; // NGN
+    baseAmount: number; // NGN
+    vatAmount: number; // NGN
+    monthlyAmount: number; // NGN (Total)
     tagline: string;
     trialDays?: number;
     bullets: string[];
@@ -32,11 +34,13 @@ export const PLANS: Plan[] = [
     {
         key: "free",
         name: "Free",
+        baseAmount: 0,
+        vatAmount: 0,
         monthlyAmount: 0,
         trialDays: 7,
         tagline: "Perfect for testing ideas.",
         bullets: [
-            "4 Included Templates", // User mentioned '4 Included'
+            "4 Included Templates",
             "Basic Storefront",
             "Vayva Branding",
             "Standard Analytics",
@@ -46,7 +50,9 @@ export const PLANS: Plan[] = [
     {
         key: "starter",
         name: "Starter",
-        monthlyAmount: 30000,
+        baseAmount: 30000,
+        vatAmount: 2250,
+        monthlyAmount: 32250,
         tagline: "For growing brands.",
         bullets: [
             "9 Included Templates",
@@ -60,7 +66,9 @@ export const PLANS: Plan[] = [
     {
         key: "pro",
         name: "Pro",
-        monthlyAmount: 40000,
+        baseAmount: 40000,
+        vatAmount: 3000,
+        monthlyAmount: 43000,
         tagline: "High volume scaling.",
         bullets: [
             "All Templates (Any Choice)",

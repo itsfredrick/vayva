@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 import { checkRateLimit } from "@/lib/rate-limit";
-import { logAudit, AuditAction } from "@/lib/audit";
+import { logAuditEvent as logAudit, AuditEventType } from "@/lib/audit";
 
 export async function POST() {
   try {
@@ -21,16 +21,17 @@ export async function POST() {
     // (Simulated for MVP)
     await new Promise((resolve) => setTimeout(resolve, 1500));
 
-    await logAudit({
+    await logAudit(
       storeId,
-      actor: {
-        type: "USER",
-        id: userId,
-        label: session.user.email || "Merchant",
-      },
-      action: "RECOVERY_WEBHOOK_SYNC_TRIGGERED",
-      correlationId: `recovery-${Date.now()}`,
-    });
+      userId,
+      "RECOVERY_WEBHOOK_SYNC_TRIGGERED",
+      {
+        meta: {
+          correlationId: `recovery-${Date.now()}`,
+          actor: { type: "USER", label: session.user.email || "Merchant" }
+        }
+      }
+    );
 
     return NextResponse.json({ success: true });
   } catch (error: any) {

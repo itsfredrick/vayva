@@ -1,11 +1,10 @@
-import { NextResponse } from "next/server";
-import { prisma } from "@vayva/db";
-import { withRBAC } from "@/lib/team/rbac";
+import { NextRequest, NextResponse } from "next/server";
+import { prisma } from "@/lib/prisma";
+import { withVayvaAPI, HandlerContext } from "@/lib/api-handler";
 import { PERMISSIONS } from "@/lib/team/permissions";
 
-export const GET = withRBAC(PERMISSIONS.METRICS_VIEW, async (session: any) => {
+export const GET = withVayvaAPI(PERMISSIONS.METRICS_VIEW, async (request: NextRequest, { storeId }: HandlerContext) => {
     try {
-        const storeId = session.user.storeId;
 
         const [firstOrder, firstPayment, activeCustomers] = await Promise.all([
             prisma.order.findFirst({ where: { storeId } }),

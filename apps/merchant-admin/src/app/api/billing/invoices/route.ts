@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { requireAuth } from "@/lib/auth/session";
-import { prisma } from "@vayva/db";
+import { prisma } from "@/lib/prisma";
 
 export async function GET() {
   try {
@@ -8,7 +8,7 @@ export async function GET() {
     const storeId = session.user.storeId;
 
     // Get invoices for this store's subscription
-    const invoices = await prisma.invoice.findMany({
+    const invoices = await prisma.invoiceV2.findMany({
       where: {
         storeId,
       },

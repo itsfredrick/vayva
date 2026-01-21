@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, Suspense } from "react";
+import { Button } from "@vayva/ui";
 import { useSearchParams, useRouter } from "next/navigation";
 import { StorefrontService } from "@/services/storefront.service";
 import { StoreShell } from "@/components/StoreShell";
@@ -94,10 +95,11 @@ function OrderStatusContent() {
           <form onSubmit={handleLookup} className="space-y-6">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div className="space-y-2">
-                <label className="text-xs font-bold text-gray-400 uppercase tracking-widest pl-1">
+                <label htmlFor="order-ref" className="text-xs font-bold text-gray-400 uppercase tracking-widest pl-1">
                   Order Reference
                 </label>
                 <input
+                  id="order-ref"
                   value={ref}
                   onChange={(e) => setRef(e.target.value.toUpperCase())}
                   className="w-full p-4 bg-gray-50 border border-gray-100 rounded-xl focus:ring-1 focus:ring-black outline-none transition-all"
@@ -106,10 +108,11 @@ function OrderStatusContent() {
                 />
               </div>
               <div className="space-y-2">
-                <label className="text-xs font-bold text-gray-400 uppercase tracking-widest pl-1">
+                <label htmlFor="order-phone" className="text-xs font-bold text-gray-400 uppercase tracking-widest pl-1">
                   Phone Number
                 </label>
                 <input
+                  id="order-phone"
                   value={phone}
                   onChange={(e) => setPhone(e.target.value)}
                   className="w-full p-4 bg-gray-50 border border-gray-100 rounded-xl focus:ring-1 focus:ring-black outline-none transition-all"
@@ -118,7 +121,7 @@ function OrderStatusContent() {
                 />
               </div>
             </div>
-            <button
+            <Button
               type="submit"
               disabled={loading}
               className="w-full bg-black text-white py-4 rounded-xl font-bold flex items-center justify-center gap-2 hover:bg-gray-900 transition-all disabled:opacity-50"
@@ -130,7 +133,7 @@ function OrderStatusContent() {
                   <Search size={18} /> Track Order
                 </>
               )}
-            </button>
+            </Button>
           </form>
 
           {error && (

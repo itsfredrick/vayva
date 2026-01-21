@@ -8,7 +8,7 @@ import {
 import { POST as verifyDomain } from "./domains/verify/route";
 import { POST as changePassword } from "./security/change-password/route";
 import { requireAuth } from "@/lib/auth/session";
-import { prisma } from "@vayva/db";
+import { prisma } from "@/lib/prisma";
 import bcrypt from "bcryptjs";
 
 const testStoreId = "store_test_999";
@@ -49,7 +49,7 @@ vi.mock("@vayva/db", () => ({
     domainMapping: { findFirst: vi.fn(), findUnique: vi.fn(), update: vi.fn() },
     auditLog: { findMany: vi.fn(), create: vi.fn() },
     kycRecord: { findUnique: vi.fn() },
-    merchantSubscription: { findUnique: vi.fn() },
+    aiSubscription: { findUnique: vi.fn() },
     whatsappChannel: { findUnique: vi.fn() },
     securitySetting: { findUnique: vi.fn() },
     user: { findUnique: vi.fn(), update: vi.fn() },

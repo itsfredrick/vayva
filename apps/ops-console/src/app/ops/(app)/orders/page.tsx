@@ -15,6 +15,8 @@ import {
     Clock,
     AlertCircle,
 } from "lucide-react";
+import { Button } from "@vayva/ui";
+import { OpsPagination } from "@/components/shared/OpsPagination";
 
 interface Order {
     id: string;
@@ -167,28 +169,32 @@ export default function OrdersPage() {
                             onChange={(e) => setSearchInput(e.target.value)}
                         />
                     </form>
-                    <button
+                    <Button
+                        variant="outline"
                         onClick={() => setShowFilters(!showFilters)}
-                        className={`px-4 py-2.5 rounded-lg border text-sm font-medium transition-colors flex items-center gap-2 ${showFilters || status || paymentStatus
-                            ? "bg-indigo-50 border-indigo-200 text-indigo-700"
-                            : "bg-white border-gray-200 text-gray-700 hover:bg-gray-50"
+                        className={`flex items-center gap-2 h-auto ${showFilters || status || paymentStatus
+                            ? "bg-indigo-50 border-indigo-200 text-indigo-700 hover:bg-indigo-100"
+                            : ""
                             }`}
+                        aria-label={showFilters ? "Hide filters" : "Show filters"}
                     >
-                        <Filter className="h-4 w-4" />
+                        <Filter className="h-4 w-4 mr-2" />
                         Filters
                         {(status || paymentStatus) && (
-                            <span className="bg-indigo-600 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
+                            <span className="ml-2 bg-indigo-600 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
                                 {[status, paymentStatus].filter(Boolean).length}
                             </span>
                         )}
-                    </button>
-                    <button
+                    </Button>
+                    <Button
+                        variant="outline"
                         onClick={fetchOrders}
-                        className="px-4 py-2.5 rounded-lg border border-gray-200 text-gray-700 hover:bg-gray-50 transition-colors flex items-center gap-2"
+                        className="flex items-center gap-2 h-auto"
+                        aria-label="Refresh orders list"
                     >
-                        <RefreshCw className="h-4 w-4" />
+                        <RefreshCw className="h-4 w-4 mr-2" />
                         Refresh
-                    </button>
+                    </Button>
                 </div>
 
                 {/* Filter Options */}
@@ -200,6 +206,7 @@ export default function OrdersPage() {
                                 value={status}
                                 onChange={(e) => handleFilterChange("status", e.target.value)}
                                 className="w-full px-3 py-2 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                                aria-label="Filter by order status"
                             >
                                 <option value="">All Statuses</option>
                                 <option value="COMPLETED">Completed</option>
@@ -214,6 +221,7 @@ export default function OrdersPage() {
                                 value={paymentStatus}
                                 onChange={(e) => handleFilterChange("paymentStatus", e.target.value)}
                                 className="w-full px-3 py-2 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                                aria-label="Filter by payment status"
                             >
                                 <option value="">All Payments</option>
                                 <option value="PAID">Paid</option>
@@ -291,30 +299,14 @@ export default function OrdersPage() {
                 </div>
 
                 {/* Pagination UI - Same as Webhooks */}
+                {/* Pagination UI - Standardized */}
                 {meta && (
-                    <div className="bg-gray-50 border-t border-gray-200 px-6 py-3 flex items-center justify-between">
-                        <div className="text-xs text-gray-500">
-                            Showing <span className="font-medium">{(meta.page - 1) * meta.limit + 1}</span> to{" "}
-                            <span className="font-medium">{Math.min(meta.page * meta.limit, meta.total)}</span> of{" "}
-                            <span className="font-medium">{meta.total}</span> results
-                        </div>
-                        <div className="flex gap-2">
-                            <button
-                                onClick={() => handlePageChange(meta.page - 1)}
-                                disabled={meta.page <= 1}
-                                className="px-3 py-1.5 border border-gray-300 rounded-lg text-xs font-medium text-gray-600 hover:bg-white disabled:opacity-50 disabled:cursor-not-allowed"
-                            >
-                                Previous
-                            </button>
-                            <button
-                                onClick={() => handlePageChange(meta.page + 1)}
-                                disabled={meta.page >= meta.totalPages}
-                                className="px-3 py-1.5 border border-gray-300 rounded-lg text-xs font-medium text-gray-600 hover:bg-white disabled:opacity-50 disabled:cursor-not-allowed"
-                            >
-                                Next
-                            </button>
-                        </div>
-                    </div>
+                    <OpsPagination
+                        currentPage={meta.page}
+                        totalItems={meta.total}
+                        limit={meta.limit}
+                        onPageChange={handlePageChange}
+                    />
                 )}
             </div>
         </div>

@@ -1,7 +1,8 @@
-import { CanonicalCategorySlug, CanonicalTemplateId } from "@/types/templates";
+import { TemplateDefinition, TemplateStatus } from "@/lib/templates/types";
 
-export { type CanonicalCategorySlug, type CanonicalTemplateId };
+export { type TemplateDefinition };
 
+// Deprecated for backward compat if needed, but we prefer checking IndustrySlug
 export enum TemplateCategory {
   RETAIL = "Retail",
   SERVICE = "Service",
@@ -19,61 +20,18 @@ export enum TemplateCategory {
   BLOG = "Blog & Media",
 }
 
-export type BillingPlan = "free" | "growth" | "pro";
-
-export interface OnboardingProfile {
-  prefill: {
-    industryCategory?: string;
-    deliveryEnabled?: boolean;
-    paymentsEnabled?: boolean;
-    defaultCurrency?: string;
-  };
-  skipSteps?: Array<
-    "business" | "visuals" | "finance" | "logistics" | "kyc"
-  >;
-  requireSteps?: Array<"finance" | "logistics" | "kyc">;
-}
-
-export interface TemplateDefinition {
-  templateId: string;
-  slug: string;
-  displayName: string;
-  category: TemplateCategory;
-  businessModel: string;
-  primaryUseCase: string;
-  requiredPlan: BillingPlan;
-  defaultTheme: "light" | "dark";
-  status: "implemented" | "partial" | "pending";
-  preview: {
-    thumbnailUrl: string | null;
-    mobileUrl: string | null;
-    desktopUrl: string | null;
-    testUrl?: string | null;
-  };
-  demoStoreUrl?: string;
-  compare: {
-    headline: string;
-    bullets: string[];
-    bestFor: string[];
-    keyModules: string[];
-  };
-  routes: string[];
-  layoutComponent: string; // The import path key or component name
-  componentProps?: Record<string, any>; // Optional props to pass to the component
-  onboardingProfile?: OnboardingProfile;
-}
-
 export const TEMPLATE_REGISTRY: Record<string, TemplateDefinition> = {
   "vayva-standard": {
     templateId: "vayva-standard",
     slug: "demo",
     displayName: "Standard Retail",
-    category: TemplateCategory.RETAIL,
+    category: "Retail",
+    industry: "retail",
     businessModel: "Retail",
     primaryUseCase: "General Physical Goods",
     requiredPlan: "free",
     defaultTheme: "light",
-    status: "implemented",
+    status: "active",
     preview: { thumbnailUrl: null, mobileUrl: null, desktopUrl: null },
     compare: {
       headline: "The essential store for physical products.",
@@ -86,10 +44,10 @@ export const TEMPLATE_REGISTRY: Record<string, TemplateDefinition> = {
       keyModules: ["Product Catalog", "Cart & Checkout", "Order Management"],
     },
     routes: ["/", "/collections/*", "/products/:slug"],
-    layoutComponent: "StandardRetailHome",
+    layoutKey: "StandardRetailHome",
     onboardingProfile: {
       prefill: {
-        industryCategory: "Retail",
+        industryCategory: "retail",
         deliveryEnabled: true,
         paymentsEnabled: true,
       },
@@ -100,12 +58,13 @@ export const TEMPLATE_REGISTRY: Record<string, TemplateDefinition> = {
     templateId: "vayva-aa-fashion",
     slug: "aa-fashion-demo",
     displayName: "A&A Fashion",
-    category: TemplateCategory.RETAIL,
+    category: "Retail",
+    industry: "fashion",
     businessModel: "Retail",
     primaryUseCase: "Fashion / Apparel",
     requiredPlan: "free",
     defaultTheme: "dark",
-    status: "implemented",
+    status: "active",
     preview: { thumbnailUrl: null, mobileUrl: null, desktopUrl: null },
     compare: {
       headline: "Bold, visual-first fashion retail.",
@@ -118,14 +77,14 @@ export const TEMPLATE_REGISTRY: Record<string, TemplateDefinition> = {
       keyModules: ["Visual Merchandising", "Size Variants", "Instagram Feed"],
     },
     routes: ["/", "/collections/*", "/products/:slug"],
-    layoutComponent: "AAFashionHome",
+    layoutKey: "AAFashionHome",
     componentProps: {
       heroText: "DARK\nMATTER",
       heroSubtext: "Season 04 / 24"
     },
     onboardingProfile: {
       prefill: {
-        industryCategory: "Fashion",
+        industryCategory: "fashion",
         deliveryEnabled: true,
         paymentsEnabled: true,
       },
@@ -136,12 +95,13 @@ export const TEMPLATE_REGISTRY: Record<string, TemplateDefinition> = {
     templateId: "vayva-gizmo-tech",
     slug: "gizmo-demo",
     displayName: "Gizmo Tech",
-    category: TemplateCategory.RETAIL,
+    category: "Retail",
+    industry: "electronics",
     businessModel: "Retail",
     primaryUseCase: "Electronics",
     requiredPlan: "free",
     defaultTheme: "dark",
-    status: "implemented",
+    status: "active",
     preview: { thumbnailUrl: null, mobileUrl: null, desktopUrl: null },
     compare: {
       headline: "High-spec showcase for electronics.",
@@ -154,10 +114,10 @@ export const TEMPLATE_REGISTRY: Record<string, TemplateDefinition> = {
       keyModules: ["Tech Specs", "Product Comparison", "Warranty Info"],
     },
     routes: ["/", "/collections/*", "/products/:slug"],
-    layoutComponent: "GizmoTechHome",
+    layoutKey: "GizmoTechHome",
     onboardingProfile: {
       prefill: {
-        industryCategory: "Electronics",
+        industryCategory: "electronics",
         deliveryEnabled: true,
         paymentsEnabled: true,
       },
@@ -168,12 +128,13 @@ export const TEMPLATE_REGISTRY: Record<string, TemplateDefinition> = {
     templateId: "vayva-bloome-home",
     slug: "bloome-demo",
     displayName: "Bloome & Home",
-    category: TemplateCategory.RETAIL,
+    category: "Retail",
+    industry: "beauty",
     businessModel: "Retail",
     primaryUseCase: "Home & Lifestyle",
     requiredPlan: "free",
     defaultTheme: "light",
-    status: "implemented",
+    status: "active",
     preview: { thumbnailUrl: null, mobileUrl: null, desktopUrl: null },
     compare: {
       headline: "Serene design for lifestyle and beauty.",
@@ -190,10 +151,10 @@ export const TEMPLATE_REGISTRY: Record<string, TemplateDefinition> = {
       ],
     },
     routes: ["/", "/collections/*", "/products/:slug"],
-    layoutComponent: "BloomeHome",
+    layoutKey: "BloomeHome",
     onboardingProfile: {
       prefill: {
-        industryCategory: "Beauty",
+        industryCategory: "beauty",
         deliveryEnabled: true,
         paymentsEnabled: true,
       },
@@ -204,12 +165,13 @@ export const TEMPLATE_REGISTRY: Record<string, TemplateDefinition> = {
     templateId: "vayva-bookly-pro",
     slug: "bookly-demo",
     displayName: "Bookly Pro",
-    category: TemplateCategory.SERVICE,
+    category: "Service",
+    industry: "services",
     businessModel: "Service",
     primaryUseCase: "Appointments / Bookings",
     requiredPlan: "free",
     defaultTheme: "light",
-    status: "implemented",
+    status: "active",
     preview: { thumbnailUrl: null, mobileUrl: null, desktopUrl: null },
     compare: {
       headline: "Professional booking system for experts.",
@@ -222,10 +184,10 @@ export const TEMPLATE_REGISTRY: Record<string, TemplateDefinition> = {
       keyModules: ["Appointment Scheduling", "Staff Management", "Deposits"],
     },
     routes: ["/", "/book/:serviceId"],
-    layoutComponent: "StandardServiceHome",
+    layoutKey: "StandardServiceHome",
     onboardingProfile: {
       prefill: {
-        industryCategory: "Services",
+        industryCategory: "services",
         deliveryEnabled: false,
         paymentsEnabled: true,
       },
@@ -237,12 +199,13 @@ export const TEMPLATE_REGISTRY: Record<string, TemplateDefinition> = {
     templateId: "vayva-chopnow",
     slug: "chopnow-demo",
     displayName: "ChopNow",
-    category: TemplateCategory.FOOD,
+    category: "Food",
+    industry: "food",
     businessModel: "Food",
     primaryUseCase: "Food Delivery / Restaurants",
     requiredPlan: "free",
     defaultTheme: "light",
-    status: "implemented",
+    status: "active",
     preview: { thumbnailUrl: null, mobileUrl: null, desktopUrl: null },
     compare: {
       headline: "Fast menu ordering for restaurants.",
@@ -259,10 +222,10 @@ export const TEMPLATE_REGISTRY: Record<string, TemplateDefinition> = {
       ],
     },
     routes: ["/"],
-    layoutComponent: "QuickBitesFood",
+    layoutKey: "QuickBitesFood",
     onboardingProfile: {
       prefill: {
-        industryCategory: "Food",
+        industryCategory: "food",
         deliveryEnabled: true,
         paymentsEnabled: true,
       },
@@ -273,12 +236,13 @@ export const TEMPLATE_REGISTRY: Record<string, TemplateDefinition> = {
     templateId: "vayva-file-vault",
     slug: "filevault-demo",
     displayName: "FileVault",
-    category: TemplateCategory.DIGITAL,
+    category: "Digital",
+    industry: "digital",
     businessModel: "Digital",
     primaryUseCase: "Digital Downloads",
     requiredPlan: "free",
     defaultTheme: "dark",
-    status: "implemented",
+    status: "active",
     preview: { thumbnailUrl: null, mobileUrl: null, desktopUrl: null },
     compare: {
       headline: "Secure delivery for digital assets.",
@@ -295,10 +259,10 @@ export const TEMPLATE_REGISTRY: Record<string, TemplateDefinition> = {
       ],
     },
     routes: ["/"],
-    layoutComponent: "StandardDigitalHome",
+    layoutKey: "StandardDigitalHome",
     onboardingProfile: {
       prefill: {
-        industryCategory: "Digital",
+        industryCategory: "digital",
         deliveryEnabled: false,
         paymentsEnabled: true,
       },
@@ -310,12 +274,13 @@ export const TEMPLATE_REGISTRY: Record<string, TemplateDefinition> = {
     templateId: "vayva-ticketly",
     slug: "ticketly-demo",
     displayName: "Ticketly",
-    category: TemplateCategory.EVENTS,
+    category: "Events",
+    industry: "events",
     businessModel: "Events",
     primaryUseCase: "Ticketing / RSVPs",
     requiredPlan: "free",
     defaultTheme: "light",
-    status: "implemented",
+    status: "active",
     preview: { thumbnailUrl: null, mobileUrl: null, desktopUrl: null },
     compare: {
       headline: "Event ticketing and guest management.",
@@ -328,10 +293,10 @@ export const TEMPLATE_REGISTRY: Record<string, TemplateDefinition> = {
       keyModules: ["Ticketing Engine", "QR Check-in", "Guest Lists"],
     },
     routes: ["/", "/events/:slug"],
-    layoutComponent: "StandardEventsHome",
+    layoutKey: "StandardEventsHome",
     onboardingProfile: {
       prefill: {
-        industryCategory: "Events",
+        industryCategory: "events",
         deliveryEnabled: false,
         paymentsEnabled: true,
       },
@@ -343,12 +308,13 @@ export const TEMPLATE_REGISTRY: Record<string, TemplateDefinition> = {
     templateId: "vayva-eduflow",
     slug: "eduflow-demo",
     displayName: "Eduflow",
-    category: TemplateCategory.EDUCATION,
+    category: "Education",
+    industry: "services", // Fallback from education
     businessModel: "Courses",
     primaryUseCase: "Online Courses / LMS",
     requiredPlan: "free",
     defaultTheme: "light",
-    status: "implemented",
+    status: "active",
     preview: { thumbnailUrl: null, mobileUrl: null, desktopUrl: null },
     compare: {
       headline: "Complete Learning Management System.",
@@ -361,10 +327,10 @@ export const TEMPLATE_REGISTRY: Record<string, TemplateDefinition> = {
       keyModules: ["LMS Player", "Student Progress", "Quizzes"],
     },
     routes: ["/", "/learn/:courseId"],
-    layoutComponent: "SkillAcademyCourses",
+    layoutKey: "SkillAcademyCourses",
     onboardingProfile: {
       prefill: {
-        industryCategory: "Education",
+        industryCategory: "education",
         deliveryEnabled: false,
         paymentsEnabled: true,
       },
@@ -376,12 +342,13 @@ export const TEMPLATE_REGISTRY: Record<string, TemplateDefinition> = {
     templateId: "vayva-bulktrade",
     slug: "bulktrade-demo",
     displayName: "BulkTrade",
-    category: TemplateCategory.B2B,
+    category: "B2B",
+    industry: "b2b",
     businessModel: "Wholesale",
     primaryUseCase: "Wholesale / Bulk Orders",
     requiredPlan: "free",
     defaultTheme: "light",
-    status: "implemented",
+    status: "active",
     preview: { thumbnailUrl: null, mobileUrl: null, desktopUrl: null },
     compare: {
       headline: "B2B portal for high-volume trade.",
@@ -394,10 +361,10 @@ export const TEMPLATE_REGISTRY: Record<string, TemplateDefinition> = {
       keyModules: ["RFQ System", "Volume Pricing", "Invoice Generation"],
     },
     routes: ["/"],
-    layoutComponent: "BulkTradeHome",
+    layoutKey: "BulkTradeHome",
     onboardingProfile: {
       prefill: {
-        industryCategory: "Wholesale",
+        industryCategory: "b2b",
         deliveryEnabled: true,
         paymentsEnabled: true,
       },
@@ -408,12 +375,13 @@ export const TEMPLATE_REGISTRY: Record<string, TemplateDefinition> = {
     templateId: "vayva-markethub",
     slug: "markethub-demo",
     displayName: "MarketHub",
-    category: TemplateCategory.MARKETPLACE,
+    category: "Marketplace",
+    industry: "retail", // Fallback from marketplace
     businessModel: "Marketplace",
     primaryUseCase: "Multi-vendor",
     requiredPlan: "free",
     defaultTheme: "light",
-    status: "implemented",
+    status: "active",
     preview: { thumbnailUrl: null, mobileUrl: null, desktopUrl: null },
     compare: {
       headline: "Launch your own multi-vendor platform.",
@@ -431,10 +399,10 @@ export const TEMPLATE_REGISTRY: Record<string, TemplateDefinition> = {
       ],
     },
     routes: ["/"],
-    layoutComponent: "CreativeMarketStore",
+    layoutKey: "CreativeMarketStore",
     onboardingProfile: {
       prefill: {
-        industryCategory: "Marketplace",
+        industryCategory: "marketplace",
         deliveryEnabled: true,
         paymentsEnabled: true,
       },
@@ -445,12 +413,13 @@ export const TEMPLATE_REGISTRY: Record<string, TemplateDefinition> = {
     templateId: "vayva-giveflow",
     slug: "giveflow-demo",
     displayName: "GiveFlow",
-    category: TemplateCategory.NONPROFIT,
+    category: "Nonprofit",
+    industry: "nonprofit",
     businessModel: "Donations",
     primaryUseCase: "Fundraising / Charity",
     requiredPlan: "free",
     defaultTheme: "light",
-    status: "implemented",
+    status: "active",
     preview: { thumbnailUrl: null, mobileUrl: null, desktopUrl: null },
     compare: {
       headline: "Drive impact with donation campaigns.",
@@ -463,10 +432,10 @@ export const TEMPLATE_REGISTRY: Record<string, TemplateDefinition> = {
       keyModules: ["Donations", "Recurring Billing", "Goal Tracking"],
     },
     routes: ["/"],
-    layoutComponent: "GiveFlowHome",
+    layoutKey: "GiveFlowHome",
     onboardingProfile: {
       prefill: {
-        industryCategory: "Non-profit",
+        industryCategory: "nonprofit",
         deliveryEnabled: false,
         paymentsEnabled: true,
       },
@@ -478,12 +447,13 @@ export const TEMPLATE_REGISTRY: Record<string, TemplateDefinition> = {
     templateId: "vayva-homelist",
     slug: "homelist-demo",
     displayName: "HomeList",
-    category: TemplateCategory.REAL_ESTATE,
+    category: "Real Estate",
+    industry: "real_estate", // Corrected slug format
     businessModel: "Property",
     primaryUseCase: "Listings / Rentals",
     requiredPlan: "free",
     defaultTheme: "light",
-    status: "implemented",
+    status: "active",
     preview: { thumbnailUrl: null, mobileUrl: null, desktopUrl: null },
     compare: {
       headline: "Showcase properties and capture leads.",
@@ -496,10 +466,10 @@ export const TEMPLATE_REGISTRY: Record<string, TemplateDefinition> = {
       keyModules: ["Property Listings", "Map View", "Lead Capture Form"],
     },
     routes: ["/", "/properties/*"],
-    layoutComponent: "HomeListHome",
+    layoutKey: "HomeListHome",
     onboardingProfile: {
       prefill: {
-        industryCategory: "Real Estate",
+        industryCategory: "real_estate",
         deliveryEnabled: false,
         paymentsEnabled: false,
       },
@@ -510,12 +480,13 @@ export const TEMPLATE_REGISTRY: Record<string, TemplateDefinition> = {
     templateId: "vayva-oneproduct",
     slug: "oneproduct-demo",
     displayName: "OneProduct Pro",
-    category: TemplateCategory.RETAIL,
+    category: "Retail",
+    industry: "retail",
     businessModel: "Single Product",
     primaryUseCase: "Funnel / Landing Page",
     requiredPlan: "free",
     defaultTheme: "light",
-    status: "implemented",
+    status: "active",
     preview: { thumbnailUrl: null, mobileUrl: null, desktopUrl: null },
     compare: {
       headline: "High-conversion single product funnel.",
@@ -528,10 +499,10 @@ export const TEMPLATE_REGISTRY: Record<string, TemplateDefinition> = {
       keyModules: ["Funnel Builder", "Upsells", "Reviews/Social Proof"],
     },
     routes: ["/"],
-    layoutComponent: "OneProductHome",
+    layoutKey: "OneProductHome",
     onboardingProfile: {
       prefill: {
-        industryCategory: "Retail",
+        industryCategory: "retail",
         deliveryEnabled: true,
         paymentsEnabled: true,
       },
@@ -542,12 +513,13 @@ export const TEMPLATE_REGISTRY: Record<string, TemplateDefinition> = {
     templateId: "slice-life-pizza",
     slug: "slice-life",
     displayName: "Slice Life Pizza",
-    category: TemplateCategory.FOOD,
+    category: "Food",
+    industry: "food",
     businessModel: "Food",
     primaryUseCase: "Pizzerias",
     requiredPlan: "free",
     defaultTheme: "light",
-    status: "implemented",
+    status: "active",
     preview: { thumbnailUrl: null, mobileUrl: null, desktopUrl: null },
     demoStoreUrl: "/demos/slice-life",
     compare: {
@@ -561,27 +533,27 @@ export const TEMPLATE_REGISTRY: Record<string, TemplateDefinition> = {
       keyModules: ["Menu Builder", "Modifiers", "Delivery"],
     },
     routes: ["/"],
-    layoutComponent: "SliceLifePizza",
+    layoutKey: "SliceLifePizza",
     onboardingProfile: {
       prefill: {
-        industryCategory: "Food",
+        industryCategory: "food",
         deliveryEnabled: true,
         paymentsEnabled: true,
       },
       requireSteps: ["logistics", "finance"],
     },
   },
-  // --- EXPANSION PACK (18 New Templates) ---
   "vayva-sneaker-drop": {
     templateId: "vayva-sneaker-drop",
     slug: "sneaker-demo",
     displayName: "Sneaker Drop",
-    category: TemplateCategory.RETAIL,
+    category: "Retail",
+    industry: "fashion",
     businessModel: "Retail",
     primaryUseCase: "Streetwear / Shoes",
     requiredPlan: "free",
     defaultTheme: "dark",
-    status: "implemented",
+    status: "active",
     preview: { thumbnailUrl: null, mobileUrl: null, desktopUrl: null },
     compare: {
       headline: "Hype drops and limited editions.",
@@ -590,25 +562,26 @@ export const TEMPLATE_REGISTRY: Record<string, TemplateDefinition> = {
       keyModules: ["Drop Timer", "Waitlist", "Stock Limits"],
     },
     routes: ["/"],
-    layoutComponent: "AAFashionHome",
+    layoutKey: "AAFashionHome",
     componentProps: {
       heroText: "SNEAKER\nDROP",
       heroSubtext: "Limited Release",
       showTimer: true,
       timerDate: "2025-12-31T00:00:00Z"
     },
-    onboardingProfile: { prefill: { industryCategory: "Fashion" } },
+    onboardingProfile: { prefill: { industryCategory: "fashion" } },
   },
   "vayva-kids-world": {
     templateId: "vayva-kids-world",
     slug: "kids-demo",
     displayName: "Kids World",
-    category: TemplateCategory.RETAIL,
+    category: "Retail",
+    industry: "retail",
     businessModel: "Retail",
     primaryUseCase: "Toys / Clothing",
     requiredPlan: "free",
     defaultTheme: "light",
-    status: "implemented",
+    status: "active",
     preview: { thumbnailUrl: null, mobileUrl: null, desktopUrl: null },
     compare: {
       headline: "Fun and playful store for kids.",
@@ -617,19 +590,20 @@ export const TEMPLATE_REGISTRY: Record<string, TemplateDefinition> = {
       keyModules: ["Gift Registry", "Age Filter"],
     },
     routes: ["/"],
-    layoutComponent: "StandardRetailHome",
-    onboardingProfile: { prefill: { industryCategory: "Toys" } },
+    layoutKey: "StandardRetailHome",
+    onboardingProfile: { prefill: { industryCategory: "retail" } },
   },
   "vayva-pet-palace": {
     templateId: "vayva-pet-palace",
     slug: "pet-demo",
     displayName: "Pet Palace",
-    category: TemplateCategory.RETAIL,
+    category: "Retail",
+    industry: "retail",
     businessModel: "Retail",
     primaryUseCase: "Pet Supplies",
     requiredPlan: "free",
     defaultTheme: "light",
-    status: "implemented",
+    status: "active",
     preview: { thumbnailUrl: null, mobileUrl: null, desktopUrl: null },
     compare: {
       headline: "Where pets are royalty.",
@@ -638,19 +612,20 @@ export const TEMPLATE_REGISTRY: Record<string, TemplateDefinition> = {
       keyModules: ["Subscriptions", "Blog"],
     },
     routes: ["/"],
-    layoutComponent: "StandardRetailHome",
-    onboardingProfile: { prefill: { industryCategory: "Pets" } },
+    layoutKey: "StandardRetailHome",
+    onboardingProfile: { prefill: { industryCategory: "retail" } },
   },
   "vayva-beauty-box": {
     templateId: "vayva-beauty-box",
     slug: "beauty-demo",
     displayName: "Beauty Box",
-    category: TemplateCategory.RETAIL,
+    category: "Retail",
+    industry: "beauty",
     businessModel: "Retail",
     primaryUseCase: "Subscription Box",
     requiredPlan: "free",
     defaultTheme: "light",
-    status: "implemented",
+    status: "active",
     preview: { thumbnailUrl: null, mobileUrl: null, desktopUrl: null },
     compare: {
       headline: "Curated beauty delivered monthly.",
@@ -659,19 +634,20 @@ export const TEMPLATE_REGISTRY: Record<string, TemplateDefinition> = {
       keyModules: ["Quiz", "Recurring Billing"],
     },
     routes: ["/"],
-    layoutComponent: "BloomeHome",
-    onboardingProfile: { prefill: { industryCategory: "Beauty" } },
+    layoutKey: "BloomeHome",
+    onboardingProfile: { prefill: { industryCategory: "beauty" } },
   },
   "vayva-active-gear": {
     templateId: "vayva-active-gear",
     slug: "active-demo",
     displayName: "Active Gear",
-    category: TemplateCategory.RETAIL,
+    category: "Retail",
+    industry: "retail",
     businessModel: "Retail",
     primaryUseCase: "Sports / Outdoors",
     requiredPlan: "free",
     defaultTheme: "dark",
-    status: "implemented",
+    status: "active",
     preview: { thumbnailUrl: null, mobileUrl: null, desktopUrl: null },
     compare: {
       headline: "Performance gear for athletes.",
@@ -680,19 +656,20 @@ export const TEMPLATE_REGISTRY: Record<string, TemplateDefinition> = {
       keyModules: ["Filters", "Bulk Orders"],
     },
     routes: ["/"],
-    layoutComponent: "GizmoTechHome",
-    onboardingProfile: { prefill: { industryCategory: "Sports" } },
+    layoutKey: "GizmoTechHome",
+    onboardingProfile: { prefill: { industryCategory: "retail" } },
   },
   "vayva-coffee-house": {
     templateId: "vayva-coffee-house",
     slug: "coffee-demo",
     displayName: "Coffee House",
-    category: TemplateCategory.FOOD,
+    category: "Food",
+    industry: "food",
     businessModel: "Food",
     primaryUseCase: "Cafe / Coffee Shop",
     requiredPlan: "free",
     defaultTheme: "light",
-    status: "implemented",
+    status: "active",
     preview: { thumbnailUrl: null, mobileUrl: null, desktopUrl: null },
     compare: {
       headline: "Order ahead for morning brew.",
@@ -701,19 +678,20 @@ export const TEMPLATE_REGISTRY: Record<string, TemplateDefinition> = {
       keyModules: ["Modifiers", "Loyalty"],
     },
     routes: ["/"],
-    layoutComponent: "QuickBitesFood",
-    onboardingProfile: { prefill: { industryCategory: "Food" } },
+    layoutKey: "QuickBitesFood",
+    onboardingProfile: { prefill: { industryCategory: "food" } },
   },
   "vayva-burger-joint": {
     templateId: "vayva-burger-joint",
     slug: "burger-demo",
     displayName: "Burger Joint",
-    category: TemplateCategory.FOOD,
+    category: "Food",
+    industry: "food",
     businessModel: "Food",
     primaryUseCase: "Fast Food",
     requiredPlan: "free",
     defaultTheme: "light",
-    status: "implemented",
+    status: "active",
     preview: { thumbnailUrl: null, mobileUrl: null, desktopUrl: null },
     compare: {
       headline: "Juicy burgers, fast delivery.",
@@ -722,19 +700,20 @@ export const TEMPLATE_REGISTRY: Record<string, TemplateDefinition> = {
       keyModules: ["Combos", "Delivery"],
     },
     routes: ["/"],
-    layoutComponent: "QuickBitesFood",
-    onboardingProfile: { prefill: { industryCategory: "Food" } },
+    layoutKey: "QuickBitesFood",
+    onboardingProfile: { prefill: { industryCategory: "food" } },
   },
   "vayva-sushi-bar": {
     templateId: "vayva-sushi-bar",
     slug: "sushi-demo",
     displayName: "Sushi Bar",
-    category: TemplateCategory.FOOD,
+    category: "Food",
+    industry: "food",
     businessModel: "Food",
     primaryUseCase: "Asian Cuisine",
     requiredPlan: "free",
     defaultTheme: "dark",
-    status: "implemented",
+    status: "active",
     preview: { thumbnailUrl: null, mobileUrl: null, desktopUrl: null },
     compare: {
       headline: "Elegant dining experience.",
@@ -743,19 +722,20 @@ export const TEMPLATE_REGISTRY: Record<string, TemplateDefinition> = {
       keyModules: ["Reservations", "Menu Gallery"],
     },
     routes: ["/"],
-    layoutComponent: "StandardFoodHome",
-    onboardingProfile: { prefill: { industryCategory: "Food" } },
+    layoutKey: "StandardFoodHome",
+    onboardingProfile: { prefill: { industryCategory: "food" } },
   },
   "vayva-bakery": {
     templateId: "vayva-bakery",
     slug: "bakery-demo",
     displayName: "Sweet Bakery",
-    category: TemplateCategory.FOOD,
+    category: "Food",
+    industry: "food",
     businessModel: "Food",
     primaryUseCase: "Bakery / Sweets",
     requiredPlan: "free",
     defaultTheme: "light",
-    status: "implemented",
+    status: "active",
     preview: { thumbnailUrl: null, mobileUrl: null, desktopUrl: null },
     compare: {
       headline: "Fresh pastries daily.",
@@ -764,19 +744,20 @@ export const TEMPLATE_REGISTRY: Record<string, TemplateDefinition> = {
       keyModules: ["Custom Orders", "Scheduling"],
     },
     routes: ["/"],
-    layoutComponent: "StandardFoodHome",
-    onboardingProfile: { prefill: { industryCategory: "Food" } },
+    layoutKey: "StandardFoodHome",
+    onboardingProfile: { prefill: { industryCategory: "food" } },
   },
   "vayva-gym-flow": {
     templateId: "vayva-gym-flow",
     slug: "gym-demo",
     displayName: "Gym Flow",
-    category: TemplateCategory.SERVICE,
+    category: "Service",
+    industry: "services",
     businessModel: "Service",
     primaryUseCase: "Fitness / Gym",
     requiredPlan: "free",
     defaultTheme: "dark",
-    status: "implemented",
+    status: "active",
     preview: { thumbnailUrl: null, mobileUrl: null, desktopUrl: null },
     compare: {
       headline: "Class bookings and memberships.",
@@ -785,494 +766,80 @@ export const TEMPLATE_REGISTRY: Record<string, TemplateDefinition> = {
       keyModules: ["Calendar", "Memberships"],
     },
     routes: ["/"],
-    layoutComponent: "StandardServiceHome",
-    onboardingProfile: { prefill: { industryCategory: "Fitness" } },
+    layoutKey: "StandardServiceHome",
+    onboardingProfile: { prefill: { industryCategory: "services" } },
   },
   "vayva-law-firm": {
     templateId: "vayva-law-firm",
     slug: "law-demo",
     displayName: "Legal Partners",
-    category: TemplateCategory.SERVICE,
+    category: "Service",
+    industry: "services",
     businessModel: "Service",
     primaryUseCase: "Professional Services",
     requiredPlan: "free",
     defaultTheme: "light",
-    status: "implemented",
+    status: "active",
     preview: { thumbnailUrl: null, mobileUrl: null, desktopUrl: null },
     compare: {
-      headline: "Trust and expertise.",
-      bullets: ["Consultation booking", "Practice areas", "Attorney bios"],
-      bestFor: ["Lawyers", "Consultants"],
-      keyModules: ["Appointments", "Bio"],
+      headline: "Trustworthy presence for professionals.",
+      bullets: ["Practice areas", "Team bios", "Consultation form"],
+      bestFor: ["Law Firms", "Accountants"],
+      keyModules: ["Consultation Request", "Team Profiles"],
     },
     routes: ["/"],
-    layoutComponent: "StandardServiceHome",
-    onboardingProfile: { prefill: { industryCategory: "Legal" } },
+    layoutKey: "StandardServiceHome",
+    onboardingProfile: { prefill: { industryCategory: "services" } },
   },
   "vayva-clean-crew": {
     templateId: "vayva-clean-crew",
     slug: "clean-demo",
     displayName: "Clean Crew",
-    category: TemplateCategory.SERVICE,
+    category: "Service",
+    industry: "services",
     businessModel: "Service",
     primaryUseCase: "Home Services",
     requiredPlan: "free",
     defaultTheme: "light",
-    status: "implemented",
+    status: "active",
     preview: { thumbnailUrl: null, mobileUrl: null, desktopUrl: null },
     compare: {
-      headline: "Spotless service on demand.",
-      bullets: ["Service area check", "Instant quotes", "Recurring bookings"],
-      bestFor: ["Cleaners", "Plumbers"],
-      keyModules: ["Quoting", "Recurring"],
+      headline: "Home services on demand.",
+      bullets: ["Service selection", "Zip code check", "Recurring plans"],
+      bestFor: ["Cleaners", "Plumbers", "Handymen"],
+      keyModules: ["Location Check", "Subscriptions"],
     },
     routes: ["/"],
-    layoutComponent: "StandardServiceHome",
-    onboardingProfile: { prefill: { industryCategory: "Home Services" } },
-  },
-  "vayva-barber-shop": {
-    templateId: "vayva-barber-shop",
-    slug: "barber-demo",
-    displayName: "The Barber",
-    category: TemplateCategory.SERVICE,
-    businessModel: "Service",
-    primaryUseCase: "Grooming",
-    requiredPlan: "free",
-    defaultTheme: "dark",
-    status: "implemented",
-    preview: { thumbnailUrl: null, mobileUrl: null, desktopUrl: null },
-    compare: {
-      headline: "Sharp cuts, easy booking.",
-      bullets: ["Barber selection", "Style gallery", "Mobile friendly"],
-      bestFor: ["Barbers", "Salons"],
-      keyModules: ["Staff Selection", "Gallery"],
-    },
-    routes: ["/"],
-    layoutComponent: "StandardServiceHome",
-    onboardingProfile: { prefill: { industryCategory: "Beauty" } },
-  },
-  "vayva-music-class": {
-    templateId: "vayva-music-class",
-    slug: "music-demo",
-    displayName: "Music Master",
-    category: TemplateCategory.EDUCATION,
-    businessModel: "Courses",
-    primaryUseCase: "Private Lessons",
-    requiredPlan: "free",
-    defaultTheme: "light",
-    status: "implemented",
-    preview: { thumbnailUrl: null, mobileUrl: null, desktopUrl: null },
-    compare: {
-      headline: "Master an instrument.",
-      bullets: ["Video lessons", "Sheet music downloads", "Community forum"],
-      bestFor: ["Music Teachers", "Schools"],
-      keyModules: ["LMS", "Downloads"],
-    },
-    routes: ["/"],
-    layoutComponent: "SkillAcademyCourses",
-    onboardingProfile: { prefill: { industryCategory: "Education" } },
-  },
-  "vayva-ebook-store": {
-    templateId: "vayva-ebook-store",
-    slug: "ebook-demo",
-    displayName: "Book Haven",
-    category: TemplateCategory.DIGITAL,
-    businessModel: "Digital",
-    primaryUseCase: "E-Books",
-    requiredPlan: "free",
-    defaultTheme: "light",
-    status: "implemented",
-    preview: { thumbnailUrl: null, mobileUrl: null, desktopUrl: null },
-    compare: {
-      headline: "Instant library access.",
-      bullets: ["Kindle/PDF downloads", "Author profile", "Sample chapters"],
-      bestFor: ["Authors", "Publishers"],
-      keyModules: ["Secure Downloads", "Samples"],
-    },
-    routes: ["/"],
-    layoutComponent: "StandardDigitalHome",
-    onboardingProfile: { prefill: { industryCategory: "Digital" } },
-  },
-  "vayva-photo-presetz": {
-    templateId: "vayva-photo-presetz",
-    slug: "preset-demo",
-    displayName: "Pro Presets",
-    category: TemplateCategory.DIGITAL,
-    businessModel: "Digital",
-    primaryUseCase: "Creative Assets",
-    requiredPlan: "free",
-    defaultTheme: "dark",
-    status: "implemented",
-    preview: { thumbnailUrl: null, mobileUrl: null, desktopUrl: null },
-    compare: {
-      headline: "Upgrade your workflow.",
-      bullets: ["Before/After sliders", "Bundle deals", "Installation guide"],
-      bestFor: ["Photographers", "Designers"],
-      keyModules: ["Comparison Slider", "Bundles"],
-    },
-    routes: ["/"],
-    layoutComponent: "StandardDigitalHome",
-    onboardingProfile: { prefill: { industryCategory: "Creative" } },
-  },
-  "vayva-conference": {
-    templateId: "vayva-conference",
-    slug: "conf-demo",
-    displayName: "Tech Conf 2024",
-    category: TemplateCategory.EVENTS,
-    businessModel: "Events",
-    primaryUseCase: "Conference",
-    requiredPlan: "free",
-    defaultTheme: "light",
-    status: "implemented",
-    preview: { thumbnailUrl: null, mobileUrl: null, desktopUrl: null },
-    compare: {
-      headline: "The event of the year.",
-      bullets: ["Speaker lineup", "Schedule grid", "Sponsor tiering"],
-      bestFor: ["Conferences", "Summits"],
-      keyModules: ["Schedule", "Speakers"],
-    },
-    routes: ["/"],
-    layoutComponent: "StandardEventsHome",
-    onboardingProfile: { prefill: { industryCategory: "Events" } },
-  },
-  "vayva-wedding-rsvp": {
-    templateId: "vayva-wedding-rsvp",
-    slug: "wedding-demo",
-    displayName: "Forever Yours",
-    category: TemplateCategory.EVENTS,
-    businessModel: "Events",
-    primaryUseCase: "Wedding",
-    requiredPlan: "free",
-    defaultTheme: "light",
-    status: "implemented",
-    preview: { thumbnailUrl: null, mobileUrl: null, desktopUrl: null },
-    compare: {
-      headline: "Celebrate our special day.",
-      bullets: ["RSVP form", "Gift registry link", "Venue map"],
-      bestFor: ["Weddings", "Parties"],
-      keyModules: ["RSVP", "Registry"],
-    },
-    routes: ["/"],
-    layoutComponent: "StandardEventsHome",
-    onboardingProfile: { prefill: { industryCategory: "Personal" } },
-  },
-  "vayva-lens-master": {
-    templateId: "vayva-lens-master",
-    slug: "lens-demo",
-    displayName: "LensMaster",
-    category: TemplateCategory.CREATIVE,
-    businessModel: "Portfolio",
-    primaryUseCase: "Photography",
-    requiredPlan: "pro",
-    defaultTheme: "dark",
-    status: "implemented",
-    preview: { thumbnailUrl: null, mobileUrl: null, desktopUrl: null },
-    compare: {
-      headline: "Showcase your vision.",
-      bullets: ["Masonry gallery", "Client proofing area", "High-res optimization"],
-      bestFor: ["Photographers", "Visual Artists"],
-      keyModules: ["Gallery", "Proofing"],
-    },
-    routes: ["/"],
-    layoutComponent: "LensMasterHome",
-    onboardingProfile: { prefill: { industryCategory: "Creative" } },
-  },
-  "vayva-agency-folio": {
-    templateId: "vayva-agency-folio",
-    slug: "agency-demo",
-    displayName: "AgencyFolio",
-    category: TemplateCategory.CREATIVE,
-    businessModel: "Portfolio",
-    primaryUseCase: "Design Agency",
-    requiredPlan: "pro",
-    defaultTheme: "light",
-    status: "implemented",
-    preview: { thumbnailUrl: null, mobileUrl: null, desktopUrl: null },
-    compare: {
-      headline: "For the digital elite.",
-      bullets: ["Horizontal scroll", "Case study layouts", "Team profiles"],
-      bestFor: ["Design Agencies", "Architects"],
-      keyModules: ["Case Studies", "Team"],
-    },
-    routes: ["/"],
-    layoutComponent: "AgencyFolioHome",
-    onboardingProfile: { prefill: { industryCategory: "Creative" } },
-  },
-  "vayva-auto-dealer": {
-    templateId: "vayva-auto-dealer",
-    slug: "auto-demo",
-    displayName: "AutoDealer",
-    category: TemplateCategory.AUTOMOTIVE,
-    businessModel: "Retail", // Or "Listing" if supported
-    primaryUseCase: "Car Dealership",
-    requiredPlan: "pro",
-    defaultTheme: "light",
-    status: "implemented",
-    preview: { thumbnailUrl: null, mobileUrl: null, desktopUrl: null },
-    compare: {
-      headline: "Drive sales faster.",
-      bullets: ["Inventory search", "Test drive booking", "Finance calculator"],
-      bestFor: ["Dealerships", "Showrooms"],
-      keyModules: ["Vehicle Search", "Test Drive"],
-    },
-    routes: ["/"],
-    layoutComponent: "AutoDealerHome",
-    onboardingProfile: { prefill: { industryCategory: "Automotive" } },
-  },
-  "vayva-parts-pro": {
-    templateId: "vayva-parts-pro",
-    slug: "parts-demo",
-    displayName: "PartsPro",
-    category: TemplateCategory.AUTOMOTIVE,
-    businessModel: "Retail",
-    primaryUseCase: "Auto Parts",
-    requiredPlan: "growth",
-    defaultTheme: "dark",
-    status: "implemented",
-    preview: { thumbnailUrl: null, mobileUrl: null, desktopUrl: null },
-    compare: {
-      headline: "The mechanic's choice.",
-      bullets: ["Part finder by VIN", "Compatibility check", "Bulk ordering"],
-      bestFor: ["Parts Stores", "Mechanics"],
-      keyModules: ["Part Finder", "Bulk Order"],
-    },
-    routes: ["/"],
-    layoutComponent: "PartsProHome",
-    onboardingProfile: { prefill: { industryCategory: "Automotive" } },
-  },
-  "vayva-staycation": {
-    templateId: "vayva-staycation",
-    slug: "stay-demo",
-    displayName: "Staycation",
-    category: TemplateCategory.TRAVEL,
-    businessModel: "Service", // Booking based
-    primaryUseCase: "Hotel & Rental",
-    requiredPlan: "pro",
-    defaultTheme: "light",
-    status: "implemented",
-    preview: { thumbnailUrl: null, mobileUrl: null, desktopUrl: null },
-    compare: {
-      headline: "Bookings made beautiful.",
-      bullets: ["Nightly Availability", "Amenity Icons", "Direct Booking Engine"],
-      bestFor: ["Hotels", "BnBs", "Resorts"],
-      keyModules: ["Availability Calendar", "Room Types"],
-    },
-    routes: ["/"],
-    layoutComponent: "StaycationHome",
-    onboardingProfile: { prefill: { industryCategory: "Travel" } },
-  },
-  "vayva-editorial": {
-    templateId: "vayva-editorial",
-    slug: "editorial-demo",
-    displayName: "The Editorial",
-    category: TemplateCategory.BLOG,
-    businessModel: "Content",
-    primaryUseCase: "Publishers & Influencers",
-    requiredPlan: "growth",
-    defaultTheme: "light",
-    status: "implemented",
-    preview: { thumbnailUrl: null, mobileUrl: null, desktopUrl: null },
-    compare: {
-      headline: "Your voice, amplified.",
-      bullets: ["Magazine Layout", "Shop-the-Look", "Newsletter Integration"],
-      bestFor: ["Bloggers", "News Sites", "Curators"],
-      keyModules: ["Article Grid", "Product Tagging"],
-    },
-    routes: ["/"],
-    layoutComponent: "EditorialHome",
-    onboardingProfile: { prefill: { industryCategory: "Media" } },
+    layoutKey: "StandardServiceHome",
+    onboardingProfile: { prefill: { industryCategory: "services" } },
   },
 };
 
-export function getTemplatesByCategory(
-  category: TemplateCategory | string,
-): NormalizedTemplate[] {
-  const norm = (s: string) => s.trim().toLowerCase();
-  const target = norm(category as string);
-  return getNormalizedTemplates().filter(
-    (t) => norm(t.category || "") === target,
-  );
+export function getNormalizedTemplates() {
+  return Object.values(TEMPLATE_REGISTRY).filter((t) => t.status !== "deprecated");
 }
 
-export function getTemplateBySlug(
-  slug: string,
-): TemplateDefinition | undefined {
-  return Object.values(TEMPLATE_REGISTRY).find((t) => t.slug === slug);
+export const TEMPLATE_CATEGORIES = [
+  { slug: "fashion-clothing", displayName: "Fashion", isActive: true },
+  { slug: "electronics-gadgets", displayName: "Electronics", isActive: true },
+  { slug: "beauty-wellness-home", displayName: "Beauty & Home", isActive: true },
+  { slug: "food-restaurant", displayName: "Food & Drink", isActive: true },
+  { slug: "services-appointments", displayName: "Services", isActive: true },
+  { slug: "digital-products", displayName: "Digital", isActive: true },
+  { slug: "events-ticketing", displayName: "Events", isActive: true },
+  { slug: "education-courses", displayName: "Education", isActive: true },
+  { slug: "wholesale-b2b", displayName: "Wholesale (B2B)", isActive: true },
+  { slug: "marketplace", displayName: "Marketplace", isActive: true },
+  { slug: "donations-fundraising", displayName: "Non-profit", isActive: true },
+  { slug: "real-estate", displayName: "Real Estate", isActive: true },
+].map(c => ({
+  ...c,
+  // Helper to find templates for this category
+  recommendedTemplates: Object.values(TEMPLATE_REGISTRY)
+    .filter(t => t.industry === c.slug)
+    .map(t => t.templateId)
+}));
+
+export function getTemplatesByCategory(categorySlug: string) {
+  return Object.values(TEMPLATE_REGISTRY).filter(t => t.industry === categorySlug);
 }
-
-export function getTemplatesByPlan(plan: BillingPlan): TemplateDefinition[] {
-  return Object.values(TEMPLATE_REGISTRY).filter(
-    (t) => t.requiredPlan === plan,
-  );
-}
-
-// --- CANONICAL NORMALIZER (BATCH 1) ---
-
-export const DEFAULT_DESKTOP_PREVIEW =
-  "/images/template-previews/default-desktop.png";
-export const DEFAULT_MOBILE_PREVIEW =
-  "/images/template-previews/default-mobile.png";
-
-export type NormalizedTemplate = {
-  id: string;
-  slug: string;
-  name: string;
-  category?: string;
-  description: string;
-
-  previewImageDesktop: string; // never empty
-  previewImageMobile: string; // never empty
-  previewRoute: string; // /preview/[slug]
-
-  features: string[];
-  isFree: boolean;
-  requiredPlan?: string;
-  status: "active" | "inactive" | "deprecated" | string;
-
-  layoutComponent?: string | null;
-  componentProps?: Record<string, any>; // Pass through props
-  registry: any;
-};
-
-export function getNormalizedTemplates(): NormalizedTemplate[] {
-  return Object.values(TEMPLATE_REGISTRY)
-    .map((t: any) => {
-      const slug = t.slug || t.templateId;
-
-      // Normalize desktop image (fallback used if null)
-      const desktop =
-        t.preview?.desktopUrl ||
-        t.preview?.thumbnailUrl ||
-        DEFAULT_DESKTOP_PREVIEW;
-
-      // Normalize mobile image (fallback used if null)
-      const mobile = t.preview?.mobileUrl || DEFAULT_MOBILE_PREVIEW;
-
-      const features: string[] = Array.isArray(t.features)
-        ? t.features
-        : Array.isArray(t.compare?.bullets)
-          ? t.compare.bullets
-          : [];
-
-      const requiredPlan = t.requiredPlan || "free";
-      const isFree = requiredPlan === "free";
-
-      return {
-        id: t.templateId,
-        slug,
-        name: t.displayName,
-        category: t.category,
-        description: t.compare?.headline || t.description || "",
-
-        previewImageDesktop: desktop,
-        previewImageMobile: mobile,
-        previewRoute: `/preview/${slug}`,
-
-        features,
-        isFree,
-        requiredPlan,
-        status: t.status || "active",
-
-        layoutComponent: t.layoutComponent,
-        componentProps: t.componentProps,
-        registry: t, // Keep ref to original
-      };
-    })
-    .filter((t) => t.status === "active" || t.status === "implemented");
-}
-
-export const TEMPLATES = getNormalizedTemplates();
-
-export interface CategoryConfig {
-  slug: TemplateCategory | string;
-  displayName: string;
-  recommendedTemplates: string[];
-  isActive: boolean;
-}
-
-export const TEMPLATE_CATEGORIES: CategoryConfig[] = [
-  {
-    slug: TemplateCategory.RETAIL as any,
-    displayName: "Retail",
-    recommendedTemplates: ["vayva-standard", "vayva-aa-fashion"],
-    isActive: true,
-  },
-  {
-    slug: TemplateCategory.SERVICE as any,
-    displayName: "Services & Appointments",
-    recommendedTemplates: ["vayva-bookly-pro"],
-    isActive: true,
-  },
-  {
-    slug: TemplateCategory.FOOD as any,
-    displayName: "Food & Dining",
-    recommendedTemplates: ["vayva-chopnow", "slice-life-pizza"],
-    isActive: true,
-  },
-  {
-    slug: TemplateCategory.DIGITAL as any,
-    displayName: "Digital Products",
-    recommendedTemplates: ["vayva-file-vault"],
-    isActive: true,
-  },
-  {
-    slug: TemplateCategory.EVENTS as any,
-    displayName: "Events & Ticketing",
-    recommendedTemplates: ["vayva-ticketly"],
-    isActive: true,
-  },
-  {
-    slug: TemplateCategory.EDUCATION as any,
-    displayName: "Education & Courses",
-    recommendedTemplates: ["vayva-eduflow"],
-    isActive: true,
-  },
-  {
-    slug: TemplateCategory.B2B as any,
-    displayName: "Wholesale B2B",
-    recommendedTemplates: ["vayva-bulktrade"],
-    isActive: true,
-  },
-  {
-    slug: TemplateCategory.MARKETPLACE as any,
-    displayName: "Marketplace",
-    recommendedTemplates: ["vayva-markethub"],
-    isActive: true,
-  },
-  {
-    slug: TemplateCategory.NONPROFIT as any,
-    displayName: "Donations & Fundraising",
-    recommendedTemplates: ["vayva-giveflow"],
-    isActive: true,
-  },
-  {
-    slug: TemplateCategory.REAL_ESTATE as any,
-    displayName: "Real Estate",
-    recommendedTemplates: ["vayva-homelist"],
-    isActive: true,
-  },
-  {
-    slug: TemplateCategory.CREATIVE as any,
-    displayName: "Creative & Portfolio",
-    recommendedTemplates: ["vayva-lens-master", "vayva-agency-folio"],
-    isActive: true,
-  },
-  {
-    slug: TemplateCategory.AUTOMOTIVE as any,
-    displayName: "Automotive",
-    recommendedTemplates: ["vayva-auto-dealer", "vayva-parts-pro"],
-    isActive: true,
-  },
-  {
-    slug: TemplateCategory.TRAVEL as any,
-    displayName: "Travel",
-    recommendedTemplates: ["vayva-staycation"],
-    isActive: true,
-  },
-  {
-    slug: TemplateCategory.BLOG as any,
-    displayName: "Blog & Media",
-    recommendedTemplates: ["vayva-editorial"],
-    isActive: true,
-  },
-];

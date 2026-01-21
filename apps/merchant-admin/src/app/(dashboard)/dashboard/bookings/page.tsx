@@ -1,123 +1,104 @@
-"use client";
+import { prisma } from "@/lib/prisma";
+import { requireAuth } from "@/lib/auth/session";
+import { format } from "date-fns";
+import { Badge, Button, Icon } from "@vayva/ui";
+import { Calendar, Clock, User, Plus } from "lucide-react";
+import { BookingListActions } from "@/components/bookings/BookingListActions";
+import { CreateBookingModal } from "@/components/bookings/CreateBookingModal";
 
-import React, { useState, useEffect } from "react";
-import { format, startOfWeek, endOfWeek, eachDayOfInterval, addDays } from "date-fns";
-import { Icon, Button, GlassPanel } from "@vayva/ui";
-import { toast } from "sonner";
+export default async function BookingsPage() {
+    const session = await requireAuth();
+    const storeId = session.user.storeId;
 
-// Placeholder types until we have shared types
-interface Booking {
-    id: string;
-    startsAt: string;
-    endsAt: string;
-    customer?: { firstName: string; lastName: string };
-    service?: { title: string };
-    status: string;
-}
-
-export default function BookingsPage() {
-    const [currentDate, setCurrentDate] = useState(new Date());
-    const [bookings, setBookings] = useState<Booking[]>([]);
-    const [loading, setLoading] = useState(true);
-
-    useEffect(() => {
-        fetchBookings();
-    }, [currentDate]);
-
-    const fetchBookings = async () => {
-        setLoading(true);
-        try {
-            const dateStr = format(currentDate, "yyyy-MM-dd");
-            const res = await fetch(`/api/bookings?date=${dateStr}`);
-            const data = await res.json();
-            if (data.bookings) {
-                setBookings(data.bookings);
-            }
-        } catch (error) {
-            toast.error("Failed to load bookings");
-        } finally {
-            setLoading(false);
-        }
-    };
-
-    const weekStart = startOfWeek(currentDate, { weekStartsOn: 1 });
-    const weekDays = eachDayOfInterval({
-        start: weekStart,
-        end: endOfWeek(currentDate, { weekStartsOn: 1 })
+    const bookings = await prisma.booking.findMany({
+        where: { storeId },
+        include: {
+            service: { select: { id: true, title: true } },
+            customer: { select: { id: true, firstName: true, lastName: true } },
+        },
+        orderBy: { startsAt: "asc" },
     });
 
+    // For create modal
+    const services = await prisma.product.findMany({
+        where: { storeId, productType: 'SERVICE' },
+        select: { id: true, title: true }
+    });
+
+    const customers = await prisma.customer.findMany({
+        where: { storeId },
+        select: { id: true, firstName: true, lastName: true }
+    });
+
+    const serviceOptions = services.map(s => ({ id: s.id, name: s.title }));
+    const customerOptions = customers.map(c => ({ id: c.id, name: `${c.firstName} ${c.lastName}` }));
+
     return (
-        <div className="p-6 h-full flex flex-col">
-            <div className="flex justify-between items-center mb-6">
+        <div className="p-6 md:p-8 max-w-7xl mx-auto space-y-8">
+            <div className="flex justify-between items-center">
                 <div>
-                    <h1 className="text-2xl font-bold text-gray-900">Bookings</h1>
-                    <p className="text-gray-500">Manage your appointments and availability.</p>
+                    <h1 className="text-2xl font-bold tracking-tight text-gray-900">Bookings & Appointments</h1>
+                    <p className="text-gray-500">Manage your schedule and client visits</p>
                 </div>
-                <div className="flex gap-2">
-                    <Button variant="outline"><Icon name="Settings" size={16} className="mr-2" /> Automation</Button>
-                    <Button><Icon name="Plus" size={16} className="mr-2" /> New Appointment</Button>
-                </div>
+                <CreateBookingModal
+                    services={serviceOptions}
+                    customers={customerOptions}
+                />
             </div>
 
-            <div className="flex-1 bg-white rounded-xl border border-gray-200 shadow-sm flex flex-col overflow-hidden">
-                {/* Calendar Header */}
-                <div className="p-4 border-b border-gray-100 flex justify-between items-center bg-gray-50/50">
-                    <div className="flex items-center gap-4">
-                        <Button variant="ghost" size="sm" onClick={() => setCurrentDate(addDays(currentDate, -7))}>
-                            <Icon name="ChevronLeft" size={16} />
-                        </Button>
-                        <h2 className="font-bold text-lg">{format(currentDate, "MMMM yyyy")}</h2>
-                        <Button variant="ghost" size="sm" onClick={() => setCurrentDate(addDays(currentDate, 7))}>
-                            <Icon name="ChevronRight" size={16} />
-                        </Button>
-                    </div>
-                    <div className="flex bg-white rounded-lg p-1 border border-gray-200">
-                        <button className="px-3 py-1 text-xs font-medium rounded bg-gray-100 text-gray-900">Week</button>
-                        <button className="px-3 py-1 text-xs font-medium rounded text-gray-500 hover:text-gray-900">Day</button>
-                        <button className="px-3 py-1 text-xs font-medium rounded text-gray-500 hover:text-gray-900">List</button>
-                    </div>
+            <div className="bg-white rounded-2xl border border-gray-200 overflow-hidden shadow-sm">
+                <div className="p-6 border-b border-gray-100 flex items-center justify-between">
+                    <h2 className="font-bold text-gray-900">Upcoming Schedule</h2>
+                    <div className="text-sm text-gray-500">{bookings.length} total bookings</div>
                 </div>
 
-                {/* Calendar Grid */}
-                <div className="flex-1 overflow-auto flex">
-                    {/* Time Column */}
-                    <div className="w-16 border-r border-gray-100 bg-gray-50/30 flex-shrink-0">
-                        {Array.from({ length: 13 }).map((_, i) => (
-                            <div key={i} className="h-20 text-xs text-gray-400 text-center pt-2 border-b border-gray-50">
-                                {i + 8}:00
-                            </div>
-                        ))}
-                    </div>
-
-                    {/* Days Columns */}
-                    <div className="flex-1 grid grid-cols-7 divide-x divide-gray-100 min-w-[800px]">
-                        {weekDays.map((day) => (
-                            <div key={day.toString()} className="flex flex-col">
-                                <div className={`p-2 text-center border-b border-gray-100 ${format(day, 'yyyy-MM-dd') === format(new Date(), 'yyyy-MM-dd') ? 'bg-blue-50' : ''
-                                    }`}>
-                                    <div className="text-xs text-gray-500 uppercase">{format(day, 'EEE')}</div>
-                                    <div className={`font-bold ${format(day, 'yyyy-MM-dd') === format(new Date(), 'yyyy-MM-dd') ? 'text-blue-600' : 'text-gray-900'
-                                        }`}>{format(day, 'd')}</div>
-                                </div>
-
-                                {/* Slots */}
-                                <div className="flex-1 relative bg-white">
-                                    {/* Render bookings here roughly based on time */}
-                                    {bookings
-                                        .filter(b => format(new Date(b.startsAt), 'yyyy-MM-dd') === format(day, 'yyyy-MM-dd'))
-                                        .map(booking => (
-                                            <div key={booking.id} className="mx-1 mt-2 p-2 rounded bg-blue-100 border border-blue-200 text-blue-800 text-xs cursor-pointer hover:bg-blue-200 transition-colors">
-                                                <div className="font-bold truncate">{booking.service?.title || "Service"}</div>
-                                                <div className="truncate">{booking.customer?.firstName} {booking.customer?.lastName}</div>
+                <div className="p-6">
+                    {bookings.length === 0 ? (
+                        <div className="text-center py-12">
+                            <Calendar className="w-12 h-12 text-gray-200 mx-auto mb-4" />
+                            <h3 className="font-bold text-gray-900">No bookings yet</h3>
+                            <p className="text-gray-500 text-sm mt-1">New appointments will appear here.</p>
+                        </div>
+                    ) : (
+                        <div className="space-y-4">
+                            {bookings.map((booking) => (
+                                <div key={booking.id} className="bg-white p-4 rounded-xl border border-gray-200 shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-4">
+                                    <div className="flex items-start gap-4">
+                                        <div className="w-12 h-12 rounded-lg bg-green-50 flex items-center justify-center text-green-600 font-bold text-lg shrink-0">
+                                            {format(booking.startsAt, "d")}
+                                        </div>
+                                        <div>
+                                            <h3 className="font-semibold text-gray-900">{booking.service.title}</h3>
+                                            <div className="flex items-center gap-4 mt-1 text-sm text-gray-500">
+                                                <span className="flex items-center gap-1">
+                                                    <Clock size={14} />
+                                                    {format(booking.startsAt, "h:mm a")} - {format(booking.endsAt, "h:mm a")}
+                                                </span>
+                                                {booking.customer && (
+                                                    <span className="flex items-center gap-1">
+                                                        <User size={14} />
+                                                        {booking.customer.firstName} {booking.customer.lastName}
+                                                    </span>
+                                                )}
                                             </div>
-                                        ))
-                                    }
-                                </div>
-                            </div>
-                        ))}
-                    </div>
-                </div>
+                                        </div>
+                                    </div>
 
+                                    <div className="flex items-center gap-3">
+                                        <Badge variant={(booking.status as any) === 'CONFIRMED' ? 'success' : 'default'}>
+                                            {booking.status}
+                                        </Badge>
+                                        <BookingListActions
+                                            booking={booking}
+                                            services={serviceOptions}
+                                            customers={customerOptions}
+                                        />
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+                    )}
+                </div>
             </div>
         </div>
     );

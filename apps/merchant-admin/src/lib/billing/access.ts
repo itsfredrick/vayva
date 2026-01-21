@@ -6,7 +6,7 @@ export async function checkFeatureAccess(storeId: string, feature: Feature) {
     const store = await prisma.store.findUnique({
         where: { id: storeId },
         include: {
-            merchantSubscription: true,
+            aiSubscription: true,
         },
     });
 
@@ -14,12 +14,12 @@ export async function checkFeatureAccess(storeId: string, feature: Feature) {
         throw new Error("Store not found");
     }
 
-    const subscription = store.merchantSubscription as any;
-    const plan = store.plan as string || "FREE";
+    const subscription = store.aiSubscription;
+    const plan = store.plan as string || "STARTER";
 
     // 1. Check Trial Expiry
-    if (plan === "FREE" && subscription?.trialEndsAt) {
-        if (new Date() > subscription.trialEndsAt) {
+    if (plan === "STARTER" && subscription?.trialExpiresAt) {
+        if (new Date() > subscription.trialExpiresAt) {
             return {
                 allowed: false,
                 reason: "trial_expired",
@@ -29,14 +29,14 @@ export async function checkFeatureAccess(storeId: string, feature: Feature) {
     }
 
     // 2. Usage Limits
-    if (plan === "FREE") {
+    if (plan === "STARTER") {
         if (feature === "whatsapp_ai") {
             const messagesSent = await getWhatsAppMessageCount(storeId);
             if (messagesSent >= 100) {
                 return {
                     allowed: false,
                     reason: "limit_reached",
-                    message: "You've reached your free limit of 100 AI messages. Upgrade to Starter for 500.",
+                    message: "You've reached your free limit of 100 AI messages. Upgrade to Growth for 500.",
                 };
             }
         }
@@ -49,13 +49,13 @@ export async function checkFeatureAccess(storeId: string, feature: Feature) {
                 return {
                     allowed: false,
                     reason: "limit_reached",
-                    message: "Free plan is limited to 2 templates. Upgrade to Starter for more.",
+                    message: "Free plan is limited to 2 templates. Upgrade to Growth for more.",
                 };
             }
         }
     }
 
-    if (plan === "STARTER") {
+    if (plan === "GROWTH") {
         if (feature === "order_creation") {
             const ordersThisMonth = await prisma.order.count({
                 where: {
@@ -94,7 +94,7 @@ export async function checkFeatureAccess(storeId: string, feature: Feature) {
                 return {
                     allowed: false,
                     reason: "limit_reached",
-                    message: "Starter plan is limited to 5 templates. Upgrade to Pro for unlimited.",
+                    message: "Growth plan is limited to 5 templates. Upgrade to Pro for unlimited.",
                 };
             }
         }
@@ -109,16 +109,16 @@ export async function checkFeatureAccess(storeId: string, feature: Feature) {
         };
     }
 
-    if (plan === "FREE" || plan === "STARTER") {
+    if (plan === "STARTER" || plan === "GROWTH") {
         if (feature === "custom_domain" || feature === "advanced_analytics") {
-            if (plan === "FREE") {
+            if (plan === "STARTER") {
                 return {
                     allowed: false,
                     reason: "feature_locked",
                     message: "This feature is only available on paid plans.",
                 };
             }
-            if (feature === "custom_domain" && plan === "STARTER") {
+            if (feature === "custom_domain" && plan === "GROWTH") {
                 return {
                     allowed: false,
                     reason: "feature_locked",

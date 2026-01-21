@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
+import { Button } from "@vayva/ui";
 import { StoreShell } from "@/components/StoreShell";
 import { ProductCard } from "@/components/ProductCard";
 import { useStore } from "@/context/StoreContext";
@@ -158,9 +159,9 @@ export default function StoreHome() {
               "Explore our varied collection of premium products."}
           </p>
           <Link href={`/collections/all?store=${store.slug}`}>
-            <button className="bg-black text-white px-8 py-4 rounded-full font-bold text-sm tracking-wide hover:bg-gray-900 transition-colors">
+            <Button className="bg-black text-white px-8 py-4 rounded-full font-bold text-sm tracking-wide hover:bg-gray-900 transition-colors">
               Shop All Products
-            </button>
+            </Button>
           </Link>
         </div>
       </section>

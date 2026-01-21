@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
+import { Button } from "@vayva/ui";
 import { X } from "lucide-react";
 import { useDownloadModal } from "@/context/DownloadModalContext";
 
@@ -16,6 +17,10 @@ export function PWAInstallToast() {
 
         if (isStandalone) return;
 
+        // Check if user has previously dismissed the install prompt
+        const isDismissed = localStorage.getItem("vayva_pwa_dismissed");
+        if (isDismissed) return;
+
         // Show after scrolling a bit, similar to Cookie Banner but right side
         const scrollHandler = () => {
             const hasConsent = localStorage.getItem("vayva_cookie_consent");
@@ -29,6 +34,11 @@ export function PWAInstallToast() {
         return () => window.removeEventListener("scroll", scrollHandler);
     }, []);
 
+    const handleDismiss = () => {
+        setIsVisible(false);
+        localStorage.setItem("vayva_pwa_dismissed", "true");
+    };
+
     if (!isVisible) return null;
 
     return (
@@ -38,30 +48,34 @@ export function PWAInstallToast() {
                     <div className="w-10 h-10 bg-[#0F172A] rounded-lg flex items-center justify-center text-white font-bold text-lg">
                         V
                     </div>
-                    <button
-                        onClick={() => setIsVisible(false)}
-                        className="text-gray-400 hover:text-gray-600"
+                    <Button
+                        onClick={handleDismiss}
+                        className="text-gray-400 hover:text-gray-600 transition-colors"
+                        title="Dismiss"
                     >
                         <X size={16} />
-                    </button>
+                    </Button>
                 </div>
                 <h4 className="font-bold text-[#0F172A] mb-1">Install Vayva App</h4>
                 <p className="text-xs text-gray-500 leading-relaxed mb-4">
                     Install our web app for a faster, full-screen experience on your device.
                 </p>
                 <div className="flex gap-3">
-                    <button
-                        onClick={openDownloadModal}
+                    <Button
+                        onClick={() => {
+                            openDownloadModal();
+                            handleDismiss();
+                        }}
                         className="flex-1 bg-[#22C55E] hover:bg-[#16A34A] text-white py-2 rounded-lg text-xs font-bold transition-all"
                     >
                         Install App
-                    </button>
-                    <button
-                        onClick={() => setIsVisible(false)}
+                    </Button>
+                    <Button
+                        onClick={handleDismiss}
                         className="flex-1 bg-white border border-gray-200 text-gray-600 hover:bg-gray-50 py-2 rounded-lg text-xs font-bold transition-all"
                     >
                         Later
-                    </button>
+                    </Button>
                 </div>
             </div>
         </div>

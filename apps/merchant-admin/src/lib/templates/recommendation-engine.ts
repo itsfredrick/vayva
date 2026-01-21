@@ -1,6 +1,6 @@
 import { CanonicalTemplateId, CanonicalCategorySlug } from "@/types/templates";
 import { OnboardingState } from "@/types/onboarding";
-import { TEMPLATE_CATEGORIES } from "@/lib/templates-registry";
+import { TemplateCategory, TEMPLATE_REGISTRY } from "@/lib/templates-registry";
 
 interface RecommendationResult {
   recommendedTemplate: CanonicalTemplateId;
@@ -66,21 +66,24 @@ export function recommendTemplate(
     return null;
   }
 
-  // Lookup Category Config
-  const categoryConfig = TEMPLATE_CATEGORIES.find(
-    (c) => c.slug === matchedCategorySlug,
-  );
-  if (!categoryConfig) return null;
+  // Verify it exists in enum
+  // (c) => c === matchedCategorySlug,
+  // );
 
-  // Get Primary Template
-  // Prompt: "One template may belong to only one primary category"
-  // "Return: Primary recommended template"
-  const primaryTemplateId = categoryConfig
-    .recommendedTemplates[0] as CanonicalTemplateId;
+  // Temporary fix: If we can't look up config, just return null or basic result
+  if (!matchedCategorySlug) return null;
+
+  /*
+  // Logic removed as TEMPLATE_CATEGORIES is deprecated
+  */
+
+  // Just return the first template for that category from registry
+  const firstTemplate = Object.values(TEMPLATE_REGISTRY).find(t => (t.industry as string) === matchedCategorySlug);
+  if (!firstTemplate) return null;
 
   return {
-    recommendedTemplate: primaryTemplateId,
+    recommendedTemplate: firstTemplate.templateId as CanonicalTemplateId,
     category: matchedCategorySlug,
-    reason: `Best fit for ${categoryConfig.displayName} businesses.`,
+    reason: `Best fit for ${matchedCategorySlug} businesses.`,
   };
 }

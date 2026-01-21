@@ -1,0 +1,8 @@
+"use client";
+import { jsx as _jsx, jsxs as _jsxs } from "react/jsx-runtime";
+import { useOnboarding } from "../OnboardingContext";
+import { Button } from "@vayva/ui";
+export default function ReviewStep() {
+    const { completeOnboarding, prevStep, state, isSaving } = useOnboarding();
+    return (_jsxs("div", { className: "space-y-6", children: [_jsxs("div", { className: "text-center space-y-2", children: [_jsx("div", { className: "text-4xl", children: "\uD83C\uDF89" }), _jsx("h2", { className: "text-2xl font-bold", children: "You're all set!" }), _jsx("p", { className: "text-gray-500", children: "Review your details before launching." })] }), _jsxs("div", { className: "bg-white rounded-lg border divide-y text-sm", children: [_jsxs("div", { className: "p-4 flex justify-between", children: [_jsx("span", { className: "text-gray-500", children: "Store Name" }), _jsx("span", { className: "font-medium", children: state.business?.storeName })] }), _jsxs("div", { className: "p-4 flex justify-between", children: [_jsx("span", { className: "text-gray-500", children: "URL" }), _jsxs("span", { className: "font-medium", children: ["vayva.shop/", state.business?.slug] })] }), _jsxs("div", { className: "p-4 flex justify-between", children: [_jsx("span", { className: "text-gray-500", children: "Bank" }), _jsxs("span", { className: "font-medium", children: [state.finance?.bankName, " - ", state.finance?.accountNumber] })] })] }), _jsxs("div", { className: "pt-4 flex gap-3", children: [_jsx(Button, { variant: "outline", onClick: prevStep, disabled: isSaving, children: "Back" }), _jsx(Button, { className: "flex-1", onClick: completeOnboarding, disabled: isSaving, isLoading: isSaving, size: "lg", children: "Launch Store" })] })] }));
+}

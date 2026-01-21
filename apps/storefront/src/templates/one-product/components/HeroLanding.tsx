@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { Button } from "@vayva/ui";
 import Link from "next/link";
 import Image from "next/image";
 import { PublicProduct } from "@/types/storefront";
@@ -46,7 +47,7 @@ export const HeroLanding = ({
             </div>
             <div className="flex gap-4 overflow-x-auto pb-2">
               {product.images?.map((img, idx) => (
-                <button
+                <Button
                   key={idx}
                   onClick={() => setSelectedImg(idx)}
                   className={`w-20 h-20 rounded-xl overflow-hidden border-2 transition-all ${selectedImg === idx ? "border-gray-900 opacity-100" : "border-transparent opacity-60 hover:opacity-100"}`}
@@ -57,7 +58,7 @@ export const HeroLanding = ({
                     fill
                     className="object-cover"
                   />
-                </button>
+                </Button>
               ))}
             </div>
           </div>
@@ -97,23 +98,23 @@ export const HeroLanding = ({
 
               <div className="flex flex-col sm:flex-row gap-4 mb-6">
                 <div className="flex items-center border border-gray-300 rounded-xl bg-white h-14">
-                  <button
+                  <Button
                     onClick={() => setQty(Math.max(1, qty - 1))}
                     className="px-4 h-full hover:bg-gray-50 rounded-l-xl"
                   >
                     <Minus size={18} />
-                  </button>
+                  </Button>
                   <span className="w-12 text-center font-bold text-lg">
                     {qty}
                   </span>
-                  <button
+                  <Button
                     onClick={() => setQty(qty + 1)}
                     className="px-4 h-full hover:bg-gray-50 rounded-r-xl"
                   >
                     <Plus size={18} />
-                  </button>
+                  </Button>
                 </div>
-                <button
+                <Button
                   onClick={() => onBuy(qty)}
                   className="flex-1 bg-[#111827] hover:bg-black text-white h-14 rounded-xl font-bold text-lg shadow-xl shadow-gray-200 hover:shadow-2xl hover:-translate-y-1 transition-all flex items-center justify-center gap-2"
                 >
@@ -123,7 +124,7 @@ export const HeroLanding = ({
                     fill="currentColor"
                     className="text-yellow-400"
                   />
-                </button>
+                </Button>
               </div>
 
               <div className="flex flex-col gap-2 text-xs font-medium text-gray-500">

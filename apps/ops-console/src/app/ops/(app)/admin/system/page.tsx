@@ -3,6 +3,7 @@
 import React from "react";
 import { Terminal, Server, CheckCircle2, ShieldCheck, RefreshCw } from "lucide-react";
 import { useOpsQuery } from "@/hooks/useOpsQuery";
+import { Button } from "@vayva/ui";
 
 export default function SystemPage() {
     const { data: system, isLoading, refetch } = useOpsQuery(
@@ -20,9 +21,15 @@ export default function SystemPage() {
                     </h1>
                     <p className="text-gray-500 mt-1">Runtime configuration and health metrics.</p>
                 </div>
-                <button onClick={() => refetch()} className="p-2 hover:bg-gray-100 rounded-full">
+                <Button
+                    variant="ghost"
+                    size="icon"
+                    onClick={() => refetch()}
+                    className="rounded-full h-8 w-8"
+                    aria-label="Refresh system environment details"
+                >
                     <RefreshCw className={`w-5 h-5 text-gray-500 ${isLoading ? 'animate-spin' : ''}`} />
-                </button>
+                </Button>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">

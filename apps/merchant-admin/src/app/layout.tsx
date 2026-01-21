@@ -1,6 +1,10 @@
 import { Space_Grotesk, Inter } from "next/font/google";
 import type { Metadata, Viewport } from "next";
 import { AuthProvider } from "@/context/AuthContext";
+import { ConsentBanner } from "@/components/legal/ConsentBanner";
+import { IncidentBanner } from "@/components/layout/IncidentBanner";
+import { Analytics } from "@vercel/analytics/react";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 import "./globals.css";
 
 export const dynamic = "force-dynamic";
@@ -46,6 +50,8 @@ export const metadata: Metadata = {
   },
 };
 
+import { Toaster } from "sonner";
+
 export default function RootLayout({
   children,
 }: {
@@ -64,10 +70,18 @@ export default function RootLayout({
         />
       </head>
       <body
-        className={`font-sans antialiased min-h-screen bg-background`}
+        className={`font-sans antialiased min-h-screen bg-background density-comfortable`}
         suppressHydrationWarning
       >
-        <AuthProvider>{children}</AuthProvider>
+        <AuthProvider>
+          <IncidentBanner />
+          {children}
+          <Toaster richColors position="top-right" />
+          <ConsentBanner />
+        </AuthProvider>
+        {/* Performance Monitoring */}
+        <Analytics />
+        <SpeedInsights />
       </body>
     </html>
   );

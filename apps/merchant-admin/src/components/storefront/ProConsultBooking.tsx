@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { Button } from "@vayva/ui";
 import {
   useStorefrontProducts,
   useStorefrontStore,
@@ -73,16 +74,16 @@ export function ProConsultBooking({
           </a>
         </div>
         <div className="flex gap-4">
-          <button className="text-sm font-bold text-slate-600 hover:text-blue-600">
+          <Button className="text-sm font-bold text-slate-600 hover:text-blue-600">
             Login
-          </button>
-          <button
+          </Button>
+          <Button
             className="px-5 py-2 bg-slate-900 text-white text-sm font-bold rounded-lg hover:bg-slate-800 flex items-center gap-2"
             onClick={() => setIsCartOpen(true)}
           >
             <ShoppingBag className="w-4 h-4" />
             <span>Bookings ({cart.length})</span>
-          </button>
+          </Button>
         </div>
       </nav>
 
@@ -98,9 +99,9 @@ export function ProConsultBooking({
               <h2 className="text-xl font-bold text-slate-900">
                 Session Summary
               </h2>
-              <button onClick={() => setIsCartOpen(false)}>
+              <Button onClick={() => setIsCartOpen(false)}>
                 <X className="w-5 h-5 text-slate-400" />
-              </button>
+              </Button>
             </div>
 
             <div className="flex-1 overflow-auto space-y-4">
@@ -132,26 +133,26 @@ export function ProConsultBooking({
                       </div>
                       <div className="flex items-center gap-3">
                         <div className="flex items-center border border-slate-200 rounded px-1">
-                          <button
+                          <Button
                             onClick={() => updateQuantity(item.id, -1)}
                             className="p-1 hover:text-blue-600"
                           >
                             <Minus className="w-3 h-3" />
-                          </button>
+                          </Button>
                           <span className="text-xs px-2">{item.quantity}</span>
-                          <button
+                          <Button
                             onClick={() => updateQuantity(item.id, 1)}
                             className="p-1 hover:text-blue-600"
                           >
                             <Plus className="w-3 h-3" />
-                          </button>
+                          </Button>
                         </div>
-                        <button
+                        <Button
                           onClick={() => removeFromCart(item.id)}
                           className="text-xs text-red-500 hover:text-red-700"
                         >
                           Remove
-                        </button>
+                        </Button>
                       </div>
                     </div>
                   </div>
@@ -165,7 +166,7 @@ export function ProConsultBooking({
                   <span>Total Due</span>
                   <span>₦{total.toLocaleString()}</span>
                 </div>
-                <button
+                <Button
                   onClick={() => {
                     setIsCartOpen(false);
                     setIsCheckoutOpen(true);
@@ -173,7 +174,7 @@ export function ProConsultBooking({
                   className="w-full bg-blue-600 text-white py-4 rounded-lg font-bold hover:bg-blue-700 shadow-lg shadow-blue-100 transition-all"
                 >
                   Confirm & Pay
-                </button>
+                </Button>
               </div>
             )}
           </div>
@@ -198,12 +199,12 @@ export function ProConsultBooking({
               and finance via high-quality video calls.
             </p>
             <div className="flex gap-4">
-              <button className="px-8 py-3 bg-blue-600 text-white font-bold rounded-lg hover:bg-blue-500 transition-colors">
+              <Button className="px-8 py-3 bg-blue-600 text-white font-bold rounded-lg hover:bg-blue-500 transition-colors">
                 Find an Expert
-              </button>
-              <button className="px-8 py-3 bg-white/10 text-white font-bold rounded-lg hover:bg-white/20 transition-colors backdrop-blur">
+              </Button>
+              <Button className="px-8 py-3 bg-white/10 text-white font-bold rounded-lg hover:bg-white/20 transition-colors backdrop-blur">
                 How it Works
-              </button>
+              </Button>
             </div>
           </div>
           <div className="hidden md:block relative">
@@ -236,9 +237,9 @@ export function ProConsultBooking({
             </h2>
             <p className="text-slate-500">Book a 1-on-1 session today.</p>
           </div>
-          <button className="text-blue-600 font-bold flex items-center gap-2 hover:gap-3 transition-all">
+          <Button className="text-blue-600 font-bold flex items-center gap-2 hover:gap-3 transition-all">
             View All Categories <ArrowRight className="w-4 h-4" />
-          </button>
+          </Button>
         </div>
 
         {isLoading && products.length === 0 ? (
@@ -303,9 +304,9 @@ export function ProConsultBooking({
                         </span>
                       </div>
                     </div>
-                    <button className="bg-slate-900 text-white p-2 rounded-lg hover:bg-blue-600 transition-colors group-hover:shadow-lg">
+                    <Button className="bg-slate-900 text-white p-2 rounded-lg hover:bg-blue-600 transition-colors group-hover:shadow-lg">
                       <ArrowRight className="w-5 h-5" />
-                    </button>
+                    </Button>
                   </div>
                 </div>
               </div>

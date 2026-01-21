@@ -18,4 +18,94 @@
         background-image: none;
         /* Remove dark gradients */
     }
+
+    input,
+    select,
+    textarea {
+        @apply text-base;
+        /* 16px to prevent iOS zoom */
+    }
+}
+
+@layer utilities {
+
+    /* Surface Primitives */
+    .surface-base {
+        @apply bg-background text-foreground;
+    }
+
+    .surface-muted {
+        @apply bg-muted text-muted-foreground;
+    }
+
+    .surface-glass {
+        @apply bg-white/60 backdrop-blur-md border border-white/20 shadow-glass;
+    }
+
+    .surface-elevated {
+        @apply bg-white shadow-elevated border border-gray-100;
+    }
+
+    /* Redundant legacy classes mapped to new system for compatibility */
+    .glass-panel {
+        @apply surface-glass;
+    }
+
+    .glass-card {
+        @apply surface-glass rounded-xl;
+    }
+
+    /* Typography Roles */
+    .text-display {
+        @apply font-heading text-4xl font-bold tracking-tight;
+    }
+
+    .text-title {
+        @apply font-heading text-2xl font-semibold tracking-tight;
+    }
+
+    .text-section {
+        @apply font-sans text-lg font-medium text-foreground;
+    }
+
+    .text-body {
+        @apply font-sans text-base text-foreground leading-relaxed;
+    }
+
+    .text-meta {
+        @apply font-sans text-sm text-muted-foreground;
+    }
+
+    .text-link {
+        @apply font-sans text-sm font-medium text-primary hover:underline underline-offset-4 cursor-pointer;
+    }
+
+    /* Layout Primitives */
+    .divider-h {
+        @apply h-px w-full bg-border/40 my-4;
+    }
+}
+
+/* Density Systems - Global overrides */
+@layer components {
+
+    /* Compact Mode */
+    .density-compact table tr td,
+    .density-compact table tr th {
+        @apply py-2 px-3 text-xs override-padding;
+    }
+
+    .density-compact .btn-std {
+        @apply h-8 px-3 text-xs;
+    }
+
+    /* Comfortable Mode (Marketplace Default) */
+    .density-comfortable table tr td,
+    .density-comfortable table tr th {
+        @apply py-4 px-6 text-sm override-padding;
+    }
+
+    .density-comfortable .btn-std {
+        @apply h-10 px-4 text-sm;
+    }
 }

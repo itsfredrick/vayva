@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { Button } from "@vayva/ui";
 import {
   X,
   ChevronRight,
@@ -52,12 +53,12 @@ export const BookingWizard = ({
               {service.name} • ₦{service.price.toLocaleString()}
             </p>
           </div>
-          <button
+          <Button
             onClick={onClose}
             className="p-2 hover:bg-gray-200 rounded-full text-gray-500"
           >
             <X size={20} />
-          </button>
+          </Button>
         </div>
 
         {/* Body */}
@@ -82,7 +83,7 @@ export const BookingWizard = ({
               </h4>
               <div className="grid grid-cols-5 gap-3">
                 {DEMO_DATES.map((d, i) => (
-                  <button
+                  <Button
                     key={i}
                     onClick={() => setSelectedDate(d.date)}
                     className={`flex flex-col items-center justify-center p-3 rounded-lg border ${selectedDate === d.date ? "border-blue-600 bg-blue-50 text-blue-700" : "border-gray-200 hover:border-blue-300"}`}
@@ -91,16 +92,16 @@ export const BookingWizard = ({
                       {d.day}
                     </span>
                     <span className="text-xl font-bold">{d.date}</span>
-                  </button>
+                  </Button>
                 ))}
               </div>
-              <button
+              <Button
                 disabled={!selectedDate}
                 onClick={() => setStep(2)}
                 className="w-full bg-blue-600 text-white font-bold py-3 rounded-lg disabled:opacity-50 disabled:cursor-not-allowed mt-4"
               >
                 Continue
-              </button>
+              </Button>
             </div>
           )}
 
@@ -111,29 +112,29 @@ export const BookingWizard = ({
               </h4>
               <div className="grid grid-cols-3 gap-3">
                 {DEMO_SLOTS.map((t, i) => (
-                  <button
+                  <Button
                     key={i}
                     onClick={() => setSelectedTime(t)}
                     className={`py-3 px-4 rounded-lg border font-medium ${selectedTime === t ? "border-blue-600 bg-blue-50 text-blue-700" : "border-gray-200 hover:border-blue-300 text-gray-700"}`}
                   >
                     {t}
-                  </button>
+                  </Button>
                 ))}
               </div>
               <div className="flex gap-3 mt-8">
-                <button
+                <Button
                   onClick={() => setStep(1)}
                   className="flex-1 py-3 text-gray-600 font-medium hover:bg-gray-50 rounded-lg"
                 >
                   Back
-                </button>
-                <button
+                </Button>
+                <Button
                   disabled={!selectedTime}
                   onClick={() => setStep(3)}
                   className="flex-1 bg-blue-600 text-white font-bold py-3 rounded-lg disabled:opacity-50"
                 >
                   Continue
-                </button>
+                </Button>
               </div>
             </div>
           )}
@@ -180,18 +181,18 @@ export const BookingWizard = ({
               </div>
 
               <div className="flex gap-3 mt-4">
-                <button
+                <Button
                   onClick={() => setStep(2)}
                   className="flex-1 py-3 text-gray-600 font-medium hover:bg-gray-50 rounded-lg"
                 >
                   Back
-                </button>
-                <button
+                </Button>
+                <Button
                   onClick={handleConfirm}
                   className="flex-[2] bg-gray-900 text-white font-bold py-3 rounded-lg hover:bg-black transition-colors"
                 >
                   Confirm & Pay
-                </button>
+                </Button>
               </div>
             </div>
           )}

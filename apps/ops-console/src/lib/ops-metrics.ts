@@ -8,6 +8,7 @@ export interface DashboardMetrics {
     paymentsSuccess24h: number;
     paymentsFailed24h: number;
     activeDispatchJobs: number;
+    appDownloads: number;
   };
   growth: {
     totalMerchants: number;
@@ -103,6 +104,7 @@ export async function getDashboardMetrics(): Promise<DashboardMetrics> {
       paymentsSuccess24h: paymentsSuccess24h as any,
       paymentsFailed24h: paymentsFailed24h as any,
       activeDispatchJobs: activeDispatchJobs as any,
+      appDownloads: 0, // Metric not yet tracked
     },
     growth: {
       totalMerchants: totalMerchants as any,

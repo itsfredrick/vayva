@@ -16,6 +16,8 @@ import {
     MapPin,
     AlertTriangle
 } from "lucide-react";
+import { Button } from "@vayva/ui";
+import { OpsPagination } from "@/components/shared/OpsPagination";
 import { toast } from "sonner";
 
 interface Shipment {
@@ -53,10 +55,24 @@ export default function DeliveriesPage() {
     const [meta, setMeta] = useState<Meta | null>(null);
     const [loading, setLoading] = useState(true);
     const [showFilters, setShowFilters] = useState(false);
+    const [stats, setStats] = useState({ total: 0, delivered: 0, pending: 0, failed: 0, slaRate: 0 });
 
     useEffect(() => {
         fetchDeliveries();
+        fetchStats();
     }, [page, search, status, provider]);
+
+    const fetchStats = async () => {
+        try {
+            const res = await fetch("/api/ops/logistics/stats");
+            if (res.ok) {
+                const s = await res.json();
+                setStats(s);
+            }
+        } catch (e) {
+            console.error("Failed to fetch stats", e);
+        }
+    };
 
     const fetchDeliveries = async () => {
         setLoading(true);
@@ -69,10 +85,6 @@ export default function DeliveriesPage() {
                 ...(provider && { provider }),
             });
 
-            const res = await fetch(`/api/ops/logistics/shipments?${query}`); // Assuming GET route exists similar to before or use existing search API
-            // Note: In previous step I saw fetch(`/api/ops/deliveries?${query}`); leaving as is if route exists
-            // But usually I might have needed to create it.
-            // Let's assume GET /api/ops/deliveries exists as per existing code.
             const resGet = await fetch(`/api/ops/deliveries?${query}`);
 
             if (resGet.status === 401) {
@@ -175,10 +187,35 @@ export default function DeliveriesPage() {
                         <Truck className="w-8 h-8 text-indigo-600" />
                         Deliveries
                     </h1>
-                    <p className="text-gray-500 mt-1">Track platform-wide shipments</p>
+                    <div className="flex items-center gap-3 mt-1">
+                        <p className="text-gray-500">Track platform-wide shipments</p>
+                        <span className="px-2 py-0.5 bg-green-100 text-green-700 text-xs font-bold rounded-full">
+                            {stats.slaRate}% On-Time Delivery
+                        </span>
+                    </div>
                 </div>
                 <div className="text-sm text-gray-500">
                     {meta && `${meta.total} total shipments`}
+                </div>
+            </div>
+
+            {/* Stats Summary */}
+            <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+                <div className="bg-white p-4 rounded-xl border border-gray-200">
+                    <div className="text-gray-500 text-xs font-medium uppercase mb-1">Total Shipped</div>
+                    <div className="text-2xl font-bold">{stats.total}</div>
+                </div>
+                <div className="bg-white p-4 rounded-xl border border-gray-200">
+                    <div className="text-green-600 text-xs font-medium uppercase mb-1">Delivered</div>
+                    <div className="text-2xl font-bold">{stats.delivered}</div>
+                </div>
+                <div className="bg-white p-4 rounded-xl border border-gray-200">
+                    <div className="text-blue-600 text-xs font-medium uppercase mb-1">Pending</div>
+                    <div className="text-2xl font-bold">{stats.pending}</div>
+                </div>
+                <div className="bg-white p-4 rounded-xl border border-gray-200">
+                    <div className="text-red-600 text-xs font-medium uppercase mb-1">Failed</div>
+                    <div className="text-2xl font-bold">{stats.failed}</div>
                 </div>
             </div>
 
@@ -195,28 +232,32 @@ export default function DeliveriesPage() {
                             onChange={(e) => setSearchInput(e.target.value)}
                         />
                     </form>
-                    <button
+                    <Button
+                        variant="outline"
                         onClick={() => setShowFilters(!showFilters)}
-                        className={`px-4 py-2.5 rounded-lg border text-sm font-medium transition-colors flex items-center gap-2 ${showFilters || status || provider
-                            ? "bg-indigo-50 border-indigo-200 text-indigo-700"
-                            : "bg-white border-gray-200 text-gray-700 hover:bg-gray-50"
+                        className={`flex items-center gap-2 h-auto ${showFilters || status || provider
+                            ? "bg-indigo-50 border-indigo-200 text-indigo-700 hover:bg-indigo-100"
+                            : ""
                             }`}
+                        aria-label={showFilters ? "Hide filters" : "Show filters"}
                     >
-                        <Filter className="h-4 w-4" />
+                        <Filter className="h-4 w-4 mr-2" />
                         Filters
                         {(status || provider) && (
-                            <span className="bg-indigo-600 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
+                            <span className="ml-2 bg-indigo-600 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
                                 {[status, provider].filter(Boolean).length}
                             </span>
                         )}
-                    </button>
-                    <button
+                    </Button>
+                    <Button
+                        variant="outline"
                         onClick={fetchDeliveries}
-                        className="px-4 py-2.5 rounded-lg border border-gray-200 text-gray-700 hover:bg-gray-50 transition-colors flex items-center gap-2"
+                        className="flex items-center gap-2 h-auto"
+                        aria-label="Refresh deliveries list"
                     >
-                        <RefreshCw className="h-4 w-4" />
+                        <RefreshCw className="h-4 w-4 mr-2" />
                         Refresh
-                    </button>
+                    </Button>
                 </div>
 
                 {/* Filter Options */}
@@ -225,6 +266,8 @@ export default function DeliveriesPage() {
                         <div>
                             <label className="block text-xs font-medium text-gray-700 mb-2">Delivery Status</label>
                             <select
+                                title="Filter by status"
+                                aria-label="Filter by delivery status"
                                 value={status}
                                 onChange={(e) => handleFilterChange("status", e.target.value)}
                                 className="w-full px-3 py-2 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
@@ -240,6 +283,8 @@ export default function DeliveriesPage() {
                         <div>
                             <label className="block text-xs font-medium text-gray-700 mb-2">Provider</label>
                             <select
+                                title="Filter by provider"
+                                aria-label="Filter by delivery provider"
                                 value={provider}
                                 onChange={(e) => handleFilterChange("provider", e.target.value)}
                                 className="w-full px-3 py-2 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
@@ -316,27 +361,36 @@ export default function DeliveriesPage() {
                                         </td>
                                         <td className="px-6 py-4">
                                             <div className="flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
-                                                <button
+                                                <Button
+                                                    variant="primary"
+                                                    size="sm"
                                                     onClick={() => handleForceStatus(shipment.id, "DELIVERED")}
-                                                    className="p-1 px-2 text-xs bg-green-50 text-green-700 border border-green-200 rounded hover:bg-green-100"
+                                                    className="h-7 px-2 text-[10px] bg-green-50 text-green-700 border border-green-200 hover:bg-green-100"
                                                     title="Force Mark Delivered"
+                                                    aria-label={`Mark shipment ${shipment.id} as delivered`}
                                                 >
                                                     Done
-                                                </button>
-                                                <button
+                                                </Button>
+                                                <Button
+                                                    variant="destructive"
+                                                    size="sm"
                                                     onClick={() => handleForceStatus(shipment.id, "FAILED")}
-                                                    className="p-1 px-2 text-xs bg-red-50 text-red-700 border border-red-200 rounded hover:bg-red-100"
+                                                    className="h-7 px-2 text-[10px] bg-red-50 text-red-700 border border-red-200 hover:bg-red-100 shadow-none"
                                                     title="Force Mark Failed"
+                                                    aria-label={`Mark shipment ${shipment.id} as failed`}
                                                 >
                                                     Fail
-                                                </button>
-                                                <button
+                                                </Button>
+                                                <Button
+                                                    variant="outline"
+                                                    size="sm"
                                                     onClick={() => handleForceStatus(shipment.id, "CANCELED")}
-                                                    className="p-1 px-2 text-xs bg-gray-50 text-gray-700 border border-gray-200 rounded hover:bg-gray-100"
+                                                    className="h-7 px-2 text-[10px] bg-gray-50 text-gray-700 border border-gray-200 hover:bg-gray-100"
                                                     title="Force Cancel"
+                                                    aria-label={`Mark shipment ${shipment.id} as canceled`}
                                                 >
                                                     Cancel
-                                                </button>
+                                                </Button>
                                             </div>
                                         </td>
                                     </tr>
@@ -348,29 +402,12 @@ export default function DeliveriesPage() {
 
                 {/* Pagination UI - Shared */}
                 {meta && (
-                    <div className="bg-gray-50 border-t border-gray-200 px-6 py-3 flex items-center justify-between">
-                        <div className="text-xs text-gray-500">
-                            Showing <span className="font-medium">{(meta.page - 1) * meta.limit + 1}</span> to{" "}
-                            <span className="font-medium">{Math.min(meta.page * meta.limit, meta.total)}</span> of{" "}
-                            <span className="font-medium">{meta.total}</span> results
-                        </div>
-                        <div className="flex gap-2">
-                            <button
-                                onClick={() => handlePageChange(meta.page - 1)}
-                                disabled={meta.page <= 1}
-                                className="px-3 py-1.5 border border-gray-300 rounded-lg text-xs font-medium text-gray-600 hover:bg-white disabled:opacity-50 disabled:cursor-not-allowed"
-                            >
-                                Previous
-                            </button>
-                            <button
-                                onClick={() => handlePageChange(meta.page + 1)}
-                                disabled={meta.page >= meta.totalPages}
-                                className="px-3 py-1.5 border border-gray-300 rounded-lg text-xs font-medium text-gray-600 hover:bg-white disabled:opacity-50 disabled:cursor-not-allowed"
-                            >
-                                Next
-                            </button>
-                        </div>
-                    </div>
+                    <OpsPagination
+                        currentPage={meta.page}
+                        totalItems={meta.total}
+                        limit={meta.limit}
+                        onPageChange={handlePageChange}
+                    />
                 )}
             </div>
         </div>

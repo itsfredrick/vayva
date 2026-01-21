@@ -31,9 +31,8 @@ const MOCKS = {
 const OUTPUT_PATH = path.join(process.cwd(), "public", "email_previews.html");
 
 function generate() {
-  const galleryItems = Object.entries(Templates).map(([key, renderFn]) => {
+  const galleryItems = Object.entries(Templates as Record<string, (data: any) => string>).map(([key, renderFn]) => {
     const data = MOCKS[key as keyof typeof MOCKS] || {};
-    // @ts-ignore
     const html = renderFn(data);
     return { key, html, subject: "Subject Preview" };
   });

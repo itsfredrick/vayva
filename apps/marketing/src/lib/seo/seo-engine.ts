@@ -5,8 +5,6 @@ import {
   isAllowIndex,
   isHardNoindex,
   pageTypeFor,
-  DUPLICATE_MARKETPLACE_PATH,
-  CANONICAL_MARKETPLACE_TARGET,
 } from "./route-policy";
 import { buildJsonLdFor } from "./schema/index";
 
@@ -23,11 +21,8 @@ export function robotsFor(path: string) {
 }
 
 export function metadataFor(path: string, ctx?: Record<string, any>): Metadata {
-  // Duplicate marketplace handling: marketing /marketplace must not compete with /market/*
-  const isDupMarketplace = path === DUPLICATE_MARKETPLACE_PATH;
-
   const robots = robotsFor(path);
-  const canonicalPath = isDupMarketplace ? CANONICAL_MARKETPLACE_TARGET : path;
+  const canonicalPath = path;
 
   const title = computeTitle(path, ctx);
   const description = computeDescription(path, ctx);
@@ -61,20 +56,14 @@ function computeTitle(path: string, ctx?: Record<string, any>) {
   switch (pt) {
     case "home":
       return "Vayva | Nigeria's #1 AI Commerce Platform";
-    case "templates_hub":
-      return "Website Templates for Online Selling | Vayva";
-    case "template_detail":
-      return `${ctx?.templateName ?? "Online Store Template"} | Vayva`;
-    case "compare_page":
-      return `${ctx?.compareTitle ?? "Vayva Comparisons"} | Vayva`;
-    case "market_category":
-      return `${ctx?.categoryName ?? "Marketplace Category"} Stores in Nigeria | Vayva`;
-    case "storefront":
-      return `${ctx?.storeName ?? "Store"} | Buy Online in ${ctx?.city || "Nigeria"} via Vayva AI`;
     case "blog_hub":
       return "Vayva Blog | Guides for Selling Online";
     case "blog_post":
       return `${ctx?.postTitle ?? "Guide"} | Vayva Blog`;
+    case "legal_page":
+      return `${ctx?.pageTitle ?? "Legal"} | Vayva`;
+    case "help_page":
+      return `${ctx?.pageTitle ?? "Help Center"} | Vayva`;
     default:
       return `${ctx?.pageTitle ?? "Vayva"} | Vayva`;
   }
@@ -85,16 +74,8 @@ function computeDescription(path: string, ctx?: Record<string, any>) {
   switch (pt) {
     case "home":
       return "Build, sell, and scale with Vayva—Nigeria's #1 AI-powered commerce platform. Professional storefronts, WhatsApp ordering, and automated payments for modern vendors.";
-    case "template_detail":
-      return (
-        ctx?.templateDescription ??
-        "Launch a fast, mobile-first storefront with payments and a conversion-focused design."
-      );
-    case "storefront":
-      return (
-        ctx?.storeDescription ??
-        `Shop at ${ctx?.storeName ?? "this store"} on Vayva—Nigeria's #1 AI Commerce platform. Fast WhatsApp ordering, secure payments, and reliable delivery in ${ctx?.city || "Nigeria"}.`
-      );
+    case "blog_post":
+      return ctx?.postDescription ?? "Read the latest from Vayva.";
     default:
       return (
         ctx?.pageDescription ??

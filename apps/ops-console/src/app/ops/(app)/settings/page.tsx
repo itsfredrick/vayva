@@ -3,6 +3,7 @@
 import React, { useState } from "react";
 import { Settings, Shield, Zap, AlertTriangle, Save } from "lucide-react";
 import { toast } from "sonner";
+import { Button } from "@vayva/ui";
 
 export default function GlobalSettingsPage() {
     const [settings, setSettings] = useState({
@@ -43,12 +44,14 @@ export default function GlobalSettingsPage() {
                     </h1>
                     <p className="text-gray-500 mt-1">Global controls and emergency switches.</p>
                 </div>
-                <button
+                <Button
+                    variant="primary"
                     onClick={handleSave}
-                    className="flex items-center gap-2 bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-lg font-medium transition-colors"
+                    className="flex items-center gap-2 bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-lg font-medium transition-colors h-auto"
+                    aria-label="Save global system settings"
                 >
                     <Save size={18} /> Save Changes
-                </button>
+                </Button>
             </div>
 
             <div className="grid gap-6">
@@ -72,6 +75,7 @@ export default function GlobalSettingsPage() {
                                     className="sr-only peer"
                                     checked={settings.aiEnabled}
                                     onChange={() => handleToggle("aiEnabled")}
+                                    aria-label="Toggle Global AI Agent"
                                 />
                                 <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-indigo-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-indigo-600"></div>
                             </label>
@@ -88,6 +92,7 @@ export default function GlobalSettingsPage() {
                                     className="sr-only peer"
                                     checked={settings.evolutionApiEnabled}
                                     onChange={() => handleToggle("evolutionApiEnabled")}
+                                    aria-label="Toggle Evolution API Integration"
                                 />
                                 <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-indigo-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-green-600"></div>
                             </label>
@@ -113,6 +118,7 @@ export default function GlobalSettingsPage() {
                                 className="sr-only peer"
                                 checked={settings.maintenanceMode}
                                 onChange={() => handleToggle("maintenanceMode")}
+                                aria-label="Toggle Maintenance Mode"
                             />
                             <div className="w-11 h-6 bg-red-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-red-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-red-600"></div>
                         </label>

@@ -8,7 +8,7 @@ import { revalidatePath } from "next/cache";
 export type StoreSeoInput = {
     seoTitle: string | null;
     seoDescription: string | null;
-    seoKeywords: string[];
+    // seoKeywords: string[]; // Field not in schema yet
     socialImage: string | null;
 };
 
@@ -26,7 +26,7 @@ export async function updateStoreSeo(data: StoreSeoInput) {
             data: {
                 seoTitle: data.seoTitle,
                 seoDescription: data.seoDescription,
-                seoKeywords: data.seoKeywords,
+                // seoKeywords: data.seoKeywords, // Field not in schema yet
                 socialImage: data.socialImage,
             },
         });

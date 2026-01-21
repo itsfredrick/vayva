@@ -1,9 +1,8 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { Button } from "@/components/ui/button";
+import { Button, Input } from "@vayva/ui";
 import { Card } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Badge } from "@/components/ui/badge";
 
@@ -187,16 +186,16 @@ export default function StorePoliciesPage() {
             const isSelected = selectedType === type;
 
             return (
-              <button
+              <Button
                 key={type}
+                variant="ghost"
                 onClick={() => setSelectedType(type)}
-                className={`w-full text-left px-4 py-3 rounded-lg transition-colors ${
-                  isSelected
-                    ? "bg-[#22C55E]/10 text-[#22C55E] font-medium"
-                    : "hover:bg-slate-100 text-slate-700"
-                }`}
+                className={`w-full justify-start h-auto px-4 py-3 rounded-lg transition-colors font-normal hover:bg-slate-100 text-slate-700 ${isSelected
+                    ? "bg-[#22C55E]/10 text-[#22C55E] font-medium hover:bg-[#22C55E]/20 hover:text-[#22C55E]"
+                    : ""
+                  }`}
               >
-                <div className="flex items-center justify-between">
+                <div className="flex items-center justify-between w-full">
                   <span className="text-sm">{label}</span>
                   {policy && (
                     <Badge
@@ -210,7 +209,7 @@ export default function StorePoliciesPage() {
                     </Badge>
                   )}
                 </div>
-              </button>
+              </Button>
             );
           })}
         </div>

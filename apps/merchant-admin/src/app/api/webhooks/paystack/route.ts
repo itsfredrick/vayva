@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { verifyPaystackSignature } from "@/lib/webhooks/verify";
-import { prisma } from "@vayva/db";
+import { prisma } from "@/lib/prisma";
 import { getPaymentsQueue } from "@/lib/queue";
 
 /**
@@ -24,7 +24,7 @@ export async function POST(req: NextRequest) {
     return new NextResponse("Invalid JSON", { status: 400 });
   }
 
-  if (!verifyPaystackSignature(event, signature, secret)) {
+  if (!verifyPaystackSignature(rawBody, signature, secret)) {
     return new NextResponse("Invalid Signature", { status: 401 });
   }
 
@@ -74,23 +74,27 @@ export async function POST(req: NextRequest) {
 
       if (storeId && newPlan) {
         try {
-          await prisma.merchantSubscription.upsert({
+          await prisma.merchantAiSubscription.upsert({
             where: { storeId },
             create: {
-              storeId,
-              planSlug: newPlan,
+              store: {
+                connect: { id: storeId }
+              },
+              plan: {
+                connect: { name: newPlan.toUpperCase() }
+              },
+              planKey: newPlan.toUpperCase(),
               status: "active",
-              provider: "paystack",
-              currentPeriodStart: new Date(),
-              currentPeriodEnd: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000), // 30 days
-              trialEndsAt: null, // End trial immediately
+              periodStart: new Date(),
+              periodEnd: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000), // 30 days
+              trialExpiresAt: new Date(),
             },
             update: {
-              planSlug: newPlan,
+              planKey: newPlan.toUpperCase(),
               status: "active",
-              currentPeriodStart: new Date(),
-              currentPeriodEnd: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000),
-              trialEndsAt: null,
+              periodStart: new Date(),
+              periodEnd: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000),
+              trialExpiresAt: new Date(),
             }
           });
 

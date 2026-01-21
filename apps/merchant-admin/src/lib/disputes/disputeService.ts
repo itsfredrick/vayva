@@ -18,7 +18,7 @@ export class DisputeService {
         store: {
           include: {
             memberships: {
-              where: { role: "OWNER" },
+              where: { role_enum: "OWNER" },
               take: 1,
             },
           },

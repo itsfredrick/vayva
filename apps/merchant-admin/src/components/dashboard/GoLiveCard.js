@@ -1,0 +1,96 @@
+"use client";
+import { jsx as _jsx, jsxs as _jsxs } from "react/jsx-runtime";
+import { useEffect, useState } from "react";
+import { Icon, Button } from "@vayva/ui";
+import { useRouter } from "next/navigation";
+import { useToast } from "@/components/ui/use-toast";
+export function GoLiveCard() {
+    const router = useRouter();
+    const { toast } = useToast();
+    const [status, setStatus] = useState(null);
+    const [loading, setLoading] = useState(true);
+    const [processing, setProcessing] = useState(false);
+    useEffect(() => {
+        fetchStatus();
+    }, []);
+    async function fetchStatus() {
+        try {
+            const res = await fetch("/api/merchant/store/publish/status");
+            const data = await res.json();
+            setStatus(data);
+        }
+        catch (e) {
+            console.error(e);
+        }
+        finally {
+            setLoading(false);
+        }
+    }
+    async function handleGoLive() {
+        setProcessing(true);
+        try {
+            const res = await fetch("/api/merchant/store/publish/go-live", {
+                method: "POST",
+            });
+            const data = await res.json();
+            if (res.ok) {
+                // Success
+                fetchStatus();
+                toast({
+                    title: "Store is Live!",
+                    description: "Your store is now visible to the public.",
+                });
+            }
+            else {
+                if (res.status === 409) {
+                    // Blocked
+                    toast({
+                        title: "Cannot Go Live",
+                        description: "Please fix the blockers listed below.",
+                        variant: "destructive",
+                    });
+                    fetchStatus(); // Refresh to ensure we see latest blockers
+                }
+                else {
+                    toast({
+                        title: "Publication Failed",
+                        description: data.message || "Failed to publish store.",
+                        variant: "destructive",
+                    });
+                }
+            }
+        }
+        catch (err) {
+            console.error(err);
+        }
+        finally {
+            setProcessing(false);
+        }
+    }
+    async function handleUnpublish() {
+        if (!confirm("Are you sure? Your store will go offline."))
+            return;
+        setProcessing(true);
+        try {
+            await fetch("/api/merchant/store/publish/unpublish", {
+                method: "POST",
+                body: JSON.stringify({ reason: "Merchant initiated" }),
+            });
+            fetchStatus();
+        }
+        finally {
+            setProcessing(false);
+        }
+    }
+    if (loading)
+        return _jsx("div", { className: "h-48 bg-gray-100 rounded-xl animate-pulse" });
+    if (!status)
+        return null;
+    const isLive = status?.isLive;
+    const readiness = status?.readiness || {};
+    const isReady = readiness.level === "ready";
+    const blockers = readiness.issues?.filter((i) => i.severity === "blocker") || [];
+    return (_jsxs("div", { className: "bg-white rounded-xl border border-gray-200 shadow-sm p-6", children: [_jsxs("div", { className: "flex justify-between items-start mb-4", children: [_jsxs("div", { children: [_jsx("h3", { className: "text-lg font-bold text-gray-900", children: "Store Status" }), _jsx("p", { className: "text-sm text-gray-500", children: "Manage your public presence." })] }), _jsx("div", { className: `px-3 py-1 rounded-full text-xs font-bold uppercase ${isLive ? "bg-green-100 text-green-700" : "bg-gray-100 text-gray-500"}`, children: isLive ? "Live" : "Offline" })] }), isLive ? (_jsx("div", { className: "space-y-4", children: _jsxs("div", { className: "p-4 bg-green-50 rounded-lg flex items-center gap-3", children: [_jsx(Icon, { name: "Globe", className: "text-green-600" }), _jsxs("div", { className: "flex-1", children: [_jsx("div", { className: "text-xs text-green-700 font-bold uppercase", children: "Public URL" }), _jsx("a", { href: "#", className: "text-sm font-medium text-green-900 underline", children: "vayva.ng/store" })] }), _jsx(Button, { onClick: handleUnpublish, disabled: processing, className: "text-xs text-red-600 font-bold hover:underline", children: "Unpublish" })] }) })) : (_jsxs("div", { className: "space-y-4", children: [!isReady && (_jsxs("div", { className: "bg-orange-50 p-4 rounded-lg border border-orange-100", children: [_jsxs("div", { className: "flex items-center gap-2 mb-2 text-orange-800 font-bold text-sm", children: [_jsx(Icon, { name: "AlertTriangle", size: 16 }), blockers.length, " Issues preventing Go Live"] }), _jsx("div", { className: "space-y-1", children: blockers.map((b) => (_jsxs("div", { className: "text-xs text-orange-700 flex justify-between", children: [_jsxs("span", { children: ["\u2022 ", b.title] }), b.actionUrl && (_jsx("a", { href: b.actionUrl, className: "underline hover:text-orange-900", children: "Fix" }))] }, b.code))) })] })), _jsxs(Button, { onClick: handleGoLive, disabled: !isReady || processing, className: `w-full py-3 rounded-lg font-bold flex items-center justify-center gap-2 ${!isReady
+                            ? "bg-gray-100 text-gray-400 cursor-not-allowed"
+                            : "bg-black text-white hover:bg-gray-800"}`, children: [processing ? "Publishing..." : "Go Live Now", _jsx(Icon, { name: "ArrowRight", size: 16 })] })] }))] }));
+}

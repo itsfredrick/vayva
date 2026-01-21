@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { prisma } from "@vayva/db";
+import { prisma } from "@/lib/prisma";
 import { OpsAuthService } from "@/lib/ops-auth";
 
 export async function GET(request: Request) {
@@ -13,7 +13,6 @@ export async function GET(request: Request) {
       include: {
         kycRecord: true,
         bankBeneficiaries: { where: { isDefault: true } },
-        merchantSubscription: true,
       },
       take: 100,
     });
@@ -29,7 +28,7 @@ export async function GET(request: Request) {
       return {
         id: m.id,
         name: m.name,
-        plan: m.merchantSubscription?.plan || "FREE",
+        plan: m.aiSubscription?.plan || "FREE",
         kycStatus,
         isReady: reasons.length === 0,
         blockReasons: reasons,

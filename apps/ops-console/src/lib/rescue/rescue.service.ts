@@ -117,7 +117,7 @@ TASK:
 Analyze the provided error report and classify it into one of the following categories:
 - AUTH: Authentication or Authorization failures.
 - DATABASE: Prisma, Postgres, or indexing issues.
-- PAYMENTS: Paystack, Stripe, or wallet transaction failures.
+- PAYMENTS: Paystack or wallet transaction failures.
 - DELIVERY: Kwik, logistics, or shipment status issues.
 - NETWORKING: API Gateway, service-to-service timeouts, or CORS.
 - AI_LOGIC: SalesAgent, MerchantBrain, or prompt engineering issues.

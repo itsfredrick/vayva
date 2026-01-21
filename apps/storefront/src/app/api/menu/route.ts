@@ -18,9 +18,19 @@ export async function GET(req: NextRequest) {
     const collections = await prisma.collection.findMany({
       where: { storeId: store.id },
       include: {
-        CollectionProduct: {
+        collectionProducts: {
           include: {
-            Product: true,
+            product: {
+              select: {
+                id: true,
+                title: true,
+                description: true,
+                price: true,
+                handle: true,
+                tags: true,
+                productImages: true,
+              },
+            },
           },
         },
       },
@@ -29,7 +39,7 @@ export async function GET(req: NextRequest) {
     const products = await prisma.product.findMany({
       where: { storeId: store.id },
       include: {
-        ProductImage: true,
+        productImages: true,
       },
     });
 
@@ -74,7 +84,7 @@ export async function GET(req: NextRequest) {
         name: p.title,
         description: p.description || "",
         price: Number(p.price) || 0,
-        images: p.ProductImage?.map((img: any) => img.url) || [],
+        images: p.productImages?.map((img: any) => img.url) || [],
         variants: [],
         inStock: true,
         category: tagsObj.category,

@@ -3,6 +3,7 @@
 import React from "react";
 import { History, User, Search, RefreshCw } from "lucide-react";
 import { useOpsQuery } from "@/hooks/useOpsQuery";
+import { Button } from "@vayva/ui";
 
 export default function AuditPage() {
     const { data: logs, isLoading, refetch } = useOpsQuery(
@@ -20,9 +21,15 @@ export default function AuditPage() {
                     </h1>
                     <p className="text-gray-500 mt-1">Unified timestamped log of internal administrative actions.</p>
                 </div>
-                <button onClick={() => refetch()} className="p-2 hover:bg-gray-100 rounded-full">
+                <Button
+                    variant="ghost"
+                    size="icon"
+                    onClick={() => refetch()}
+                    className="rounded-full h-8 w-8"
+                    aria-label="Refresh audit logs"
+                >
                     <RefreshCw className={`w-5 h-5 text-gray-500 ${isLoading ? 'animate-spin' : ''}`} />
-                </button>
+                </Button>
             </div>
 
             <div className="bg-white border border-gray-200 rounded-xl shadow-sm overflow-hidden">

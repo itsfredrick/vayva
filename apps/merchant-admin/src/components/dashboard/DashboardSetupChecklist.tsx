@@ -2,10 +2,12 @@
 
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { Icon, cn, Button } from "@vayva/ui";
+import { Button, Icon, cn } from "@vayva/ui";
 import { useAuth } from "@/context/AuthContext";
 import { OnboardingStatus } from "@vayva/shared";
 import { telemetry } from "@/lib/telemetry";
+import { INDUSTRY_CONFIG } from "@/config/industry";
+import styles from "./DashboardSetupChecklist.module.css";
 
 export function DashboardSetupChecklist() {
   const { merchant } = useAuth();
@@ -14,7 +16,8 @@ export function DashboardSetupChecklist() {
   const [isPersistedHidden, setIsPersistedHidden] = useState(false);
 
   // Detailed progress state
-  const [progress, setProgress] = useState<any>(null);
+  const [activation, setActivation] = useState<any>(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     // Persistence check
@@ -24,27 +27,32 @@ export function DashboardSetupChecklist() {
       setIsPersistedHidden(hidden);
     }
 
-    async function loadProgress() {
+    async function loadActivation() {
       try {
-        const res = await fetch("/api/merchant/onboarding/state");
+        const res = await fetch("/api/merchant/dashboard/activation-progress");
         if (res.ok) {
-          const data = await res.json();
-          setProgress(data.data || {});
+          const json = await res.json();
+          setActivation(json.data || {});
         }
       } catch (e) {
         console.error(e);
+      } finally {
+        setLoading(false);
       }
     }
-    loadProgress();
+    loadActivation();
   }, []);
 
-  if (!merchant) return null;
+  if (!merchant || loading || !activation) return null;
 
-  const shouldShow =
-    merchant.onboardingStatus === OnboardingStatus.OPTIONAL_INCOMPLETE ||
-    merchant.onboardingStatus === OnboardingStatus.REQUIRED_COMPLETE;
+  // Activation Checklist Logic
+  // Hide if either onboarding not fully done OR all activation tasks done
+  const allDone = activation.hasProducts &&
+    activation.hasPayoutMethod &&
+    activation.kycStatus === "VERIFIED" &&
+    activation.isStoreLive;
 
-  if (!shouldShow) return null;
+  if (allDone) return null;
 
   const handleDismissSession = () => setIsVisible(false);
 
@@ -59,46 +67,60 @@ export function DashboardSetupChecklist() {
     localStorage.removeItem("vayva_dashboard_setup_hidden");
   };
 
+  // 1) Get Object name from industry
+  const industrySlug = activation.industrySlug || "retail";
+  const config = (INDUSTRY_CONFIG as any)[industrySlug] || (INDUSTRY_CONFIG as any)["retail"];
+  const primaryObject = config?.primaryObject || "product";
+  const objectLabel = primaryObject.charAt(0).toUpperCase() + primaryObject.slice(1).replace(/_/g, " ");
+
   const items = [
     {
-      id: "whatsapp",
-      label: "Connect WhatsApp",
-      desc: "Enable automated ordering",
-      isDone: !!progress?.whatsappConnected,
-      path: "/onboarding/whatsapp",
-    },
-    {
-      id: "payments",
-      label: "Set Payment Methods",
-      desc: "Define how you get paid",
-      isDone: !!progress?.payments,
-      path: "/onboarding/payments",
-    },
-    {
-      id: "delivery",
-      label: "Delivery Settings",
-      desc: "Configure shipping zones",
-      isDone: !!progress?.delivery,
-      path: "/onboarding/delivery",
-    },
-    {
-      id: "team",
-      label: "Invite Team",
-      desc: "Add staff members",
-      isDone: !!progress?.team?.invites?.length,
-      path: "/onboarding/team",
+      id: "product",
+      label: `Add your first ${objectLabel}`,
+      desc: `Create your initial ${primaryObject} listing`,
+      isDone: activation.hasProducts,
+      path:
+        config?.moduleRoutes?.catalog?.create ||
+        `/dashboard/${primaryObject}s/new`.replace("productss", "products"), // Safe plurals
     },
     {
       id: "kyc",
       label: "Verify Identity",
-      desc: "Required for withdrawals",
-      isDone: !!progress?.kycStatus && progress.kycStatus === "verified",
-      path: "/onboarding/kyc",
+      desc: "Upload ID to enable payouts",
+      isDone: activation.kycStatus === "VERIFIED",
+      path: "/dashboard/settings/security",
+    },
+    {
+      id: "payments",
+      label: "Setup Payout Bank",
+      desc: "Where we send your earnings",
+      isDone: activation.hasPayoutMethod,
+      path: "/dashboard/settings/billing",
+    },
+    {
+      id: "live",
+      label: "Go Live",
+      desc: "Publish your storefront",
+      isDone: activation.isStoreLive,
+      path: "/dashboard/control-center",
+    },
+    {
+      id: "roles",
+      label: "Secure Team",
+      desc: "Define custom roles & permissions",
+      isDone: activation.hasCustomRoles,
+      path: "/dashboard/settings/roles",
     },
   ];
 
+  // Specific path overrides
+  if (primaryObject === "menu_item") items[0].path = "/dashboard/menu-items/new";
+  if (primaryObject === "digital_asset") items[0].path = "/dashboard/digital-assets/new";
+
   const completedCount = items.filter((i) => i.isDone).length;
   const progressPercent = Math.round((completedCount / items.length) * 100);
+  const progressBucket = Math.max(0, Math.min(100, Math.round(progressPercent / 5) * 5));
+  const progressClass = styles[`w${progressBucket}`] || styles.w0;
 
   if (completedCount === items.length) return null; // All done
 
@@ -106,10 +128,10 @@ export function DashboardSetupChecklist() {
   if (!isVisible || isPersistedHidden) {
     return (
       <div className="mb-6 flex justify-end">
-        <button
+        <Button
           onClick={handleShow}
-          className="group flex items-center gap-3 text-sm font-medium text-gray-600 bg-white border border-gray-200 pl-3 pr-4 py-2 rounded-full hover:border-black hover:text-black hover:shadow-sm transition-all shadow-sm"
-        >
+          className="group flex items-center gap-3 text-sm font-bold text-gray-600 bg-white border border-studio-border pl-3 pr-4 py-2 rounded-full hover:border-vayva-green hover:text-black hover:shadow-lg transition-all shadow-sm"
+          variant="outline">
           <div className="relative w-5 h-5">
             <svg className="w-full h-full -rotate-90" viewBox="0 0 36 36">
               <path
@@ -120,7 +142,7 @@ export function DashboardSetupChecklist() {
                 strokeWidth="4"
               />
               <path
-                className="text-black transition-all duration-500"
+                className="text-vayva-green transition-all duration-500"
                 strokeDasharray={`${progressPercent}, 100`}
                 d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
                 fill="none"
@@ -130,7 +152,7 @@ export function DashboardSetupChecklist() {
             </svg>
           </div>
           <span>Finish Setup ({items.length - completedCount} left)</span>
-        </button>
+        </Button>
       </div>
     );
   }
@@ -145,25 +167,20 @@ export function DashboardSetupChecklist() {
           </p>
         </div>
         <div className="flex items-center gap-4">
-          <span className="text-sm font-bold text-gray-900">
+          <span className="text-sm font-black text-black">
             {progressPercent}% Done
           </span>
-          <button
+          <Button
             onClick={handleDismissSession}
             title="Dismiss for now"
             className="text-gray-400 hover:text-black transition-colors p-1"
-          >
+            variant="ghost" size="icon">
             <Icon name="X" size={20} />
-          </button>
+          </Button>
         </div>
       </div>
 
-      <div className="w-full bg-gray-100 h-2 rounded-full mb-6 overflow-hidden">
-        <div
-          className="bg-black h-full rounded-full transition-all duration-500 ease-out"
-          style={{ width: `${progressPercent}%` }}
-        />
-      </div>
+      <div className={cn("h-full rounded-full", styles.progressBar, progressClass)} />
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-4">
         {items.map((item) => (
@@ -178,10 +195,10 @@ export function DashboardSetupChecklist() {
               }
             }}
             className={cn(
-              "flex items-center gap-4 p-4 rounded-xl border transition-all duration-200 relative group",
+              "flex items-center gap-4 p-4 rounded-xl border transition-all duration-300 relative group",
               item.isDone
-                ? "bg-gray-50 border-gray-100 opacity-75"
-                : "bg-white border-gray-200 hover:border-black hover:shadow-md cursor-pointer",
+                ? "bg-gray-50 border-studio-border opacity-75"
+                : "bg-white border-studio-border hover:border-vayva-green hover:shadow-xl hover:-translate-y-1 cursor-pointer",
             )}
           >
             <div
@@ -189,7 +206,7 @@ export function DashboardSetupChecklist() {
                 "w-10 h-10 rounded-full flex items-center justify-center shrink-0",
                 item.isDone
                   ? "bg-green-100 text-green-600"
-                  : "bg-gray-100 text-gray-500 group-hover:bg-black group-hover:text-white transition-colors",
+                  : "bg-studio-gray text-gray-400 group-hover:bg-vayva-green group-hover:text-white transition-all",
               )}
             >
               {item.isDone ? (
@@ -214,12 +231,12 @@ export function DashboardSetupChecklist() {
       </div>
 
       <div className="flex justify-end pt-2 border-t border-gray-100">
-        <button
+        <Button
           onClick={handleHideForever}
           className="text-xs text-gray-400 hover:text-gray-600 hover:underline"
-        >
+          variant="link">
           Don't show this again
-        </button>
+        </Button>
       </div>
     </div>
   );

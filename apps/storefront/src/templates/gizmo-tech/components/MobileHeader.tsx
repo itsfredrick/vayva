@@ -1,6 +1,7 @@
 import React from "react";
 import { ShoppingBag, Search, Menu } from "lucide-react";
 import Link from "next/link";
+import { Button } from "@vayva/ui";
 
 interface MobileHeaderProps {
   storeName?: string;
@@ -25,9 +26,9 @@ export const MobileHeader = ({
       </div>
 
       <div className="flex items-center gap-5 text-[#0B0F19]">
-        <button className="p-1 hover:text-blue-600 transition-colors">
+        <Button variant="ghost" size="icon" className="p-1 hover:text-blue-600 transition-colors h-auto" aria-label="Search">
           <Search size={20} strokeWidth={2} />
-        </button>
+        </Button>
         <Link
           href="/cart"
           className="relative p-1 hover:text-blue-600 transition-colors"

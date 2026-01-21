@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { getSessionUser } from "@/lib/session";
 import { authorizeAction, AppRole } from "@/lib/permissions";
-import { prisma } from "@vayva/db";
+import { prisma } from "@/lib/prisma";
 import { logAuditEvent, AuditEventType } from "@/lib/audit";
 
 export async function POST(request: Request) {
@@ -47,9 +47,13 @@ export async function POST(request: Request) {
       user.id,
       AuditEventType.COMPLIANCE_REPORT_CREATED,
       {
-        reportType: type,
-        dateRange: { start: dateFrom, end: dateTo },
-        jobId: job.id,
+        targetType: "EXPORT_JOB",
+        targetId: job.id,
+        meta: {
+          reportType: type,
+          dateRange: { start: dateFrom, end: dateTo },
+          jobId: job.id,
+        },
       },
     );
 

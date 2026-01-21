@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getSessionUser } from "@/lib/session";
-import { prisma } from "@vayva/db";
+import { prisma } from "@/lib/prisma";
 import bcrypt from "bcryptjs";
 import { Resend } from "resend";
 
@@ -63,7 +63,7 @@ export async function POST(request: NextRequest) {
             try {
                 const resend = new Resend(process.env.RESEND_API_KEY);
                 await resend.emails.send({
-                    from: process.env.RESEND_FROM_EMAIL || "security@vayva.app",
+                    from: process.env.RESEND_FROM_EMAIL || "no-reply@vayva.ng",
                     to: user.email, // Assuming user.email exists in session or fetch from user profile
                     subject: `Security Alert: Wallet PIN ${isChange ? "Changed" : "Set"}`,
                     html: `

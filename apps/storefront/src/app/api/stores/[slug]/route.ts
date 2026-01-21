@@ -1,3 +1,4 @@
+
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@vayva/db";
 
@@ -16,18 +17,52 @@ export async function GET(
       return NextResponse.json({ error: "Store not found" }, { status: 404 });
     }
 
-    // Transform to PublicStore format if necessary
+    const { searchParams } = new URL(request.url);
+    const isPreview = searchParams.get("preview") === "true";
+
+    // Fetch published version or draft
+    let activeConfig: any = null;
+
+    if (isPreview) {
+      const draft = await prisma.storefrontDraft.findUnique({
+        where: { storeId: store.id },
+      });
+      if (draft) {
+        activeConfig = {
+          theme: draft.themeConfig,
+          sections: draft.sectionConfig,
+          order: draft.sectionOrder,
+          templateId: draft.activeTemplateId,
+        };
+      }
+    } else {
+      const published = await prisma.storefrontPublished.findUnique({
+        where: { storeId: store.id },
+      });
+      if (published) {
+        activeConfig = {
+          theme: published.themeConfig,
+          sections: published.sectionConfig,
+          order: (published as any).sectionOrder || [],
+          templateId: published.activeTemplateId,
+        };
+      }
+    }
+
+    // Transform to PublicStore format
     const publicStore = {
       id: store.id,
       name: store.name,
       slug: store.slug,
-      logo: store.logoUrl, // Check schema for actual field name
-      theme: (store.settings as any)?.theme || {},
-      plan: "FREE", // tested/derived
+      logo: store.logoUrl,
+      theme: activeConfig || (store.settings as any)?.theme || { templateId: "vayva-standard" },
+      plan: store.plan,
+      isLive: store.isLive,
     };
 
     return NextResponse.json(publicStore);
   } catch (error) {
+    console.error("Storefront API Error:", error);
     return NextResponse.json(
       { error: "Failed to fetch store" },
       { status: 500 },

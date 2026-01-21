@@ -1,5 +1,6 @@
 import React from "react";
 import { TemplateProps } from "../registry";
+import { Button } from "@vayva/ui";
 
 export const LogisticsServiceTemplate: React.FC<TemplateProps> = ({
   businessName,
@@ -60,9 +61,9 @@ export const LogisticsServiceTemplate: React.FC<TemplateProps> = ({
               </div>
             </div>
           </div>
-          <button className="w-full bg-yellow-400 text-blue-900 mt-6 py-3 rounded-lg font-bold text-sm hover:bg-yellow-300 transition-colors shadow-lg shadow-yellow-400/20">
+          <Button className="w-full bg-yellow-400 text-blue-900 mt-6 py-3 rounded-lg font-bold text-sm hover:bg-yellow-300 transition-colors shadow-lg shadow-yellow-400/20 h-auto">
             Check Price
-          </button>
+          </Button>
         </div>
       </section>
 

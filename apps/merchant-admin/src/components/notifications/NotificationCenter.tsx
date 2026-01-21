@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Notification, NotificationType } from "@vayva/shared";
-import { Icon, Button, cn } from "@vayva/ui";
+import { Button, Icon, cn } from "@vayva/ui";
 import Link from "next/link";
 import { NotificationItem } from "./NotificationItem";
 
@@ -92,18 +92,20 @@ export const NotificationCenter = ({
             <h3 className="font-bold text-gray-900">Notifications</h3>
             <div className="flex gap-2 mt-2">
               {(["all", "unread", "critical"] as const).map((f) => (
-                <button
+                <Button
                   key={f}
+                  variant="ghost"
+                  size="sm"
                   onClick={() => setFilter(f)}
                   className={cn(
-                    "text-[10px] font-bold uppercase tracking-wider px-2 py-1 rounded-full transition-colors",
+                    "text-[10px] font-bold uppercase tracking-wider px-2 py-1 rounded-full transition-colors h-auto min-h-0",
                     filter === f
-                      ? "bg-black text-white"
+                      ? "bg-black text-white hover:bg-black/90 hover:text-white"
                       : "bg-gray-100 text-gray-500 hover:bg-gray-200",
                   )}
                 >
                   {f}
-                </button>
+                </Button>
               ))}
             </div>
           </div>

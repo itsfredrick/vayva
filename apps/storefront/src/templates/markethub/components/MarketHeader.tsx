@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Search, ShoppingBag, User, Heart, Menu } from "lucide-react";
 import Link from "next/link";
+import { Button } from "@vayva/ui";
 import { useStore } from "@/context/StoreContext";
 
 interface MarketHeaderProps {
@@ -35,9 +36,9 @@ export const MarketHeader = ({
 
       <div className="max-w-7xl mx-auto px-6 h-18 md:h-20 flex items-center gap-4 md:gap-8 bg-white">
         {/* Mobile Menu */}
-        <button className="md:hidden text-gray-600">
+        <Button variant="ghost" size="icon" className="md:hidden text-gray-600 h-auto" aria-label="Open mobile menu">
           <Menu size={24} />
-        </button>
+        </Button>
 
         {/* Brand */}
         <Link
@@ -66,9 +67,9 @@ export const MarketHeader = ({
                 size={16}
               />
             </div>
-            <button className="bg-[#111827] hover:bg-[#1F2937] text-white px-6 py-2.5 rounded-r-lg font-bold text-sm transition-colors">
+            <Button className="bg-[#111827] hover:bg-[#1F2937] text-white px-6 py-2.5 rounded-r-lg font-bold text-sm transition-colors h-auto" aria-label="Search">
               Search
-            </button>
+            </Button>
           </div>
         </div>
 
@@ -88,9 +89,11 @@ export const MarketHeader = ({
             <Heart size={20} />
             <span className="text-[10px] font-bold">Wishlist</span>
           </Link>
-          <button
+          <Button
+            variant="ghost"
             onClick={onOpenCart}
-            className="flex flex-col items-center gap-0.5 hover:text-[#111827] relative"
+            className="flex flex-col items-center gap-0.5 hover:text-[#111827] relative h-auto"
+            aria-label={`Open cart, ${cartCount} items`}
           >
             <div className="relative">
               <ShoppingBag size={20} />
@@ -101,7 +104,7 @@ export const MarketHeader = ({
               )}
             </div>
             <span className="text-[10px] font-bold">Cart</span>
-          </button>
+          </Button>
         </div>
       </div>
 

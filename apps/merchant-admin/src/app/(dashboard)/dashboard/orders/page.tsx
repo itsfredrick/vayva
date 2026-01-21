@@ -1,117 +1,115 @@
 "use client";
 
-import { EmptyState, Button } from "@vayva/ui";
-import { ZeroOrdersState } from "@/components/orders/ZeroOrdersState";
-import { useEffect, useState } from "react";
-import { toast } from "sonner";
+import { useState } from "react";
+import useSWR from "swr";
 import { useRouter } from "next/navigation";
+import { useDebounce } from "@/hooks/use-debounce";
+import { toast } from "sonner";
+import { ShoppingBag, Plus, Loader2 } from "lucide-react";
+
+import { Button, Icon } from "@vayva/ui";
+import { useAuth } from "@/context/AuthContext";
+import { useStore } from "@/context/StoreContext";
+import { IndustrySlug } from "@/lib/templates/types";
+import { UnifiedOrder } from "@vayva/shared";
+
+import { FilterBar } from "@/components/orders/FilterBar";
+import { OrdersHeader } from "@/components/orders/OrdersHeader";
+import { RetailOrdersView } from "@/components/orders/RetailOrdersView";
+import { FoodOrdersKanban } from "@/components/orders/FoodOrdersKanban";
+import { ServiceBookingsView } from "@/components/orders/ServiceBookingsView";
+import { OrderDetailsDrawer } from "@/components/orders/OrderDetailsDrawer";
+import { ZeroOrdersState } from "@/components/orders/ZeroOrdersState";
+
+const fetcher = (url: string) => fetch(url).then((r) => r.json());
 
 export default function OrdersPage() {
-    const [orders, setOrders] = useState<any[]>([]);
-    const [loading, setLoading] = useState(true);
+    const { merchant } = useAuth();
+    const { store } = useStore();
     const router = useRouter();
 
-    useEffect(() => {
-        fetchOrders();
-    }, []);
+    const [filters, setFilters] = useState<any>({});
+    const [search, setSearch] = useState("");
+    const debouncedSearch = useDebounce(search, 500);
+    const [selectedOrder, setSelectedOrder] = useState<UnifiedOrder | null>(null);
 
-    const fetchOrders = async () => {
-        try {
-            const res = await fetch("/api/orders");
-            const data = await res.json();
-            if (data.success) {
-                setOrders(data.data || []);
-            }
-        } catch (error) {
-            toast.error("Failed to load orders");
-        } finally {
-            setLoading(false);
-        }
+    // Build API URL with filters
+    const queryParams = new URLSearchParams();
+    if (filters.status && filters.status !== "ALL") queryParams.append("status", filters.status);
+    if (filters.paymentStatus && filters.paymentStatus !== "ALL") queryParams.append("paymentStatus", filters.paymentStatus);
+    if (debouncedSearch) queryParams.append("q", debouncedSearch);
+
+    const { data: response, error, mutate, isLoading } = useSWR(
+        `/api/orders?${queryParams.toString()}`,
+        fetcher
+    );
+
+    const industrySlug = (store?.industrySlug as any) || (merchant as any).industrySlug || "retail";
+    const orders: UnifiedOrder[] = response?.data || [];
+
+    const isFiltered = !!(filters.status && filters.status !== "ALL") || !!search;
+
+    const handleRefresh = () => {
+        mutate();
+        toast.success("Orders refreshed");
     };
 
-    const handleShareStore = async () => {
-        const shareData = {
-            title: 'My Vayva Store',
-            text: 'Check out my store on Vayva!',
-            url: window.location.origin, // Ideally this should be the actual store URL
-        };
-
-        if (navigator.share) {
-            try {
-                await navigator.share(shareData);
-            } catch (err) {
-                // Share cancelled or failed
-            }
-        } else {
-            // Fallback
-            try {
-                await navigator.clipboard.writeText(shareData.url);
-                toast.success("Store URL copied to clipboard");
-            } catch (e) {
-                toast.error("Could not share store");
-            }
-        }
+    const handleSelectOrder = (order: UnifiedOrder) => {
+        // Navigation to detail page or open drawer?
+        // For mobile/desktop consistency, let's go to detail page
+        router.push(`/dashboard/orders/${order.id}`);
     };
 
-    if (loading) {
-        return (
-            <div className="p-6 space-y-6">
-                <div className="h-8 w-48 bg-gray-100 rounded animate-pulse" />
-                <div className="bg-white rounded-xl border border-gray-100 overflow-hidden">
-                    <div className="h-12 bg-gray-50 border-b border-gray-100" />
-                    {[1, 2, 3, 4, 5].map((i) => (
-                        <div key={i} className="h-16 border-b border-gray-100 flex items-center px-6 gap-4">
-                            <div className="h-4 w-24 bg-gray-50 rounded animate-pulse" />
-                            <div className="h-4 w-32 bg-gray-50 rounded animate-pulse" />
-                            <div className="h-4 w-16 bg-gray-50 rounded animate-pulse ml-auto" />
-                            <div className="h-6 w-20 bg-gray-50 rounded-full animate-pulse" />
-                        </div>
-                    ))}
+    const renderIndustryView = () => {
+        if (isLoading) {
+            return (
+                <div className="flex flex-col items-center justify-center py-20 bg-white/50 rounded-3xl border border-dashed border-gray-200">
+                    <Loader2 className="w-8 h-8 animate-spin text-gray-400 mb-4" />
+                    <p className="text-gray-500 font-medium font-inter">Loading orders...</p>
                 </div>
-            </div>
-        );
-    }
+            );
+        }
 
-    if (orders.length === 0) {
-        return (
-            <div className="p-6">
-                <h1 className="text-2xl font-bold mb-6 text-gray-900">Orders</h1>
-                <ZeroOrdersState />
-            </div>
-        );
-    }
+        if (orders.length === 0 && !isFiltered) {
+            return <ZeroOrdersState />;
+        }
+
+        switch (industrySlug) {
+            case "food":
+                return <FoodOrdersKanban orders={orders} onSelect={handleSelectOrder} />;
+            case "service":
+            case "stays":
+            case "creative":
+                return <ServiceBookingsView orders={orders} onSelect={handleSelectOrder} />;
+            default:
+                return <RetailOrdersView orders={orders} onSelect={handleSelectOrder} />;
+        }
+    };
 
     return (
-        <div className="p-6">
-            <h1 className="text-2xl font-bold mb-6 text-gray-900">Orders</h1>
-            <div className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
-                <table className="w-full text-left text-sm">
-                    <thead className="bg-gray-50 text-gray-500 font-medium border-b border-gray-100">
-                        <tr>
-                            <th className="px-6 py-4">Order ID</th>
-                            <th className="px-6 py-4">Customer</th>
-                            <th className="px-6 py-4">Total</th>
-                            <th className="px-6 py-4">Status</th>
-                        </tr>
-                    </thead>
-                    <tbody className="divide-y divide-gray-100">
-                        {orders.map((order: any) => (
-                            <tr key={order.id} className="hover:bg-gray-50 transition-colors cursor-pointer" onClick={() => router.push(`/dashboard/orders/${order.id}`)}>
-                                <td className="px-6 py-4 font-bold text-gray-900">#{order.orderNumber || order.id.slice(0, 8)}</td>
-                                <td className="px-6 py-4 text-gray-600">{order.customer?.firstName || "Guest"}</td>
-                                <td className="px-6 py-4 font-medium text-gray-900">{order.currency} {order.total}</td>
-                                <td className="px-6 py-4">
-                                    <span className={`px-2 py-1 rounded-full text-xs font-bold ${order.status === 'PAID' ? 'bg-green-100 text-green-700' :
-                                        order.status === 'PENDING' ? 'bg-yellow-100 text-yellow-700' : 'bg-gray-100 text-gray-600'
-                                        }`}>
-                                        {order.status}
-                                    </span>
-                                </td>
-                            </tr>
-                        ))}
-                    </tbody>
-                </table>
+        <div className="p-6 md:p-8 max-w-7xl mx-auto space-y-6">
+            {/* Header */}
+            <OrdersHeader />
+
+            {/* Filter Bar */}
+            <FilterBar
+                onFilterChange={setFilters}
+                onSearch={setSearch}
+                onRefresh={handleRefresh}
+            />
+
+            {/* Industry Specific View */}
+            <div className="min-h-[400px]">
+                {renderIndustryView()}
             </div>
+
+            {/* Selection Drawer (Optional if navigation is preferred) */}
+            {selectedOrder && (
+                <OrderDetailsDrawer
+                    order={selectedOrder}
+                    onClose={() => setSelectedOrder(null)}
+                />
+            )}
         </div>
     );
 }

@@ -5,6 +5,7 @@ import { cn } from "../../utils";
 import { Icon } from "../Icon";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
+import { Button } from "../Button";
 
 interface LegalPageLayoutProps {
   children: React.ReactNode;
@@ -71,7 +72,6 @@ export const LegalPageLayout: React.FC<LegalPageLayoutProps> = ({
       {/* Top Navigation / Back Link */}
       <div className="max-w-[1280px] mx-auto px-6 pt-12 print:hidden">
         {backLink && (
-          // @ts-ignore
           <Link
             href={backLink.href}
             className="inline-flex items-center gap-2 text-sm text-gray-400 hover:text-black transition-colors group mb-8"
@@ -94,36 +94,39 @@ export const LegalPageLayout: React.FC<LegalPageLayoutProps> = ({
               ON THIS PAGE
             </h4>
             {toc.map((item) => (
-              <button
+              <Button
                 key={item.id}
                 onClick={() => scrollToSection(item.id)}
+                variant="ghost"
                 className={cn(
-                  "block w-full text-left text-sm py-2 transition-all duration-300",
+                  "block w-full text-left text-sm py-2 transition-all duration-300 justify-start h-auto font-normal",
                   activeSection === item.id
                     ? "text-black font-bold pl-1 translate-x-1"
                     : "text-gray-400 hover:text-gray-600 pl-0",
                 )}
               >
                 {item.label}
-              </button>
+              </Button>
             ))}
           </div>
 
           <div className="mt-12 pt-12 border-t border-gray-100 flex flex-col gap-4">
-            <button
+            <Button
               onClick={() => window.print()}
-              className="flex items-center gap-3 text-sm text-gray-500 hover:text-black transition-colors"
+              variant="ghost"
+              className="flex items-center gap-3 text-sm text-gray-500 hover:text-black justify-start h-auto font-normal"
             >
               <Icon name="Printer" size={16} />
               Print this page
-            </button>
-            <div className="flex items-center gap-3 text-sm text-gray-300 cursor-not-allowed group relative">
+            </Button>
+            <Button
+              onClick={() => window.print()}
+              variant="ghost"
+              className="flex items-center gap-3 text-sm text-gray-500 hover:text-black justify-start h-auto font-normal group relative"
+            >
               <Icon name="Download" size={16} />
               <span>Download PDF</span>
-              <div className="absolute left-0 -top-8 bg-black text-white text-[10px] px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">
-                Coming soon
-              </div>
-            </div>
+            </Button>
           </div>
         </aside>
 
@@ -136,8 +139,7 @@ export const LegalPageLayout: React.FC<LegalPageLayoutProps> = ({
               </div>
             )}
             <h1
-              className="text-5xl md:text-6xl font-bold text-[#0B0B0B] mb-8 tracking-tight"
-              style={{ fontFamily: "Space Grotesk, sans-serif" }}
+              className="text-5xl md:text-6xl font-bold text-[#0B0B0B] mb-8 tracking-tight font-space-grotesk"
             >
               {title}
             </h1>
@@ -150,16 +152,17 @@ export const LegalPageLayout: React.FC<LegalPageLayoutProps> = ({
 
           {/* Mobile TOC Accordion */}
           <div className="lg:hidden mb-12 print:hidden">
-            <button
+            <Button
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-              className="w-full flex items-center justify-between p-4 bg-gray-50 rounded-xl border border-gray-100"
+              variant="ghost"
+              className="w-full flex items-center justify-between p-4 bg-gray-50 rounded-xl border border-gray-100 h-auto font-bold"
             >
               <span className="text-sm font-bold">Table of Contents</span>
               <Icon
                 name={isMobileMenuOpen ? "ChevronUp" : "ChevronDown"}
                 size={18}
               />
-            </button>
+            </Button>
             <AnimatePresence>
               {isMobileMenuOpen && (
                 <motion.div
@@ -170,18 +173,19 @@ export const LegalPageLayout: React.FC<LegalPageLayoutProps> = ({
                 >
                   <div className="p-4 flex flex-col gap-3">
                     {toc.map((item) => (
-                      <button
+                      <Button
                         key={item.id}
                         onClick={() => scrollToSection(item.id)}
+                        variant="ghost"
                         className={cn(
-                          "text-left text-sm py-1 transition-colors",
+                          "text-left text-sm py-1 transition-colors justify-start h-auto font-normal",
                           activeSection === item.id
                             ? "text-black font-bold"
                             : "text-gray-500",
                         )}
                       >
                         {item.label}
-                      </button>
+                      </Button>
                     ))}
                   </div>
                 </motion.div>
@@ -196,7 +200,6 @@ export const LegalPageLayout: React.FC<LegalPageLayoutProps> = ({
           <footer className="mt-32 pt-12 border-t border-gray-100 print:hidden text-center md:text-left">
             <p className="text-sm text-gray-400">
               Looking for something else? Visit our
-              {/* @ts-ignore */}
               <Link href="/legal" className="text-black font-bold underline">
                 Legal Hub
               </Link>
@@ -207,8 +210,8 @@ export const LegalPageLayout: React.FC<LegalPageLayoutProps> = ({
       </div>
 
       {/* Print Styles */}
-      {/* @ts-ignore */}
-      <style jsx global>{`
+      <style dangerouslySetInnerHTML={{
+        __html: `
         @media print {
           .print\\:hidden {
             display: none !important;
@@ -222,6 +225,7 @@ export const LegalPageLayout: React.FC<LegalPageLayoutProps> = ({
             border: none !important;
             margin: 0 !important;
             padding: 0 !important;
+            max-width: none !important;
           }
           .legal-content-body h2 {
             page-break-after: avoid;
@@ -231,7 +235,7 @@ export const LegalPageLayout: React.FC<LegalPageLayoutProps> = ({
             page-break-inside: avoid;
           }
         }
-      `}</style>
+      `}} />
     </div>
   );
 };

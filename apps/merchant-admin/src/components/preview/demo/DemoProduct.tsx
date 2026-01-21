@@ -1,5 +1,6 @@
 import React from "react";
 import type { DemoProduct } from "@/lib/preview/demo-data";
+import { Button } from "@vayva/ui";
 
 export function DemoProductView({ product }: { product: DemoProduct }) {
   return (
@@ -27,12 +28,15 @@ export function DemoProductView({ product }: { product: DemoProduct }) {
           </div>
 
           <div className="mt-6 flex gap-2">
-            <button className="rounded-lg bg-black px-4 py-2 text-sm text-white hover:opacity-90">
+            <Button className="rounded-lg bg-black px-4 py-2 text-sm text-white hover:opacity-90 h-auto">
               Add to cart (preview)
-            </button>
-            <button className="rounded-lg border px-4 py-2 text-sm hover:bg-gray-50">
+            </Button>
+            <Button
+              variant="outline"
+              className="rounded-lg border px-4 py-2 text-sm hover:bg-gray-50 h-auto"
+            >
               Buy now (preview)
-            </button>
+            </Button>
           </div>
         </div>
       </div>

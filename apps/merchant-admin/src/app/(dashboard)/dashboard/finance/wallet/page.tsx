@@ -8,7 +8,7 @@ import {
   CardTitle,
   CardDescription,
 } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
+import { Button, EmptyState } from "@vayva/ui";
 import {
   Wallet,
   ArrowUpRight,
@@ -16,8 +16,8 @@ import {
   Copy,
   AlertCircle,
 } from "lucide-react";
-import { EmptyState } from "@vayva/ui";
 import WalletGuard from "@/components/wallet/WalletGuard";
+import { WithdrawFundsTrigger } from "@/components/wallet/WithdrawFundsTrigger";
 
 
 async function getWallet(storeId: string) {
@@ -57,9 +57,7 @@ export default async function WalletPage() {
           <h2 className="text-3xl font-bold tracking-tight">Wallet & Payouts</h2>
           <div className="flex items-center space-x-2">
             <Button variant="outline">History</Button>
-            <Button>
-              <ArrowUpRight className="mr-2 h-4 w-4" /> Withdraw Funds
-            </Button>
+            <WithdrawFundsTrigger />
           </div>
         </div>
 

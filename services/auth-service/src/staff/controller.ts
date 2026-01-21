@@ -33,7 +33,7 @@ export const inviteStaffHandler = async (
 
   if (
     !membership ||
-    (membership.role !== UserRole.OWNER && membership.role !== UserRole.ADMIN)
+    (membership.role_enum !== UserRole.OWNER && membership.role_enum !== UserRole.ADMIN)
   ) {
     return reply
       .status(403)
@@ -49,7 +49,7 @@ export const inviteStaffHandler = async (
   const staffCount = await prisma.membership.count({
     where: { storeId: store.id },
   });
-  if (store.plan === "STARTER" || store.plan === "FREE") {
+  if (store.plan === "STARTER") {
     return reply
       .status(403)
       .send({ error: "PLAN_LIMIT", message: "Upgrade to PRO to invite staff" });
@@ -145,7 +145,7 @@ export const acceptInviteHandler = async (
     data: {
       userId: user.id,
       storeId: invite.storeId,
-      role: invite.role,
+      role_enum: invite.role as any,
     },
   });
 
@@ -172,7 +172,7 @@ export const getStaffHandler = async (
   const staff = await prisma.membership.findMany({
     where: { storeId: membership.storeId },
     include: {
-      User: {
+      user: {
         select: {
           id: true,
           firstName: true,
@@ -198,7 +198,7 @@ export const removeStaffHandler = async (
     where: { userId: user.sub },
   });
 
-  if (!actingMember || actingMember.role !== UserRole.OWNER) {
+  if (!actingMember || actingMember.role_enum !== UserRole.OWNER) {
     return reply
       .status(403)
       .send({ error: "FORBIDDEN", message: "Only Owner can remove staff" });

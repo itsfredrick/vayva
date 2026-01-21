@@ -224,13 +224,21 @@ export async function getOpsMetrics(storeId?: string): Promise<OpsMetrics> {
     },
   });
 
-  // For downloaded count, we'd need a downloadedAt field (not implemented yet)
-  // For MVP, we'll estimate based on audit logs
-  const exportDownloads = await prisma.auditLog.count({
+  // For downloaded count, we use the timestamp field
+  const downloadStats = await prisma.exportJob.aggregate({
+    _count: { downloadedAt: true },
     where: {
-      ...whereStore,
-      action: "EXPORT_DOWNLOADED",
-      createdAt: { gte: today },
+      ...whereMerchant,
+      downloadedAt: { not: null },
+    }
+  });
+  const exportDownloads = downloadStats._count.downloadedAt;
+
+  // Downloaded today using downloadedAt
+  const downloadedToday = await prisma.exportJob.count({
+    where: {
+      ...whereMerchant,
+      downloadedAt: { gte: today },
     },
   });
 
@@ -283,7 +291,7 @@ export async function getOpsMetrics(storeId?: string): Promise<OpsMetrics> {
 
   // P11.2: API Health metrics
   const isP112Enabled = process.env.OPS_P11_2_ENABLED === "true";
-  let apiHealth, performance, integrations, downloadedToday, expiredUnusedRows;
+  let apiHealth, performance, integrations, expiredUnusedRows;
 
   if (isP112Enabled) {
     const oneHourAgo = new Date(Date.now() - 60 * 60 * 1000);
@@ -314,13 +322,8 @@ export async function getOpsMetrics(storeId?: string): Promise<OpsMetrics> {
       })),
     };
 
-    // Downloaded today using downloadedAt
-    downloadedToday = await prisma.exportJob.count({
-      where: {
-        ...whereMerchant,
-        downloadedAt: { gte: today },
-      },
-    });
+    // downloadedToday already calculated above
+
 
     // Expired unused rows
     expiredUnusedRows = stuckExports.slice(0, 10);
@@ -408,20 +411,25 @@ export async function logStuckOperations(
 
   for (const withdrawal of stuck) {
     await logAuditEvent(storeId, userId, AuditEventType.OPERATION_STUCK, {
-      type: "withdrawal",
-      reference: withdrawal.referenceCode,
-      status: withdrawal.status,
-      stuckDurationMs: withdrawal.stuckDuration,
+      targetType: "WITHDRAWAL",
+      targetId: withdrawal.id,
+      meta: {
+        reference: withdrawal.referenceCode,
+        status: withdrawal.status,
+        stuckDurationMs: withdrawal.stuckDuration,
+      }
     });
   }
 
   const stuckExports = await detectStuckExports(storeId);
   for (const exp of stuckExports) {
     await logAuditEvent(storeId, userId, AuditEventType.OPERATION_STUCK, {
-      type: "export",
-      exportId: exp.id,
-      exportType: exp.type,
-      status: exp.status,
+      targetType: "EXPORT_JOB",
+      targetId: exp.id,
+      meta: {
+        exportType: exp.type,
+        status: exp.status,
+      }
     });
   }
 }

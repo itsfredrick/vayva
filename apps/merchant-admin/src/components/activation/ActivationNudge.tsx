@@ -1,6 +1,7 @@
 "use client";
 
 import React from "react";
+import { Button } from "@vayva/ui";
 import Link from "next/link";
 
 interface ActivationNudgeProps {
@@ -53,13 +54,13 @@ export function ActivationNudge({ type, onDismiss }: ActivationNudgeProps) {
           )}
         </div>
         {onDismiss && (
-          <button
+          <Button
             onClick={onDismiss}
             className="text-blue-600 hover:text-blue-700 text-sm flex-shrink-0"
             aria-label="Dismiss"
           >
             ×
-          </button>
+          </Button>
         )}
       </div>
     </div>

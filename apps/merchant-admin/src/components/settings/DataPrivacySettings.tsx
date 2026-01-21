@@ -51,7 +51,7 @@ export function DataPrivacySettings() {
       {/* 1. Export Section */}
       <div className="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
         <div className="p-8 border-b border-gray-50">
-          <h3 className="text-lg font-bold text-[#0B0B0B]">Export Your Data</h3>
+          <h3 className="text-lg font-bold text-black">Export Your Data</h3>
           <p className="text-sm text-gray-500 mt-1">
             Download a portable archive of your business data in JSON and CSV
             formats.
@@ -61,7 +61,7 @@ export function DataPrivacySettings() {
         <div className="p-8 space-y-8">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {scopesList.map((scope) => (
-              <button
+              <Button
                 key={scope.id}
                 onClick={() => toggleScope(scope.id)}
                 className={cn(
@@ -82,7 +82,7 @@ export function DataPrivacySettings() {
                   <Icon name={scope.icon as any} size={20} />
                 </div>
                 <div className="flex-1">
-                  <p className="text-sm font-bold text-[#0B0B0B]">
+                  <p className="text-sm font-bold text-black">
                     {scope.label}
                   </p>
                   <p className="text-[10px] text-gray-400">Portable JSON/CSV</p>
@@ -90,7 +90,7 @@ export function DataPrivacySettings() {
                 {selectedScopes.includes(scope.id) && (
                   <Icon name="Check" size={16} className="text-black" />
                 )}
-              </button>
+              </Button>
             ))}
           </div>
 
@@ -133,7 +133,7 @@ export function DataPrivacySettings() {
                       <Icon name="Download" size={14} />
                     </div>
                     <div>
-                      <p className="text-xs font-bold text-[#0B0B0B]">
+                      <p className="text-xs font-bold text-black">
                         Data Archive ({exp.scopes.join(", ")})
                       </p>
                       <p className="text-[10px] text-gray-400">
@@ -169,7 +169,7 @@ export function DataPrivacySettings() {
             <Icon name="Clock" size={24} />
           </div>
           <div>
-            <h3 className="text-lg font-bold text-[#0B0B0B]">
+            <h3 className="text-lg font-bold text-black">
               Data Retention Status
             </h3>
             <p className="text-sm text-gray-500 mt-1">
@@ -181,13 +181,13 @@ export function DataPrivacySettings() {
                 <p className="text-[10px] font-bold text-gray-400 uppercase">
                   Conversations
                 </p>
-                <p className="text-sm font-bold text-[#0B0B0B]">180 Days</p>
+                <p className="text-sm font-bold text-black">180 Days</p>
               </div>
               <div>
                 <p className="text-[10px] font-bold text-gray-400 uppercase">
                   AI Traces
                 </p>
-                <p className="text-sm font-bold text-[#0B0B0B]">30 Days</p>
+                <p className="text-sm font-bold text-black">30 Days</p>
               </div>
             </div>
           </div>

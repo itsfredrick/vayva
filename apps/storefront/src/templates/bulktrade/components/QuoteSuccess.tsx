@@ -1,4 +1,5 @@
 import React from "react";
+import { Button } from "@vayva/ui";
 import { CheckCircle, FileText, ArrowRight, X } from "lucide-react";
 
 interface QuoteSuccessProps {
@@ -9,12 +10,12 @@ export const QuoteSuccess = ({ onClose }: QuoteSuccessProps) => {
   return (
     <div className="fixed inset-0 z-[110] flex items-center justify-center bg-black/70 backdrop-blur-sm p-4">
       <div className="bg-white rounded-2xl w-full max-w-md p-8 text-center animate-in zoom-in-95 duration-300 relative">
-        <button
+        <Button
           onClick={onClose}
           className="absolute top-4 right-4 text-gray-400 hover:text-gray-900"
         >
           <X size={24} />
-        </button>
+        </Button>
 
         <div className="w-20 h-20 bg-green-100 text-green-600 rounded-full flex items-center justify-center mx-auto mb-6">
           <CheckCircle size={40} />
@@ -59,15 +60,15 @@ export const QuoteSuccess = ({ onClose }: QuoteSuccessProps) => {
         </div>
 
         <div className="flex gap-3">
-          <button
+          <Button
             onClick={onClose}
             className="flex-1 bg-gray-100 hover:bg-gray-200 text-gray-900 font-bold py-3 rounded-lg transition-colors"
           >
             Close
-          </button>
-          <button className="flex-1 bg-[#0F172A] hover:bg-[#1E293B] text-white font-bold py-3 rounded-lg transition-colors">
+          </Button>
+          <Button className="flex-1 bg-[#0F172A] hover:bg-[#1E293B] text-white font-bold py-3 rounded-lg transition-colors">
             View RFQ Status
-          </button>
+          </Button>
         </div>
       </div>
     </div>

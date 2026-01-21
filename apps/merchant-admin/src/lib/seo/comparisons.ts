@@ -78,7 +78,7 @@ export const COMPETITORS: Record<string, ComparisonData> = {
       {
         question: "How do I handle shipping?",
         answer:
-          "Vayva integrates with local logistics providers like Kwik and Gokada, which Shopify does not support natively.",
+          "Vayva integrates with local logistics providers like Kwik, which Shopify does not support natively.",
       },
       {
         question: "Can I sell digital products?",
@@ -179,7 +179,7 @@ export const COMPETITORS: Record<string, ComparisonData> = {
       {
         question: "Is it easy to switch?",
         answer:
-          "Yes. Use our Shopify Importer to bring over your products in seconds.",
+          "We are building tools to help you migrate. For now, you can add products easily via our mobile dashboard.",
       },
       {
         question: "Does Vayva have themes?",

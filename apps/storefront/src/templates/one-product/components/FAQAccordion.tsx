@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { Button } from "@vayva/ui";
 import { Plus, Minus, ChevronDown, ChevronUp } from "lucide-react";
 
 interface FAQAccordionProps {
@@ -21,7 +22,7 @@ export const FAQAccordion = ({ faqs }: FAQAccordionProps) => {
               key={idx}
               className="border border-gray-200 rounded-xl overflow-hidden"
             >
-              <button
+              <Button
                 onClick={() => setOpenIdx(openIdx === idx ? null : idx)}
                 className="w-full flex items-center justify-between p-5 text-left bg-white hover:bg-gray-50 transition-colors"
               >
@@ -31,7 +32,7 @@ export const FAQAccordion = ({ faqs }: FAQAccordionProps) => {
                 ) : (
                   <ChevronDown size={20} className="text-gray-400" />
                 )}
-              </button>
+              </Button>
               {openIdx === idx && (
                 <div className="p-5 pt-0 bg-white text-gray-600 leading-relaxed border-t border-gray-50">
                   {faq.answer}

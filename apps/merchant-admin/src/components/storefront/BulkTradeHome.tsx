@@ -1,6 +1,7 @@
 "use client";
 
 import React from "react";
+import { Button } from "@vayva/ui";
 import { Search, Globe, Truck, ShieldCheck } from "lucide-react";
 import { useStorefrontStore } from "@/hooks/storefront/useStorefront";
 
@@ -46,8 +47,8 @@ export default function BulkTradeHome({
                     </div>
 
                     <div className="flex items-center gap-4">
-                        <button className="text-sm font-bold text-blue-900">Sign In</button>
-                        <button className="bg-blue-900 text-white px-5 py-2 rounded font-bold text-sm">Request Access</button>
+                        <Button className="text-sm font-bold text-blue-900">Sign In</Button>
+                        <Button className="bg-blue-900 text-white px-5 py-2 rounded font-bold text-sm">Request Access</Button>
                     </div>
                 </div>
             </header>
@@ -59,7 +60,7 @@ export default function BulkTradeHome({
                     <p className="text-xl text-blue-100 mb-10 max-w-2xl mx-auto">Access direct manufacturer pricing. Minimum Order Quantities apply. Verified quality assurance.</p>
                     <div className="bg-white p-2 rounded flex max-w-2xl mx-auto">
                         <input type="text" placeholder="Search by SKU, Product Name or Category..." className="flex-1 px-4 py-3 text-slate-900 outline-none" />
-                        <button className="bg-orange-500 text-white px-8 font-bold rounded hover:bg-orange-600">Search</button>
+                        <Button className="bg-orange-500 text-white px-8 font-bold rounded hover:bg-orange-600">Search</Button>
                     </div>
                 </div>
             </div>
@@ -102,7 +103,7 @@ export default function BulkTradeHome({
                                     <td className="px-6 py-4 text-slate-600">{p.minOrder}</td>
                                     <td className="px-6 py-4 font-mono text-slate-800">{p.price}</td>
                                     <td className="px-6 py-4 text-right">
-                                        <button className="text-sm font-bold text-blue-600 hover:underline">Request Quote</button>
+                                        <Button className="text-sm font-bold text-blue-600 hover:underline">Request Quote</Button>
                                     </td>
                                 </tr>
                             ))}

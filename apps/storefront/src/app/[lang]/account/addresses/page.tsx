@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
+import { Button } from "@vayva/ui";
 import { useParams } from "next/navigation";
 import { LocaleKey, LOCALES } from "@/data/locales";
 import { useUserInteractions } from "@/hooks/useUserInteractions";
@@ -22,13 +23,13 @@ export default function AddressesPage({ params }: any) {
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <h1 className="text-2xl font-bold">{t.title}</h1>
-        <button
+        <Button
           onClick={() => setIsNavOpen(true)}
           className="flex items-center gap-2 bg-black text-white px-4 py-2 rounded-xl font-bold text-sm hover:bg-gray-800 transition-colors"
         >
           <Plus size={16} />
           {t.add}
-        </button>
+        </Button>
       </div>
 
       {addresses.length === 0 ? (
@@ -55,19 +56,19 @@ export default function AddressesPage({ params }: any) {
                 </div>
                 <div className="flex gap-2">
                   {!addr.isDefault && (
-                    <button
+                    <Button
                       onClick={() => setDefaultAddress(addr.id)}
                       className="text-xs font-bold text-gray-400 hover:text-black transition-colors"
                     >
                       {t.setDefault}
-                    </button>
+                    </Button>
                   )}
-                  <button
+                  <Button
                     onClick={() => removeAddress(addr.id)}
                     className="text-gray-400 hover:text-red-500 transition-colors"
                   >
                     <Trash2 size={16} />
-                  </button>
+                  </Button>
                 </div>
               </div>
               <p className="text-gray-600 leading-relaxed mb-1">

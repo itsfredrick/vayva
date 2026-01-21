@@ -1,4 +1,4 @@
-import { EmptyState, Button } from "@vayva/ui";
+import { Button, EmptyState } from "@vayva/ui";
 
 export default function LogisticsPage() {
     const shipments: any[] = [];

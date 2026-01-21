@@ -6,6 +6,7 @@ import {
 import { useStorefrontCart } from "@/hooks/storefront/useStorefrontCart";
 import { CheckoutModal } from "./CheckoutModal";
 import { ShoppingBag, Star, Clock, MapPin, X, Plus, Minus } from "lucide-react";
+import { Button } from "@vayva/ui";
 
 export function GourmetDiningFood({
   storeName: initialStoreName,
@@ -76,22 +77,23 @@ export function GourmetDiningFood({
           </a>
         </div>
         <div className="flex gap-6">
-          <button
-            className="text-xs font-sans tracking-[0.2em] uppercase border border-gold px-6 py-2 hover:bg-[#d4af37] hover:text-black transition-colors"
+          <Button
+            className="text-xs font-sans tracking-[0.2em] uppercase border border-gold px-6 py-2 hover:bg-[#d4af37] hover:text-black transition-colors rounded-none h-auto border-white/20"
             onClick={() =>
               document
                 .getElementById("reservations")
                 ?.scrollIntoView({ behavior: "smooth" })
             }
+            aria-label="Book a table"
           >
             Book Table
-          </button>
-          <button className="relative p-2" onClick={() => setIsCartOpen(true)}>
+          </Button>
+          <Button variant="ghost" size="icon" className="relative p-2 h-auto" onClick={() => setIsCartOpen(true)} aria-label={`View order bag with ${cart.length} items`}>
             <ShoppingBag className="w-5 h-5 text-[#d4af37]" />
             {cart.length > 0 && (
               <span className="absolute top-0 right-0 w-2 h-2 bg-red-500 rounded-full"></span>
             )}
-          </button>
+          </Button>
         </div>
       </nav>
 
@@ -105,9 +107,9 @@ export function GourmetDiningFood({
           <div className="relative w-full max-w-md bg-white h-full p-8 flex flex-col animate-in slide-in-from-right duration-500">
             <div className="flex justify-between items-center mb-8">
               <h2 className="text-2xl font-serif text-black">Your Order</h2>
-              <button onClick={() => setIsCartOpen(false)}>
+              <Button variant="ghost" size="icon" onClick={() => setIsCartOpen(false)} aria-label="Close order bag" className="h-auto">
                 <X className="w-6 h-6 text-gray-400" />
-              </button>
+              </Button>
             </div>
 
             <div className="flex-1 overflow-auto space-y-6 pr-2">
@@ -127,27 +129,35 @@ export function GourmetDiningFood({
                       </div>
                       <div className="flex items-center gap-4 mt-2">
                         <div className="flex items-center border border-gray-200 rounded-full px-2">
-                          <button
+                          <Button
+                            variant="ghost"
+                            size="icon"
                             onClick={() => updateQuantity(item.id, -1)}
                             disabled={item.quantity <= 1}
-                            className="p-1 hover:text-orange-500 disabled:opacity-30"
+                            className="h-7 w-7 hover:text-orange-500 disabled:opacity-30 rounded-full p-0 h-auto"
+                            aria-label="Decrease quantity"
                           >
                             <Minus className="w-3 h-3" />
-                          </button>
+                          </Button>
                           <span className="px-3 text-sm">{item.quantity}</span>
-                          <button
+                          <Button
+                            variant="ghost"
+                            size="icon"
                             onClick={() => updateQuantity(item.id, 1)}
-                            className="p-1 hover:text-orange-500"
+                            className="h-7 w-7 hover:text-orange-500 rounded-full p-0 h-auto"
+                            aria-label="Increase quantity"
                           >
                             <Plus className="w-3 h-3" />
-                          </button>
+                          </Button>
                         </div>
-                        <button
+                        <Button
+                          variant="link"
                           onClick={() => removeFromCart(item.id)}
-                          className="text-xs text-red-500 hover:underline"
+                          className="text-xs text-red-500 hover:text-red-700 p-0 h-auto h-auto"
+                          aria-label={`Remove ${item.name} from order`}
                         >
                           Remove
-                        </button>
+                        </Button>
                       </div>
                     </div>
                   </div>
@@ -161,15 +171,16 @@ export function GourmetDiningFood({
                   <span>Total</span>
                   <span>₦{total.toLocaleString()}</span>
                 </div>
-                <button
+                <Button
                   onClick={() => {
                     setIsCartOpen(false);
                     setIsCheckoutOpen(true);
                   }}
-                  className="w-full bg-[#1c1c1c] text-[#d4af37] py-4 text-xs font-bold uppercase tracking-[0.2em] hover:bg-black transition-colors"
+                  className="w-full bg-[#1c1c1c] text-[#d4af37] py-6 h-auto text-xs font-bold uppercase tracking-[0.2em] hover:bg-black transition-colors rounded-none"
+                  aria-label="Complete order"
                 >
                   Complete Order
-                </button>
+                </Button>
               </div>
             )}
           </div>
@@ -181,6 +192,7 @@ export function GourmetDiningFood({
         <div className="absolute inset-0">
           <img
             src="https://images.unsplash.com/photo-1544025162-d76690b67f61?auto=format&fit=crop&q=80&w=2000"
+            alt="Fine dining experience"
             className="w-full h-full object-cover opacity-40"
           />
           <div className="absolute inset-0 bg-gradient-to-t from-[#1c1c1c] via-transparent to-transparent"></div>
@@ -196,16 +208,18 @@ export function GourmetDiningFood({
             A culinary journey through contemporary flavors and traditional
             techniques.
           </p>
-          <button
+          <Button
+            variant="outline"
             onClick={() =>
               document
                 .getElementById("menu")
                 ?.scrollIntoView({ behavior: "smooth" })
             }
-            className="border border-white/20 px-8 py-4 text-xs font-sans font-bold tracking-[0.2em] uppercase hover:border-[#d4af37] hover:text-[#d4af37] transition-all"
+            className="border border-white/20 px-8 py-6 h-auto text-xs font-sans font-bold tracking-[0.2em] uppercase hover:border-[#d4af37] hover:text-[#d4af37] transition-all bg-transparent rounded-none"
+            aria-label="View seasonal menu"
           >
             View Menu
-          </button>
+          </Button>
         </div>
       </header>
 
@@ -277,12 +291,14 @@ export function GourmetDiningFood({
                       <p className="text-gray-500 text-sm italic mb-3">
                         {dish.description}
                       </p>
-                      <button
+                      <Button
+                        variant="link"
                         onClick={() => addToCart(dish)}
-                        className="text-[10px] font-sans font-bold uppercase tracking-widest text-[#d4af37] hover:text-white transition-colors opacity-0 group-hover:opacity-100"
+                        className="text-[10px] font-sans font-bold uppercase tracking-widest text-[#d4af37] hover:text-white transition-colors opacity-0 group-hover:opacity-100 p-0 h-auto"
+                        aria-label={`Add ${dish.name} to order`}
                       >
                         + Add to Order
-                      </button>
+                      </Button>
                     </div>
                   ))}
                 </div>
@@ -303,16 +319,20 @@ export function GourmetDiningFood({
           <div className="flex flex-col md:flex-row gap-4 justify-center">
             <input
               type="date"
+              aria-label="Reservation date"
               className="bg-[#1c1c1c] border border-white/10 text-white px-6 py-4 rounded-none focus:border-[#d4af37] outline-none"
             />
-            <select className="bg-[#1c1c1c] border border-white/10 text-white px-6 py-4 rounded-none focus:border-[#d4af37] outline-none">
+            <select
+              aria-label="Number of guests"
+              className="bg-[#1c1c1c] border border-white/10 text-white px-6 py-4 rounded-none focus:border-[#d4af37] outline-none"
+            >
               <option>2 Guests</option>
               <option>4 Guests</option>
               <option>6+ Guests</option>
             </select>
-            <button className="bg-[#d4af37] text-black px-10 py-4 font-bold font-sans tracking-widest uppercase hover:bg-white transition-colors">
+            <Button className="bg-[#d4af37] text-black px-10 py-6 h-auto font-bold font-sans tracking-widest uppercase hover:bg-white transition-colors rounded-none" aria-label="Find a table for reservation">
               Find Table
-            </button>
+            </Button>
           </div>
         </div>
       </section>

@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { Button } from "@vayva/ui";
 import { PublicStore, PublicProduct } from "@/types/storefront";
 import { EduHeader } from "./components/EduHeader";
 import { CourseHero } from "./components/CourseHero";
@@ -109,12 +110,12 @@ export const EduflowLayout = ({ store, products }: EduflowLayoutProps) => {
               </p>
 
               {progress === 100 ? (
-                <button
+                <Button
                   onClick={() => setShowCertificate(true)}
                   className="w-full bg-green-100 text-green-700 font-bold py-2 rounded-lg text-sm hover:bg-green-200 transition-colors flex items-center justify-center gap-2"
                 >
                   <CheckCircle size={16} /> View Certificate
-                </button>
+                </Button>
               ) : (
                 <div className="text-xs text-gray-400 text-center">
                   Complete all lessons to earn your certificate.

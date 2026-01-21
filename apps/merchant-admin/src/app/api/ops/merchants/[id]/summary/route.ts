@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { prisma } from "@vayva/db";
+import { prisma } from "@/lib/prisma";
 import { OpsAuthService } from "@/lib/ops-auth";
 
 export async function GET(
@@ -18,8 +18,8 @@ export async function GET(
       where: { id },
       include: {
         kycRecord: true,
-        merchantSubscription: true,
         bankBeneficiaries: { where: { isDefault: true } },
+        aiSubscription: true,
       },
     });
 
@@ -45,7 +45,7 @@ export async function GET(
       kyc: merchant.kycRecord?.status || "PENDING",
       payouts: merchant.bankBeneficiaries.length > 0,
       subscription:
-        (merchant.merchantSubscription as any)?.status || "INACTIVE",
+        (merchant.aiSubscription as any)?.status || "INACTIVE",
       isBlocked: false,
       blockReason: "",
     };

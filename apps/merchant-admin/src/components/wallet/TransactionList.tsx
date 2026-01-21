@@ -4,7 +4,7 @@ import {
   WalletTransactionType,
   WalletTransactionStatus,
 } from "@vayva/shared";
-import { Icon, cn } from "@vayva/ui";
+import { Icon, IconName, cn, Button } from "@vayva/ui";
 
 interface TransactionListProps {
   transactions: LedgerEntry[];
@@ -39,7 +39,7 @@ export const TransactionList = ({
     );
   }
 
-  const getIcon = (type: WalletTransactionType) => {
+  const getIcon = (type: WalletTransactionType): IconName => {
     switch (type) {
       case WalletTransactionType.PAYMENT:
         return "ArrowDownLeft";
@@ -81,17 +81,18 @@ export const TransactionList = ({
       {/* Simple Filter Tabs (Visual Only for now) */}
       <div className="flex gap-2 overflow-x-auto pb-2">
         {["All", "Payments", "Payouts", "Refunds"].map((tab, i) => (
-          <button
+          <Button
             key={tab}
+            variant="ghost"
             className={cn(
-              "px-4 py-2 rounded-full text-sm font-medium transition-colors whitespace-nowrap",
+              "px-4 py-2 rounded-full text-sm font-medium transition-colors whitespace-nowrap h-auto border",
               i === 0
-                ? "bg-black text-white"
-                : "bg-white border border-gray-200 text-gray-600 hover:bg-gray-50",
+                ? "bg-black text-white hover:bg-black/90 border-black"
+                : "bg-white border-gray-200 text-gray-600 hover:bg-gray-50",
             )}
           >
             {tab}
-          </button>
+          </Button>
         ))}
       </div>
 
@@ -115,7 +116,6 @@ export const TransactionList = ({
                         : "bg-blue-50 text-blue-600",
                   )}
                 >
-                  {/* @ts-ignore */}
                   <Icon name={getIcon(txn.type)} size={18} />
                 </div>
                 <div>

@@ -1,11 +1,12 @@
 import { OnboardingState, OnboardingStepId } from "@/types/onboarding";
+import { logger } from "@/lib/logger";
 
 
-const STORAGE_KEY = "vayva_onboarding_state";
+const STORAGE_KEY = "vayva_onboarding_state"; // nosecret
 
 const defaultState: OnboardingState = {
   isComplete: false,
-  currentStep: "welcome",
+  currentStep: "welcome", // Start at Industry Selection
   lastUpdatedAt: new Date().toISOString(),
   whatsappConnected: false,
   templateSelected: false,
@@ -47,16 +48,18 @@ export const OnboardingService = {
         }
       }
     } catch (error) {
-      console.error("Error reading onboarding state:", error);
+      logger.error("Error reading onboarding state", error);
 
       // Try localStorage fallback
       if (typeof window !== "undefined") {
         const stored = localStorage.getItem(STORAGE_KEY);
         if (stored) {
+          logger.warn("Recovered state from localStorage");
           return JSON.parse(stored);
         }
       }
     }
+    logger.warn("Returning default onboarding state.");
     return defaultState;
   },
 
@@ -83,7 +86,7 @@ export const OnboardingService = {
         throw new Error("Failed to save to backend");
       }
 
-      console.log(`Saved step ${stepId} to backend`);
+      logger.info(`Saved step ${stepId} to backend`);
 
       // Also save to localStorage as backup
       if (typeof window !== "undefined") {
@@ -97,7 +100,7 @@ export const OnboardingService = {
         localStorage.setItem(STORAGE_KEY, JSON.stringify(newState));
       }
     } catch (error) {
-      console.error("Error saving onboarding step:", error);
+      logger.error("Error saving onboarding step", error);
 
       // Fallback to localStorage only
       if (typeof window !== "undefined") {
@@ -117,12 +120,20 @@ export const OnboardingService = {
     try {
       // Mark as complete via API
       const response = await fetch("/api/merchant/onboarding/complete", {
-        method: "PUT",
+        method: "POST",
         credentials: "include",
       });
 
       if (!response.ok) {
-        throw new Error("Failed to complete onboarding");
+        const raw = await response.text();
+        let message = raw;
+        try {
+          const parsed = JSON.parse(raw);
+          message = parsed?.error || parsed?.message || raw;
+        } catch {
+          // ignore parse errors
+        }
+        throw new Error(message || "Failed to complete onboarding");
       }
 
       // Clear localStorage
@@ -130,9 +141,10 @@ export const OnboardingService = {
         localStorage.removeItem(STORAGE_KEY);
       }
     } catch (error) {
-      console.error("Error completing onboarding:", error);
+      logger.error("Error completing onboarding", error);
       // Still try to save locally
       await OnboardingService.saveStep("review", { isComplete: true });
+      throw error;
     }
   },
 

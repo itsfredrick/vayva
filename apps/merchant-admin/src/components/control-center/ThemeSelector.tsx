@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Icon, cn } from "@vayva/ui";
+import { Icon, cn, Button } from "@vayva/ui";
 
 interface Theme {
   id: string;
@@ -80,9 +80,9 @@ export const ThemeSelector = () => {
       </div>
 
       <div className="mt-4 pt-4 border-t border-gray-100 flex justify-end">
-        <button className="text-xs font-bold text-gray-400 hover:text-black flex items-center gap-1">
+        <Button className="text-xs font-bold text-gray-400 hover:text-black flex items-center gap-1" variant="ghost">
           Advanced Customization <Icon name="ChevronRight" size={12} />
-        </button>
+        </Button>
       </div>
     </div>
   );

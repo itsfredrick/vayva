@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { Button } from "@vayva/ui";
 import { PublicStore, PublicProduct } from "@/types/storefront";
 import { BulkHeader } from "./components/BulkHeader";
 import { BulkHero } from "./components/BulkHero";
@@ -160,12 +161,12 @@ export const BulkTradeLayout = ({ store, products }: BulkTradeLayoutProps) => {
                           }
                           className="w-20 border border-gray-300 rounded-lg px-2 text-center font-bold text-sm focus:outline-none focus:ring-2 focus:ring-blue-600"
                         />
-                        <button
+                        <Button
                           onClick={() => addToRFQ(product)}
                           className="flex-1 bg-[#0F172A] hover:bg-[#1E293B] text-white text-sm font-bold py-2.5 rounded-lg transition-colors"
                         >
                           Add to RFQ
-                        </button>
+                        </Button>
                       </div>
                     </div>
                   </div>

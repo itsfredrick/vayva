@@ -1,8 +1,20 @@
 import React from "react";
 import { View, Text, ScrollView, TouchableOpacity, Image } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { ShoppingBag, Check, X, MessageCircle } from "lucide-react-native";
+import { ShoppingBag, Check, X, MessageCircle, LucideIcon } from "lucide-react-native";
 import { BlurView } from "expo-blur";
+
+const Icon = ({
+  name: Component,
+  size,
+  color,
+}: {
+  name: LucideIcon;
+  size: number;
+  color: string;
+}) => {
+  return <Component size={size} color={color} />;
+};
 
 const APPROVALS = [
   {
@@ -53,8 +65,8 @@ export default function ApprovalsScreen() {
                 <View
                   className={`w-10 h-10 rounded-full items-center justify-center ${item.type === "refund" ? "bg-red-500/20" : "bg-blue-500/20"}`}
                 >
-                  {/* @ts-ignore */}
-                  <ShoppingBag
+                  <Icon
+                    name={ShoppingBag}
                     size={18}
                     color={item.type === "refund" ? "#ef4444" : "#3b82f6"}
                   />
@@ -67,22 +79,20 @@ export default function ApprovalsScreen() {
                 </View>
               </View>
               <View
-                className={`px-2 py-1 rounded border ${
-                  item.risk === "High"
+                className={`px-2 py-1 rounded border ${item.risk === "High"
                     ? "bg-red-500/10 border-red-500/20"
                     : item.risk === "Medium"
                       ? "bg-orange-500/10 border-orange-500/20"
                       : "bg-green-500/10 border-green-500/20"
-                }`}
+                  }`}
               >
                 <Text
-                  className={`text-[10px] font-bold uppercase ${
-                    item.risk === "High"
+                  className={`text-[10px] font-bold uppercase ${item.risk === "High"
                       ? "text-red-400"
                       : item.risk === "Medium"
                         ? "text-orange-400"
                         : "text-green-400"
-                  }`}
+                    }`}
                 >
                   {item.risk} Risk
                 </Text>
@@ -97,8 +107,7 @@ export default function ApprovalsScreen() {
 
               <View className="bg-white/5 rounded-xl p-4 mb-6 border border-white/5">
                 <View className="flex-row items-center gap-2 mb-2">
-                  {/* @ts-ignore */}
-                  <MessageCircle size={14} color="rgba(255,255,255,0.5)" />
+                  <Icon name={MessageCircle} size={14} color="rgba(255,255,255,0.5)" />
 
                   <Text className="text-white/50 text-xs uppercase font-bold">
                     Latest Message
@@ -115,15 +124,11 @@ export default function ApprovalsScreen() {
 
               <View className="flex-row gap-3">
                 <TouchableOpacity className="flex-1 bg-white/5 border border-white/10 py-3 rounded-xl items-center flex-row justify-center gap-2">
-                  {/* @ts-ignore */}
-                  <X size={18} color="#ef4444" />
-
+                  <Icon name={X} size={18} color="#ef4444" />
                   <Text className="text-white font-bold">Reject</Text>
                 </TouchableOpacity>
                 <TouchableOpacity className="flex-1 bg-[#46EC13] py-3 rounded-xl items-center flex-row justify-center gap-2 shadow-lg shadow-green-500/20">
-                  {/* @ts-ignore */}
-                  <Check size={18} color="#000" />
-
+                  <Icon name={Check} size={18} color="#000" />
                   <Text className="text-black font-bold">Approve</Text>
                 </TouchableOpacity>
               </View>

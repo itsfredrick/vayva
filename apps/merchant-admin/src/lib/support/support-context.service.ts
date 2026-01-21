@@ -8,7 +8,6 @@ export class SupportContextService {
     const [storeData, orders] = await Promise.all([
       prisma.store.findUnique({
         where: { id: storeId },
-        include: { merchantSubscription: true, waAgentSettings: true } as any,
       }),
       prisma.order.findMany({
         where: { storeId },
@@ -29,10 +28,10 @@ export class SupportContextService {
       },
       plan: {
         name: storeData.plan || "FREE",
-        status: (storeData as any).merchantSubscription?.status || "TRIAL",
-        expiresAt: (storeData as any).merchantSubscription?.trialEndsAt,
-        daysRemaining: (storeData as any).merchantSubscription?.trialEndsAt
-          ? Math.max(0, Math.ceil((new Date((storeData as any).merchantSubscription.trialEndsAt).getTime() - new Date().getTime()) / (1000 * 60 * 60 * 24)))
+        status: (storeData as any).aiSubscription?.status || "TRIAL",
+        expiresAt: (storeData as any).aiSubscription?.trialEndsAt,
+        daysRemaining: (storeData as any).aiSubscription?.trialEndsAt
+          ? Math.max(0, Math.ceil((new Date((storeData as any).aiSubscription.trialEndsAt).getTime() - new Date().getTime()) / (1000 * 60 * 60 * 24)))
           : null,
       },
       stats: {
@@ -41,7 +40,7 @@ export class SupportContextService {
         totalLeads: await prisma.customer.count({ where: { storeId } }),
       },
       whatsapp: {
-        connected: !!(storeData as any).waAgentSettings,
+        connected: !!(storeData as any).agent,
         status: "ACTIVE",
         aiActive: true,
       },

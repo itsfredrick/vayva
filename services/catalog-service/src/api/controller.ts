@@ -1,6 +1,6 @@
 import { FastifyRequest, FastifyReply } from "fastify";
 import { prisma } from "@vayva/db";
-import { Prisma } from "@prisma/client";
+
 
 interface CreateProductBody {
   storeId: string;
@@ -87,8 +87,8 @@ export const CatalogController = {
               inventoryItems: {
                 create: {
                   // Default location for V1
-                  InventoryLocation: {
-                    // Corrected from location to InventoryLocation (PascalCase relation)
+                  inventoryLocation: {
+                    // Corrected from location to inventoryLocation
                     connectOrCreate: {
                       where: { id: "DEFAULT" }, // Needs robust logic, using placeholders or finding default
                       create: {
@@ -115,7 +115,7 @@ export const CatalogController = {
             price: price,
             inventoryItems: {
               create: {
-                InventoryLocation: {
+                inventoryLocation: {
                   // Corrected
                   create: {
                     storeId,
@@ -148,8 +148,8 @@ export const CatalogController = {
         status: status || undefined,
       },
       include: {
-        ProductVariant: true, // PascalCase
-        ProductImage: true,
+        productVariants: true,
+        productImages: true,
       },
       orderBy: { updatedAt: "desc" },
     });
@@ -164,13 +164,12 @@ export const CatalogController = {
     const product = await prisma.product.findUnique({
       where: { id },
       include: {
-        ProductVariant: {
-          // PascalCase
+        productVariants: {
           include: {
-            InventoryItem: true, // PascalCase
+            inventoryItems: true,
           },
         },
-        ProductImage: true,
+        productImages: true,
       },
     });
     if (!product) return reply.status(404).send({ error: "Product not found" });
@@ -303,11 +302,11 @@ export const CatalogController = {
     // For V1 simple list
     const items = await prisma.inventoryItem.findMany({
       where: {
-        InventoryLocation: { storeId }, // PascalCase
+        inventoryLocation: { storeId },
       },
       include: {
-        ProductVariant: true, // PascalCase
-        Product: true, // PascalCase
+        productVariant: true,
+        product: true,
       },
     });
     return items;
@@ -386,5 +385,41 @@ export const CatalogController = {
     });
 
     return result;
+  },
+
+  // --- Collections ---
+
+  createCollection: async (
+    req: FastifyRequest<{ Body: { storeId: string; title: string; description?: string; productIds?: string[] } }>,
+    reply: FastifyReply,
+  ) => {
+    const { storeId, title, description, productIds } = req.body;
+    const handle = title.toLowerCase().replace(/[^a-z0-9]+/g, "-") + "-" + Math.floor(Math.random() * 1000);
+
+    const collection = await prisma.collection.create({
+      data: {
+        storeId,
+        title,
+        description,
+        handle,
+        collectionProducts: productIds ? {
+          create: productIds.map(id => ({ productId: id }))
+        } : undefined
+      }
+    });
+
+    return reply.status(201).send(collection);
+  },
+
+  getCollections: async (
+    req: FastifyRequest<{ Querystring: { storeId: string } }>,
+    reply: FastifyReply,
+  ) => {
+    const { storeId } = req.query as any;
+    const collections = await prisma.collection.findMany({
+      where: { storeId },
+      include: { collectionProducts: { include: { product: true } } }
+    });
+    return collections;
   },
 };

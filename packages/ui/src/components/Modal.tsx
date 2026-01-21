@@ -2,6 +2,7 @@ import React from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Icon } from "./Icon";
 import { cn } from "../utils";
+import { Button } from "./Button";
 
 interface ModalProps {
   isOpen: boolean;
@@ -44,12 +45,14 @@ export const Modal = ({
               {/* Header */}
               <div className="flex items-center justify-between px-6 py-4 border-b border-gray-100">
                 <h3 className="font-bold text-lg text-gray-900">{title}</h3>
-                <button
+                <Button
                   onClick={onClose}
-                  className="w-8 h-8 rounded-full bg-gray-50 flex items-center justify-center text-gray-500 hover:bg-gray-100 transition-colors"
+                  variant="ghost"
+                  size="icon"
+                  className="w-8 h-8 rounded-full bg-gray-50 hover:bg-gray-100"
                 >
                   <Icon name="X" size={18} />
-                </button>
+                </Button>
               </div>
 
               {/* Body */}

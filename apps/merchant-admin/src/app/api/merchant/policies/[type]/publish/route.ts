@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getServerSession } from "next-auth";
-import { prisma } from "@vayva/db";
+import { prisma } from "@/lib/prisma";
 import { authOptions } from "@/lib/auth"; // Assuming authOptions is imported from here
 
 export async function POST(

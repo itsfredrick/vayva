@@ -10,10 +10,9 @@ import { Logo } from "@/components/Logo";
 import { Menu, X } from "lucide-react";
 
 const NAV_LINKS = [
-  { href: "/features", label: "Features" },
+  { href: "/how-vayva-works", label: "How it Works" },
   { href: "/pricing", label: "Pricing" },
-  { href: "/templates", label: "Templates" },
-  { href: "/marketplace", label: "Marketplace" },
+  { href: "/blog", label: "Blog" },
   { href: "/help", label: "Help" },
 ];
 
@@ -53,12 +52,12 @@ export function MarketingHeader() {
           </div>
 
           {/* Mobile Menu Toggle */}
-          <button
+          <Button
             className="lg:hidden p-2 text-gray-600 hover:bg-gray-100 rounded-lg transition-colors"
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
           >
             {mobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
-          </button>
+          </Button>
         </div>
       </div>
 
@@ -73,14 +72,10 @@ export function MarketingHeader() {
                 onClick={() => setMobileMenuOpen(false)}
                 className="text-[#0F172A] hover:text-[#22C55E] hover:bg-gray-50 px-4 py-3 rounded-xl transition-all font-bold text-lg flex items-center justify-between group"
               >
-                <div className="flex items-center gap-3">
-                  {link.label}
-                  {link.label === "Help" && (
-                    <span className="text-[10px] bg-green-100 text-green-700 px-2 py-0.5 rounded-full uppercase tracking-wide">
-                      New
-                    </span>
-                  )}
-                </div>
+                {link.label}
+                {link.label === "Help" && (
+                  <span className="text-[10px] bg-green-100 text-green-700 px-2 py-0.5 rounded-full uppercase tracking-wide">New</span>
+                )}
                 <span className="text-gray-300 group-hover:text-[#22C55E]">→</span>
               </Link>
             ))}

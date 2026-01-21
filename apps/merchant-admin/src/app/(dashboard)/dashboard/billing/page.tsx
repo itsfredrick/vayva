@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import { Icon } from "@vayva/ui";
+import { Icon, Button } from "@vayva/ui";
 import { formatMoneyNGN } from "@/lib/billing/formatters";
 import { PLANS } from "@/lib/billing/plans";
 
@@ -38,7 +38,7 @@ export default function BillingPage() {
 
   if (loading) return <div className="p-8">Loading billing...</div>;
 
-  const currentPlan = status?.planSlug || "none";
+  const currentPlan = status?.planKey || "none";
   const isPastDue = status?.status === "past_due";
 
   return (
@@ -64,7 +64,7 @@ export default function BillingPage() {
         <div>
           <h4 className="font-bold text-gray-900">Transaction Disclosure</h4>
           <p className="text-sm text-gray-500">
-            A 5% transaction fee is applied to every withdrawal from your Vayva
+            A 3% transaction fee is applied to every withdrawal from your Vayva
             wallet to your bank account, regardless of your plan tier.
           </p>
         </div>
@@ -77,8 +77,8 @@ export default function BillingPage() {
             <div
               key={plan.slug}
               className={`border rounded-2xl p-8 relative ${isCurrent
-                  ? "border-black ring-1 ring-black bg-gray-50"
-                  : "border-gray-200 bg-white"
+                ? "border-black ring-1 ring-black bg-gray-50"
+                : "border-gray-200 bg-white"
                 }`}
             >
               {isCurrent && (
@@ -113,12 +113,12 @@ export default function BillingPage() {
                 </li>
               </ul>
 
-              <button
+              <Button
                 onClick={() => handleSubscribe(plan.slug)}
                 disabled={isCurrent || !!processing}
-                className={`w-full py-3 rounded-lg font-bold ${isCurrent
-                    ? "bg-gray-200 text-gray-500 cursor-default"
-                    : "bg-black text-white hover:bg-gray-800"
+                className={`w-full py-6 rounded-lg font-bold shadow-none ${isCurrent
+                  ? "bg-gray-200 text-gray-500 cursor-default hover:bg-gray-200"
+                  : "bg-black text-white hover:bg-gray-800"
                   }`}
               >
                 {isCurrent
@@ -126,7 +126,7 @@ export default function BillingPage() {
                   : processing === plan.slug
                     ? "Processing..."
                     : `Switch to ${plan.name}`}
-              </button>
+              </Button>
             </div>
           );
         })}

@@ -4,7 +4,7 @@
         "**/.env.*",
         "**/tsconfig.json"
     ],
-    "pipeline": {
+    "tasks": {
         "build": {
             "dependsOn": [
                 "^build"
@@ -38,7 +38,10 @@
             ]
         },
         "db:generate": {
-            "cache": false
+            "cache": false,
+            "outputs": [
+                "src/generated/**"
+            ]
         },
         "db:push": {
             "cache": false

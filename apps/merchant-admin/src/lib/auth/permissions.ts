@@ -27,6 +27,43 @@ export const PERMISSIONS = {
   DELIVERY_APPROVE: "delivery.approve",
 } as const;
 
+export const PERMISSION_GROUPS = [
+  {
+    name: "General",
+    id: "general",
+    permissions: [
+      { id: PERMISSIONS.TEAM_MANAGE, label: "Manage Staff", description: "Invite and remove staff members" },
+      { id: PERMISSIONS.SETTINGS_MANAGE, label: "Manage Settings", description: "Edit store profile and general configurations" },
+      { id: PERMISSIONS.AUDIT_VIEW, label: "View Audit Logs", description: "See platform-wide activity logs" }
+    ]
+  },
+  {
+    name: "Sales & Orders",
+    id: "sales",
+    permissions: [
+      { id: PERMISSIONS.ORDERS_MANAGE, label: "Manage Orders", description: "View and process customer orders" },
+      { id: PERMISSIONS.PRODUCTS_MANAGE, label: "Manage Products", description: "Edit catalog and inventory" }
+    ]
+  },
+  {
+    name: "Finance",
+    id: "finance",
+    permissions: [
+      { id: PERMISSIONS.BILLING_MANAGE, label: "Manage Billing", description: "View invoices and pay subscription" },
+      { id: PERMISSIONS.REFUNDS_MANAGE, label: "Manage Refunds", description: "Initiate refund requests" },
+      { id: PERMISSIONS.REFUNDS_APPROVE, label: "Approve Refunds", description: "SENSITIVE: High-level financial approval" }
+    ]
+  },
+  {
+    name: "Operations",
+    id: "ops",
+    permissions: [
+      { id: PERMISSIONS.DELIVERY_MANAGE, label: "Manage Delivery", description: "Organize shipments and logistics" },
+      { id: PERMISSIONS.APPROVALS_DECIDE, label: "Decide Approvals", description: "Approve or reject platform-level requests" }
+    ]
+  }
+];
+
 export type Permission = (typeof PERMISSIONS)[keyof typeof PERMISSIONS];
 
 const ROLE_PERMISSIONS: Record<Role, Permission[]> = {
@@ -85,7 +122,7 @@ export function hasRolePermission(
 
 /**
  * Server-side check: verifying if a specific user has permission in a store.
- * Requires fetching the membership role.
+ * Requires fetching the membership role and its associated permissions.
  */
 export async function hasPermission(
   userId: string,
@@ -99,13 +136,31 @@ export async function hasPermission(
         storeId,
       },
     },
-    select: { role: true },
+    include: {
+      role: {
+        include: {
+          rolePermissions: {
+            include: {
+              permission: true
+            }
+          }
+        }
+      }
+    }
   });
 
   if (!membership) return false;
 
-  // Normalize likely case issues or fallbacks
-  const role = membership.role as Role;
+  // 1. Check Custom Role (DB)
+  if (membership.role) {
+    const hasPerm = membership.role.rolePermissions.some(
+      rp => rp.permission.key === (permission as string)
+    );
+    if (hasPerm) return true;
+  }
+
+  // 2. Fallback to System Role (Hardcoded map)
+  const role = membership.role_enum.toLowerCase() as Role;
   return hasRolePermission(role, permission);
 }
 

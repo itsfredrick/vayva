@@ -58,7 +58,7 @@ export class MerchantBrainService {
       if (!product) return null;
 
       // Logic: if any variant is in stock, product is in stock.
-      // We assume 'InventoryItem' holds the quantity in 'available' field.
+      // We assume 'inventoryItems' holds the quantity in 'available' field.
 
       const totalStock = await prisma.inventoryItem.groupBy({
         by: ['productId'],

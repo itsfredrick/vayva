@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
+import { Button } from "@vayva/ui";
 import NextLink from "next/link";
 const Link = NextLink as any;
 import { useStore } from "@/context/StoreContext";
@@ -66,13 +67,15 @@ export function StoreShell({ children }: { children: React.ReactNode }) {
         <div className="max-w-7xl mx-auto px-4 h-16 flex items-center justify-between">
           {/* Left: Mobile Menu & Logo */}
           <div className="flex items-center gap-4">
-            <button
-              className="md:hidden p-2 -ml-2 hover:bg-gray-100 rounded-full"
+            <Button
+              variant="ghost"
+              size="icon"
+              className="md:hidden p-2 -ml-2 hover:bg-gray-100 rounded-full h-auto"
               onClick={() => setMobileMenuOpen(true)}
               aria-label="Toggle mobile menu"
             >
               <Menu size={20} />
-            </button>
+            </Button>
 
             <Link
               href={`/?store=${store?.slug}`}
@@ -118,27 +121,33 @@ export function StoreShell({ children }: { children: React.ReactNode }) {
 
           {/* Right: Search, Account & Cart */}
           <div className="flex items-center gap-2">
-            <button
-              className="p-2 hover:bg-gray-100 rounded-full"
+            <Button
+              variant="ghost"
+              size="icon"
+              className="p-2 hover:bg-gray-100 rounded-full h-auto"
               aria-label="Search"
             >
               <Search size={20} />
-            </button>
+            </Button>
             <Link href={`/${lang}/account`}>
-              <button
-                className="p-2 hover:bg-gray-100 rounded-full"
+              <Button
+                variant="ghost"
+                size="icon"
+                className="p-2 hover:bg-gray-100 rounded-full h-auto"
                 aria-label="Account"
               >
                 <User size={20} />
-              </button>
+              </Button>
             </Link>
             <Link href={`/cart?store=${store?.slug}`}>
-              <button
-                className="p-2 hover:bg-gray-100 rounded-full relative"
+              <Button
+                variant="ghost"
+                size="icon"
+                className="p-2 hover:bg-gray-100 rounded-full relative h-auto"
                 aria-label="Cart"
               >
                 <ShoppingBag size={20} />
-              </button>
+              </Button>
             </Link>
           </div>
         </div>

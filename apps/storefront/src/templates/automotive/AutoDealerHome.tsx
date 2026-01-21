@@ -1,5 +1,6 @@
 
 import { VehicleSearchWidget } from "@/components/automotive/VehicleSearchWidget";
+import { Button } from "@vayva/ui";
 // Removed missing Hero import
 
 
@@ -32,7 +33,7 @@ export default function AutoDealerHome({ store }: { store: any }) {
                                 <p className="text-gray-500 text-sm">2,500 miles • Hybrid</p>
                                 <div className="mt-4 flex justify-between items-center">
                                     <span className="text-xl font-bold text-blue-700">₦65,000,000</span>
-                                    <button className="text-blue-600 font-medium text-sm hover:underline">View Details</button>
+                                    <Button variant="link" className="text-blue-600 font-medium text-sm hover:underline h-auto p-0" aria-label="View vehicle details">View Details</Button>
                                 </div>
                             </div>
                         </div>

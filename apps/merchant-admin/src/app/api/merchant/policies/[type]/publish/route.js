@@ -1,0 +1,31 @@
+import { NextResponse } from "next/server";
+import { getServerSession } from "next-auth";
+import { prisma } from "@/lib/prisma";
+import { authOptions } from "@/lib/auth"; // Assuming authOptions is imported from here
+export async function POST(req, { params }) {
+    const { type } = await params;
+    const session = await getServerSession(authOptions);
+    if (!session?.user)
+        return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    try {
+        const policy = await prisma.merchantPolicy.update({
+            where: {
+                storeId_type: {
+                    storeId: session.user.storeId,
+                    type: type.toUpperCase().replace("-", "_"),
+                },
+            },
+            data: {
+                status: "PUBLISHED",
+                publishedVersion: { increment: 1 },
+                publishedAt: new Date(),
+                lastUpdatedLabel: new Date().toISOString().split("T")[0], // YYYY-MM-DD
+            },
+        });
+        return NextResponse.json({ policy });
+    }
+    catch (error) {
+        console.error("Error publishing policy:", error);
+        return NextResponse.json({ error: "Internal server error" }, { status: 500 });
+    }
+}

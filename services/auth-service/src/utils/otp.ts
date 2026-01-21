@@ -1,8 +1,36 @@
 import { prisma } from "@vayva/db";
+import { Resend } from "resend";
 import * as crypto from "crypto";
+
+const resendApiKey = process.env.RESEND_API_KEY;
+const resendFromEmail =
+  process.env.AUTH_OTP_FROM_EMAIL ||
+  process.env.RESEND_FROM_EMAIL ||
+  "no-reply@vayva.com";
 
 export const generateOtp = () => {
   return crypto.randomInt(100000, 999999).toString();
+};
+
+const dispatchOtp = async (identifier: string, code: string, type: string) => {
+  if (!resendApiKey) {
+    console.warn(
+      "[OTP] RESEND_API_KEY not configured; skipping email send",
+    );
+    return;
+  }
+
+  const resend = new Resend(resendApiKey);
+  try {
+    await resend.emails.send({
+      from: resendFromEmail,
+      to: identifier,
+      subject: "Your Vayva verification code",
+      text: `Your ${type.toLowerCase()} code is ${code}. It expires in 10 minutes.`,
+    });
+  } catch (err) {
+    console.error("[OTP] Failed to dispatch via Resend", err);
+  }
 };
 
 export const storeOtp = async (identifier: string, type: string) => {
@@ -18,8 +46,8 @@ export const storeOtp = async (identifier: string, type: string) => {
     },
   });
 
-  // TODO: Send via SMS/Email Provider
-  console.log(`[OTP] Generated for ${identifier} (${type}): ${code}`);
+  // Send via email provider (fall back to logs if not configured)
+  await dispatchOtp(identifier, code, type);
 
   return code;
 };

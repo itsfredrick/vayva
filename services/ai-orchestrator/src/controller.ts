@@ -10,37 +10,69 @@ export const processHandler = async (
 
   const message = await prisma.message.findUnique({
     where: { id: messageId },
-    include: { Conversation: { include: { contact: true } } },
+    include: { conversation: { include: { contact: true } } },
   });
 
-  if (!message || !message.Conversation)
+  if (!message || !message.conversation)
     return reply.status(404).send({ error: "Message not found" });
 
   const text = (message.textBody || "").toLowerCase();
   let responseText = "";
 
   // Simple V1 Heuristics
-  if (text.includes("order")) {
-    responseText =
-      "I see you're asking about an order. Let me check the status... (Simulated: Processing)";
-    // TODO: Call orders-service to list latest order
-  } else if (text.includes("discount")) {
-    // Create Approval
+  if (text.includes("order") || text.includes("track") || text.includes("where is my")) {
+    responseText = "I'm checking your latest order status...";
+    try {
+      const ordersUrl = process.env.SERVICE_URL_ORDERS || "http://localhost:3003";
+      const { data: orders } = await axios.get(`${ordersUrl}/v1/orders`, {
+        params: {
+          phone: message.conversation.contact.phoneE164,
+          storeId: message.conversation.storeId,
+          limit: 1
+        }
+      });
+
+      if (orders && orders.data && orders.data.length > 0) {
+        const latest = orders.data[0];
+        responseText = `Your latest order #${latest.orderNumber} is currently ${latest.status}. Total: ${latest.currency} ${latest.total / 100}.`;
+      } else {
+        responseText = "I couldn't find any recent orders for this phone number.";
+      }
+    } catch (err: any) {
+      console.error("AI Order Lookup Failed:", err.message);
+      responseText = "I'm having trouble accessing order details right now. Please allow me to connect you to an agent.";
+    }
+  } else if (text.includes("discount") || text.includes("promo") || text.includes("coupon")) {
+    // Create Approval with structured payload
     const approval = await prisma.approval.create({
       data: {
-        storeId: message.Conversation.storeId,
-        merchantId: message.Conversation.storeId, // Required field in schema
+        merchantId: message.conversation.storeId || "SYSTEM",
+        storeId: message.conversation.storeId,
         type: "DISCOUNT_APPLICATION",
-        data: {
-          discount: "10%",
-          requesterId: message.Conversation.contact.phoneE164,
+        summary: `10% Discount request from ${message.conversation.contact.phoneE164}`,
+        payload: {
+          requestedDiscount: "10%",
+          sourceId: messageId,
+          contactId: message.conversation.contact.id,
         },
         status: "PENDING",
       },
     });
-    responseText = `I've requested a 10% discount for you. Waiting for manager approval. (Approval ID: ${approval.id})`;
+    responseText = `I've requested a 10% discount for you. A manager is reviewing it now. (Ref: ${approval.id.slice(0, 8)})`;
+  } else if (text.includes("find") || text.includes("source") || text.includes("bulk") || text.includes("import")) {
+    // Sourcing / Product Matching
+    const { ChinaSyncService } = require("@vayva/shared");
+    const suggestion = await ChinaSyncService.suggestSupplier(text);
+
+    if (suggestion) {
+      responseText = `I can help you source that! We have a specialist partner, ${suggestion.name}, who covers ${suggestion.category || 'this category'}. Would you like me to start a sourcing request for you?`;
+    } else {
+      responseText = "I've logged your interest in sourcing this product. Our agents will look for the best deals in China and get back to you.";
+    }
+  } else if (text.includes("help") || text.includes("support") || text.includes("problem")) {
+    responseText = "I've notified our support team! A human agent will jump in to assist you shortly. In the meantime, feel free to share any more details about the issue.";
   } else {
-    responseText = `Echo: ${message.textBody} - (AI Logic Placeholder)`;
+    responseText = `I've received your message: "${message.textBody}". I'm escalating this to a human agent who will reply shortly.`;
   }
 
   // Send Reply

@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Icon, Button, cn } from "@vayva/ui";
+import { Button, Icon, cn } from "@vayva/ui";
 
 interface PinEntryModalProps {
   isOpen: boolean;
@@ -215,9 +215,9 @@ export const PinEntryModal = ({
               )}
 
               {!isSetupMode && (
-                <button className="text-xs text-gray-400 hover:text-gray-900 transition-colors">
+                <Button className="text-xs text-gray-400 hover:text-gray-900 transition-colors">
                   Forgot PIN?
-                </button>
+                </Button>
               )}
 
               {onClose && (

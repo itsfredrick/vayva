@@ -74,7 +74,7 @@ Vayva is a **software infrastructure provider** that helps Nigerian merchants or
        │
        ▼
 ┌─────────────────────┐
-│  Vayva Platform     │
+│  Vayva     │
 │  (Data Controller)  │
 │                     │
 │  - User accounts    │

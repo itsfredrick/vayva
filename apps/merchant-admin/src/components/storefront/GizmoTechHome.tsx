@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { Button } from "@vayva/ui";
 import {
   useStorefrontProducts,
   useStorefrontStore,
@@ -64,19 +65,19 @@ export function GizmoTechHome({
             </span>
           </div>
           <div className="flex gap-6 text-xs md:text-sm uppercase tracking-widest">
-            <button className="hover:bg-[#00ff41] hover:text-black px-2 py-1 transition-colors">
+            <Button className="hover:bg-[#00ff41] hover:text-black px-2 py-1 transition-colors">
               Modules
-            </button>
-            <button className="hover:bg-[#00ff41] hover:text-black px-2 py-1 transition-colors">
+            </Button>
+            <Button className="hover:bg-[#00ff41] hover:text-black px-2 py-1 transition-colors">
               Components
-            </button>
-            <button
+            </Button>
+            <Button
               className="hover:bg-[#00ff41] hover:text-black px-2 py-1 transition-colors flex items-center gap-2 border border-[#00ff41]/20"
               onClick={() => setIsCartOpen(true)}
             >
               <ShoppingCart className="w-4 h-4" />
               <span>SYSTEM.CART({cart.length})</span>
-            </button>
+            </Button>
           </div>
         </div>
       </header>
@@ -93,12 +94,12 @@ export function GizmoTechHome({
               <h2 className="text-xl font-bold uppercase tracking-widest">
                 System Inventory
               </h2>
-              <button
+              <Button
                 onClick={() => setIsCartOpen(false)}
                 className="hover:text-white"
               >
                 <X className="w-6 h-6" />
-              </button>
+              </Button>
             </div>
 
             <div className="flex-1 overflow-auto space-y-6 scrollbar-thin scrollbar-thumb-[#00ff41]/20">
@@ -133,28 +134,28 @@ export function GizmoTechHome({
                       </div>
                       <div className="flex items-center justify-between mt-2">
                         <div className="flex items-center gap-2 text-xs">
-                          <button
+                          <Button
                             onClick={() => updateQuantity(item.id, -1)}
                             className="hover:text-white"
                           >
                             [ - ]
-                          </button>
+                          </Button>
                           <span className="w-4 text-center">
                             {item.quantity}
                           </span>
-                          <button
+                          <Button
                             onClick={() => updateQuantity(item.id, 1)}
                             className="hover:text-white"
                           >
                             [ + ]
-                          </button>
+                          </Button>
                         </div>
-                        <button
+                        <Button
                           onClick={() => removeFromCart(item.id)}
                           className="text-[10px] text-red-500 hover:text-red-400"
                         >
                           Term.Process
-                        </button>
+                        </Button>
                       </div>
                     </div>
                   </div>
@@ -168,7 +169,7 @@ export function GizmoTechHome({
                   <span>TOTAL_LOAD</span>
                   <span>₦{total.toLocaleString()}</span>
                 </div>
-                <button
+                <Button
                   onClick={() => {
                     setIsCartOpen(false);
                     setIsCheckoutOpen(true);
@@ -176,7 +177,7 @@ export function GizmoTechHome({
                   className="w-full bg-[#00ff41] text-black py-4 font-bold uppercase hover:bg-white hover:shadow-[0_0_20px_rgba(0,255,65,0.5)] transition-all"
                 >
                   Proceed to Checkout
-                </button>
+                </Button>
               </div>
             )}
           </div>
@@ -242,12 +243,12 @@ export function GizmoTechHome({
                     <div className="font-bold text-lg">
                       ₦{product.price.toLocaleString()}
                     </div>
-                    <button
+                    <Button
                       onClick={() => addToCart(product)}
                       className="px-3 py-1 bg-[#00ff41]/10 border border-[#00ff41] hover:bg-[#00ff41] hover:text-black text-xs font-bold uppercase transition-colors"
                     >
                       Acquire
-                    </button>
+                    </Button>
                   </div>
                 </div>
               </div>

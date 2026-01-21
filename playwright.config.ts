@@ -41,22 +41,22 @@ export default defineConfig({
   ],
   webServer: [
     {
-      command: 'pnpm --filter merchant-admin start',
-      url: 'http://127.0.0.1:3000/healthz',
+      command: 'VAYVA_E2E_MODE=true pnpm --filter merchant-admin dev',
+      url: 'http://127.0.0.1:3000/api/health',
       reuseExistingServer: !process.env.CI,
-      timeout: 120 * 1000,
+      timeout: 300 * 1000,
     },
     {
-      command: 'pnpm --filter storefront start',
-      url: 'http://127.0.0.1:3001/healthz',
+      command: 'VAYVA_E2E_MODE=true pnpm --filter storefront dev',
+      url: 'http://127.0.0.1:3001/api/health',
       reuseExistingServer: !process.env.CI,
-      timeout: 120 * 1000,
+      timeout: 300 * 1000,
     },
     {
-      command: 'pnpm --filter ops-console start',
-      url: 'http://127.0.0.1:3002/healthz',
+      command: 'VAYVA_E2E_MODE=true pnpm --filter ops-console dev',
+      url: 'http://127.0.0.1:3002/api/health',
       reuseExistingServer: !process.env.CI,
-      timeout: 120 * 1000,
+      timeout: 300 * 1000,
     },
   ],
 });

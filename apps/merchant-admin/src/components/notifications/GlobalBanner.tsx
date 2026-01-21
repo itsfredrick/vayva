@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Notification } from "@vayva/shared";
-import { Icon, Button, cn } from "@vayva/ui";
+import { Button, Icon, cn } from "@vayva/ui";
 
 export const GlobalBanner = () => {
   const [banners, setBanners] = useState<Notification[]>([]);
@@ -78,9 +78,9 @@ export const GlobalBanner = () => {
           </a>
         )}
         {!isCritical && (
-          <button className="p-1.5 hover:bg-black/5 rounded-lg transition-colors">
+          <Button variant="ghost" size="icon" className="h-6 w-6 hover:bg-black/5 rounded-lg transition-colors p-0">
             <Icon name="X" size={16} />
-          </button>
+          </Button>
         )}
       </div>
     </div>

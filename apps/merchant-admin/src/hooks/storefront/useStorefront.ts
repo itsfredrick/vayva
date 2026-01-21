@@ -9,7 +9,7 @@ export interface StoreData {
   category: string;
   plan: string;
   isLive: boolean;
-  waAgentSettings?: {
+  agent?: {
     enabled: boolean;
     businessHours: any;
   };

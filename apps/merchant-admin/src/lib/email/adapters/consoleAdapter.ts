@@ -3,14 +3,13 @@ import { EmailAdapter, EmailPayload } from "../types";
 export class ConsoleAdapter implements EmailAdapter {
   async send(payload: EmailPayload) {
     console.log(`
+        [ConsoleEmailAdapter] Sending Email
         ------------------------------------------
-        [EMAIL SENT - CONSOLE]
-        TO: ${payload.to}
-        SUBJECT: ${payload.subject}
-        TEMPLATE: ${payload.templateKey}
-        CORRELATION: ${payload.correlationId}
-        ------------------------------------------
-        ${payload.text || "(No Plaintext)"}
+        To: ${payload.to}
+        Subject: ${payload.subject}
+        Template: ${payload.templateKey}
+        Meta: ${JSON.stringify(payload.meta, null, 2)}
+        Text: ${payload.text}
         ------------------------------------------
         `);
     return { success: true, providerId: `console-${Date.now()}` };

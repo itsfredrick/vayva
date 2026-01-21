@@ -1,8 +1,10 @@
 "use client";
 
+import React from "react";
 import { LocaleKey, LOCALES } from "@/data/locales";
 import { ShoppingBag, Star, Info } from "lucide-react";
 import { Meal } from "@/types/menu";
+import { Button } from "@vayva/ui";
 
 interface SelectionSummaryProps {
   selectedMeals: Meal[];
@@ -24,6 +26,14 @@ export function SelectionSummary({
   const t = LOCALES[lang];
   const remaining = mealsPerWeek - selectedMeals.length;
   const progress = (selectedMeals.length / mealsPerWeek) * 100;
+
+  const progressBarRef = React.useRef<HTMLDivElement>(null);
+
+  React.useEffect(() => {
+    if (progressBarRef.current) {
+      progressBarRef.current.style.width = `${Math.min(progress, 100)}%`;
+    }
+  }, [progress]);
 
   return (
     <div className="bg-white rounded-2xl shadow-lg border border-gray-100 p-6 sticky top-24">
@@ -48,8 +58,8 @@ export function SelectionSummary({
         </div>
         <div className="h-2 bg-gray-100 rounded-full overflow-hidden">
           <div
+            ref={progressBarRef}
             className={`h-full transition-all duration-500 ease-out ${remaining === 0 ? "bg-[#22C55E]" : "bg-orange-400"}`}
-            style={{ width: `${Math.min(progress, 100)}%` }}
           />
         </div>
       </div>
@@ -60,7 +70,7 @@ export function SelectionSummary({
           <div key={meal.id} className="flex gap-3 items-start">
             <img
               src={meal.image}
-              alt=""
+              alt={meal.title[lang]}
               className="w-12 h-12 rounded-lg object-cover bg-gray-100 flex-shrink-0"
             />
             <div className="flex-1 min-w-0">
@@ -96,20 +106,20 @@ export function SelectionSummary({
           {t.planSummary}
         </div>
 
-        <button
+        <Button
           onClick={onSave}
           disabled={isLocked || selectedMeals.length !== mealsPerWeek}
           className={`
-                        w-full py-3.5 rounded-xl font-bold text-sm transition-all shadow-lg shadow-[#22C55E]/10
-                        ${
-                          isLocked || selectedMeals.length !== mealsPerWeek
-                            ? "bg-gray-100 text-gray-400 cursor-not-allowed"
-                            : "bg-[#0B1220] text-white hover:bg-black hover:shadow-xl"
-                        }
+                        w-full py-3.5 rounded-xl font-bold text-sm transition-all shadow-lg shadow-[#22C55E]/10 h-auto
+                        ${isLocked || selectedMeals.length !== mealsPerWeek
+              ? "bg-gray-100 text-gray-400 cursor-not-allowed"
+              : "bg-[#0B1220] text-white hover:bg-black hover:shadow-xl"
+            }
                     `}
+          aria-label={isLocked ? "Selection locked" : t.saveSelection}
         >
           {isLocked ? "Locked" : t.saveSelection}
-        </button>
+        </Button>
       </div>
     </div>
   );

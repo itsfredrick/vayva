@@ -3,6 +3,7 @@
 import { useEffect, type ReactNode } from "react";
 import { cn } from "../utils";
 import { X as XIcon } from "lucide-react";
+import { Button } from "./Button";
 
 export interface DrawerProps {
   isOpen: boolean;
@@ -53,12 +54,14 @@ export function Drawer({
         {title && (
           <div className="flex items-center justify-between px-6 py-4 border-b">
             <h2 className="text-lg font-semibold">{title}</h2>
-            <button
+            <Button
               onClick={onClose}
-              className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
+              variant="ghost"
+              size="icon"
+              className="hover:bg-gray-100"
             >
               <XIcon className="w-5 h-5" />
-            </button>
+            </Button>
           </div>
         )}
 

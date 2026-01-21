@@ -1,4 +1,5 @@
 import React from "react";
+import { Button } from "@vayva/ui";
 import { SubscriptionPlan } from "@vayva/shared";
 
 interface PlanUsageProps {
@@ -57,9 +58,9 @@ export const PlanUsage = ({ usage, plan }: PlanUsageProps) => {
           <h3 className="text-xl font-bold text-gray-900">{plan}</h3>
         </div>
         {plan === SubscriptionPlan.STARTER && (
-          <button className="px-4 py-2 bg-black text-white rounded-lg text-xs font-bold hover:scale-105 transition-transform">
+          <Button variant="primary" size="sm" className="hover:scale-105">
             Upgrade to Pro
-          </button>
+          </Button>
         )}
       </div>
 

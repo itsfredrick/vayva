@@ -26,7 +26,7 @@ export default function AuthError({
         <div className="w-16 h-16 bg-red-100 text-red-600 rounded-full flex items-center justify-center mx-auto mb-6 text-2xl">
           ⚠️
         </div>
-        <h2 className="text-2xl font-bold text-[#0F172A] mb-4">
+        <h2 className="text-2xl font-bold text-black mb-4">
           Something went wrong
         </h2>
         <p className="text-[#64748B] mb-8 leading-relaxed">

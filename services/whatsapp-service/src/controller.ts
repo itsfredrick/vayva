@@ -15,8 +15,11 @@ export const verifyWebhook = async (
   const token = query["hub.verify_token"];
   const challenge = query["hub.challenge"];
 
-  // In prod, this token should be in env
-  const VERIFY_TOKEN = process.env.WHATSAPP_VERIFY_TOKEN || "vayva_v1_secret";
+  const VERIFY_TOKEN = process.env.WHATSAPP_VERIFY_TOKEN;
+  if (!VERIFY_TOKEN) {
+    (req.log as any).error("WHATSAPP_VERIFY_TOKEN not set");
+    return reply.status(500).send("Internal Server Configuration Error");
+  }
 
   if (mode === "subscribe" && token === VERIFY_TOKEN) {
     return reply.send(challenge);
@@ -35,24 +38,35 @@ export const webhookHandler = async (
   const signature = req.headers["x-hub-signature-256"] as string;
   const appSecret = process.env.WHATSAPP_APP_SECRET;
 
-  if (appSecret && signature) {
-    const crypto = await import("crypto");
-    const hmac = crypto.createHmac("sha256", appSecret);
-    const bodyStr = JSON.stringify(req.body); // Raw body preferred if available, but for JSON parser usage this approximates
-    const digest = hmac.update(bodyStr).digest("hex");
+  if (appSecret) {
+    if (!signature) {
+      (req.log as any).warn("Missing x-hub-signature-256 header");
+      if (process.env.NODE_ENV === "production") return reply.status(403).send("Forbidden");
+    } else {
+      const crypto = await import("crypto");
+      const hmac = crypto.createHmac("sha256", appSecret);
+      const rawBody = (req as any).rawBody;
 
-    if (`sha256=${digest}` !== signature) {
-      (req.log as any).warn("Invalid WhatsApp Signature");
-      // return reply.status(403).send({ error: "Invalid Signature" });
-      // FIXME: Body parsing differences can cause hash mismatch. 
-      // For V1, logging warning but allowing if secret not set or mismatch due to parsing.
-      // Ideally use fastify-raw-body to get exact buffer.
-      if (process.env.NODE_ENV === 'production') {
-        // In strict production, fail.
-        // return reply.status(403).send("Forbidden"); 
-        // Commented out to prevent accidental lockout during demo until raw-body is configured
+      if (!rawBody) {
+        (req.log as any).error("Raw body missing for signature verification. Ensure content-type parser is set.");
+        // If missing, we can't verify. Fail safe.
+        return reply.status(500).send({ error: "Internal Error" });
+      }
+
+      // Ensure rawBody is a Buffer or string
+      const updateData = Buffer.isBuffer(rawBody) ? rawBody : String(rawBody);
+      const digest = hmac.update(updateData).digest("hex");
+      const expectedSignature = `sha256=${digest}`;
+
+      if (signature !== expectedSignature) {
+        (req.log as any).warn(`Invalid WhatsApp Signature. Expected ${expectedSignature}, got ${signature}`);
+        if (process.env.NODE_ENV === "production" || process.env.VERIFY_WEBHOOKS === "true") {
+          return reply.status(403).send("Forbidden");
+        }
       }
     }
+  } else {
+    (req.log as any).warn("WHATSAPP_APP_SECRET not set. Skipping signature verification.");
   }
 
   const body = req.body as any;
@@ -68,8 +82,11 @@ export const webhookHandler = async (
         where: { phoneNumberId: metadata?.phone_number_id },
       });
 
-      // For V1 demo fallback to a known store if channel not found
-      const storeId = channel?.storeId || "store-123";
+      if (!channel) {
+        (req.log as any).error(`No channel found for phone_number_id ${metadata?.phone_number_id}`);
+        continue;
+      }
+      const storeId = channel.storeId;
 
       if (value.messages) {
         await InboundProcessor.processMessage(storeId, value);
@@ -83,14 +100,15 @@ export const webhookHandler = async (
   }
 
   return reply.send({ status: "success" });
-
 };
 
 /**
  * Send Message from Merchant Dashboard
  */
 export const sendMessage = async (req: FastifyRequest, reply: FastifyReply) => {
-  const storeId = (req.headers["x-store-id"] as string) || "store-123";
+  const storeId = req.headers["x-store-id"] as string;
+  if (!storeId) return reply.status(400).send({ error: "Missing x-store-id header" });
+
   const { conversationId, body, templateName } = req.body as any;
 
   try {
@@ -109,7 +127,9 @@ export const sendMessage = async (req: FastifyRequest, reply: FastifyReply) => {
  * List Threads for Inbox
  */
 export const listThreads = async (req: FastifyRequest, reply: FastifyReply) => {
-  const storeId = (req.headers["x-store-id"] as string) || "store-123";
+  const storeId = req.headers["x-store-id"] as string;
+  if (!storeId) return reply.status(400).send({ error: "Missing x-store-id header" });
+
   const threads = await ConversationStore.listThreads(storeId);
   return reply.send(threads);
 };
@@ -118,7 +138,9 @@ export const listThreads = async (req: FastifyRequest, reply: FastifyReply) => {
  * Get Full Thread History
  */
 export const getThread = async (req: FastifyRequest, reply: FastifyReply) => {
-  const storeId = (req.headers["x-store-id"] as string) || "store-123";
+  const storeId = req.headers["x-store-id"] as string;
+  if (!storeId) return reply.status(400).send({ error: "Missing x-store-id header" });
+
   const { id } = req.params as { id: string };
 
   const thread = await ConversationStore.getThread(storeId, id);
@@ -128,4 +150,33 @@ export const getThread = async (req: FastifyRequest, reply: FastifyReply) => {
   await ConversationStore.markAsRead(storeId, id);
 
   return reply.send(thread);
+};
+
+/**
+ * Sync Agent Context for a store (Refreshes cache/LLM instructions)
+ */
+export const syncAgentContext = async (req: FastifyRequest, reply: FastifyReply) => {
+  const secret = req.headers["x-internal-secret"];
+  const INTERNAL_SECRET = process.env.INTERNAL_API_SECRET;
+
+  if (!INTERNAL_SECRET || secret !== INTERNAL_SECRET) {
+    return reply.status(401).send({ error: "Unauthorized" });
+  }
+
+  const { storeId } = req.body as { storeId: string };
+  if (!storeId) return reply.status(400).send({ error: "storeId required" });
+
+  try {
+    const store = await prisma.store.findUnique({
+      where: { id: storeId },
+      select: { settings: true }
+    });
+
+    const aiSettings = (store?.settings as any)?.aiAgent;
+    (req.log as any).info(`Refreshing AI Agent context for store ${storeId}. Enabled: ${aiSettings?.enabled}`);
+
+    return reply.send({ success: true, syncedAt: new Date().toISOString() });
+  } catch (e: any) {
+    return reply.status(500).send({ error: e.message });
+  }
 };

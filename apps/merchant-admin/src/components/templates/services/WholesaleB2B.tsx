@@ -1,5 +1,6 @@
 import React from "react";
 import { TemplateProps } from "../registry";
+import { Button } from "@vayva/ui";
 
 export const WholesaleB2BTemplate: React.FC<TemplateProps> = ({
   businessName,
@@ -23,9 +24,9 @@ export const WholesaleB2BTemplate: React.FC<TemplateProps> = ({
           <span className="text-xs bg-gray-100 px-2 py-1 rounded">
             Hi, Distributor
           </span>
-          <button className="bg-gray-900 text-white px-4 py-2 text-xs font-bold uppercase hover:bg-gray-800">
+          <Button className="bg-gray-900 text-white px-4 py-2 text-xs font-bold uppercase hover:bg-gray-800 h-auto">
             Quick Order Form
-          </button>
+          </Button>
         </div>
       </header>
 
@@ -127,9 +128,9 @@ export const WholesaleB2BTemplate: React.FC<TemplateProps> = ({
             </div>
             <div className="font-bold text-lg">₦175,000</div>
           </div>
-          <button className="bg-green-600 text-white px-8 py-3 text-sm font-bold uppercase hover:bg-green-700 tracking-wide">
+          <Button className="bg-green-600 text-white px-8 py-3 text-sm font-bold uppercase hover:bg-green-700 tracking-wide h-auto">
             Submit Order
-          </button>
+          </Button>
         </div>
       </div>
     </div>

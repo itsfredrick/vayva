@@ -1,6 +1,6 @@
 import React from "react";
 import { Domain } from "@vayva/shared";
-import { Icon, Button, Badge, cn } from "@vayva/ui";
+import { Badge, Button, Icon, cn } from "@vayva/ui";
 
 interface DomainSettingsProps {
   domains: Domain[];

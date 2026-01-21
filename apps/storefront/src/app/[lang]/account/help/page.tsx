@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
+import { Button } from "@vayva/ui";
 import { useParams } from "next/navigation";
 import { ChevronDown, Mail, Phone, Plus } from "lucide-react";
 import { LocaleKey, LOCALES } from "@/data/locales";
@@ -55,7 +56,7 @@ export default function HelpPage({ params }: any) {
       <div className="bg-white rounded-2xl border border-gray-100 overflow-hidden">
         {faqs.map((faq, idx) => (
           <div key={idx} className="border-b border-gray-100 last:border-0">
-            <button
+            <Button
               onClick={() => setOpenIndex(openIndex === idx ? null : idx)}
               className="w-full flex items-center justify-between p-6 text-left hover:bg-gray-50 transition-colors"
             >
@@ -64,7 +65,7 @@ export default function HelpPage({ params }: any) {
                 className={`transition-transform duration-300 ${openIndex === idx ? "rotate-180" : ""}`}
                 size={20}
               />
-            </button>
+            </Button>
             {openIndex === idx && (
               <div className="px-6 pb-6 text-gray-500 leading-relaxed animate-fade-in">
                 {faq.a}

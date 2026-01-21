@@ -1,5 +1,6 @@
 import React from "react";
 import { TemplateProps } from "../registry";
+import { Button } from "@vayva/ui";
 
 export const TrainingSchoolTemplate: React.FC<TemplateProps> = ({
   businessName,
@@ -22,9 +23,9 @@ export const TrainingSchoolTemplate: React.FC<TemplateProps> = ({
           <a href="#">Admissions</a>
           <a href="#">Portal</a>
         </div>
-        <button className="bg-blue-600 text-white px-4 py-2 rounded font-bold text-sm hover:bg-blue-700">
+        <Button className="bg-blue-600 text-white px-4 py-2 rounded font-bold text-sm hover:bg-blue-700 h-auto">
           Apply Now
-        </button>
+        </Button>
       </header>
 
       {/* Hero */}
@@ -40,12 +41,12 @@ export const TrainingSchoolTemplate: React.FC<TemplateProps> = ({
           and Product Design. 100% money-back guarantee.
         </p>
         <div className="flex justify-center gap-4">
-          <button className="bg-blue-600 px-8 py-3 rounded font-bold hover:bg-blue-500">
+          <Button className="bg-blue-600 px-8 py-3 rounded font-bold hover:bg-blue-500 h-auto">
             View Courses
-          </button>
-          <button className="border border-slate-600 px-8 py-3 rounded font-bold hover:bg-white/5">
+          </Button>
+          <Button variant="outline" className="border border-slate-600 px-8 py-3 rounded font-bold hover:bg-white/5 bg-transparent text-white h-auto">
             Download Syllabus
-          </button>
+          </Button>
         </div>
       </section>
 
@@ -84,9 +85,9 @@ export const TrainingSchoolTemplate: React.FC<TemplateProps> = ({
                 <span>⏱ {c.duration}</span>
                 <span>📈 {c.level}</span>
               </div>
-              <button className="w-full border border-blue-600 text-blue-600 font-bold py-2 rounded hover:bg-blue-50">
+              <Button variant="outline" className="w-full border border-blue-600 text-blue-600 font-bold py-2 rounded hover:bg-blue-50 h-auto">
                 View Curriculum
-              </button>
+              </Button>
             </div>
           ))}
         </div>

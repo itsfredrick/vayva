@@ -3,12 +3,21 @@
 import React from "react";
 import Link from "next/link";
 import { Button, Icon } from "@vayva/ui";
+import { useToast } from "@/components/ui/use-toast";
 
 interface MarketShellProps {
   children: React.ReactNode;
 }
 
 export function MarketShell({ children }: MarketShellProps) {
+  const { toast } = useToast();
+
+  const handlePlaceholder = (e: React.MouseEvent, title: string) => {
+    // e.preventDefault(); // Allow default navigation if href is set, or redirect
+    // For now, wire to support
+    window.location.href = `/support?topic=${encodeURIComponent(title)}`;
+  };
+
   return (
     <div className="min-h-screen bg-[#142210] text-white font-sans selection:bg-primary/30">
       {/* Sticky Marketplace Header */}
@@ -33,9 +42,9 @@ export function MarketShell({ children }: MarketShellProps) {
               className="w-full h-11 bg-white/5 border border-white/10 rounded-full pl-11 pr-4 text-sm text-white focus:outline-none focus:border-primary/50 focus:bg-white/10 transition-all placeholder:text-white/30"
               placeholder="Search for products, brands and categories..."
             />
-            <button className="absolute right-2 top-1.5 h-8 px-4 bg-primary/10 hover:bg-primary/20 text-primary text-xs font-bold rounded-full transition-colors">
+            <Button className="absolute right-2 top-1.5 h-8 px-4 bg-primary/10 hover:bg-primary/20 text-primary text-xs font-bold rounded-full transition-colors">
               Search
-            </button>
+            </Button>
           </div>
 
           {/* Right: Actions */}
@@ -144,17 +153,17 @@ export function MarketShell({ children }: MarketShellProps) {
               </h4>
               <ul className="space-y-3 text-sm text-text-secondary">
                 <li>
-                  <a href="#" className="hover:text-primary transition-colors">
+                  <a href="#" onClick={(e) => handlePlaceholder(e, "Help Center")} className="hover:text-primary transition-colors">
                     Help Center
                   </a>
                 </li>
                 <li>
-                  <a href="#" className="hover:text-primary transition-colors">
+                  <a href="#" onClick={(e) => handlePlaceholder(e, "Report Portal")} className="hover:text-primary transition-colors">
                     Report a Listing
                   </a>
                 </li>
                 <li>
-                  <a href="#" className="hover:text-primary transition-colors">
+                  <a href="#" onClick={(e) => handlePlaceholder(e, "Buyer Protection")} className="hover:text-primary transition-colors">
                     Buyer Protection
                   </a>
                 </li>
@@ -167,19 +176,19 @@ export function MarketShell({ children }: MarketShellProps) {
               </h4>
               <ul className="space-y-3 text-sm text-text-secondary">
                 <li>
-                  <a href="#" className="hover:text-primary transition-colors">
+                  <Link href="/legal/privacy" className="hover:text-primary transition-colors">
                     Privacy Policy
-                  </a>
+                  </Link>
                 </li>
                 <li>
-                  <a href="#" className="hover:text-primary transition-colors">
+                  <Link href="/legal/terms" className="hover:text-primary transition-colors">
                     Terms of Service
-                  </a>
+                  </Link>
                 </li>
                 <li>
-                  <a href="#" className="hover:text-primary transition-colors">
+                  <Link href="/legal/returns" className="hover:text-primary transition-colors">
                     Return Policy
-                  </a>
+                  </Link>
                 </li>
               </ul>
             </div>

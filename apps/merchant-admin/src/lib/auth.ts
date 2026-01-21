@@ -36,7 +36,7 @@ export const authOptions: any = {
               include: {
                 store: {
                   include: {
-                    merchantSubscription: true,
+                    aiSubscription: true,
                   },
                 },
               },
@@ -72,26 +72,69 @@ export const authOptions: any = {
             user.email,
           storeId: primaryMembership.storeId,
           storeName: primaryMembership.store.name,
-          role: primaryMembership.role,
+          role: primaryMembership.role_enum,
           plan: primaryMembership.store.plan || "FREE",
-          trialEndsAt: (primaryMembership.store as any).merchantSubscription?.trialEndsAt,
+          trialEndsAt: primaryMembership.store.aiSubscription?.trialExpiresAt,
+          emailVerified: user.isEmailVerified,
+          onboardingCompleted: primaryMembership.store.onboardingCompleted,
         };
       },
     }),
   ],
   callbacks: {
-    async jwt({ token, user }: any) {
-      // Add custom fields to JWT on initial sign in
+    async jwt({ token, user, trigger, session }: any) {
+      // 1. Initial Sign In
       if (user) {
         token.storeId = user.storeId;
         token.storeName = user.storeName;
         token.role = user.role;
         token.plan = user.plan;
         token.trialEndsAt = user.trialEndsAt;
+        token.emailVerified = user.emailVerified;
+        token.onboardingCompleted = user.onboardingCompleted;
+        token.lastActive = Date.now();
       }
+
+      // 2. Handle Session Updates (e.g. Profile changes)
+      if (trigger === "update" && session) {
+        token.storeName = session.storeName || token.storeName;
+        token.onboardingCompleted = session.onboardingCompleted ?? token.onboardingCompleted;
+        token.lastActive = Date.now(); // Update activity on explicit refresh
+      }
+
+      // 3. Idle Timeout Check (e.g. 30 Minutes)
+      const MAX_IDLE_TIME = 30 * 60 * 1000; // 30 mins
+      const now = Date.now();
+
+      // If token has a lastActive time and we've exceeded idle time
+      if (token.lastActive && (now - (token.lastActive as number) > MAX_IDLE_TIME)) {
+        // We could invalidate here, but NextAuth makes it hard to "kill" a JWT.
+        // We return a flag that the session check can see and reject.
+        return { ...token, error: "RefreshAccessTokenError" };
+      }
+
+      // Update lastActive (Sliding Window) 
+      // NOTE: This runs on every JWT decode (every API call / page load).
+      // To prevent thrashing, we only update if > 1 min has passed?
+      // Actually, NextAuth only writes the cookie back if we change the token in `signIn` or `update`.
+      // Standard `jwt` callback read doesn't always persist updates to the cookie unless `trigger` involved, 
+      // BUT for sliding expiration we relying on `maxAge` usually. 
+      // To strictly enforce "Revoke on Idle", we need to check the timestamp.
+      // We will update `lastActive` here to allow "Sliding Window".
+      // RATE LIMIT: Only update if > 5 minutes have passed to prevent Set-Cookie thrashing
+      const REFRESH_WINDOW = 5 * 60 * 1000;
+      if (!token.lastActive || (now - (token.lastActive as number) > REFRESH_WINDOW)) {
+        token.lastActive = now;
+      }
+
       return token;
     },
     async session({ session, token }: any) {
+      // Enforce Idle Revocation
+      if (token.error === "RefreshAccessTokenError") {
+        return null; // Force sign out
+      }
+
       // Add custom fields to session
       if (session.user) {
         (session.user as any).id = token.sub!;
@@ -100,6 +143,8 @@ export const authOptions: any = {
         (session.user as any).role = token.role;
         (session.user as any).plan = token.plan;
         (session.user as any).trialEndsAt = token.trialEndsAt;
+        (session.user as any).emailVerified = token.emailVerified;
+        (session.user as any).onboardingCompleted = token.onboardingCompleted;
       }
       return session;
     },

@@ -96,7 +96,8 @@ export class DataGovernanceService {
 
   /**
    * Internal PII Redaction Logic
-   * Simple regex-based masking for demo; production would use a dedicated PII detector.
+   * Enhanced regex-based masking.
+   * NOTE: For Enterprise usage, integrate with VGS, Google DLP, or AWS Macie.
    */
   private static redactPII(text: string): string {
     if (!text) return text;
@@ -105,7 +106,21 @@ export class DataGovernanceService {
         /[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}/g,
         "[EMAIL_REDACTED]",
       ) // Emails
-      .replace(/\+?\d{10,15}/g, "[PHONE_REDACTED]") // Phone numbers
-      .replace(/\b\d{4}[- ]?\d{4}[- ]?\d{4}[- ]?\d{4}\b/g, "[CARD_REDACTED]"); // Card numbers
+      .replace(
+        /(?:\+?\d{1,3}[- ]?)?\(?\d{3}\)?[- ]?\d{3}[- ]?\d{4}/g,
+        "[PHONE_REDACTED]",
+      ) // Phone numbers (US/Intl formats)
+      .replace(
+        /\b(?:\d[ -]*?){13,16}\b/g,
+        "[CARD_REDACTED]",
+      ) // Credit Card numbers (Luhn check not enforced here)
+      .replace(
+        /\b(?!000|666|9\d\d)\d{3}[- ]?(?!00)\d{2}[- ]?(?!0000)\d{4}\b/g,
+        "[SSN_REDACTED]",
+      ) // SSN (Basic)
+      .replace(
+        /sk_live_[0-9a-zA-Z]{24}/g,
+        "[API_KEY_REDACTED]"
+      ); // Stripe Live Keys
   }
 }

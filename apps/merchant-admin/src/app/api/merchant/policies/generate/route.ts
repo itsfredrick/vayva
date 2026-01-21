@@ -1,18 +1,24 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getServerSession } from "next-auth";
-import { prisma } from "@vayva/db";
-// @ts-ignore
+import { prisma, PolicyType } from "@/lib/prisma";
 import { generateDefaultPolicies } from "@vayva/policies";
+
+interface StoreSettings {
+  supportWhatsApp?: string;
+  supportEmail?: string;
+}
 
 export async function POST(req: NextRequest) {
   try {
     const session = await getServerSession();
-    if (!(session?.user as any)?.storeId) {
+    const user = session?.user as { storeId?: string; id: string } | undefined;
+
+    if (!user?.storeId) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
     const store = await prisma.store.findUnique({
-      where: { id: (session!.user as any).storeId },
+      where: { id: user.storeId },
       select: { name: true, slug: true, settings: true },
     });
 
@@ -21,28 +27,29 @@ export async function POST(req: NextRequest) {
     }
 
     // Generate default policies
+    const settings = (store.settings as unknown as StoreSettings) || {};
     const policies = generateDefaultPolicies({
       storeName: store.name,
       storeSlug: store.slug,
-      merchantSupportWhatsApp: (store.settings as any)?.supportWhatsApp,
-      supportEmail: (store.settings as any)?.supportEmail,
+      merchantSupportWhatsApp: settings?.supportWhatsApp,
+      supportEmail: settings?.supportEmail,
     });
 
     // Create policy records
     const created = await Promise.all(
-      policies.map((policy: any) =>
+      policies.map((policy: { type: string; title: string; contentMd: string }) =>
         prisma.merchantPolicy.upsert({
           where: {
             storeId_type: {
-              storeId: (session!.user as any).storeId,
-              type: policy.type.toUpperCase().replace("-", "_"),
+              storeId: user.storeId!,
+              type: policy.type.toUpperCase().replace("-", "_") as PolicyType,
             },
           },
           create: {
-            storeId: (session!.user as any).storeId,
-            merchantId: (session!.user as any).id,
+            storeId: user.storeId!,
+            merchantId: user.id,
             storeSlug: store.slug,
-            type: policy.type.toUpperCase().replace("-", "_"),
+            type: policy.type.toUpperCase().replace("-", "_") as PolicyType,
             title: policy.title,
             contentMd: policy.contentMd,
             status: "DRAFT",

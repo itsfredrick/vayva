@@ -1,8 +1,9 @@
 "use client";
 
 import React, { useState } from "react";
-import { Button, Drawer, Input, Badge, SuccessState } from "@vayva/ui";
+import { Badge, Button, Drawer, Input, SuccessState } from "@vayva/ui";
 import { Truck, MapPin } from "lucide-react";
+import { useToast } from "@/components/ui/use-toast";
 
 interface FulfillmentDrawerProps {
   order: any;
@@ -17,6 +18,7 @@ export function FulfillmentDrawer({
   onClose,
   onUpdate,
 }: FulfillmentDrawerProps) {
+  const { toast } = useToast();
   const [loading, setLoading] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
 
@@ -35,7 +37,11 @@ export function FulfillmentDrawer({
       });
       const data = await res.json();
       if (!res.ok) {
-        alert(data.error || "Dispatch Failed");
+        toast({
+          title: "Dispatch Failed",
+          description: data.error || "Could not dispatch delivery.",
+          variant: "destructive",
+        });
       } else {
         setIsSuccess(true);
         setTimeout(() => {
@@ -44,7 +50,11 @@ export function FulfillmentDrawer({
       }
     } catch (err) {
       console.error(err);
-      alert("Failed to dispatch");
+      toast({
+        title: "Error",
+        description: "Failed to dispatch delivery. Please try again.",
+        variant: "destructive",
+      });
     } finally {
       setLoading(false);
     }
@@ -69,7 +79,11 @@ export function FulfillmentDrawer({
       );
       const data = await res.json();
       if (!res.ok) {
-        alert(data.error || "Update Failed");
+        toast({
+          title: "Update Failed",
+          description: data.error || "Could not update status.",
+          variant: "destructive",
+        });
       } else {
         setIsSuccess(true);
         setTimeout(() => {
@@ -79,7 +93,11 @@ export function FulfillmentDrawer({
       }
     } catch (err) {
       console.error(err);
-      alert("Failed to update status");
+      toast({
+        title: "Error",
+        description: "Failed to update status.",
+        variant: "destructive",
+      });
     } finally {
       setLoading(false);
     }

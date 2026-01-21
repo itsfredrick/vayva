@@ -8,7 +8,7 @@ describe("redactSensitiveData", () => {
         expect(redactSensitiveData(input)).toBe(expected);
     });
 
-    test("redacts Paystack/Stripe secret keys", () => {
+    test("redacts Paystack Secret Keys", () => { // Paystack Secret Keys
         const input = "{ \"key\": \"sk_test_REDACTED\" }";
         const expected = "{ \"key\": \"********\" }";
         expect(redactSensitiveData(input)).toBe(expected);

@@ -1,6 +1,7 @@
 import React from "react";
 import { Search, Heart, User, Menu, Phone, Home } from "lucide-react";
 import Link from "next/link";
+import { Button } from "@vayva/ui";
 
 interface RealEstateHeaderProps {
   storeName?: string;
@@ -61,18 +62,18 @@ export const RealEstateHeader = ({
             <span>{contactPhone}</span>
           </Link>
 
-          <button className="text-gray-400 hover:text-[#2563EB] transition-colors relative">
+          <Button variant="ghost" size="icon" className="text-gray-400 hover:text-[#2563EB] transition-colors relative h-auto" aria-label="View favorites">
             <Heart size={20} />
-          </button>
+          </Button>
 
-          <button className="flex items-center gap-2 text-sm font-bold text-[#0F172A] hover:bg-gray-50 px-3 py-2.5 rounded-lg border border-transparent hover:border-gray-200 transition-all">
+          <Button variant="ghost" className="flex items-center gap-2 text-sm font-bold text-[#0F172A] hover:bg-gray-50 px-3 py-2.5 rounded-lg border border-transparent hover:border-gray-200 transition-all h-auto" aria-label="Sign in">
             <User size={18} />
             <span className="hidden sm:inline">Sign In</span>
-          </button>
+          </Button>
 
-          <button className="md:hidden text-gray-800">
+          <Button variant="ghost" size="icon" className="md:hidden text-gray-800 h-auto" aria-label="Open mobile menu">
             <Menu size={24} />
-          </button>
+          </Button>
         </div>
       </div>
     </header>

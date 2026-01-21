@@ -1,4 +1,5 @@
 import React from "react";
+import { Button } from "@vayva/ui";
 
 // Simplified modal without specialized UI components for portability
 // Assuming parent provides styling or uses a portal if needed.
@@ -25,7 +26,7 @@ export function UpgradePlanModal({
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm p-4">
       <div className="bg-white rounded-2xl w-full max-w-md p-6 shadow-2xl relative animate-in fade-in zoom-in-95 duration-200">
-        <button
+        <Button
           onClick={onClose}
           className="absolute top-4 right-4 text-gray-400 hover:text-gray-600"
         >
@@ -43,7 +44,7 @@ export function UpgradePlanModal({
               d="M6 18L18 6M6 6l12 12"
             />
           </svg>
-        </button>
+        </Button>
 
         <div className="text-center pt-2">
           <div className="w-16 h-16 bg-blue-50 rounded-full flex items-center justify-center mx-auto mb-4 text-blue-600">
@@ -70,18 +71,18 @@ export function UpgradePlanModal({
           </p>
 
           <div className="space-y-3">
-            <button
+            <Button
               onClick={() => (window.location.href = "/dashboard/settings/billing")}
               className="w-full py-3.5 bg-black text-white rounded-xl font-bold hover:bg-gray-800 transition-all shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
             >
               Upgrade Now
-            </button>
-            <button
+            </Button>
+            <Button
               onClick={onClose}
               className="w-full py-3 text-gray-500 font-semibold hover:text-gray-800 transition-colors"
             >
               Maybe Later
-            </button>
+            </Button>
           </div>
         </div>
       </div>

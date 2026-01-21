@@ -26,7 +26,7 @@ export class DeletionService {
     const scheduledFor = addDays(new Date(), 7); // 7 Day Grace Period
     const confirmationToken = uuidv4();
 
-    await (prisma as any).accountDeletionRequest.create({
+    await prisma.accountDeletionRequest.create({
       data: {
         storeId,
         requestedByUserId: userId,
@@ -60,9 +60,7 @@ export class DeletionService {
    * Cancel Pending Deletion
    */
   static async cancelDeletion(storeId: string, userId: string) {
-    const activeRequest = await (
-      prisma as any
-    ).accountDeletionRequest.findFirst({
+    const activeRequest = await prisma.accountDeletionRequest.findFirst({
       where: { storeId, status: "SCHEDULED" },
     });
 
@@ -70,7 +68,7 @@ export class DeletionService {
       return { success: false, error: "No active deletion request found." };
     }
 
-    await (prisma as any).accountDeletionRequest.update({
+    await prisma.accountDeletionRequest.update({
       where: { id: activeRequest.id },
       data: { status: "CANCELED" },
     });
@@ -82,7 +80,7 @@ export class DeletionService {
    * Get Current Deletion Status
    */
   static async getStatus(storeId: string) {
-    return await (prisma as any).accountDeletionRequest.findFirst({
+    return await prisma.accountDeletionRequest.findFirst({
       where: { storeId, status: "SCHEDULED" },
       orderBy: { createdAt: "desc" },
     });
@@ -92,7 +90,7 @@ export class DeletionService {
    * Execute Logic (To be called by Job Worker)
    */
   static async executeDeletion(requestId: string) {
-    const request = await (prisma as any).accountDeletionRequest.findUnique({
+    const request = await prisma.accountDeletionRequest.findUnique({
       where: { id: requestId },
       include: { store: true },
     });
@@ -107,7 +105,7 @@ export class DeletionService {
         data: { isLive: false },
       }),
       // 2. Mark Request as Executed
-      (prisma as any).accountDeletionRequest.update({
+      prisma.accountDeletionRequest.update({
         where: { id: request.id },
         data: { status: "EXECUTED" },
       }),

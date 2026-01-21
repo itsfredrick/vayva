@@ -1,6 +1,7 @@
 "use client";
 
 import React from "react";
+import { Button } from "@vayva/ui";
 import Link from "next/link";
 import { AddOnMetadata, CompatibilityCheck } from "@vayva/extensions";
 
@@ -52,7 +53,7 @@ export function AddOnCard({
       {/* Header */}
       <div className="flex justify-between items-start mb-4">
         <div>
-          <h3 className="text-lg font-semibold text-[#0F172A] mb-1">
+          <h3 className="text-lg font-semibold text-black mb-1">
             {addon.name}
           </h3>
           <div className="flex gap-2">
@@ -110,26 +111,26 @@ export function AddOnCard({
       {/* Actions */}
       <div className="flex gap-2">
         {onPreview && (
-          <button
+          <Button
             onClick={onPreview}
-            className="flex-1 text-sm text-[#0F172A] border border-gray-300 rounded px-4 py-2 hover:bg-gray-50"
+            className="flex-1 text-sm text-black border border-gray-300 rounded px-4 py-2 hover:bg-gray-50"
           >
             Preview
-          </button>
+          </Button>
         )}
         {compatibility.isCompatible && onEnable && !isEnabled && (
-          <button
+          <Button
             onClick={onEnable}
             className="flex-1 text-sm bg-[#22C55E] hover:bg-[#16A34A] text-white rounded px-4 py-2 font-semibold"
           >
             Enable
-          </button>
+          </Button>
         )}
         {compatibility.requiredPlanUpgrade && (
           <Link href="/pricing" className="flex-1">
-            <button className="w-full text-sm bg-blue-600 hover:bg-blue-700 text-white rounded px-4 py-2 font-semibold">
+            <Button className="w-full text-sm bg-blue-600 hover:bg-blue-700 text-white rounded px-4 py-2 font-semibold">
               Upgrade to {compatibility.requiredPlanUpgrade}
-            </button>
+            </Button>
           </Link>
         )}
       </div>

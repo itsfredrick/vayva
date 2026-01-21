@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
-import { prisma } from "@vayva/db";
+import { prisma } from "@/lib/prisma";
 import { TemplateService } from "@/lib/templates/templateService";
 import { cookies } from "next/headers";
 
@@ -25,17 +25,17 @@ export async function POST(req: NextRequest) {
       where: { id: templateId },
     });
     if (template && template.tags.includes("premium")) {
-      const sub = await prisma.merchantSubscription.findUnique({
+      const sub = await prisma.merchantAiSubscription.findUnique({
         where: { storeId },
       });
       const entitlement = {
-        planSlug: (sub?.planSlug || "growth") as "growth" | "pro",
+        planKey: (sub?.planKey || "growth") as "growth" | "pro",
         status: (sub?.status || "trial") as any,
       };
 
       // If Growth, block premium
       // We can use a helper or manual check here since logic is simple
-      if (entitlement.planSlug === "growth") {
+      if (entitlement.planKey === "growth") {
         return NextResponse.json(
           {
             code: "PLAN_REQUIRED",

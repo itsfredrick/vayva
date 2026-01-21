@@ -6,6 +6,7 @@ import {
 import { useStorefrontCart } from "@/hooks/storefront/useStorefrontCart";
 import { CheckoutModal } from "./CheckoutModal";
 import { ShoppingCart, X, Download, ShieldCheck } from "lucide-react";
+import { Button } from "@vayva/ui";
 
 export function DigitalVaultStore({
   storeName: initialStoreName,
@@ -55,13 +56,15 @@ export function DigitalVaultStore({
               {displayName}
             </span>
           </div>
-          <button
-            className="bg-black text-white px-4 py-2 rounded-lg font-bold hover:translate-y-px hover:shadow-none transition-all flex items-center gap-2 border-2 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,0.2)]"
+          <Button
+            variant="primary"
+            className="bg-black text-white px-4 py-2 rounded-lg font-bold hover:translate-y-px hover:shadow-none transition-all flex items-center gap-2 border-2 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,0.2)] h-auto"
             onClick={() => setIsCartOpen(true)}
+            aria-label={`View cart with ${cart.length} items`}
           >
             <ShoppingCart className="w-5 h-5" />
             <span>Cart ({cart.length})</span>
-          </button>
+          </Button>
         </div>
       </header>
 
@@ -75,9 +78,9 @@ export function DigitalVaultStore({
           <div className="relative w-full max-w-md bg-white h-full shadow-2xl flex flex-col border-l-4 border-black animate-in slide-in-from-right">
             <div className="p-6 border-b-2 border-dashed border-gray-200 flex justify-between items-center bg-gray-50">
               <h2 className="font-bold text-xl">Your Downloads</h2>
-              <button onClick={() => setIsCartOpen(false)}>
+              <Button variant="ghost" size="icon" onClick={() => setIsCartOpen(false)} aria-label="Close cart sidebar">
                 <X className="w-6 h-6 hover:rotate-90 transition-transform" />
-              </button>
+              </Button>
             </div>
 
             <div className="flex-1 overflow-auto p-6 space-y-6">
@@ -101,12 +104,14 @@ export function DigitalVaultStore({
                       </div>
                     </div>
                     <div className="flex justify-between items-center mt-4">
-                      <button
+                      <Button
+                        variant="link"
                         onClick={() => removeFromCart(item.id)}
-                        className="text-xs font-bold text-red-500 hover:bg-red-50 px-2 py-1 rounded"
+                        className="text-xs font-bold text-red-500 hover:bg-red-50 px-2 py-1 rounded h-auto p-0"
+                        aria-label={`Remove ${item.name} from downloads`}
                       >
                         Remove
-                      </button>
+                      </Button>
                     </div>
                   </div>
                 ))
@@ -119,15 +124,15 @@ export function DigitalVaultStore({
                   <span>Total</span>
                   <span>₦{total.toLocaleString()}</span>
                 </div>
-                <button
+                <Button
                   onClick={() => {
                     setIsCartOpen(false);
                     setIsCheckoutOpen(true);
                   }}
-                  className="w-full bg-[#23A094] text-white py-4 font-bold rounded-xl border-2 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:translate-y-[2px] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] transition-all"
+                  className="w-full bg-[#23A094] text-white py-6 font-bold rounded-xl border-2 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:translate-y-[2px] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] transition-all h-auto"
                 >
                   Pay {total > 0 ? `₦${total.toLocaleString()}` : ""}
-                </button>
+                </Button>
                 <div className="text-center mt-3 text-xs text-gray-500 flex items-center justify-center gap-1">
                   <ShieldCheck className="w-3 h-3" /> Secure checkout
                 </div>
@@ -169,6 +174,7 @@ export function DigitalVaultStore({
                         product.image ||
                         `https://via.placeholder.com/400x300?text=${encodeURIComponent(product.name)}`
                       }
+                      alt={product.name}
                       className="w-full h-full object-cover"
                     />
                     <div className="absolute top-3 left-3 bg-white px-3 py-1 text-xs font-black uppercase tracking-widest border-2 border-black rounded-lg">
@@ -187,12 +193,14 @@ export function DigitalVaultStore({
                       <div className="text-2xl font-black">
                         ₦{product.price.toLocaleString()}
                       </div>
-                      <button
+                      <Button
+                        variant="primary"
                         onClick={() => addToCart(product)}
-                        className="bg-[#FF90E8] text-black px-6 py-2 rounded-lg font-bold border-2 border-black hover:bg-[#ff70e0] transition-colors"
+                        className="bg-[#FF90E8] text-black px-6 py-2 rounded-lg font-bold border-2 border-black hover:bg-[#ff70e0] transition-colors h-auto"
+                        aria-label={`Add ${product.name} to cart`}
                       >
                         I want this!
-                      </button>
+                      </Button>
                     </div>
                   </div>
                 </div>

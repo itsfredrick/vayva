@@ -6,6 +6,7 @@ import {
 import { useStorefrontCart } from "@/hooks/storefront/useStorefrontCart";
 import { CheckoutModal } from "./CheckoutModal";
 import { ShoppingCart, X, Share2, Plus, Minus } from "lucide-react";
+import { Button } from "@vayva/ui";
 
 export function EventTicketsPro({
   storeName: initialStoreName,
@@ -60,22 +61,25 @@ export function EventTicketsPro({
           </div>
 
           <div className="flex items-center gap-6">
-            <button className="text-sm font-medium hover:text-red-600">
+            <Button variant="ghost" className="text-sm font-medium hover:text-red-600 h-auto p-0 hover:bg-transparent text-[#1e0a3c]">
               Find Events
-            </button>
-            <button className="text-sm font-medium hover:text-red-600">
+            </Button>
+            <Button variant="ghost" className="text-sm font-medium hover:text-red-600 h-auto p-0 hover:bg-transparent text-[#1e0a3c]">
               Create Event
-            </button>
-            <button
-              className="flex items-center gap-2 hover:bg-gray-100 p-2 rounded relative"
+            </Button>
+            <Button
+              variant="ghost"
+              size="icon"
+              className="flex items-center gap-2 hover:bg-gray-100 p-2 rounded relative h-10 w-10 flex items-center justify-center p-0"
               onClick={() => setIsCartOpen(true)}
+              aria-label={`View cart with ${cart.length} items`}
             >
               <ShoppingCart className="w-5 h-5 text-gray-600" />
               {cart.length > 0 && (
                 <span className="absolute top-1 right-0 w-2 h-2 bg-red-600 rounded-full"></span>
               )}
-            </button>
-            <button className="text-sm font-medium">Log In</button>
+            </Button>
+            <Button variant="ghost" className="text-sm font-medium h-auto p-0 hover:bg-transparent text-[#1e0a3c]">Log In</Button>
           </div>
         </div>
       </nav>
@@ -92,9 +96,9 @@ export function EventTicketsPro({
               <h2 className="font-bold text-xl text-[#1e0a3c]">
                 Order Summary
               </h2>
-              <button onClick={() => setIsCartOpen(false)}>
+              <Button variant="ghost" size="icon" onClick={() => setIsCartOpen(false)} aria-label="Close cart sidebar" className="p-0 h-auto">
                 <X className="w-5 h-5 text-gray-500" />
-              </button>
+              </Button>
             </div>
 
             <div className="flex-1 overflow-auto p-6 space-y-6">
@@ -112,6 +116,7 @@ export function EventTicketsPro({
                       {item.image && (
                         <img
                           src={item.image}
+                          alt={item.name}
                           className="w-full h-full object-cover"
                         />
                       )}
@@ -126,21 +131,27 @@ export function EventTicketsPro({
                       </div>
                       <div className="flex justify-between items-end">
                         <div className="flex items-center border border-gray-300 rounded">
-                          <button
+                          <Button
+                            variant="ghost"
+                            size="icon"
                             onClick={() => updateQuantity(item.id, -1)}
-                            className="px-2 py-1 hover:bg-gray-100 text-gray-600 font-bold"
+                            className="px-2 py-1 hover:bg-gray-100 text-gray-600 font-bold h-8 w-8 p-0"
+                            aria-label="Decrease quantity"
                           >
                             -
-                          </button>
+                          </Button>
                           <span className="px-2 text-sm font-bold">
                             {item.quantity}
                           </span>
-                          <button
+                          <Button
+                            variant="ghost"
+                            size="icon"
                             onClick={() => updateQuantity(item.id, 1)}
-                            className="px-2 py-1 hover:bg-gray-100 text-gray-600 font-bold"
+                            className="px-2 py-1 hover:bg-gray-100 text-gray-600 font-bold h-8 w-8 p-0"
+                            aria-label="Increase quantity"
                           >
                             +
-                          </button>
+                          </Button>
                         </div>
                         <div className="text-right">
                           <div className="font-bold text-[#1e0a3c]">
@@ -160,15 +171,15 @@ export function EventTicketsPro({
                   <span>Total</span>
                   <span>₦{total.toLocaleString()}</span>
                 </div>
-                <button
+                <Button
                   onClick={() => {
                     setIsCartOpen(false);
                     setIsCheckoutOpen(true);
                   }}
-                  className="w-full bg-[#d1410c] text-white py-4 font-bold rounded-lg hover:bg-[#b0370a] shadow transition-colors"
+                  className="w-full bg-[#d1410c] text-white py-6 h-auto font-bold rounded-lg hover:bg-[#b0370a] shadow transition-colors"
                 >
                   Check out
-                </button>
+                </Button>
               </div>
             )}
           </div>
@@ -180,6 +191,7 @@ export function EventTicketsPro({
         <div className="absolute inset-0">
           <img
             src="https://images.unsplash.com/photo-1492684223066-81342ee5ff30?auto=format&fit=crop&q=80&w=2000"
+            alt="Event Hero"
             className="w-full h-full object-cover"
           />
           <div className="absolute inset-0 bg-gradient-to-t from-[#1e0a3c] via-transparent to-transparent opacity-90"></div>
@@ -194,9 +206,9 @@ export function EventTicketsPro({
               <br />
               live.
             </h1>
-            <button className="bg-[#d1410c] text-white px-8 py-4 font-bold rounded hover:bg-[#b0370a] transition-colors text-lg">
+            <Button className="bg-[#d1410c] text-white px-8 py-6 h-auto font-bold rounded hover:bg-[#b0370a] transition-colors text-lg">
               Explore Events
-            </button>
+            </Button>
           </div>
         </div>
       </div>
@@ -229,11 +241,12 @@ export function EventTicketsPro({
                       event.image ||
                       `https://via.placeholder.com/400x300?text=${encodeURIComponent(event.name)}`
                     }
+                    alt={event.name}
                     className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                   />
-                  <button className="absolute top-3 right-3 bg-white p-2 rounded-full shadow-md text-gray-400 hover:text-red-500">
+                  <Button variant="ghost" size="icon" className="absolute top-3 right-3 bg-white p-2 rounded-full shadow-md text-gray-400 hover:text-red-500 h-8 w-8 flex items-center justify-center p-0" aria-label="Share event">
                     <Share2 className="w-4 h-4" />
-                  </button>
+                  </Button>
                 </div>
                 <div className="p-5 flex-1 flex flex-col">
                   <div className="font-bold text-[#d1410c] text-sm mb-1 uppercase tracking-wide">
@@ -253,9 +266,9 @@ export function EventTicketsPro({
                     <div className="font-bold text-gray-700">
                       From ₦{event.price.toLocaleString()}
                     </div>
-                    <button className="p-2 border border-gray-200 rounded-full hover:bg-gray-50">
+                    <Button variant="ghost" size="icon" className="p-2 border border-gray-200 rounded-full hover:bg-gray-50 h-10 w-10 flex items-center justify-center" aria-label={`Add ${event.name} to cart`}>
                       <ShoppingCart className="w-4 h-4 text-gray-600" />
-                    </button>
+                    </Button>
                   </div>
                 </div>
               </div>

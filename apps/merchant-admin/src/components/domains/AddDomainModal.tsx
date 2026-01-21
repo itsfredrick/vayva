@@ -1,8 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import { Button } from "@/components/ui/button";
-import { Icon } from "@vayva/ui";
+import { Button, Icon } from "@vayva/ui";
 
 interface AddDomainModalProps {
   isOpen: boolean;
@@ -45,12 +44,14 @@ export const AddDomainModal = ({
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm animate-in fade-in duration-200">
       <div className="bg-white rounded-3xl w-full max-w-lg shadow-2xl animate-in zoom-in-95 duration-200 relative p-8">
-        <button
+        <Button
+          variant="ghost"
+          size="icon"
           onClick={onClose}
-          className="absolute top-4 right-4 p-2 rounded-full hover:bg-gray-100 transition-colors"
+          className="absolute top-4 right-4 rounded-full hover:bg-gray-100 transition-colors h-auto w-auto p-2"
         >
           <Icon name="X" size={20} />
-        </button>
+        </Button>
 
         <h2 className="text-2xl font-bold text-gray-900 mb-2">
           Connect Domain

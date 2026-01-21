@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { Button } from "@vayva/ui";
 import {
   useStorefrontProducts,
   useStorefrontStore,
@@ -65,16 +66,16 @@ export function LearnHubCourses({
           </div>
 
           <div className="flex items-center gap-4">
-            <button className="text-sm font-bold opacity-90 hover:opacity-100">
+            <Button className="text-sm font-bold opacity-90 hover:opacity-100">
               Log In
-            </button>
-            <button
+            </Button>
+            <Button
               className="bg-white text-blue-600 px-4 py-2 rounded font-bold text-sm hover:bg-blue-50 transition-colors flex items-center gap-2"
               onClick={() => setIsCartOpen(true)}
             >
               <ShoppingBag className="w-4 h-4" />
               {cart.length > 0 && <span>({cart.length})</span>}
-            </button>
+            </Button>
           </div>
         </div>
       </nav>
@@ -91,9 +92,9 @@ export function LearnHubCourses({
               <h2 className="font-bold text-xl text-blue-900">
                 Your Learning Plan
               </h2>
-              <button onClick={() => setIsCartOpen(false)}>
+              <Button onClick={() => setIsCartOpen(false)}>
                 <X className="w-5 h-5 text-gray-400" />
-              </button>
+              </Button>
             </div>
 
             <div className="flex-1 overflow-auto p-6 space-y-6">
@@ -118,12 +119,12 @@ export function LearnHubCourses({
                     <div className="text-xs text-green-600 font-bold flex items-center gap-1 mb-4">
                       <CheckCircle className="w-3 h-3" /> Includes Certificate
                     </div>
-                    <button
+                    <Button
                       onClick={() => removeFromCart(item.id)}
                       className="text-xs text-red-500 font-medium hover:underline"
                     >
                       Remove
-                    </button>
+                    </Button>
                   </div>
                 ))
               )}
@@ -135,7 +136,7 @@ export function LearnHubCourses({
                   <span>Total:</span>
                   <span>₦{total.toLocaleString()}</span>
                 </div>
-                <button
+                <Button
                   onClick={() => {
                     setIsCartOpen(false);
                     setIsCheckoutOpen(true);
@@ -143,7 +144,7 @@ export function LearnHubCourses({
                   className="w-full bg-blue-600 text-white py-3 font-bold rounded shadow-lg hover:bg-blue-700 transition-colors"
                 >
                   Proceed to Payment
-                </button>
+                </Button>
               </div>
             )}
           </div>
@@ -162,12 +163,12 @@ export function LearnHubCourses({
               world-class universities and companies.
             </p>
             <div className="flex gap-4">
-              <button className="bg-blue-600 text-white px-8 py-4 font-bold rounded text-lg shadow-blue-200 shadow-xl hover:bg-blue-700 transition-colors">
+              <Button className="bg-blue-600 text-white px-8 py-4 font-bold rounded text-lg shadow-blue-200 shadow-xl hover:bg-blue-700 transition-colors">
                 Start Learning Free
-              </button>
-              <button className="border border-blue-600 text-blue-600 px-8 py-4 font-bold rounded text-lg hover:bg-blue-50 transition-colors">
+              </Button>
+              <Button className="border border-blue-600 text-blue-600 px-8 py-4 font-bold rounded text-lg hover:bg-blue-50 transition-colors">
                 Career Guide
-              </button>
+              </Button>
             </div>
           </div>
         </div>
@@ -223,7 +224,7 @@ export function LearnHubCourses({
                   <img
                     src={
                       course.image ||
-                      `https://via.placeholder.com/300x200?text=${encodeURIComponent(course.name)}`
+                      "/images/template-previews/default-desktop.png"
                     }
                     className="w-full h-full object-cover"
                   />
@@ -255,9 +256,9 @@ export function LearnHubCourses({
                     <div className="font-bold text-lg text-blue-700">
                       ₦{course.price.toLocaleString()}
                     </div>
-                    <button className="text-blue-600 text-sm font-bold opacity-0 group-hover:opacity-100 transition-opacity">
+                    <Button className="text-blue-600 text-sm font-bold opacity-0 group-hover:opacity-100 transition-opacity">
                       Enroll Now →
-                    </button>
+                    </Button>
                   </div>
                 </div>
               </div>

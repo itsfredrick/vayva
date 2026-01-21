@@ -30,9 +30,9 @@ export async function GET(
                 skip,
                 orderBy: { createdAt: "desc" },
                 include: {
-                    Shipment: {
+                    shipment: {
                         include: {
-                            Order: { select: { orderNumber: true } }
+                            order: { select: { orderNumber: true } }
                         }
                     }
                 }
@@ -43,7 +43,7 @@ export async function GET(
         return NextResponse.json({
             data: dispatchJobs.map(job => ({
                 id: job.id,
-                orderId: job.Shipment.Order.orderNumber,
+                orderId: job.shipment.order.orderNumber,
                 carrier: job.carrier,
                 status: job.status,
                 rider: job.assignedRiderName,

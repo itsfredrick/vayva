@@ -1,17 +1,41 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getSessionUser } from "@/lib/session";
-import { prisma } from "@vayva/db";
+import { prisma } from "@/lib/prisma";
 import { syncOnboardingData } from "@/lib/onboarding-sync";
 import { OnboardingState } from "@/types/onboarding";
 import { ONBOARDING_PROFILES } from "@/lib/onboarding-profiles";
+import { applyRateLimit, RATE_LIMITS } from "@/lib/rate-limit-enhanced";
 
 export async function POST(request: NextRequest) {
   try {
+    // Apply rate limiting
+    const rateLimitResult = await applyRateLimit(request, "onboarding-complete", RATE_LIMITS.ONBOARDING_COMPLETE);
+    if (!rateLimitResult.allowed) {
+      return rateLimitResult.response!;
+    }
+
     // Get authenticated user from session
     const sessionUser = await getSessionUser();
 
     if (!sessionUser) {
       return NextResponse.json({ error: "Not authenticated" }, { status: 401 });
+    }
+
+    // ENHANCED VALIDATION: Check email verification
+    const user = await prisma.user.findUnique({
+      where: { id: sessionUser.id },
+      select: { isEmailVerified: true }
+    });
+
+    if (!user?.isEmailVerified) {
+      return NextResponse.json(
+        {
+          error: "Email verification required before completing onboarding.",
+          code: "EMAIL_NOT_VERIFIED",
+          action: "verify_email"
+        },
+        { status: 422 }
+      );
     }
 
     // Fetch current onboarding state
@@ -36,7 +60,7 @@ export async function POST(request: NextRequest) {
                 { status: 422 },
               );
             }
-            if (step === "logistics" && !state.logistics?.policy) {
+            if (step === "logistics" && !state.logistics?.deliveryMode) {
               return NextResponse.json(
                 {
                   error: `Missing required step: ${step}`,
@@ -45,16 +69,112 @@ export async function POST(request: NextRequest) {
                 { status: 422 },
               );
             }
-            if (
-              step === "kyc" &&
-              state.kycStatus !== "verified" &&
-              state.kycStatus !== "pending"
-            ) {
-              // Weak check for now, as KYC might be async
-              // return NextResponse.json({ error: 'KYC Required' }, { status: 422 });
+            // ENHANCED VALIDATION: Strengthen KYC check
+            if (step === "kyc") {
+              const isRegistered = state.business?.businessRegistrationType === "registered";
+              const hasNin = !!state.identity?.nin;
+              const hasCac = !!(state.identity as any)?.cacNumber;
+              const kycVerified = state.kycStatus === "verified";
+              const kycPending = state.kycStatus === "pending";
+
+              const kycOk = isRegistered
+                ? kycVerified && hasNin && hasCac
+                : (kycVerified || kycPending) && hasNin;
+
+              if (!kycOk) {
+                return NextResponse.json(
+                  {
+                    error: "KYC verification required. Please complete identity verification.",
+                    code: "KYC_NOT_VERIFIED",
+                    step: "kyc"
+                  },
+                  { status: 422 }
+                );
+              }
             }
           }
         }
+      }
+
+      // CRITICAL: Validate Industry Selection
+      if (!state.industrySlug) {
+        return NextResponse.json(
+          { error: "Missing industry selection.", code: "MISSING_INDUSTRY", step: "industry" },
+          { status: 422 }
+        );
+      }
+
+      // CRITICAL: Validate Business Basics
+      if (!state.business?.name || !state.business?.storeName || !state.business?.slug) {
+        return NextResponse.json(
+          { error: "Missing business details.", code: "MISSING_BUSINESS", step: "business" },
+          { status: 422 }
+        );
+      }
+
+      if (state.business.businessRegistrationType === "registered" && !state.business.cacNumber) {
+        return NextResponse.json(
+          { error: "Missing CAC Number for registered business.", code: "MISSING_CAC", step: "business" },
+          { status: 422 }
+        );
+      }
+
+      // CRITICAL: Validate Visuals (Logo)
+      if (!state.branding?.logoUrl) {
+        return NextResponse.json(
+          { error: "Store logo is required.", code: "MISSING_LOGO", step: "visuals" },
+          { status: 422 }
+        );
+      }
+
+      // CRITICAL: Validate Finance
+      if (!state.finance?.bankName || !state.finance?.accountNumber || !state.finance?.bvn) {
+        return NextResponse.json(
+          { error: "Missing finance details (Bank/BVN).", code: "MISSING_FINANCE", step: "finance" },
+          { status: 422 }
+        );
+      }
+
+      // CRITICAL: Verify payout name matches identity (simple first-token match)
+      if (
+        state.identity?.fullName &&
+        state.finance?.accountName &&
+        !accountNameMatchesIdentity(state.finance.accountName, state.identity.fullName)
+      ) {
+        return NextResponse.json(
+          {
+            error: "Payout account name does not match identity. Please confirm bank details.",
+            code: "ACCOUNT_NAME_MISMATCH",
+            step: "finance",
+          },
+          { status: 422 },
+        );
+      }
+
+      // CRITICAL: Validate Logistics (if strictly tracking types)
+      // state.logistics.deliveryMode is required by type but let's check it
+      if (!state.logistics?.deliveryMode) {
+        return NextResponse.json(
+          { error: "Missing logistics preference.", code: "MISSING_LOGISTICS", step: "logistics" },
+          { status: 422 }
+        );
+      }
+
+      // ENHANCED VALIDATION: Check minimum product count
+      const productCount = await prisma.product.count({
+        where: { storeId: sessionUser.storeId }
+      });
+
+      if (productCount === 0) {
+        return NextResponse.json(
+          {
+            error: "At least one product is required before publishing your store.",
+            code: "NO_PRODUCTS",
+            step: "inventory",
+            action: "add_product"
+          },
+          { status: 422 }
+        );
       }
 
       // Sync data to core tables
@@ -98,6 +218,8 @@ export async function POST(request: NextRequest) {
         data: {
           onboardingCompleted: true,
           onboardingLastStep: "complete",
+          onboardingStatus: "COMPLETE",
+          onboardingUpdatedAt: new Date(),
         },
       }),
     ]);
@@ -113,4 +235,19 @@ export async function POST(request: NextRequest) {
       { status: 500 },
     );
   }
+}
+
+function normalizeName(name?: string) {
+  if (!name) return "";
+  return name.replace(/[^a-zA-Z\s]/g, "").toLowerCase().trim();
+}
+
+function accountNameMatchesIdentity(accountName: string, fullName: string) {
+  const acc = normalizeName(accountName);
+  const tokens = normalizeName(fullName)
+    .split(" ")
+    .filter((t) => t.length >= 3);
+
+  if (tokens.length === 0) return false;
+  return tokens.every((t) => acc.includes(t));
 }

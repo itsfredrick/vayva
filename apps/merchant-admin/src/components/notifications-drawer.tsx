@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import { Drawer, Icon, Button, cn } from "@vayva/ui";
+import { Button, Drawer, Icon, cn } from "@vayva/ui";
 
 interface NotificationsDrawerProps {
   isOpen: boolean;
@@ -32,11 +32,11 @@ export const NotificationsDrawer = ({
     activeTab === "All"
       ? notifications
       : notifications.filter((n) => {
-          if (activeTab === "Orders") return n.type === "order";
-          if (activeTab === "WhatsApp AI") return n.type === "ai";
-          if (activeTab === "Payments") return n.type === "payment";
-          return n.type === "system";
-        });
+        if (activeTab === "Orders") return n.type === "order";
+        if (activeTab === "WhatsApp AI") return n.type === "ai";
+        if (activeTab === "Payments") return n.type === "payment";
+        return n.type === "system";
+      });
 
   const markAllRead = () => {
     setNotifications(notifications.map((n) => ({ ...n, unread: false })));
@@ -77,29 +77,33 @@ export const NotificationsDrawer = ({
             <span className="text-sm text-text-secondary">
               {notifications.filter((n) => n.unread).length} unread
             </span>
-            <button
+            <Button
               onClick={markAllRead}
-              className="text-xs font-bold text-primary hover:underline"
+              variant="link"
+              size="sm"
+              className="text-xs font-bold text-primary hover:underline h-auto p-0"
             >
               Mark all as read
-            </button>
+            </Button>
           </div>
 
           {/* Tabs */}
           <div className="flex gap-2 overflow-x-auto pb-2 no-scrollbar">
             {TABS.map((tab) => (
-              <button
+              <Button
                 key={tab}
                 onClick={() => setActiveTab(tab)}
+                variant="ghost"
+                size="sm"
                 className={cn(
-                  "px-3 py-1.5 rounded-full text-xs font-medium whitespace-nowrap transition-colors",
+                  "px-3 py-1.5 rounded-full text-xs font-medium whitespace-nowrap transition-colors h-auto",
                   activeTab === tab
                     ? "bg-white text-background-dark"
                     : "bg-white/5 text-text-secondary hover:bg-white/10",
                 )}
               >
                 {tab}
-              </button>
+              </Button>
             ))}
           </div>
         </div>

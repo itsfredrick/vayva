@@ -95,7 +95,7 @@ export function ActivationWelcome() {
 
       {/* Dismissal Controls */}
       <div className="absolute top-4 right-4 flex items-center gap-4 z-20">
-        <button
+        <Button
           onClick={() => {
             setVisible(false);
             localStorage.setItem("activation_welcome_dismissed", "true");
@@ -103,7 +103,7 @@ export function ActivationWelcome() {
           className="text-white/40 hover:text-white/70 text-xs transition-colors"
         >
           Dismiss
-        </button>
+        </Button>
       </div>
 
       <div className="relative z-10 grid md:grid-cols-2 gap-8 items-center">
@@ -122,12 +122,9 @@ export function ActivationWelcome() {
           </p>
 
           <div className="flex flex-wrap gap-3">
-            <button
-              onClick={() => handleAction("add_product", "/dashboard/products")}
-              className="bg-white text-black px-6 py-3 rounded-xl font-bold hover:bg-gray-100 transition-colors shadow-lg shadow-white/10"
-            >
+            <Button onClick={() => handleAction("add_product", "/dashboard/products")} size="lg" className="bg-white text-black hover:bg-gray-100 shadow-lg shadow-white/10">
               Add First Product →
-            </button>
+            </Button>
           </div>
         </div>
 

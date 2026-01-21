@@ -1,5 +1,5 @@
 import React from "react";
-import { Icon, cn } from "@vayva/ui";
+import { Icon, cn, Button } from "@vayva/ui";
 import { Recommendation } from "@/types/designer";
 import { TemplateMiniPreview } from "./TemplateMiniPreview";
 
@@ -10,6 +10,7 @@ interface TemplateCardProps {
   onUnlock?: (template: any) => void;
   userPlan: "free" | "growth" | "pro";
   recommendation?: Recommendation;
+  compact?: boolean;
 }
 
 export const TemplateCard = ({
@@ -19,6 +20,7 @@ export const TemplateCard = ({
   onUnlock,
   userPlan,
   recommendation,
+  compact,
 }: TemplateCardProps) => {
   // Determine if locked based on plan
   const planLevels = ["free", "growth", "pro"];
@@ -94,15 +96,16 @@ export const TemplateCard = ({
 
         {/* Hover Actions */}
         <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-3 backdrop-blur-[2px]">
-          <button
+          <Button
             onClick={(e) => {
               e.stopPropagation();
               onPreview(template);
             }}
+            variant="ghost"
             className="bg-white text-black px-4 py-2 rounded-xl text-xs font-bold shadow-lg transform translate-y-2 group-hover:translate-y-0 transition-transform duration-300 hover:bg-gray-50 flex items-center gap-2"
           >
             <Icon name="Eye" size={14} /> Preview
-          </button>
+          </Button>
         </div>
       </div>
 
@@ -191,30 +194,33 @@ export const TemplateCard = ({
           </div>
 
           {template.isActive ? (
-            <button className="w-full py-2.5 bg-gray-100 text-gray-400 rounded-xl text-sm font-bold cursor-default flex items-center justify-center gap-2">
+            <Button className="w-full py-2.5 bg-gray-100 text-gray-400 rounded-xl text-sm font-bold cursor-default flex items-center justify-center gap-2" variant="ghost">
               <Icon name="Check" size={16} /> Active on Store
-            </button>
+            </Button>
           ) : isLocked ? (
-            <button
+            <Button
               onClick={() => onUnlock?.(template)}
+              variant="primary"
               className="w-full py-2.5 bg-gray-900 text-white rounded-xl text-sm font-bold hover:bg-gray-800 transition-colors flex items-center justify-center gap-2"
             >
               <Icon name="Lock" size={14} /> Unlock with {template.tier}
-            </button>
+            </Button>
           ) : template.price > 0 && !template.isPurchased ? (
-            <button
+            <Button
               onClick={() => onUse(template)}
+              variant="primary"
               className="w-full py-2.5 bg-black text-white rounded-xl text-sm font-bold hover:bg-gray-800 transition-colors shadow-sm group-hover:shadow-md flex items-center justify-center gap-2"
             >
               <Icon name="CreditCard" size={14} /> Buy Template
-            </button>
+            </Button>
           ) : (
-            <button
+            <Button
               onClick={() => onUse(template)}
+              variant="primary"
               className="w-full py-2.5 bg-black text-white rounded-xl text-sm font-bold hover:bg-gray-800 transition-colors shadow-sm group-hover:shadow-md"
             >
               Use Template
-            </button>
+            </Button>
           )}
         </div>
       </div>

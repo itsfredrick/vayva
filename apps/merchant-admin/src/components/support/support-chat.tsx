@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useEffect, useRef } from "react";
+import { Button } from "@vayva/ui";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   MessageCircle,
@@ -158,12 +159,12 @@ export const SupportChat: React.FC = () => {
                   </div>
                 </div>
               </div>
-              <button
+              <Button
                 onClick={() => setIsOpen(false)}
                 className="hover:bg-white/10 p-1 rounded-lg transition-colors"
               >
                 <X size={20} />
-              </button>
+              </Button>
             </div>
 
             {/* Auto-Escalation Banner */}
@@ -175,7 +176,7 @@ export const SupportChat: React.FC = () => {
                   <br />
                   We can connect you to a human agent.
                 </div>
-                <button
+                <Button
                   onClick={() => {
                     setInput("Please connect me to a human agent");
                     handleSendMessage();
@@ -183,7 +184,7 @@ export const SupportChat: React.FC = () => {
                   className="text-xs bg-orange-100 text-orange-800 px-3 py-1.5 rounded-lg border border-orange-200 font-medium hover:bg-orange-200 transition-colors"
                 >
                   Talk to Human
-                </button>
+                </Button>
               </div>
             )}
 
@@ -211,7 +212,7 @@ export const SupportChat: React.FC = () => {
                   {msg.role === "bot" && (msg as any).actions && (
                     <div className="mt-2 flex flex-wrap gap-2">
                       {(msg as any).actions.map((action: string, i: number) => (
-                        <button
+                        <Button
                           key={i}
                           onClick={() =>
                             setInput(
@@ -223,7 +224,7 @@ export const SupportChat: React.FC = () => {
                           className="text-xs bg-indigo-50 text-indigo-700 px-2 py-1 rounded-full border border-indigo-100 hover:bg-indigo-100 transition-colors"
                         >
                           {action}
-                        </button>
+                        </Button>
                       ))}
                     </div>
                   )}
@@ -241,7 +242,7 @@ export const SupportChat: React.FC = () => {
                         </span>
                       ) : (
                         <>
-                          <button
+                          <Button
                             onClick={() =>
                               handleFeedback(msg.id, msg.messageId!, "SOLVED")
                             }
@@ -249,8 +250,8 @@ export const SupportChat: React.FC = () => {
                             title="Solved my issue"
                           >
                             <ThumbsUp size={12} />
-                          </button>
-                          <button
+                          </Button>
+                          <Button
                             onClick={() =>
                               handleFeedback(
                                 msg.id,
@@ -262,7 +263,7 @@ export const SupportChat: React.FC = () => {
                             title="Didn't help"
                           >
                             <ThumbsDown size={12} />
-                          </button>
+                          </Button>
                         </>
                       )}
                     </div>
@@ -290,7 +291,7 @@ export const SupportChat: React.FC = () => {
                   "Connect WhatsApp",
                   "Talk to Human",
                 ].map((chip) => (
-                  <button
+                  <Button
                     key={chip}
                     onClick={() => {
                       if (chip === "Talk to Human") {
@@ -303,7 +304,7 @@ export const SupportChat: React.FC = () => {
                     className="whitespace-nowrap flex-shrink-0 text-[10px] font-medium bg-gray-50 text-gray-600 px-2.5 py-1.5 rounded-full border border-gray-200 hover:bg-gray-100 transition-colors"
                   >
                     {chip}
-                  </button>
+                  </Button>
                 ))}
               </div>
 
@@ -318,13 +319,13 @@ export const SupportChat: React.FC = () => {
                     placeholder="Ask for help..."
                     className="flex-1 bg-transparent border-none focus:ring-0 text-sm py-1 placeholder:text-gray-400"
                   />
-                  <button
+                  <Button
                     onClick={handleSendMessage}
                     disabled={!input.trim() || isLoading}
                     className="p-1.5 bg-indigo-600 text-white rounded-lg disabled:opacity-50 disabled:bg-gray-400 hover:bg-indigo-700 transition-colors"
                   >
                     <Send size={16} />
-                  </button>
+                  </Button>
                 </div>
                 <p className="text-[10px] text-gray-400 text-center mt-3">
                   Secure, AI-powered merchant support

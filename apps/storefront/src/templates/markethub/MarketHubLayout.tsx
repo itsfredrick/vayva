@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { Button } from "@vayva/ui";
 import Link from "next/link";
 import Image from "next/image";
 import { PublicStore, PublicProduct } from "@/types/storefront";
@@ -117,12 +118,12 @@ export const MarketHubLayout = ({ store, products }: MarketHubLayoutProps) => {
                     <span className="font-bold text-gray-900">
                       ₦{product.price.toLocaleString()}
                     </span>
-                    <button
+                    <Button
                       onClick={() => addToCart(product)}
                       className="w-8 h-8 rounded-full bg-gray-100 hover:bg-[#10B981] hover:text-white flex items-center justify-center transition-colors"
                     >
                       <ShoppingCart size={14} />
-                    </button>
+                    </Button>
                   </div>
                 </div>
               </div>

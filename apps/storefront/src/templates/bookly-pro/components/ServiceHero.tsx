@@ -1,4 +1,5 @@
 import React from "react";
+import { Button } from "@vayva/ui";
 
 interface ServiceHeroProps {
   headline?: string;
@@ -23,12 +24,12 @@ export const ServiceHero = ({
             {subheadline}
           </p>
           <div className="flex items-center gap-4 justify-center md:justify-start pt-2">
-            <button className="bg-gray-900 text-white px-8 py-3.5 rounded-lg font-semibold hover:bg-gray-800 transition-all">
+            <Button className="bg-gray-900 text-white px-8 py-3.5 rounded-lg font-semibold hover:bg-gray-800 transition-all h-auto" aria-label="View services">
               View Services
-            </button>
-            <button className="text-gray-600 font-medium hover:text-blue-600 px-4">
+            </Button>
+            <Button variant="ghost" className="text-gray-600 font-medium hover:text-blue-600 px-4 h-auto" aria-label="Our story">
               Our Story
-            </button>
+            </Button>
           </div>
         </div>
 

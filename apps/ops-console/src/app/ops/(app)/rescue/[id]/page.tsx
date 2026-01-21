@@ -16,8 +16,10 @@ import {
 } from "lucide-react";
 import Link from "next/link";
 import { Button } from "@vayva/ui";
+import { useToast } from "@/components/ui/use-toast";
 
 export default function IncidentDetailPage({ params }: { params: { id: string } }) {
+    const { toast } = useToast();
     const [incident, setIncident] = useState<any>(null);
     const [loading, setLoading] = useState(true);
     const [actionLoading, setActionLoading] = useState<string | null>(null);
@@ -45,11 +47,11 @@ export default function IncidentDetailPage({ params }: { params: { id: string } 
                 body: JSON.stringify({ actionType }),
             });
             if (res.ok) {
-                alert("Action executed successfully!");
+                toast({ title: "Success", description: "Action executed successfully!" });
                 fetchIncident();
             }
         } catch (error) {
-            alert("Action failed.");
+            toast({ title: "Error", description: "Action failed.", variant: "destructive" });
         } finally {
             setActionLoading(null);
         }
@@ -141,11 +143,12 @@ export default function IncidentDetailPage({ params }: { params: { id: string } 
                                 <h4 className="text-sm font-bold mb-4">Safe Actions Available</h4>
                                 <div className="space-y-3">
                                     {["RETRY_JOB", "REPROCESS_WEBHOOK", "HEALTH_CHECK"].map(act => (
-                                        <button
+                                        <Button
                                             key={act}
+                                            variant="ghost"
                                             onClick={() => runAction(act)}
                                             disabled={!!actionLoading}
-                                            className="w-full flex items-center justify-between p-3 rounded-xl bg-white/10 hover:bg-white/20 transition-all text-xs font-bold group"
+                                            className="w-full flex items-center justify-between p-3 rounded-xl bg-white/10 hover:bg-white/20 transition-all text-xs font-bold group h-auto text-white hover:text-white"
                                         >
                                             <div className="flex items-center gap-3">
                                                 {act === "RETRY_JOB" && <RotateCcw className="w-4 h-4" />}
@@ -154,7 +157,7 @@ export default function IncidentDetailPage({ params }: { params: { id: string } 
                                                 {act.replace('_', ' ')}
                                             </div>
                                             <ChevronRight className="w-4 h-4 opacity-0 group-hover:opacity-100 transition-all" />
-                                        </button>
+                                        </Button>
                                     ))}
                                 </div>
                             </div>

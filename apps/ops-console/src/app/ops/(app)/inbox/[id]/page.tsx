@@ -18,7 +18,7 @@ import {
 } from "lucide-react";
 import { formatDistanceToNow } from "date-fns";
 import { toast } from "sonner";
-import { cn } from "@/lib/utils";
+import { cn, Button } from "@vayva/ui";
 
 interface TicketMessage {
     id: string;
@@ -184,25 +184,27 @@ export default function TicketDetailPage() {
                 </div>
 
                 <div className="flex items-center gap-3">
-                    <button
+                    <Button
                         onClick={() => handleAction('Assign to Me', { assignedToUserId: 'current-user-id' })} // Mock ID
                         disabled={performingAction || !!ticket.assignedToUserId}
-                        className="px-3 py-1.5 border border-gray-200 rounded text-xs font-semibold text-gray-700 hover:bg-gray-50 disabled:opacity-50"
+                        variant="outline"
+                        className="px-3 py-1.5 border border-gray-200 rounded text-xs font-semibold text-gray-700 hover:bg-gray-50 disabled:opacity-50 h-auto"
                     >
                         {ticket.assignedToUserId ? 'Assigned' : 'Assign to Me'}
-                    </button>
-                    <button
+                    </Button>
+                    <Button
                         onClick={() => handleAction('Escalate to Engineering', { priority: 'urgent' })}
                         disabled={performingAction || ticket.priority === 'urgent'}
-                        className="px-3 py-1.5 border border-red-200 text-red-700 rounded text-xs font-semibold hover:bg-red-50 disabled:opacity-50"
+                        variant="outline"
+                        className="px-3 py-1.5 border border-red-200 text-red-700 rounded text-xs font-semibold hover:bg-red-50 disabled:opacity-50 h-auto"
                     >
                         Escalate to Engineering
-                    </button>
+                    </Button>
                     <div className="h-6 w-px bg-gray-200 mx-1" />
-                    <button
+                    <Button
                         onClick={toggleStatus}
                         disabled={performingAction}
-                        className={`px-4 py-2 rounded-lg text-sm font-medium flex items-center gap-2 border transition-colors ${ticket.status === 'open'
+                        className={`px-4 py-2 rounded-lg text-sm font-medium flex items-center gap-2 border transition-colors h-auto ${ticket.status === 'open'
                             ? 'bg-white border-gray-200 text-gray-700 hover:bg-gray-50'
                             : 'bg-green-600 border-transparent text-white hover:bg-green-700'
                             }`}
@@ -216,7 +218,7 @@ export default function TicketDetailPage() {
                                 <RefreshCw size={16} /> Re-open Ticket
                             </>
                         )}
-                    </button>
+                    </Button>
                 </div>
             </div>
 
@@ -297,12 +299,13 @@ export default function TicketDetailPage() {
             {ticket.status === 'closed' ? (
                 <div className="bg-gray-50 border-t border-gray-200 p-6 text-center">
                     <p className="text-gray-500 text-sm mb-3">This ticket is closed.</p>
-                    <button
+                    <Button
                         onClick={toggleStatus}
-                        className="text-indigo-600 text-sm font-medium hover:underline"
+                        variant="link"
+                        className="text-indigo-600 text-sm font-medium hover:underline p-0 h-auto"
                     >
                         Re-open to reply
-                    </button>
+                    </Button>
                 </div>
             ) : (
                 <div className="bg-white border-t border-gray-200 p-4 shrink-0">
@@ -311,24 +314,24 @@ export default function TicketDetailPage() {
                             <textarea
                                 value={replyText}
                                 onChange={(e) => setReplyText(e.target.value)}
-                                placeholder="Type your reply... (Press specific keys to send not implemented, just click button)"
+                                placeholder="Type your reply..."
                                 className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:bg-white resize-none transition-all"
                                 rows={1}
                                 onKeyDown={(e) => {
-                                    if (e.key === 'Enter' && !e.shiftKey) {
+                                    if ((e.key === 'Enter' && !e.shiftKey) || ((e.metaKey || e.ctrlKey) && e.key === 'Enter')) {
                                         e.preventDefault();
                                         handleReply(e);
                                     }
                                 }}
                             />
                         </div>
-                        <button
+                        <Button
                             type="submit"
                             disabled={sending || !replyText.trim()}
-                            className="px-4 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl flex items-center justify-center transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                            className="px-4 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl flex items-center justify-center transition-colors disabled:opacity-50 disabled:cursor-not-allowed h-auto"
                         >
                             {sending ? <RefreshCw className="animate-spin" size={20} /> : <Send size={20} />}
-                        </button>
+                        </Button>
                     </form>
                     <div className="max-w-4xl mx-auto mt-2 text-xs text-center text-gray-400">
                         Press Enter to send, Shift+Enter for new line

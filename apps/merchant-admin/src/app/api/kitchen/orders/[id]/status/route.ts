@@ -1,7 +1,7 @@
 
 import { NextRequest, NextResponse } from "next/server";
 import { getSessionUser } from "@/lib/session";
-import { prisma } from "@vayva/db";
+import { prisma } from "@/lib/prisma";
 
 // PATCH /api/kitchen/orders/[id]/status
 export async function PATCH(request: NextRequest, { params }: { params: Promise<{ id: string }> }) {

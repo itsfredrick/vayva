@@ -1,165 +1,133 @@
+
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Link from "next/link";
-import { MarketShell } from "@/components/market/market-shell";
-import { Button, Icon } from "@vayva/ui";
+import { useParams } from "next/navigation";
+import { MarketShell } from "@/components/market/market-shell"; // Ensure this exists or imports correct shell
+import { Icon, Button } from "@vayva/ui"; // Assume UI lib
 
-const DEMO_PRODUCT = {
-  id: "1",
-  name: "MacBook Pro M3 Max - 1TB SSD, 36GB RAM",
-  price: 3500000,
-  curr: "₦",
-  seller: {
-    name: "TechDepot",
-    verified: true,
-    rating: 4.8,
-    slug: "techdepot",
-    location: "Ikeja, Lagos",
-  },
-  images: ["", "", ""],
-  desc: "Brand new factory sealed MacBook Pro M3 Max. 1 year Apple Warranty included. Fast shipping within Lagos.",
-};
+export default function MarketProductPage() {
+  const params = useParams();
+  const [product, setProduct] = useState<any>(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
 
-export default function MarketPDP({
-  params,
-}: {
-  params: Promise<{ id: string }>;
-}) {
-  const { id } = React.use(params);
-  const [qty, setQty] = useState(1);
+  useEffect(() => {
+    async function load() {
+      try {
+        const res = await fetch(`/api/market/products/${params.id}`);
+        if (!res.ok) throw new Error("Product not found");
+        const data = await res.json();
+        setProduct(data);
+      } catch (err) {
+        setError("Failed to load product");
+      } finally {
+        setLoading(false);
+      }
+    }
+    if (params.id) load();
+  }, [params.id]);
+
+  if (loading) return <MarketShell><div className="p-12 text-center text-white">Loading...</div></MarketShell>;
+  if (error || !product) return <MarketShell><div className="p-12 text-center text-red-400">{error}</div></MarketShell>;
 
   return (
     <MarketShell>
-      <div className="max-w-[1400px] mx-auto px-4 lg:px-6 py-8">
+      <div className="max-w-6xl mx-auto px-4 py-8">
+
         {/* Breadcrumb */}
-        <div className="text-xs text-text-secondary uppercase font-bold tracking-wider mb-8 flex items-center gap-2">
-          <Link href="/market" className="hover:text-white">
-            Home
-          </Link>
-          <Icon name="ChevronRight" size={14} />
-          <Link href="/market/search" className="hover:text-white">
-            Computers
-          </Link>
-          <Icon name="ChevronRight" size={14} />
-          <span className="text-white">MacBooks</span>
+        <div className="flex items-center gap-2 text-sm text-gray-400 mb-6">
+          <Link href="/market" className="hover:text-white">Market</Link>
+          <span>/</span>
+          <span className="text-white">{product.name}</span>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20">
-          {/* Gallery (Left) */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
+
+          {/* Left: Images */}
           <div className="space-y-4">
-            <div className="aspect-video bg-[#0b141a] rounded-2xl w-full relative overflow-hidden flex items-center justify-center border border-white/5">
-              <Icon name="Monitor" size={64} className="text-white/10" />
-            </div>
-            <div className="grid grid-cols-4 gap-4">
-              {[1, 2, 3, 4].map((i) => (
-                <div
-                  key={i}
-                  className="aspect-square bg-white/5 rounded-lg cursor-pointer hover:bg-white/10 transition-colors border border-white/5"
-                />
-              ))}
-            </div>
-          </div>
-
-          {/* Details (Right) */}
-          <div>
-            <h1 className="text-3xl font-bold text-white mb-2">
-              {DEMO_PRODUCT.name}
-            </h1>
-            <div className="text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-primary to-emerald-400 mb-8 inline-block">
-              {DEMO_PRODUCT.curr} {DEMO_PRODUCT.price.toLocaleString()}
-            </div>
-
-            {/* Seller Card (Embedded) */}
-            <div className="bg-white/5 rounded-xl p-4 border border-white/5 mb-8 flex items-center justify-between">
-              <div className="flex items-center gap-3">
-                <div className="w-12 h-12 rounded-full bg-indigo-500 flex items-center justify-center text-white font-bold text-xl">
-                  {DEMO_PRODUCT.seller.name.charAt(0)}
-                </div>
-                <div>
-                  <div className="font-bold text-white flex items-center gap-1">
-                    {DEMO_PRODUCT.seller.name}
-                    {DEMO_PRODUCT.seller.verified && (
-                      <Icon
-                        name="ShieldCheck"
-                        size={16}
-                        className="text-blue-400"
-                      />
-                    )}
-                  </div>
-                  <div className="flex items-center gap-2 text-xs text-text-secondary">
-                    <span className="flex items-center gap-0.5">
-                      <Icon name="Star" size={12} className="text-yellow-400" />{" "}
-                      {DEMO_PRODUCT.seller.rating}
-                    </span>
-                    <span>•</span>
-                    <span>{DEMO_PRODUCT.seller.location}</span>
-                  </div>
-                </div>
-              </div>
-              <Link href={`/market/sellers/${DEMO_PRODUCT.seller.slug}`}>
-                <Button
-                  variant="outline"
-                  size="sm"
-                  className="border-white/10 text-white hover:bg-white/5"
-                >
-                  View Profile
-                </Button>
-              </Link>
-            </div>
-
-            {/* Buy Panel */}
-            <div className="space-y-6 mb-10 p-6 rounded-2xl bg-white/5 border border-white/5">
-              <div className="flex items-center gap-4 text-sm text-text-secondary border-b border-white/5 pb-4">
-                <Icon name="Truck" size={18} />
-                <span>
-                  Ships to{" "}
-                  <strong className="text-white">Lagos Mainland</strong> in{" "}
-                  <strong className="text-white">1-2 days</strong>
+            <div className="aspect-square bg-gray-800 rounded-2xl overflow-hidden border border-white/10 relative">
+              {/* Condition Badge */}
+              <div className="absolute top-4 left-4 z-10">
+                <span className={`px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider ${product.condition === 'NEW' ? 'bg-green-500/20 text-green-400 border border-green-500/30' :
+                    'bg-yellow-500/20 text-yellow-400 border border-yellow-500/30'
+                  }`}>
+                  {product.condition}
                 </span>
               </div>
 
-              <div className="flex gap-4">
-                <div className="flex items-center bg-[#0b141a] border border-white/10 rounded-full h-12 px-2">
-                  <button
-                    onClick={() => setQty(Math.max(1, qty - 1))}
-                    className="w-8 h-full flex items-center justify-center text-white/50 hover:text-white"
-                  >
-                    <Icon name="Minus" size={16} />
-                  </button>
-                  <span className="w-8 text-center text-white font-bold">
-                    {qty}
-                  </span>
-                  <button
-                    onClick={() => setQty(qty + 1)}
-                    className="w-8 h-full flex items-center justify-center text-white/50 hover:text-white"
-                  >
-                    <Icon name="Plus" size={16} />
-                  </button>
-                </div>
-                <Button className="flex-1 h-12 rounded-full bg-primary text-black hover:bg-primary/90 font-bold text-base shadow-[0_0_20px_rgba(70,236,19,0.2)]">
-                  Add to Cart
-                </Button>
-              </div>
-
-              <p className="text-xs text-center text-text-secondary">
-                Transactions are secured by Vayva. Money held in escrow until
-                delivery.
-              </p>
+              {product.images?.[0] ? (
+                <img src={product.images[0]} alt={product.name} className="w-full h-full object-cover" />
+              ) : (
+                <div className="w-full h-full flex items-center justify-center text-gray-600">No Image</div>
+              )}
             </div>
+          </div>
+
+          {/* Right: Details */}
+          <div>
+            <h1 className="text-3xl font-bold text-white mb-2">{product.name}</h1>
+            <div className="flex items-center gap-4 mb-6">
+              <div className="text-2xl font-bold text-emerald-400">
+                {product.curr} {product.price.toLocaleString()}
+              </div>
+              {product.warranty && (
+                <div className="flex items-center gap-1 text-xs text-blue-300 bg-blue-500/10 px-2 py-1 rounded">
+                  <Icon name="ShieldCheck" size={14} />
+                  {product.warranty}
+                </div>
+              )}
+            </div>
+
+            {/* Seller Card */}
+            <div className="bg-white/5 border border-white/10 rounded-xl p-4 mb-8 flex items-center justify-between">
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-full bg-primary/20 flex items-center justify-center text-primary font-bold">
+                  {product.seller.logo ? <img src={product.seller.logo} className="w-full h-full rounded-full" /> : product.seller.name[0]}
+                </div>
+                <div>
+                  <div className="text-sm font-bold text-white flex items-center gap-1">
+                    {product.seller.name}
+                    {product.seller.verified && <Icon name="BadgeCheck" size={14} className="text-blue-400" />}
+                  </div>
+                  <div className="text-xs text-gray-400">{product.seller.location}</div>
+                </div>
+              </div>
+              <Button variant="outline" size="sm">View Store</Button>
+            </div>
+
+            {/* Actions */}
+            <div className="flex gap-4 mb-12">
+              <Button size="lg" className="w-full bg-primary text-black hover:bg-primary/90 font-bold">
+                Add to Cart
+              </Button>
+              <Button size="lg" variant="outline" className="w-full">
+                Make Offer
+              </Button>
+            </div>
+
+            {/* Tech Specs Table */}
+            {product.specs && Object.keys(product.specs).length > 0 && (
+              <div className="border-t border-white/10 pt-8">
+                <h3 className="text-lg font-bold text-white mb-4">Technical Specifications</h3>
+                <div className="grid grid-cols-1 gap-y-2">
+                  {Object.entries(product.specs).map(([key, val]: any) => (
+                    <div key={key} className="grid grid-cols-2 py-2 border-b border-white/5">
+                      <div className="text-sm text-gray-400 capitalize">{key.replace(/([A-Z])/g, ' $1').trim()}</div>
+                      <div className="text-sm text-white font-medium">{val}</div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
 
             {/* Description */}
-            <div className="mb-8">
-              <h3 className="font-bold text-white mb-2">Description</h3>
-              <p className="text-text-secondary leading-relaxed">
-                {DEMO_PRODUCT.desc}
-              </p>
+            <div className="mt-8">
+              <h3 className="text-lg font-bold text-white mb-2">Description</h3>
+              <p className="text-gray-400 leading-relaxed text-sm">{product.desc}</p>
             </div>
 
-            {/* Report */}
-            <div className="flex items-center gap-2 mt-12 text-xs text-text-secondary cursor-pointer hover:text-state-danger transition-colors opacity-60 hover:opacity-100">
-              <Icon name="Flag" size={14} /> Report this listing
-            </div>
           </div>
         </div>
       </div>

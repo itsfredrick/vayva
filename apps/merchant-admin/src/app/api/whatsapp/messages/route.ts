@@ -4,7 +4,8 @@ import {
   WhatsAppMessageSender,
   WhatsAppLinkedEntityType,
 } from "@vayva/shared";
-import { prisma, MessageType, Direction, MessageStatus } from "@vayva/db";
+import { prisma } from "@/lib/prisma";
+import { MessageType, Direction, MessageStatus } from "@vayva/db";
 import { getSessionUser } from "@/lib/session";
 
 export async function GET(request: Request) {
@@ -29,7 +30,7 @@ export async function GET(request: Request) {
       where: {
         conversationId: conversationId,
         // Ensure store ownership
-        Conversation: {
+        conversation: {
           storeId: user.storeId,
         },
       },

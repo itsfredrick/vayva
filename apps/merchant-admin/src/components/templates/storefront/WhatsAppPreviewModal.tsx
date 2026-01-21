@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import { Icon, Button, cn } from "@vayva/ui";
+import { Button, Icon, cn } from "@vayva/ui";
 
 interface WhatsAppPreviewModalProps {
   isOpen: boolean;
@@ -34,22 +34,19 @@ export function WhatsAppPreviewModal({
       onClick={onClose}
     >
       <div
-        className="w-full max-w-[360px] bg-[#E5DDD5] rounded-[32px] overflow-hidden shadow-2xl relative flex flex-col h-[700px] max-h-[90vh]"
+        className="w-full max-w-[360px] bg-[#E5DDD5] rounded-[32px] overflow-hidden shadow-2xl relative flex flex-col h-[700px] max-h-[90vh] bg-[url('https://user-images.githubusercontent.com/15075759/28719144-86dc0f70-73b1-11e7-911d-60d70fcded21.png')] bg-blend-overlay"
         onClick={(e) => e.stopPropagation()}
-        style={{
-          backgroundImage:
-            'url("https://user-images.githubusercontent.com/15075759/28719144-86dc0f70-73b1-11e7-911d-60d70fcded21.png")',
-          backgroundBlendMode: "overlay",
-        }}
       >
         {/* Header */}
         <div className="bg-[#008069] text-white p-3 px-4 flex items-center gap-3 shrink-0">
-          <button
+          <Button
+            variant="ghost"
+            size="icon"
             onClick={onClose}
-            className="hover:bg-white/10 rounded-full p-1 -ml-1"
+            className="hover:bg-white/10 rounded-full p-1 -ml-1 text-white h-auto w-auto hover:text-white"
           >
             <Icon name="ArrowLeft" size={20} />
-          </button>
+          </Button>
           <div className="w-9 h-9 bg-gray-300 rounded-full flex items-center justify-center overflow-hidden">
             <Icon name="User" className="text-gray-500" size={20} />
           </div>

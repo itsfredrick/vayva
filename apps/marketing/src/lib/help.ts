@@ -15,7 +15,7 @@ export const HELP_ARTICLES: HelpArticle[] = [
         category: "Onboarding",
         title: "How to get started with Vayva",
         summary: "Learn the basics of setting up your Vayva store and launching your first products.",
-        content: "Vayva makes it easy to launch your e-commerce business..."
+        content: "Vayva simplifies launching your online business. Create an account, choose a template, and add your first product in minutes."
     },
     {
         id: "2",
@@ -26,13 +26,13 @@ export const HELP_ARTICLES: HelpArticle[] = [
         content: `
       Vayva offers two flexible delivery models:
       
-      1. **Vayva Delivery Partner (Kwik)**: 
-         Use our integrated partner for automatic dispatching and tracking. Suitable for Lagos-based merchants.
+      • Vayva Delivery Partner (Kwik): 
+         Use our integrated partner for automatic dispatching and tracking. Best for Lagos-based merchants requiring instant delivery.
       
-      2. **Own Dispatch Rider**:
+      • Own Dispatch Rider:
          If you have your own riders, you can manage them manually. Simply select 'Self Dispatch' in your merchant settings.
          
-      To configure these, go to **Settings > Delivery** in your Merchant Dashboard.
+      To configure these, go to Settings > Delivery in your Merchant Dashboard.
     `
     },
     {
@@ -49,7 +49,7 @@ export const HELP_ARTICLES: HelpArticle[] = [
         category: "Design",
         title: "Customizing your Storefront",
         summary: "How to use our visual builder to customize your look and feel.",
-        content: "Our builder allow you to pick templates and edit sections..."
+        content: "Our visual builder allows you to select templates, customize sections, and publish changes instantly."
     }
 ];
 

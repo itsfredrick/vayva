@@ -1,7 +1,7 @@
 
 import { NextRequest, NextResponse } from "next/server";
 import { getSessionUser } from "@/lib/session";
-import { prisma } from "@vayva/db";
+import { prisma } from "@/lib/prisma";
 
 // GET /api/portfolio
 export async function GET(request: NextRequest) {

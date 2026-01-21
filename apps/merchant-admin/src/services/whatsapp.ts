@@ -22,11 +22,7 @@ export class WhatsappManager {
       return await res.json();
     } catch (error) {
       console.error("Failed to create WhatsApp instance:", error);
-      // Mock success for development if API is offline
-      return {
-        instance: { instanceName, status: "created" },
-        qrcode: "base64_mock_qr_code_data_here"
-      };
+      throw error;
     }
   }
 
@@ -37,11 +33,11 @@ export class WhatsappManager {
         method: "GET",
         headers: { "apikey": EVOLUTION_API_KEY }
       });
+      if (!res.ok) throw new Error("Failed to connect instance");
       return await res.json();
     } catch (error) {
       console.error("Failed to connect WhatsApp instance:", error);
-      // Mock QR for UI dev
-      return { base64: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8z8BQDwAEhQGAhKmMIQAAAABJRU5ErkJggg==" };
+      throw error;
     }
   }
 
@@ -62,10 +58,11 @@ export class WhatsappManager {
           textMessage: { text }
         })
       });
+      if (!res.ok) throw new Error("Failed to send message: " + res.statusText);
       return await res.json();
     } catch (error) {
       console.error(`Failed to send WA message to ${phone}:`, error);
-      return { status: "mock_sent" };
+      throw error;
     }
   }
 }

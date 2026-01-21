@@ -1,5 +1,5 @@
 import { requireAuth } from "@/lib/auth/session";
-import { prisma } from "@vayva/db";
+import { prisma } from "@/lib/prisma";
 import { ReferralService } from "@/services/referral.service";
 import { NextResponse } from "next/server";
 

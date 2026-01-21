@@ -1,6 +1,6 @@
 import React from "react";
 import { UnifiedOrder, UnifiedOrderStatus, OrderType } from "@vayva/shared";
-import { Icon, cn, Drawer } from "@vayva/ui";
+import { Drawer, Icon, cn, Button } from "@vayva/ui";
 
 interface OrderDetailsDrawerProps {
   order: UnifiedOrder | null;
@@ -89,19 +89,21 @@ export const OrderDetailsDrawer = ({
             onChange={(e) => setActionNote(e.target.value)}
           />
           <div className="flex gap-2">
-            <button
+            <Button
               onClick={() => setShowCancel(false)}
-              className="flex-1 py-3 bg-gray-100 font-bold rounded-xl hover:bg-gray-200"
+              variant="secondary"
+              className="flex-1 font-bold rounded-xl"
             >
               Back
-            </button>
-            <button
+            </Button>
+            <Button
               onClick={handleCancel}
               disabled={isLoading}
-              className="flex-1 py-3 bg-red-600 text-white font-bold rounded-xl hover:bg-red-700"
+              variant="destructive"
+              className="flex-1 font-bold rounded-xl"
             >
               {isLoading ? "Processing..." : "Confirm Cancel"}
-            </button>
+            </Button>
           </div>
         </div>
       );
@@ -120,21 +122,22 @@ export const OrderDetailsDrawer = ({
             onChange={(e) => setActionNote(e.target.value)}
           />
           <div className="flex gap-2">
-            <button
+            <Button
               onClick={() => setShowRefund(false)}
-              className="flex-1 py-3 bg-gray-100 font-bold rounded-xl hover:bg-gray-200"
+              variant="secondary"
+              className="flex-1 font-bold rounded-xl"
             >
               Back
-            </button>
-            <button
+            </Button>
+            <Button
               onClick={handleRefund}
               disabled={isLoading}
-              className="flex-1 py-3 bg-orange-500 text-white font-bold rounded-xl hover:bg-orange-600"
+              className="flex-1 bg-orange-500 hover:bg-orange-600 text-white font-bold rounded-xl"
             >
               {isLoading
                 ? "Processing..."
                 : `Refund ${formatCurrency(order.totalAmount)}`}
-            </button>
+            </Button>
           </div>
         </div>
       );
@@ -146,39 +149,40 @@ export const OrderDetailsDrawer = ({
         <div className="flex gap-2">
           {order.status === UnifiedOrderStatus.NEW && (
             <>
-              <button
+              <Button
                 onClick={() =>
                   handleStatusUpdate(UnifiedOrderStatus.PROCESSING)
                 }
-                className="flex-1 py-3 bg-black text-white rounded-xl font-bold hover:bg-gray-800 transition-colors"
+                className="flex-1 rounded-xl font-bold"
               >
                 Accept Order
-              </button>
-              <button
+              </Button>
+              <Button
                 onClick={() => setShowCancel(true)}
-                className="px-4 py-3 bg-red-50 text-red-600 rounded-xl font-bold hover:bg-red-100 transition-colors"
+                variant="destructive" //Using destructive variant but overriding bg for softer look if needed, or stick to system destructive
+                className="px-4 bg-red-50 text-red-600 hover:bg-red-100 border-none rounded-xl font-bold"
               >
                 Reject
-              </button>
+              </Button>
             </>
           )}
 
           {order.status === UnifiedOrderStatus.PROCESSING && (
-            <button
+            <Button
               onClick={() => handleStatusUpdate(UnifiedOrderStatus.READY)}
-              className="flex-1 py-3 bg-black text-white rounded-xl font-bold hover:bg-gray-800 transition-colors"
+              className="flex-1 rounded-xl font-bold"
             >
               Mark Ready / Shipped
-            </button>
+            </Button>
           )}
 
           {order.status === UnifiedOrderStatus.READY && (
-            <button
+            <Button
               onClick={() => handleStatusUpdate(UnifiedOrderStatus.COMPLETED)}
-              className="flex-1 py-3 bg-green-600 text-white rounded-xl font-bold hover:bg-green-700 transition-colors"
+              className="flex-1 bg-green-600 hover:bg-green-700 text-white rounded-xl font-bold"
             >
               Complete Order
-            </button>
+            </Button>
           )}
         </div>
 
@@ -187,19 +191,21 @@ export const OrderDetailsDrawer = ({
           order.status !== UnifiedOrderStatus.REFUNDED &&
           order.status !== UnifiedOrderStatus.NEW && (
             <div className="flex gap-2 justify-center pt-2">
-              <button
+              <Button
+                variant="link"
                 onClick={() => setShowCancel(true)}
-                className="text-xs font-bold text-red-500 hover:text-red-700 underline"
+                className="text-xs font-bold text-red-500 hover:text-red-700 underline p-0 h-auto"
               >
                 Cancel Order
-              </button>
+              </Button>
               <span className="text-gray-300">|</span>
-              <button
+              <Button
+                variant="link"
                 onClick={() => setShowRefund(true)}
-                className="text-xs font-bold text-orange-500 hover:text-orange-700 underline"
+                className="text-xs font-bold text-orange-500 hover:text-orange-700 underline p-0 h-auto"
               >
                 Issue Refund
-              </button>
+              </Button>
             </div>
           )}
       </div>
@@ -258,12 +264,12 @@ export const OrderDetailsDrawer = ({
             </div>
           </div>
           <div className="flex gap-2">
-            <button className="flex-1 bg-green-500 text-white rounded-lg py-2.5 text-sm font-bold flex items-center justify-center gap-2 hover:bg-green-600 transition-colors">
+            <Button className="flex-1 bg-green-500 hover:bg-green-600 text-white rounded-lg font-bold gap-2">
               <Icon name="MessageCircle" size={16} /> WhatsApp
-            </button>
-            <button className="flex-1 bg-white border border-gray-200 text-gray-700 rounded-lg py-2.5 text-sm font-bold hover:bg-gray-50 transition-colors">
+            </Button>
+            <Button variant="outline" className="flex-1 rounded-lg font-bold">
               Call
-            </button>
+            </Button>
           </div>
         </div>
 

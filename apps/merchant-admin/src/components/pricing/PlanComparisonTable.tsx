@@ -49,7 +49,7 @@ export const PlanComparisonTable = () => {
             {PLANS.map((plan) => (
               <th
                 key={plan.key}
-                className={`p-8 text-xl font-black text-[#0F172A] text-center ${plan.featured ? "bg-green-50/30" : ""}`}
+                className={`p-8 text-xl font-black text-black text-center ${plan.featured ? "bg-green-50/30" : ""}`}
               >
                 {plan.name}
               </th>
@@ -123,5 +123,5 @@ function renderValue(val: string | boolean) {
       <span className="text-gray-200">—</span>
     );
   }
-  return <span className="text-sm font-black text-[#0F172A]">{val}</span>;
+  return <span className="text-sm font-black text-black">{val}</span>;
 }

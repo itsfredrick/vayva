@@ -6,6 +6,7 @@ import {
 import { useStorefrontCart } from "@/hooks/storefront/useStorefrontCart";
 import { CheckoutModal } from "./CheckoutModal";
 import { ShoppingCart, X, Star, BookOpen } from "lucide-react";
+import { Button } from "@vayva/ui";
 
 export function SkillAcademyCourses({
   storeName: initialStoreName,
@@ -65,15 +66,18 @@ export function SkillAcademyCourses({
             </div>
           </div>
           <div className="flex items-center gap-4">
-            <button className="text-sm font-medium text-gray-600 hover:text-purple-600">
+            <Button variant="ghost" className="text-sm font-medium text-gray-600 hover:text-purple-600 h-auto p-0 hover:bg-transparent">
               Log in
-            </button>
-            <button className="bg-black text-white px-4 py-2 text-sm font-bold rounded hover:bg-gray-800">
+            </Button>
+            <Button variant="primary" className="bg-black text-white px-4 py-2 text-sm font-bold rounded hover:bg-gray-800 h-auto">
               Sign up
-            </button>
-            <button
+            </Button>
+            <Button
+              variant="ghost"
+              size="icon"
               className="relative p-2 hover:bg-gray-100 rounded-full text-gray-600"
               onClick={() => setIsCartOpen(true)}
+              aria-label={`View cart with ${cart.length} items`}
             >
               <ShoppingCart className="w-6 h-6" />
               {cart.length > 0 && (
@@ -81,7 +85,7 @@ export function SkillAcademyCourses({
                   {cart.length}
                 </span>
               )}
-            </button>
+            </Button>
           </div>
         </div>
       </nav>
@@ -96,9 +100,9 @@ export function SkillAcademyCourses({
           <div className="relative w-full max-w-md bg-white h-full shadow-2xl flex flex-col animate-in slide-in-from-right">
             <div className="p-4 border-b border-gray-200 flex justify-between items-center bg-gray-50">
               <h2 className="font-bold text-lg">Shopping Cart</h2>
-              <button onClick={() => setIsCartOpen(false)}>
+              <Button variant="ghost" size="icon" onClick={() => setIsCartOpen(false)} aria-label="Close cart sidebar">
                 <X className="w-5 h-5 text-gray-500" />
-              </button>
+              </Button>
             </div>
 
             <div className="flex-1 overflow-auto p-4 space-y-4">
@@ -117,6 +121,7 @@ export function SkillAcademyCourses({
                       {item.image && (
                         <img
                           src={item.image}
+                          alt={item.name}
                           className="w-full h-full object-cover"
                         />
                       )}
@@ -132,12 +137,13 @@ export function SkillAcademyCourses({
                         <span className="font-bold text-purple-700">
                           ₦{item.price.toLocaleString()}
                         </span>
-                        <button
+                        <Button
+                          variant="link"
                           onClick={() => removeFromCart(item.id)}
-                          className="text-xs text-red-500 hover:underline"
+                          className="text-xs text-red-500 hover:underline p-0 h-auto"
                         >
                           Remove
-                        </button>
+                        </Button>
                       </div>
                     </div>
                   </div>
@@ -151,15 +157,15 @@ export function SkillAcademyCourses({
                   <span>Total:</span>
                   <span>₦{total.toLocaleString()}</span>
                 </div>
-                <button
+                <Button
                   onClick={() => {
                     setIsCartOpen(false);
                     setIsCheckoutOpen(true);
                   }}
-                  className="w-full bg-purple-600 text-white py-3 font-bold rounded hover:bg-purple-700 shadow-lg"
+                  className="w-full bg-purple-600 text-white py-6 h-auto font-bold rounded hover:bg-purple-700 shadow-lg"
                 >
                   Checkout Now
-                </button>
+                </Button>
               </div>
             )}
           </div>
@@ -179,9 +185,9 @@ export function SkillAcademyCourses({
               marketing and more from industry leaders.
             </p>
             <div className="flex gap-4">
-              <button className="bg-black text-white px-8 py-3 font-bold rounded hover:bg-gray-800">
+              <Button className="bg-black text-white px-8 py-6 font-bold rounded hover:bg-gray-800 h-auto">
                 View All Courses
-              </button>
+              </Button>
             </div>
           </div>
           <div className="hidden md:block relative w-96 h-80">
@@ -241,6 +247,7 @@ export function SkillAcademyCourses({
                       course.image ||
                       `https://via.placeholder.com/300x200?text=${encodeURIComponent(course.name)}`
                     }
+                    alt={course.name}
                     className="w-full h-full object-cover"
                   />
                   <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors"></div>
@@ -264,9 +271,9 @@ export function SkillAcademyCourses({
                     <span className="font-bold text-lg text-gray-900">
                       ₦{course.price.toLocaleString()}
                     </span>
-                    <button className="bg-purple-100 text-purple-700 px-3 py-1 text-xs font-bold rounded hover:bg-purple-200">
+                    <Button variant="primary" className="bg-purple-100 text-purple-700 px-3 py-2 text-xs font-bold rounded hover:bg-purple-200 h-auto border-none">
                       Add to Cart
-                    </button>
+                    </Button>
                   </div>
                 </div>
               </div>

@@ -3,6 +3,8 @@
 
 import React, { useState } from "react";
 import { PLANS, FEES } from "@/config/pricing";
+import { Button } from "@vayva/ui";
+import { cn } from "@/lib/utils";
 
 export const PlanComparisonMobile = () => {
     const [selectedPlan, setSelectedPlan] = useState<"free" | "starter" | "pro">(
@@ -14,20 +16,21 @@ export const PlanComparisonMobile = () => {
             {/* Plan Selector */}
             <div className="flex p-1 bg-gray-100 rounded-xl">
                 {PLANS.map((plan) => (
-                    <button
+                    <Button
                         key={plan.key}
                         onClick={() => setSelectedPlan(plan.key)}
-                        className={`flex-1 py-3 text-xs font-black uppercase tracking-widest rounded-lg transition-all ${selectedPlan === plan.key
-                            ? "bg-white text-[#0F172A] shadow-sm"
-                            : "text-gray-400 hover:text-gray-600"
-                            }`}
+                        variant="ghost"
+                        className={cn(
+                            "flex-1 py-3 text-xs font-black uppercase tracking-widest rounded-lg transition-all h-auto",
+                            selectedPlan === plan.key
+                                ? "bg-white text-[#0F172A] shadow-sm hover:bg-white"
+                                : "text-gray-400 hover:text-gray-600 hover:bg-transparent"
+                        )}
                     >
                         {plan.key === "free"
                             ? "Free"
-                            : plan.monthlyAmount === 30000
-                                ? "₦30k"
-                                : "₦40k"}
-                    </button>
+                            : `₦${plan.baseAmount / 1000}k`}
+                    </Button>
                 ))}
             </div>
 

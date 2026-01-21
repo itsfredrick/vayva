@@ -1,5 +1,6 @@
 import React from "react";
 import { TemplateProps } from "../registry";
+import { Button } from "@vayva/ui";
 
 export const FurnitureHomeTemplate: React.FC<TemplateProps> = ({
   businessName,
@@ -62,9 +63,9 @@ export const FurnitureHomeTemplate: React.FC<TemplateProps> = ({
               </div>
               <div className="text-xl font-bold">₦285,000</div>
             </div>
-            <button className="bg-stone-800 text-white px-6 py-3 text-xs font-bold uppercase tracking-wider hover:bg-black">
+            <Button className="bg-stone-800 text-white px-6 py-3 text-xs font-bold uppercase tracking-wider hover:bg-black h-auto">
               Request Quote
-            </button>
+            </Button>
           </div>
         </div>
       </section>

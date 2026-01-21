@@ -1,5 +1,5 @@
 import React from "react";
-import { Icon } from "@vayva/ui";
+import { Icon, Button } from "@vayva/ui";
 
 type Item = {
   label: string;
@@ -39,9 +39,9 @@ export function RequirementChecklist({ items }: { items: Item[] }) {
             </span>
           </div>
           {!item.met && item.link && (
-            <button className="text-xs text-primary font-bold hover:underline whitespace-nowrap ml-4">
+            <Button variant="link" className="text-xs text-primary font-bold hover:underline whitespace-nowrap ml-4 h-auto p-0">
               Fix now
-            </button>
+            </Button>
           )}
         </div>
       ))}

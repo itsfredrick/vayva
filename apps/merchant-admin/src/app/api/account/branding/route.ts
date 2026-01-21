@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { requireAuth } from "@/lib/auth/session";
-import { prisma } from "@vayva/db";
+import { prisma } from "@/lib/prisma";
 
 export async function GET() {
   try {
@@ -72,7 +72,9 @@ export async function PUT(req: Request) {
       session.user.id,
       AuditEventType.SETTINGS_CHANGED,
       {
-        keysChanged: ["branding"],
+        targetType: "STORE",
+        targetId: storeId,
+        meta: { keysChanged: ["branding"] }
       },
     );
 

@@ -3,41 +3,30 @@
 import { notFound } from "next/navigation";
 import { getNormalizedTemplates } from "@/lib/templates-registry";
 import { LivePreviewClient } from "@/components/preview/LivePreviewClient";
-import { StoreShell } from "@/components/storefront/store-shell";
-import { AAFashionHome } from "@/components/storefront/AAFashionHome";
-import { GizmoTechHome } from "@/components/storefront/GizmoTechHome";
-import { BloomeHome } from "@/components/storefront/BloomeHome";
+import { resolveLayout } from "@/lib/templates/layout-resolver";
 
-const COMPONENT_MAP: Record<string, React.ComponentType<any>> = {
-  StoreShell: StoreShell,
-  AAFashionHome: AAFashionHome,
-  GizmoTechHome: GizmoTechHome,
-  BloomeHomeLayout: BloomeHome,
-};
+const DEFAULT_DESKTOP_PREVIEW = "https://images.unsplash.com/photo-1441986300917-64674bd600d8?q=80&w=2070&auto=format&fit=crop";
+const DEFAULT_MOBILE_PREVIEW = "https://images.unsplash.com/photo-1512314889357-e157c22f938d?q=80&w=2071&auto=format&fit=crop";
 
-export default function TemplatePreviewPage({
+export default async function TemplatePreviewPage({
   params,
 }: {
-  params: { slug: string };
+  params: Promise<{ slug: string }>;
 }) {
-  const template = getNormalizedTemplates().find((t) => t.slug === params.slug);
+  const { slug } = await params;
+  const template = getNormalizedTemplates().find((t) => t.slug === slug);
   if (!template) return notFound();
 
-  const layoutName = (template as any).layoutComponent as
-    | string
-    | null
-    | undefined;
-  const LayoutComponent = layoutName
-    ? (COMPONENT_MAP[layoutName] ?? null)
-    : null;
+  const layoutKey = (template as any).layoutKey || (template as any).layoutComponent;
+  const LayoutComponent = resolveLayout(layoutKey);
 
   return (
     <LivePreviewClient
-      templateName={template.name}
+      templateName={template.displayName}
       slug={template.slug}
-      LayoutComponent={LayoutComponent}
-      fallbackDesktopImage={template.previewImageDesktop}
-      fallbackMobileImage={template.previewImageMobile}
+      LayoutComponent={LayoutComponent || (() => <div>Layout not found</div>)}
+      fallbackDesktopImage={template.preview?.desktopUrl || DEFAULT_DESKTOP_PREVIEW}
+      fallbackMobileImage={template.preview?.mobileUrl || DEFAULT_MOBILE_PREVIEW}
     />
   );
 }

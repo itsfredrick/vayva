@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
+import { Button } from "@vayva/ui";
 import { useStore } from "@/context/StoreContext";
 import { StorefrontService } from "@/services/storefront.service";
 import { StoreShell } from "@/components/StoreShell";
@@ -31,6 +32,7 @@ export default function CheckoutPage() {
   const [deliveryMethod, setDeliveryMethod] = useState<"DELIVERY" | "PICKUP">(
     "DELIVERY",
   );
+  const [agreed, setAgreed] = useState(false);
 
   const subtotal = cart.reduce(
     (sum, item) => sum + item.price * item.quantity,
@@ -43,6 +45,10 @@ export default function CheckoutPage() {
 
   const handlePlaceOrder = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (!agreed) {
+      setError("You must agree to the Refund Policy & Privacy Policy to continue.");
+      return;
+    }
     setSubmitting(true);
     setError(null);
 
@@ -74,7 +80,6 @@ export default function CheckoutPage() {
       const payment = await StorefrontService.initializePayment({
         orderId: order.orderId!, // Assert existence as createOrder succeeded
         email: email,
-        amount: total * 100, // Paystack expects Kobo
         callbackUrl: `${window.location.origin}/order/confirmation?store=${store.slug}&orderId=${order.orderId}`,
       });
 
@@ -130,8 +135,10 @@ export default function CheckoutPage() {
             <div>
               <h2 className="text-lg font-bold mb-4">Contact</h2>
               <input
+                id="checkout-email"
                 type="email"
                 placeholder="Email"
+                aria-label="Email address"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 className="w-full p-3 border border-gray-200 rounded-lg mb-2 focus:ring-1 focus:ring-black outline-none"
@@ -148,12 +155,13 @@ export default function CheckoutPage() {
                 >
                   <div className="flex items-center gap-3">
                     <input
+                      id="delivery-method-ship"
                       type="radio"
                       checked={deliveryMethod === "DELIVERY"}
-                      readOnly
+                      onChange={() => setDeliveryMethod("DELIVERY")}
                       className="accent-black"
                     />
-                    <span className="text-sm">Ship to my address</span>
+                    <label htmlFor="delivery-method-ship" className="text-sm cursor-pointer">Ship to my address</label>
                   </div>
                   <span className="text-sm font-bold">₦1,500</span>
                 </div>
@@ -163,12 +171,13 @@ export default function CheckoutPage() {
                 >
                   <div className="flex items-center gap-3">
                     <input
+                      id="delivery-method-pickup"
                       type="radio"
                       checked={deliveryMethod === "PICKUP"}
-                      readOnly
+                      onChange={() => setDeliveryMethod("PICKUP")}
                       className="accent-black"
                     />
-                    <span className="text-sm">Local pickup</span>
+                    <label htmlFor="delivery-method-pickup" className="text-sm cursor-pointer">Local pickup</label>
                   </div>
                   <span className="text-sm font-bold">Free</span>
                 </div>
@@ -180,16 +189,20 @@ export default function CheckoutPage() {
                 <h2 className="text-lg font-bold mb-4">Shipping address</h2>
                 <div className="grid grid-cols-2 gap-4">
                   <input
+                    id="checkout-first-name"
                     type="text"
                     placeholder="First name"
+                    aria-label="First name"
                     value={firstName}
                     onChange={(e) => setFirstName(e.target.value)}
                     className="w-full p-3 border border-gray-200 rounded-lg focus:ring-1 focus:ring-black outline-none"
                     required
                   />
                   <input
+                    id="checkout-last-name"
                     type="text"
                     placeholder="Last name"
+                    aria-label="Last name"
                     value={lastName}
                     onChange={(e) => setLastName(e.target.value)}
                     className="w-full p-3 border border-gray-200 rounded-lg focus:ring-1 focus:ring-black outline-none"
@@ -197,8 +210,10 @@ export default function CheckoutPage() {
                   />
                 </div>
                 <input
+                  id="checkout-address"
                   type="text"
                   placeholder="Address"
+                  aria-label="Shipping address"
                   value={address}
                   onChange={(e) => setAddress(e.target.value)}
                   className="w-full p-3 border border-gray-200 rounded-lg mt-4 focus:ring-1 focus:ring-black outline-none"
@@ -206,16 +221,20 @@ export default function CheckoutPage() {
                 />
                 <div className="grid grid-cols-2 gap-4 mt-4">
                   <input
+                    id="checkout-city"
                     type="text"
                     placeholder="City"
+                    aria-label="City"
                     value={city}
                     onChange={(e) => setCity(e.target.value)}
                     className="w-full p-3 border border-gray-200 rounded-lg focus:ring-1 focus:ring-black outline-none"
                     required
                   />
                   <input
+                    id="checkout-state"
                     type="text"
                     placeholder="State"
+                    aria-label="State"
                     value={state}
                     onChange={(e) => setState(e.target.value)}
                     className="w-full p-3 border border-gray-200 rounded-lg focus:ring-1 focus:ring-black outline-none"
@@ -223,8 +242,10 @@ export default function CheckoutPage() {
                   />
                 </div>
                 <input
+                  id="checkout-phone"
                   type="tel"
                   placeholder="Phone (e.g. 08031234567)"
+                  aria-label="Phone number"
                   value={phone}
                   onChange={(e) => setPhone(e.target.value)}
                   className="w-full p-3 border border-gray-200 rounded-lg mt-4 focus:ring-1 focus:ring-black outline-none"
@@ -234,6 +255,19 @@ export default function CheckoutPage() {
             )}
 
             <div className="pt-6 border-t border-gray-100">
+              <div className="flex items-start gap-2 mb-4">
+                <input
+                  type="checkbox"
+                  id="agreed"
+                  checked={agreed}
+                  onChange={(e) => setAgreed(e.target.checked)}
+                  className="mt-1 w-4 h-4 rounded border-gray-300 text-black focus:ring-black accent-black"
+                />
+                <label htmlFor="agreed" className="text-sm text-gray-500 cursor-pointer select-none">
+                  I agree to the <Link href={`/policies/refund-policy?store=${store.slug}`} target="_blank" className="underline text-gray-800">Refund Policy</Link> and <Link href={`/policies/privacy-policy?store=${store.slug}`} target="_blank" className="underline text-gray-800">Privacy Policy</Link>.
+                </label>
+              </div>
+
               <div className="flex items-center justify-between">
                 <Link
                   href={`/cart?store=${store.slug}`}
@@ -241,15 +275,15 @@ export default function CheckoutPage() {
                 >
                   Return to cart
                 </Link>
-                <button
+                <Button
                   type="submit"
-                  disabled={submitting || cart.length === 0}
+                  disabled={submitting || cart.length === 0 || !agreed}
                   className="bg-black text-white px-10 py-5 rounded-lg font-bold text-sm hover:bg-gray-900 transition-all disabled:opacity-50 shadow-lg shadow-black/10"
                 >
                   {submitting
                     ? "Preparing your order..."
                     : "Pay Now with Paystack"}
-                </button>
+                </Button>
               </div>
             </div>
           </form>
@@ -266,6 +300,7 @@ export default function CheckoutPage() {
                   {item.image && (
                     <img
                       src={item.image}
+                      alt={item.productName}
                       className="w-full h-full object-cover"
                     />
                   )}

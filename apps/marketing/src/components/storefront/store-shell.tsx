@@ -101,7 +101,8 @@ export function StoreShell({
             <Button
               variant="ghost"
               size="icon"
-              className="md:hidden text-white"
+              className="md:hidden text-white h-auto"
+              aria-label="Search products"
             >
               <Icon name="Search" />
             </Button>
@@ -109,7 +110,8 @@ export function StoreShell({
               <Button
                 variant="ghost"
                 size="sm"
-                className="hidden md:flex text-white/70 hover:text-white gap-2"
+                className="hidden md:flex text-white/70 hover:text-white gap-2 h-auto"
+                aria-label="Track your order"
               >
                 <Icon name="Truck" size={18} />{" "}
                 <span className="text-xs">Track Order</span>
@@ -119,7 +121,8 @@ export function StoreShell({
               <Button
                 variant="ghost"
                 size="icon"
-                className="text-white relative"
+                className="text-white relative h-auto"
+                aria-label="View shopping bag"
               >
                 <Icon name="ShoppingBag" />
                 <span className="absolute top-2 right-2 w-2 h-2 bg-primary rounded-full" />

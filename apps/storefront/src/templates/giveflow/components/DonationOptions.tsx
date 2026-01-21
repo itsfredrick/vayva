@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { X, Heart, RefreshCw, CheckCircle } from "lucide-react";
+import { Button } from "@vayva/ui";
 
 interface DonationOptionsProps {
   isOpen: boolean;
@@ -66,12 +67,15 @@ export const DonationOptions = ({
               {campaignTitle}
             </p>
           </div>
-          <button
+          <Button
+            variant="ghost"
+            size="icon"
             onClick={onClose}
-            className="p-2 hover:bg-gray-100 rounded-full transition-colors"
+            className="p-2 hover:bg-gray-100 rounded-full transition-colors h-auto"
+            aria-label="Close donation options"
           >
             <X size={20} />
-          </button>
+          </Button>
         </div>
 
         {/* Content */}
@@ -79,18 +83,22 @@ export const DonationOptions = ({
           {/* Frequency Toggle */}
           {isRecurringAvailable && (
             <div className="flex bg-gray-100 p-1 rounded-xl mb-8">
-              <button
+              <Button
+                variant="ghost"
                 onClick={() => setIsRecurring(false)}
-                className={`flex-1 py-3 text-sm font-bold rounded-lg transition-all ${!isRecurring ? "bg-white shadow text-[#16A34A]" : "text-gray-500 hover:text-gray-700"}`}
+                className={`flex-1 py-3 text-sm font-bold rounded-lg transition-all h-auto ${!isRecurring ? "bg-white shadow text-[#16A34A]" : "text-gray-500 hover:text-gray-700"}`}
+                aria-label="Make a one-time donation"
               >
                 Give Once
-              </button>
-              <button
+              </Button>
+              <Button
+                variant="ghost"
                 onClick={() => setIsRecurring(true)}
-                className={`flex-1 py-3 text-sm font-bold rounded-lg transition-all flex items-center justify-center gap-2 ${isRecurring ? "bg-white shadow text-[#16A34A]" : "text-gray-500 hover:text-gray-700"}`}
+                className={`flex-1 py-3 text-sm font-bold rounded-lg transition-all flex items-center justify-center gap-2 h-auto ${isRecurring ? "bg-white shadow text-[#16A34A]" : "text-gray-500 hover:text-gray-700"}`}
+                aria-label="Make a recurring monthly donation"
               >
                 <RefreshCw size={14} /> Monthly
-              </button>
+              </Button>
             </div>
           )}
 
@@ -99,18 +107,23 @@ export const DonationOptions = ({
           </label>
           <div className="grid grid-cols-3 gap-3 mb-6">
             {presetAmounts.map((val) => (
-              <button
+              <Button
                 key={val}
+                variant="outline"
                 onClick={() => setAmount(val)}
-                className={`py-3 rounded-lg border font-bold text-sm transition-all ${amount === val ? "border-[#16A34A] bg-green-50 text-[#16A34A]" : "border-gray-200 hover:border-gray-300"}`}
+                className={`py-3 rounded-lg border font-bold text-sm transition-all h-auto ${amount === val ? "border-[#16A34A] bg-green-50 text-[#16A34A]" : "border-gray-200 hover:border-gray-300"}`}
+                aria-label={`Donate ₦${val.toLocaleString()}`}
               >
                 ₦{val.toLocaleString()}
-              </button>
+              </Button>
             ))}
           </div>
 
           <div className="mb-8">
-            <label className="block text-xs font-bold text-gray-400 uppercase mb-2">
+            <label
+              htmlFor="custom-donation-amount"
+              className="block text-xs font-bold text-gray-400 uppercase mb-2"
+            >
               Custom Amount
             </label>
             <div className="relative">
@@ -118,6 +131,7 @@ export const DonationOptions = ({
                 ₦
               </span>
               <input
+                id="custom-donation-amount"
                 type="number"
                 value={amount}
                 onChange={(e) => setAmount(parseInt(e.target.value) || 0)}
@@ -144,14 +158,15 @@ export const DonationOptions = ({
 
         {/* Footer */}
         <div className="p-6 border-t border-gray-100">
-          <button
+          <Button
             onClick={handleSubmit}
-            className="w-full bg-[#16A34A] hover:bg-[#15803D] text-white font-bold py-4 rounded-xl text-lg shadow-lg flex items-center justify-center gap-2 transition-all"
+            className="w-full bg-[#16A34A] hover:bg-[#15803D] text-white font-bold py-4 rounded-xl text-lg shadow-lg flex items-center justify-center gap-2 transition-all h-auto"
+            aria-label={isRecurring ? `Donate ₦${amount.toLocaleString()} monthly` : `Donate ₦${amount.toLocaleString()}`}
           >
             {isRecurring
               ? `Donate ₦${amount.toLocaleString()} Monthly`
               : `Donate ₦${amount.toLocaleString()}`}
-          </button>
+          </Button>
           <p className="text-center text-[10px] text-gray-400 mt-4">
             By donating, you agree to our Terms of Service and Privacy Policy.
           </p>

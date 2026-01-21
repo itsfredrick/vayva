@@ -4,7 +4,6 @@ import { FEATURES } from "../env-validation";
 import { BRAND, getCanonicalUrl } from "@vayva/shared";
 
 
-
 export class ResendEmailService {
   private static resendClient: Resend | null = null;
 
@@ -17,7 +16,8 @@ export class ResendEmailService {
 
       if (!RESEND_KEY) {
         // In build context or when key is missing, return a dummy or throw when used
-        console.warn("[ResendEmailService] RESEND_API_KEY is missing.");
+        console.error("[ResendEmailService] RESEND_API_KEY is missing. Fatal.");
+        throw new Error("Email service is not configured (missing RESEND_API_KEY).");
       }
       this.resendClient = new Resend(RESEND_KEY);
     }
@@ -194,6 +194,38 @@ export class ResendEmailService {
     }
   }
 
+  // --- 6. Order Shipped ---
+  static async sendOrderShippedEmail(
+    to: string,
+    orderNumber: string,
+    trackingUrl: string | undefined,
+    storeName: string,
+  ) {
+    this.assertConfigured();
+
+    try {
+      const { data, error } = await this.client.emails.send({
+        from: this.fromEmail,
+        to,
+        subject: `Your order ${orderNumber} is on the way!`,
+        html: wrapEmail(
+          this.getShippedTemplate(orderNumber, trackingUrl, storeName),
+          "Order Shipped",
+        ),
+      });
+
+      if (error) {
+        console.error("[Resend] Shipped Error:", error);
+        throw new Error(`Failed to send shipped email: ${error.message}`);
+      }
+
+      return { success: true, messageId: data?.id };
+    } catch (error: any) {
+      console.error("[Resend] Shipped Error:", error);
+      throw error;
+    }
+  }
+
   /**
    * Internal Template Generators (Content Body Only)
    */
@@ -300,6 +332,28 @@ export class ResendEmailService {
 &nbsp;</p>
             <p style="margin:24px 0 0; font-size:14px; color:#666666;">
                 View your invoice history in <a href="${getCanonicalUrl("/dashboard/settings/billing")}" style="color:#111111; text-decoration:underline;">Billing Settings</a>.
+            </p>
+        `;
+  }
+
+  private static getShippedTemplate(
+    orderNumber: string,
+    trackingUrl: string | undefined,
+    storeName: string,
+  ): string {
+    return `
+            <h1 style="margin:0 0 12px; font-size:22px; font-weight:600;">Good news!</h1>
+            <p style="margin:0 0 16px; font-size:16px; line-height:1.6; color:#444444;">
+                Your order <strong>${orderNumber}</strong> from <strong>${storeName}</strong> has been shipped.
+            </p>
+
+            ${trackingUrl
+        ? renderButton(trackingUrl, "Track Shipment")
+        : ""
+      }
+
+            <p style="margin:24px 0 0; font-size:14px; color:#666666;">
+                You will receive another update when it arrives.
             </p>
         `;
   }

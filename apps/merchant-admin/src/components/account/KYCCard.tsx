@@ -1,6 +1,6 @@
 import React from "react";
 import { KYCDetails, KYCStatus } from "@vayva/shared";
-import { Icon, Button, cn } from "@vayva/ui";
+import { Button, Icon, cn } from "@vayva/ui";
 
 interface KYCCardProps {
   kyc: KYCDetails;

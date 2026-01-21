@@ -28,11 +28,10 @@ export default function RefundPolicyPage() {
                   <li key={doc.href}>
                     <Link
                       href={doc.href}
-                      className={`block px-3 py-2 text-sm rounded ${
-                        doc.active
+                      className={`block px-3 py-2 text-sm rounded ${doc.active
                           ? "bg-gray-100 text-gray-900 font-medium"
                           : "text-gray-600 hover:bg-gray-50 hover:text-gray-900"
-                      }`}
+                        }`}
                     >
                       {doc.title}
                     </Link>
@@ -51,7 +50,7 @@ export default function RefundPolicyPage() {
                 <strong>Last Updated:</strong> January 1, 2025
               </p>
               <p>
-                <strong>Governing Entity:</strong> Vayva Inc. (operating in
+                <strong>Governing Entity:</strong> Vayva Tech (operating in
                 Nigeria)
               </p>
             </div>
@@ -73,7 +72,7 @@ export default function RefundPolicyPage() {
 
             <h2>2. Transaction & Withdrawal Fees</h2>
             <p>
-              <strong>Withdrawal fees (5%) are non-refundable.</strong> Once a
+              <strong>Withdrawal fees (3%) are non-refundable.</strong> Once a
               withdrawal request is processed and the fee is deducted, the fee
               cannot be refunded or reversed, as it covers the costs associated
               with the fund settlement and transaction processing.

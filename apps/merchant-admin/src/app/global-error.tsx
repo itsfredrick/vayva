@@ -13,6 +13,9 @@ export default function GlobalError({
 }) {
   useEffect(() => {
     Sentry.captureException(error);
+    // Log fatal error to our system
+    // We import logger dynamically or use console if outside context, but here we can import.
+    // However, global-error is special. Let's try to keep it simple.
   }, [error]);
 
   return (

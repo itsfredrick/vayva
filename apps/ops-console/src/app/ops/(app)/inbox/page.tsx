@@ -18,6 +18,7 @@ import {
 import { formatDistanceToNow } from "date-fns";
 import { MerchantHappinessWidget } from "@/components/analytics/csat-widget";
 import { cn } from "@/lib/utils";
+import { Button } from "@vayva/ui";
 
 interface SupportTicket {
     id: string;
@@ -162,12 +163,14 @@ export default function SupportInboxPage() {
                         />
                     </form>
 
-                    <button
+                    <Button
+                        variant="outline"
                         onClick={() => setShowFilters(!showFilters)}
-                        className={`px-4 py-2.5 rounded-lg border text-sm font-medium transition-colors flex items-center gap-2 ${showFilters || (status !== "open") || priority
+                        className={`px-4 py-2.5 rounded-lg border text-sm font-medium transition-colors flex items-center gap-2 h-auto ${showFilters || (status !== "open") || priority
                             ? "bg-indigo-50 border-indigo-200 text-indigo-700"
                             : "bg-white border-gray-200 text-gray-700 hover:bg-gray-50"
                             }`}
+                        aria-label={showFilters ? "Hide filters" : "Show filters"}
                     >
                         <Filter className="h-4 w-4" />
                         Filters
@@ -176,14 +179,16 @@ export default function SupportInboxPage() {
                                 {Number(status !== "open") + Number(!!priority)}
                             </span>
                         )}
-                    </button>
-                    <button
+                    </Button>
+                    <Button
+                        variant="outline"
                         onClick={fetchTickets}
-                        className="px-4 py-2.5 rounded-lg border border-gray-200 text-gray-700 hover:bg-gray-50 transition-colors flex items-center gap-2"
+                        className="px-4 py-2.5 rounded-lg border border-gray-200 text-gray-700 hover:bg-gray-50 transition-colors flex items-center gap-2 h-auto"
+                        aria-label="Refresh support tickets"
                     >
                         <RefreshCw className="h-4 w-4" />
                         Refresh
-                    </button>
+                    </Button>
                 </div>
 
                 {/* Filter Options */}
@@ -195,6 +200,7 @@ export default function SupportInboxPage() {
                                 value={status}
                                 onChange={(e) => handleFilterChange("status", e.target.value)}
                                 className="w-full px-3 py-2 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                                aria-label="Filter by ticket status"
                             >
                                 <option value="open">Open</option>
                                 <option value="closed">Closed</option>
@@ -207,6 +213,7 @@ export default function SupportInboxPage() {
                                 value={priority}
                                 onChange={(e) => handleFilterChange("priority", e.target.value)}
                                 className="w-full px-3 py-2 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                                aria-label="Filter by ticket priority"
                             >
                                 <option value="">All Priorities</option>
                                 <option value="high">High</option>
@@ -285,20 +292,24 @@ export default function SupportInboxPage() {
                             Page {meta.page} of {meta.totalPages}
                         </div>
                         <div className="flex gap-2">
-                            <button
+                            <Button
+                                variant="outline"
                                 disabled={meta.page <= 1}
                                 onClick={() => router.push(`?page=${meta.page - 1}`)}
-                                className="px-3 py-1 bg-white border rounded text-xs disabled:opacity-50"
+                                className="px-3 py-1 bg-white border rounded text-xs disabled:opacity-50 h-auto"
+                                aria-label="Go to previous page"
                             >
                                 Prev
-                            </button>
-                            <button
+                            </Button>
+                            <Button
+                                variant="outline"
                                 disabled={meta.page >= meta.totalPages}
                                 onClick={() => router.push(`?page=${meta.page + 1}`)}
-                                className="px-3 py-1 bg-white border rounded text-xs disabled:opacity-50"
+                                className="px-3 py-1 bg-white border rounded text-xs disabled:opacity-50 h-auto"
+                                aria-label="Go to next page"
                             >
                                 Next
-                            </button>
+                            </Button>
                         </div>
                     </div>
                 )}

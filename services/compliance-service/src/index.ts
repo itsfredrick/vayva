@@ -1,31 +1,48 @@
 import Fastify from "fastify";
 import cors from "@fastify/cors";
+import { validateStoreCompliance } from "@vayva/compliance";
+import { z } from "zod";
 
-const fastify = Fastify({ logger: true });
+const fastify = Fastify({
+    logger: true,
+});
 
-// Register CORS
 fastify.register(cors);
 
-// Health check endpoint
+const validateParamsSchema = z.object({
+    storeId: z.string(),
+});
+
+fastify.post("/v1/validate/:storeId", async (request, reply) => {
+    try {
+        const { storeId } = validateParamsSchema.parse(request.params);
+        const report = await validateStoreCompliance(storeId);
+
+        return reply.send({
+            success: true,
+            report,
+        });
+    } catch (error: any) {
+        fastify.log.error(error);
+        return reply.status(error.name === "ZodError" ? 400 : 500).send({
+            success: false,
+            error: error.message || "Internal server error",
+        });
+    }
+});
+
 fastify.get("/health", async () => {
-  return { status: "ok", service: "compliance-service" };
+    return { status: "ok" };
 });
 
-// Placeholder routes - to be implemented
-fastify.get("/api/compliance/status", async () => {
-  return { message: "Compliance service - Coming soon" };
-});
-
-// Start server
 const start = async () => {
-  try {
-    const port = parseInt(process.env.PORT || "4010");
-    await fastify.listen({ port, host: "0.0.0.0" });
-    console.log(`Compliance service listening on port ${port}`);
-  } catch (err) {
-    console.error(err);
-    process.exit(1);
-  }
+    try {
+        await fastify.listen({ port: 3015, host: "0.0.0.0" });
+        console.log("Compliance Service listening on port 3015");
+    } catch (err) {
+        fastify.log.error(err);
+        process.exit(1);
+    }
 };
 
 start();

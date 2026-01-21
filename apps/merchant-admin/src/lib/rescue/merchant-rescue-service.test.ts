@@ -16,8 +16,8 @@ vi.mock('@vayva/db', () => ({
 // Mock Groq
 vi.mock('groq-sdk', () => {
     return {
-        default: vi.fn().mockImplementation(() => ({
-            chat: {
+        default: vi.fn().mockImplementation(function (this: any) {
+            this.chat = {
                 completions: {
                     create: vi.fn().mockResolvedValue({
                         choices: [{
@@ -31,9 +31,9 @@ vi.mock('groq-sdk', () => {
                         }]
                     })
                 }
-            }
-        }))
-    }
+            };
+        })
+    };
 });
 
 describe('MerchantRescueService', () => {

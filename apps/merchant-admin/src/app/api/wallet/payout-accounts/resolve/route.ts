@@ -3,7 +3,7 @@ import { NextResponse } from "next/server";
 export async function POST(request: Request) {
   const { accountNumber, bankCode } = await request.json();
 
-  await new Promise((resolve) => setTimeout(resolve, 1000)); // Simulate bank lookup
+
 
   if (accountNumber.length !== 10) {
     return NextResponse.json(

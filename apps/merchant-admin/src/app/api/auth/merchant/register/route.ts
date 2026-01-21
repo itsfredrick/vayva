@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { hash } from "bcryptjs";
-import { prisma } from "@vayva/db";
+import { prisma } from "@/lib/prisma";
 import { logger } from "@/lib/logger";
 import { checkRateLimit } from "@/lib/rate-limit";
 import { FlagService } from "@/lib/flags/flagService";
@@ -10,10 +10,10 @@ export async function POST(request: NextRequest) {
   let body: any;
   try {
     body = await request.json();
-    const { email, password, firstName, lastName, businessName } = body;
+    const { email, password, firstName, lastName } = body;
 
     // 0. Kill Switch & Rate Limit
-    const isEnabled = await FlagService.isEnabled("onboarding.enabled");
+    const isEnabled = process.env.NODE_ENV !== 'production' || await FlagService.isEnabled("onboarding.enabled");
     if (!isEnabled) {
       return NextResponse.json(
         { error: "Registration is temporarily disabled" },
@@ -21,8 +21,14 @@ export async function POST(request: NextRequest) {
       );
     }
 
+    const { applyRateLimit, RATE_LIMITS } = await import("@/lib/rate-limit-enhanced");
+    const rateLimitResult = await applyRateLimit(request, "register", RATE_LIMITS.AUTH_STRICT);
+
+    if (!rateLimitResult.allowed) {
+      return rateLimitResult.response!;
+    }
+
     const ip = request.headers.get("x-forwarded-for") || "unknown";
-    await checkRateLimit(ip, "register", 5, 3600);
 
     // 0.1 AI Anti-Abuse Check
     const ipHash = Buffer.from(ip).toString("base64"); // Simple hash for demo
@@ -112,7 +118,7 @@ export async function POST(request: NextRequest) {
       });
 
       // Create initial store for the merchant
-      const storeName = businessName || `${firstName}'s Store`;
+      const storeName = `${firstName}'s Store`;
       const store = await tx.store.create({
         data: {
           name: storeName,
@@ -127,7 +133,7 @@ export async function POST(request: NextRequest) {
         data: {
           userId: newUser.id,
           storeId: store.id,
-          role: "owner",
+          role_enum: "OWNER",
           status: "active",
         },
       });

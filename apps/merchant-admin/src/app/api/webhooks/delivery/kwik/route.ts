@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { prisma } from "@vayva/db";
+import { prisma } from "@/lib/prisma";
 
 export async function POST(req: NextRequest) {
     const secret = process.env.KWIK_WEBHOOK_SECRET;

@@ -27,7 +27,7 @@ export async function GET(req: NextRequest) {
             prisma.opsAuditEvent.findMany({
                 where,
                 include: {
-                    OpsUser: {
+                    opsUser: {
                         select: { name: true, email: true, role: true }
                     }
                 },

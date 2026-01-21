@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { Icon, cn } from "@vayva/ui";
+import { Icon, cn, Button } from "@vayva/ui";
 
 export const FoodOverview = () => {
   return (
@@ -78,18 +78,18 @@ export const FoodOverview = () => {
             </div>
           </div>
           <div className="grid grid-cols-3 gap-4">
-            <button className="p-4 rounded-2xl bg-gray-900 text-white flex flex-col items-center gap-2 shadow-lg shadow-black/10 transition-transform active:scale-95">
+            <Button variant="primary" className="p-4 rounded-2xl flex flex-col items-center gap-2 shadow-lg shadow-black/10 active:scale-95">
               <span className="text-xs font-bold">Standard</span>
               <span className="text-lg font-bold">~15m</span>
-            </button>
-            <button className="p-4 rounded-2xl bg-white border border-gray-100 flex flex-col items-center gap-2 hover:bg-gray-50 transition-colors">
+            </Button>
+            <Button variant="secondary" className="p-4 rounded-2xl bg-white border border-gray-100 flex flex-col items-center gap-2 hover:bg-gray-50">
               <span className="text-xs font-bold text-gray-500">Busy</span>
               <span className="text-lg font-bold">~30m</span>
-            </button>
-            <button className="p-4 rounded-2xl bg-white border border-gray-100 flex flex-col items-center gap-2 hover:bg-gray-50 transition-colors">
+            </Button>
+            <Button variant="secondary" className="p-4 rounded-2xl bg-white border border-gray-100 flex flex-col items-center gap-2 hover:bg-gray-50">
               <span className="text-xs font-bold text-gray-500">Rush</span>
               <span className="text-lg font-bold">~45m+</span>
-            </button>
+            </Button>
           </div>
         </div>
 
@@ -107,9 +107,9 @@ export const FoodOverview = () => {
               <span className="font-bold text-orange-500">2</span>
             </div>
           </div>
-          <button className="w-full mt-6 py-2 bg-gray-50 text-gray-900 rounded-xl text-xs font-bold hover:bg-gray-100 transition-colors">
+          <Button size="sm" className="w-full mt-6 bg-gray-50 text-gray-900 hover:bg-gray-100">
             Manage Menu
-          </button>
+          </Button>
         </div>
 
         <div className="bg-[#0D1D1E] p-6 rounded-3xl text-white">

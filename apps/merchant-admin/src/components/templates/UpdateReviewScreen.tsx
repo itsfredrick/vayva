@@ -33,7 +33,7 @@ export function UpdateReviewScreen({
       <div className="max-w-3xl w-full bg-white rounded-lg border border-gray-200 p-8">
         {/* Header */}
         <div className="mb-8">
-          <h1 className="text-3xl font-bold text-[#0F172A] mb-2">
+          <h1 className="text-3xl font-bold text-black mb-2">
             Update available for {templateName}
           </h1>
           <p className="text-[#64748B]">
@@ -43,14 +43,14 @@ export function UpdateReviewScreen({
 
         {/* What's New */}
         <div className="mb-8">
-          <h2 className="text-lg font-semibold text-[#0F172A] mb-4">
+          <h2 className="text-lg font-semibold text-black mb-4">
             What's new
           </h2>
           <ul className="space-y-2">
             {whatsNew.map((item, i) => (
               <li key={i} className="flex items-start gap-2">
                 <span className="text-[#22C55E] mt-1">✓</span>
-                <span className="text-[#0F172A]">{item}</span>
+                <span className="text-black">{item}</span>
               </li>
             ))}
           </ul>
@@ -58,7 +58,7 @@ export function UpdateReviewScreen({
 
         {/* What Stays the Same */}
         <div className="mb-8 bg-gray-50 rounded-lg p-6">
-          <h3 className="text-sm font-semibold text-[#0F172A] mb-3">
+          <h3 className="text-sm font-semibold text-black mb-3">
             What stays the same
           </h3>
           <div className="flex flex-wrap gap-2">
@@ -76,7 +76,7 @@ export function UpdateReviewScreen({
         {/* What's Optional */}
         {whatsOptional.length > 0 && (
           <div className="mb-8">
-            <h3 className="text-sm font-semibold text-[#0F172A] mb-3">
+            <h3 className="text-sm font-semibold text-black mb-3">
               What's optional
             </h3>
             <ul className="space-y-2">
@@ -92,7 +92,7 @@ export function UpdateReviewScreen({
 
         {/* Decision */}
         <div className="mb-8 bg-blue-50 border border-blue-200 rounded-lg p-6">
-          <h3 className="text-sm font-semibold text-[#0F172A] mb-4">
+          <h3 className="text-sm font-semibold text-black mb-4">
             Your choice
           </h3>
           <div className="space-y-3">
@@ -106,7 +106,7 @@ export function UpdateReviewScreen({
                 className="mt-1"
               />
               <div>
-                <p className="font-semibold text-[#0F172A]">
+                <p className="font-semibold text-black">
                   Keep current version
                 </p>
                 <p className="text-sm text-[#64748B]">
@@ -125,7 +125,7 @@ export function UpdateReviewScreen({
                 className="mt-1"
               />
               <div>
-                <p className="font-semibold text-[#0F172A]">Apply update</p>
+                <p className="font-semibold text-black">Apply update</p>
                 <p className="text-sm text-[#64748B]">
                   Add new capabilities while keeping your existing setup
                 </p>

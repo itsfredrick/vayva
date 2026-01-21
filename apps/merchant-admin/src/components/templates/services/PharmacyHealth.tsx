@@ -1,5 +1,6 @@
 import React from "react";
 import { TemplateProps } from "../registry";
+import { Button } from "@vayva/ui";
 
 export const PharmacyHealthTemplate: React.FC<TemplateProps> = ({
   businessName,
@@ -17,9 +18,9 @@ export const PharmacyHealthTemplate: React.FC<TemplateProps> = ({
           <span className="bg-emerald-100 text-emerald-800 px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wide">
             License #10293
           </span>
-          <button className="bg-emerald-600 text-white px-4 py-2 rounded-lg text-xs font-bold hover:bg-emerald-700">
+          <Button className="bg-emerald-600 text-white px-4 py-2 rounded-lg text-xs font-bold hover:bg-emerald-700 h-auto">
             Upload Prescription
-          </button>
+          </Button>
         </div>
       </header>
 
@@ -37,7 +38,7 @@ export const PharmacyHealthTemplate: React.FC<TemplateProps> = ({
             placeholder="Search for medications (e.g. Panadol, Malaria)"
             className="w-full py-4 px-6 rounded-full text-gray-900 font-medium shadow-lg outline-none focus:ring-4 focus:ring-emerald-500/30"
           />
-          <button className="absolute right-2 top-2 bg-emerald-600 p-2 rounded-full text-white hover:bg-emerald-500">
+          <Button size="icon" className="absolute right-2 top-2 bg-emerald-600 p-2 rounded-full text-white hover:bg-emerald-500 h-auto w-auto">
             <svg
               className="w-6 h-6"
               fill="none"
@@ -51,7 +52,7 @@ export const PharmacyHealthTemplate: React.FC<TemplateProps> = ({
                 d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
               />
             </svg>
-          </button>
+          </Button>
         </div>
       </div>
 
@@ -90,9 +91,9 @@ export const PharmacyHealthTemplate: React.FC<TemplateProps> = ({
               Not sure what you need? Our licensed pharmacists are available for
               a private chat.
             </p>
-            <button className="text-xs font-bold text-white bg-emerald-600 px-4 py-2 rounded-lg flex items-center gap-2 hover:bg-emerald-700">
+            <Button className="text-xs font-bold text-white bg-emerald-600 px-4 py-2 rounded-lg flex items-center gap-2 hover:bg-emerald-700 h-auto">
               Start Chat
-            </button>
+            </Button>
           </div>
           <div className="absolute right-[-20px] bottom-[-20px] text-[150px] opacity-5 text-emerald-900 select-none pointer-events-none">
             💬

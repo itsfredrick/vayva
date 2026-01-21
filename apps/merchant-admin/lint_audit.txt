@@ -1,4 +1,0 @@
-
-> merchant-admin@0.0.0 lint
-> true
-

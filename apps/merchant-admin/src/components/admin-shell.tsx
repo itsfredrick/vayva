@@ -4,186 +4,34 @@ import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname, useRouter } from "next/navigation";
-import { Icon, cn, Button, Avatar } from "@vayva/ui";
+import { Avatar, Button, Icon, IconName, cn } from "@vayva/ui";
 import { useAuth } from "@/context/AuthContext";
 import { motion, AnimatePresence } from "framer-motion";
+import { toast } from "sonner";
 import { NotificationBell } from "./notifications/NotificationBell";
 import { NotificationCenter } from "./notifications/NotificationCenter";
 import { GlobalBanner } from "./notifications/GlobalBanner";
 import { Logo } from "./Logo";
 import { SupportChat } from "./support/support-chat";
+import { CommandPalette } from "./ai/CommandPalette";
+import { extensionRegistry } from "@/lib/extensions/registry";
 import { FEATURES } from "@/lib/env-validation";
 
-const ALL_NAV_ITEMS = [
-  {
-    name: "Overview",
-    icon: "LayoutDashboard",
-    href: "/dashboard",
-    alwaysShow: true,
-  },
-  { name: "Wallet", icon: "Wallet", href: "/dashboard/finance/wallet", alwaysShow: true },
-  ...(FEATURES.WHATSAPP_ENABLED
-    ? [
-      {
-        name: "Inbox",
-        icon: "Inbox",
-        href: "/dashboard/inbox",
-        alwaysShow: true,
-      },
-      {
-        name: "WhatsApp Agent",
-        icon: "MessageSquare",
-        href: "/dashboard/wa-agent",
-        alwaysShow: true,
-      },
-    ]
-    : []),
+import { getSidebar, SIDEBAR_GROUPS } from "@/config/sidebar";
+import { IndustrySlug, SidebarGroup, SidebarItem } from "@/lib/templates/types";
 
-  // Commerce / Retail
-  {
-    name: "Products",
-    icon: "Package",
-    href: "/dashboard/products",
-    module: "commerceRetail",
-  },
-  {
-    name: "Orders",
-    icon: "ShoppingBag",
-    href: "/dashboard/orders",
-    module: "commerceRetail",
-  },
-  {
-    name: "Inventory",
-    icon: "Boxes",
-    href: "/dashboard/inventory",
-    module: "commerceRetail",
-  },
+// ... (other imports)
 
-  // Bookings
-  {
-    name: "Bookings",
-    icon: "CalendarCheck",
-    href: "/dashboard/bookings",
-    module: "bookings",
-  },
-  {
-    name: "Calendar",
-    icon: "CalendarDays",
-    href: "/dashboard/calendar",
-    module: "bookings",
-  },
-
-  // Food
-  {
-    name: "Menu",
-    icon: "Utensils",
-    href: "/dashboard/menu",
-    module: "foodOrdering",
-  },
-  {
-    name: "Kitchen",
-    icon: "ChefHat",
-    href: "/dashboard/kitchen",
-    module: "foodOrdering",
-  },
-
-  // Digital
-  {
-    name: "Downloads",
-    icon: "Download",
-    href: "/dashboard/downloads",
-    module: "digitalDownloads",
-  },
-
-  // Events
-  {
-    name: "Events",
-    icon: "Ticket",
-    href: "/dashboard/events",
-    module: "ticketing",
-  },
-
-  // Courses
-  {
-    name: "Courses",
-    icon: "GraduationCap",
-    href: "/dashboard/courses",
-    module: "courses",
-  },
-
-  // B2B & Invoicing
-  {
-    name: "Invoices",
-    icon: "FileText",
-    href: "/dashboard/invoices",
-    module: "rfqInvoicing",
-  },
-
-  // Marketplace
-  {
-    name: "Vendors",
-    icon: "Store",
-    href: "/dashboard/vendors",
-    module: "marketplaceMultiVendor",
-  },
-
-  // Donations
-  {
-    name: "Campaigns",
-    icon: "Heart",
-    href: "/dashboard/campaigns",
-    module: "donations",
-  },
-
-  // Real Estate
-  {
-    name: "Properties",
-    icon: "Home",
-    href: "/dashboard/properties",
-    module: "realEstateLeads",
-  },
-
-  {
-    name: "Customers",
-    icon: "Users",
-    href: "/dashboard/customers/insights",
-    alwaysShow: true,
-  },
-  {
-    name: "Analytics",
-    icon: "PieChart",
-    href: "/dashboard/analytics",
-    alwaysShow: true,
-  },
-  {
-    name: "Reports",
-    icon: "BarChart",
-    href: "/dashboard/reports",
-    alwaysShow: true,
-  },
-  {
-    name: "Settings",
-    href: "/dashboard/settings/overview",
-    alwaysShow: true,
-  },
-  {
-    name: "WhatsApp AI",
-    icon: "Smartphone",
-    href: "/dashboard/wa-agent",
-    alwaysShow: true,
-  },
-  {
-    name: "Help & Support",
-    icon: "HelpCircle",
-    href: "/dashboard/help",
-    alwaysShow: true,
-  },
+const ACCOUNT_DROPDOWN_ITEMS: { name: string; href: string; icon: IconName }[] = [
+  { name: "My Profile", href: "/dashboard/settings/profile", icon: "User" },
+  { name: "Store Settings", href: "/dashboard/settings/store", icon: "Settings" },
+  { name: "Billing", href: "/dashboard/settings/billing", icon: "CreditCard" },
 ];
 
-interface AdminShellProps {
+export interface AdminShellProps {
   children: React.ReactNode;
   title?: string;
-  breadcrumb?: string;
+  breadcrumb?: { label: string; href?: string }[];
   mode?: "admin" | "onboarding";
 }
 
@@ -198,13 +46,9 @@ export const AdminShell = ({
   const { user, merchant, logout } = useAuth();
   const [showUserMenu, setShowUserMenu] = useState(false);
   const [isSidebarExpanded, setIsSidebarExpanded] = useState(false);
-  const [storeCategory, setStoreCategory] = useState<string>("retail");
-  const [kycStatus, setKycStatus] = useState<string>("not_started");
-  const [businessType, setBusinessType] = useState<string>("individual");
-
-  const [enabledModules, setEnabledModules] = useState<Record<string, boolean>>(
-    {},
-  );
+  const [industrySlug, setIndustrySlug] = useState<IndustrySlug | null>(null);
+  const [enabledExtensionIds, setEnabledExtensionIds] = useState<string[]>([]);
+  const [isLoadingIndustry, setIsLoadingIndustry] = useState(true);
 
   // Mobile State
   const [isMobile, setIsMobile] = useState(false);
@@ -214,16 +58,18 @@ export const AdminShell = ({
   const [isNotifOpen, setIsNotifOpen] = useState(false);
 
   // Initial logic for "FD" avatar
-  const initials = user ? `${user.firstName[0]}${user.lastName[0]}` : "FD";
+  // Cast to any as the session types might be generic
+  const initials = user ? `${(user as any).firstName?.[0] || ""}${(user as any).lastName?.[0] || ""}` : "FD";
 
   // Fallback Merchant Details
   const merchantName =
-    (merchant as any)?.firstName || user?.firstName || "Merchant";
+    (merchant as any)?.firstName || (user as any)?.firstName || "Merchant";
   const storeName = (merchant as any)?.businessName || "My Store";
 
   // Store URL logic
   const [storeLink, setStoreLink] = useState<string>("");
   const [storeStatus, setStoreStatus] = useState<"live" | "draft">("draft");
+  const [storeLogo, setStoreLogo] = useState<string | null>(null);
 
   useEffect(() => {
     const handleResize = () => {
@@ -237,37 +83,52 @@ export const AdminShell = ({
   }, []);
 
   useEffect(() => {
-    // Fetch Store Info & Modules
+    // Fetch Store Info & Industry
     fetch("/api/auth/merchant/me")
       .then((res) => res.json())
       .then((data) => {
-        if (data.store) {
-          if (data.store.settings?.modules) {
-            setEnabledModules(data.store.settings.modules);
-          }
-          setStoreCategory(data.store.category || "retail");
-          setKycStatus(data.onboarding?.data?.kyc?.status || "not_started");
-          setBusinessType(data.store.businessType || data.onboarding?.data?.business?.type || "individual");
+        const merchantData = data.merchant || {};
 
-          // Set Store Link directly from Slug
-          if (data.store.slug) {
-            setStoreLink(`https://${data.store.slug}.vayva.ng`);
-          }
+        if (merchantData.logoUrl) {
+          setStoreLogo(merchantData.logoUrl);
+        }
+
+        const fetchedIndustry = merchantData.industrySlug as IndustrySlug;
+
+        // Critical Redirect Logic
+        // If no industry set, and we are NOT already on the settings page, redirect.
+        // MIGRATION FIX: If industry is missing, force them to the new onboarding step
+        // We added a whitelist for the target page to avoid loops
+        if (!fetchedIndustry && !pathname.includes("/onboarding/industry")) {
+          router.push("/onboarding/industry");
+        } else {
+          setIndustrySlug(fetchedIndustry);
+        }
+
+        if (merchantData.enabledExtensionIds) {
+          setEnabledExtensionIds(merchantData.enabledExtensionIds);
+        }
+
+        if (merchantData.externalManifests) {
+          merchantData.externalManifests.forEach((manifest: any) => {
+            extensionRegistry.register(manifest);
+          });
         }
       })
-      .catch((err) => console.error("Failed to load store settings", err));
+      .catch((err) => console.error("Failed to load store settings", err))
+      .finally(() => setIsLoadingIndustry(false));
 
     // Fetch real store status and URL from API
     fetch("/api/storefront/url")
       .then((res) => res.json())
       .then((data) => setStoreLink(data.url))
-      .catch(() => setStoreLink("#"));
+      .catch(() => setStoreLink(""));
 
     fetch("/api/storefront/status")
       .then((res) => res.json())
       .then((data) => setStoreStatus(data.status))
       .catch(() => { });
-  }, []);
+  }, [router, pathname]);
 
   // Close mobile menu on route change
   useEffect(() => {
@@ -275,8 +136,9 @@ export const AdminShell = ({
   }, [pathname]);
 
   const handleVisitStore = (e: React.MouseEvent) => {
-    if (!storeLink || storeLink === "#") {
+    if (!storeLink) {
       e.preventDefault();
+      toast.error("Store URL not yet generated. Please complete onboarding.");
     }
   };
 
@@ -284,38 +146,9 @@ export const AdminShell = ({
     logout();
   };
 
-  // Filter Items
-  const visibleNavItems = ALL_NAV_ITEMS.filter((item) => {
-    if (item.alwaysShow) return true;
-
-    // Category Specific Logic
-    const isServiceLike = ["services", "education", "events"].includes(storeCategory);
-
-    // Hide Shipping for Services/Education/Events
-    if (item.name === "Delivery Settings" && isServiceLike) return false;
-
-    // Show Bookings for Services/Education/Events
-    if ((item.module === "bookings" || item.module === "events") && !isServiceLike) return false;
-
-    // Real Estate: Hide Orders, Show Properties
-    if (storeCategory === "real-estate") {
-      if (item.name === "Orders") return false;
-      if (item.module === "realEstateLeads") return true;
-    } else {
-      if (item.module === "realEstateLeads") return false;
-    }
-
-    // Default Module Logic (fallback)
-    if (item.module && enabledModules[item.module]) return true;
-
-    return !!item.alwaysShow; // Default keep
-  }).map(item => {
-    // Renaming Logic
-    if (storeCategory === "food" && item.name === "Products") {
-      return { ...item, name: "Menu Items", icon: "Utensils" };
-    }
-    return item;
-  });
+  // Grouped Navigation Logic
+  // Dynamic based on industrySlug and persistent enabled extensions
+  const visibleGroups = industrySlug ? getSidebar(industrySlug, enabledExtensionIds) : SIDEBAR_GROUPS;
 
   // Sidebar Animation Variants
   const sidebarVariants = {
@@ -334,15 +167,15 @@ export const AdminShell = ({
       : "desktopCollapsed";
 
   // Bottom Navigation Logic
-  const bottomNavItems = [
+  const bottomNavItems: { name: string; icon: IconName; href: string }[] = [
     { name: "Home", icon: "LayoutDashboard", href: "/dashboard" },
     { name: "Orders", icon: "ShoppingBag", href: "/dashboard/orders" },
-    { name: "Wallet", icon: "Wallet", href: "/dashboard/finance/wallet" },
     { name: "Products", icon: "Package", href: "/dashboard/products" },
+    { name: "Earnings", icon: "Wallet", href: "/dashboard/finance" },
   ];
 
   return (
-    <div className="flex h-screen w-full bg-[#FBFCFC] overflow-hidden text-[#0B0B0B]">
+    <div className="flex h-screen w-full bg-white overflow-hidden text-black font-sans">
       {/* MOBILE OVERLAY */}
       <AnimatePresence>
         {isMobile && mobileMenuOpen && (
@@ -359,7 +192,7 @@ export const AdminShell = ({
       {/* SIDEBAR (Drawer) */}
       <motion.aside
         className={cn(
-          "fixed md:relative h-full z-50 flex flex-col bg-white border-r border-gray-100 text-[#0B0B0B]",
+          "fixed md:relative h-full z-50 flex flex-col border-r border-studio-border text-black bg-white",
           isMobile ? "top-0 left-0 shadow-2xl w-[280px]" : "",
         )}
         variants={sidebarVariants}
@@ -369,19 +202,24 @@ export const AdminShell = ({
         onMouseEnter={() => !isMobile && setIsSidebarExpanded(true)}
         onMouseLeave={() => !isMobile && setIsSidebarExpanded(false)}
       >
-        {/* Mobile Drawer Header */}
-        <div className="h-[72px] md:h-[100px] flex items-center justify-between md:justify-center px-4 md:px-0 shrink-0 relative">
+        {/* Vayva Logo Top Left - Clickable to Dashboard */}
+        <div className="h-[72px] md:h-[100px] flex items-center justify-start px-6 shrink-0 relative">
           <Logo
+            href="/dashboard"
             size={isMobile ? "sm" : "lg"}
             showText={isMobile || isSidebarExpanded}
           />
           {isMobile && (
-            <button
+            <Button
+              variant="ghost"
+              size="icon"
               onClick={() => setMobileMenuOpen(false)}
-              className="p-2 rounded-full hover:bg-gray-100 text-gray-500"
+              className="rounded-full hover:bg-gray-100 text-gray-500 ml-auto"
+              aria-label="Close menu"
+              title="Close menu"
             >
               <Icon name="X" size={24} />
-            </button>
+            </Button>
           )}
         </div>
 
@@ -393,9 +231,9 @@ export const AdminShell = ({
             rel="noopener noreferrer"
             onClick={handleVisitStore}
             className={cn(
-              "w-full flex items-center justify-center gap-2 py-3 rounded-xl font-bold transition-colors shadow-sm",
-              storeStatus === "live"
-                ? "bg-gray-900 text-white"
+              "w-full flex items-center justify-center gap-2 py-3 rounded-xl font-bold transition-all shadow-lg",
+              storeStatus === "live" && storeLink
+                ? "bg-vayva-green text-white shadow-green-500/20"
                 : "bg-gray-100 text-gray-400 cursor-not-allowed"
             )}
           >
@@ -405,107 +243,78 @@ export const AdminShell = ({
         </div>
 
         {/* Nav Items */}
-        <nav className="flex-1 flex flex-col gap-1 py-4 px-3 overflow-hidden custom-scrollbar overflow-y-auto">
-          {visibleNavItems.map((item) => {
-            const isActive =
-              pathname === item.href ||
-              (item.href !== "/dashboard" && pathname.startsWith(item.href));
-            const isLocked = mode === "onboarding";
+        <nav className="flex-1 flex flex-col gap-4 py-4 px-3 overflow-hidden custom-scrollbar overflow-y-auto">
+          {visibleGroups.map((group: SidebarGroup, groupIdx: number) => (
+            <div key={groupIdx} className="flex flex-col gap-1">
+              {group.name && (
+                <div className={cn(
+                  "px-4 text-[10px] font-bold uppercase tracking-wider text-gray-400 font-mono mb-1 mt-1 transition-opacity duration-200",
+                  (!isSidebarExpanded && !isMobile) ? "opacity-0 h-0 overflow-hidden" : "opacity-100"
+                )}>
+                  {group.name}
+                </div>
+              )}
+              {group.items.map((item: SidebarItem) => {
+                const isActive =
+                  pathname === item.href ||
+                  (item.href !== "/dashboard" && pathname.startsWith(item.href));
+                const isLocked = mode === "onboarding";
 
-            return (
-              <Link
-                key={item.name}
-                href={isLocked ? "#" : item.href}
-                onClick={() => isMobile && setMobileMenuOpen(false)} // Close drawer on click
-                className={cn(
-                  "flex items-center gap-3 px-4 py-3 rounded-xl transition-all text-sm font-medium relative group whitespace-nowrap overflow-hidden shrink-0",
-                  isActive && !isLocked
-                    ? "bg-gray-100 text-black font-bold shadow-sm"
-                    : isLocked
-                      ? "text-gray-300 cursor-not-allowed"
-                      : "text-gray-500 hover:text-black hover:bg-gray-50",
-                )}
-              >
-                {/* @ts-ignore */}
-                <Icon
-                  name={item.icon as any}
-                  size={20}
-                  className={cn(
-                    "shrink-0",
-                    isActive ? "text-black" : "text-gray-400",
-                  )}
-                />
-                <motion.span
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: isMobile || isSidebarExpanded ? 1 : 0 }}
-                  className="block"
-                >
-                  {item.name}
-                </motion.span>
-                {isLocked && (
-                  <Icon
-                    name="Lock"
-                    size={14}
-                    className="ml-auto opacity-50 shrink-0"
-                  />
-                )}
-              </Link>
-            );
-          })}
+                return (
+                  <Link
+                    key={item.name}
+                    href={isLocked ? "#" : item.href}
+                    onClick={() => isMobile && setMobileMenuOpen(false)}
+                    className={cn(
+                      "flex items-center gap-3 px-4 py-2 rounded-lg transition-all text-sm font-medium relative group whitespace-nowrap overflow-hidden shrink-0",
+                      isActive && !isLocked
+                        ? "bg-studio-gray text-black font-black border-r-4 border-vayva-green"
+                        : isLocked
+                          ? "text-gray-300 cursor-not-allowed"
+                          : "text-gray-500 hover:text-black hover:bg-studio-gray",
+                    )}
+                    title={(!isSidebarExpanded && !isMobile) ? item.name : undefined}
+                  >
+                    <Icon
+                      name={item.icon as IconName}
+                      size={18}
+                      className={cn(
+                        "shrink-0 transition-colors",
+                        isActive ? "text-black" : "text-gray-400 group-hover:text-gray-600",
+                      )}
+                    />
+                    <motion.span
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: isMobile || isSidebarExpanded ? 1 : 0 }}
+                      className="block truncate"
+                    >
+                      {item.name}
+                    </motion.span>
+                    {isLocked && (
+                      <Icon
+                        name="Lock"
+                        size={12}
+                        className="ml-auto opacity-50 shrink-0"
+                      />
+                    )}
+                  </Link>
+                );
+              })}
+            </div>
+          ))}
         </nav>
 
-        {/* Bottom Card - Control Center */}
-        <div className="p-4 mt-auto border-t border-gray-100 pb-safe">
-          <Link href="/dashboard/control-center">
-            <div
-              className={cn(
-                "rounded-2xl bg-gray-50 border border-gray-100 p-3 flex items-center gap-3 hover:bg-gray-100 transition-all cursor-pointer group overflow-hidden whitespace-nowrap",
-                !isSidebarExpanded &&
-                !isMobile &&
-                "justify-center px-0 border-none bg-transparent",
-              )}
-            >
-              <div className="w-9 h-9 rounded-xl bg-white border border-gray-100 flex items-center justify-center text-gray-900 shrink-0 shadow-sm group-hover:scale-105 transition-transform">
-                <Icon name="LayoutTemplate" size={16} />
-              </div>
-              <motion.div
-                initial={{ opacity: 0, width: 0 }}
-                animate={{
-                  opacity: isMobile || isSidebarExpanded ? 1 : 0,
-                  width: isMobile || isSidebarExpanded ? "auto" : 0,
-                }}
-                className="overflow-hidden"
-              >
-                <p className="text-xs font-bold text-gray-900">
-                  Control Center
-                </p>
-              </motion.div>
-            </div>
-          </Link>
-        </div>
+        {/* Control Center - Removed manual block as it's now in System group */}
       </motion.aside>
 
       {/* MAIN CONTENT */}
-      <main className="flex-1 h-full flex flex-col relative overflow-hidden bg-[#F8F9FA]">
+      <main className="flex-1 h-full flex flex-col relative overflow-hidden bg-white">
         <GlobalBanner />
 
         {/* Top Command Bar */}
-        <header className="h-[60px] md:h-[72px] w-full bg-white/80 backdrop-blur-md border-b border-gray-100 flex items-center justify-between px-4 md:px-8 shrink-0 relative z-30 sticky top-0">
+        <header className="h-[60px] md:h-[72px] w-full glass-panel flex items-center justify-between px-4 md:px-8 shrink-0 relative z-30 sticky top-0">
           <div className="flex items-center gap-4 md:gap-6">
-            {/* Mobile: Logo Only (Burger is now bottom nav) */}
-            <div className="flex items-center gap-6 md:hidden">
-              <Logo size="sm" showText={true} />
-            </div>
-
-            <div className="hidden md:flex items-center gap-6">
-              {/* Breadcrumbs could go here */}
-              {businessType === "registered" && kycStatus !== "verified" && (
-                <div className="flex items-center gap-2 bg-yellow-50 text-yellow-700 px-3 py-1.5 rounded-full text-xs font-bold border border-yellow-200">
-                  <Icon name="AlertTriangle" size={14} />
-                  Verification Pending
-                </div>
-              )}
-            </div>
+            <Logo href="/dashboard" size="sm" showText={true} className="md:hidden" />
           </div>
 
           {/* Right Actions */}
@@ -516,22 +325,21 @@ export const AdminShell = ({
               rel="noopener noreferrer"
               onClick={handleVisitStore}
               className={cn(
-                "hidden sm:flex items-center gap-2 px-4 py-2 rounded-full text-xs font-bold transition-colors",
-                storeStatus === "live"
-                  ? "bg-black text-white hover:bg-gray-800"
+                "hidden sm:flex items-center gap-2 px-4 py-2 rounded-full text-xs font-bold transition-all shadow-sm",
+                storeStatus === "live" && storeLink
+                  ? "bg-vayva-green text-white hover:bg-vayva-green/90 shadow-green-500/10"
                   : "bg-gray-100 text-gray-400 cursor-not-allowed",
               )}
-              title={
-                storeStatus === "draft" ? "Store is not live" : "Visit Store"
-              }
             >
               Visit Store <Icon name="ExternalLink" size={12} />
             </a>
 
+            <CommandPalette />
             <Button
               variant="ghost"
               size="icon"
               className="text-gray-400 hover:text-gray-900"
+              onClick={() => (window as any).triggerCommandPalette?.()}
             >
               <Icon name="Search" size={20} />
             </Button>
@@ -548,23 +356,27 @@ export const AdminShell = ({
 
             <div className="h-6 w-px bg-gray-200 mx-1 hidden sm:block" />
 
-            {/* Avatar / User Menu */}
+            {/* Avatar / User Menu (Header Top Right) */}
             <div className="relative">
-              <button
+              <Button
+                variant="ghost"
                 onClick={() => setShowUserMenu(!showUserMenu)}
-                className="flex items-center gap-2 p-1 rounded-full hover:bg-gray-50 transition-colors"
+                className="flex items-center gap-2 p-1 rounded-full hover:bg-gray-50 transition-colors h-auto"
+                id="user-menu-button"
+                aria-label="User menu"
+                title="User menu"
               >
                 <Avatar
+                  src={storeLogo || user?.avatarUrl || user?.image || undefined}
                   fallback={initials}
                   className="bg-indigo-600"
-                  size="sm"
                 />
                 <Icon
                   name="ChevronDown"
                   size={16}
                   className="text-gray-400 hidden sm:block"
                 />
-              </button>
+              </Button>
 
               <AnimatePresence>
                 {showUserMenu && (
@@ -580,23 +392,35 @@ export const AdminShell = ({
                         {merchantName}
                       </p>
                       <p className="text-xs text-gray-500 truncate">
-                        {storeName}
+                        Owner Identity
                       </p>
                     </div>
                     <div className="p-1">
-                      <Link href="/dashboard/settings/overview">
-                        <button className="w-full flex items-center gap-2 px-3 py-2 text-sm text-[#525252] hover:text-[#0B0B0B] hover:bg-gray-50 rounded-lg transition-colors text-left">
-                          <Icon name="Settings" size={16} />
-                          Account Overview
-                        </button>
-                      </Link>
-                      <button
+                      {ACCOUNT_DROPDOWN_ITEMS.map((item) => (
+                        <Link key={item.href} href={item.href}>
+                          <Button
+                            variant="ghost"
+                            onClick={() => setShowUserMenu(false)}
+                            className="w-full justify-start items-center gap-2 px-3 py-2 text-sm text-gray-500 hover:text-black hover:bg-studio-gray rounded-lg transition-colors text-left font-bold h-auto"
+                          >
+                            <Icon name={item.icon as any} size={16} />
+                            {item.name}
+                          </Button>
+                        </Link>
+                      ))}
+
+                      <div className="h-px bg-gray-50 my-1" />
+
+                      <Button
+                        variant="ghost"
                         onClick={handleLogout}
-                        className="w-full flex items-center gap-2 px-3 py-2 text-sm text-red-500 hover:bg-red-50 rounded-lg transition-colors text-left"
+                        className="w-full justify-start items-center gap-3 p-2 hover:bg-white/5 rounded-lg transition-colors border border-transparent hover:border-white/10 text-left group font-normal h-auto"
+                        title="Sign out"
+                        aria-label="Sign out"
                       >
                         <Icon name="LogOut" size={16} />
                         Sign out
-                      </button>
+                      </Button>
                     </div>
                   </motion.div>
                 )}
@@ -605,8 +429,18 @@ export const AdminShell = ({
           </div>
         </header>
 
-        <div className="flex-1 overflow-y-auto px-4 md:px-8 py-4 md:py-8 custom-scrollbar pb-24 md:pb-8">
-          <div className="max-w-[1400px] mx-auto min-h-full">{children}</div>
+        <div className="flex-1 overflow-y-auto px-3 md:px-8 py-3 md:py-8 custom-scrollbar pb-24 md:pb-8">
+          <div className="max-w-[1400px] mx-auto min-h-full">
+            <motion.div
+              key={pathname}
+              initial={{ opacity: 0, translateY: "10px" }}
+              animate={{ opacity: 1, translateY: "0px" }}
+              exit={{ opacity: 0, translateY: "-10px" }}
+              transition={{ duration: 0.2, ease: "easeOut" }}
+            >
+              {children}
+            </motion.div>
+          </div>
         </div>
 
         {/* BOTTOM NAVIGATION (Mobile Only) */}
@@ -617,50 +451,59 @@ export const AdminShell = ({
               <Link
                 key={item.name}
                 href={item.href}
-                className="flex flex-col items-center gap-1 min-w-[64px]"
+                className="flex flex-col items-center gap-0.5 min-w-[56px] relative"
+                aria-label={item.name}
               >
                 <div
                   className={cn(
-                    "p-1.5 rounded-xl transition-colors",
-                    isActive ? "bg-black text-white" : "text-gray-400",
+                    "p-2 rounded-2xl transition-all duration-300",
+                    isActive
+                      ? "bg-vayva-green text-white shadow-lg shadow-green-500/20 scale-110 -translate-y-1"
+                      : "text-gray-400 hover:text-gray-600",
                   )}
                 >
-                  {/* @ts-ignore */}
-                  <Icon name={item.icon as any} size={20} />
+                  <Icon name={item.icon as any} size={22} />
                 </div>
                 <span
                   className={cn(
-                    "text-[10px] font-medium leading-none",
-                    isActive ? "text-black font-bold" : "text-gray-400",
+                    "text-[9px] font-bold uppercase tracking-tight transition-colors",
+                    isActive ? "text-gray-900" : "text-gray-400",
                   )}
                 >
                   {item.name}
                 </span>
+                {isActive && (
+                  <motion.div
+                    layoutId="bottomNavActive"
+                    className="absolute -top-1 w-1 h-1 bg-vayva-green rounded-full"
+                  />
+                )}
               </Link>
             );
           })}
           {/* Menu Trigger */}
-          <button
+          <Button
+            variant="ghost"
             onClick={() => setMobileMenuOpen(true)}
-            className="flex flex-col items-center gap-1 min-w-[64px]"
+            className="flex flex-col items-center gap-0.5 min-w-[56px] h-auto p-0 hover:bg-transparent"
           >
             <div
               className={cn(
-                "p-1.5 rounded-xl transition-colors",
-                mobileMenuOpen ? "bg-black text-white" : "text-gray-400",
+                "p-2 rounded-2xl transition-colors",
+                mobileMenuOpen ? "bg-vayva-green text-white" : "text-gray-400",
               )}
             >
-              <Icon name="Menu" size={20} />
+              <Icon name="Menu" size={22} />
             </div>
             <span
               className={cn(
-                "text-[10px] font-medium leading-none",
-                mobileMenuOpen ? "text-black font-bold" : "text-gray-400",
+                "text-[9px] font-bold uppercase tracking-tight",
+                mobileMenuOpen ? "text-gray-900" : "text-gray-400",
               )}
             >
-              Menu
+              More
             </span>
-          </button>
+          </Button>
         </div>
       </main>
 
@@ -672,6 +515,7 @@ export const AdminShell = ({
         />
       )}
       <SupportChat />
+      <CommandPalette />
     </div>
   );
 };

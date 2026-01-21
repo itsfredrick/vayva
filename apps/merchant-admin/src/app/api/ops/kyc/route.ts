@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { prisma } from "@vayva/db";
+import { prisma } from "@/lib/prisma";
 import { OpsAuthService } from "@/lib/ops-auth";
 
 export async function GET(request: Request) {
@@ -17,7 +17,6 @@ export async function GET(request: Request) {
       include: {
         store: {
           include: {
-            merchantSubscription: true,
           },
         },
       },
@@ -41,7 +40,7 @@ export async function GET(request: Request) {
         provider: latestAttempt.provider || "Internal",
         status: r.status,
         attemptTime: r.createdAt,
-        plan: (r.store as any).merchantSubscription?.plan || "FREE",
+        plan: (r.store as any).aiSubscription?.plan || "FREE",
       };
     });
 

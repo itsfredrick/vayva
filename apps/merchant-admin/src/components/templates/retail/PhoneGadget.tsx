@@ -1,6 +1,6 @@
 import { TemplateProps } from "@/components/templates/registry";
 import { useStore } from "@/context/StoreContext";
-import { Icon } from "@vayva/ui";
+import { Icon, Button } from "@vayva/ui";
 
 export const PhoneGadgetTemplate: React.FC<TemplateProps> = ({
   businessName,
@@ -21,43 +21,43 @@ export const PhoneGadgetTemplate: React.FC<TemplateProps> = ({
   // Demo Data Override for Phone Gadgets
   const gadgetItems = demoMode
     ? [
-        {
-          id: "ph_1",
-          name: "iPhone 12",
-          price: 380000,
-          type: "retail",
-          specs: { storage: "128GB", condition: "UK Used", battery: "89%" },
-          image:
-            "https://images.unsplash.com/photo-1603351154351-5cf233081e35?w=800&q=80",
-        },
-        {
-          id: "ph_2",
-          name: "Samsung A32",
-          price: 120000,
-          type: "retail",
-          specs: { storage: "64GB", condition: "New", color: "Blue" },
-          image:
-            "https://images.unsplash.com/photo-1610945415295-d9bbf067e59c?w=800&q=80",
-        },
-        {
-          id: "ph_3",
-          name: "AirPods Pro",
-          price: 150000,
-          type: "retail",
-          specs: { condition: "New", warranty: "1 Year" },
-          image:
-            "https://images.unsplash.com/photo-1588423771073-b8903fbb85b5?w=800&q=80",
-        },
-        {
-          id: "ph_4",
-          name: "20W Charger",
-          price: 15000,
-          type: "retail",
-          specs: { type: "Original", port: "USB-C" },
-          image:
-            "https://images.unsplash.com/photo-1625732292415-460bd582e0ea?w=800&q=80",
-        },
-      ]
+      {
+        id: "ph_1",
+        name: "iPhone 12",
+        price: 380000,
+        type: "retail",
+        specs: { storage: "128GB", condition: "UK Used", battery: "89%" },
+        image:
+          "https://images.unsplash.com/photo-1603351154351-5cf233081e35?w=800&q=80",
+      },
+      {
+        id: "ph_2",
+        name: "Samsung A32",
+        price: 120000,
+        type: "retail",
+        specs: { storage: "64GB", condition: "New", color: "Blue" },
+        image:
+          "https://images.unsplash.com/photo-1610945415295-d9bbf067e59c?w=800&q=80",
+      },
+      {
+        id: "ph_3",
+        name: "AirPods Pro",
+        price: 150000,
+        type: "retail",
+        specs: { condition: "New", warranty: "1 Year" },
+        image:
+          "https://images.unsplash.com/photo-1588423771073-b8903fbb85b5?w=800&q=80",
+      },
+      {
+        id: "ph_4",
+        name: "20W Charger",
+        price: 15000,
+        type: "retail",
+        specs: { type: "Original", port: "USB-C" },
+        image:
+          "https://images.unsplash.com/photo-1625732292415-460bd582e0ea?w=800&q=80",
+      },
+    ]
     : products.filter((p) => p.type === "retail");
 
   return (
@@ -74,8 +74,10 @@ export const PhoneGadgetTemplate: React.FC<TemplateProps> = ({
             </span>
           </div>
           <div className="flex items-center gap-4">
-            <button
-              className="relative p-2 hover:bg-gray-100 rounded-full"
+            <Button
+              variant="ghost"
+              size="icon"
+              className="relative p-2 hover:bg-gray-100 rounded-full h-auto w-auto"
               onClick={() => toggleCart(true)}
             >
               <Icon name="ShoppingBag" size={20} />
@@ -84,7 +86,7 @@ export const PhoneGadgetTemplate: React.FC<TemplateProps> = ({
                   {itemCount}
                 </span>
               )}
-            </button>
+            </Button>
           </div>
         </div>
       </header>
@@ -95,9 +97,9 @@ export const PhoneGadgetTemplate: React.FC<TemplateProps> = ({
           <div className="w-full max-w-sm bg-white h-full p-6 flex flex-col animate-in slide-in-from-right">
             <div className="flex justify-between items-center mb-6">
               <h2 className="text-xl font-bold">Cart ({itemCount})</h2>
-              <button onClick={() => toggleCart(false)}>
+              <Button variant="ghost" size="icon" onClick={() => toggleCart(false)} className="h-auto w-auto p-0">
                 <Icon name="X" size={24} />
-              </button>
+              </Button>
             </div>
             <div className="flex-1 overflow-auto">
               {itemCount === 0 ? (
@@ -118,10 +120,10 @@ export const PhoneGadgetTemplate: React.FC<TemplateProps> = ({
               )}
             </div>
             <div className="mt-4">
-              <button
+              <Button
                 onClick={() => checkout("whatsapp")}
                 disabled={isCheckoutProcessing || itemCount === 0}
-                className="w-full bg-green-500 text-white py-3 rounded-lg font-bold flex items-center justify-center gap-2"
+                className="w-full bg-green-500 text-white py-3 rounded-lg font-bold flex items-center justify-center gap-2 h-auto"
               >
                 {isCheckoutProcessing ? (
                   "Processing..."
@@ -130,7 +132,7 @@ export const PhoneGadgetTemplate: React.FC<TemplateProps> = ({
                     <Icon name="MessageCircle" size={20} /> Chat to Confirm
                   </>
                 )}
-              </button>
+              </Button>
             </div>
 
             {/* Footer Trust */}
@@ -192,14 +194,14 @@ export const PhoneGadgetTemplate: React.FC<TemplateProps> = ({
                   <span className="font-bold text-blue-600">
                     {currency} {item.price.toLocaleString()}
                   </span>
-                  <button
+                  <Button
                     onClick={() =>
                       addToCart({ ...item, quantity: 1, productId: item.id })
                     }
-                    className="bg-blue-50 text-blue-600 p-2 rounded-lg hover:bg-blue-100 transition-colors"
+                    className="bg-blue-50 text-blue-600 p-2 rounded-lg hover:bg-blue-100 transition-colors h-auto w-auto min-w-0"
                   >
                     <Icon name="Plus" size={16} />
-                  </button>
+                  </Button>
                 </div>
               </div>
             </div>

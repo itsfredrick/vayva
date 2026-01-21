@@ -1,6 +1,6 @@
 import React from "react";
 import { WalletBalance } from "@vayva/shared";
-import { Icon } from "@vayva/ui";
+import { Icon, Button } from "@vayva/ui";
 
 // ... (imports)
 
@@ -83,15 +83,18 @@ export const WalletHero = ({
 
       {/* Actions Card */}
       <div className="bg-white border border-gray-200 rounded-2xl p-8 flex flex-col justify-center space-y-4 shadow-sm h-[240px]">
-        <button
+        <Button
           onClick={onWithdraw}
-          className="w-full py-3 bg-black text-white rounded-xl font-bold flex items-center justify-center gap-2 hover:bg-gray-800 transition-all active:scale-[0.98]"
+          className="w-full py-3 bg-black text-white rounded-xl font-bold flex items-center justify-center gap-2 hover:bg-gray-800 transition-all active:scale-[0.98] h-auto"
         >
           <Icon name="ArrowDownLeft" size={20} /> Withdraw Funds
-        </button>
-        <button className="w-full py-3 bg-white border border-gray-200 text-gray-900 rounded-xl font-bold flex items-center justify-center gap-2 hover:bg-gray-50 transition-all">
+        </Button>
+        <Button
+          variant="outline"
+          className="w-full py-3 bg-white border border-gray-200 text-gray-900 rounded-xl font-bold flex items-center justify-center gap-2 hover:bg-gray-50 transition-all h-auto"
+        >
           <Icon name="History" size={20} /> Payout History
-        </button>
+        </Button>
       </div>
     </div>
   );

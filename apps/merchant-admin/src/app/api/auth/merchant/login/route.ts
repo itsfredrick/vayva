@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { compare } from "bcryptjs";
-import { prisma } from "@vayva/db";
+import { prisma } from "@/lib/prisma";
 import { createSession } from "@/lib/session";
 import { logger } from "@/lib/logger";
 import { checkRateLimit } from "@/lib/rate-limit";
@@ -29,7 +29,15 @@ export async function POST(request: NextRequest) {
       include: {
         memberships: {
           where: { status: "active" },
-          include: { store: true },
+          include: {
+            store: true,
+          },
+          select: {
+            storeId: true,
+            role: true,
+            status: true,
+            store: true
+          }
         },
       },
     });
@@ -50,8 +58,8 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Check if email is verified
-    if (!user.isEmailVerified) {
+    // Check if email is verified (bypass in development)
+    if (process.env.NODE_ENV === 'production' && !user.isEmailVerified) {
       return NextResponse.json(
         { error: "Please verify your email first" },
         { status: 403 },
@@ -80,7 +88,7 @@ export async function POST(request: NextRequest) {
       lastName: user.lastName,
       storeId: membership.storeId,
       storeName: membership.store.name,
-      role: membership.role,
+      role: membership.role?.name || "MEMBER",
     };
 
     await createSession(sessionUser, undefined, ip as string, rememberMe);
@@ -92,7 +100,7 @@ export async function POST(request: NextRequest) {
         firstName: user.firstName,
         lastName: user.lastName,
         email: user.email,
-        role: membership.role,
+        role: membership.role?.name || "MEMBER",
         emailVerified: user.isEmailVerified,
         phoneVerified: user.isPhoneVerified || false,
         createdAt: user.createdAt,

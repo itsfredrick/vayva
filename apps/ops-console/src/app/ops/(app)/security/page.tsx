@@ -13,13 +13,14 @@ import {
     Terminal,
     Eye
 } from "lucide-react";
+import { Button } from "@vayva/ui";
 
 interface AuditEvent {
     id: string;
     eventType: string;
     metadata: any;
     createdAt: string;
-    OpsUser: {
+    opsUser: {
         name: string;
         email: string;
         role: string;
@@ -68,9 +69,15 @@ export default function SecurityPage() {
                     </h1>
                     <p className="text-gray-500 mt-1">Monitor platform access and sensitive actions.</p>
                 </div>
-                <button onClick={fetchLogs} className="p-2 hover:bg-gray-100 rounded-full">
+                <Button
+                    variant="ghost"
+                    size="icon"
+                    onClick={fetchLogs}
+                    className="rounded-full h-8 w-8"
+                    aria-label="Refresh security logs"
+                >
                     <RefreshCw className={`w-5 h-5 text-gray-400 ${loading ? 'animate-spin' : ''}`} />
-                </button>
+                </Button>
             </div>
 
             {/* Stats Cards (Mocked for visual impact) */}
@@ -92,16 +99,18 @@ export default function SecurityPage() {
             {/* Filter Bar */}
             <div className="flex gap-2">
                 {["", "OPS_LOGIN_SUCCESS", "OPS_LOGIN_FAILED", "OPS_BATCH_ACTION"].map(type => (
-                    <button
+                    <Button
                         key={type}
+                        variant={filterType === type ? "primary" : "outline"}
                         onClick={() => setFilterType(type)}
-                        className={`px-3 py-1.5 rounded-full text-xs font-medium border transition-colors ${filterType === type
-                                ? "bg-gray-900 text-white border-gray-900"
-                                : "bg-white text-gray-600 border-gray-200 hover:bg-gray-50"
+                        className={`px-3 py-1.5 rounded-full text-xs font-medium transition-colors h-auto ${filterType === type
+                            ? "bg-gray-900 text-white border-gray-900"
+                            : "bg-white text-gray-600 border-gray-200 hover:bg-gray-50"
                             }`}
+                        aria-label={`Filter by ${type || "all"} events`}
                     >
                         {type || "All Events"}
-                    </button>
+                    </Button>
                 ))}
             </div>
 
@@ -133,10 +142,10 @@ export default function SecurityPage() {
                                         </div>
                                     </td>
                                     <td className="px-6 py-4">
-                                        {e.OpsUser ? (
+                                        {e.opsUser ? (
                                             <div>
-                                                <div className="font-medium text-gray-900">{e.OpsUser.name}</div>
-                                                <div className="text-xs text-gray-500">{e.OpsUser.role}</div>
+                                                <div className="font-medium text-gray-900">{e.opsUser.name}</div>
+                                                <div className="text-xs text-gray-500">{e.opsUser.role}</div>
                                             </div>
                                         ) : (
                                             <div className="text-gray-400 italic">System / Unknown</div>

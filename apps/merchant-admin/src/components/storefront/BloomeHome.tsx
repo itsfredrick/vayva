@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { Button } from "@vayva/ui";
 import {
   useStorefrontProducts,
   useStorefrontStore,
@@ -65,15 +66,15 @@ export function BloomeHome({
           {displayName}
         </div>
         <div className="flex gap-4 items-center">
-          <button className="text-sm font-sans tracking-widest uppercase hover:text-black">
+          <Button className="text-sm font-sans tracking-widest uppercase hover:text-black">
             Account
-          </button>
-          <button
+          </Button>
+          <Button
             className="text-sm font-sans tracking-widest uppercase hover:text-black flex items-center gap-2"
             onClick={() => setIsCartOpen(true)}
           >
             Cart ({cart.length})
-          </button>
+          </Button>
         </div>
       </nav>
 
@@ -87,24 +88,24 @@ export function BloomeHome({
           <div className="relative w-full max-w-md bg-[#FAFAF9] h-full p-8 flex flex-col shadow-2xl animate-in slide-in-from-right duration-500">
             <div className="flex justify-between items-center mb-8">
               <h2 className="text-2xl font-serif text-[#292524]">Your Cart</h2>
-              <button
+              <Button
                 onClick={() => setIsCartOpen(false)}
                 className="opacity-50 hover:opacity-100 transition-opacity"
               >
                 <X className="w-6 h-6" />
-              </button>
+              </Button>
             </div>
 
             <div className="flex-1 overflow-auto space-y-8 pr-2">
               {cart.length === 0 ? (
                 <div className="text-center py-20 text-[#A8A29E]">
                   <p className="mb-4">Your cart is currently empty.</p>
-                  <button
+                  <Button
                     onClick={() => setIsCartOpen(false)}
                     className="text-[#292524] underline underline-offset-4"
                   >
                     Continue Browsing
-                  </button>
+                  </Button>
                 </div>
               ) : (
                 cart.map((item) => (
@@ -127,12 +128,12 @@ export function BloomeHome({
                         </p>
                       </div>
                       <div className="flex justify-between items-end">
-                        <button
+                        <Button
                           onClick={() => removeFromCart(item.id)}
                           className="text-xs text-[#A8A29E] hover:text-[#78716C] underline underline-offset-2"
                         >
                           Remove
-                        </button>
+                        </Button>
                         <span className="font-serif text-lg">
                           ₦{(item.price * item.quantity).toLocaleString()}
                         </span>
@@ -153,7 +154,7 @@ export function BloomeHome({
                     ₦{total.toLocaleString()}
                   </span>
                 </div>
-                <button
+                <Button
                   onClick={() => {
                     setIsCartOpen(false);
                     setIsCheckoutOpen(true);
@@ -161,7 +162,7 @@ export function BloomeHome({
                   className="w-full bg-[#292524] text-[#FAFAF9] py-4 text-sm font-bold uppercase tracking-widest hover:bg-[#1C1917] transition-colors"
                 >
                   Proceed to Checkout
-                </button>
+                </Button>
               </div>
             )}
           </div>
@@ -217,11 +218,11 @@ export function BloomeHome({
                   <img
                     src={
                       product.image ||
-                      `https://via.placeholder.com/400x500?text=${encodeURIComponent(product.name)}`
+                      `"/images/template-previews/default-desktop.png"?text=${encodeURIComponent(product.name)}`
                     }
                     className="w-full h-full object-cover mix-blend-multiply opacity-90 group-hover:opacity-100 group-hover:scale-105 transition-all duration-700"
                   />
-                  <button
+                  <Button
                     onClick={(e) => {
                       e.stopPropagation();
                       addToCart(product);
@@ -229,7 +230,7 @@ export function BloomeHome({
                     className="absolute bottom-4 right-4 bg-white p-3 rounded-full shadow-sm hover:shadow-md opacity-0 group-hover:opacity-100 transition-all duration-300 translate-y-4 group-hover:translate-y-0"
                   >
                     <ShoppingBag className="w-4 h-4 text-[#292524]" />
-                  </button>
+                  </Button>
                 </div>
                 <h3 className="text-lg text-[#292524] mb-1 group-hover:underline underline-offset-4 decoration-[#D6D3D1] transition-all">
                   {product.name}

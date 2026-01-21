@@ -72,32 +72,32 @@ let notifications: NotificationPrefs = {
 
 export const AccountService = {
   getProfile: async (): Promise<MerchantProfile> => {
-    await new Promise((resolve) => setTimeout(resolve, 300));
+
     return profile;
   },
 
   updateProfile: async (data: Partial<MerchantProfile>): Promise<void> => {
-    await new Promise((resolve) => setTimeout(resolve, 800));
+
     profile = { ...profile, ...data };
   },
 
   getStoreProfile: async (): Promise<StoreProfile> => {
-    await new Promise((resolve) => setTimeout(resolve, 300));
+
     return store;
   },
 
   updateStoreProfile: async (data: Partial<StoreProfile>): Promise<void> => {
-    await new Promise((resolve) => setTimeout(resolve, 800));
+
     store = { ...store, ...data };
   },
 
   getStaff: async (): Promise<StaffMember[]> => {
-    await new Promise((resolve) => setTimeout(resolve, 400));
+
     return staff;
   },
 
   inviteStaff: async (email: string, role: string): Promise<void> => {
-    await new Promise((resolve) => setTimeout(resolve, 800));
+
     staff.push({
       id: Math.random().toString(36).substr(2, 9),
       name: email.split("@")[0],
@@ -109,35 +109,35 @@ export const AccountService = {
   },
 
   removeStaff: async (id: string): Promise<void> => {
-    await new Promise((resolve) => setTimeout(resolve, 600));
+
     staff = staff.filter((s) => s.id !== id);
   },
 
   getKycStatus: async (): Promise<KycDetails> => {
-    await new Promise((resolve) => setTimeout(resolve, 300));
+
     return kyc;
   },
 
   submitKyc: async (data: any): Promise<void> => {
-    await new Promise((resolve) => setTimeout(resolve, 1500));
+
     kyc = { ...kyc, status: "pending", ...data };
   },
 
   getSecurityState: async (): Promise<SecurityState> => {
-    await new Promise((resolve) => setTimeout(resolve, 300));
+
     // Test linking verified KYC to simulate PIN prompt requirement if needed
     return security;
   },
 
   getNotifications: async (): Promise<NotificationPrefs> => {
-    await new Promise((resolve) => setTimeout(resolve, 300));
+
     return notifications;
   },
 
   updateNotifications: async (
     data: Partial<NotificationPrefs>,
   ): Promise<void> => {
-    await new Promise((resolve) => setTimeout(resolve, 500));
+
     notifications = { ...notifications, ...data };
   },
 };

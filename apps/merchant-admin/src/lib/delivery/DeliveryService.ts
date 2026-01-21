@@ -102,9 +102,7 @@ export class DeliveryService {
     channel: "whatsapp" | "storefront",
     idempotencyKey: string,
   ): Promise<AutoDispatchResult> {
-    console.log(
-      `[AutoDispatch] Attempting for Order ${orderId} via ${channel}`,
-    );
+
 
     // 1. Fetch Context
     const order = await db.order.findUnique({
@@ -210,14 +208,18 @@ export class DeliveryService {
       });
 
       try {
-        const { logAudit } = await import("@/lib/audit");
-        await logAudit({
-          storeId: order.storeId,
-          actor: { type: "SYSTEM", id: "auto_dispatch", label: "AutoDispatch" },
-          action: "DELIVERY_AUTO_DISPATCH_PENDING",
-          entity: { type: "ORDER", id: order.id },
-          after: { mode: "CONFIRM", channel },
-        });
+        const { logAuditEvent: logAudit } = await import("@/lib/audit");
+        await logAudit(
+          order.storeId,
+          "auto_dispatch",
+          "DELIVERY_AUTO_DISPATCH_PENDING",
+          {
+            targetType: "ORDER",
+            targetId: order.id,
+            after: { mode: "CONFIRM", channel },
+            meta: { actor: { type: "SYSTEM", label: "AutoDispatch" } }
+          }
+        );
       } catch (ignore: any) { }
 
       return {
@@ -300,19 +302,23 @@ export class DeliveryService {
       });
 
       try {
-        const { logAudit, AuditAction } = await import("@/lib/audit");
-        await logAudit({
-          storeId: order.storeId,
-          actor: { type: "SYSTEM", id: "auto_dispatch", label: "AutoDispatch" },
-          action: "DELIVERY_AUTO_DISPATCH_ATTEMPTED",
-          entity: { type: "SHIPMENT", id: shipment.id },
-          after: {
-            channel,
-            status: "REQUESTED",
-            mode: settings.autoDispatchMode,
-            trackingUrl: result.trackingUrl,
-          },
-        });
+        const { logAuditEvent: logAudit } = await import("@/lib/audit");
+        await logAudit(
+          order.storeId,
+          "auto_dispatch",
+          "DELIVERY_AUTO_DISPATCH_ATTEMPTED",
+          {
+            targetType: "SHIPMENT",
+            targetId: shipment.id,
+            after: {
+              channel,
+              status: "REQUESTED",
+              mode: settings.autoDispatchMode,
+              trackingUrl: result.trackingUrl,
+            },
+            meta: { actor: { type: "SYSTEM", label: "AutoDispatch" } }
+          }
+        );
       } catch (ignore: any) {
         /* non-blocking */
       }

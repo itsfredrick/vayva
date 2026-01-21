@@ -1,298 +1,249 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
-import {
-    User,
-    Building2,
-    CreditCard,
-    LogOut,
-    ChevronRight,
-    Shield,
-    ExternalLink,
-    HelpCircle,
-    Mail
-} from "lucide-react";
-import { Button, Card, Avatar } from "@vayva/ui";
+import useSWR from "swr";
 import Link from "next/link";
-
-interface AccountData {
-    user: {
-        firstName: string;
-        lastName: string;
-        email: string;
-    };
-    merchant: {
-        storeName: string;
-        businessType: string;
-        plan: string;
-    };
-}
-
+import { format } from "date-fns";
 import {
-    Dialog,
-    DialogContent,
-    DialogDescription,
-    DialogFooter,
-    DialogHeader,
-    DialogTitle,
-    DialogTrigger,
-} from "@/components/ui/dialog";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
+  Shield, CreditCard, User, HelpCircle,
+  LogOut, ExternalLink, CheckCircle2, AlertTriangle,
+  LayoutTemplate, MessageSquare, ChevronRight, Mail
+} from "lucide-react";
+import { Button } from "@vayva/ui";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { Separator } from "@/components/ui/separator";
+import { Skeleton } from "@/components/ui/skeleton";
 import { toast } from "sonner";
-// import { Lock } from "lucide-react"; // Removed duplicate
+import { signOut } from "next-auth/react";
 
-// Inline Dialog Component for simplicity or move to separate file if cleaner
-function WalletPinDialog() {
-    const [open, setOpen] = useState(false);
-    const [loading, setLoading] = useState(false);
+const fetcher = (url: string) => fetch(url).then((r) => r.json());
 
-    // For Change PIN
-    const [currentPin, setCurrentPin] = useState("");
-    const [newPin, setNewPin] = useState("");
-    const [confirmPin, setConfirmPin] = useState("");
+export default function AccountOverviewPage() {
+  const { data, error, isLoading } = useSWR("/api/account/overview", fetcher);
 
-    const handleSubmit = async (e: React.FormEvent) => {
-        e.preventDefault();
+  const handleSignOutAll = async () => {
+    if (!confirm("This will sign you out of all devices immediately. Continue?")) return;
+    try {
+      const res = await fetch("/api/auth/security/signout-all", { method: "POST" });
+      if (!res.ok) throw new Error("Failed");
+      toast.success("Signed out of all devices");
+      signOut({ callbackUrl: "/login" });
+    } catch (err) {
+      toast.error("Failed to sign out all devices");
+    }
+  };
 
-        if (newPin !== confirmPin) {
-            toast.error("New PINs do not match");
-            return;
-        }
-        if (newPin.length < 4 || newPin.length > 6) {
-            toast.error("PIN must be 4-6 digits");
-            return;
-        }
+  if (isLoading) return <AccountSkeleton />;
+  if (error) return <div className="p-8 text-red-500">Failed to load account data.</div>;
+  if (!data) return null;
 
-        setLoading(true);
-        try {
-            const res = await fetch("/api/wallet/pin/setup", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ currentPin, newPin, confirmPin })
-            });
-            const data = await res.json();
+  const { profile, subscription, kyc, payouts, security, integrations } = data;
 
-            if (res.ok) {
-                toast.success(data.message);
-                setOpen(false);
-                // Reset form
-                setCurrentPin("");
-                setNewPin("");
-                setConfirmPin("");
-            } else {
-                toast.error(data.error || "Failed to set PIN");
-            }
-        } catch (err) {
-            toast.error("Something went wrong");
-        } finally {
-            setLoading(false);
-        }
-    };
+  return (
+    <div className="space-y-6 max-w-6xl mx-auto p-6">
+      <header className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+        <div>
+          <h1 className="text-3xl font-bold tracking-tight">Account Overview</h1>
+          <p className="text-muted-foreground">
+            Manage your store identity, security settings, and subscriptions.
+          </p>
+        </div>
+        <div className="flex gap-2">
+          <Link href="/dashboard/control-center">
+            <Button variant="outline">
+              <LayoutTemplate className="mr-2 h-4 w-4" />
+              Storefront
+            </Button>
+          </Link>
+          <Link href="/dashboard/settings/whatsapp">
+            <Button variant="primary" className="bg-green-600 hover:bg-green-700">
+              <MessageSquare className="mr-2 h-4 w-4" />
+              WhatsApp
+            </Button>
+          </Link>
+        </div>
+      </header>
 
-    return (
-        <Dialog open={open} onOpenChange={setOpen}>
-            <DialogTrigger asChild>
-                <Button variant="ghost" size="sm" className="w-full justify-between text-blue-600 px-0 hover:bg-transparent">
-                    Manage Wallet PIN <ChevronRight className="w-4 h-4" />
-                </Button>
-            </DialogTrigger>
-            <DialogContent>
-                <DialogHeader>
-                    <DialogTitle>Wallet Security PIN</DialogTitle>
-                    <DialogDescription>
-                        Set a 4-6 digit PIN to secure your wallet transactions. If changing, provide old PIN.
-                    </DialogDescription>
-                </DialogHeader>
-                <form onSubmit={handleSubmit} className="space-y-4 py-4">
-                    <div className="space-y-2">
-                        <Label htmlFor="current">Current PIN (Optional if setting first time)</Label>
-                        <Input
-                            id="current"
-                            type="password"
-                            placeholder="Current PIN"
-                            value={currentPin}
-                            onChange={(e: React.ChangeEvent<HTMLInputElement>) => setCurrentPin(e.target.value)}
-                            maxLength={6}
-                        />
-                    </div>
-                    <div className="grid grid-cols-2 gap-4">
-                        <div className="space-y-2">
-                            <Label htmlFor="new">New PIN</Label>
-                            <Input
-                                id="new"
-                                type="password"
-                                placeholder="New PIN"
-                                value={newPin}
-                                onChange={(e: React.ChangeEvent<HTMLInputElement>) => setNewPin(e.target.value)}
-                                maxLength={6}
-                                required
-                            />
-                        </div>
-                        <div className="space-y-2">
-                            <Label htmlFor="confirm">Confirm PIN</Label>
-                            <Input
-                                id="confirm"
-                                type="password"
-                                placeholder="Confirm"
-                                value={confirmPin}
-                                onChange={(e: React.ChangeEvent<HTMLInputElement>) => setConfirmPin(e.target.value)}
-                                maxLength={6}
-                                required
-                            />
-                        </div>
-                    </div>
-                    <DialogFooter>
-                        <Button type="submit" disabled={loading}>
-                            {loading ? "Saving..." : "Save PIN"}
-                        </Button>
-                    </DialogFooter>
-                </form>
-            </DialogContent>
-        </Dialog>
-    )
+      <div className="grid gap-6 md:grid-cols-2">
+        {/* Identity & Store */}
+        <Card>
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <User className="h-5 w-5 text-blue-500" />
+              Identity & Store
+            </CardTitle>
+            <CardDescription>Your store profile and verification status.</CardDescription>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            <div className="flex justify-between items-center py-2 border-b">
+              <span className="text-sm font-medium">Store Name</span>
+              <span className="text-sm text-muted-foreground">{profile.name}</span>
+            </div>
+            <div className="flex justify-between items-center py-2 border-b">
+              <span className="text-sm font-medium">Category</span>
+              <span className="text-sm text-muted-foreground">{profile.category}</span>
+            </div>
+            <div className="flex justify-between items-center py-2 border-b">
+              <span className="text-sm font-medium">Identity Verification (KYC)</span>
+              {kyc.status === "VERIFIED" ? (
+                <Badge className="bg-green-100 text-green-700 hover:bg-green-200 border-green-200">Verified</Badge>
+              ) : (
+                <Link href="/dashboard/settings/kyc">
+                  <Badge variant="outline" className="cursor-pointer hover:bg-muted">
+                    {kyc.status === "PENDING" ? "In Review" : "Complete Now"} <ChevronRight className="h-3 w-3 ml-1" />
+                  </Badge>
+                </Link>
+              )}
+            </div>
+            <div className="flex justify-between items-center py-2">
+              <span className="text-sm font-medium">Status</span>
+              <Badge variant={profile.isLive ? "default" : "secondary"}>
+                {profile.isLive ? "Live" : "Draft"}
+              </Badge>
+            </div>
+          </CardContent>
+          <CardFooter>
+            <Link href="/dashboard/settings/profile" className="w-full">
+              <Button variant="outline" className="w-full">Edit Profile</Button>
+            </Link>
+          </CardFooter>
+        </Card>
+
+        {/* Security */}
+        <Card>
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <Shield className="h-5 w-5 text-amber-500" />
+              Security
+            </CardTitle>
+            <CardDescription>Protect your account and sessions.</CardDescription>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            <div className="flex justify-between items-center py-2 border-b">
+              <span className="text-sm font-medium">Multi-Factor Auth (MFA)</span>
+              {security.mfaEnabled ? (
+                <Badge className="bg-green-500">Enabled</Badge>
+              ) : (
+                <Link href="/dashboard/settings/security">
+                  <Button variant="link" size="sm" className="h-auto p-0">Enable MFA</Button>
+                </Link>
+              )}
+            </div>
+            <div className="flex justify-between items-center py-2 border-b">
+              <span className="text-sm font-medium">Password</span>
+              <Link href="/dashboard/settings/security">
+                <Button variant="link" size="sm" className="h-auto p-0">Change Password</Button>
+              </Link>
+            </div>
+            <div className="flex justify-between items-center py-2">
+              <span className="text-sm font-medium">Active Sessions</span>
+              <span className="text-sm font-mono bg-muted px-2 py-1 rounded">
+                ~ {security.recentLogins} detected
+              </span>
+            </div>
+          </CardContent>
+          <CardFooter>
+            <Button variant="outline" className="w-full text-red-600 hover:text-red-700 hover:bg-red-50 border-red-200" onClick={handleSignOutAll}>
+              <LogOut className="mr-2 h-4 w-4" />
+              Sign Out All Devices
+            </Button>
+          </CardFooter>
+        </Card>
+
+        {/* Billing */}
+        <Card>
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <CreditCard className="h-5 w-5 text-purple-500" />
+              Billing & Payouts
+            </CardTitle>
+            <CardDescription>Plan management and bank account.</CardDescription>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            <div className="flex justify-between items-center py-2 border-b">
+              <span className="text-sm font-medium">Current Plan</span>
+              <Badge variant="secondary" className="uppercase">{subscription.plan}</Badge>
+            </div>
+            {subscription.renewalDate && (
+              <div className="flex justify-between items-center py-2 border-b">
+                <span className="text-sm font-medium">Renews On</span>
+                <span className="text-sm text-muted-foreground">{format(new Date(subscription.renewalDate), "MMM d, yyyy")}</span>
+              </div>
+            )}
+            <div className="flex justify-between items-center py-2">
+              <span className="text-sm font-medium">Payout Account</span>
+              {payouts.bankConnected ? (
+                <span className="text-sm font-mono">{payouts.maskedAccount}</span>
+              ) : (
+                <span className="text-sm text-red-500 flex items-center gap-1">
+                  <AlertTriangle className="h-3 w-3" /> Missing
+                </span>
+              )}
+            </div>
+          </CardContent>
+          <CardFooter>
+            <Link href="/dashboard/billing" className="w-full">
+              <Button variant="outline" className="w-full">Manage Billing</Button>
+            </Link>
+          </CardFooter>
+        </Card>
+
+        {/* Support */}
+        <Card>
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <HelpCircle className="h-5 w-5 text-teal-500" />
+              Support & Help
+            </CardTitle>
+            <CardDescription>Get help when you need it.</CardDescription>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            <Link href="https://help.vayva.ng" target="_blank" className="flex items-center justify-between p-3 border rounded-lg hover:bg-muted transition-colors">
+              <div className="flex items-center gap-3">
+                <div className="p-2 bg-blue-50 text-blue-600 rounded-full">
+                  <HelpCircle className="h-4 w-4" />
+                </div>
+                <div>
+                  <div className="text-sm font-medium">Knowledge Base</div>
+                  <div className="text-xs text-muted-foreground">Guides and FAQs</div>
+                </div>
+              </div>
+              <ExternalLink className="h-4 w-4 text-muted-foreground" />
+            </Link>
+            <Link href="/dashboard/support/tickets/new" className="flex items-center justify-between p-3 border rounded-lg hover:bg-muted transition-colors">
+              <div className="flex items-center gap-3">
+                <div className="p-2 bg-purple-50 text-purple-600 rounded-full">
+                  <Mail className="h-4 w-4" />
+                </div>
+                <div>
+                  <div className="text-sm font-medium">Contact Support</div>
+                  <div className="text-xs text-muted-foreground">Open a ticket</div>
+                </div>
+              </div>
+              <ChevronRight className="h-4 w-4 text-muted-foreground" />
+            </Link>
+          </CardContent>
+        </Card>
+      </div>
+    </div>
+  );
 }
 
-export default function AccountHubPage() {
-    const [data, setData] = useState<AccountData | null>(null);
-    const [loading, setLoading] = useState(true);
-
-    useEffect(() => {
-        fetch("/api/auth/merchant/me")
-            .then(res => res.json())
-            .then(res => {
-                setData(res);
-                setLoading(false);
-            })
-            .catch(() => setLoading(false));
-    }, []);
-
-    const handleSignOut = () => {
-        // Standard signout flow - redirect to auth signout
-        window.location.href = "/api/auth/signout";
-    };
-
-    if (loading) {
-        return (
-            <div className="p-8 max-w-4xl mx-auto space-y-8 animate-pulse">
-                <div className="h-20 w-48 bg-gray-100 rounded-lg" />
-                <div className="space-y-4">
-                    <div className="h-40 w-full bg-gray-50 rounded-xl border border-gray-100" />
-                    <div className="h-40 w-full bg-gray-50 rounded-xl border border-gray-100" />
-                </div>
-            </div>
-        );
-    }
-
-    const initials = data?.user ? `${data.user.firstName?.[0] || ""}${data.user.lastName?.[0] || ""}` : "??";
-
-    return (
-        <div className="p-4 md:p-8 max-w-4xl mx-auto space-y-8 pb-12">
-            <header>
-                <h1 className="text-2xl md:text-3xl font-bold text-gray-900">Account Hub</h1>
-                <p className="text-gray-500 mt-1">Manage your profiles, subscription, and security settings.</p>
-            </header>
-
-            {/* User Section */}
-            <section className="space-y-4">
-                <div className="flex items-center justify-between">
-                    <h2 className="text-sm font-semibold text-gray-400 uppercase tracking-wider">Your Profile</h2>
-                </div>
-                <Card className="p-6">
-                    <div className="flex items-center gap-4">
-                        <div className="h-16 w-16 bg-gray-900 rounded-full flex items-center justify-center text-xl font-bold text-white border-4 border-gray-50">
-                            {initials}
-                        </div>
-                        <div>
-                            <h3 className="text-lg font-bold text-gray-900">{data?.user.firstName} {data?.user.lastName}</h3>
-                            <p className="text-sm text-gray-500">{data?.user.email}</p>
-                        </div>
-                        <Button variant="outline" size="sm" className="ml-auto md:flex hidden">Edit Profile</Button>
-                    </div>
-                </Card>
-            </section>
-
-            {/* Business Section */}
-            <section className="space-y-4">
-                <h2 className="text-sm font-semibold text-gray-400 uppercase tracking-wider">Business Details</h2>
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                    <Card className="p-6 flex flex-col justify-between space-y-4">
-                        <div className="flex items-center gap-3">
-                            <div className="p-2 bg-indigo-50 rounded-lg">
-                                <Building2 className="w-5 h-5 text-indigo-600" />
-                            </div>
-                            <div>
-                                <p className="text-xs text-gray-500 font-medium">Business Name</p>
-                                <p className="font-bold text-gray-900">{data?.merchant.storeName}</p>
-                            </div>
-                        </div>
-                        <Link href="/dashboard/settings/profile">
-                            <Button variant="ghost" size="sm" className="w-full justify-between text-indigo-600 px-0 hover:bg-transparent">
-                                Update Store Profile <ChevronRight className="w-4 h-4" />
-                            </Button>
-                        </Link>
-                    </Card>
-
-                    <Card className="p-6 flex flex-col justify-between space-y-4">
-                        <div className="flex items-center gap-3">
-                            <div className="p-2 bg-emerald-50 rounded-lg">
-                                <CreditCard className="w-5 h-5 text-emerald-600" />
-                            </div>
-                            <div>
-                                <p className="text-xs text-gray-500 font-medium">Current Plan</p>
-                                <p className="font-bold text-gray-900">{data?.merchant.plan}</p>
-                            </div>
-                        </div>
-                        <Link href="/dashboard/billing">
-                            <Button variant="ghost" size="sm" className="w-full justify-between text-emerald-600 px-0 hover:bg-transparent">
-                                Manage Subscription <ChevronRight className="w-4 h-4" />
-                            </Button>
-                        </Link>
-                    </Card>
-
-                    {/* NEW: Wallet Security Card */}
-                    <Card className="p-6 flex flex-col justify-between space-y-4">
-                        <div className="flex items-center gap-3">
-                            <div className="p-2 bg-blue-50 rounded-lg">
-                                <Shield className="w-5 h-5 text-blue-600" />
-                            </div>
-                            <div>
-                                <p className="text-xs text-gray-500 font-medium">Wallet Security</p>
-                                <p className="font-bold text-gray-900">4-Digit PIN</p>
-                            </div>
-                        </div>
-                        <WalletPinDialog />
-                    </Card>
-                </div>
-            </section>
-
-            {/* Utilities */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                <Link href="/dashboard/support" className="flex items-center gap-3 p-4 bg-gray-50 rounded-xl hover:bg-gray-100 transition-colors border border-gray-100 group">
-                    <HelpCircle className="w-5 h-5 text-gray-500 group-hover:text-black" />
-                    <span className="text-sm font-medium text-gray-700">Get Help</span>
-                </Link>
-                <Link href="/dashboard/settings/security" className="flex items-center gap-3 p-4 bg-gray-50 rounded-xl hover:bg-gray-100 transition-colors border border-gray-100 group">
-                    <Shield className="w-5 h-5 text-gray-500 group-hover:text-black" />
-                    <span className="text-sm font-medium text-gray-700">Security</span>
-                </Link>
-                <a href="mailto:support@vayva.ng" className="flex items-center gap-3 p-4 bg-gray-50 rounded-xl hover:bg-gray-100 transition-colors border border-gray-100 group">
-                    <Mail className="w-5 h-5 text-gray-500 group-hover:text-black" />
-                    <span className="text-sm font-medium text-gray-700">Compliance</span>
-                </a>
-            </div>
-
-            {/* Sign Out */}
-            <div className="pt-4 border-t border-gray-100">
-                <Button
-                    variant="ghost"
-                    className="w-full md:w-auto text-red-600 hover:bg-red-50 hover:text-red-700 gap-2 font-bold"
-                    onClick={handleSignOut}
-                >
-                    <LogOut className="w-5 h-5" />
-                    Sign Out of Vayva
-                </Button>
-            </div>
+function AccountSkeleton() {
+  return (
+    <div className="space-y-6 max-w-6xl mx-auto p-6">
+      <div className="flex justify-between">
+        <div className="space-y-2">
+          <Skeleton className="h-8 w-48" />
+          <Skeleton className="h-4 w-64" />
         </div>
-    );
+        <Skeleton className="h-10 w-32" />
+      </div>
+      <div className="grid gap-6 md:grid-cols-2">
+        {[1, 2, 3, 4].map((i) => (
+          <Skeleton key={i} className="h-64 w-full" />
+        ))}
+      </div>
+    </div>
+  );
 }

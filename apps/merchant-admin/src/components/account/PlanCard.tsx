@@ -1,6 +1,6 @@
 import React from "react";
 import { AccountOverview } from "@vayva/shared";
-import { Icon, Button } from "@vayva/ui";
+import { Button, Icon } from "@vayva/ui";
 
 interface PlanCardProps {
   plan: AccountOverview["plan"];

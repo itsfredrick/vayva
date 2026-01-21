@@ -242,7 +242,7 @@ export function CommandMenu() {
     );
 }
 
-function CommandItem({ children, onSelect, icon: Icon }: any) {
+function CommandItem({ children, onSelect, icon: Icon }: { children: React.ReactNode; onSelect: () => void; icon: React.ElementType }) {
     return (
         <Command.Item
             onSelect={onSelect}

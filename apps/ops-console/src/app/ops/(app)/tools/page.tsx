@@ -118,9 +118,15 @@ function AnnouncementCard() {
                 <div className="bg-pink-50 border border-pink-100 p-4 rounded-xl mb-4">
                     <div className="text-xs font-bold text-pink-600 uppercase mb-1">Live Now</div>
                     <div className="text-sm font-medium text-gray-900">{current.message}</div>
-                    <button onClick={clear} disabled={loading} className="mt-2 text-xs text-red-600 hover:underline">
+                    <Button
+                        variant="ghost"
+                        onClick={clear}
+                        disabled={loading}
+                        className="mt-2 text-xs text-red-600 hover:underline h-auto p-0 hover:bg-transparent"
+                        aria-label="Recall active announcement"
+                    >
                         Recall Announcement
-                    </button>
+                    </Button>
                 </div>
             ) : (
                 <div className="text-sm text-gray-400 italic mb-4">No active announcement.</div>
@@ -133,13 +139,15 @@ function AnnouncementCard() {
                     placeholder="Enter alert message..."
                     className="flex-1 px-3 py-2 border rounded-lg text-sm"
                 />
-                <button
+                <Button
+                    variant="primary"
                     onClick={publish}
                     disabled={!message || loading}
-                    className="px-4 py-2 bg-gray-900 text-white rounded-lg text-sm font-bold disabled:opacity-50"
+                    className="px-4 py-2 bg-gray-900 text-white rounded-lg text-sm font-bold disabled:opacity-50 h-auto"
+                    aria-label="Post announcement"
                 >
                     Post
-                </button>
+                </Button>
             </div>
         </div>
     );
@@ -193,22 +201,26 @@ function CacheControlCard() {
                     />
                 </div>
                 <div className="flex gap-2">
-                    <button
+                    <Button
+                        variant="ghost"
                         onClick={() => handleClear("path")}
                         disabled={loading}
-                        className="flex-1 py-2 bg-white border border-gray-300 hover:bg-gray-50 text-gray-700 rounded-lg text-sm font-bold flex items-center justify-center gap-2"
+                        className="flex-1 py-2 bg-white border border-gray-300 hover:bg-gray-50 text-gray-700 rounded-lg text-sm font-bold flex items-center justify-center gap-2 h-auto"
+                        aria-label="Revalidate Next.js cache by path"
                     >
                         {loading ? <RefreshCw className="h-4 w-4 animate-spin" /> : <Globe className="h-4 w-4" />}
                         Revalidate Path
-                    </button>
-                    <button
+                    </Button>
+                    <Button
+                        variant="ghost"
                         onClick={() => handleClear("tag")}
                         disabled={loading}
-                        className="flex-1 py-2 bg-white border border-gray-300 hover:bg-gray-50 text-gray-700 rounded-lg text-sm font-bold flex items-center justify-center gap-2"
+                        className="flex-1 py-2 bg-white border border-gray-300 hover:bg-gray-50 text-gray-700 rounded-lg text-sm font-bold flex items-center justify-center gap-2 h-auto"
+                        aria-label="Revalidate Next.js cache by tag"
                     >
                         {loading ? <RefreshCw className="h-4 w-4 animate-spin" /> : <Database className="h-4 w-4" />}
                         Revalidate Tag
-                    </button>
+                    </Button>
                 </div>
             </div>
         </div>
@@ -248,9 +260,14 @@ function FeatureFlagCard() {
                         <div className="text-sm font-bold text-gray-900">Maintenance Mode</div>
                         <div className="text-xs text-gray-500">Block all non-admin traffic.</div>
                     </div>
-                    <button onClick={toggleMaintenance} className={`text-2xl transition-colors ${maintenance ? "text-indigo-600" : "text-gray-300"}`}>
+                    <Button
+                        variant="ghost"
+                        onClick={toggleMaintenance}
+                        className={`text-2xl transition-colors h-auto p-0 hover:bg-transparent ${maintenance ? "text-indigo-600" : "text-gray-300"}`}
+                        aria-label={maintenance ? "Disable maintenance mode" : "Enable maintenance mode"}
+                    >
                         {maintenance ? <ToggleRight className="h-8 w-8" /> : <ToggleLeft className="h-8 w-8" />}
-                    </button>
+                    </Button>
                 </div>
 
                 <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg border border-gray-100 opacity-50">

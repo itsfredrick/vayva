@@ -1,5 +1,6 @@
 import React from "react";
 import { TemplateProps } from "../registry";
+import { Button } from "@vayva/ui";
 
 export const EventPlanningTemplate: React.FC<TemplateProps> = ({
   businessName,
@@ -12,6 +13,7 @@ export const EventPlanningTemplate: React.FC<TemplateProps> = ({
         <div className="absolute inset-0 bg-black/40 z-10"></div>
         <img
           src="https://images.unsplash.com/photo-1519225463351-193509074455?w=1600&q=80"
+          alt="Elegant event setup with long table"
           className="absolute inset-0 w-full h-full object-cover"
         />
         <div className="relative z-20 px-4">
@@ -21,9 +23,9 @@ export const EventPlanningTemplate: React.FC<TemplateProps> = ({
           <h1 className="text-4xl md:text-6xl font-serif italic mb-8">
             {businessName || "Golden Moments"}
           </h1>
-          <button className="bg-white text-black px-8 py-4 uppercase tracking-widest text-xs font-bold hover:bg-gray-100 transition-colors">
+          <Button className="bg-white text-black px-8 py-4 uppercase tracking-widest text-xs font-bold hover:bg-gray-100 transition-colors h-auto">
             Plan My Event
-          </button>
+          </Button>
         </div>
       </header>
 
@@ -99,11 +101,11 @@ export const EventPlanningTemplate: React.FC<TemplateProps> = ({
                     </li>
                   ))}
                 </ul>
-                <button
-                  className={`w-full py-3 text-xs font-bold uppercase tracking-wider border ${i === 1 ? "bg-amber-400 border-amber-400 text-white" : "border-gray-200 hover:bg-black hover:text-white transition-colors"}`}
+                <Button
+                  className={`w-full py-3 text-xs font-bold uppercase tracking-wider border h-auto ${i === 1 ? "bg-amber-400 border-amber-400 text-white" : "border-gray-200 hover:bg-black hover:text-white transition-colors"}`}
                 >
                   Select Package
-                </button>
+                </Button>
               </div>
             ))}
           </div>

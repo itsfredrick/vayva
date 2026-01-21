@@ -142,10 +142,9 @@ export class ReportsService {
       cursor: cursor ? { id: cursor } : undefined,
       orderBy: { createdAt: "desc" },
       include: {
-        PaymentTransaction: true,
-        // refunds: true, // Removed as relation doesn't exist, using PaymentTransaction
-        Shipment: true,
-        Customer: { select: { firstName: true, lastName: true, phone: true } }, // Basic details
+        paymentTransactions: true,
+        shipment: true,
+        customer: { select: { firstName: true, lastName: true, phone: true } }, // Basic details
       },
     });
 
@@ -159,7 +158,7 @@ export class ReportsService {
       const total = Number(o.total);
 
       // Sum successful payments
-      const paidTransactions = o.transactions.filter(
+      const paidTransactions = o.paymentTransactions.filter(
         (t: any) => t.status === "SUCCESS" && t.type === "CHARGE",
       );
       const paidAmount = paidTransactions.reduce(
@@ -168,7 +167,7 @@ export class ReportsService {
       );
 
       // Sum completed refunds via transactions
-      const refundTransactions = o.transactions.filter(
+      const refundTransactions = o.paymentTransactions.filter(
         (t: any) => t.status === "SUCCESS" && t.type === "REFUND",
       );
       const refundedAmount = refundTransactions.reduce(
@@ -210,8 +209,8 @@ export class ReportsService {
         date: o.createdAt,
         customerName: o.customer
           ? `${o.customer.firstName || ""} ${o.customer.lastName || ""}`.trim() ||
-            o.customer.phone ||
-            "Unknown"
+          o.customer.phone ||
+          "Unknown"
           : "Guest",
         status: o.status,
         total,

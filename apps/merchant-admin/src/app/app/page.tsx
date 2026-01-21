@@ -1,50 +1,32 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { checkAppLaunchStatus } from "./actions";
+import { useAuth } from "@/context/AuthContext";
+import { getAuthRedirect } from "@/lib/auth/redirects";
 import Image from "next/image";
 
 export default function AppLaunchPage() {
   const router = useRouter();
-  const [status, setStatus] = useState("loading");
+  const { user, merchant, isLoading } = useAuth();
 
   useEffect(() => {
-    // Trigger check immediately
-    const runCheck = async () => {
-      try {
-        // Minimum splash time (aesthetic)
-        const start = Date.now();
+    if (isLoading) return;
 
-        const result = await checkAppLaunchStatus();
+    if (!user) {
+      router.replace("/signin");
+      return;
+    }
 
-        const elapsed = Date.now() - start;
-        const remaining = Math.max(0, 1500 - elapsed); // Ensure at least 1.5s splash
-
-        setTimeout(() => {
-          if (result.status === "unauthenticated") {
-            router.replace("/signin");
-          } else if (result.onboardingCompleted) {
-            router.replace("/admin");
-          } else {
-            router.replace("/onboarding");
-          }
-        }, remaining);
-      } catch (e) {
-        console.error("Launch check failed", e);
-        router.replace("/signin");
-      }
-    };
-
-    runCheck();
-  }, [router]);
+    const destination = getAuthRedirect(user, merchant);
+    router.replace(destination);
+  }, [user, merchant, isLoading, router]);
 
   return (
     <div className="fixed inset-0 bg-black flex flex-col items-center justify-center z-50">
       <div className="animate-pulse">
-        {/* Use manifest icon as logo */}
         <Image
-          src="/icons/icon-192.png" // Fallback to raster if svg issues, or just use vector
+          src="/icons/icon-192.png"
           alt="Vayva"
           width={100}
           height={100}

@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { Button } from "@vayva/ui";
 import { PublicStore, PublicProduct } from "@/types/storefront";
 import { RealEstateHeader } from "./components/RealEstateHeader";
 import { HeroSearch } from "./components/HeroSearch";
@@ -36,9 +37,9 @@ export const HomeListLayout = ({ store, products }: HomeListLayoutProps) => {
                 Featured Listings
               </h2>
             </div>
-            <button className="hidden md:block text-sm font-bold text-gray-500 hover:text-[#2563EB]">
+            <Button className="hidden md:block text-sm font-bold text-gray-500 hover:text-[#2563EB]">
               View All Properties
-            </button>
+            </Button>
           </div>
 
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
@@ -52,9 +53,9 @@ export const HomeListLayout = ({ store, products }: HomeListLayoutProps) => {
           </div>
 
           <div className="mt-12 text-center">
-            <button className="bg-white border border-gray-200 hover:border-[#2563EB] text-[#0F172A] hover:text-[#2563EB] px-8 py-3 rounded-lg font-bold transition-all md:hidden">
+            <Button className="bg-white border border-gray-200 hover:border-[#2563EB] text-[#0F172A] hover:text-[#2563EB] px-8 py-3 rounded-lg font-bold transition-all md:hidden">
               View All Properties
-            </button>
+            </Button>
           </div>
         </section>
 

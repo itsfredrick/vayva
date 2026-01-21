@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
+import { Button } from "@vayva/ui";
 import Link from "next/link";
 import { Sparkles } from "lucide-react";
 import { HELP_ARTICLES, HelpArticle } from "@/lib/help";
@@ -151,7 +152,7 @@ export default function HelpCenterPage() {
 
           {/* Mobile AI Toggle */}
           <div className="lg:hidden fixed bottom-6 right-6 z-50">
-            <button
+            <Button
               onClick={() => setIsAiOpen(!isAiOpen)}
               className="w-16 h-16 bg-[#22C55E] text-white rounded-full shadow-2xl flex items-center justify-center hover:scale-110 transition-transform"
             >
@@ -162,7 +163,7 @@ export default function HelpCenterPage() {
               ) : (
                 <Sparkles className="w-8 h-8" />
               )}
-            </button>
+            </Button>
           </div>
 
           {/* Mobile AI Modal Overlay */}
@@ -170,12 +171,12 @@ export default function HelpCenterPage() {
             <div className="lg:hidden fixed inset-0 z-[60] pt-20 px-4 bg-white/90 backdrop-blur-sm">
               <div className="max-w-md mx-auto h-[80vh]">
                 <HelpAIChat />
-                <button
+                <Button
                   onClick={() => setIsAiOpen(false)}
                   className="w-full mt-4 py-3 text-gray-500 font-medium"
                 >
                   Close Assistant
-                </button>
+                </Button>
               </div>
             </div>
           )}

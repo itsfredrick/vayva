@@ -96,13 +96,22 @@ export const WaAgentService = {
     return res.ok;
   },
 
-  // 2. Inbox - Throws error if disabled (no empty arrays)
+  // 2. Inbox
   getConversations: async (): Promise<any[]> => {
     if (!FEATURES.WHATSAPP_ENABLED) {
-      throw new Error("WhatsApp integration is not configured");
+      // Return empty instead of error to prevent UI crash
+      return [];
     }
 
-    throw new Error("WhatsApp inbox not implemented");
+    try {
+      const res = await fetch("/api/support/conversations");
+      if (!res.ok) return [];
+      const json = await res.json();
+      return json.data || [];
+    } catch (e) {
+      console.error("Failed to fetch conversations", e);
+      return [];
+    }
   },
 
   // 3. Test Message
@@ -122,25 +131,61 @@ export const WaAgentService = {
   // 4. Approvals
   getApprovals: async (): Promise<WaApproval[]> => {
     if (!FEATURES.WHATSAPP_ENABLED) return [];
-    // Pending
-    return [];
+    try {
+      const res = await fetch("/api/support/approvals");
+      if (!res.ok) return [];
+      const json = await res.json();
+      return json.data || [];
+    } catch (e) {
+      return [];
+    }
   },
 
   actionApproval: async (id: string, action: "approve" | "reject") => {
     if (!FEATURES.WHATSAPP_ENABLED) throw new Error("Not configured");
-    // Pending
-    return true;
+    const res = await fetch(`/api/support/approvals/${id}/action`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ action })
+    });
+    return res.ok;
   },
 
   // 5. Inbox Pendings
   getThread: async (threadId: string): Promise<WaThread | null> => {
     if (!FEATURES.WHATSAPP_ENABLED) return null;
-    return null;
+    try {
+      const res = await fetch(`/api/support/conversations/${threadId}`);
+      if (!res.ok) return null;
+      const json = await res.json();
+      return json.data;
+    } catch (e) {
+      return null;
+    }
   },
 
   getKnowledgeBase: async (): Promise<KbItem[]> => {
     if (!FEATURES.WHATSAPP_ENABLED) return [];
-    return [];
+    try {
+      const res = await fetch("/api/seller/ai/knowledge-base");
+      if (!res.ok) return [];
+      const json = await res.json();
+      const entries = json.data || [];
+
+      // Map knowledge base entries to UI interface
+      return entries.map((e: any) => ({
+        id: e.id,
+        question: e.sourceType === "FILE" ? "Document Upload" : "Manual Entry",
+        answer: e.content.length > 100 ? e.content.substring(0, 100) + "..." : e.content,
+        fullContent: e.content,
+        tags: [e.sourceType],
+        category: "General",
+        status: "ACTIVE"
+      }));
+    } catch (e) {
+      console.error("Failed to load KB", e);
+      return [];
+    }
   },
 };
 

@@ -15,6 +15,8 @@ export const TemplateManifestSchema = z.object({
     image: z.string(),
     accent: z.string().optional(),
   }),
+  coverImage: z.string().optional(),
+  screenshots: z.array(z.string()).optional(),
   layout: z
     .object({
       sections: z.array(z.string()),

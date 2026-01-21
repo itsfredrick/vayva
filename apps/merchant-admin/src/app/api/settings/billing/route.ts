@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { requireAuth } from "@/lib/auth/session";
-import { prisma } from "@vayva/db";
+import { prisma } from "@/lib/prisma";
 
 export async function GET() {
   try {
@@ -11,30 +11,38 @@ export async function GET() {
       where: { id: storeId },
     });
 
-    const subscription = await prisma.merchantSubscription.findFirst({
+    const subscription = await prisma.merchantAiSubscription.findFirst({
       where: { storeId },
-      orderBy: { createdAt: "desc" },
+      orderBy: { updatedAt: "desc" },
     });
 
-    // Test invoices for demonstration
-    const invoices = [
-      {
-        id: "INV-001",
-        amount: "₦0.00",
-        date: new Date().toISOString(),
-        status: "PAID",
-        plan: "FOUNDER_FREE",
-      },
-    ];
+    // Real Invoices (Charges)
+    const charges = await prisma.charge.findMany({
+      where: { storeId },
+      orderBy: { createdAt: "desc" },
+      take: 20,
+    });
+
+    const invoices = charges.map(c => ({
+      id: c.id,
+      amount: `₦${Number(c.amount).toLocaleString()}`,
+      date: c.createdAt.toISOString(),
+      status: c.status,
+      plan: "CHARGE", // Or derive from metadata
+    }));
+
+    // Real Usage Metrics
+    const productsCount = await prisma.product.count({ where: { storeId } });
+    const ordersCount = await prisma.order.count({ where: { storeId } });
 
     return NextResponse.json({
       plan: store?.plan || "FREE",
       status: subscription?.status || "ACTIVE",
-      renewalDate: subscription?.currentPeriodEnd || null,
+      renewalDate: subscription?.periodEnd || null,
       usage: {
-        products: 5,
-        orders: 12,
-        storage: "120MB",
+        products: productsCount,
+        orders: ordersCount,
+        storage: "120MB", // Placeholder (Storage calc is expensive)
       },
       invoices,
     });

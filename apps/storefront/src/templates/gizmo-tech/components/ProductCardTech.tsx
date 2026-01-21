@@ -2,6 +2,7 @@ import React from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { Plus, Check, ShoppingCart } from "lucide-react";
+import { Button } from "@vayva/ui";
 import { PublicProduct } from "@/types/storefront";
 import { useStore } from "@/context/StoreContext";
 
@@ -60,16 +61,19 @@ export const ProductCardTech = ({
         )}
 
         {/* Quick Add Button - Bottom Right */}
-        <button
-          className={`absolute bottom-2 right-2 p-2 rounded-lg transition-all duration-300 shadow-sm border ${added ? "bg-green-500 text-white border-green-500" : "bg-white text-blue-600 border-gray-200 hover:bg-blue-600 hover:text-white hover:border-blue-600"}`}
+        <Button
+          variant="ghost"
+          size="icon"
+          className={`absolute bottom-2 right-2 p-2 rounded-lg transition-all duration-300 shadow-sm border h-auto ${added ? "bg-green-500 text-white border-green-500" : "bg-white text-blue-600 border-gray-200 hover:bg-blue-600 hover:text-white hover:border-blue-600"}`}
           onClick={handleAdd}
+          aria-label={added ? "Added to cart" : `Add ${product.name} to cart`}
         >
           {added ? (
             <Check size={16} strokeWidth={3} />
           ) : (
             <Plus size={16} strokeWidth={3} />
           )}
-        </button>
+        </Button>
       </div>
 
       <div className="space-y-1">

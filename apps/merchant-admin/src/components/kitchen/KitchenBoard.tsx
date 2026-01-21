@@ -2,22 +2,27 @@
 
 import { useEffect, useState, useRef } from "react";
 import { KitchenTicket } from "./KitchenTicket";
+import { Button, Card, StatusChip } from "@vayva/ui";
 import { Loader2, UtensilsCrossed } from "lucide-react";
 
 export function KitchenBoard() {
     const [orders, setOrders] = useState<any[]>([]);
     const [loading, setLoading] = useState(true);
-    const pollerRef = useRef<NodeJS.Timeout | null>(null);
+    const [error, setError] = useState<string | null>(null);
+    const pollerRef = useRef<any>(null);
 
     const fetchOrders = async () => {
         try {
             const res = await fetch("/api/kitchen/orders");
+            if (!res.ok) throw new Error("Failed to fetch orders");
             const data = await res.json();
-            if (data.orders) {
-                setOrders(data.orders);
-            }
-        } catch (error) {
+            // The API returns an array directly or { orders: [] } 
+            // Current MenuService returns array. KitchenTicket expects Order object.
+            setOrders(Array.isArray(data) ? data : data.orders || []);
+            setError(null);
+        } catch (error: any) {
             console.error(error);
+            setError(error.message);
         } finally {
             setLoading(false);
         }
@@ -42,6 +47,19 @@ export function KitchenBoard() {
         return (
             <div className="flex h-screen items-center justify-center">
                 <Loader2 className="animate-spin text-gray-400" size={48} />
+            </div>
+        );
+    }
+
+    if (error) {
+        return (
+            <div className="flex flex-col items-center justify-center h-[60vh] text-center p-8 bg-red-50 border-2 border-dashed border-red-200 rounded-xl">
+                <div className="p-4 bg-white rounded-full shadow-sm mb-4">
+                    <Loader2 size={48} className="text-red-300" />
+                </div>
+                <h2 className="text-xl font-semibold text-red-900">Oops! Something went wrong</h2>
+                <p className="text-red-500 mt-2">{error}</p>
+                <Button onClick={fetchOrders} className="mt-4" variant="outline">Try Again</Button>
             </div>
         );
     }

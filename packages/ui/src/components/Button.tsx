@@ -38,10 +38,11 @@ const buttonVariants = cva(
 
 export interface ButtonProps
   extends
-    React.ButtonHTMLAttributes<HTMLButtonElement>,
-    VariantProps<typeof buttonVariants> {
+  React.ButtonHTMLAttributes<HTMLButtonElement>,
+  VariantProps<typeof buttonVariants> {
   asChild?: boolean;
   isLoading?: boolean;
+  "aria-label"?: string;
 }
 
 const BaseButton = React.forwardRef<HTMLButtonElement, ButtonProps>(
@@ -57,21 +58,22 @@ const BaseButton = React.forwardRef<HTMLButtonElement, ButtonProps>(
     },
     ref,
   ) => {
+    const MotionButton = motion.button as any;
+
     return (
-      <motion.button
+      <MotionButton
         className={cn(buttonVariants({ variant, size, className }))}
-        // @ts-ignore: framer-motion refs are compatible but types can be strict
         ref={ref}
         disabled={props.disabled || isLoading}
         whileHover={!props.disabled && !isLoading ? hoverLift : undefined}
         whileTap={!props.disabled && !isLoading ? tapScale : undefined}
-        {...(props as any)}
+        {...props}
       >
         {isLoading && (
           <Icon name="loader" className="mr-2 h-4 w-4 animate-spin" />
         )}
         {children}
-      </motion.button>
+      </MotionButton>
     );
   },
 );

@@ -15,7 +15,7 @@ export async function syncOnboardingData(
     );
   }
 
-  console.log(`[Sync] Starting onboarding sync for store ${storeId}`);
+  
 
   try {
     await prisma.$transaction(async (tx: any) => {
@@ -25,7 +25,11 @@ export async function syncOnboardingData(
         data: {
           name: state.business?.name || undefined,
           slug: state.business?.slug || state.storeDetails?.slug || undefined,
+          // Map category for analytics bucket if present
           category: state.business?.category || undefined,
+          // CRITICAL: Persist Industry Variant Slug
+          industrySlug: state.industrySlug || undefined,
+
           // Store settings for domain preference and currency
           settings: {
             domainPreference:
@@ -44,9 +48,9 @@ export async function syncOnboardingData(
         where: { storeId },
       });
       const profileData = {
-        state: state.business?.location?.state,
-        city: state.business?.location?.city,
-        displayName: state.storeDetails?.storeName || state.business?.name,
+        state: state.business?.state,
+        city: state.business?.city,
+        displayName: state.business?.storeName || state.business?.name,
         whatsappNumberE164: state.whatsapp?.number || state.identity?.phone, // Assuming owner phone is contact
       };
 
@@ -102,14 +106,14 @@ export async function syncOnboardingData(
       }
 
       // 4. Sync Bank Account
-      if (state.finance?.settlementBank || (state.finance?.bankName && state.finance?.accountNumber)) {
+      if (state.finance?.bankName && state.finance?.accountNumber) {
         // Deactivate old default
         await tx.bankBeneficiary.updateMany({
           where: { storeId, isDefault: true },
           data: { isDefault: false },
         });
 
-        const bankInfo = state.finance.settlementBank || state.finance;
+        const bankInfo = state.finance;
 
         await tx.bankBeneficiary.create({
           data: {
@@ -117,7 +121,7 @@ export async function syncOnboardingData(
             bankName: bankInfo.bankName,
             accountNumber: bankInfo.accountNumber,
             accountName: bankInfo.accountName,
-            bankCode: "000", // Placeholder or needs lookup
+            bankCode: bankInfo.bankCode || "000",
             isDefault: true,
           },
         });
@@ -125,14 +129,14 @@ export async function syncOnboardingData(
 
       // 5. Sync Delivery Settings
       const deliveryMethods: string[] = [];
-      if (state.logistics?.policy !== "pickup") {
-        deliveryMethods.push(state.logistics?.defaultProvider || "manual");
+      if (state.logistics?.deliveryMode !== "pickup") {
+        deliveryMethods.push("manual"); // Default to manual if delivery is enabled
       }
 
       await tx.storeProfile.update({
         where: { storeId },
         data: {
-          pickupAvailable: state.logistics?.policy !== "delivery",
+          pickupAvailable: state.logistics?.deliveryMode !== "delivery",
           pickupAddress: state.logistics?.pickupAddress || undefined,
           deliveryMethods:
             deliveryMethods.length > 0 ? deliveryMethods : undefined,
@@ -140,11 +144,11 @@ export async function syncOnboardingData(
       });
 
       // [NEW] 5.1 Sync Delivery Policy as Merchant Policy
-      if (state.logistics?.policy) {
+      if (state.logistics?.deliveryMode) {
         const policyContent =
-          state.logistics.policy === "pickup"
+          state.logistics.deliveryMode === "pickup"
             ? "Orders are only available for pickup at our physical location."
-            : state.logistics.policy; // e.g. "Shipped within 24 hours"
+            : state.logistics.deliveryMode; // e.g. "Shipped within 24 hours"
 
         // We use upsert for the policy
         const store = await tx.store.findUnique({
@@ -187,7 +191,7 @@ export async function syncOnboardingData(
         });
       }
     });
-    console.log(`[Sync] Onboarding sync completed for ${storeId}`);
+    
   } catch (error: any) {
     console.error("[Sync] Failed to sync onboarding data:", error);
     // We log but maybe allow completion logic to proceed or fail?

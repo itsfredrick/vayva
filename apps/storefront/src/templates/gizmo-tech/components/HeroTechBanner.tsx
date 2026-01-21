@@ -1,4 +1,5 @@
 import React from "react";
+import { Button } from "@vayva/ui";
 import Image from "next/image";
 
 interface HeroTechBannerProps {
@@ -33,9 +34,9 @@ export const HeroTechBanner = ({
         <h2 className="text-3xl md:text-5xl font-bold tracking-tight mb-4 leading-tight">
           {headline}
         </h2>
-        <button className="bg-white text-black px-6 py-3 rounded-lg font-bold text-sm hover:bg-gray-100 transition-colors shadow-lg active:scale-95 transform transition-transform">
+        <Button className="bg-white text-black px-6 py-3 rounded-lg font-bold text-sm hover:bg-gray-100 transition-colors shadow-lg active:scale-95 transform transition-transform">
           {ctaText}
-        </button>
+        </Button>
       </div>
     </div>
   );

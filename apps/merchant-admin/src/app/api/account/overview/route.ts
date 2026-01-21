@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { requireAuth } from "@/lib/auth/session";
-import { prisma } from "@vayva/db";
+import { prisma } from "@/lib/prisma";
 
 export async function GET() {
   try {
@@ -15,8 +15,6 @@ export async function GET() {
       domain,
       recentLogs,
       kyc,
-      subscription,
-      whatsapp,
     ] = await Promise.all([
       prisma.store.findUnique({
         where: { id: storeId },
@@ -47,12 +45,6 @@ export async function GET() {
       prisma.kycRecord.findUnique({
         where: { storeId },
       }),
-      prisma.merchantSubscription.findUnique({
-        where: { storeId },
-      }),
-      prisma.whatsappChannel.findUnique({
-        where: { storeId },
-      }),
     ]);
 
     if (!store) {
@@ -69,14 +61,14 @@ export async function GET() {
       profile: {
         name: store.name || "Unset",
         category: store.category || "General",
-        plan: subscription?.planSlug || (store as any).plan || "STARTER",
+        plan: (store as any).plan || "GROWTH",
         isLive: store.isLive || false,
         onboardingCompleted: store.onboardingCompleted || false,
       },
       subscription: {
-        plan: subscription?.planSlug || (store as any).plan || "STARTER",
-        status: subscription?.status || "ACTIVE",
-        renewalDate: subscription?.currentPeriodEnd || null,
+        plan: (store as any).plan || "GROWTH",
+        status: "ACTIVE",
+        renewalDate: null,
         canUpgrade: true,
       },
       kyc: {
@@ -101,7 +93,7 @@ export async function GET() {
         sslEnabled: domain?.status === "verified",
       },
       integrations: {
-        whatsapp: whatsapp ? "CONNECTED" : "DISCONNECTED",
+        whatsapp: "DISCONNECTED",
         payments: storeSettings.paystack?.connected
           ? "CONNECTED"
           : "DISCONNECTED",

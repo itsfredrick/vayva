@@ -1,4 +1,5 @@
 import React from "react";
+import { Button } from "@vayva/ui";
 import { BadgeCheck, Star } from "lucide-react";
 
 interface VendorDetails {
@@ -39,9 +40,9 @@ export const VendorCard = ({ vendor }: VendorCardProps) => {
         </div>
       </div>
 
-      <button className="text-xs font-bold text-[#10B981] bg-emerald-50 hover:bg-emerald-100 px-3 py-1.5 rounded-lg transition-colors">
+      <Button className="text-xs font-bold text-[#10B981] bg-emerald-50 hover:bg-emerald-100 px-3 py-1.5 rounded-lg transition-colors">
         Visit
-      </button>
+      </Button>
     </div>
   );
 };

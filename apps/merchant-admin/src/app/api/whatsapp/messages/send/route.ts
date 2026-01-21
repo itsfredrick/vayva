@@ -7,7 +7,7 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "Message empty" }, { status: 400 });
 
   // Test send delay
-  await new Promise((resolve) => setTimeout(resolve, 300));
+  // No artificial latency
 
   return NextResponse.json({
     message_id: `msg_${Date.now()}`,

@@ -1,6 +1,7 @@
 "use client";
 
 import React from "react";
+import { Button } from "@vayva/ui";
 import Link from "next/link";
 import { CheckCircle, AlertCircle, Clock } from "lucide-react";
 
@@ -155,14 +156,14 @@ export default function SystemStatusPage() {
                     </p>
                     <div className="flex justify-center gap-4">
                         <Link href="/help">
-                            <button className="px-6 py-3 bg-[#22C55E] text-white font-bold rounded-xl hover:bg-[#16A34A] transition-colors">
+                            <Button className="px-6 py-3 bg-[#22C55E] text-white font-bold rounded-xl hover:bg-[#16A34A] transition-colors">
                                 Visit Help Center
-                            </button>
+                            </Button>
                         </Link>
                         <a href="mailto:support@vayva.ng">
-                            <button className="px-6 py-3 border-2 border-gray-200 text-[#0F172A] font-bold rounded-xl hover:bg-gray-50 transition-colors">
+                            <Button className="px-6 py-3 border-2 border-gray-200 text-[#0F172A] font-bold rounded-xl hover:bg-gray-50 transition-colors">
                                 Email Support
-                            </button>
+                            </Button>
                         </a>
                     </div>
                 </div>

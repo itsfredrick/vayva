@@ -1,4 +1,5 @@
 import React from "react";
+import { Button } from "@vayva/ui";
 import Link from "next/link";
 import Image from "next/image";
 import { FileText, FileCode, FileImage, Download } from "lucide-react";
@@ -26,9 +27,9 @@ export const ProductGridDigital = ({
       <div className="max-w-6xl mx-auto">
         <div className="flex items-center justify-between mb-10 text-white">
           <h2 className="text-2xl font-bold">Latest Drops</h2>
-          <button className="text-sm text-indigo-400 hover:text-indigo-300">
+          <Button className="text-sm text-indigo-400 hover:text-indigo-300">
             View All
-          </button>
+          </Button>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">

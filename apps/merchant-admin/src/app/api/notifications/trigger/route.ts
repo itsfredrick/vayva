@@ -2,7 +2,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getSessionUser } from "@/lib/session";
 import { NotificationService, NotificationEvent } from "@/services/notifications";
-import { prisma } from "@vayva/db";
+import { prisma } from "@/lib/prisma";
 
 export async function POST(req: NextRequest) {
     const user = await getSessionUser();
@@ -22,7 +22,12 @@ export async function POST(req: NextRequest) {
             select: { phone: true, firstName: true }
         });
 
-        const phone = fullUser?.phone || "2348000000000";
+        if (!fullUser?.phone) {
+            console.warn(`[Notification_Trigger] Skipping ${event} - No phone number for user ${user.id}`);
+            return NextResponse.json({ success: false, error: "User phone missing" });
+        }
+
+        const phone = fullUser.phone;
         const merchantName = fullUser?.firstName || (user as any).name || "Merchant";
 
         await NotificationService.sendMilestone(event as NotificationEvent, {

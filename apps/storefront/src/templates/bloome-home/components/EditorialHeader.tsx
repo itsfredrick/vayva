@@ -1,6 +1,7 @@
 import React from "react";
 import { ShoppingBag, Search, Menu } from "lucide-react";
 import Link from "next/link";
+import { Button } from "@vayva/ui";
 
 interface EditorialHeaderProps {
   storeName?: string;
@@ -14,9 +15,9 @@ export const EditorialHeader = ({
   return (
     <header className="sticky top-0 z-50 bg-[#FAFAF9]/90 backdrop-blur-sm border-b border-stone-200 h-[70px] flex items-center justify-between px-6 transition-all duration-300">
       {/* Left - Menu (Editorial feel often has menu on left) */}
-      <button className="p-2 -ml-2 hover:bg-stone-100 rounded-full text-stone-600 transition-colors">
+      <Button variant="ghost" size="icon" className="p-2 -ml-2 hover:bg-stone-100 rounded-full text-stone-600 transition-colors h-auto" aria-label="Open menu">
         <Menu size={22} strokeWidth={1.5} />
-      </button>
+      </Button>
 
       {/* Center - Brand */}
       <Link
@@ -28,9 +29,9 @@ export const EditorialHeader = ({
 
       {/* Right - Icons */}
       <div className="flex items-center gap-4 text-stone-600">
-        <button className="p-2 hover:text-[#C9B7A2] transition-colors">
+        <Button variant="ghost" size="icon" className="p-2 hover:text-[#C9B7A2] transition-colors h-auto" aria-label="Search">
           <Search size={22} strokeWidth={1.5} />
-        </button>
+        </Button>
         <Link
           href="/cart"
           className="relative p-2 hover:text-[#C9B7A2] transition-colors"

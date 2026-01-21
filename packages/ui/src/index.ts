@@ -26,3 +26,6 @@ export * from "./components/ErrorBoundary";
 export * from "./components/Label";
 export * from "./components/Textarea";
 export * from "./components/Select";
+export * from "./components/Checkbox";
+export * from "./components/Switch";
+export * from "./components/Skeleton";

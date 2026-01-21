@@ -18,6 +18,7 @@ import {
 } from "lucide-react";
 import Link from "next/link";
 import { toast } from "sonner";
+import { Button } from "@vayva/ui";
 
 type Tab = "incidents" | "history" | "runbook" | "settings";
 
@@ -97,12 +98,15 @@ export default function RescueConsolePage() {
                     </h1>
                     <p className="text-gray-500 mt-1">AI-powered platform diagnostics and self-healing</p>
                 </div>
-                <button
+                <Button
+                    variant="ghost"
+                    size="icon"
                     onClick={fetchData}
-                    className="p-2 text-gray-400 hover:text-indigo-600 transition-colors"
+                    className="p-2 text-gray-400 hover:text-indigo-600 transition-colors h-10 w-10 flex items-center justify-center"
+                    aria-label="Refresh rescue diagnostics"
                 >
                     <RefreshCw className={`w-5 h-5 ${loading ? 'animate-spin' : ''}`} />
-                </button>
+                </Button>
             </div>
 
             {/* Tabs Nav */}
@@ -113,17 +117,19 @@ export default function RescueConsolePage() {
                     { id: "runbook", label: "Runbooks", icon: Zap },
                     { id: "settings", label: "Settings", icon: Settings },
                 ].map((tab) => (
-                    <button
+                    <Button
                         key={tab.id}
+                        variant="ghost"
                         onClick={() => setActiveTab(tab.id as Tab)}
-                        className={`flex items-center gap-2 px-6 py-2.5 rounded-lg text-sm font-semibold transition-all ${activeTab === tab.id
-                            ? "bg-[#0F172A] text-white shadow-lg"
+                        className={`flex items-center gap-2 px-6 py-2.5 rounded-lg text-sm font-semibold transition-all h-auto ${activeTab === tab.id
+                            ? "bg-[#0F172A] text-white shadow-lg hover:bg-[#0F172A] hover:text-white"
                             : "text-gray-500 hover:text-gray-900 hover:bg-gray-100"
                             }`}
+                        aria-label={`Switch to ${tab.label} tab`}
                     >
                         <tab.icon className="w-4 h-4" />
                         {tab.label}
-                    </button>
+                    </Button>
                 ))}
             </div>
 
@@ -233,12 +239,14 @@ export default function RescueConsolePage() {
                                 { id: "job-stuck-mitigation", title: "Job Stuck Mitigation", desc: "Dealing with BullMQ congestion", icon: Zap },
                                 { id: "auth-sync-repair", title: "Auth Sync Repair", desc: "Resolving session inconsistencies", icon: ShieldCheck },
                             ].map((rb) => (
-                                <button
+                                <Button
+                                    variant="ghost"
                                     key={rb.id}
                                     onClick={() => runRunbook(rb.id, rb.title)}
                                     disabled={!!runningRunbook}
-                                    className={`p-6 bg-white rounded-2xl border border-gray-200 hover:shadow-lg transition-all text-left group ${runningRunbook === rb.id ? 'opacity-75 animate-pulse cursor-wait' : ''
+                                    className={`p-6 bg-white rounded-2xl border border-gray-200 hover:shadow-lg transition-all text-left group h-auto block w-full hover:bg-white ${runningRunbook === rb.id ? 'opacity-75 animate-pulse cursor-wait' : ''
                                         }`}
+                                    aria-label={`Run automation: ${rb.title}`}
                                 >
                                     <div className="w-10 h-10 rounded-xl bg-indigo-50 flex items-center justify-center mb-4 group-hover:bg-indigo-600 group-hover:text-white transition-colors">
                                         {runningRunbook === rb.id ? <Loader2 className="h-5 w-5 animate-spin" /> : <rb.icon className="w-5 h-5 text-indigo-600 group-hover:text-white" />}
@@ -248,7 +256,7 @@ export default function RescueConsolePage() {
                                     <div className="mt-4 flex items-center gap-2 text-xs font-bold text-indigo-600 opacity-0 group-hover:opacity-100 transition-all transform translate-y-2 group-hover:translate-y-0">
                                         <Play className="w-3 h-3 fill-current" /> Run Automation
                                     </div>
-                                </button>
+                                </Button>
                             ))}
                         </div>
                     )}

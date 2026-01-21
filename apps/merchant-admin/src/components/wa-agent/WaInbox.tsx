@@ -3,7 +3,7 @@
 import React from "react";
 import { WaThread, WaMessage } from "@/services/wa-agent";
 import { useRouter, useParams } from "next/navigation";
-import { Icon, Button, cn } from "@vayva/ui";
+import { Button, Icon, cn } from "@vayva/ui";
 import { TimeDisplay } from "@/components/shared/TimeDisplay";
 
 // --- Sidebar List ---
@@ -18,14 +18,14 @@ export const InboxSidebar = ({
   return (
     <div className="w-80 border-r border-gray-100 bg-white flex flex-col h-full overflow-hidden">
       <div className="p-4 border-b border-gray-100 flex items-center justify-between">
-        <h2 className="font-bold text-[#0B0B0B]">Inbox</h2>
+        <h2 className="font-bold text-black">Inbox</h2>
         <div className="flex gap-2">
-          <button className="text-gray-400 hover:text-black">
+          <Button className="text-gray-400 hover:text-black">
             <Icon name="Filter" size={16} />
-          </button>
-          <button className="text-gray-400 hover:text-black">
+          </Button>
+          <Button className="text-gray-400 hover:text-black">
             <Icon name="Search" size={16} />
-          </button>
+          </Button>
         </div>
       </div>
       <div className="flex-1 overflow-y-auto">
@@ -44,7 +44,7 @@ export const InboxSidebar = ({
               <span
                 className={cn(
                   "font-bold text-sm",
-                  activeId === thread.id ? "text-blue-900" : "text-[#0B0B0B]",
+                  activeId === thread.id ? "text-blue-900" : "text-black",
                 )}
               >
                 {thread.customerName}
@@ -96,14 +96,14 @@ export const ChatWindow = ({ thread }: { thread?: WaThread | null }) => {
             {thread.customerName.charAt(0)}
           </div>
           <div>
-            <h3 className="font-bold text-[#0B0B0B] text-sm">
+            <h3 className="font-bold text-black text-sm">
               {thread.customerName}
             </h3>
             <p className="text-xs text-gray-500">{thread.customerPhone}</p>
           </div>
         </div>
         <div className="flex items-center gap-2">
-          <button
+          <Button
             onClick={() =>
               alert("Conversation reported for compliance review.")
             }
@@ -112,7 +112,7 @@ export const ChatWindow = ({ thread }: { thread?: WaThread | null }) => {
           >
             <Icon name="ShieldAlert" size={16} />
             <span className="hidden md:inline">Report</span>
-          </button>
+          </Button>
           <Button variant="outline" size="sm">
             Resolve
           </Button>
@@ -142,7 +142,7 @@ export const ChatWindow = ({ thread }: { thread?: WaThread | null }) => {
                 : "bg-[#d9fdd3] self-end rounded-tr-none",
             )}
           >
-            <p className="text-[#0B0B0B]">{msg.text}</p>
+            <p className="text-black">{msg.text}</p>
             <span className="text-[10px] text-gray-400 block text-right mt-1 opacity-70 border-t border-black/5 pt-1">
               <TimeDisplay date={msg.timestamp} format="time" />
             </span>
@@ -158,9 +158,9 @@ export const ChatWindow = ({ thread }: { thread?: WaThread | null }) => {
             placeholder="Type a message..."
             className="flex-1 h-10 border border-gray-200 rounded-full px-4 text-sm focus:outline-none focus:border-blue-500"
           />
-          <button className="w-10 h-10 rounded-full bg-[#00A884] text-white flex items-center justify-center hover:bg-[#008f6f] transition-colors">
+          <Button className="w-10 h-10 rounded-full bg-[#00A884] text-white flex items-center justify-center hover:bg-[#008f6f] transition-colors">
             <Icon name="Send" size={18} />
-          </button>
+          </Button>
         </div>
       </div>
     </div>
@@ -172,7 +172,7 @@ export const AiActionsPanel = ({ thread }: { thread?: WaThread | null }) => {
   if (!thread) return null;
   return (
     <div className="w-80 border-l border-gray-100 bg-white flex flex-col h-full overflow-y-auto p-4 gap-6">
-      <h3 className="font-bold text-[#0B0B0B] text-sm uppercase tracking-wide">
+      <h3 className="font-bold text-black text-sm uppercase tracking-wide">
         AI Assistant
       </h3>
 
@@ -183,7 +183,7 @@ export const AiActionsPanel = ({ thread }: { thread?: WaThread | null }) => {
             <Icon name="Zap" size={14} />
             <span className="text-xs font-bold">Suggested Reply</span>
           </div>
-          <p className="text-sm text-[#0B0B0B] mb-3">
+          <p className="text-sm text-black mb-3">
             {thread.aiSuggestions.reply}
           </p>
           <div className="flex gap-2">
@@ -207,7 +207,7 @@ export const AiActionsPanel = ({ thread }: { thread?: WaThread | null }) => {
             <Icon name="ShieldAlert" size={14} />
             <span className="text-xs font-bold">Approval Required</span>
           </div>
-          <p className="text-sm font-bold text-[#0B0B0B]">
+          <p className="text-sm font-bold text-black">
             {thread.aiSuggestions.action.description}
           </p>
           <p className="text-xs text-gray-500 mt-1 mb-3">
@@ -240,14 +240,14 @@ export const AiActionsPanel = ({ thread }: { thread?: WaThread | null }) => {
           Quick Share
         </h4>
         <div className="flex flex-col gap-2">
-          <button className="flex items-center gap-3 p-2 hover:bg-gray-50 rounded-lg text-left transition-colors">
+          <Button className="flex items-center gap-3 p-2 hover:bg-gray-50 rounded-lg text-left transition-colors">
             <div className="w-10 h-10 bg-gray-100 rounded overflow-hidden"></div>
             <div className="flex-1">
-              <p className="text-xs font-bold text-[#0B0B0B]">Vintage Jacket</p>
+              <p className="text-xs font-bold text-black">Vintage Jacket</p>
               <p className="text-[10px] text-gray-500">₦ 15,000</p>
             </div>
             <Icon name="Plus" size={14} className="text-gray-400" />
-          </button>
+          </Button>
         </div>
       </div>
     </div>

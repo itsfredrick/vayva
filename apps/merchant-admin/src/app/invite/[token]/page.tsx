@@ -3,7 +3,7 @@
 import React from "react";
 import Link from "next/link";
 import { AuthShell } from "@/components/auth-shell";
-import { GlassPanel, Input, Button } from "@vayva/ui";
+import { Button, GlassPanel, Input } from "@vayva/ui";
 
 export default function AcceptInvitePage({
   params,
@@ -40,7 +40,7 @@ export default function AcceptInvitePage({
             <div className="text-center border-t border-border-subtle pt-4">
               <p className="text-xs text-text-secondary">
                 Already have an account?{" "}
-                <Link href="/auth/login" className="text-white hover:underline">
+                <Link href="/signin" className="text-white hover:underline">
                   Log in
                 </Link>{" "}
                 instead.
@@ -55,7 +55,7 @@ export default function AcceptInvitePage({
             <p className="text-text-secondary mb-6">
               This invitation link has expired or is invalid.
             </p>
-            <Link href="/auth/login">
+            <Link href="/signin">
               <Button variant="outline">Go to Login</Button>
             </Link>
           </div>

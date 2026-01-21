@@ -8,6 +8,7 @@ import {
 import { useStorefrontCart } from "@/hooks/storefront/useStorefrontCart";
 import { CheckoutModal } from "./CheckoutModal";
 import { Download, Monitor, Zap, CheckCircle, ShoppingBag, X } from "lucide-react";
+import { Button } from "@vayva/ui";
 
 export function StandardDigitalHome({
     storeName: initialStoreName,
@@ -32,12 +33,14 @@ export function StandardDigitalHome({
                     <Monitor className="inline-block w-6 h-6 mr-2 mb-1" />
                     {displayName}
                 </div>
-                <button
+                <Button
+                    variant="ghost"
                     onClick={() => setIsCartOpen(true)}
-                    className="hover:text-purple-400 transition-colors relative"
+                    className="hover:text-purple-400 transition-colors relative h-auto p-0"
+                    aria-label={`View library with ${cart.length} items`}
                 >
                     My Library [{cart.length}]
-                </button>
+                </Button>
             </nav>
 
             <div className="max-w-6xl mx-auto px-6 py-20 text-center">
@@ -67,18 +70,20 @@ export function StandardDigitalHome({
                                 </div>
 
                                 <div className="aspect-square bg-gray-800 rounded-lg mb-6 overflow-hidden grayscale group-hover:grayscale-0 transition-all">
-                                    <img src={product.image || `https://via.placeholder.com/300?text=.ZIP`} className="w-full h-full object-cover mix-blend-overlay opacity-80" />
+                                    <img src={product.image || `https://via.placeholder.com/300?text=.ZIP`} alt={product.name} className="w-full h-full object-cover mix-blend-overlay opacity-80" />
                                 </div>
 
                                 <h3 className="text-lg font-bold mb-2">{product.name}</h3>
                                 <div className="flex justify-between items-center mt-4">
                                     <span className="text-purple-400 font-bold">₦{product.price.toLocaleString()}</span>
-                                    <button
+                                    <Button
+                                        variant="primary"
                                         onClick={() => addToCart(product)}
-                                        className="text-xs bg-white text-black px-3 py-2 rounded font-bold hover:bg-purple-400 hover:text-white transition-colors uppercase"
+                                        className="text-xs bg-white text-black px-3 py-2 rounded font-bold hover:bg-purple-400 hover:text-white transition-colors uppercase h-auto border-none"
+                                        aria-label={`Add ${product.name} to cart`}
                                     >
                                         Add
-                                    </button>
+                                    </Button>
                                 </div>
                             </div>
                         ))
@@ -118,7 +123,7 @@ export function StandardDigitalHome({
                     <div className="relative w-full max-w-md bg-[#181818] border-l border-gray-800 h-full p-8 flex flex-col shadow-2xl animate-in slide-in-from-right">
                         <div className="flex justify-between items-center mb-8 border-b border-gray-800 pb-4">
                             <h2 className="text-xl font-bold tracking-tight">Purchase Summary</h2>
-                            <button onClick={() => setIsCartOpen(false)}><X className="w-6 h-6 text-gray-500 hover:text-white" /></button>
+                            <Button variant="ghost" size="icon" onClick={() => setIsCartOpen(false)} aria-label="Close cart sidebar"><X className="w-6 h-6 text-gray-500 hover:text-white" /></Button>
                         </div>
 
                         <div className="flex-1 space-y-4 overflow-y-auto custom-scrollbar">
@@ -130,7 +135,7 @@ export function StandardDigitalHome({
                                     </div>
                                     <div className="flex gap-4 items-center">
                                         <span>₦{item.price.toLocaleString()}</span>
-                                        <button onClick={() => removeFromCart(item.id)} className="text-gray-600 hover:text-red-500"><X className="w-4 h-4" /></button>
+                                        <Button variant="ghost" size="icon" onClick={() => removeFromCart(item.id)} className="text-gray-600 hover:text-red-500 p-0 h-auto" aria-label={`Remove ${item.name} from cart`}><X className="w-4 h-4" /></Button>
                                     </div>
                                 </div>
                             ))}
@@ -141,12 +146,12 @@ export function StandardDigitalHome({
                                 <span>Total</span>
                                 <span className="text-purple-400">₦{total.toLocaleString()}</span>
                             </div>
-                            <button
+                            <Button
                                 onClick={() => setIsCheckoutOpen(true)}
-                                className="w-full bg-purple-600 hover:bg-purple-500 text-white py-4 rounded-lg font-bold tracking-wide transition-all shadow-lg shadow-purple-900/20"
+                                className="w-full bg-purple-600 hover:bg-purple-500 text-white py-6 h-auto rounded-lg font-bold tracking-wide transition-all shadow-lg shadow-purple-900/20"
                             >
                                 Confirm & Download
-                            </button>
+                            </Button>
                         </div>
                     </div>
                 </div>

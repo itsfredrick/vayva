@@ -63,7 +63,11 @@ export async function checkRateLimit(
         storeId,
         userId,
         AuditEventType.SECURITY_RATE_LIMIT_BLOCKED,
-        { routeKey, limit, points: record.points },
+        {
+          targetType: "SECURITY_BLOCK",
+          targetId: routeKey,
+          meta: { limit, points: record.points },
+        }
       );
     }
 

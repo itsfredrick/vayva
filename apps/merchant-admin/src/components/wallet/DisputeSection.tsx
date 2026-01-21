@@ -1,5 +1,5 @@
 import React from "react";
-import { Icon } from "@vayva/ui";
+import { Icon, Button } from "@vayva/ui";
 
 export const DisputeSection = () => {
   // Test Dispute Data
@@ -22,9 +22,9 @@ export const DisputeSection = () => {
         <h3 className="font-bold text-red-900 flex items-center gap-2">
           <Icon name="Info" size={18} /> Action Required: 1 Open Dispute
         </h3>
-        <button className="text-xs font-bold text-red-700 hover:underline">
+        <Button variant="link" className="text-xs font-bold text-red-700 hover:underline h-auto p-0">
           View All Disputes
-        </button>
+        </Button>
       </div>
 
       <div className="space-y-3">
@@ -48,12 +48,15 @@ export const DisputeSection = () => {
             </div>
 
             <div className="flex gap-2">
-              <button className="px-3 py-2 bg-red-600 text-white rounded-lg text-xs font-bold hover:bg-red-700">
+              <Button className="px-3 py-2 bg-red-600 text-white rounded-lg text-xs font-bold hover:bg-red-700 h-auto">
                 Submit Evidence
-              </button>
-              <button className="px-3 py-2 border border-gray-200 rounded-lg text-xs font-bold text-gray-700 hover:bg-gray-50">
+              </Button>
+              <Button
+                variant="outline"
+                className="px-3 py-2 border border-gray-200 rounded-lg text-xs font-bold text-gray-700 hover:bg-gray-50 h-auto"
+              >
                 View Details
-              </button>
+              </Button>
             </div>
           </div>
         ))}

@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
+import { Button } from "@vayva/ui";
 
 interface InfoTooltipProps {
   content: string;
@@ -16,11 +17,11 @@ export function InfoTooltip({ content, children }: InfoTooltipProps) {
 
   return (
     <div className="relative inline-block">
-      <button
+      <Button
         onMouseEnter={() => setIsVisible(true)}
         onMouseLeave={() => setIsVisible(false)}
         onClick={() => setIsVisible(!isVisible)}
-        className="text-[#64748B] hover:text-[#0F172A] transition-colors"
+        className="text-[#64748B] hover:text-black transition-colors"
         aria-label="More information"
       >
         {children || (
@@ -38,10 +39,10 @@ export function InfoTooltip({ content, children }: InfoTooltipProps) {
             />
           </svg>
         )}
-      </button>
+      </Button>
 
       {isVisible && (
-        <div className="absolute z-10 bottom-full left-1/2 transform -translate-x-1/2 mb-2 px-3 py-2 bg-[#0F172A] text-white text-xs rounded shadow-lg max-w-xs">
+        <div className="absolute z-10 bottom-full left-1/2 transform -translate-x-1/2 mb-2 px-3 py-2 bg-black text-white text-xs rounded shadow-lg max-w-xs">
           <p>{truncatedContent}</p>
           <div className="absolute top-full left-1/2 transform -translate-x-1/2 -mt-1">
             <div className="border-4 border-transparent border-t-[#0F172A]"></div>

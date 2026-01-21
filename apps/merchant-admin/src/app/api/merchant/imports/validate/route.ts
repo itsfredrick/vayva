@@ -1,9 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
-import { prisma } from "@vayva/db";
-// @ts-ignore
-import { parse } from "csv-parse/sync"; // Need to add package or use simple split
+import { prisma } from "@/lib/prisma";
 import { validateRow } from "@/lib/imports/csv";
 
 // Test fetching file content from URL
@@ -15,20 +13,31 @@ T-Shirt,₦ 5000,10,Clothes
 Jeans,,5,Clothes
 Sneakers,25000,2,Shoes`;
   }
+
   // Real fetch
-  // const res = await fetch(url); return res.text();
-  return "";
+  const res = await fetch(url);
+  if (!res.ok) throw new Error("Failed to fetch CSV file");
+  return res.text();
 };
+
+type CsvRow = Record<string, string>;
+
+interface ImportError {
+  row: number;
+  msgs: string[];
+}
 
 export async function POST(req: NextRequest) {
   const session = await getServerSession(authOptions);
-  if (!session?.user)
+  const user = session?.user as { storeId?: string } | undefined;
+
+  if (!user?.storeId)
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 
   const { jobId } = await req.json();
 
   const job = await prisma.importJob.findUnique({ where: { id: jobId } });
-  if (!job || job.merchantId !== (session!.user as any).storeId)
+  if (!job || job.merchantId !== user.storeId)
     return new NextResponse("Forbidden", { status: 403 });
 
   try {
@@ -40,26 +49,23 @@ export async function POST(req: NextRequest) {
     const csvContent = await fetchFileContent(job.fileUrl);
 
     // Parse
-    // Manual split for dependency-free V1 if needed, or assume csv-parse is available.
-    // I'll use simple split for prototype to avoid install dep step if possible, but CSV is complex.
-    // Assuming simple headers.
     const lines = csvContent.split("\n").filter((l) => l.trim().length > 0);
-    const headers = lines[0].split(",").map((h: any) => h.trim());
+    const headers = lines[0].split(",").map((h) => h.trim());
 
     let valid = 0;
     let invalid = 0;
-    const errors: any[] = [];
-    const preview: any[] = [];
+    const errors: ImportError[] = [];
+    const preview: CsvRow[] = [];
 
     for (let i = 1; i < lines.length; i++) {
-      const vals = lines[i].split(",").map((s: any) => s.trim());
-      const row: any = {};
+      const vals = lines[i].split(",").map((s) => s.trim());
+      const row: CsvRow = {};
       headers.forEach((h, idx) => (row[h] = vals[idx]));
 
       const result = validateRow(row);
       if (result.valid) {
         valid++;
-        if (preview.length < 5) preview.push(result.row);
+        if (preview.length < 5) preview.push(result.row as any);
       } else {
         invalid++;
         if (errors.length < 10)
@@ -74,7 +80,7 @@ export async function POST(req: NextRequest) {
         validRows: valid,
         invalidRows: invalid,
         totalRows: lines.length - 1,
-        summary: { preview, errors },
+        summary: { preview, errors } as any,
       },
     });
 

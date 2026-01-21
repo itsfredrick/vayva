@@ -13,6 +13,7 @@ import {
     Calendar,
     MapPin
 } from "lucide-react";
+import { Button } from "@vayva/ui";
 
 export default function OrderDetailPage() {
     const { id } = useParams() as { id: string };
@@ -56,9 +57,9 @@ export default function OrderDetailPage() {
                 <div className="bg-red-50 text-red-700 p-4 rounded-lg">
                     Error: {error || "Order not found"}
                 </div>
-                <button onClick={() => router.back()} className="mt-4 text-indigo-600 hover:underline">
+                <Button onClick={() => router.back()} variant="link" className="mt-4 text-indigo-600 hover:underline p-0 h-auto">
                     Go Back
-                </button>
+                </Button>
             </div>
         );
     }
@@ -67,12 +68,14 @@ export default function OrderDetailPage() {
         <div className="p-8 space-y-6 max-w-7xl mx-auto">
             {/* Header */}
             <div className="flex items-center gap-4">
-                <button
+                <Button
                     onClick={() => router.back()}
-                    className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
+                    variant="ghost"
+                    size="icon"
+                    className="h-10 w-10 hover:bg-gray-100 rounded-lg transition-colors p-2"
                 >
                     <ArrowLeft size={20} className="text-gray-600" />
-                </button>
+                </Button>
                 <div>
                     <div className="flex items-center gap-3">
                         <h1 className="text-2xl font-bold text-gray-900">

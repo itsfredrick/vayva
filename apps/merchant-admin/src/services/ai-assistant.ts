@@ -4,7 +4,6 @@
 export class AiService {
     static async generateResponse(userMessage: string, productSchema: any): Promise<string> {
         // In real impl, checking OpenAI/Gemini with system prompt
-        console.log("Generating AI response for schema:", productSchema?.length || 0, "items");
 
         // Simple keyword mock
         const msg = userMessage.toLowerCase();

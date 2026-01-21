@@ -1,8 +1,8 @@
 import { NextResponse } from "next/server";
 import { requireAuth } from "@/lib/auth/session";
-import { prisma } from "@vayva/db";
+import { prisma } from "@/lib/prisma";
 import bcrypt from "bcryptjs";
-import { logAudit, AuditAction } from "@/lib/audit";
+import { logAuditEvent as logAudit, AuditEventType } from "@/lib/audit";
 import { checkRateLimit } from "@/lib/rate-limit";
 
 export async function POST(req: Request) {
@@ -71,13 +71,19 @@ export async function POST(req: Request) {
     });
 
     // 5. Audit Logging
-    await logAudit({
+    await logAudit(
       storeId,
-      actor: { type: "USER", id: userId, label: user.email },
-      action: "PASSWORD_CHANGED",
-      entity: { type: "USER", id: userId },
-      metadata: { ip: req.headers.get("x-forwarded-for") || "unknown" },
-    } as any);
+      userId,
+      AuditEventType.SETTINGS_CHANGED,
+      {
+        targetType: "USER",
+        targetId: userId,
+        meta: {
+          ip: req.headers.get("x-forwarded-for") || "unknown",
+          actor: { type: "USER", label: user.email }
+        }
+      }
+    );
 
     // 6. Security Notification
     const { ResendEmailService } = await import("@/lib/email/resend");

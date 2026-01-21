@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { prisma } from "@vayva/db";
+import { prisma } from "@/lib/prisma";
 
 export async function POST(req: Request) {
   try {
@@ -31,11 +31,11 @@ export async function POST(req: Request) {
           action: "REFRESH_PAGE",
         });
       } else if (order?.paymentStatus === "PENDING") {
-        // Test logic: randomly say it's settling to demo the flow
+        // Real logic: It is pending.
         return NextResponse.json({
-          resolved: true,
+          resolved: false,
           message:
-            "This payment is currently settling with the bank. It usually clears within 15 minutes.",
+            "Payment is still pending confirmation from the provider. Please check again in a few minutes.",
           action: "WAIT",
         });
       }

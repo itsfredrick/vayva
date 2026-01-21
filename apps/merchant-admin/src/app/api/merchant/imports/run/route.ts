@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
-import { prisma } from "@vayva/db";
+import { prisma } from "@/lib/prisma";
 import { validateRow } from "@/lib/imports/csv";
 
 export async function POST(req: NextRequest) {

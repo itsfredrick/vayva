@@ -96,4 +96,43 @@ export class AnalyticsService {
       storePublished: actions.has(ACTIVATION_EVENTS.PUBLISH_STORE),
     };
   }
+
+  // 4. Daily Revenue (For Trend Chart)
+  static async getDailyRevenue(storeId: string, range: DateRange) {
+    // Group by Date
+    // Note: Prisma groupBy doesn't natively support Date truncation easily across all DBs without raw query.
+    // For local Postgres/Launch, we can fetch orders and aggregate in JS or use raw query.
+    // Aggregating in JS for simplicity/safety given volume < 100k.
+
+    const orders = await prisma.order.findMany({
+      where: {
+        storeId,
+        paymentStatus: "PAID" as any,
+        createdAt: { gte: range.from, lte: range.to },
+      },
+      select: {
+        createdAt: true,
+        total: true,
+      },
+      orderBy: { createdAt: "asc" },
+    });
+
+    // Map to daily buckets
+    const dailyMap = new Map<string, number>();
+    const dayMilliseconds = 24 * 60 * 60 * 1000;
+
+    // Initialize all days in range
+    for (let d = range.from.getTime(); d <= range.to.getTime(); d += dayMilliseconds) {
+      const dateStr = new Date(d).toISOString().split('T')[0];
+      dailyMap.set(dateStr, 0);
+    }
+
+    orders.forEach(o => {
+      const dateStr = o.createdAt.toISOString().split('T')[0];
+      const amount = (o.total as any).toNumber ? (o.total as any).toNumber() : Number(o.total);
+      dailyMap.set(dateStr, (dailyMap.get(dateStr) || 0) + amount);
+    });
+
+    return Array.from(dailyMap.values());
+  }
 }

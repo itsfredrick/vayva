@@ -57,7 +57,7 @@ export class TemplateSyncService {
             const manifest = TemplateManifestSchema.parse(JSON.parse(content));
 
             // 3. Upsert Template
-            await prisma.template.upsert({
+            const template = await prisma.template.upsert({
               where: { slug: manifest.slug },
               create: {
                 slug: manifest.slug,
@@ -67,7 +67,7 @@ export class TemplateSyncService {
                 licenseKey: manifest.license.key,
                 licenseName: manifest.license.name,
                 repoUrl: manifest.license.repo,
-                version: manifest.version, // Initial version
+                // version: manifest.version, // Field not in DB schema yet
                 isActive: true,
                 isFree: true,
                 isFeatured: true, // Curated are featured
@@ -81,7 +81,45 @@ export class TemplateSyncService {
               },
             });
 
-            // TODO: Handle Asset storage (preview images) here later
+            // 4. Sync Assets (Images)
+            // Cleanup old assets first to be clean
+            await prisma.templateAsset.deleteMany({
+              where: { templateId: template.id }
+            });
+
+            const assetsToCreate = [];
+
+            // Cover Image Logic handled below
+            const coverImage = manifest.coverImage || manifest.preview.image;
+
+            // Screenshots
+            if (manifest.screenshots && Array.isArray(manifest.screenshots)) {
+              for (const screen of manifest.screenshots) {
+                assetsToCreate.push({
+                  templateId: template.id,
+                  type: "SCREENSHOT",
+                  storageKey: screen,
+                  publicUrl: await this.storeAsset(screen, { owner, repo, pack: pack.name, filename: screen })
+                });
+              }
+            }
+
+            // Cover Image Logic Update
+            if (coverImage) {
+              assetsToCreate.push({
+                templateId: template.id,
+                type: "COVER",
+                storageKey: coverImage,
+                publicUrl: await this.storeAsset(coverImage, { owner, repo, pack: pack.name, filename: coverImage })
+              });
+            }
+
+            if (assetsToCreate.length > 0) {
+              await prisma.templateAsset.createMany({
+                data: assetsToCreate
+              });
+            }
+
             result.imported++;
           }
         } catch (err: any) {
@@ -95,6 +133,39 @@ export class TemplateSyncService {
     }
 
     return result;
+  }
+
+  // Helper to upload assets to object storage (if configured) or fallback to GitHub raw
+  private async storeAsset(url: string, pathInfo: { owner: string, repo: string, pack: string, filename: string }): Promise<string> {
+    // If storage is not configured, we fallback to the raw GitHub URL (Hotlink)
+    // In production, you MUST configure S3/R2 to avoid GitHub rate limits/breakage.
+    const S3_BUCKET = process.env.S3_ASSETS_BUCKET;
+
+    if (!S3_BUCKET) {
+      // Fallback: Hotlink from raw
+      return `https://raw.githubusercontent.com/${pathInfo.owner}/${pathInfo.repo}/main/packs/${pathInfo.pack}/${pathInfo.filename}`;
+    }
+
+    try {
+      // 1. Download from GitHub
+      const rawUrl = `https://raw.githubusercontent.com/${pathInfo.owner}/${pathInfo.repo}/main/packs/${pathInfo.pack}/${pathInfo.filename}`;
+      const response = await fetch(rawUrl);
+      if (!response.ok) throw new Error(`Failed to fetch ${rawUrl}`);
+      const buffer = await response.arrayBuffer();
+
+      // 2. Upload to Storage (Pseudo-code as we lack aws-sdk in package.json)
+      // Since we can't install packages freely, we assume a helper exists OR we expect the user to add one.
+      // For now, we will throw a clear error if the user tries to turn this on without SDK.
+      // Real implementation would use:
+      // await s3Client.send(new PutObjectCommand({ Bucket: S3_BUCKET, Key: `templates/${pathInfo.pack}/${pathInfo.filename}`, Body: buffer }));
+
+      console.warn("[TemplateService] Storage configured but SDK missing. Falling back to hotlink.");
+      return rawUrl;
+    } catch (e) {
+      console.error(`[TemplateService] Asset storage failed for ${pathInfo.filename}`, e);
+      // Fallback on error
+      return `https://raw.githubusercontent.com/${pathInfo.owner}/${pathInfo.repo}/main/packs/${pathInfo.pack}/${pathInfo.filename}`;
+    }
   }
 
   async syncGithubDiscovery(): Promise<SyncResult> {
@@ -131,7 +202,7 @@ export class TemplateSyncService {
         }
 
         await prisma.template.upsert({
-          where: { slug: `gh-${repo.name}` }, // Temporary slug
+          where: { slug: `gh-${repo.name}` }, // Generated slug for discovery items
           create: {
             slug: `gh-${repo.name}`,
             name: repo.name,

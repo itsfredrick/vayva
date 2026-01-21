@@ -1,7 +1,7 @@
 import React from "react";
 import { Customer } from "@vayva/shared";
 import { CustomerCard } from "./CustomerCard";
-import { Icon } from "@vayva/ui";
+import { Icon, Button } from "@vayva/ui";
 
 interface CustomerGridProps {
   customers: Customer[];
@@ -37,9 +37,9 @@ export const CustomerGrid = ({
           Customers appear here after someone places an order or booking. Share
           your store link to get started.
         </p>
-        <button className="mt-6 px-6 py-2 bg-black text-white rounded-lg font-bold text-sm">
+        <Button className="mt-6 px-6 py-2 bg-black text-white rounded-lg font-bold text-sm">
           Share Store Link
-        </button>
+        </Button>
       </div>
     );
   }

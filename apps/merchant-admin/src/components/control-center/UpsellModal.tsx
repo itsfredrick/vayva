@@ -1,8 +1,7 @@
 "use client";
 
 import React from "react";
-import { Button } from "@/components/ui/button";
-import { Icon } from "@vayva/ui";
+import { Button, Icon } from "@vayva/ui";
 
 interface UpsellModalProps {
   isOpen: boolean;
@@ -24,12 +23,9 @@ export const UpsellModal = ({
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm animate-in fade-in duration-200">
       <div className="bg-white rounded-3xl w-full max-w-lg shadow-2xl animate-in zoom-in-95 duration-200 relative p-8">
-        <button
-          onClick={onClose}
-          className="absolute top-4 right-4 p-2 rounded-full hover:bg-gray-100 transition-colors"
-        >
+        <Button onClick={onClose} className="absolute top-4 right-4 p-2 hover:bg-gray-100">
           <Icon name={"X" as any} size={20} />
-        </button>
+        </Button>
 
         <div className="text-center">
           <div className="w-16 h-16 bg-primary-100 text-primary-600 rounded-2xl flex items-center justify-center mx-auto mb-6">

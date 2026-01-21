@@ -15,11 +15,11 @@ export function StatusChip({
   className,
 }: StatusChipProps) {
   const styles = {
-    success: "bg-green-100 text-green-700 border-green-200",
-    warning: "bg-yellow-100 text-yellow-700 border-yellow-200",
-    error: "bg-red-100 text-red-700 border-red-200",
-    neutral: "bg-gray-100 text-gray-700 border-gray-200",
-    info: "bg-blue-100 text-blue-700 border-blue-200",
+    success: "bg-vayva-green/10 text-vayva-green border-vayva-green/20",
+    warning: "bg-amber-50 text-amber-700 border-amber-100",
+    error: "bg-red-50 text-red-700 border-red-100",
+    neutral: "bg-studio-gray text-black border-studio-border font-bold",
+    info: "bg-blue-50 text-blue-700 border-blue-100",
   };
 
   // Simple auto-detection if type is not explicit

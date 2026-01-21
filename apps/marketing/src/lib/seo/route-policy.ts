@@ -4,14 +4,7 @@ export type PageType =
   | "marketing_page"
   | "blog_hub"
   | "blog_post"
-  | "templates_hub"
-  | "template_detail"
   | "compare_page"
-  | "market_category"
-  | "market_products"
-  | "market_search"
-  | "market_sellers"
-  | "storefront"
   | "legal_page"
   | "help_page"
   | "private_page";
@@ -22,17 +15,13 @@ export const SITE_ORIGIN = "https://vayva.ng";
 export const INDEX_ALLOW_PREFIXES = [
   "/about",
   "/blog",
-  "/careers",
-  "/community",
   "/compare",
   "/contact",
-  "/features",
   "/help",
   "/how-vayva-works",
   "/legal",
   "/pricing",
   "/store-builder",
-  "/templates",
   "/trust",
   "/market/categories",
   "/market/products",
@@ -60,8 +49,7 @@ export const HARD_NOINDEX_PREFIXES = [
 ];
 
 // special duplicate
-export const DUPLICATE_MARKETPLACE_PATH = "/marketplace"; // (marketing)/marketplace route path
-export const CANONICAL_MARKETPLACE_TARGET = "/market/categories";
+
 
 export function isHardNoindex(path: string) {
   return HARD_NOINDEX_PREFIXES.some(
@@ -77,17 +65,10 @@ export function isAllowIndex(path: string) {
 
 export function pageTypeFor(path: string): PageType {
   if (path === "/") return "home";
-  if (path === "/templates") return "templates_hub";
-  if (path.startsWith("/templates/")) return "template_detail";
   if (path === "/blog") return "blog_hub";
   if (path.startsWith("/blog/")) return "blog_post";
-  if (path.startsWith("/compare/") || path === "/compare")
+  if (path.startsWith("/compare/") || path === "/compare" || path.startsWith("/vs/"))
     return "compare_page";
-  if (path.startsWith("/market/categories/")) return "market_category";
-  if (path.startsWith("/market/products")) return "market_products";
-  if (path.startsWith("/market/search")) return "market_search";
-  if (path.startsWith("/market/sellers")) return "market_sellers";
-  if (path.startsWith("/store/")) return "storefront";
   if (path.startsWith("/legal") || path === "/privacy" || path === "/terms")
     return "legal_page";
   if (path.startsWith("/help")) return "help_page";

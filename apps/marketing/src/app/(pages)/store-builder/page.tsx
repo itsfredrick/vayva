@@ -1,6 +1,4 @@
-import React from "react";
 import Link from "next/link";
-import { Button } from "@vayva/ui";
 import { APP_URL } from "@/lib/constants";
 import {
   Layout,
@@ -11,6 +9,8 @@ import {
   Layers,
   ArrowRight,
 } from "lucide-react";
+import * as motion from "framer-motion/client";
+import { PremiumButton } from "@/components/marketing/PremiumButton";
 
 export const metadata = {
   title: "Store Builder | Design Your Vayva Store",
@@ -20,202 +20,148 @@ export const metadata = {
 
 export default function StoreBuilderPage() {
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen bg-white relative overflow-hidden text-[#0F172A]">
+      {/* Background Orbs */}
+      <div className="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none z-0">
+        <div className="absolute top-[-5%] left-[-5%] w-[40%] h-[40%] bg-green-50 rounded-full blur-[120px] opacity-60 animate-pulse" />
+        <div className="absolute bottom-[20%] right-[-10%] w-[35%] h-[35%] bg-blue-50 rounded-full blur-[100px] opacity-40 animate-pulse delay-1000" />
+      </div>
+
       {/* Section 1: Hero */}
-      <section className="pt-20 pb-16 px-4 bg-gray-50 border-b border-gray-100">
+      <section className="pt-32 pb-24 px-4 relative z-10">
         <div className="max-w-4xl mx-auto text-center">
-          <h1 className="text-4xl md:text-6xl font-bold text-[#0F172A] mb-6 tracking-tight">
-            Build a Professional Store
+          <motion.div
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-green-50 text-green-600 text-[10px] font-black uppercase tracking-widest mb-8 border border-green-100"
+          >
+            Visual Commerce Engine
+          </motion.div>
+          <motion.h1
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.1 }}
+            className="text-5xl md:text-7xl font-bold text-[#0F172A] mb-8 leading-[1.1] tracking-tight"
+          >
+            Build a Store That
             <br />
-            <span className="text-[#22C55E]">Without Code</span>
-          </h1>
-          <p className="text-xl text-[#64748B] mb-10 max-w-2xl mx-auto leading-relaxed">
-            Design, edit, and publish a stunning mobile storefront in minutes.
-            No hosting fees, no plugins, just pure commerce.
-          </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Link href="/templates">
-              <Button className="bg-[#22C55E] hover:bg-[#16A34A] text-white px-8 py-4 text-lg font-bold rounded-xl transition-all shadow-lg shadow-green-100">
-                View Templates
-              </Button>
-            </Link>
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#22C55E] to-[#16A34A]">Sell While You Sleep</span>
+          </motion.h1>
+          <motion.p
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.2 }}
+            className="text-xl text-[#64748B] mb-12 max-w-2xl mx-auto leading-relaxed"
+          >
+            Design and publish a stunning mobile storefront in minutes.
+            Connected to real payments, inventory, and WhatsApp automatically.
+          </motion.p>
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.3 }}
+            className="flex flex-col sm:flex-row gap-4 justify-center"
+          >
             <Link href={`${APP_URL}/signup`}>
-              <Button
-                variant="outline"
-                className="border-2 border-gray-200 text-[#0F172A] px-8 py-4 text-lg font-bold rounded-xl hover:bg-white transition-all"
-              >
-                Start Free Trial
-              </Button>
+              <PremiumButton className="px-12 py-6 text-lg rounded-[24px] shadow-[0_20px_40px_-10px_rgba(34,197,94,0.3)]">
+                Start Building Your Store
+              </PremiumButton>
             </Link>
-          </div>
+          </motion.div>
         </div>
       </section>
 
       {/* Section 2: What the Store Builder Is */}
-      <section className="py-24 px-4">
-        <div className="max-w-3xl mx-auto text-center">
-          <h2 className="text-3xl font-bold text-[#0F172A] mb-6">
+      <section className="py-32 px-4 relative z-10">
+        <div className="max-w-4xl mx-auto text-center">
+          <h2 className="text-4xl font-bold text-[#0F172A] mb-8 tracking-tight">
             Your brand, your rules.
           </h2>
-          <p className="text-lg text-[#64748B] leading-relaxed">
-            The Vayva Store Builder is a template-based visual editor designed
-            specifically for WhatsApp commerce. Unlike generic website builders,
-            every pixel is optimized for mobile customers who shop on their
-            phones. No technical setup required.
+          <p className="text-lg text-[#64748B] leading-relaxed max-w-3xl mx-auto font-medium">
+            The Vayva Store Builder is a visual editor designed specifically for WhatsApp commerce.
+            Every pixel is optimized for mobile customers who shop on their phones.
+            No technical hurdles, just pure speed.
           </p>
         </div>
       </section>
 
       {/* Section 3: Core Capabilities */}
-      <section className="py-12 px-4 bg-gray-50">
+      <section className="py-32 px-4 bg-gray-50/50 relative overflow-hidden">
         <div className="max-w-6xl mx-auto">
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {/* Capability 1 */}
-            <div className="bg-white p-8 rounded-2xl border border-gray-100 shadow-sm hover:shadow-md transition-shadow">
-              <div className="w-12 h-12 bg-blue-50 text-blue-600 rounded-xl flex items-center justify-center mb-6">
-                <MousePointerClick size={24} />
-              </div>
-              <h3 className="text-xl font-bold mb-3 text-[#0F172A]">
-                Visual Editing
-              </h3>
-              <p className="text-sm text-gray-600">
-                Click, type, and swap. Change colors, text, and images using a
-                simple control panel. No HTML or CSS needed.
-              </p>
-            </div>
-
-            {/* Capability 2 */}
-            <div className="bg-white p-8 rounded-2xl border border-gray-100 shadow-sm hover:shadow-md transition-shadow">
-              <div className="w-12 h-12 bg-purple-50 text-purple-600 rounded-xl flex items-center justify-center mb-6">
-                <Layout size={24} />
-              </div>
-              <h3 className="text-xl font-bold mb-3 text-[#0F172A]">
-                Live Preview
-              </h3>
-              <p className="text-sm text-gray-600">
-                See your changes instantly as you make them. Switch between
-                desktop and mobile views to ensure perfection.
-              </p>
-            </div>
-
-            {/* Capability 3 */}
-            <div className="bg-white p-8 rounded-2xl border border-gray-100 shadow-sm hover:shadow-md transition-shadow">
-              <div className="w-12 h-12 bg-green-50 text-green-600 rounded-xl flex items-center justify-center mb-6">
-                <Smartphone size={24} />
-              </div>
-              <h3 className="text-xl font-bold mb-3 text-[#0F172A]">
-                Mobile Optimization
-              </h3>
-              <p className="text-sm text-gray-600">
-                Every template is built mobile-first. Fast load times,
-                thumb-friendly buttons, and seamless checkout flows.
-              </p>
-            </div>
-
-            {/* Capability 4 */}
-            <div className="bg-white p-8 rounded-2xl border border-gray-100 shadow-sm hover:shadow-md transition-shadow">
-              <div className="w-12 h-12 bg-orange-50 text-orange-600 rounded-xl flex items-center justify-center mb-6">
-                <Layers size={24} />
-              </div>
-              <h3 className="text-xl font-bold mb-3 text-[#0F172A]">
-                Section-Based Layout
-              </h3>
-              <p className="text-sm text-gray-600">
-                Stack your content blocks like LEGOs. Enable, disable, or
-                reorder sections like Heroes, Products, and Testimonials.
-              </p>
-            </div>
-
-            {/* Capability 5 */}
-            <div className="bg-white p-8 rounded-2xl border border-gray-100 shadow-sm hover:shadow-md transition-shadow">
-              <div className="w-12 h-12 bg-red-50 text-red-600 rounded-xl flex items-center justify-center mb-6">
-                <RefreshCcw size={24} />
-              </div>
-              <h3 className="text-xl font-bold mb-3 text-[#0F172A]">
-                Safe Reset & Recovery
-              </h3>
-              <p className="text-sm text-gray-600">
-                Made a mess? Reset a single section, just the theme colors, or
-                the entire template back to defaults safely.
-              </p>
-            </div>
-
-            {/* Capability 6 */}
-            <div className="bg-white p-8 rounded-2xl border border-gray-100 shadow-sm hover:shadow-md transition-shadow">
-              <div className="w-12 h-12 bg-teal-50 text-teal-600 rounded-xl flex items-center justify-center mb-6">
-                <Zap size={24} />
-              </div>
-              <h3 className="text-xl font-bold mb-3 text-[#0F172A]">
-                Fast Publishing
-              </h3>
-              <p className="text-sm text-gray-600">
-                Go live in one click. Changes propagate to your public store URL
-                instantly without downtime.
-              </p>
-            </div>
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {[
+              { title: "Visual Editing", desc: "Click, type, and swap. Change colors and images using a simple control panel.", icon: MousePointerClick, color: "text-blue-500", bg: "bg-blue-50" },
+              { title: "Live Preview", desc: "See your changes instantly. Switch between desktop and mobile views in one click.", icon: Layout, color: "text-purple-500", bg: "bg-purple-50" },
+              { title: "Mobile Optimized", desc: "Built for speed. Thumb-friendly buttons and seamless one-hand checkout flows.", icon: Smartphone, color: "text-green-500", bg: "bg-green-50" },
+              { title: "Section Modules", desc: "Stack blocks like LEGOs. Reorder Heroes, Products, and Reviews easily.", icon: Layers, color: "text-orange-500", bg: "bg-orange-50" },
+              { title: "Durable Recovery", desc: "Made a mess? Reset sections or the entire theme back to defaults safely.", icon: RefreshCcw, color: "text-red-500", bg: "bg-red-50" },
+              { title: "Instant Update", desc: "Go live instantly. Changes propagate to your public store URL without downtime.", icon: Zap, color: "text-teal-500", bg: "bg-teal-50" },
+            ].map((item, i) => (
+              <motion.div
+                key={i}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: i * 0.05 }}
+                className="bg-white p-10 rounded-[40px] border border-gray-100 shadow-sm hover:shadow-2xl hover:translate-y-[-4px] transition-all group"
+              >
+                <div className={`w-14 h-14 ${item.bg} ${item.color} rounded-2xl flex items-center justify-center mb-8 group-hover:scale-110 transition-transform`}>
+                  <item.icon size={28} />
+                </div>
+                <h3 className="text-xl font-bold mb-4 tracking-tight">
+                  {item.title}
+                </h3>
+                <p className="text-sm text-[#64748B] leading-relaxed">
+                  {item.desc}
+                </p>
+              </motion.div>
+            ))}
           </div>
         </div>
       </section>
 
       {/* Section 4: How Editing Works */}
-      <section className="py-24 px-4 overflow-hidden">
-        <div className="max-w-6xl mx-auto grid lg:grid-cols-2 gap-16 items-center">
+      <section className="py-40 px-4 relative z-10">
+        <div className="max-w-6xl mx-auto grid lg:grid-cols-2 gap-20 items-center">
           <div>
-            <h2 className="text-3xl font-bold text-[#0F172A] mb-6">
-              Central Command for Creativity
+            <h2 className="text-4xl font-bold text-[#0F172A] mb-10 tracking-tight">
+              Simplified Creative Control.
             </h2>
-            <div className="space-y-8">
-              <div className="flex gap-4">
-                <div className="h-8 w-8 rounded-full bg-black text-white flex items-center justify-center font-bold shrink-0">
-                  1
+            <div className="space-y-10">
+              {[
+                { step: 1, title: "Select Template", desc: "Choose your foundation from the Template Gallery. This sets your structure." },
+                { step: 2, title: "Tweak in Draft", desc: "Enter the Control Center. Tweak your design privately without affecting your live site." },
+                { step: 3, title: "Publish Live", desc: "Hit Publish. Your new look is live for all customers instantly across the world." }
+              ].map((item, i) => (
+                <div key={i} className="flex gap-6">
+                  <div className="h-10 w-10 rounded-full bg-slate-900 text-white flex items-center justify-center font-bold shrink-0 text-sm shadow-xl">
+                    {item.step}
+                  </div>
+                  <div>
+                    <h3 className="font-bold text-xl mb-2 tracking-tight">{item.title}</h3>
+                    <p className="text-[#64748B] leading-relaxed">
+                      {item.desc}
+                    </p>
+                  </div>
                 </div>
-                <div>
-                  <h3 className="font-bold text-lg mb-1">Select Once</h3>
-                  <p className="text-gray-600">
-                    Choose your foundation from the Template Gallery. This sets
-                    your structure.
-                  </p>
-                </div>
-              </div>
-              <div className="flex gap-4">
-                <div className="h-8 w-8 rounded-full bg-black text-white flex items-center justify-center font-bold shrink-0">
-                  2
-                </div>
-                <div>
-                  <h3 className="font-bold text-lg mb-1">Draft & Edit</h3>
-                  <p className="text-gray-600">
-                    Enter the Control Center. Tweak your design in Draft mode
-                    privately without affecting your live site.
-                  </p>
-                </div>
-              </div>
-              <div className="flex gap-4">
-                <div className="h-8 w-8 rounded-full bg-black text-white flex items-center justify-center font-bold shrink-0">
-                  3
-                </div>
-                <div>
-                  <h3 className="font-bold text-lg mb-1">Publish to World</h3>
-                  <p className="text-gray-600">
-                    Happy with the preview? Hit Publish. Your new look is live
-                    for all customers instantly.
-                  </p>
-                </div>
-              </div>
+              ))}
             </div>
           </div>
-          <div className="bg-gray-100 rounded-2xl p-8 aspect-video flex items-center justify-center border border-gray-200">
-            {/* Visual representation of the builder */}
-            <div className="bg-white w-full h-full rounded-xl shadow-lg flex overflow-hidden opacity-90">
-              <div className="w-1/4 bg-gray-50 border-r border-gray-200 p-2 space-y-2">
-                <div className="w-full h-2 bg-gray-200 rounded"></div>
-                <div className="w-3/4 h-2 bg-gray-200 rounded"></div>
+          <div className="bg-slate-100/50 rounded-[48px] p-8 lg:p-12 aspect-square flex items-center justify-center border border-slate-200/60 relative group">
+            <div className="absolute inset-0 bg-blue-500/5 blur-[80px] group-hover:bg-blue-500/10 transition-all opacity-0 group-hover:opacity-100" />
+            <div className="bg-white w-full h-full rounded-[32px] shadow-2xl flex overflow-hidden border border-white/40 relative z-10">
+              <div className="w-1/4 bg-gray-50 border-r border-gray-100 p-4 space-y-3">
+                {[1, 2, 3, 4].map(v => <div key={v} className="w-full h-2 bg-gray-200 rounded animate-pulse" />)}
               </div>
-              <div className="w-1/2 p-4 flex items-center justify-center bg-gray-100">
-                <div className="w-32 h-48 bg-white border-2 border-gray-800 rounded-lg shadow-sm"></div>
+              <div className="w-1/2 p-6 flex flex-col items-center justify-center bg-[#F8FAFC]">
+                <div className="text-[10px] font-black uppercase tracking-widest text-slate-300 mb-4">Preview Window</div>
+                <div className="w-full h-full max-h-[300px] bg-white border-4 border-slate-900 rounded-[24px] shadow-2xl relative">
+                  <div className="absolute top-2 left-1/2 -translate-x-1/2 w-12 h-1 bg-slate-900 rounded-full" />
+                </div>
               </div>
-              <div className="w-1/4 bg-white border-l border-gray-200 p-2">
-                <div className="w-full h-2 bg-green-100 rounded mb-2"></div>
-                <div className="w-full h-16 bg-gray-50 border border-gray-100 rounded"></div>
+              <div className="w-1/4 bg-white border-l border-gray-100 p-4">
+                <div className="w-full h-8 bg-green-50 rounded-xl mb-4 border border-green-100" />
+                {[1, 2].map(v => <div key={v} className="w-full h-12 bg-gray-50 border border-gray-100 rounded-xl mb-3" />)}
               </div>
             </div>
           </div>
@@ -223,54 +169,47 @@ export default function StoreBuilderPage() {
       </section>
 
       {/* Section 5: Built for Growth */}
-      <section className="py-24 px-4 bg-[#0F172A] text-white">
-        <div className="max-w-4xl mx-auto text-center">
-          <h2 className="text-3xl font-bold mb-6">
+      <section className="py-40 px-4 bg-slate-950 text-white relative overflow-hidden">
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-blue-500/10 via-transparent to-transparent opacity-50" />
+        <div className="max-w-4xl mx-auto text-center relative z-10">
+          <h2 className="text-4xl font-bold mb-8 tracking-tight">
             More than just a pretty face.
           </h2>
-          <p className="text-gray-300 text-lg mb-12 max-w-2xl mx-auto">
-            This isn't a hobby site builder. It’s an engine connected to real
-            inventory, real payments, and real logistics.
+          <p className="text-slate-400 text-lg mb-20 max-w-2xl mx-auto leading-relaxed">
+            Every store built with Vayva is connected to our enterprise core—real-time inventory, secure payments, and global logistics.
           </p>
-          <div className="grid md:grid-cols-3 gap-8 text-center">
-            <div>
-              <h4 className="font-bold text-xl mb-2 text-[#22C55E]">
-                Inventory Sync
-              </h4>
-              <p className="text-sm text-gray-400">
-                Products update automatically when stock changes.
-              </p>
-            </div>
-            <div>
-              <h4 className="font-bold text-xl mb-2 text-[#22C55E]">
-                Payment Native
-              </h4>
-              <p className="text-sm text-gray-400">
-                Checkout is built-in, not pasted on.
-              </p>
-            </div>
-            <div>
-              <h4 className="font-bold text-xl mb-2 text-[#22C55E]">
-                Delivery Ready
-              </h4>
-              <p className="text-sm text-gray-400">
-                Logistics partners plugged in from day one.
-              </p>
-            </div>
+          <div className="grid md:grid-cols-3 gap-12">
+            {[
+              { title: "Inventory Sync", desc: "Products update automatically when stock changes across channels." },
+              { title: "Payment Native", desc: "Secure checkout is baked into the foundation, not added as a plugin." },
+              { title: "Logistics Ready", desc: "Delivery partners are plugged in from day one for seamless fulfillment." }
+            ].map((item, i) => (
+              <div key={i}>
+                <h4 className="font-bold text-2xl mb-4 text-[#22C55E] tracking-tight">
+                  {item.title}
+                </h4>
+                <p className="text-sm text-slate-500 leading-relaxed font-medium">
+                  {item.desc}
+                </p>
+              </div>
+            ))}
           </div>
         </div>
       </section>
 
       {/* Section 6: Final CTA */}
-      <section className="py-20 px-4 text-center">
-        <h2 className="text-4xl font-bold text-[#0F172A] mb-6">
-          Stop coding. Start selling.
-        </h2>
-        <Link href={`${APP_URL}/signup`}>
-          <Button className="bg-[#22C55E] hover:bg-[#16A34A] text-white px-10 py-5 text-lg font-bold rounded-xl shadow-xl shadow-green-100 transition-all hover:scale-105 inline-flex items-center gap-2">
-            Start Building Your Store <ArrowRight size={20} />
-          </Button>
-        </Link>
+      <section className="py-40 px-4 text-center relative overflow-hidden">
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-green-500/10 via-transparent to-transparent opacity-50" />
+        <div className="max-w-2xl mx-auto relative z-10">
+          <h2 className="text-5xl font-bold text-slate-900 mb-8 tracking-tight">
+            Stop coding. Start selling.
+          </h2>
+          <Link href={`${APP_URL}/signup`}>
+            <PremiumButton className="px-12 py-8 text-xl rounded-[24px] shadow-2xl">
+              Launch Your Store Free <ArrowRight className="ml-2 inline-block" size={24} />
+            </PremiumButton>
+          </Link>
+        </div>
       </section>
     </div>
   );

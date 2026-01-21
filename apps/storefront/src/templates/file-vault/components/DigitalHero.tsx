@@ -1,5 +1,6 @@
 import React from "react";
 import { ShieldCheck, Zap } from "lucide-react";
+import { Button } from "@vayva/ui";
 
 export const DigitalHero = () => {
   return (
@@ -23,9 +24,9 @@ export const DigitalHero = () => {
         </p>
 
         <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-          <button className="w-full sm:w-auto bg-indigo-600 text-white px-8 py-4 rounded-xl font-bold hover:bg-indigo-500 transition-all shadow-lg shadow-indigo-900/50">
+          <Button className="w-full sm:w-auto bg-indigo-600 text-white px-8 py-4 rounded-xl font-bold hover:bg-indigo-500 transition-all shadow-lg shadow-indigo-900/50 h-auto" aria-label="Explore products">
             Explore Products
-          </button>
+          </Button>
           <div className="flex items-center gap-2 text-gray-500 text-sm font-medium px-6">
             <ShieldCheck size={18} className="text-green-500" />
             Secure Payment & Delivery

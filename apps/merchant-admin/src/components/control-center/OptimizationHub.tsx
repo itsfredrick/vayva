@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Icon, cn } from "@vayva/ui";
+import { Icon, cn, Button } from "@vayva/ui";
 import { OptimizationStatus } from "@/types/intelligence";
 
 export const OptimizationHub = ({
@@ -36,7 +36,7 @@ export const OptimizationHub = ({
             Automatically improve mobile layout and checkout flow.
           </p>
         </div>
-        <button
+        <Button
           onClick={handleToggle}
           disabled={loading}
           className={cn(
@@ -50,7 +50,7 @@ export const OptimizationHub = ({
               status.active ? "translate-x-5" : "translate-x-0",
             )}
           />
-        </button>
+        </Button>
       </div>
 
       {status.active ? (
@@ -112,21 +112,18 @@ export const OptimizationHub = ({
             ))}
           </div>
 
-          <button className="text-xs text-gray-400 underline decoration-dotted hover:text-gray-600">
+          <Button size="sm" className="text-gray-400 underline decoration-dotted hover:text-gray-600">
             Revert all changes
-          </button>
+          </Button>
         </div>
       ) : (
         <div className="text-center py-6 bg-gray-50 rounded-xl border border-dashed border-gray-200">
           <p className="text-sm text-gray-500 mb-2">
             Auto-Optimization is paused.
           </p>
-          <button
-            onClick={handleToggle}
-            className="text-sm font-bold text-amber-600 hover:text-amber-700"
-          >
+          <Button onClick={handleToggle} className="text-sm text-amber-600 hover:text-amber-700">
             Turn On &rarr;
-          </button>
+          </Button>
         </div>
       )}
     </div>

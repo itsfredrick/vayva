@@ -45,10 +45,13 @@ export async function trackPerformance(
     // Log slow operation
     if (storeId && userId) {
       await logAuditEvent(storeId, userId, AuditEventType.OPERATION_SLOW, {
-        route,
-        method,
-        durationMs,
-        success,
+        targetType: "API_ROUTE",
+        targetId: route,
+        meta: {
+          method,
+          durationMs,
+          success,
+        }
       });
     }
 

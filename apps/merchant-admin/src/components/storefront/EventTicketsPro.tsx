@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { Button } from "@vayva/ui";
 import {
   useStorefrontProducts,
   useStorefrontStore,
@@ -60,13 +61,13 @@ export function EventTicketsPro({
           </div>
 
           <div className="flex items-center gap-6">
-            <button className="text-sm font-medium hover:text-red-600">
+            <Button className="text-sm font-medium hover:text-red-600">
               Find Events
-            </button>
-            <button className="text-sm font-medium hover:text-red-600">
+            </Button>
+            <Button className="text-sm font-medium hover:text-red-600">
               Create Event
-            </button>
-            <button
+            </Button>
+            <Button
               className="flex items-center gap-2 hover:bg-gray-100 p-2 rounded relative"
               onClick={() => setIsCartOpen(true)}
             >
@@ -74,8 +75,8 @@ export function EventTicketsPro({
               {cart.length > 0 && (
                 <span className="absolute top-1 right-0 w-2 h-2 bg-red-600 rounded-full"></span>
               )}
-            </button>
-            <button className="text-sm font-medium">Log In</button>
+            </Button>
+            <Button className="text-sm font-medium">Log In</Button>
           </div>
         </div>
       </nav>
@@ -92,9 +93,9 @@ export function EventTicketsPro({
               <h2 className="font-bold text-xl text-[#1e0a3c]">
                 Order Summary
               </h2>
-              <button onClick={() => setIsCartOpen(false)}>
+              <Button onClick={() => setIsCartOpen(false)}>
                 <X className="w-5 h-5 text-gray-500" />
-              </button>
+              </Button>
             </div>
 
             <div className="flex-1 overflow-auto p-6 space-y-6">
@@ -126,21 +127,21 @@ export function EventTicketsPro({
                       </div>
                       <div className="flex justify-between items-end">
                         <div className="flex items-center border border-gray-300 rounded">
-                          <button
+                          <Button
                             onClick={() => updateQuantity(item.id, -1)}
                             className="px-2 py-1 hover:bg-gray-100 text-gray-600 font-bold"
                           >
                             -
-                          </button>
+                          </Button>
                           <span className="px-2 text-sm font-bold">
                             {item.quantity}
                           </span>
-                          <button
+                          <Button
                             onClick={() => updateQuantity(item.id, 1)}
                             className="px-2 py-1 hover:bg-gray-100 text-gray-600 font-bold"
                           >
                             +
-                          </button>
+                          </Button>
                         </div>
                         <div className="text-right">
                           <div className="font-bold text-[#1e0a3c]">
@@ -160,7 +161,7 @@ export function EventTicketsPro({
                   <span>Total</span>
                   <span>₦{total.toLocaleString()}</span>
                 </div>
-                <button
+                <Button
                   onClick={() => {
                     setIsCartOpen(false);
                     setIsCheckoutOpen(true);
@@ -168,7 +169,7 @@ export function EventTicketsPro({
                   className="w-full bg-[#d1410c] text-white py-4 font-bold rounded-lg hover:bg-[#b0370a] shadow transition-colors"
                 >
                   Check out
-                </button>
+                </Button>
               </div>
             )}
           </div>
@@ -194,9 +195,9 @@ export function EventTicketsPro({
               <br />
               live.
             </h1>
-            <button className="bg-[#d1410c] text-white px-8 py-4 font-bold rounded hover:bg-[#b0370a] transition-colors text-lg">
+            <Button className="bg-[#d1410c] text-white px-8 py-4 font-bold rounded hover:bg-[#b0370a] transition-colors text-lg">
               Explore Events
-            </button>
+            </Button>
           </div>
         </div>
       </div>
@@ -231,9 +232,9 @@ export function EventTicketsPro({
                     }
                     className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                   />
-                  <button className="absolute top-3 right-3 bg-white p-2 rounded-full shadow-md text-gray-400 hover:text-red-500">
+                  <Button className="absolute top-3 right-3 bg-white p-2 rounded-full shadow-md text-gray-400 hover:text-red-500">
                     <Share2 className="w-4 h-4" />
-                  </button>
+                  </Button>
                 </div>
                 <div className="p-5 flex-1 flex flex-col">
                   <div className="font-bold text-[#d1410c] text-sm mb-1 uppercase tracking-wide">
@@ -253,9 +254,9 @@ export function EventTicketsPro({
                     <div className="font-bold text-gray-700">
                       From ₦{event.price.toLocaleString()}
                     </div>
-                    <button className="p-2 border border-gray-200 rounded-full hover:bg-gray-50">
+                    <Button className="p-2 border border-gray-200 rounded-full hover:bg-gray-50">
                       <ShoppingCart className="w-4 h-4 text-gray-600" />
-                    </button>
+                    </Button>
                   </div>
                 </div>
               </div>

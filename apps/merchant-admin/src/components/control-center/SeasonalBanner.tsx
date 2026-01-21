@@ -1,5 +1,5 @@
 import React from "react";
-import { Icon, cn } from "@vayva/ui";
+import { Icon, cn, Button } from "@vayva/ui";
 import { SeasonalSuggestion } from "@/types/intelligence";
 
 export const SeasonalBanner = ({
@@ -51,28 +51,19 @@ export const SeasonalBanner = ({
         </div>
 
         <div className="flex gap-3 shrink-0">
-          <button
-            onClick={onDismiss}
-            className="px-4 py-2 rounded-xl text-sm font-bold text-emerald-100 hover:bg-white/10 transition-colors"
-          >
+          <Button onClick={onDismiss} className="px-4 py-2 text-sm text-emerald-100 hover:bg-white/10">
             Dismiss
-          </button>
-          <button
-            onClick={onApply}
-            className="bg-white text-emerald-900 px-6 py-2 rounded-xl text-sm font-bold hover:bg-emerald-50 transition-colors shadow-md"
-          >
+          </Button>
+          <Button onClick={onApply} className="bg-white text-emerald-900 px-6 py-2 text-sm hover:bg-emerald-50 shadow-md">
             Apply Layout
-          </button>
+          </Button>
         </div>
       </div>
 
       {/* Close X */}
-      <button
-        onClick={onDismiss}
-        className="absolute top-4 right-4 text-emerald-400 hover:text-white transition-colors"
-      >
+      <Button onClick={onDismiss} className="absolute top-4 right-4 text-emerald-400 hover:text-white">
         <Icon name="X" size={16} />
-      </button>
+      </Button>
     </div>
   );
 };

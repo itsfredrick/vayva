@@ -2,7 +2,7 @@
 
 import React from "react";
 import Link from "next/link";
-import { Icon, cn } from "@vayva/ui";
+import { Icon, cn, Button } from "@vayva/ui";
 
 interface ChecklistItem {
   id: string;
@@ -107,10 +107,10 @@ export const LaunchChecklist = ({ items }: LaunchChecklistProps) => {
 
             {!item.isCompleted && (
               <Link href={item.href}>
-                <button className="h-8 px-4 rounded-lg bg-white/10 hover:bg-white/20 text-white text-xs font-medium transition-colors flex items-center gap-2">
+                <Button className="h-8 px-4 rounded-lg bg-white/10 hover:bg-white/20 text-white text-xs font-medium transition-colors flex items-center gap-2" variant="ghost">
                   {item.cta}
                   <Icon name="ArrowRight" size={12} />
-                </button>
+                </Button>
               </Link>
             )}
           </div>

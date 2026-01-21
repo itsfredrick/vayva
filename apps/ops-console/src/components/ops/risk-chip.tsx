@@ -1,5 +1,5 @@
 import React from "react";
-import { Icon } from "@vayva/ui";
+import { Icon, IconName } from "@vayva/ui";
 
 type RiskLevel = "Low" | "Medium" | "High";
 
@@ -10,7 +10,7 @@ interface RiskChipProps {
 
 const RISK_CONFIG: Record<
   RiskLevel,
-  { bg: string; text: string; border: string; icon: string; iconColor: string }
+  { bg: string; text: string; border: string; icon: IconName; iconColor: string }
 > = {
   Low: {
     bg: "bg-emerald-500/10",
@@ -44,7 +44,7 @@ export function RiskChip({ level, showIcon = true }: RiskChipProps) {
     >
       {showIcon && (
         <Icon
-          name={config.icon as any}
+          name={config.icon}
           size={14}
           className={config.iconColor}
         />

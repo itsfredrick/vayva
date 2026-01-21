@@ -1,6 +1,7 @@
 import React from "react";
 import { ShoppingBag, Search } from "lucide-react";
 import Link from "next/link";
+import { Button } from "@vayva/ui";
 
 interface MobileHeaderProps {
   storeName: string;
@@ -21,9 +22,9 @@ export const MobileHeader = ({
       </Link>
 
       <div className="flex items-center gap-4 text-[#111111]">
-        <button className="p-1">
+        <Button variant="ghost" size="icon" className="p-1 h-auto" aria-label="Search">
           <Search size={22} strokeWidth={1.5} />
-        </button>
+        </Button>
         <Link href="/cart" className="relative p-1">
           <ShoppingBag size={22} strokeWidth={1.5} />
           {cartItemCount > 0 && (

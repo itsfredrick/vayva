@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
+import { Button } from "@vayva/ui";
 import {
     useStorefrontProducts,
     useStorefrontStore,
@@ -55,18 +56,18 @@ export function StandardEventsHome({
                                 {cart.map(item => (
                                     <div key={item.id} className="text-sm flex justify-between">
                                         <span className="truncate w-32">{item.name}</span>
-                                        <button onClick={() => removeFromCart(item.id)} className="text-indigo-300 hover:text-white"><X className="w-3 h-3" /></button>
+                                        <Button onClick={() => removeFromCart(item.id)} className="text-indigo-300 hover:text-white"><X className="w-3 h-3" /></Button>
                                     </div>
                                 ))}
                             </div>
                         )}
-                        <button
+                        <Button
                             onClick={() => setIsCheckoutOpen(true)}
                             disabled={cart.length === 0}
                             className="w-full bg-white text-indigo-900 py-3 rounded-xl font-bold hover:bg-indigo-50 transition-colors disabled:opacity-50"
                         >
                             Checkout
-                        </button>
+                        </Button>
                     </div>
                 </div>
             </div>
@@ -107,12 +108,12 @@ export function StandardEventsHome({
                                             <div className="text-xs text-slate-400">Starting from</div>
                                             <div className="text-xl font-bold text-slate-900">₦{event.price.toLocaleString()}</div>
                                         </div>
-                                        <button
+                                        <Button
                                             onClick={() => addToCart(event)}
                                             className="bg-slate-900 text-white px-6 py-3 rounded-xl font-bold hover:bg-indigo-600 transition-colors flex items-center gap-2"
                                         >
                                             Get Tickets <ArrowRight className="w-4 h-4" />
-                                        </button>
+                                        </Button>
                                     </div>
                                 </div>
                             </div>

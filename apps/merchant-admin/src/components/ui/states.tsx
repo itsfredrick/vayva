@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { cn } from "@vayva/ui";
+import { cn, Button } from "@vayva/ui";
 
 interface EmptyStateProps {
   icon?: React.ReactNode;
@@ -75,12 +75,12 @@ export function ErrorState({
       <h3 className="text-lg font-semibold text-[#0B1220] mb-2">{title}</h3>
       <p className="text-sm text-gray-500 max-w-sm mb-6">{message}</p>
       {onRetry && (
-        <button
+        <Button
           onClick={onRetry}
           className="px-4 py-2 bg-[#22C55E] text-white rounded-lg text-sm font-medium hover:bg-[#16A34A] transition-colors"
         >
           Try Again
-        </button>
+        </Button>
       )}
     </div>
   );
@@ -158,12 +158,12 @@ export function RetryBanner({ message, onRetry }: RetryBannerProps) {
         <span className="text-sm text-yellow-800">{message}</span>
       </div>
       {onRetry && (
-        <button
+        <Button
           onClick={onRetry}
           className="text-sm font-medium text-yellow-700 hover:text-yellow-800"
         >
           Retry Now
-        </button>
+        </Button>
       )}
     </div>
   );

@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useRouter, useParams } from "next/navigation";
 import { useStore } from "@/context/StoreContext";
 import { StoreShell } from "@/components/StoreShell";
+import { Button } from "@vayva/ui";
 import { User, Lock, ArrowRight, Loader2, Mail, PenTool } from "lucide-react";
 import Link from "next/link";
 
@@ -107,7 +108,7 @@ export default function RegisterPage() {
 
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700">
+                  <label htmlFor="reg-first-name" className="block text-sm font-medium text-gray-700">
                     First Name
                   </label>
                   <div className="mt-1 relative rounded-md shadow-sm">
@@ -115,6 +116,7 @@ export default function RegisterPage() {
                       <PenTool className="h-5 w-5 text-gray-400" />
                     </div>
                     <input
+                      id="reg-first-name"
                       type="text"
                       required
                       value={form.firstName}
@@ -127,11 +129,12 @@ export default function RegisterPage() {
                   </div>
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700">
+                  <label htmlFor="reg-last-name" className="block text-sm font-medium text-gray-700">
                     Last Name
                   </label>
                   <div className="mt-1 relative rounded-md shadow-sm">
                     <input
+                      id="reg-last-name"
                       type="text"
                       required
                       value={form.lastName}
@@ -146,7 +149,7 @@ export default function RegisterPage() {
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700">
+                <label htmlFor="reg-email" className="block text-sm font-medium text-gray-700">
                   Email address
                 </label>
                 <div className="mt-1 relative rounded-md shadow-sm">
@@ -154,6 +157,7 @@ export default function RegisterPage() {
                     <Mail className="h-5 w-5 text-gray-400" />
                   </div>
                   <input
+                    id="reg-email"
                     type="email"
                     required
                     value={form.email}
@@ -167,7 +171,7 @@ export default function RegisterPage() {
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700">
+                <label htmlFor="reg-password" className="block text-sm font-medium text-gray-700">
                   Password
                 </label>
                 <div className="mt-1 relative rounded-md shadow-sm">
@@ -175,6 +179,7 @@ export default function RegisterPage() {
                     <Lock className="h-5 w-5 text-gray-400" />
                   </div>
                   <input
+                    id="reg-password"
                     type="password"
                     required
                     value={form.password}
@@ -188,7 +193,7 @@ export default function RegisterPage() {
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700">
+                <label htmlFor="reg-confirm-password" className="block text-sm font-medium text-gray-700">
                   Confirm Password
                 </label>
                 <div className="mt-1 relative rounded-md shadow-sm">
@@ -196,6 +201,7 @@ export default function RegisterPage() {
                     <Lock className="h-5 w-5 text-gray-400" />
                   </div>
                   <input
+                    id="reg-confirm-password"
                     type="password"
                     required
                     value={form.confirmPassword}
@@ -209,10 +215,11 @@ export default function RegisterPage() {
               </div>
 
               <div>
-                <button
+                <Button
                   type="submit"
                   disabled={isLoading}
-                  className="w-full flex justify-center items-center py-3 px-4 border border-transparent rounded-xl shadow-sm text-sm font-bold text-white bg-black hover:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-black transition-all transform active:scale-95 disabled:opacity-70 disabled:cursor-not-allowed"
+                  className="w-full flex justify-center items-center py-3 px-4 border border-transparent rounded-xl shadow-sm text-sm font-bold text-white bg-black hover:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-black transition-all transform active:scale-95 disabled:opacity-70 disabled:cursor-not-allowed h-auto"
+                  aria-label={isLoading ? "Creating account" : "Create account"}
                 >
                   {isLoading ? (
                     <Loader2 className="animate-spin h-5 w-5" />
@@ -221,7 +228,7 @@ export default function RegisterPage() {
                       Create Account <ArrowRight className="ml-2 h-4 w-4" />
                     </>
                   )}
-                </button>
+                </Button>
               </div>
             </form>
           </div>

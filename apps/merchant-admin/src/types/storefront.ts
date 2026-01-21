@@ -18,11 +18,14 @@ export type MicroTemplateId =
 
 export interface StorefrontBranding {
   color: string; // Primary accent color
+  colors?: { primary: string; secondary: string };
   logo?: string; // URL
+  logoUrl?: string; // User uploaded logo
   font?: string; // Font family class
+  brandColor?: string;
 }
 
-export interface StorefrontProductVariant {
+export interface StorefrontproductVariants {
   name: string; // e.g. "Size", "Color"
   options: string[]; // e.g. ["S", "M", "L"]
 }
@@ -35,7 +38,7 @@ export interface StorefrontProduct {
   tag: string | null;
   description?: string;
   stock?: "In Stock" | "Low Stock" | "Out of Stock";
-  variants?: StorefrontProductVariant[];
+  variants?: StorefrontproductVariants[];
   modifiers?: {
     name: string; // e.g. "Extras"
     type: "single" | "multiple"; // Radio vs Checkbox

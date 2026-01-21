@@ -5,6 +5,7 @@ import {
   listThreads,
   getThread,
   sendMessage,
+  syncAgentContext,
 } from "./controller";
 
 export const whatsappRoutes = async (server: FastifyInstance) => {
@@ -16,4 +17,7 @@ export const whatsappRoutes = async (server: FastifyInstance) => {
   server.get("/threads", listThreads);
   server.get("/threads/:id", getThread);
   server.post("/threads/:conversationId/messages", sendMessage);
+
+  // Internal/Admin API
+  server.post("/internal/agent/sync", syncAgentContext);
 };

@@ -2,7 +2,6 @@ import Fastify from "fastify";
 import cors from "@fastify/cors";
 import { catalogRoutes } from "./api/routes";
 import dotenv from "dotenv";
-import { PrismaClient } from "@prisma/client";
 
 dotenv.config();
 

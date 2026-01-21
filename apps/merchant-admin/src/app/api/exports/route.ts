@@ -1,8 +1,8 @@
 import { NextResponse } from "next/server";
-import { prisma } from "@vayva/db";
+import { prisma } from "@/lib/prisma";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
-import { logAudit } from "@/lib/audit";
+import { logAuditEvent as logAudit, AuditEventType } from "@/lib/audit";
 import { checkRateLimit } from "@/lib/rate-limit";
 
 export async function GET() {
@@ -62,17 +62,17 @@ export async function POST(req: Request) {
       },
     });
 
-    await logAudit({
+    await logAudit(
       storeId,
-      actor: {
-        type: "USER",
-        id: userId,
-        label: session.user.email || "Merchant",
-      },
-      action: "EXPORT_GENERATED",
-      entity: { type: "ExportJob", id: job.id },
-      after: { type },
-    });
+      userId,
+      AuditEventType.EXPORT_CREATED,
+      {
+        targetType: "ExportJob",
+        targetId: job.id,
+        after: { type },
+        meta: { actor: { type: "USER", label: session.user.email || "Merchant" } }
+      }
+    );
 
     return NextResponse.json({ job });
   } catch (error) {

@@ -87,7 +87,10 @@ export const FEATURES = {
    * Delivery Integration
    * Requires: KWIK_API_KEY, KWIK_MERCHANT_ID
    */
-  DELIVERY_ENABLED: Boolean(ENV.KWIK_API_KEY && ENV.KWIK_MERCHANT_ID),
+  DELIVERY_ENABLED: Boolean(
+    (ENV.KWIK_API_KEY && ENV.KWIK_MERCHANT_ID) ||
+    (process.env.KWIK_EMAIL && process.env.KWIK_PASSWORD)
+  ),
 
   /**
    * KYC Verification
@@ -250,37 +253,21 @@ export function assertFeatureEnabled(feature: keyof typeof FEATURES): void {
  * Logs warnings/errors but doesn't crash (except in production with missing critical vars).
  */
 export function validateEnvironment(): void {
-  console.log("🔍 Validating environment configuration...");
-  console.log("");
+  
+  
 
   // Feature status
-  console.log("Feature Status:");
-  console.log(
-    `  Payments: ${FEATURES.PAYMENTS_ENABLED ? "✅ ENABLED" : "❌ DISABLED"}`,
-  );
-  console.log(
-    `  Email: ${FEATURES.EMAIL_ENABLED ? "✅ ENABLED" : "❌ DISABLED"}`,
-  );
-  console.log(
-    `  WhatsApp: ${FEATURES.WHATSAPP_ENABLED ? "✅ ENABLED" : "❌ DISABLED"}`,
-  );
-  console.log(
-    `  Delivery: ${FEATURES.DELIVERY_ENABLED ? "✅ ENABLED" : "❌ DISABLED"}`,
-  );
-  console.log(`  KYC: ${FEATURES.KYC_ENABLED ? "✅ ENABLED" : "❌ DISABLED"}`);
-  console.log(
-    `  Storage: ${FEATURES.STORAGE_ENABLED ? "✅ ENABLED" : "❌ DISABLED"}`,
-  );
-  console.log(
-    `  Sentry: ${FEATURES.SENTRY_ENABLED ? "✅ ENABLED" : "❌ DISABLED"}`,
-  );
-  console.log(
-    `  AI Assistant: ${FEATURES.AI_ASSISTANT_ENABLED ? "✅ ENABLED" : "❌ DISABLED"}`,
-  );
-  console.log(
-    `  Marketing AI: ${FEATURES.MARKETING_AI_ENABLED ? "✅ ENABLED" : "❌ DISABLED"}`,
-  );
-  console.log("");
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
 
   // Production validation
   const validation = validateProductionRequirements();
@@ -297,9 +284,9 @@ export function validateEnvironment(): void {
       process.exit(1);
     }
   } else {
-    console.log("✅ Environment validation passed");
+    
   }
-  console.log("");
+  
 }
 
 // Export environment for read-only access

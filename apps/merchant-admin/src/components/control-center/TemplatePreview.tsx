@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import { Icon, cn } from "@vayva/ui";
+import { Icon, cn, Button } from "@vayva/ui";
 import { Template } from "@/types/templates";
 
 interface TemplatePreviewProps {
@@ -36,12 +36,9 @@ export const TemplatePreview = ({
       {/* Top Bar */}
       <div className="h-16 bg-white border-b border-gray-200 flex items-center justify-between px-6 shadow-sm z-10">
         <div className="flex items-center gap-4">
-          <button
-            onClick={onClose}
-            className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
-          >
+          <Button onClick={onClose} className="p-2 hover:bg-gray-100">
             <Icon name="X" size={20} />
-          </button>
+          </Button>
           <div>
             <h2 className="font-bold text-gray-900 text-lg leading-none">
               {template.name}
@@ -53,7 +50,7 @@ export const TemplatePreview = ({
         </div>
 
         <div className="flex items-center gap-2 bg-gray-100 p-1 rounded-xl">
-          <button
+          <Button
             onClick={() => setViewMode("desktop")}
             className={cn(
               "p-2 rounded-lg transition-all",
@@ -63,8 +60,8 @@ export const TemplatePreview = ({
             )}
           >
             <Icon name="Monitor" size={20} />
-          </button>
-          <button
+          </Button>
+          <Button
             onClick={() => setViewMode("mobile")}
             className={cn(
               "p-2 rounded-lg transition-all",
@@ -74,7 +71,7 @@ export const TemplatePreview = ({
             )}
           >
             <Icon name="Smartphone" size={20} />
-          </button>
+          </Button>
         </div>
 
         <div className="flex items-center gap-3">
@@ -84,12 +81,9 @@ export const TemplatePreview = ({
               {(template as any).tier || (template as any).planLevel}
             </div>
           ) : (
-            <button
-              onClick={() => onUse(template)}
-              className="bg-black text-white px-6 py-2.5 rounded-xl font-bold text-sm hover:bg-gray-800 transition-colors shadow-lg"
-            >
+            <Button onClick={() => onUse(template)} variant="primary" className="px-6 py-2.5 text-sm shadow-lg">
               Use Template
-            </button>
+            </Button>
           )}
         </div>
       </div>

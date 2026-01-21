@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from "react";
 import { Activity, RefreshCw, Filter, AlertCircle, CheckCircle, Clock } from "lucide-react";
 import { useOpsQuery } from "@/hooks/useOpsQuery";
+import { Button } from "@vayva/ui";
 
 export default function WebhookInspectorPage() {
     const [statusFilter, setStatusFilter] = useState("ALL");
@@ -35,21 +36,29 @@ export default function WebhookInspectorPage() {
                 </div>
                 <div className="flex gap-2 items-center">
                     <span className="text-xs text-gray-400 font-mono animate-pulse">LIVE MONITORING</span>
-                    <button onClick={() => refetch()} className="p-2 hover:bg-gray-100 rounded-full">
+                    <Button
+                        variant="ghost"
+                        size="icon"
+                        onClick={() => refetch()}
+                        className="rounded-full h-8 w-8"
+                        aria-label="Refresh webhook logs"
+                    >
                         <RefreshCw className={`w-5 h-5 text-gray-500 ${isLoading ? 'animate-spin' : ''}`} />
-                    </button>
+                    </Button>
                 </div>
             </div>
 
             <div className="flex gap-2">
                 {["ALL", "FAILED", "SUCCESS", "PENDING"].map(s => (
-                    <button
+                    <Button
                         key={s}
+                        variant={statusFilter === s ? "secondary" : "ghost"}
                         onClick={() => setStatusFilter(s)}
-                        className={`px-3 py-1.5 text-xs font-bold rounded-lg transition-colors ${statusFilter === s ? "bg-indigo-100 text-indigo-700" : "bg-white border border-gray-200 text-gray-600 hover:bg-gray-50"}`}
+                        className={`px-3 py-1.5 text-xs font-bold rounded-lg transition-colors h-auto ${statusFilter === s ? "bg-indigo-100 text-indigo-700" : "bg-white border border-gray-200 text-gray-600 hover:bg-gray-50"}`}
+                        aria-label={`Filter by ${s} status`}
                     >
                         {s}
-                    </button>
+                    </Button>
                 ))}
             </div>
 

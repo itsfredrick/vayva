@@ -2,6 +2,7 @@
 
 import React, { useEffect, useState } from "react";
 import { Star, CheckCircle, ArrowRight } from "lucide-react";
+import { Button } from "@vayva/ui";
 import { useStorefrontStore } from "@/hooks/storefront/useStorefront";
 
 interface OneProductHomeProps {
@@ -29,20 +30,20 @@ export default function OneProductHome({
                 {/* Left: Product Gallery */}
                 <div className="space-y-4">
                     <div className="aspect-square bg-gray-100 rounded-3xl overflow-hidden relative shadow-2xl">
-                        <img src="https://images.unsplash.com/photo-1616683693504-3ea7e9ad6fec?auto=format&fit=crop&q=80&w=1000" className="w-full h-full object-cover" />
+                        <img src="https://images.unsplash.com/photo-1616683693504-3ea7e9ad6fec?auto=format&fit=crop&q=80&w=1000" alt="Facial Serum Main View" className="w-full h-full object-cover" />
                         <div className="absolute top-6 left-6 bg-rose-600 text-white font-black px-4 py-2 rounded-lg text-xl -rotate-2">
                             50% OFF
                         </div>
                     </div>
                     <div className="grid grid-cols-3 gap-4">
                         <div className="aspect-square bg-gray-100 rounded-xl overflow-hidden cursor-pointer border-2 border-transparent hover:border-black">
-                            <img src="https://images.unsplash.com/photo-1620916566398-39f1143ab7be?auto=format&fit=crop&q=80&w=400" className="w-full h-full object-cover" />
+                            <img src="https://images.unsplash.com/photo-1620916566398-39f1143ab7be?auto=format&fit=crop&q=80&w=400" alt="Serum Application Detail" className="w-full h-full object-cover" />
                         </div>
                         <div className="aspect-square bg-gray-100 rounded-xl overflow-hidden cursor-pointer border-2 border-transparent hover:border-black">
-                            <img src="https://images.unsplash.com/photo-1596462502278-27bfdd403348?auto=format&fit=crop&q=80&w=400" className="w-full h-full object-cover" />
+                            <img src="https://images.unsplash.com/photo-1596462502278-27bfdd403348?auto=format&fit=crop&q=80&w=400" alt="Serum Bottle Close-up" className="w-full h-full object-cover" />
                         </div>
                         <div className="aspect-square bg-gray-100 rounded-xl overflow-hidden cursor-pointer border-2 border-transparent hover:border-black">
-                            <img src="https://images.unsplash.com/photo-1608248597279-f99d160bfbc8?auto=format&fit=crop&q=80&w=400" className="w-full h-full object-cover" />
+                            <img src="https://images.unsplash.com/photo-1608248597279-f99d160bfbc8?auto=format&fit=crop&q=80&w=400" alt="Serum Dropper Detail" className="w-full h-full object-cover" />
                         </div>
                     </div>
                 </div>
@@ -86,9 +87,9 @@ export default function OneProductHome({
                         </div>
                     </div>
 
-                    <button className="w-full bg-black text-white py-6 rounded-xl font-bold text-xl uppercase tracking-wider hover:bg-gray-800 transition-transform hover:scale-[1.02] shadow-xl shadow-rose-200 mb-6 flex items-center justify-center gap-3">
+                    <Button className="w-full bg-black text-white py-8 h-auto rounded-xl font-bold text-xl uppercase tracking-wider hover:bg-gray-800 transition-transform hover:scale-[1.02] shadow-xl shadow-rose-200 mb-6 flex items-center justify-center gap-3 h-auto" aria-label="Get your Aura Glow serum now">
                         Get Yours Now <ArrowRight />
-                    </button>
+                    </Button>
 
                     <div className="text-center text-sm text-gray-500">
                         <p>Free Shipping Worldwide 🌍 • Secure Checkout 🔒</p>

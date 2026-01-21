@@ -40,7 +40,7 @@ export const COMPETITORS: Record<string, ComparisonData> = {
       },
       {
         feature: "Transaction Fees",
-        vayva: "0%",
+        vayva: "3% Flat",
         competitor: "2.0% (unless using Shopify Payments)",
       },
       {
@@ -58,7 +58,7 @@ export const COMPETITORS: Record<string, ComparisonData> = {
       {
         question: "Is Vayva cheaper than Shopify?",
         answer:
-          'For most Nigerian merchants, yes. By charging in NGN and having no platform transaction fees, Vayva eliminates the hidden costs of currency conversion and "Shopify Tax".',
+          'For most Nigerian merchants, yes. By charging in NGN and having a low 3% platform fee, Vayva helps you avoid the hidden costs of currency conversion.',
       },
       {
         question: "Does Vayva support Paystack?",
@@ -73,12 +73,12 @@ export const COMPETITORS: Record<string, ComparisonData> = {
       {
         question: "Is there a mobile app?",
         answer:
-          "Yes, Vayva is mobile-first, allowing you to manage orders and chat with customers entirely from your phone.",
+          "Yes, Vayva is designed primarily for mobile, allowing you to manage orders and chat with customers entirely from your phone browser.",
       },
       {
         question: "How do I handle shipping?",
         answer:
-          "Vayva integrates with local logistics providers like Kwik and Gokada, which Shopify does not support natively.",
+          "Vayva integrates with local logistics providers like Kwik, which Shopify does not support natively.",
       },
       {
         question: "Can I sell digital products?",
@@ -179,7 +179,7 @@ export const COMPETITORS: Record<string, ComparisonData> = {
       {
         question: "Is it easy to switch?",
         answer:
-          "Yes. Use our Shopify Importer to bring over your products in seconds.",
+          "We are building tools to help you migrate. For now, you can add products easily via our mobile dashboard.",
       },
       {
         question: "Does Vayva have themes?",
@@ -215,7 +215,7 @@ export const COMPETITORS: Record<string, ComparisonData> = {
     featureComparison: [
       {
         feature: "Mobile UX",
-        vayva: "Native Shopping App Feel",
+        vayva: "Native Mobile Web App",
         competitor: "Responsive Desktop Site",
       },
       {
@@ -304,7 +304,7 @@ export const COMPETITORS: Record<string, ComparisonData> = {
       {
         question: "Can I sell event tickets?",
         answer:
-          "Yes, Vayva has a dedicated Ticketing template with QR check-in—Squarespace does not.",
+          "Yes, Vayva offers simple digital ticketing templates for events.",
       },
       {
         question: "What about analytics?",
@@ -315,6 +315,94 @@ export const COMPETITORS: Record<string, ComparisonData> = {
         question: "Is Vayva optimized for mobile?",
         answer:
           "Yes, 95% of Vayva customers shop on mobile, so every page is mobile-perfect.",
+      },
+    ],
+  },
+  "instagram-shopping": {
+    name: "Instagram",
+    slug: "instagram-shopping",
+    title: "Vayva vs Instagram Shopping | Automate your Social Commerce",
+    description:
+      "Stop saying 'Price in DM'. Use Vayva to automate your Instagram sales, track inventory in real-time, and build trust with a professional storefront.",
+    heroHeading: "Vayva vs Instagram: Stop saying 'Price in DM'.",
+    verdict:
+      "Instagram is for discovery, Vayva is for closing. Use them together—Instagram for traffic, Vayva for automated checkout and inventory management.",
+    featureComparison: [
+      {
+        feature: "Checkout",
+        vayva: "Automated & Instant",
+        competitor: "Manual Back-and-forth",
+      },
+      {
+        feature: "Inventory",
+        vayva: "Real-time Tracking",
+        competitor: "Manual Management",
+      },
+      {
+        feature: "Trust",
+        vayva: "Professional Storefront",
+        competitor: "DM-based Trust Issues",
+      },
+      {
+        feature: "Records",
+        vayva: "Complete Audit Trail",
+        competitor: "Scattered Chat History",
+      },
+    ],
+    faqs: [
+      {
+        question: "How does Vayva help with Instagram sales?",
+        answer:
+          "Vayva gives you a professional link-in-bio store that automates checkout so you don't have to manually reply to 'How much?' questions.",
+      },
+      {
+        question: "Can I still talk to customers?",
+        answer:
+          "Yes! Vayva handles the busywork of taking orders, leaving you free to handle high-value customer interactions.",
+      },
+    ],
+  },
+  jumia: {
+    name: "Jumia",
+    slug: "jumia",
+    title: "Vayva vs Jumia | Build Your Own Brand in Nigeria",
+    description:
+      "Stop paying high commissions to Jumia. Build your own brand with Vayva and keep more of your money while owning your customer data.",
+    heroHeading: "Vayva vs Jumia: Build your own Brand, not a listing.",
+    verdict:
+      "Jumia is a marketplace where you compete on price. Vayva is an infrastructure where you build a brand and own the customer relationship.",
+    featureComparison: [
+      {
+        feature: "Fees",
+        vayva: "3% Flat Fee",
+        competitor: "Up to 20% Commission",
+      },
+      {
+        feature: "Branding",
+        vayva: "Your Own Domain/Store",
+        competitor: "Jumia Marketplace Theme",
+      },
+      {
+        feature: "Data",
+        vayva: "You Own Customer Leads",
+        competitor: "Jumia Owns the Customer",
+      },
+      {
+        feature: "Payouts",
+        vayva: "Secure Escrow Wallet",
+        competitor: "Delayed Market Cycles",
+      },
+    ],
+    faqs: [
+      {
+        question: "Is Vayva better than Jumia?",
+        answer:
+          "If you want to build a long-term brand and avoid high commissions, Vayva is the superior choice for your own storefront.",
+      },
+      {
+        question: "How do I ship orders?",
+        answer:
+          "Vayva connects you with local logistics partners directly, rather than relying on a centralized warehouse.",
       },
     ],
   },

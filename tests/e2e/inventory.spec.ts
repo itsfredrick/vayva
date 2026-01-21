@@ -19,9 +19,9 @@ test.describe("Inventory System", () => {
     });
 
     // Cleanup
-    await prisma.stock_movement.deleteMany({ where: { merchantId } });
-    await prisma.stock_reservation.deleteMany({ where: { merchantId } });
-    await prisma.inventory_item.deleteMany({ where: { merchantId } });
+    await prisma.stockMovement.deleteMany({ where: { merchantId } });
+    await prisma.stockReservation.deleteMany({ where: { merchantId } });
+    await prisma.inventoryItem.deleteMany({ where: { merchantId } });
   });
 
   test("full inventory lifecycle", async () => {
@@ -31,7 +31,7 @@ test.describe("Inventory System", () => {
       label: "Test Init",
     });
 
-    const item = await prisma.inventory_item.findFirst({
+    const item = await prisma.inventoryItem.findFirst({
       where: { merchantId, productId },
     });
     expect(item?.onHand).toBe(5);
@@ -43,7 +43,7 @@ test.describe("Inventory System", () => {
       { productId, variantId: null, quantity: 2 },
     ]);
 
-    const itemReserved = await prisma.inventory_item.findFirst({
+    const itemReserved = await prisma.inventoryItem.findFirst({
       where: { merchantId, productId },
     });
     expect(itemReserved?.onHand).toBe(5);
@@ -64,7 +64,7 @@ test.describe("Inventory System", () => {
     // 4. Confirm Reservation (Sale)
     await InventoryService.confirmReservation(merchantId, draftId, "ord_001");
 
-    const itemSold = await prisma.inventory_item.findFirst({
+    const itemSold = await prisma.inventoryItem.findFirst({
       where: { merchantId, productId },
     });
     expect(itemSold?.onHand).toBe(3); // 5 - 2
@@ -78,7 +78,7 @@ test.describe("Inventory System", () => {
     ]);
     await InventoryService.releaseReservation(merchantId, draftCancel);
 
-    const itemReleased = await prisma.inventory_item.findFirst({
+    const itemReleased = await prisma.inventoryItem.findFirst({
       where: { merchantId, productId },
     });
     expect(itemReleased?.onHand).toBe(3); // Unchanged

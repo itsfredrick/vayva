@@ -1,6 +1,6 @@
 import { TemplateProps } from "@/components/templates/registry";
 import { useStore } from "@/context/StoreContext";
-import { Icon } from "@vayva/ui";
+import { Icon, Button } from "@vayva/ui";
 import { useState } from "react";
 
 export const PerfumeLuxuryTemplate: React.FC<TemplateProps> = ({
@@ -23,44 +23,44 @@ export const PerfumeLuxuryTemplate: React.FC<TemplateProps> = ({
   // Demo Data Override for Perfume
   const perfumeItems = demoMode
     ? [
-        {
-          id: "perf_1",
-          name: "Oud Gold",
-          price: 18000,
-          type: "retail",
-          notes: "Sandlewood • Amber • Musk",
-          img: "https://images.unsplash.com/photo-1594035910387-fea4779426fa?q=80&w=800",
-          sizes: ["30ml", "50ml", "100ml"],
-        },
-        {
-          id: "perf_2",
-          name: "Vanilla Musk",
-          price: 9000,
-          type: "retail",
-          notes: "Taif Rose • OUD • Vanilla",
-          img: "https://images.unsplash.com/photo-1541643600914-78b084683601?q=80&w=800",
-          sizes: ["15ml", "30ml"],
-        },
-        {
-          id: "perf_3",
-          name: "Night Sultan",
-          price: 52000,
-          type: "retail",
-          notes: "Black Pepper • Leather • Smoke",
-          img: "https://images.unsplash.com/photo-1523293182086-7651a899d37f?q=80&w=800",
-          sizes: ["50ml", "100ml"],
-        },
-      ]
+      {
+        id: "perf_1",
+        name: "Oud Gold",
+        price: 18000,
+        type: "retail",
+        notes: "Sandlewood • Amber • Musk",
+        img: "https://images.unsplash.com/photo-1594035910387-fea4779426fa?q=80&w=800",
+        sizes: ["30ml", "50ml", "100ml"],
+      },
+      {
+        id: "perf_2",
+        name: "Vanilla Musk",
+        price: 9000,
+        type: "retail",
+        notes: "Taif Rose • OUD • Vanilla",
+        img: "https://images.unsplash.com/photo-1541643600914-78b084683601?q=80&w=800",
+        sizes: ["15ml", "30ml"],
+      },
+      {
+        id: "perf_3",
+        name: "Night Sultan",
+        price: 52000,
+        type: "retail",
+        notes: "Black Pepper • Leather • Smoke",
+        img: "https://images.unsplash.com/photo-1523293182086-7651a899d37f?q=80&w=800",
+        sizes: ["50ml", "100ml"],
+      },
+    ]
     : products
-        .filter((p) => p.type === "retail")
-        .map((p) => ({
-          ...p,
-          img:
-            p.images?.[0] ||
-            "https://images.unsplash.com/photo-1594035910387-fea4779426fa?q=80&w=800",
-          notes: p.description || "Premium Collection",
-          sizes: ["30ml", "50ml", "100ml"],
-        }));
+      .filter((p) => p.type === "retail")
+      .map((p) => ({
+        ...p,
+        img:
+          p.images?.[0] ||
+          "https://images.unsplash.com/photo-1594035910387-fea4779426fa?q=80&w=800",
+        notes: p.description || "Premium Collection",
+        sizes: ["30ml", "50ml", "100ml"],
+      }));
 
   return (
     <div className="font-serif min-h-screen bg-[#0a0a0a] text-amber-50 selection:bg-amber-900 selection:text-white pb-20">
@@ -70,18 +70,25 @@ export const PerfumeLuxuryTemplate: React.FC<TemplateProps> = ({
           {businessName || "ELIXIR"}
         </div>
         <div className="flex gap-8 text-xs tracking-widest uppercase opacity-80 items-center">
-          <button className="hover:text-amber-400 transition-colors hidden md:block">
+          <Button
+            variant="ghost"
+            className="hover:text-amber-400 transition-colors hidden md:block h-auto p-0 font-normal uppercase tracking-widest text-xs opacity-80"
+          >
             Collection
-          </button>
-          <button className="hover:text-amber-400 transition-colors hidden md:block">
+          </Button>
+          <Button
+            variant="ghost"
+            className="hover:text-amber-400 transition-colors hidden md:block h-auto p-0 font-normal uppercase tracking-widest text-xs opacity-80"
+          >
             Our Story
-          </button>
-          <button
-            className="hover:text-amber-400 transition-colors flex items-center gap-2"
+          </Button>
+          <Button
+            variant="ghost"
+            className="hover:text-amber-400 transition-colors flex items-center gap-2 h-auto p-0 font-normal uppercase tracking-widest text-xs opacity-80"
             onClick={() => toggleCart(true)}
           >
             Cart ({itemCount})
-          </button>
+          </Button>
         </div>
       </header>
 
@@ -93,9 +100,9 @@ export const PerfumeLuxuryTemplate: React.FC<TemplateProps> = ({
               <h2 className="text-xl tracking-[0.2em] uppercase">
                 Your Selection
               </h2>
-              <button onClick={() => toggleCart(false)}>
+              <Button variant="ghost" size="icon" onClick={() => toggleCart(false)} className="text-amber-50 h-auto w-auto p-1">
                 <Icon name="X" size={24} />
-              </button>
+              </Button>
             </div>
             <div className="flex-1 overflow-auto space-y-4">
               {itemCount === 0 ? (
@@ -116,13 +123,13 @@ export const PerfumeLuxuryTemplate: React.FC<TemplateProps> = ({
               )}
             </div>
             <div className="mt-8 space-y-4">
-              <button
+              <Button
                 onClick={() => checkout("website")}
                 disabled={isCheckoutProcessing || itemCount === 0}
-                className="w-full bg-amber-900/40 border border-amber-400/30 text-amber-400 py-4 text-xs tracking-[0.2em] uppercase hover:bg-amber-400 hover:text-black transition-all disabled:opacity-30 disabled:cursor-not-allowed"
+                className="w-full bg-amber-900/40 border border-amber-400/30 text-amber-400 py-4 text-xs tracking-[0.2em] uppercase hover:bg-amber-400 hover:text-black transition-all disabled:opacity-30 disabled:cursor-not-allowed h-auto"
               >
                 {isCheckoutProcessing ? "Processing" : "Secure Checkout"}
-              </button>
+              </Button>
             </div>
           </div>
         </div>
@@ -144,9 +151,9 @@ export const PerfumeLuxuryTemplate: React.FC<TemplateProps> = ({
             Essence of{" "}
             <span className="italic font-serif text-amber-200">Royalty</span>
           </h1>
-          <button className="mt-8 border border-amber-50/30 text-amber-50 px-8 py-4 text-xs tracking-[0.2em] uppercase hover:bg-amber-900/20 hover:border-amber-400/50 transition-all duration-500">
+          <Button className="mt-8 border border-amber-50/30 text-amber-50 px-8 py-4 text-xs tracking-[0.2em] uppercase hover:bg-amber-900/20 hover:border-amber-400/50 transition-all duration-500 bg-transparent h-auto rounded-none">
             Discover the Scent
-          </button>
+          </Button>
         </div>
       </section>
 
@@ -182,14 +189,14 @@ export const PerfumeLuxuryTemplate: React.FC<TemplateProps> = ({
                 </div>
 
                 <div className="pt-2 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
-                  <button
+                  <Button
                     onClick={() =>
                       addToCart({ ...item, quantity: 1, productId: item.id })
                     }
-                    className="border border-white/20 text-white hover:bg-white hover:text-black px-6 py-2 text-[10px] tracking-[0.2em] uppercase transition-all"
+                    className="border border-white/20 text-white hover:bg-white hover:text-black px-6 py-2 text-[10px] tracking-[0.2em] uppercase transition-all bg-transparent h-auto rounded-none"
                   >
                     Add to Cart
-                  </button>
+                  </Button>
                 </div>
               </div>
             </div>
@@ -207,12 +214,12 @@ export const PerfumeLuxuryTemplate: React.FC<TemplateProps> = ({
             Speak with our fragrance curators on WhatsApp for a personalized
             recommendation.
           </p>
-          <button
+          <Button
             onClick={() => checkout("whatsapp")}
-            className="bg-[#25D366] text-black px-8 py-4 text-xs font-bold tracking-widest uppercase hover:bg-[#128C7E] transition-colors flex items-center gap-2 mx-auto rounded-none"
+            className="bg-[#25D366] text-black px-8 py-4 text-xs font-bold tracking-widest uppercase hover:bg-[#128C7E] transition-colors flex items-center gap-2 mx-auto rounded-none h-auto"
           >
             <span>Start Consultation</span>
-          </button>
+          </Button>
         </div>
       </section>
     </div>

@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { prisma } from "@vayva/db";
+import { prisma } from "@/lib/prisma";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 import { logAuditEvent, AuditEventType } from "@/lib/audit";
@@ -60,9 +60,9 @@ export async function POST(req: NextRequest) {
 
     // Audit Log
     await logAuditEvent(storeId, userId, AuditEventType.PAYOUT_SETTING_CHANGED, {
-      accountId: account.id,
-      bank: account.bankName,
-      accountLast4: account.accountNumber.slice(-4),
+      targetType: "PAYOUT_ACCOUNT",
+      targetId: account.id,
+      meta: { bank: account.bankName, accountLast4: account.accountNumber.slice(-4) }
     });
 
     return NextResponse.json(account);

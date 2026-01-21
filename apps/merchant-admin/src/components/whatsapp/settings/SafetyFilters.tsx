@@ -1,0 +1,246 @@
+"use client";
+
+import { useState } from "react";
+import { toast } from "sonner";
+import { Shield, Ban, Clock, AlertTriangle } from "lucide-react";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Label } from "@/components/ui/label";
+import { Button, Input } from "@vayva/ui";
+import { Switch } from "@/components/ui/switch";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { Textarea } from "@/components/ui/textarea";
+
+interface SafetyFiltersProps {
+    settings?: {
+        rateLimitEnabled?: boolean;
+        rateLimitPerHour?: number;
+        spamDetectionEnabled?: boolean;
+        blockedNumbers?: string[];
+        blockedKeywords?: string[];
+        aiSensitivity?: number;
+        autoEscalationThreshold?: number;
+    };
+    onUpdate: (data: any) => Promise<void>;
+}
+
+export function SafetyFilters({ settings, onUpdate }: SafetyFiltersProps) {
+    const [saving, setSaving] = useState(false);
+    const [formData, setFormData] = useState({
+        rateLimitEnabled: settings?.rateLimitEnabled ?? false,
+        rateLimitPerHour: settings?.rateLimitPerHour ?? 100,
+        spamDetectionEnabled: settings?.spamDetectionEnabled ?? true,
+        blockedNumbers: (settings?.blockedNumbers || []).join("\n"),
+        blockedKeywords: (settings?.blockedKeywords || []).join(", "),
+        aiSensitivity: settings?.aiSensitivity ?? 70,
+        autoEscalationThreshold: settings?.autoEscalationThreshold ?? 3,
+    });
+
+    const handleSave = async () => {
+        setSaving(true);
+        try {
+            await onUpdate({
+                rateLimitEnabled: formData.rateLimitEnabled,
+                rateLimitPerHour: Number(formData.rateLimitPerHour),
+                spamDetectionEnabled: formData.spamDetectionEnabled,
+                blockedNumbers: formData.blockedNumbers
+                    .split("\n")
+                    .map((n) => n.trim())
+                    .filter(Boolean),
+                blockedKeywords: formData.blockedKeywords
+                    .split(",")
+                    .map((k) => k.trim())
+                    .filter(Boolean),
+                aiSensitivity: Number(formData.aiSensitivity),
+                autoEscalationThreshold: Number(formData.autoEscalationThreshold),
+            });
+            toast.success("Safety filters updated successfully");
+        } catch (error) {
+            toast.error("Failed to update safety filters");
+        } finally {
+            setSaving(false);
+        }
+    };
+
+    return (
+        <div className="space-y-4">
+            <Card>
+                <CardHeader>
+                    <div className="flex items-center gap-2">
+                        <Clock className="h-5 w-5 text-blue-600" />
+                        <CardTitle>Rate Limiting</CardTitle>
+                    </div>
+                    <CardDescription>
+                        Prevent abuse by limiting the number of messages per hour
+                    </CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                    <div className="flex items-center justify-between">
+                        <div className="space-y-0.5">
+                            <Label>Enable Rate Limiting</Label>
+                            <p className="text-sm text-muted-foreground">
+                                Block customers who exceed the hourly limit
+                            </p>
+                        </div>
+                        <Switch
+                            checked={formData.rateLimitEnabled}
+                            onCheckedChange={(checked) =>
+                                setFormData({ ...formData, rateLimitEnabled: checked })
+                            }
+                        />
+                    </div>
+                    {formData.rateLimitEnabled && (
+                        <div className="space-y-2">
+                            <Label htmlFor="rateLimit">Messages per hour</Label>
+                            <Input
+                                id="rateLimit"
+                                type="number"
+                                min="1"
+                                max="1000"
+                                value={formData.rateLimitPerHour}
+                                onChange={(e: any) =>
+                                    setFormData({ ...formData, rateLimitPerHour: e.target.value })
+                                }
+                            />
+                            <p className="text-xs text-muted-foreground">
+                                Recommended: 50-100 messages per hour
+                            </p>
+                        </div>
+                    )}
+                </CardContent>
+            </Card>
+
+            <Card>
+                <CardHeader>
+                    <div className="flex items-center gap-2">
+                        <Shield className="h-5 w-5 text-green-600" />
+                        <CardTitle>Spam Detection</CardTitle>
+                    </div>
+                    <CardDescription>
+                        Automatically detect and filter spam messages
+                    </CardDescription>
+                </CardHeader>
+                <CardContent>
+                    <div className="flex items-center justify-between">
+                        <div className="space-y-0.5">
+                            <Label>Enable Spam Detection</Label>
+                            <p className="text-sm text-muted-foreground">
+                                Uses AI to identify and block spam patterns
+                            </p>
+                        </div>
+                        <Switch
+                            checked={formData.spamDetectionEnabled}
+                            onCheckedChange={(checked) =>
+                                setFormData({ ...formData, spamDetectionEnabled: checked })
+                            }
+                        />
+                    </div>
+
+                    {formData.spamDetectionEnabled && (
+                        <div className="pt-4 space-y-4 border-t">
+                            <div className="space-y-2">
+                                <div className="flex justify-between">
+                                    <Label>AI Sensitivity</Label>
+                                    <span className="text-sm font-medium">{formData.aiSensitivity}%</span>
+                                </div>
+                                <Input
+                                    type="range"
+                                    min="0"
+                                    max="100"
+                                    value={formData.aiSensitivity}
+                                    onChange={(e: any) => setFormData({ ...formData, aiSensitivity: parseInt(e.target.value) })}
+                                    className="h-1.5"
+                                />
+                                <p className="text-xs text-muted-foreground">
+                                    Higher sensitivity means stricter filtering.
+                                </p>
+                            </div>
+
+                            <div className="space-y-2">
+                                <Label>Self-Escalation Threshold</Label>
+                                <Select 
+                                    value={formData.autoEscalationThreshold.toString()} 
+                                    onValueChange={(v) => setFormData({ ...formData, autoEscalationThreshold: parseInt(v) })}
+                                >
+                                    <SelectTrigger>
+                                        <SelectValue />
+                                    </SelectTrigger>
+                                    <SelectContent>
+                                        <SelectItem value="1">1 Negative interaction</SelectItem>
+                                        <SelectItem value="3">3 Negative interactions</SelectItem>
+                                        <SelectItem value="5">5 Negative interactions</SelectItem>
+                                    </SelectContent>
+                                </Select>
+                                <p className="text-xs text-muted-foreground">
+                                    Automatic handoff to human after repeated customer frustration.
+                                </p>
+                            </div>
+                        </div>
+                    )}
+                </CardContent>
+            </Card>
+
+            <Card>
+                <CardHeader>
+                    <div className="flex items-center gap-2">
+                        <Ban className="h-5 w-5 text-red-600" />
+                        <CardTitle>Blocklist</CardTitle>
+                    </div>
+                    <CardDescription>
+                        Block specific phone numbers or keywords
+                    </CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                    <div className="space-y-2">
+                        <Label htmlFor="blockedNumbers">Blocked Phone Numbers</Label>
+                        <Textarea
+                            id="blockedNumbers"
+                            placeholder="+2348012345678&#10;+2347012345678"
+                            value={formData.blockedNumbers}
+                            onChange={(e: any) =>
+                                setFormData({ ...formData, blockedNumbers: e.target.value })
+                            }
+                            rows={4}
+                        />
+                        <p className="text-xs text-muted-foreground">
+                            Enter one phone number per line (with country code)
+                        </p>
+                    </div>
+                    <div className="space-y-2">
+                        <Label htmlFor="blockedKeywords">Blocked Keywords</Label>
+                        <Textarea
+                            id="blockedKeywords"
+                            placeholder="spam, scam, fraud"
+                            value={formData.blockedKeywords}
+                            onChange={(e: any) =>
+                                setFormData({ ...formData, blockedKeywords: e.target.value })
+                            }
+                            rows={3}
+                        />
+                        <p className="text-xs text-muted-foreground">
+                            Comma-separated list of keywords to block
+                        </p>
+                    </div>
+                </CardContent>
+            </Card>
+
+            <div className="flex items-center gap-2 p-4 bg-amber-50 border border-amber-200 rounded-lg">
+                <AlertTriangle className="h-5 w-5 text-amber-600 flex-shrink-0" />
+                <p className="text-sm text-amber-800">
+                    <strong>Important:</strong> Changes to safety filters take effect immediately and apply to all incoming messages.
+                </p>
+            </div>
+
+            <div className="flex justify-end">
+                <Button onClick={handleSave} disabled={saving}>
+                    {saving ? "Saving..." : "Save Changes"}
+                </Button>
+            </div>
+        </div>
+    );
+}

@@ -43,6 +43,8 @@ export interface User {
   phoneVerified: boolean;
   role: UserRole;
   storeId?: string; // Optional context for the current session
+  avatarUrl?: string; // Added for UI
+  image?: string; // NextAuth fallback
   createdAt: string;
 }
 
@@ -271,6 +273,11 @@ export enum ProductServiceType {
   RETAIL = "retail",
   FOOD = "food",
   SERVICE = "service",
+  DIGITAL = "digital",
+  EVENT = "event",
+  HOTEL = "hotel",
+  AUTO = "auto",
+  REAL_ESTATE = "real_estate",
 }
 
 export enum ProductServiceStatus {
@@ -302,12 +309,50 @@ export interface ProductServiceItem {
   currency: string;
   status: ProductServiceStatus;
   images?: string[];
+  image?: string; // Convenience for primary thumbnail
 
   // Type specific fields
   inventory?: InventoryConfig; // Retail
   availability?: AvailabilityConfig; // Service
   isTodaysSpecial?: boolean; // Food
   category?: string;
+
+  // Industry-specific expansions
+  digital?: {
+    fileUrl?: string;
+    fileSize?: string;
+    licenseType?: "Personal" | "Commercial";
+  };
+  realEstate?: {
+    bedrooms?: number;
+    bathrooms?: number;
+    sqft?: number;
+    propertyType?: string;
+    amenities?: string[];
+  };
+  automotive?: {
+    make?: string;
+    model?: string;
+    year?: number;
+    vin?: string;
+    mileage?: number;
+    fuelType?: string;
+    transmission?: string;
+  };
+  stay?: {
+    maxGuests?: number;
+    roomType?: string;
+    amenities?: string[];
+    checkInTime?: string;
+    checkOutTime?: string;
+  };
+  event?: {
+    date?: string;
+    venue?: string;
+    isVirtual?: boolean;
+    ticketTiers?: { name: string; price: number }[];
+  };
+  metadata?: Record<string, any>;
 
   itemsSold?: number; // For analytics stats
   createdAt: string;
@@ -331,6 +376,8 @@ export interface Customer {
   totalSpend: number;
   status: CustomerStatus;
   preferredChannel?: "whatsapp" | "website";
+  email?: string;
+  avatarUrl?: string | null;
 }
 
 export interface CustomerActivity {
@@ -528,8 +575,12 @@ export interface UnifiedOrder {
   items: OrderItem[];
   totalAmount: number;
   currency: string;
-  source: "website" | "whatsapp";
+  source: "website" | "whatsapp" | "marketplace" | "dashboard";
   fulfillmentType?: "pickup" | "delivery";
+
+  // Marketplace Specific
+  fulfillmentGroupId?: string;
+  parentOrderRef?: string;
 
   // Scheduling (Services)
   scheduledAt?: string;

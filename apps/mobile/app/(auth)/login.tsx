@@ -7,7 +7,6 @@ import {
   ImageBackground,
 } from "react-native";
 import { router } from "expo-router";
-// @ts-ignore
 import { BlurView } from "expo-blur";
 import { SafeAreaView } from "react-native-safe-area-context";
 

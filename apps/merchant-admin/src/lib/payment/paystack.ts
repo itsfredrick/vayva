@@ -108,7 +108,7 @@ export class PaystackService {
         vatAmountKobo: vatAmount,
         vatRate: 7.5,
       },
-      callback_url: `${process.env.NEXTAUTH_URL}/dashboard/settings/subscription?payment=success`,
+      callback_url: `${process.env.NEXT_PUBLIC_APP_URL || process.env.NEXTAUTH_URL}/dashboard/settings/subscription?payment=success`,
     });
 
     return {
@@ -165,5 +165,24 @@ export class PaystackService {
       authorization_url: response.data.authorization_url,
       reference: response.data.reference,
     };
+  }
+  static async getBanks(): Promise<{ name: string; code: string; active: boolean }[]> {
+    const response = await this.request<{ data: any[] }>("/bank", {
+      method: "GET",
+    });
+    return response.data;
+  }
+
+  static async resolveAccount(
+    accountNumber: string,
+    bankCode: string
+  ): Promise<{ account_number: string; account_name: string; bank_id: number }> {
+    const response = await this.request<{ data: any }>(
+      `/bank/resolve?account_number=${accountNumber}&bank_code=${bankCode}`,
+      {
+        method: "GET",
+      }
+    );
+    return response.data;
   }
 }

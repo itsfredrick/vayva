@@ -16,6 +16,7 @@ import {
     Check
 } from "lucide-react";
 import { formatDistanceToNow } from "date-fns";
+import { Button } from "@vayva/ui";
 
 interface AuditEvent {
     id: string;
@@ -155,12 +156,14 @@ export default function AuditLogsPage() {
                         />
                     </form>
 
-                    <button
+                    <Button
+                        variant="outline"
                         onClick={() => setShowFilters(!showFilters)}
-                        className={`px-4 py-2.5 rounded-lg border text-sm font-medium transition-colors flex items-center gap-2 ${showFilters || eventType
-                                ? "bg-indigo-50 border-indigo-200 text-indigo-700"
-                                : "bg-white border-gray-200 text-gray-700 hover:bg-gray-50"
+                        className={`px-4 py-2.5 rounded-lg border text-sm font-medium transition-colors flex items-center gap-2 h-auto ${showFilters || eventType
+                            ? "bg-indigo-50 border-indigo-200 text-indigo-700"
+                            : "bg-white border-gray-200 text-gray-700 hover:bg-gray-50"
                             }`}
+                        aria-label={showFilters ? "Hide filters" : "Show filters"}
                     >
                         <Filter className="h-4 w-4" />
                         Filters
@@ -169,14 +172,16 @@ export default function AuditLogsPage() {
                                 1
                             </span>
                         )}
-                    </button>
-                    <button
+                    </Button>
+                    <Button
+                        variant="outline"
                         onClick={fetchLogs}
-                        className="px-4 py-2.5 rounded-lg border border-gray-200 text-gray-700 hover:bg-gray-50 transition-colors flex items-center gap-2"
+                        className="px-4 py-2.5 rounded-lg border border-gray-200 text-gray-700 hover:bg-gray-50 transition-colors flex items-center gap-2 h-auto"
+                        aria-label="Refresh audit trail"
                     >
                         <RefreshCw className="h-4 w-4" />
                         Refresh
-                    </button>
+                    </Button>
                 </div>
 
                 {showFilters && (
@@ -186,6 +191,7 @@ export default function AuditLogsPage() {
                             value={eventType}
                             onChange={(e) => handleFilterChange("eventType", e.target.value)}
                             className="w-full max-w-xs px-3 py-2 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                            aria-label="Filter by event type"
                         >
                             <option value="">All Events</option>
                             <option value="LOGIN">Login</option>
@@ -259,12 +265,15 @@ export default function AuditLogsPage() {
                                         {getTargetInfo(event.metadata)}
                                     </td>
                                     <td className="px-6 py-4 text-right">
-                                        <button
+                                        <Button
+                                            variant="ghost"
+                                            size="icon"
                                             onClick={() => setSelectedEvent(event)}
-                                            className="text-gray-400 hover:text-indigo-600 transition-colors"
+                                            className="text-gray-400 hover:text-indigo-600 transition-colors h-8 w-8"
+                                            aria-label={`View details for event ${event.eventType}`}
                                         >
                                             <Eye size={18} />
-                                        </button>
+                                        </Button>
                                     </td>
                                 </tr>
                             ))
@@ -279,20 +288,24 @@ export default function AuditLogsPage() {
                             Page {meta.page} of {meta.totalPages}
                         </div>
                         <div className="flex gap-2">
-                            <button
+                            <Button
+                                variant="outline"
                                 disabled={meta.page <= 1}
                                 onClick={() => handlePageChange(meta.page - 1)}
-                                className="px-3 py-1 bg-white border rounded text-xs disabled:opacity-50"
+                                className="px-3 py-1 bg-white border rounded text-xs disabled:opacity-50 h-auto"
+                                aria-label="Go to previous page"
                             >
                                 Prev
-                            </button>
-                            <button
+                            </Button>
+                            <Button
+                                variant="outline"
                                 disabled={meta.page >= meta.totalPages}
                                 onClick={() => handlePageChange(meta.page + 1)}
-                                className="px-3 py-1 bg-white border rounded text-xs disabled:opacity-50"
+                                className="px-3 py-1 bg-white border rounded text-xs disabled:opacity-50 h-auto"
+                                aria-label="Go to next page"
                             >
                                 Next
-                            </button>
+                            </Button>
                         </div>
                     </div>
                 )}
@@ -314,12 +327,15 @@ export default function AuditLogsPage() {
                                     {new Date(selectedEvent.createdAt).toLocaleString()} • {selectedEvent.eventType}
                                 </div>
                             </div>
-                            <button
+                            <Button
+                                variant="ghost"
+                                size="icon"
                                 onClick={() => setSelectedEvent(null)}
-                                className="p-2 text-gray-400 hover:text-gray-600 hover:bg-gray-200 rounded-full transition-colors"
+                                className="p-2 text-gray-400 hover:text-gray-600 hover:bg-gray-200 rounded-full transition-colors h-8 w-8"
+                                aria-label="Close event details modal"
                             >
                                 <X size={20} />
-                            </button>
+                            </Button>
                         </div>
 
                         <div className="flex-1 overflow-auto p-0">
@@ -338,12 +354,14 @@ export default function AuditLogsPage() {
                         </div>
 
                         <div className="px-6 py-4 border-t border-gray-200 bg-gray-50 flex justify-end">
-                            <button
+                            <Button
+                                variant="outline"
                                 onClick={() => setSelectedEvent(null)}
-                                className="px-4 py-2 bg-white border border-gray-300 rounded-lg text-sm font-medium text-gray-700 hover:bg-gray-50"
+                                className="px-4 py-2 bg-white border border-gray-300 rounded-lg text-sm font-medium text-gray-700 hover:bg-gray-50 h-auto"
+                                aria-label="Close event details modal"
                             >
                                 Close
-                            </button>
+                            </Button>
                         </div>
                     </div>
                 </div>

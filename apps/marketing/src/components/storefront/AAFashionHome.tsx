@@ -9,6 +9,7 @@ import { useStorefrontCart } from "@/hooks/storefront/useStorefrontCart";
 import { CheckoutModal } from "./CheckoutModal";
 import { CountdownTimer } from "./features/CountdownTimer";
 import { ShoppingBag, X, Plus, Minus } from "lucide-react";
+import { Button } from "@vayva/ui";
 
 export interface AAFashionHomeProps {
   storeName?: string;
@@ -94,22 +95,24 @@ export function AAFashionHome({
           {displayName}
         </div>
         <div className="flex gap-8 text-sm font-medium tracking-wide items-center">
-          <button className="hidden md:block hover:underline underline-offset-4">
+          <Button variant="link" className="hidden md:block hover:underline underline-offset-4 text-white h-auto" aria-label="View collection">
             Collection
-          </button>
-          <button className="hidden md:block hover:underline underline-offset-4">
+          </Button>
+          <Button variant="link" className="hidden md:block hover:underline underline-offset-4 text-white h-auto" aria-label="View editorial">
             Editorial
-          </button>
-          <button
-            className="hover:underline underline-offset-4 flex items-center gap-2"
+          </Button>
+          <Button
+            variant="link"
+            className="hover:underline underline-offset-4 flex items-center gap-2 text-white h-auto"
             onClick={() => setIsCartOpen(true)}
+            aria-label={`View cart with ${cart.length} items`}
           >
             <ShoppingBag className="w-5 h-5" />
             <span className="hidden md:inline">Cart</span>
             <span className="bg-white text-black text-xs px-2 py-0.5 rounded-full font-bold">
               {cart.length}
             </span>
-          </button>
+          </Button>
         </div>
       </nav>
 
@@ -125,9 +128,9 @@ export function AAFashionHome({
               <h2 className="text-xl font-bold uppercase tracking-widest">
                 Your Bag
               </h2>
-              <button onClick={() => setIsCartOpen(false)}>
+              <Button variant="ghost" size="icon" onClick={() => setIsCartOpen(false)} className="text-white hover:bg-white/10 h-auto" aria-label="Close bag">
                 <X className="w-6 h-6" />
-              </button>
+              </Button>
             </div>
 
             <div className="flex-1 overflow-auto space-y-8 pr-2 custom-scrollbar">
@@ -143,6 +146,7 @@ export function AAFashionHome({
                       {item.image && (
                         <img
                           src={item.image}
+                          alt={item.name}
                           className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                         />
                       )}
@@ -156,26 +160,34 @@ export function AAFashionHome({
                       </div>
                       <div className="flex items-center justify-between mt-4">
                         <div className="flex items-center border border-gray-800 rounded">
-                          <button
+                          <Button
+                            variant="ghost"
+                            size="icon"
                             onClick={() => updateQuantity(item.id, -1)}
-                            className="p-1.5 hover:bg-white hover:text-black transition-colors"
+                            className="h-8 w-8 hover:bg-white hover:text-black transition-colors rounded-none h-auto"
+                            aria-label="Decrease quantity"
                           >
                             <Minus className="w-3 h-3" />
-                          </button>
+                          </Button>
                           <span className="px-3 text-xs font-mono">{item.quantity}</span>
-                          <button
+                          <Button
+                            variant="ghost"
+                            size="icon"
                             onClick={() => updateQuantity(item.id, 1)}
-                            className="p-1.5 hover:bg-white hover:text-black transition-colors"
+                            className="h-8 w-8 hover:bg-white hover:text-black transition-colors rounded-none h-auto"
+                            aria-label="Increase quantity"
                           >
                             <Plus className="w-3 h-3" />
-                          </button>
+                          </Button>
                         </div>
-                        <button
+                        <Button
+                          variant="link"
                           onClick={() => removeFromCart(item.id)}
-                          className="text-xs text-gray-500 hover:text-red-400 transition-colors"
+                          className="text-xs text-gray-500 hover:text-red-400 transition-colors p-0 h-auto"
+                          aria-label={`Remove ${item.name} from bag`}
                         >
                           Remove
-                        </button>
+                        </Button>
                       </div>
                     </div>
                   </div>
@@ -189,15 +201,16 @@ export function AAFashionHome({
                   <span>Total</span>
                   <span className="font-mono">₦{total.toLocaleString()}</span>
                 </div>
-                <button
+                <Button
                   onClick={() => {
                     setIsCartOpen(false);
                     setIsCheckoutOpen(true);
                   }}
-                  className="w-full bg-white text-black py-4 font-bold uppercase tracking-widest hover:bg-gray-200 transition-colors"
+                  className="w-full bg-white text-black py-6 h-auto font-bold uppercase tracking-widest hover:bg-gray-200 transition-colors rounded-none h-auto"
+                  aria-label="Proceed to checkout"
                 >
                   Checkout
-                </button>
+                </Button>
               </div>
             )}
           </div>
@@ -232,9 +245,9 @@ export function AAFashionHome({
             </div>
           )}
 
-          <button className="border border-white bg-transparent hover:bg-white hover:text-black px-12 py-4 text-sm font-bold tracking-[0.2em] uppercase transition-all duration-300">
+          <Button className="border border-white bg-transparent hover:bg-white hover:text-black px-12 py-6 h-auto text-sm font-bold tracking-[0.2em] uppercase transition-all duration-300 rounded-none h-auto" aria-label="View seasonal collection">
             View Collection
-          </button>
+          </Button>
         </div>
       </header>
 
@@ -258,7 +271,7 @@ export function AAFashionHome({
         ) : products.length === 0 ? (
           <div className="text-center py-40 border border-gray-900 border-dashed rounded-xl">
             <p className="text-gray-500 mb-4">No products dropped yet.</p>
-            <button className="text-xs uppercase tracking-widest border-b border-gray-500">Check back later</button>
+            <Button variant="link" className="text-xs uppercase tracking-widest border-b border-gray-500 p-0 h-auto rounded-none text-gray-400 h-auto" aria-label="Check back later for products">Check back later</Button>
           </div>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-x-6 gap-y-16">
@@ -276,25 +289,27 @@ export function AAFashionHome({
                   <div className="absolute bottom-0 left-0 w-full p-4 transform translate-y-full group-hover:translate-y-0 transition-transform duration-300">
                     {/* Simulating Raffle items if price is high or random logic for demo */}
                     {product.price > 50000 || product.id.includes('raffle') ? (
-                      <button
+                      <Button
                         onClick={(e) => {
                           e.stopPropagation();
                           setRaffleItem(product);
                         }}
-                        className="w-full bg-white text-black py-3 text-xs font-bold uppercase tracking-widest hover:bg-yellow-400 transition-colors"
+                        className="w-full bg-white text-black py-3 h-auto text-xs font-bold uppercase tracking-widest hover:bg-yellow-400 transition-colors rounded-none h-auto"
+                        aria-label={`Enter raffle for ${product.name}`}
                       >
                         Enter Raffle — Free
-                      </button>
+                      </Button>
                     ) : (
-                      <button
+                      <Button
                         onClick={(e) => {
                           e.stopPropagation();
                           addToCart(product);
                         }}
-                        className="w-full bg-white text-black py-3 text-xs font-bold uppercase tracking-widest hover:bg-gray-200 transition-colors"
+                        className="w-full bg-white text-black py-3 h-auto text-xs font-bold uppercase tracking-widest hover:bg-gray-200 transition-colors rounded-none h-auto"
+                        aria-label={`Add ${product.name} to bag`}
                       >
                         Add to Bag — ₦{product.price.toLocaleString()}
-                      </button>
+                      </Button>
                     )}
                   </div>
                   {/* Stock tag / Raffle tag */}

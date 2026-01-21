@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { getSessionUser, COOKIE_NAME } from "@/lib/session";
-import { prisma } from "@vayva/db";
+import { prisma } from "@/lib/prisma";
 import bcrypt from "bcryptjs";
 import { cookies } from "next/headers";
 import { logAuditEvent, AuditEventType } from "@/lib/audit"; // P11.2
@@ -32,7 +32,9 @@ export async function POST(request: Request) {
     if (!isValid) {
       // P11.2: Log failed sudo attempt
       await logAuditEvent(user.storeId, user.id, AuditEventType.SUDO_FAILED, {
-        reason: "invalid_password",
+        targetType: "USER",
+        targetId: user.id,
+        meta: { reason: "invalid_password" }
       });
 
       return NextResponse.json({ error: "Invalid password" }, { status: 401 });
@@ -56,8 +58,12 @@ export async function POST(request: Request) {
 
     // P11.2: Log successful sudo
     await logAuditEvent(user.storeId, user.id, AuditEventType.SUDO_SUCCESS, {
-      method: "password",
-      duration: "10m",
+      targetType: "USER",
+      targetId: user.id,
+      meta: {
+        method: "password",
+        duration: "10m",
+      }
     });
 
     return NextResponse.json({ success: true, sudoExpiresAt: expiresAt });

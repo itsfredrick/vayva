@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useRouter, useParams } from "next/navigation";
 import { useStore } from "@/context/StoreContext";
 import { StoreShell } from "@/components/StoreShell";
+import { Button } from "@vayva/ui";
 import { User, Lock, ArrowRight, Loader2 } from "lucide-react";
 import Link from "next/link";
 
@@ -159,10 +160,11 @@ export default function LoginPage() {
               </div>
 
               <div>
-                <button
+                <Button
                   type="submit"
                   disabled={isLoading}
-                  className="w-full flex justify-center items-center py-3 px-4 border border-transparent rounded-xl shadow-sm text-sm font-bold text-white bg-black hover:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-black transition-all transform active:scale-95 disabled:opacity-70 disabled:cursor-not-allowed"
+                  className="w-full flex justify-center items-center py-3 px-4 border border-transparent rounded-xl shadow-sm text-sm font-bold text-white bg-black hover:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-black transition-all transform active:scale-95 disabled:opacity-70 disabled:cursor-not-allowed h-auto"
+                  aria-label={isLoading ? "Signing in" : "Sign in"}
                 >
                   {isLoading ? (
                     <Loader2 className="animate-spin h-5 w-5" />
@@ -171,7 +173,7 @@ export default function LoginPage() {
                       Sign in <ArrowRight className="ml-2 h-4 w-4" />
                     </>
                   )}
-                </button>
+                </Button>
               </div>
             </form>
 

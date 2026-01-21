@@ -1,36 +1,48 @@
 import { NextRequest, NextResponse } from "next/server";
+import { prisma } from "@vayva/db";
 import { PaystackService } from "@/lib/paystack";
 import { reportError } from "@/lib/error";
 
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
-    const { email, amount, orderId, callbackUrl } = body;
+    const { email, orderId, callbackUrl } = body;
 
-    if (!email || !amount || !orderId) {
+    // 1. Validate Input
+    if (!email || !orderId) {
       return NextResponse.json(
         { error: "Missing required payment fields" },
         { status: 400 },
       );
     }
 
-    // Amount comes in as Naira, convert to Kobo if not already?
-    // Let's assume input is in Naira for safety from frontend, but usually frontend sends NGN.
-    // Paystack expects Kobo (integer).
-    // Let's ensure we are dealing with Kobo.
-    // Storefront service passes 'amount' which is usually NGN.
-    // Let's cast to Kobo: Math.round(amount * 100).
+    // 2. Fetch Authoritative Order
+    const order = await prisma.order.findUnique({
+      where: { id: orderId }
+    });
 
-    // Wait, did the caller already convert?
-    // StorefrontService.initializePayment passes { amount: number }
-    // Let's assume it's NGN (standard display currency).
+    if (!order) {
+      return NextResponse.json({ error: "Order not found" }, { status: 404 });
+    }
 
-    const amountKobo = Math.round(amount * 100);
+    // 3. Security & State Checks
+    if (order.paymentStatus === "SUCCESS" || order.status === "PAID") {
+      return NextResponse.json({ error: "Order is already paid" }, { status: 400 });
+    }
+
+    // Verify ownership (or at least knowledge of email)
+    if (order.customerEmail && order.customerEmail.toLowerCase() !== email.toLowerCase()) {
+      return NextResponse.json({ error: "Invalid customer email" }, { status: 403 });
+    }
+
+    // 4. Use Database Price (Source of Truth)
+    // Paystack expects Kobo (integer). Order.total is in Naira (decimal/float).
+    const amountKobo = Math.round(Number(order.total) * 100);
 
     const response = await PaystackService.initializeTransaction({
       email,
       amount: amountKobo,
-      reference: `ORD-${orderId}-${Date.now()}`, // Unique Ref
+      reference: `ORD-${orderId}-${Date.now()}`,
       callback_url: callbackUrl,
       metadata: {
         order_id: orderId,

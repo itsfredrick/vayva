@@ -1,6 +1,7 @@
 import React from "react";
 import { PublicProduct } from "@/types/storefront";
 import { Users, Clock } from "lucide-react";
+import { Button } from "@vayva/ui";
 
 interface CampaignHeroProps {
   campaign: PublicProduct;
@@ -18,6 +19,14 @@ export const CampaignHero = ({
     100,
     Math.round((details.raisedAmount / details.goalAmount) * 100),
   );
+
+  const progressBarRef = React.useRef<HTMLDivElement>(null);
+
+  React.useEffect(() => {
+    if (progressBarRef.current) {
+      progressBarRef.current.style.width = `${percentage}%`;
+    }
+  }, [percentage]);
 
   return (
     <section className="bg-white pb-12">
@@ -71,8 +80,8 @@ export const CampaignHero = ({
           {/* Progress Bar */}
           <div className="w-full bg-gray-100 rounded-full h-3 mb-6 relative overflow-hidden">
             <div
+              ref={progressBarRef}
               className="bg-[#16A34A] h-full rounded-full transition-all duration-1000 ease-out relative"
-              style={{ width: `${percentage}%` }}
             >
               <div className="absolute inset-0 bg-white/20 animate-pulse"></div>
             </div>
@@ -112,16 +121,17 @@ export const CampaignHero = ({
               Support this cause
             </h3>
 
-            <button
+            <Button
               onClick={onDonateClick}
-              className="w-full bg-[#16A34A] hover:bg-[#15803D] text-white font-bold py-4 rounded-xl text-lg shadow-lg shadow-green-100 transition-all transform hover:-translate-y-1 mb-4"
+              className="w-full bg-[#16A34A] hover:bg-[#15803D] text-white font-bold py-4 rounded-xl text-lg shadow-lg shadow-green-100 transition-all transform hover:-translate-y-1 mb-4 h-auto"
+              aria-label="Donate now to this cause"
             >
               Donate Now
-            </button>
+            </Button>
 
-            <button className="w-full bg-white border-2 border-gray-200 hover:border-gray-300 text-gray-700 font-bold py-3 rounded-xl transition-colors">
+            <Button variant="outline" className="w-full bg-white border-2 border-gray-200 hover:border-gray-300 text-gray-700 font-bold py-3 rounded-xl transition-colors h-auto" aria-label="Share campaign">
               Share Campaign
-            </button>
+            </Button>
 
             <div className="mt-6 pt-6 border-t border-gray-100 text-center text-xs text-gray-500">
               <p>All donations are secure and encrypted.</p>

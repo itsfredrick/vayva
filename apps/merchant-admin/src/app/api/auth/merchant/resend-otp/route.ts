@@ -1,9 +1,18 @@
 import { NextRequest, NextResponse } from "next/server";
-import { prisma } from "@vayva/db";
+import { prisma } from "@/lib/prisma";
 
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
+
+    // Rate Limit: Prevent OTP spamming (e.g. max 3 per minute)
+    const { applyRateLimit, RATE_LIMITS } = await import("@/lib/rate-limit-enhanced");
+    const rateLimitResult = await applyRateLimit(request, "resend-otp", RATE_LIMITS.OTP_REQUEST);
+
+    if (!rateLimitResult.allowed) {
+      return rateLimitResult.response!;
+    }
+
     const { email } = body;
 
     if (!email) {

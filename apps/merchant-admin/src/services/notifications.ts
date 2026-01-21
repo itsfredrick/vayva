@@ -1,5 +1,6 @@
 
 import { WhatsappManager } from "./whatsapp";
+import { logger } from "@/lib/logger";
 
 // Central Notification System
 // Triggers WhatsApp messages on key events
@@ -35,8 +36,8 @@ export class NotificationService {
     if (message && data.phone) {
       // Fire and forget
       WhatsappManager.sendMessage(this.SYSTEM_INSTANCE, data.phone, message)
-        .then(() => console.log(`[Notify] Sent ${event} to ${data.phone}`))
-        .catch(e => console.error(`[Notify] Failed to send ${event}`, e));
+        .then(() => logger.info(`[Notify] Sent ${event} to ${data.phone}`))
+        .catch(e => logger.error(`[Notify] Failed to send ${event}`, e));
     }
   }
 }

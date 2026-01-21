@@ -1,6 +1,6 @@
 import React from "react";
 import { Notification } from "@vayva/shared";
-import { Icon, Button, cn } from "@vayva/ui";
+import { Button, Icon, cn } from "@vayva/ui";
 import Link from "next/link";
 import { formatDistanceToNow } from "date-fns";
 

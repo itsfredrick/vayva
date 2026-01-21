@@ -1,6 +1,7 @@
 "use client";
 
 import React from "react";
+import { Button } from "@vayva/ui";
 import { Search, MapPin, Bed, Bath } from "lucide-react";
 import { useStorefrontStore } from "@/hooks/storefront/useStorefront";
 
@@ -59,9 +60,9 @@ export default function HomeListHome({
                         <a href="#">Rent</a>
                         <a href="#">Sell</a>
                     </div>
-                    <button className="border border-slate-300 px-4 py-2 rounded-lg font-medium hover:bg-slate-50">
+                    <Button className="border border-slate-300 px-4 py-2 rounded-lg font-medium hover:bg-slate-50">
                         Contact Us
-                    </button>
+                    </Button>
                 </div>
             </nav>
 
@@ -76,10 +77,10 @@ export default function HomeListHome({
                             placeholder="Search by city, neighborhood, or address..."
                             className="flex-1 px-4 py-3 outline-none text-lg rounded-l-lg"
                         />
-                        <button className="bg-indigo-600 text-white px-8 py-3 rounded-lg font-bold hover:bg-indigo-700 flex items-center gap-2">
+                        <Button className="bg-indigo-600 text-white px-8 py-3 rounded-lg font-bold hover:bg-indigo-700 flex items-center gap-2">
                             <Search className="w-5 h-5" />
                             Search
-                        </button>
+                        </Button>
                     </div>
                 </div>
             </div>
@@ -105,7 +106,7 @@ export default function HomeListHome({
                                 </div>
                                 <div className="flex items-center justify-between border-t border-slate-100 pt-4">
                                     <span className="text-2xl font-bold text-indigo-600">₦{(p.price / 1000000).toFixed(1)}M</span>
-                                    <button className="text-sm font-bold border border-indigo-600 text-indigo-600 px-3 py-1 rounded hover:bg-indigo-50">Details</button>
+                                    <Button className="text-sm font-bold border border-indigo-600 text-indigo-600 px-3 py-1 rounded hover:bg-indigo-50">Details</Button>
                                 </div>
                             </div>
                         </div>

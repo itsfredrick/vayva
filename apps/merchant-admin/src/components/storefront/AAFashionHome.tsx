@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { Button } from "@vayva/ui";
 import {
   useStorefrontProducts,
   useStorefrontStore,
@@ -51,18 +52,18 @@ export function AAFashionHome({
           {displayName}
         </div>
         <div className="flex gap-8 text-sm font-medium tracking-wide">
-          <button className="hover:underline underline-offset-4">
+          <Button className="hover:underline underline-offset-4">
             Collection
-          </button>
-          <button className="hover:underline underline-offset-4">
+          </Button>
+          <Button className="hover:underline underline-offset-4">
             Editorial
-          </button>
-          <button
+          </Button>
+          <Button
             className="hover:underline underline-offset-4 flex items-center gap-2"
             onClick={() => setIsCartOpen(true)}
           >
             Cart ({cart.length})
-          </button>
+          </Button>
         </div>
       </nav>
 
@@ -78,9 +79,9 @@ export function AAFashionHome({
               <h2 className="text-xl font-bold uppercase tracking-widest">
                 Your Bag
               </h2>
-              <button onClick={() => setIsCartOpen(false)}>
+              <Button onClick={() => setIsCartOpen(false)}>
                 <X className="w-6 h-6" />
-              </button>
+              </Button>
             </div>
 
             <div className="flex-1 overflow-auto space-y-8">
@@ -95,6 +96,7 @@ export function AAFashionHome({
                       {item.image && (
                         <img
                           src={item.image}
+                          alt={item.name}
                           className="w-full h-full object-cover"
                         />
                       )}
@@ -108,26 +110,26 @@ export function AAFashionHome({
                       </div>
                       <div className="flex items-center gap-4">
                         <div className="flex items-center border border-gray-800 rounded">
-                          <button
+                          <Button
                             onClick={() => updateQuantity(item.id, -1)}
                             className="p-1 hover:bg-white hover:text-black transition-colors"
                           >
                             <Minus className="w-3 h-3" />
-                          </button>
+                          </Button>
                           <span className="px-2 text-xs">{item.quantity}</span>
-                          <button
+                          <Button
                             onClick={() => updateQuantity(item.id, 1)}
                             className="p-1 hover:bg-white hover:text-black transition-colors"
                           >
                             <Plus className="w-3 h-3" />
-                          </button>
+                          </Button>
                         </div>
-                        <button
+                        <Button
                           onClick={() => removeFromCart(item.id)}
                           className="text-xs text-gray-500 hover:text-white underline"
                         >
                           Remove
-                        </button>
+                        </Button>
                       </div>
                     </div>
                   </div>
@@ -141,7 +143,7 @@ export function AAFashionHome({
                   <span>Total</span>
                   <span>₦{total.toLocaleString()}</span>
                 </div>
-                <button
+                <Button
                   onClick={() => {
                     setIsCartOpen(false);
                     setIsCheckoutOpen(true);
@@ -149,7 +151,7 @@ export function AAFashionHome({
                   className="w-full bg-white text-black py-4 font-bold uppercase tracking-widest hover:bg-gray-200 transition-colors"
                 >
                   Checkout
-                </button>
+                </Button>
               </div>
             )}
           </div>
@@ -179,9 +181,9 @@ export function AAFashionHome({
             <br />
             MATTER
           </h1>
-          <button className="border border-white px-12 py-4 text-sm font-bold tracking-[0.2em] uppercase hover:bg-white hover:text-black transition-all duration-500">
+          <Button className="border border-white px-12 py-4 text-sm font-bold tracking-[0.2em] uppercase hover:bg-white hover:text-black transition-all duration-500">
             View Lookbook
-          </button>
+          </Button>
         </div>
       </header>
 
@@ -220,12 +222,12 @@ export function AAFashionHome({
                     className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700 ease-out transform group-hover:scale-105"
                   />
                   <div className="absolute bottom-0 left-0 w-full p-4 transform translate-y-full group-hover:translate-y-0 transition-transform duration-300">
-                    <button
+                    <Button
                       onClick={() => addToCart(product)}
                       className="w-full bg-white text-black py-3 text-xs font-bold uppercase tracking-widest hover:bg-gray-200"
                     >
                       Add to Bag — ₦{product.price.toLocaleString()}
-                    </button>
+                    </Button>
                   </div>
                 </div>
                 <div className="flex justify-between items-start">

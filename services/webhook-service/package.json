@@ -7,16 +7,15 @@
         "build": "tsc"
     },
     "dependencies": {
-        "fastify": "^4.21.0",
-        "@fastify/cors": "^8.3.0",
+        "@fastify/cors": "^11.2.0",
+        "@prisma/client": "^5.22.0",
         "@vayva/db": "workspace:*",
-        "@prisma/client": "^5.7.0",
-        "axios": "^1.6.0",
-        "crypto": "^1.0.1"
+        "axios": "^1.13.2",
+        "fastify": "^5.7.1"
     },
     "devDependencies": {
+        "@types/node": "^20.19.30",
         "ts-node-dev": "^2.0.0",
-        "typescript": "^5.0.0",
-        "@types/node": "^20.0.0"
+        "typescript": "^5.9.3"
     }
 }

@@ -2,7 +2,7 @@
 
 import React from "react";
 import Link from "next/link";
-import { Icon, cn } from "@vayva/ui";
+import { Icon, cn, Button } from "@vayva/ui";
 import { Store } from "@/types"; // Ensure this matches your types
 
 interface StorefrontSnapshotProps {
@@ -14,7 +14,8 @@ export const StorefrontSnapshot = ({ store }: StorefrontSnapshotProps) => {
 
   const isPublished = store.status === "published";
   const APP_DOMAIN = process.env.NEXT_PUBLIC_APP_DOMAIN || "vayva.ng";
-  const storefrontBase = process.env.NEXT_PUBLIC_STOREFRONT_URL || "http://localhost:3001";
+  const storefrontBase = process.env.NEXT_PUBLIC_STOREFRONT_URL ||
+    (process.env.NODE_ENV === "production" ? "https://vayva.store" : "http://localhost:3001");
   const storeUrl = isPublished
     ? `https://${store.slug}.${APP_DOMAIN}`
     : `${storefrontBase}?store=${store.slug}`;
@@ -58,12 +59,12 @@ export const StorefrontSnapshot = ({ store }: StorefrontSnapshotProps) => {
                 {APP_DOMAIN}/{store.slug}
 
               </span>
-              <button
+              <Button
                 onClick={handleCopyLink}
                 className="text-text-secondary hover:text-white transition-colors"
-              >
+               variant="outline">
                 <Icon name="Copy" size={14} />
-              </button>
+              </Button>
             </div>
           </div>
         </div>
@@ -90,23 +91,23 @@ export const StorefrontSnapshot = ({ store }: StorefrontSnapshotProps) => {
           </p>
         </div>
         <Link href="/dashboard/control-center/templates">
-          <button className="text-xs text-primary hover:text-primary/80 font-medium transition-colors">
+          <Button className="text-xs text-primary hover:text-primary/80 font-medium transition-colors" variant="primary">
             Change Theme
-          </button>
+          </Button>
         </Link>
       </div>
 
       {/* Actions */}
       <div className="flex items-center gap-3 mt-auto">
         <a href={storeUrl} target="_blank" rel="noreferrer" className="flex-1">
-          <button className="w-full h-10 rounded-lg bg-white text-black font-bold text-sm hover:bg-white/90 transition-colors">
+          <Button className="w-full h-10 rounded-lg bg-white text-black font-bold text-sm hover:bg-white/90 transition-colors" variant="ghost">
             Preview Store
-          </button>
+          </Button>
         </a>
         <Link href="/dashboard/control-center" className="flex-1">
-          <button className="w-full h-10 rounded-lg border border-white/20 text-white font-bold text-sm hover:bg-white/5 transition-colors">
+          <Button className="w-full h-10 rounded-lg border border-white/20 text-white font-bold text-sm hover:bg-white/5 transition-colors" variant="outline">
             Customize
-          </button>
+          </Button>
         </Link>
       </div>
     </div>

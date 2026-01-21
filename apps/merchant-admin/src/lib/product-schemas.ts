@@ -42,6 +42,8 @@ export const RealEstateAttributesSchema = z.object({
     bedrooms: z.number().nonnegative().optional(),
     bathrooms: z.number().nonnegative().optional(),
     sqft: z.number().positive().optional(),
+    parking_spaces: z.number().nonnegative().optional(),
+    virtual_tour_url: z.string().url().optional(),
     amenities: z.array(z.string()).optional(),
 });
 

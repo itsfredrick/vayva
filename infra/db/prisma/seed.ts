@@ -1,9 +1,10 @@
-const { PrismaClient } = require("@prisma/client");
+require("dotenv").config();
+const { prisma } = require("../src/client");
 const bcrypt = require("bcryptjs");
-const prisma = new PrismaClient();
 
 async function main() {
   console.log("🌱 Seeding database...");
+  console.log("Debug: DATABASE_URL is", process.env.DATABASE_URL ? "SET" : "UNSET");
 
   // 0. Create Auth Users (Owner & Admin)
   const password = "Smackdown21!";
@@ -68,6 +69,23 @@ async function main() {
           templateId: "vayva-aa-fashion",
         },
       },
+    },
+  });
+
+  // 1.1 Link User to Store (Membership)
+  await prisma.membership.upsert({
+    where: {
+      userId_storeId: {
+        userId: ownerUser.id,
+        storeId: storeFashion.id,
+      },
+    },
+    update: {},
+    create: {
+      userId: ownerUser.id,
+      storeId: storeFashion.id,
+      role: "OWNER",
+      status: "active", // assuming status field exists
     },
   });
 
@@ -443,6 +461,68 @@ async function main() {
       },
     ],
   });
+
+  // 9. Seed Marketplace Categories
+  const marketplaceCategories = [
+    {
+      name: "Daily Needs",
+      slug: "daily-needs",
+      children: ["Groceries", "Fresh Food", "Pharmacy"]
+    },
+    {
+      name: "Food & Dining",
+      slug: "food-dining",
+      children: ["Restaurants", "Bakery", "Home Chefs"]
+    },
+    {
+      name: "Electronics",
+      slug: "electronics",
+      children: ["Phones", "Laptops", "Gaming"]
+    },
+    {
+      name: "Fashion",
+      slug: "fashion",
+      children: ["Men", "Women", "Shoes", "Bags"]
+    },
+    {
+      name: "Vehicles",
+      slug: "vehicles",
+      children: ["Cars", "Bikes", "Parts"]
+    },
+    {
+      name: "Property",
+      slug: "property",
+      children: ["Rent", "Sale", "Short Lets"]
+    }
+  ];
+
+  for (const cat of marketplaceCategories) {
+    const parent = await prisma.marketplaceCategory.upsert({
+      where: { slug: cat.slug },
+      update: {},
+      create: {
+        name: cat.name,
+        slug: cat.slug,
+        requiredFields: [],
+        allowedModes: ["CHECKOUT", "CLASSIFIED"]
+      }
+    });
+
+    for (const childName of cat.children) {
+      const childSlug = `${cat.slug}-${childName.toLowerCase().replace(/\s+/g, '-')}`;
+      await prisma.marketplaceCategory.upsert({
+        where: { slug: childSlug },
+        update: {},
+        create: {
+          name: childName,
+          slug: childSlug,
+          parentId: parent.id,
+          requiredFields: [],
+          allowedModes: ["CHECKOUT", "CLASSIFIED"]
+        }
+      });
+    }
+  }
 
   console.log("✅ Seeding complete!");
 }

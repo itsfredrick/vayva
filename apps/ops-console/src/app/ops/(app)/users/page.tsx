@@ -1,7 +1,8 @@
 
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
 import {
     Users,
     UserPlus,
@@ -12,11 +13,13 @@ import {
     X,
     Loader2,
     Copy,
-    AlertTriangle
+    AlertTriangle,
+    Search
 } from "lucide-react";
 import { toast } from "sonner";
 import { useOpsQuery } from "@/hooks/useOpsQuery";
 import { useQueryClient } from "@tanstack/react-query";
+import { Button } from "@vayva/ui";
 
 interface OpsUser {
     id: string;
@@ -30,11 +33,16 @@ interface OpsUser {
 
 export default function UsersPage() {
     const queryClient = useQueryClient();
+    const router = useRouter();
+    const searchParams = useSearchParams();
+    const q = searchParams.get("q") || "";
+
     const [isInviteModalOpen, setIsInviteModalOpen] = useState(false);
+    const [newUserCreds, setNewUserCreds] = useState<{ email: string; tempPass: string } | null>(null);
 
     // User List Query
-    const { data: users, isLoading } = useOpsQuery(["ops-users"], async () => {
-        const res = await fetch("/api/ops/users");
+    const { data: users, isLoading } = useOpsQuery(["ops-users", q], async () => {
+        const res = await fetch(`/api/ops/users${q ? `?q=${q}` : ""}`);
         if (res.status === 401) {
             window.location.href = "/ops/login";
             return [];
@@ -42,8 +50,6 @@ export default function UsersPage() {
         if (!res.ok) throw new Error("Failed to fetch users");
         return res.json();
     });
-
-    const [newUserCreds, setNewUserCreds] = useState<{ email: string; tempPass: string } | null>(null);
 
     return (
         <div className="p-8 max-w-6xl mx-auto space-y-8">
@@ -55,13 +61,30 @@ export default function UsersPage() {
                     </h1>
                     <p className="text-gray-500 mt-1">Manage access to the Ops Console.</p>
                 </div>
-                <button
-                    onClick={() => setIsInviteModalOpen(true)}
-                    className="flex items-center gap-2 px-4 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg font-medium transition-colors shadow-sm"
-                >
-                    <UserPlus className="h-4 w-4" />
-                    Invite Member
-                </button>
+                <div className="flex items-center gap-4">
+                    <div className="relative">
+                        <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
+                        <input
+                            placeholder="Search team..."
+                            className="pl-10 pr-4 py-2 bg-white border border-gray-200 rounded-lg text-sm focus:ring-2 focus:ring-indigo-500 outline-none w-64"
+                            defaultValue={q}
+                            onChange={(e) => {
+                                const val = e.target.value;
+                                const params = new URLSearchParams(window.location.search);
+                                if (val) params.set("q", val); else params.delete("q");
+                                router.push(`?${params.toString()}`);
+                            }}
+                        />
+                    </div>
+                    <Button
+                        onClick={() => setIsInviteModalOpen(true)}
+                        className="flex items-center gap-2 px-4 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg font-medium transition-colors shadow-sm h-auto"
+                        aria-label="Invite new team member"
+                    >
+                        <UserPlus className="h-4 w-4" />
+                        Invite Member
+                    </Button>
+                </div>
             </div>
 
             {/* Users Table */}
@@ -138,6 +161,33 @@ function UserRow({ user, refresh }: { user: OpsUser; refresh: () => void }) {
         }
     };
 
+    const handleUpdate = async (action: "TOGGLE_STATUS" | "RESET_2FA") => {
+        const msg = action === "TOGGLE_STATUS"
+            ? `Are you sure you want to ${user.isActive ? "suspend" : "activate"} ${user.name}?`
+            : `Reset 2FA for ${user.name}? They will need to set it up again on next login.`;
+
+        if (!confirm(msg)) return;
+
+        setDeleting(true);
+        try {
+            const res = await fetch("/api/ops/users", {
+                method: "PATCH",
+                body: JSON.stringify({ userId: user.id, action })
+            });
+
+            if (!res.ok) {
+                const json = await res.json();
+                throw new Error(json.error || "Action failed");
+            }
+            toast.success("User updated");
+            refresh();
+        } catch (e: any) {
+            toast.error(e.message);
+        } finally {
+            setDeleting(false);
+        }
+    };
+
     return (
         <tr className="hover:bg-gray-50 transition-colors">
             <td className="px-6 py-4">
@@ -172,8 +222,8 @@ function UserRow({ user, refresh }: { user: OpsUser; refresh: () => void }) {
                         <CheckCircle className="h-3 w-3" /> Active
                     </span>
                 ) : (
-                    <span className="inline-flex items-center gap-1 text-xs font-medium text-gray-400">
-                        Inactive
+                    <span className="inline-flex items-center gap-1 text-xs font-medium text-red-600 bg-red-50 px-2 py-0.5 rounded">
+                        <AlertTriangle className="h-3 w-3" /> Suspended
                     </span>
                 )}
             </td>
@@ -181,16 +231,43 @@ function UserRow({ user, refresh }: { user: OpsUser; refresh: () => void }) {
                 {user.lastLoginAt ? new Date(user.lastLoginAt).toLocaleDateString() : "Never"}
             </td>
             <td className="px-6 py-4 text-right">
-                {user.role !== "OPS_OWNER" && (
-                    <button
-                        onClick={handleDelete}
-                        disabled={deleting}
-                        className="p-2 text-gray-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors"
-                        title="Remove User"
-                    >
-                        {deleting ? <Loader2 className="h-4 w-4 animate-spin" /> : <Trash2 className="h-4 w-4" />}
-                    </button>
-                )}
+                <div className="flex justify-end gap-2 items-center">
+                    {user.role !== "OPS_OWNER" && (
+                        <>
+                            <Button
+                                variant="outline"
+                                onClick={() => handleUpdate("TOGGLE_STATUS")}
+                                disabled={deleting}
+                                className={`px-3 py-1 text-xs font-bold rounded border transition-colors h-auto ${user.isActive
+                                    ? "text-red-600 bg-red-50 border-red-100 hover:bg-red-100"
+                                    : "text-green-600 bg-green-50 border-green-100 hover:bg-green-100"
+                                    }`}
+                                aria-label={user.isActive ? `Suspend ${user.name}` : `Activate ${user.name}`}
+                            >
+                                {user.isActive ? "Suspend" : "Activate"}
+                            </Button>
+                            <Button
+                                variant="outline"
+                                onClick={() => handleUpdate("RESET_2FA")}
+                                disabled={deleting}
+                                className="px-3 py-1 text-xs font-bold text-gray-600 bg-gray-50 border border-gray-100 hover:bg-gray-100 rounded h-auto"
+                                aria-label={`Reset 2FA for ${user.name}`}
+                            >
+                                Reset 2FA
+                            </Button>
+                            <Button
+                                variant="ghost"
+                                size="icon"
+                                onClick={handleDelete}
+                                disabled={deleting}
+                                className="p-2 text-gray-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors h-8 w-8"
+                                aria-label={`Remove user ${user.name}`}
+                            >
+                                {deleting ? <Loader2 className="h-4 w-4 animate-spin" /> : <Trash2 className="h-4 w-4" />}
+                            </Button>
+                        </>
+                    )}
+                </div>
             </td>
         </tr>
     );
@@ -236,9 +313,15 @@ function InviteUserModal({ isOpen, onClose, onSuccess }: any) {
             <div className="bg-white rounded-2xl shadow-2xl max-w-md w-full overflow-hidden">
                 <div className="p-6 border-b border-gray-100 flex justify-between items-center">
                     <h3 className="text-lg font-bold text-gray-900">Invite New Member</h3>
-                    <button onClick={onClose} className="text-gray-400 hover:text-gray-600">
+                    <Button
+                        variant="ghost"
+                        size="icon"
+                        onClick={onClose}
+                        className="text-gray-400 hover:text-gray-600 h-8 w-8"
+                        aria-label="Close modal"
+                    >
                         <X className="h-5 w-5" />
-                    </button>
+                    </Button>
                 </div>
                 <form onSubmit={handleSubmit} className="p-6 space-y-4">
                     <div>
@@ -253,29 +336,33 @@ function InviteUserModal({ isOpen, onClose, onSuccess }: any) {
                         <label className="block text-sm font-medium text-gray-700 mb-1">Role</label>
                         <div className="grid grid-cols-3 gap-2">
                             {["OPS_ADMIN", "OPS_SUPPORT", "OPERATOR"].map((r) => (
-                                <button
+                                <Button
                                     key={r}
                                     type="button"
+                                    variant="ghost"
                                     onClick={() => setRole(r)}
-                                    className={`px-2 py-2 text-xs font-bold rounded-lg border transition-all ${role === r ? "bg-indigo-50 border-indigo-600 text-indigo-700" : "border-gray-200 text-gray-600 hover:border-gray-300"
+                                    className={`px-2 py-2 text-xs font-bold rounded-lg border transition-all h-auto hover:bg-transparent ${role === r ? "bg-indigo-50 border-indigo-600 text-indigo-700" : "border-gray-200 text-gray-600 hover:border-gray-300"
                                         }`}
+                                    aria-label={`Select role: ${r.replace("OPS_", "")}`}
                                 >
                                     {r.replace("OPS_", "")}
-                                </button>
+                                </Button>
                             ))}
                         </div>
                         <input type="hidden" name="role" value={role} />
                     </div>
 
                     <div className="pt-2">
-                        <button
+                        <Button
                             type="submit"
+                            variant="primary"
                             disabled={loading}
-                            className="w-full py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg font-bold flex items-center justify-center gap-2 disabled:opacity-70"
+                            className="w-full py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg font-bold flex items-center justify-center gap-2 disabled:opacity-70 h-auto"
+                            aria-label="Send invitation email"
                         >
                             {loading ? <Loader2 className="h-4 w-4 animate-spin" /> : <UserPlus className="h-4 w-4" />}
                             Send Invitation
-                        </button>
+                        </Button>
                     </div>
                 </form>
             </div>
@@ -305,12 +392,14 @@ function CredentialsDialog({ creds, onClose }: { creds: { email: string; tempPas
                     <div className="font-mono text-indigo-600 font-bold text-lg select-all">{creds.tempPass}</div>
                 </div>
 
-                <button
+                <Button
+                    variant="primary"
                     onClick={onClose}
-                    className="w-full py-2.5 bg-gray-900 hover:bg-gray-800 text-white rounded-lg font-bold"
+                    className="w-full py-2.5 bg-gray-900 hover:bg-gray-800 text-white rounded-lg font-bold h-auto"
+                    aria-label="Close credentials dialog"
                 >
                     Done
-                </button>
+                </Button>
             </div>
         </div>
     );

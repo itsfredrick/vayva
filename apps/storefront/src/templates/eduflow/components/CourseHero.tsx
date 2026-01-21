@@ -1,6 +1,7 @@
 import React from "react";
 import { PlayCircle, Target, User } from "lucide-react";
 import { PublicProduct } from "@/types/storefront";
+import { Button } from "@vayva/ui";
 
 interface CourseHeroProps {
   course: PublicProduct;
@@ -49,14 +50,15 @@ export const CourseHero = ({ course, onEnroll }: CourseHeroProps) => {
           </div>
 
           <div className="flex items-center gap-4 pt-2">
-            <button
+            <Button
               onClick={onEnroll}
-              className="flex-1 sm:flex-none bg-blue-600 hover:bg-blue-700 text-white font-bold py-4 px-8 rounded-xl shadow-lg shadow-blue-200 transition-all text-lg"
+              className="flex-1 sm:flex-none bg-blue-600 hover:bg-blue-700 text-white font-bold py-4 px-8 rounded-xl shadow-lg shadow-blue-200 transition-all text-lg h-auto"
+              aria-label={course.price === 0 ? "Start learning for free" : `Enroll for ₦${course.price.toLocaleString()}`}
             >
               {course.price === 0
                 ? "Start Learning for Free"
                 : `Enroll for ₦${course.price.toLocaleString()}`}
-            </button>
+            </Button>
           </div>
         </div>
 
@@ -64,6 +66,7 @@ export const CourseHero = ({ course, onEnroll }: CourseHeroProps) => {
         <div className="w-full md:w-[400px] bg-white rounded-2xl shadow-xl overflow-hidden border border-gray-100 group cursor-pointer relative">
           <img
             src={course.images?.[0]}
+            alt={course.name}
             className="w-full aspect-video object-cover"
           />
           <div className="absolute inset-0 bg-black/20 group-hover:bg-black/10 transition-colors flex items-center justify-center">

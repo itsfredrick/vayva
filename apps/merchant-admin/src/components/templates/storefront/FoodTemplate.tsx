@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect, useRef } from "react";
-import { Button, Icon, cn, Input } from "@vayva/ui";
+import { Button, Icon, Input, cn } from "@vayva/ui";
 import { StorefrontConfig, StorefrontProduct } from "@/types/storefront";
 import { getThemeStyles } from "@/utils/theme-utils";
 import { WhatsAppPreviewModal } from "./WhatsAppPreviewModal";
@@ -28,14 +28,18 @@ const FoodHeader = ({ config }: { config: StorefrontConfig }) => {
           className="flex items-center gap-3 cursor-pointer"
           onClick={() => navigate("home")}
         >
-          <img
-            src="/logo-icon.png"
-            alt="Vayva"
-            className="w-10 h-10 object-contain"
-          />
-          <span className="font-bold text-xl tracking-tight">
-            CRAVE<span className="text-amber-500">.</span>
-          </span>
+          {(config.branding?.logoUrl || config.branding?.logo) ? (
+            <img
+              src={config.branding?.logoUrl || config.branding?.logo}
+              alt={config.content.headline || "Store Logo"}
+              className="w-12 h-12 object-contain rounded-full bg-gray-50 border border-gray-100"
+            />
+          ) : (
+            <span className="font-bold text-xl tracking-tight">
+              {config.content.headline?.split(" ")[0] || "CRAVE"}
+              <span className="text-amber-500">.</span>
+            </span>
+          )}
         </div>
 
         <div className="flex items-center gap-3">
@@ -51,8 +55,10 @@ const FoodHeader = ({ config }: { config: StorefrontConfig }) => {
             Order on WhatsApp
           </Button>
 
-          <button
-            className="relative p-2.5 bg-gray-100 hover:bg-gray-200 rounded-full transition-colors group"
+          <Button
+            variant="ghost"
+            size="icon"
+            className="relative p-2.5 bg-gray-100 hover:bg-gray-200 rounded-full transition-colors group h-auto w-auto"
             onClick={() => navigate("cart")}
           >
             <Icon
@@ -65,7 +71,7 @@ const FoodHeader = ({ config }: { config: StorefrontConfig }) => {
                 {cartCount}
               </span>
             )}
-          </button>
+          </Button>
         </div>
       </div>
     </header>
@@ -160,12 +166,14 @@ const FoodProductModal = ({
           <div className="absolute inset-0 flex items-center justify-center opacity-20">
             <Icon name={currentProduct.image as any} size={64} />
           </div>
-          <button
+          <Button
+            variant="ghost"
+            size="icon"
             onClick={() => navigate("home")}
-            className="absolute top-4 right-4 w-8 h-8 bg-black/50 hover:bg-black/70 text-white rounded-full flex items-center justify-center backdrop-blur-md transition-colors"
+            className="absolute top-4 right-4 w-8 h-8 bg-black/50 hover:bg-black/70 text-white rounded-full flex items-center justify-center backdrop-blur-md transition-colors p-0"
           >
             <Icon name="X" size={16} />
-          </button>
+          </Button>
         </div>
 
         {/* Content */}
@@ -238,19 +246,23 @@ const FoodProductModal = ({
         <div className="p-4 border-t bg-white safe-area-bottom">
           <div className="flex items-center justify-between mb-4">
             <div className="flex items-center gap-4 bg-gray-100 rounded-full px-2 py-1">
-              <button
+              <Button
+                variant="ghost"
+                size="icon"
                 onClick={() => setQty(Math.max(1, qty - 1))}
-                className="w-8 h-8 flex items-center justify-center rounded-full hover:bg-white transition-colors font-bold text-lg"
+                className="w-8 h-8 flex items-center justify-center rounded-full hover:bg-white transition-colors font-bold text-lg p-0"
               >
                 -
-              </button>
+              </Button>
               <span className="font-bold text-sm w-4 text-center">{qty}</span>
-              <button
+              <Button
+                variant="ghost"
+                size="icon"
                 onClick={() => setQty(qty + 1)}
-                className="w-8 h-8 flex items-center justify-center rounded-full hover:bg-white transition-colors font-bold text-lg"
+                className="w-8 h-8 flex items-center justify-center rounded-full hover:bg-white transition-colors font-bold text-lg p-0"
               >
                 +
-              </button>
+              </Button>
             </div>
             <span className="font-extrabold text-xl">
               ₦{totalPrice.toLocaleString()}
@@ -318,18 +330,19 @@ const FoodHome = ({ config }: { config: StorefrontConfig }) => {
       <div className="sticky top-[93px] z-30 py-3 bg-white/95 backdrop-blur border-b">
         <div className="max-w-2xl mx-auto px-4 flex gap-2 overflow-x-auto no-scrollbar scroll-pl-4">
           {categories.map((c: any, i) => (
-            <button
+            <Button
               key={c}
+              variant="ghost"
               onClick={() => scrollToCat(c)}
               className={cn(
-                "px-5 py-2 rounded-full text-xs font-bold whitespace-nowrap transition-all border shrink-0",
+                "px-5 py-2 rounded-full text-xs font-bold whitespace-nowrap transition-all border shrink-0 h-auto",
                 i === 0
-                  ? "bg-black text-white border-black"
+                  ? "bg-black text-white border-black hover:bg-black/90 hover:text-white"
                   : "bg-gray-50 border-gray-200 text-gray-600 hover:bg-gray-100",
               )}
             >
               {c}
-            </button>
+            </Button>
           ))}
         </div>
       </div>
@@ -387,12 +400,14 @@ const FoodCart = ({ config }: { config: StorefrontConfig }) => {
     <div className="min-h-screen bg-gray-50 animate-in slide-in-from-right-8 duration-300">
       <div className="sticky top-[86px] z-30 bg-white px-4 py-3 border-b flex justify-between items-center mb-4">
         <div className="flex items-center gap-2">
-          <button
+          <Button
+            variant="ghost"
+            size="icon"
             onClick={() => navigate("home")}
-            className="p-1 hover:bg-gray-100 rounded-full"
+            className="p-1 hover:bg-gray-100 rounded-full h-auto w-auto"
           >
             <Icon name="ArrowLeft" size={20} />
-          </button>
+          </Button>
           <span className="font-bold">Your Tray ({cart.length})</span>
         </div>
       </div>
@@ -434,28 +449,33 @@ const FoodCart = ({ config }: { config: StorefrontConfig }) => {
                 )}
 
               <div className="flex justify-between items-center pt-2">
-                <button
+                <Button
+                  variant="link"
                   onClick={() => removeFromCart(i)}
-                  className="text-xs text-red-500 font-bold"
+                  className="text-xs text-red-500 font-bold h-auto p-0 hover:no-underline"
                 >
                   Remove
-                </button>
+                </Button>
                 <div className="flex items-center gap-3 bg-gray-50 p-1 rounded-lg border">
-                  <button
+                  <Button
+                    variant="ghost"
+                    size="icon"
                     onClick={() => updateQuantity(i, -1)}
-                    className="w-6 h-6 flex items-center justify-center bg-white rounded shadow-sm hover:bg-gray-100 font-bold"
+                    className="w-6 h-6 flex items-center justify-center bg-white rounded shadow-sm hover:bg-gray-100 font-bold p-0"
                   >
                     -
-                  </button>
+                  </Button>
                   <span className="text-xs font-bold w-4 text-center">
                     {item.quantity}
                   </span>
-                  <button
+                  <Button
+                    variant="ghost"
+                    size="icon"
                     onClick={() => updateQuantity(i, 1)}
-                    className="w-6 h-6 flex items-center justify-center bg-white rounded shadow-sm hover:bg-gray-100 font-bold"
+                    className="w-6 h-6 flex items-center justify-center bg-white rounded shadow-sm hover:bg-gray-100 font-bold p-0"
                   >
                     +
-                  </button>
+                  </Button>
                 </div>
               </div>
             </div>
@@ -518,12 +538,14 @@ const FoodCheckout = ({
   return (
     <div className="min-h-screen bg-gray-50 animate-in slide-in-from-right-8 duration-300">
       <div className="sticky top-[86px] z-30 bg-white px-4 py-3 border-b flex items-center gap-2 mb-4">
-        <button
+        <Button
+          variant="ghost"
+          size="icon"
           onClick={() => navigate("cart")}
-          className="p-1 hover:bg-gray-100 rounded-full"
+          className="p-1 hover:bg-gray-100 rounded-full h-auto w-auto"
         >
           <Icon name="ArrowLeft" size={20} />
-        </button>
+        </Button>
         <span className="font-bold">Checkout</span>
       </div>
 
@@ -618,7 +640,7 @@ function FoodShell({ config }: { config: StorefrontConfig }) {
         )}
         {route === "cart" && <FoodCart config={config} />}
         {route === "checkout" && (
-          <FoodCheckout config={config} onComplete={() => {}} />
+          <FoodCheckout config={config} onComplete={() => { }} />
         )}
       </div>
 

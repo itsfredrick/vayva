@@ -13,10 +13,9 @@ export async function POST(request: NextRequest) {
         // Validation
         if (!otp) return NextResponse.json({ error: "OTP required" }, { status: 400 });
 
-        // In a real Evolution API flow, checking OTP might mean checking if the instance is ready or validating a code.
-        // For simplicity/demo:
-        if (otp === "123456" || otp.length === 6) {
-            // We accept any 6 digit code for now if running in mock/demo mode unless we strictly implemented the OTP storage.
+        // TODO: In a production environment, you would verify the OTP against a code 
+        // stored in your database or session that was sent to the user's WhatsApp.
+        if (otp.length === 6) {
             return NextResponse.json({ success: true, status: "verified" });
         }
 

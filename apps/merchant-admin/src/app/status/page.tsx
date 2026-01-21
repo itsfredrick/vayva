@@ -12,7 +12,7 @@ import {
   ChevronRight,
 } from "lucide-react";
 import { Card } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
+import { Button } from "@vayva/ui";
 import Link from "next/link";
 
 export default function PublicStatusPage() {

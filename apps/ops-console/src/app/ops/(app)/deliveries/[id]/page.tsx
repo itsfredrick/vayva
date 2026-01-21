@@ -12,9 +12,11 @@ import {
     Navigation,
     ExternalLink
 } from "lucide-react";
+import { useToast } from "@/components/ui/use-toast";
 
 export default function DeliveryDetailPage() {
     const { id } = useParams() as { id: string };
+    const { toast } = useToast();
     const router = useRouter();
     const [shipment, setShipment] = useState<any>(null);
     const [loading, setLoading] = useState(true);
@@ -55,9 +57,9 @@ export default function DeliveryDetailPage() {
                 <div className="bg-red-50 text-red-700 p-4 rounded-lg">
                     Error: {error || "Shipment not found"}
                 </div>
-                <button onClick={() => router.back()} className="mt-4 text-indigo-600 hover:underline">
+                <Button onClick={() => router.back()} variant="link" className="mt-4 text-indigo-600 hover:underline p-0 h-auto">
                     Go Back
-                </button>
+                </Button>
             </div>
         );
     }
@@ -66,12 +68,15 @@ export default function DeliveryDetailPage() {
         <div className="p-8 space-y-6 max-w-4xl mx-auto">
             {/* Header */}
             <div className="flex items-center gap-4">
-                <button
+                <Button
                     onClick={() => router.back()}
-                    className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
+                    variant="ghost"
+                    size="icon"
+                    aria-label="Go back"
+                    className="h-10 w-10 hover:bg-gray-100 rounded-lg transition-colors p-2"
                 >
                     <ArrowLeft size={20} className="text-gray-600" />
-                </button>
+                </Button>
                 <div>
                     <h1 className="text-2xl font-bold text-gray-900 flex items-center gap-2">
                         Tracking {shipment.trackingCode || "N/A"}
@@ -174,13 +179,11 @@ export default function DeliveryDetailPage() {
                             const res = await fetch(`/api/ops/deliveries/${id}/retry`, { method: "POST" });
                             if (res.ok) {
                                 // toast would be nice here, but using alert since it's an internal tool if toaster is not available locally
-                                alert("Dispatch retry initiated successfully");
+                                toast({ title: "Success", description: "Dispatch retry initiated successfully." });
                                 window.location.reload();
-                            } else {
-                                throw new Error("Retry failed");
                             }
                         } catch (e) {
-                            alert("Failed to retry dispatch");
+                            toast({ title: "Error", description: "Failed to retry dispatch.", variant: "destructive" });
                         }
                     }}
                     className="px-4 py-2 text-sm font-medium text-white bg-indigo-600 rounded-lg hover:bg-indigo-700"
@@ -188,6 +191,6 @@ export default function DeliveryDetailPage() {
                     Retry Delivery
                 </Button>
             </div>
-        </div>
+        </div >
     );
 }

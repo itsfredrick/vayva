@@ -26,7 +26,7 @@ export function ComparisonTable() {
                             </tr>
                             <tr>
                                 <td className="p-6 font-medium text-gray-900">Transaction Fees</td>
-                                <td className="p-6 text-green-600 font-bold bg-green-50/30">5% Flat</td>
+                                <td className="p-6 text-green-600 font-bold bg-green-50/30">3% Flat</td>
                                 <td className="p-6 text-gray-500">2.0% + $0.30</td>
                             </tr>
                             <tr>

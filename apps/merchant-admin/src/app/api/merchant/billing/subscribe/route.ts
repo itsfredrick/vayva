@@ -1,46 +1,54 @@
 import { NextRequest, NextResponse } from "next/server";
-import { getServerSession } from "next-auth";
-import { authOptions } from "@/lib/auth";
-import { prisma } from "@vayva/db";
+import { withVayvaAPI, HandlerContext } from "@/lib/api-handler";
+import { PERMISSIONS } from "@/lib/team/permissions";
+import { prisma } from "@/lib/prisma";
 import { PLANS } from "@/lib/billing/plans";
 
-export async function POST(req: NextRequest) {
-  const session = await getServerSession(authOptions);
-  if (!(session?.user as any)?.storeId)
-    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+export const POST = withVayvaAPI(
+  PERMISSIONS.BILLING_MANAGE,
+  async (request: NextRequest, { storeId, user }: HandlerContext) => {
+    // Session is already validated and user exists via withRBAC -> requireAuth logic
+    // storeId is present in session
 
-  const body = await req.json();
-  const { plan_slug } = body;
 
-  if (!PLANS[plan_slug]) {
-    return new NextResponse("Invalid Plan", { status: 400 });
+    const body = await request.json();
+    const { plan_slug } = body;
+
+    if (!PLANS[plan_slug]) {
+      return new NextResponse("Invalid Plan", { status: 400 });
+    }
+
+    try {
+      const { PaystackService } = await import("@/lib/payment/paystack");
+
+      const payment = await PaystackService.createPaymentForPlanChange(
+        user.email!,
+        plan_slug,
+        storeId
+      );
+
+      // Upsert pending subscription
+      await prisma.merchantAiSubscription.upsert({
+        where: { storeId },
+        update: {
+          planKey: plan_slug,
+          // lastPaymentStatus: "pending", // Removing generic fields if unsure
+        },
+        create: {
+          storeId,
+          planKey: plan_slug,
+          planId: "paystack_" + plan_slug,
+          status: "pending",
+          periodStart: new Date(),
+          periodEnd: new Date(),
+          trialExpiresAt: new Date(),
+          // lastPaymentStatus: "pending",
+        },
+      });
+
+      return NextResponse.json({ ok: true, checkout_url: payment.authorization_url });
+    } catch (e: any) {
+      return new NextResponse(e.message, { status: 500 });
+    }
   }
-
-  try {
-    // Testing Paystack Init
-    // In real world: Call Paystack API to initialize transaction/subscription
-    // Return checkout_url
-
-    const checkoutUrl = `https://checkout.paystack.com/test-transaction-${Date.now()}`;
-
-    // Upsert pending subscription
-    await prisma.merchantSubscription.upsert({
-      where: { storeId: (session!.user as any).storeId },
-      update: {
-        planSlug: plan_slug,
-        lastPaymentStatus: "pending",
-        // Don't change status to active yet until webhook logic
-      },
-      create: {
-        storeId: (session!.user as any).storeId,
-        planSlug: plan_slug,
-        status: "pending",
-        lastPaymentStatus: "pending",
-      },
-    });
-
-    return NextResponse.json({ ok: true, checkout_url: checkoutUrl });
-  } catch (e: any) {
-    return new NextResponse(e.message, { status: 500 });
-  }
-}
+);

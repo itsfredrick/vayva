@@ -3,7 +3,7 @@
 import React, { useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Icon, Button } from "@vayva/ui";
+import { Button, Icon } from "@vayva/ui";
 
 interface StoreShellProps {
   children: React.ReactNode;
@@ -14,12 +14,13 @@ interface StoreShellProps {
 
 export function StoreShell({
   children,
-  storeName = "Vayva Store",
-  slug = "demo-store",
+  storeName,
+  slug,
   plan = "STARTER",
 }: StoreShellProps) {
   const pathname = usePathname();
-  const isCartOpen = false; // Test state
+  // Cart state should be managed by context/parent, not hardcoded
+  // const isCartOpen = false;
 
   return (
     <div className="min-h-screen bg-[#142210] text-white font-sans selection:bg-primary/30 relative">
@@ -47,7 +48,7 @@ export function StoreShell({
               strokeLinecap="round"
             />
           </svg>
-          <span className="text-[10px] font-black uppercase tracking-widest text-[#0B0B0B]">
+          <span className="text-[10px] font-black uppercase tracking-widest text-black">
             Powered by Vayva
           </span>
         </div>

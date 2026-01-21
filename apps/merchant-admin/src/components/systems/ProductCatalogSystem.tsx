@@ -1,8 +1,8 @@
 "use client";
 
 import React, { useState } from "react";
-import { Button, Icon, cn, Input } from "@vayva/ui";
-import { Switch } from "@/components/ui/Switch";
+import { Button, Icon, Input, cn } from "@vayva/ui";
+import { Switch } from "@/components/ui/switch";
 
 // Master Prompt System 1: Product Catalog Onboarding
 // Three Micro-steps: Product -> Variants -> Pricing
@@ -99,18 +99,19 @@ export function ProductCatalogSystem({
               </label>
               <div className="grid grid-cols-3 gap-2">
                 {(["physical", "digital", "service"] as const).map((t) => (
-                  <button
+                  <Button
                     key={t}
                     onClick={() => setProduct({ ...product, type: t })}
+                    variant={product.type === t ? "primary" : "outline"}
                     className={cn(
-                      "p-2 rounded-lg border text-sm capitalize transition-colors",
+                      "capitalize transition-colors h-auto py-2",
                       product.type === t
-                        ? "bg-black text-white border-black"
-                        : "bg-white text-gray-500 border-gray-200",
+                        ? "bg-black text-white border-black hover:bg-black/90"
+                        : "bg-white text-gray-500 border-gray-200 hover:bg-gray-50",
                     )}
                   >
                     {t}
-                  </button>
+                  </Button>
                 ))}
               </div>
             </div>
@@ -145,9 +146,9 @@ export function ProductCatalogSystem({
                   <label className="text-xs font-bold text-gray-500 uppercase">
                     Option Name
                   </label>
-                  <button className="text-xs text-red-500 hover:underline">
+                  <Button variant="link" size="sm" className="text-xs text-red-500 hover:text-red-600 hover:underline p-0 h-auto">
                     Remove
-                  </button>
+                  </Button>
                 </div>
                 <Input
                   value={variant.group}
@@ -263,10 +264,9 @@ export function ProductCatalogSystem({
             )}
           </div>
           <div className="p-4 space-y-2">
-            <div
-              className="h-4 w-3/4 bg-gray-100 rounded animate-pulse"
-              style={{ display: product.name ? "none" : "block" }}
-            />
+            {!product.name && (
+              <div className="h-4 w-3/4 bg-gray-100 rounded animate-pulse" />
+            )}
             {product.name && (
               <h3 className="font-bold text-gray-900 leading-tight">
                 {product.name}

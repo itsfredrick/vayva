@@ -8,7 +8,7 @@ export async function GET(req: NextRequest) {
 
         const fixes = await prisma.rescueFixAction.findMany({
             include: {
-                Incident: true,
+                incident: true,
             },
             orderBy: { createdAt: "desc" },
             take: 50,

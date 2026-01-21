@@ -1,6 +1,7 @@
 "use client";
 
 import React from "react";
+import { Button } from "@vayva/ui";
 import { StoreShell } from "@/components/StoreShell";
 import { useStore } from "@/context/StoreContext";
 import NextLink from "next/link";
@@ -25,9 +26,9 @@ export default function CartPage() {
           <div className="text-center py-12">
             <p className="text-gray-500 mb-8">Your cart is currently empty.</p>
             <Link href={`/collections/all?store=${store.slug}`}>
-              <button className="bg-black text-white px-8 py-4 rounded-full font-bold text-sm tracking-wide hover:bg-gray-900 transition-colors">
+              <Button className="bg-black text-white px-8 py-4 rounded-full font-bold text-sm tracking-wide hover:bg-gray-900 transition-colors">
                 Continue Shopping
-              </button>
+              </Button>
             </Link>
           </div>
         ) : (
@@ -57,12 +58,12 @@ export default function CartPage() {
                     <div className="text-sm text-gray-500 mb-4">
                       Quantity: {item.quantity}
                     </div>
-                    <button
+                    <Button
                       onClick={() => removeFromCart(item.productId)}
                       className="text-xs text-red-500 underline hover:text-red-600"
                     >
                       Remove
-                    </button>
+                    </Button>
                   </div>
                 </div>
               ))}
@@ -74,9 +75,9 @@ export default function CartPage() {
                 <span>₦{subtotal.toLocaleString()}</span>
               </div>
               <Link href={`/checkout?store=${store.slug}`}>
-                <button className="w-full bg-black text-white py-4 rounded-full font-bold hover:bg-gray-900 transition-colors">
+                <Button className="w-full bg-black text-white py-4 rounded-full font-bold hover:bg-gray-900 transition-colors">
                   Proceed to Checkout
-                </button>
+                </Button>
               </Link>
             </div>
           </div>

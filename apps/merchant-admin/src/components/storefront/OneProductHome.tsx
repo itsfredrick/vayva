@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
+import { Button } from "@vayva/ui";
 import { Star, CheckCircle, ArrowRight } from "lucide-react";
 import { useStorefrontStore } from "@/hooks/storefront/useStorefront";
 
@@ -86,9 +87,9 @@ export default function OneProductHome({
                         </div>
                     </div>
 
-                    <button className="w-full bg-black text-white py-6 rounded-xl font-bold text-xl uppercase tracking-wider hover:bg-gray-800 transition-transform hover:scale-[1.02] shadow-xl shadow-rose-200 mb-6 flex items-center justify-center gap-3">
+                    <Button className="w-full bg-black text-white py-6 rounded-xl font-bold text-xl uppercase tracking-wider hover:bg-gray-800 transition-transform hover:scale-[1.02] shadow-xl shadow-rose-200 mb-6 flex items-center justify-center gap-3">
                         Get Yours Now <ArrowRight />
-                    </button>
+                    </Button>
 
                     <div className="text-center text-sm text-gray-500">
                         <p>Free Shipping Worldwide 🌍 • Secure Checkout 🔒</p>

@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { ReturnTokenService } from "@/lib/returns/returnToken";
 import { ReturnService } from "@/lib/returns/returnService";
-import { prisma } from "@vayva/db";
+import { prisma } from "@/lib/prisma";
 
 export async function POST(req: NextRequest) {
   try {

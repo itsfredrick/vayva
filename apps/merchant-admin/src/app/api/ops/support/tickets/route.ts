@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { prisma } from "@vayva/db";
+import { prisma } from "@/lib/prisma";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 
@@ -10,7 +10,7 @@ export async function GET(req: Request) {
     if (!session?.user?.id)
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 
-    const tickets = await (prisma as any).supportTicket.findMany({
+    const tickets = await prisma.supportTicket.findMany({
       orderBy: { lastMessageAt: "desc" },
       include: {
         store: {

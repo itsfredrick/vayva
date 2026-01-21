@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { prisma } from "@vayva/db";
+import { prisma } from "@/lib/prisma";
 
 // POST /api/integrations/whatsapp/send-receipt
 // Internal API to trigger receipt sending. Protected by internal checks or session if needed.

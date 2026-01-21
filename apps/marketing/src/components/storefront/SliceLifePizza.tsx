@@ -3,22 +3,16 @@
 import React from "react";
 import { useStorefrontStore, useStorefrontProducts } from "@/hooks/storefront/useStorefront";
 import { useStorefrontCart } from "@/hooks/storefront/useStorefrontCart";
+import { StorefrontCart } from "@/components/storefront/StorefrontCart";
+import { StorefrontSEO } from "@/components/storefront/StorefrontSEO";
+import { Button } from "@vayva/ui";
 
-// Inline stubs to avoid missing module errors
-const StorefrontCart = () => (
-    <button className="px-4 py-2 bg-white text-orange-600 rounded-full font-bold">
-        Cart
-    </button>
-);
 
-const StorefrontSEO = ({ title }: { title: string }) => (
-    <div hidden title={title} />
-);
 
-export default function SliceLifePizza() {
-    const { store } = useStorefrontStore("slice-life");
-    const { cart } = useStorefrontCart("slice-life");
-    const { products } = useStorefrontProducts("slice-life");
+export default function SliceLifePizza({ slug = "slice-life" }: { slug?: string }) {
+    const { store } = useStorefrontStore(slug);
+    const { cart } = useStorefrontCart(slug);
+    const { products } = useStorefrontProducts(slug);
 
     if (!store) return <div className="p-10 text-center">Loading Slice Life...</div>;
 
@@ -26,7 +20,7 @@ export default function SliceLifePizza() {
 
     return (
         <div className="min-h-screen bg-[#FFF5E1] font-sans text-stone-800">
-            <StorefrontSEO title={store.name} />
+            <StorefrontSEO title={store.name} description="Artisanal slices delivered to your door." />
 
             {/* Header */}
             <header className="sticky top-0 z-50 bg-[#FF6B35] text-white shadow-lg">
@@ -36,7 +30,7 @@ export default function SliceLifePizza() {
                     </div>
                     <div className="flex items-center gap-4">
                         <span className="hidden md:inline font-medium">Order Online</span>
-                        <StorefrontCart />
+                        <StorefrontCart storeSlug={slug} />
                     </div>
                 </div>
             </header>
@@ -64,12 +58,15 @@ export default function SliceLifePizza() {
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                     {products?.map((product: any) => (
                         <div key={product.id} className="group bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300">
-                            <div className="h-48 bg-gray-200 animate-pulse relative">
-                                {/* Image placeholder */}
-                                <div className="absolute inset-0 flex items-center justify-center text-gray-400 font-bold text-2xl">
-                                    PIZZA
-                                </div>
-                            </div>
+                            {product.image ? (
+                                <img src={product.image} alt={product.name} className="w-full h-full object-cover" />
+                            ) : (
+                                <img
+                                    src="https://images.unsplash.com/photo-1513104890138-7c749659a591?auto=format&fit=crop&q=80&w=800"
+                                    alt={product.name}
+                                    className="w-full h-full object-cover"
+                                />
+                            )}
                             <div className="p-6">
                                 <h3 className="text-xl font-bold mb-2 group-hover:text-[#FF6B35] transition-colors">
                                     {product.name}
@@ -81,9 +78,15 @@ export default function SliceLifePizza() {
                                     <span className="text-2xl font-black">
                                         ₦{product.price?.toLocaleString()}
                                     </span>
-                                    <button className="w-12 h-12 rounded-full bg-[#FF6B35] text-white flex items-center justify-center hover:scale-110 transition-transform">
+                                    <Button
+                                        variant="primary"
+                                        size="icon"
+                                        className="w-12 h-12 rounded-full bg-[#FF6B35] text-white flex items-center justify-center hover:scale-110 transition-transform"
+                                        onClick={() => { }}
+                                        aria-label="Add to cart"
+                                    >
                                         +
-                                    </button>
+                                    </Button>
                                 </div>
                             </div>
                         </div>

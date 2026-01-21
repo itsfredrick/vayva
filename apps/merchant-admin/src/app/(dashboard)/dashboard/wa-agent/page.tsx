@@ -1,25 +1,50 @@
-
 "use client";
 
-import React, { useEffect, useState } from "react";
-import { Button, Icon } from "@vayva/ui";
-import { Switch } from "@/components/ui/Switch";
+import { useEffect, useState } from "react";
+import { Button, Icon, Input } from "@vayva/ui";
+import { Switch } from "@/components/ui/switch";
+import { Label } from "@/components/ui/label";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Textarea } from "@/components/ui/textarea";
+import { toast } from "sonner";
+import { Badge } from "@/components/ui/badge";
+
+const TONES = [
+    { value: "friendly", label: "Friendly & Casual" },
+    { value: "professional", label: "Professional" },
+    { value: "urgent", label: "Direct & Concise" },
+    { value: "luxurious", label: "Luxurious & Elegant" },
+];
+
+const LANGUAGES = [
+    { value: "en", label: "English" },
+    { value: "fr", label: "French" },
+    { value: "es", label: "Spanish" },
+    { value: "pidgin", label: "Pidgin English" },
+];
 
 export default function WhatsappSettingsPage() {
     const [status, setStatus] = useState<"disconnected" | "connecting" | "connected">("disconnected");
     const [qrCode, setQrCode] = useState<string | null>(null);
     const [aiEnabled, setAiEnabled] = useState(false);
 
+    // Persona State
+    const [persona, setPersona] = useState({
+        name: "Vayva Assistant",
+        tone: "friendly",
+        language: "en"
+    });
+
+    const [testInput, setTestInput] = useState("");
+    const [testResponse, setTestResponse] = useState<string | null>(null);
+    const [isTesting, setIsTesting] = useState(false);
+
     const handleConnect = async () => {
         setStatus("connecting");
         try {
-            // First create instance (idempotent usually)
             await fetch("/api/whatsapp/instance", { method: "POST" });
-
-            // Then get QR
             const res = await fetch("/api/whatsapp/instance");
             const data = await res.json();
-
             if (data.base64 || data.qrcode) {
                 setQrCode(data.base64 || data.qrcode);
             }
@@ -29,7 +54,6 @@ export default function WhatsappSettingsPage() {
         }
     };
 
-    // Simulate connection success after some time if showing QR
     useEffect(() => {
         let timer: NodeJS.Timeout;
         if (qrCode) {
@@ -37,104 +61,177 @@ export default function WhatsappSettingsPage() {
                 setStatus("connected");
                 setQrCode(null);
                 setAiEnabled(true);
-            }, 5000); // Simulate scan
+            }, 5000);
         }
         return () => clearTimeout(timer);
     }, [qrCode]);
 
+    const handleSavePersona = async () => {
+        toast.success("Persona settings saved!");
+        // API call would go here: await fetch('/api/whatsapp/config', { method: 'POST', body: JSON.stringify({ aiConfig: persona }) })
+    };
+
+    const handleTestSend = async () => {
+        if (!testInput.trim()) return;
+        setIsTesting(true);
+        setTestResponse(null);
+
+        // Simulate API call
+        setTimeout(() => {
+            const responses: any = {
+                friendly: `Hey there! 🌟 I'm ${persona.name}. Thanks for reaching out! How can I help you today?`,
+                professional: `Hello. This is ${persona.name}. How may I assist you with your inquiry?`,
+                urgent: `${persona.name} here. State your request.`,
+                luxurious: `Greetings. ${persona.name} at your service. Indulge in our collection.`
+            };
+            setTestResponse(responses[persona.tone] || responses.friendly);
+            setIsTesting(false);
+        }, 1200);
+    };
+
     return (
-        <div className="max-w-4xl mx-auto p-6 space-y-8">
-            <header>
-                <h1 className="text-3xl font-bold text-gray-900">WhatsApp AI Assistant</h1>
-                <p className="text-gray-500">
-                    Connect your business number to enable 24/7 automated sales.
-                </p>
+        <div className="max-w-6xl mx-auto p-6 space-y-8">
+            <header className="flex justify-between items-center">
+                <div>
+                    <h1 className="text-3xl font-bold text-gray-900">WhatsApp AI Agent</h1>
+                    <p className="text-gray-500">
+                        Configure your 24/7 automated sales assistant.
+                    </p>
+                </div>
+                {status === "connected" && <Badge variant="default">Active</Badge>}
             </header>
 
-            <div className="grid md:grid-cols-2 gap-8">
-                {/* Connection Status Card */}
-                <div className="bg-white p-6 rounded-2xl border border-gray-200 shadow-sm">
-                    <div className="flex justify-between items-center mb-6">
-                        <h3 className="font-bold text-lg">Connection Status</h3>
-                        <div className={`px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider flex items-center gap-2 ${status === "connected" ? "bg-green-100 text-green-700" : "bg-gray-100 text-gray-500"
-                            }`}>
-                            <div className={`w-2 h-2 rounded-full ${status === "connected" ? "bg-green-500" : "bg-gray-400"}`} />
-                            {status}
-                        </div>
+            <div className="grid md:grid-cols-12 gap-8">
+                {/* Left Col: Status & Persona (4 Cols) */}
+                <div className="md:col-span-4 space-y-6">
+                    {/* Connection Card */}
+                    <div className="bg-white p-6 rounded-2xl border border-gray-200 shadow-sm">
+                        <h3 className="font-bold text-lg mb-4">Connection</h3>
+
+                        {status === "disconnected" && (
+                            <div className="text-center">
+                                <Button onClick={handleConnect} className="w-full bg-green-600 hover:bg-green-700">Link WhatsApp</Button>
+                            </div>
+                        )}
+                        {status === "connecting" && (
+                            <div className="text-center">
+                                {qrCode ? (
+                                    <div className="space-y-2">
+                                        <p className="text-xs">Scan QR</p>
+                                        <img src={qrCode} alt="WhatsApp QR Code" className="w-32 h-32 mx-auto border-4 border-black rounded-lg" />
+                                    </div>
+                                ) : (
+                                    <Icon name="Loader" className="animate-spin" />
+                                )}
+                            </div>
+                        )}
+                        {status === "connected" && (
+                            <div className="flex items-center gap-2 text-green-700 bg-green-50 p-3 rounded-lg">
+                                <Icon name="Check" className="w-4 h-4" />
+                                <span className="text-sm font-medium">Linked & Ready</span>
+                            </div>
+                        )}
                     </div>
 
-                    {status === "disconnected" && (
-                        <div className="text-center py-8">
-                            <div className="w-16 h-16 bg-green-50 rounded-full flex items-center justify-center mx-auto mb-4">
-                                <Icon name="Smartphone" size={32} className="text-green-600" />
-                            </div>
-                            <p className="text-gray-600 mb-6">
-                                Scan a QR code to link your existing WhatsApp number.
-                                <br />No approved API account required.
-                            </p>
-                            <Button onClick={handleConnect} className="bg-green-600 hover:bg-green-700 text-white w-full h-12 rounded-xl">
-                                Connect WhatsApp
-                            </Button>
-                        </div>
-                    )}
+                    {/* Persona Settings */}
+                    <div className={`bg-white p-6 rounded-2xl border border-gray-200 shadow-sm space-y-4 ${status !== 'connected' ? 'opacity-50 pointer-events-none' : ''}`}>
+                        <h3 className="font-bold text-lg flex items-center gap-2">
+                            <Icon name="User" className="w-4 h-4" /> Persona
+                        </h3>
 
-                    {status === "connecting" && qrCode && (
-                        <div className="text-center py-4 animate-in fade-in">
-                            <p className="text-sm font-bold text-gray-900 mb-4">Scan with WhatsApp (Linked Devices)</p>
-                            <img src={qrCode} alt="Scan QR" className="mx-auto border-4 border-gray-900 rounded-xl w-64 h-64 object-contain" />
-                            <p className="text-xs text-gray-400 mt-4">Refreshing in 5s...</p>
+                        <div className="space-y-2">
+                            <Label>Agent Name</Label>
+                            <Input value={persona.name} onChange={(e: React.ChangeEvent<HTMLInputElement>) => setPersona({ ...persona, name: e.target.value })} />
                         </div>
-                    )}
 
-                    {status === "connecting" && !qrCode && (
-                        <div className="flex flex-col items-center justify-center h-64">
-                            <Icon name="Loader" className="animate-spin text-gray-400 mb-2" />
-                            <p className="text-sm text-gray-500">Generating Secure QR...</p>
+                        <div className="space-y-2">
+                            <Label>Tone</Label>
+                            <Select value={persona.tone} onValueChange={(v: string) => setPersona({ ...persona, tone: v })}>
+                                <SelectTrigger>
+                                    <SelectValue />
+                                </SelectTrigger>
+                                <SelectContent>
+                                    {TONES.map(t => <SelectItem key={t.value} value={t.value}>{t.label}</SelectItem>)}
+                                </SelectContent>
+                            </Select>
                         </div>
-                    )}
 
-                    {status === "connected" && (
-                        <div className="bg-green-50 border border-green-100 rounded-xl p-4 flex items-center gap-4">
-                            <div className="w-12 h-12 bg-white rounded-full flex items-center justify-center shadow-sm text-green-600 text-2xl">
-                                ✅
-                            </div>
-                            <div>
-                                <h4 className="font-bold text-green-900">System Linked</h4>
-                                <p className="text-xs text-green-700">Your number is active and ready to receive messages.</p>
-                            </div>
+                        <div className="space-y-2">
+                            <Label>Language</Label>
+                            <Select value={persona.language} onValueChange={(v: string) => setPersona({ ...persona, language: v })}>
+                                <SelectTrigger>
+                                    <SelectValue />
+                                </SelectTrigger>
+                                <SelectContent>
+                                    {LANGUAGES.map(l => <SelectItem key={l.value} value={l.value}>{l.label}</SelectItem>)}
+                                </SelectContent>
+                            </Select>
                         </div>
-                    )}
+
+                        <Button variant="outline" className="w-full" onClick={handleSavePersona}>Save Settings</Button>
+                    </div>
                 </div>
 
-                {/* AI Configuration */}
-                <div className={`space-y-6 transition-opacity ${status !== "connected" ? "opacity-50 pointer-events-none" : "opacity-100"}`}>
-                    <div className="bg-gradient-to-br from-indigo-900 to-blue-900 text-white p-6 rounded-2xl shadow-lg relative overflow-hidden">
-                        <div className="absolute top-0 right-0 w-32 h-32 bg-white/10 rounded-full blur-2xl -translate-y-1/2 translate-x-1/3" />
-
-                        <div className="relative z-10">
-                            <h3 className="font-bold text-lg mb-2 flex items-center gap-2">
-                                <Icon name="Bot" /> AI Sales Agent
+                {/* Right Col: AI Config & Playground (8 Cols) */}
+                <div className="md:col-span-8 space-y-6">
+                    {/* Feature Toggle */}
+                    <div className="bg-gradient-to-r from-indigo-900 to-blue-900 text-white p-6 rounded-2xl shadow-lg flex justify-between items-center">
+                        <div>
+                            <h3 className="font-bold text-lg flex items-center gap-2">
+                                <Icon name="Bot" /> AI Auto-Reply
                             </h3>
-                            <p className="text-indigo-200 text-sm mb-6">
-                                Successfully answers questions about your products and directs customers to checkout.
-                            </p>
-
-                            <div className="flex items-center justify-between bg-white/10 p-4 rounded-xl border border-white/10 backdrop-blur-sm">
-                                <span className="font-bold">Enable Auto-Reply</span>
-                                <Switch checked={aiEnabled} onCheckedChange={setAiEnabled} />
-                            </div>
+                            <p className="text-indigo-200 text-sm">Automatically respond to customer inquiries 24/7.</p>
                         </div>
+                        <Switch checked={aiEnabled} onCheckedChange={setAiEnabled} />
                     </div>
 
-                    <div className="bg-white p-6 rounded-2xl border border-gray-200 shadow-sm">
-                        <h3 className="font-bold text-gray-900 mb-4">Notification Settings</h3>
-                        <div className="space-y-4">
-                            {["Welcome Message", "Order Confirmation", "Shipment Updates"].map(item => (
-                                <div key={item} className="flex items-center justify-between py-2 border-b border-gray-50 last:border-0">
-                                    <span className="text-gray-600 text-sm">{item}</span>
-                                    <Switch checked={true} onCheckedChange={() => { }} />
+                    {/* Playground */}
+                    <div className="bg-white rounded-2xl border border-gray-200 shadow-sm overflow-hidden flex flex-col h-[500px]">
+                        <div className="p-4 border-b bg-gray-50 flex justify-between items-center">
+                            <h3 className="font-medium text-sm text-gray-700">Test Playground</h3>
+                            <Badge variant="outline">Preview Mode</Badge>
+                        </div>
+
+                        {/* Chat Area */}
+                        <div className="flex-1 p-6 space-y-4 overflow-y-auto bg-slate-50">
+                            {/* User Msg (Simulated) */}
+                            {testInput && isTesting && (
+                                <div className="flex justify-end">
+                                    <div className="bg-green-100 text-green-900 p-3 rounded-2xl rounded-tr-none max-w-[80%] shadow-sm">
+                                        {testInput}
+                                    </div>
                                 </div>
-                            ))}
+                            )}
+
+                            {/* AI Response */}
+                            {isTesting && !testResponse && (
+                                <div className="flex justify-start">
+                                    <div className="bg-white p-3 rounded-2xl rounded-tl-none border shadow-sm flex gap-2 items-center">
+                                        <span className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" />
+                                        <span className="w-2 h-2 bg-gray-400 rounded-full animate-bounce delay-75" />
+                                        <span className="w-2 h-2 bg-gray-400 rounded-full animate-bounce delay-150" />
+                                    </div>
+                                </div>
+                            )}
+                            {testResponse && (
+                                <div className="flex justify-start gap-3">
+                                    <div className="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center text-xs font-bold text-blue-700">AI</div>
+                                    <div className="bg-white p-3 rounded-2xl rounded-tl-none border shadow-sm max-w-[80%] text-gray-800">
+                                        {testResponse}
+                                    </div>
+                                </div>
+                            )}
+                        </div>
+
+                        {/* Input Area */}
+                        <div className="p-4 bg-white border-t flex gap-2">
+                            <Input
+                                placeholder="Type a message to test..."
+                                value={testInput}
+                                onChange={(e: React.ChangeEvent<HTMLInputElement>) => setTestInput(e.target.value)}
+                                onKeyDown={(e: React.KeyboardEvent<HTMLInputElement>) => e.key === 'Enter' && handleTestSend()}
+                            />
+                            <Button onClick={handleTestSend} disabled={isTesting || !testInput}>Send</Button>
                         </div>
                     </div>
                 </div>

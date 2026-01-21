@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import { ChevronLeft, ChevronRight, Clock, Loader2 } from "lucide-react";
+import { Button } from "@vayva/ui";
 
 interface BookingCalendarProps {
     storeSlug?: string;
@@ -91,12 +92,12 @@ export function BookingCalendar({ storeSlug, onSelectDate, onSelectTime, classNa
                     {currentDate.toLocaleDateString("en-US", { month: "long", year: "numeric" })}
                 </h3>
                 <div className="flex gap-2">
-                    <button onClick={handlePrevMonth} className="p-2 hover:bg-gray-100 rounded-full">
+                    <Button variant="ghost" size="icon" onClick={handlePrevMonth} className="hover:bg-gray-100 rounded-full" aria-label="Previous month">
                         <ChevronLeft className="w-5 h-5" />
-                    </button>
-                    <button onClick={handleNextMonth} className="p-2 hover:bg-gray-100 rounded-full">
+                    </Button>
+                    <Button variant="ghost" size="icon" onClick={handleNextMonth} className="hover:bg-gray-100 rounded-full" aria-label="Next month">
                         <ChevronRight className="w-5 h-5" />
-                    </button>
+                    </Button>
                 </div>
             </div>
 
@@ -116,17 +117,19 @@ export function BookingCalendar({ storeSlug, onSelectDate, onSelectTime, classNa
                     const isToday = new Date().getDate() === day && new Date().getMonth() === currentDate.getMonth();
 
                     return (
-                        <button
+                        <Button
                             key={day}
+                            variant="ghost"
                             onClick={() => handleDateClick(day)}
                             className={`
-                h-10 w-10 text-sm rounded-full flex items-center justify-center transition-all
-                ${isSelected ? "bg-black text-white shadow-md scale-110" : "hover:bg-gray-100"}
+                h-10 w-10 text-sm rounded-full flex items-center justify-center transition-all p-0
+                ${isSelected ? "bg-black text-white shadow-md scale-110 hover:bg-black" : "hover:bg-gray-100"}
                 ${isToday && !isSelected ? "border border-black font-bold" : ""}
               `}
+                            aria-label={`Select ${day} ${currentDate.toLocaleDateString("en-US", { month: "long", year: "numeric" })}`}
                         >
                             {day}
-                        </button>
+                        </Button>
                     );
                 })}
             </div>
@@ -146,19 +149,21 @@ export function BookingCalendar({ storeSlug, onSelectDate, onSelectTime, classNa
                     ) : (
                         <div className="grid grid-cols-3 gap-2 max-h-48 overflow-y-auto custom-scrollbar">
                             {availableSlots.map((time) => (
-                                <button
+                                <Button
                                     key={time}
+                                    variant="outline"
                                     onClick={() => handleTimeClick(time)}
                                     className={`
-                                        px-3 py-2 text-sm border rounded-lg transition-colors flex items-center justify-center gap-2
+                                        px-3 py-2 text-sm border rounded-lg transition-colors flex items-center justify-center gap-2 h-auto
                                         ${selectedTime === time
-                                            ? "bg-black text-white border-black"
+                                            ? "bg-black text-white border-black hover:bg-black hover:text-white"
                                             : "border-gray-200 hover:border-black hover:bg-gray-50 text-gray-700"}
                                     `}
+                                    aria-label={`Select time ${time}`}
                                 >
                                     <Clock className="w-3 h-3" />
                                     {time}
-                                </button>
+                                </Button>
                             ))}
                         </div>
                     )}

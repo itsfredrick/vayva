@@ -1,6 +1,6 @@
 import React from "react";
 import { ControlCenterState } from "@vayva/shared";
-import { Icon, cn } from "@vayva/ui";
+import { Icon, cn, Button } from "@vayva/ui";
 
 interface UsageAndSystemProps {
   usage: ControlCenterState["usage"];
@@ -50,9 +50,9 @@ export const UsageAndSystem = ({
           {renderProgressBar(usage.products)}
           {renderProgressBar(usage.templates)}
 
-          <button className="w-full mt-6 py-2 text-sm font-bold text-indigo-600 hover:text-indigo-700 hover:bg-indigo-50 rounded-lg transition-colors">
+          <Button variant="primary" className="w-full mt-6 py-2 text-sm text-indigo-600 hover:text-indigo-700 hover:bg-indigo-50">
             View Plan Details
-          </button>
+          </Button>
         </div>
       </div>
 

@@ -1,4 +1,4 @@
-# Vayva Platform: Webhook Endpoint Map
+# Vayva: Webhook Endpoint Map
 
 **Routing Logic:** All webhooks hit `api-gateway` first, are verified, then proxied to internal services.
 

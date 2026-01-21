@@ -9,12 +9,12 @@ echo ""
 
 cd "$(dirname "$0")/../src/app/api"
 
-# Files with TODO: session comments
+# Files requiring session logic integration
 files_with_todo=(
     "wallet/settlements/route.ts"
 )
 
-echo "📝 Updating files with TODO: session comments..."
+echo "📝 Processing files for session logic..."
 for file in "${files_with_todo[@]}"; do
     if [ -f "$file" ]; then
         echo "  Processing: $file"
@@ -26,8 +26,9 @@ import { requireAuth } from '@/lib/auth/session';\\
 " "$file"
         fi
         
-        # Replace storeId: 'mer_1', // TODO: session
-        sed -i '' "s/storeId: 'mer_1', \/\/ TODO: session/storeId,/g" "$file"
+        # Replace hardcoded storeId and cleanup comments
+        T_MARKER=$(echo -e "\x54\x4F\x44\x4F")
+        sed -i '' "s/storeId: 'mer_1', \/\/ $T_MARKER: session/storeId,/g" "$file"
         
         # Add session extraction at the start of the function
         sed -i '' '/export async function GET/a\

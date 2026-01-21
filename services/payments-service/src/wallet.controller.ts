@@ -542,7 +542,7 @@ export const reviewKycHandler = async (
   const opsUserId = req.headers["x-ops-user-id"] as string;
 
   const store = await prisma.store.findFirst({
-    where: { memberships: { some: { userId: merchantId, role: "OWNER" } } },
+    where: { memberships: { some: { userId: merchantId, role_enum: "OWNER" } } },
   });
 
   if (!store)

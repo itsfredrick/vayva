@@ -18,7 +18,7 @@ export async function GET(request: Request) {
         take: limit,
         orderBy: { createdAt: "desc" },
         include: {
-            OpsUser: {
+            opsUser: {
                 select: { name: true, email: true }
             }
         }

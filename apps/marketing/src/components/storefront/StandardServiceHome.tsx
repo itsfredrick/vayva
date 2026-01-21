@@ -8,6 +8,7 @@ import {
 import { useStorefrontCart } from "@/hooks/storefront/useStorefrontCart";
 import { CheckoutModal } from "./CheckoutModal";
 import { BookingCalendar } from "./features/BookingCalendar";
+import { Button } from "@vayva/ui";
 import { Calendar, Clock, MapPin, Check, ShoppingBag, X, Plus, Minus, Loader2 } from "lucide-react";
 import { toast } from "sonner"
 
@@ -124,13 +125,14 @@ export function StandardServiceHome({
             {/* Navbar */}
             <nav className="bg-white border-b border-slate-200 px-6 py-4 flex items-center justify-between sticky top-0 z-50">
                 <div className="font-bold text-xl tracking-tight text-slate-900">{displayName}</div>
-                <button
+                <Button
                     onClick={() => setIsCartOpen(true)}
-                    className="bg-slate-900 text-white px-5 py-2 rounded-lg font-medium text-sm hover:bg-slate-800 transition-colors flex items-center gap-2"
+                    className="gap-2 h-auto"
+                    aria-label={`View bookings (${cart.length})`}
                 >
                     <Calendar className="w-4 h-4" />
                     <span>My Bookings ({cart.length})</span>
-                </button>
+                </Button>
             </nav>
 
             <div className="max-w-7xl mx-auto px-4 py-12 grid grid-cols-1 lg:grid-cols-12 gap-12">
@@ -168,7 +170,7 @@ export function StandardServiceHome({
                                 {products.map(service => (
                                     <div key={service.id} className="bg-white p-6 rounded-xl border border-slate-200 hover:border-blue-500 transition-colors group flex flex-col md:flex-row gap-6 items-start md:items-center">
                                         <div className="w-full md:w-32 h-32 bg-slate-100 rounded-lg overflow-hidden flex-shrink-0">
-                                            <img src={service.image || `https://via.placeholder.com/150?text=${service.name}`} className="w-full h-full object-cover" />
+                                            <img src={service.image || `https://via.placeholder.com/150?text=${service.name}`} alt={service.name} className="w-full h-full object-cover" />
                                         </div>
                                         <div className="flex-1">
                                             <h3 className="text-lg font-bold text-slate-900">{service.name}</h3>
@@ -180,12 +182,13 @@ export function StandardServiceHome({
                                         </div>
                                         <div className="text-right flex flex-row md:flex-col items-center md:items-end justify-between w-full md:w-auto mt-4 md:mt-0 gap-4">
                                             <div className="text-lg font-bold text-slate-900">₦{service.price.toLocaleString()}</div>
-                                            <button
+                                            <Button
                                                 onClick={() => addToCart(service)}
-                                                className="bg-blue-600 text-white px-6 py-2 rounded-lg font-medium hover:bg-blue-700 transition-colors shadow-lg shadow-blue-200"
+                                                className="bg-blue-600 hover:bg-blue-700 shadow-lg shadow-blue-200 h-auto"
+                                                aria-label={`Book ${service.name}`}
                                             >
                                                 Book
-                                            </button>
+                                            </Button>
                                         </div>
                                     </div>
                                 ))}
@@ -221,7 +224,14 @@ export function StandardServiceHome({
                                         <div key={item.id} className="flex justify-between items-start text-sm">
                                             <div>
                                                 <div className="font-medium text-slate-900">{item.name}</div>
-                                                <button onClick={() => removeFromCart(item.id)} className="text-xs text-red-500 hover:underline">Remove</button>
+                                                <Button
+                                                    variant="link"
+                                                    onClick={() => removeFromCart(item.id)}
+                                                    className="text-xs text-red-500 hover:text-red-600 hover:no-underline p-0 h-auto"
+                                                    aria-label={`Remove ${item.name} from booking`}
+                                                >
+                                                    Remove
+                                                </Button>
                                             </div>
                                             <div className="text-slate-500">x{item.quantity}</div>
                                         </div>
@@ -231,14 +241,15 @@ export function StandardServiceHome({
                                     <span>Total</span>
                                     <span>₦{total.toLocaleString()}</span>
                                 </div>
-                                <button
+                                <Button
                                     onClick={handleConfirmBooking}
                                     disabled={!selectedDate || !selectedTime || isBookingSubmitting}
-                                    className="w-full bg-slate-900 text-white py-3 rounded-xl font-bold hover:bg-black transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex justify-center items-center gap-2"
+                                    className="w-full gap-2 h-auto"
+                                    aria-label="Confirm booking and proceed to checkout"
                                 >
                                     {isBookingSubmitting ? <Loader2 className="w-5 h-5 animate-spin" /> : null}
                                     Confirm Booking
-                                </button>
+                                </Button>
                             </div>
                         )}
                     </div>
@@ -250,13 +261,19 @@ export function StandardServiceHome({
                 <div className="fixed inset-0 z-[60] flex justify-end lg:hidden">
                     <div className="absolute inset-0 bg-black/50" onClick={() => setIsCartOpen(false)} />
                     <div className="relative w-full max-w-sm bg-white h-full p-6">
-                        <h2 className="font-bold text-xl mb-4">Bookings</h2>
-                        <button
+                        <div className="flex justify-between items-center mb-6">
+                            <h2 className="font-bold text-xl">Bookings</h2>
+                            <Button variant="ghost" size="icon" onClick={() => setIsCartOpen(false)} className="h-auto" aria-label="Close bookings">
+                                <X className="w-5 h-5" />
+                            </Button>
+                        </div>
+                        <Button
                             onClick={handleConfirmBooking}
-                            className="w-full bg-blue-600 text-white py-3 rounded-lg font-bold mt-4"
+                            className="w-full bg-blue-600 hover:bg-blue-700 mt-4 font-bold h-auto"
+                            aria-label={`Checkout and pay ₦${total.toLocaleString()}`}
                         >
                             Checkout (₦{total.toLocaleString()})
-                        </button>
+                        </Button>
                     </div>
                 </div>
             )}

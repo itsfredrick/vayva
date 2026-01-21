@@ -5,6 +5,7 @@ import { Button, Icon, cn } from "@vayva/ui";
 import { motion, AnimatePresence } from "framer-motion";
 import { useWallet } from "@/context/WalletContext";
 import { WalletService, BankAccount } from "@/services/wallet";
+import { useToast } from "@/components/ui/use-toast";
 
 interface WithdrawModalProps {
   isOpen: boolean;
@@ -18,6 +19,7 @@ import { telemetry } from "@/lib/telemetry";
 export const WithdrawModal = ({ isOpen, onClose }: WithdrawModalProps) => {
   const { summary, refreshWallet } = useWallet();
   const { merchant } = useAuth();
+  const { toast } = useToast();
   const router = useRouter();
   const [step, setStep] = useState<1 | 2 | 3>(1);
   const [amount, setAmount] = useState("");
@@ -108,8 +110,16 @@ export const WithdrawModal = ({ isOpen, onClose }: WithdrawModalProps) => {
       await refreshWallet();
       onClose();
       // In a real app, use a Toast
-      alert("Withdrawal Successful! Funds will be settled shortly.");
+      toast({
+        title: "Withdrawal Successful",
+        description: "Funds will be settled shortly.",
+      });
     } catch (err: any) {
+      toast({
+        title: "Withdrawal Failed",
+        description: err.response?.data?.error || "Invalid OTP",
+        variant: "destructive",
+      });
       setError(err.response?.data?.error || "Invalid OTP");
     } finally {
       setLoading(false);
@@ -129,13 +139,16 @@ export const WithdrawModal = ({ isOpen, onClose }: WithdrawModalProps) => {
       >
         {/* Header */}
         <div className="flex items-center justify-between p-4 border-b border-gray-100">
-          <h3 className="font-bold text-[#0B0B0B]">Withdraw Funds</h3>
-          <button
+          <h3 className="font-bold text-black">Withdraw Funds</h3>
+          <Button
+            variant="ghost"
+            size="icon"
             onClick={onClose}
-            className="p-1 hover:bg-gray-100 rounded-full text-gray-400 hover:text-black"
+            aria-label="Close"
+            className="p-1 hover:bg-gray-100 rounded-full text-gray-400 hover:text-black h-auto w-auto"
           >
             <Icon name="X" size={18} />
-          </button>
+          </Button>
         </div>
 
         {/* Body */}
@@ -159,10 +172,11 @@ export const WithdrawModal = ({ isOpen, onClose }: WithdrawModalProps) => {
                 </div>
 
                 <div className="flex flex-col gap-1">
-                  <label className="text-xs font-bold text-[#525252]">
+                  <label className="text-xs font-bold text-[#525252]" htmlFor="amount-input">
                     Amount (₦)
                   </label>
                   <input
+                    id="amount-input"
                     type="number"
                     placeholder="0.00"
                     className="h-10 px-3 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-black/5"
@@ -173,10 +187,12 @@ export const WithdrawModal = ({ isOpen, onClose }: WithdrawModalProps) => {
                 </div>
 
                 <div className="flex flex-col gap-1">
-                  <label className="text-xs font-bold text-[#525252]">
+                  <label className="text-xs font-bold text-[#525252]" htmlFor="bank-select">
                     Select Destination Bank
                   </label>
                   <select
+                    id="bank-select"
+                    aria-label="Select Destination Bank"
                     className="h-10 px-3 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-black/5 bg-white"
                     value={bankId}
                     onChange={(e) => setBankId(e.target.value)}
@@ -214,21 +230,21 @@ export const WithdrawModal = ({ isOpen, onClose }: WithdrawModalProps) => {
                 <div className="flex flex-col gap-2 p-4 bg-gray-50 rounded-xl border border-gray-100 text-sm">
                   <div className="flex justify-between items-center text-gray-500">
                     <span>Withdrawal Amount</span>
-                    <span className="font-mono font-bold text-[#0B0B0B]">
+                    <span className="font-mono font-bold text-black">
                       ₦{Number(amount).toLocaleString()}
                     </span>
                   </div>
                   <div className="flex justify-between items-center text-red-500 bg-red-50/50 p-2 rounded-lg mt-1">
                     <div className="flex flex-col">
                       <span className="text-[10px] font-black uppercase tracking-widest">
-                        Transaction Fee (5%)
+                        Transaction Fee (3%)
                       </span>
                       <span className="text-[10px] opacity-70">
                         Charged on every withdrawal
                       </span>
                     </div>
                     <span className="font-mono font-black">
-                      - ₦{(Number(amount) * 0.05).toLocaleString()}
+                      - ₦{(Number(amount) * 0.03).toLocaleString()}
                     </span>
                   </div>
                   <div className="border-t border-gray-200 mt-2 pt-2 flex justify-between items-center">
@@ -241,7 +257,7 @@ export const WithdrawModal = ({ isOpen, onClose }: WithdrawModalProps) => {
                       </span>
                     </div>
                     <span className="text-lg font-black text-[#22C55E]">
-                      ₦{(Number(amount) * 0.95).toLocaleString()}
+                      ₦{(Number(amount) * 0.97).toLocaleString()}
                     </span>
                   </div>
                 </div>
@@ -286,7 +302,7 @@ export const WithdrawModal = ({ isOpen, onClose }: WithdrawModalProps) => {
                   <Icon name="Mail" size={24} />
                 </div>
                 <div>
-                  <h4 className="font-bold text-[#0B0B0B]">
+                  <h4 className="font-bold text-black">
                     Verify Withdrawal
                   </h4>
                   <p className="text-xs text-gray-500 mt-1">
@@ -314,9 +330,9 @@ export const WithdrawModal = ({ isOpen, onClose }: WithdrawModalProps) => {
                   {loading ? "Verifying..." : "Confirm Withdrawal"}
                 </Button>
 
-                <button className="text-xs text-blue-600 hover:underline">
+                <Button variant="link" className="text-xs text-blue-600 hover:underline h-auto p-0">
                   Resend Code
-                </button>
+                </Button>
               </motion.div>
             )}
           </AnimatePresence>

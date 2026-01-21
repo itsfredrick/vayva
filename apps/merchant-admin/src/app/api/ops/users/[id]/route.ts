@@ -1,5 +1,5 @@
 import { NextResponse, NextRequest } from "next/server";
-import { prisma } from "@vayva/db";
+import { prisma } from "@/lib/prisma";
 import { OpsAuthService } from "@/lib/ops-auth";
 import { z } from "zod";
 import bcrypt from "bcryptjs";

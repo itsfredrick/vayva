@@ -1,42 +1,95 @@
 "use client";
 
-import React from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
-import { Icon } from "@vayva/ui";
+import { Icon, IconName } from "@vayva/ui";
+import { INDUSTRY_CONFIG } from "@/config/industry";
+import { IndustrySlug } from "@/lib/templates/types";
 
-const ACTIONS = [
-  {
-    label: "New Product",
-    icon: "Plus",
-    href: "/dashboard/products/new",
-    available: true,
-  },
-  { label: "Create Discount", icon: "Tag", href: "#", available: false },
-  {
-    label: "Create Invoice",
-    icon: "FileText",
-    href: "/dashboard/finance",
-    available: true,
-  },
-  { label: "Send Broadcast", icon: "Send", href: "#", available: false },
-  {
-    label: "Delivery Task",
-    icon: "Truck",
-    href: "/dashboard/orders",
-    available: true,
-  },
-  {
-    label: "View Reports",
-    icon: "BarChart2",
-    href: "/dashboard/analytics",
-    available: true,
-  }, // Mapped to analytics
-];
+type Action = {
+  label: string;
+  icon: IconName;
+  href: string;
+  available: boolean;
+};
 
 export const QuickActions = () => {
+  const [industrySlug, setIndustrySlug] = useState<IndustrySlug>("retail");
+
+  useEffect(() => {
+    async function load() {
+      try {
+        const res = await fetch("/api/merchant/dashboard/activation-progress");
+        if (res.ok) {
+          const data = await res.json();
+          setIndustrySlug(data?.data?.industrySlug || "retail");
+        }
+      } catch (e) {
+        // ignore, default retail
+      }
+    }
+    load();
+  }, []);
+
+  const config = useMemo(() => {
+    return INDUSTRY_CONFIG[industrySlug] || INDUSTRY_CONFIG.retail;
+  }, [industrySlug]);
+
+  const createPath =
+    config?.moduleRoutes?.catalog?.create ||
+    (config?.primaryObject === "menu_item"
+      ? "/dashboard/menu-items/new"
+      : config?.primaryObject === "digital_asset"
+        ? "/dashboard/digital-assets/new"
+        : "/dashboard/products/new");
+
+  const primaryLabelMap: Record<string, string> = {
+    menu_item: "Menu Item",
+    digital_asset: "Digital Asset",
+    service: "Service",
+    listing: "Listing",
+    course: "Course",
+    event: "Event",
+    project: "Project",
+    campaign: "Campaign",
+  };
+  const primaryLabel =
+    primaryLabelMap[config?.primaryObject] || "Product";
+
+  const hasFulfillment = (config?.modules || []).includes("fulfillment");
+
+  const actions: Action[] = [
+    {
+      label: `New ${primaryLabel}`,
+      icon: "Plus",
+      href: createPath,
+      available: true,
+    },
+    { label: "Create Discount", icon: "Tag", href: "#", available: false },
+    {
+      label: "Create Invoice",
+      icon: "FileText",
+      href: "/dashboard/finance",
+      available: true,
+    },
+    { label: "Send Broadcast", icon: "Send", href: "#", available: false },
+    {
+      label: "Delivery Task",
+      icon: "Truck",
+      href: "/dashboard/orders",
+      available: hasFulfillment,
+    },
+    {
+      label: "View Reports",
+      icon: "BarChart2",
+      href: "/dashboard/analytics",
+      available: true,
+    },
+  ];
+
   return (
     <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 mb-8">
-      {ACTIONS.map((action) => (
+      {actions.map((action) => (
         <Link
           key={action.label}
           href={action.available ? action.href : "#"}
@@ -45,7 +98,6 @@ export const QuickActions = () => {
         >
           <div className="bg-[#0A0F0D] border border-white/5 rounded-xl p-4 flex flex-col items-center gap-3 hover:border-primary/30 hover:bg-white/5 transition-all text-center h-full">
             <div className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center text-white group-hover:scale-110 transition-transform group-hover:bg-primary group-hover:text-black">
-              {/* @ts-ignore */}
               <Icon name={action.icon} size={20} />
             </div>
             <span className="text-xs font-medium text-text-secondary group-hover:text-white transition-colors">

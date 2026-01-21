@@ -1,0 +1,49 @@
+version: '3.8'
+
+services:
+  # S3 Compatible Storage
+  minio:
+    image: quay.io/minio/minio
+    container_name: vayva-minio
+    command: server /data --console-address ":9001"
+    volumes:
+      - minio_data:/data
+    environment:
+      MINIO_ROOT_USER: ${MINIO_ROOT_USER:-admin}
+      MINIO_ROOT_PASSWORD: ${MINIO_ROOT_PASSWORD:-vayva_secure_pwd}
+    ports:
+      - "9000:9000"
+      - "9001:9001"
+    restart: always
+
+  # WhatsApp API Engine
+  evolution-api:
+    image: atendare/evolution-api:latest
+    container_name: vayva-evolution
+    ports:
+      - "8080:8080"
+    environment:
+      - AUTHENTICATION_TYPE=apikey
+      - AUTHENTICATION_API_KEY=${EVO_API_KEY:-vayva_secret_key}
+      - DATABASE_ENABLED=true
+      - DATABASE_CONNECTION_URI=postgresql://${DB_USER}:${DB_PASS}@${DB_HOST}:5432/${DB_NAME}?schema=public
+      - DATABASE_CONNECTION_CLIENT_NAME=vayva_evolution
+      - REDIS_ENABLED=true
+      - REDIS_URI=redis://${DB_HOST}:6379
+    restart: always
+
+  # Reverse Proxy & SSL Management
+  proxy-manager:
+    image: 'jc21/nginx-proxy-manager:latest'
+    container_name: vayva-proxy
+    ports:
+      - '80:80'
+      - '81:81'
+      - '443:443'
+    volumes:
+      - ./proxy/data:/data
+      - ./proxy/letsencrypt:/etc/letsencrypt
+    restart: always
+
+volumes:
+  minio_data:

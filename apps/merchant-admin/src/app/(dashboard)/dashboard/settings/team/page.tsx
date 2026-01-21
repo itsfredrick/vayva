@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import { Icon, EmptyState, Button } from "@vayva/ui";
+import { Button, EmptyState, Icon } from "@vayva/ui";
 
 import { useAuth } from "@/context/AuthContext";
 import { motion } from "framer-motion";
@@ -31,6 +31,7 @@ export default function TeamSettingsPage() {
   const { user } = useAuth();
   const [members, setMembers] = useState<Member[]>([]);
   const [invites, setInvites] = useState<Invite[]>([]);
+  const [customRoles, setCustomRoles] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [showInviteModal, setShowInviteModal] = useState(false);
 
@@ -48,6 +49,13 @@ export default function TeamSettingsPage() {
       const data = await res.json();
       setMembers(data.members || []);
       setInvites(data.invites || []);
+
+      // Fetch custom roles
+      const rolesRes = await fetch("/api/settings/roles");
+      if (rolesRes.ok) {
+        const rolesData = await rolesRes.json();
+        setCustomRoles(rolesData);
+      }
     } catch (err) {
       console.error(err);
     } finally {
@@ -114,15 +122,15 @@ export default function TeamSettingsPage() {
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-[#0B0B0B]">Team Members</h1>
+          <h1 className="text-2xl font-bold text-black">Team Members</h1>
           <p className="text-gray-500">Manage who has access to your store</p>
         </div>
-        <button
+        <Button
           onClick={() => setShowInviteModal(true)}
           className="bg-black text-white px-4 py-2 rounded-lg font-medium hover:bg-gray-800 transition"
         >
           Invite Member
-        </button>
+        </Button>
       </div>
 
       {/* Stats / Usage */}
@@ -132,7 +140,7 @@ export default function TeamSettingsPage() {
             <Icon name={"Users" as any} size={20} />
           </div>
           <div>
-            <p className="text-sm font-bold text-[#0B0B0B]">Seat Usage</p>
+            <p className="text-sm font-bold text-black">Seat Usage</p>
             <p className="text-xs text-gray-400">
               {members.length + invites.length} active seats
             </p>
@@ -156,11 +164,12 @@ export default function TeamSettingsPage() {
             {members.map((m) => (
               <tr key={m.id}>
                 <td className="px-4 py-3">
-                  <div className="font-medium text-[#0B0B0B]">{m.name}</div>
+                  <div className="font-medium text-black">{m.name}</div>
                   <div className="text-xs text-gray-400">{m.email}</div>
                 </td>
                 <td className="px-4 py-3">
                   <select
+                    aria-label="Select Role"
                     value={m.role}
                     onChange={(e) => handleRoleChange(m.id, e.target.value)}
                     disabled={m.role === "owner"} // Owner checks on server too
@@ -170,6 +179,9 @@ export default function TeamSettingsPage() {
                     <option value="finance">Finance</option>
                     <option value="support">Support</option>
                     <option value="viewer">Viewer</option>
+                    {customRoles.map(role => (
+                      <option key={role.id} value={role.id}>{role.name}</option>
+                    ))}
                     {m.role === "owner" && <option value="owner">Owner</option>}
                   </select>
                 </td>
@@ -180,12 +192,14 @@ export default function TeamSettingsPage() {
                 </td>
                 <td className="px-4 py-3 text-right">
                   {m.role !== "owner" && (
-                    <button
+                    <Button
+                      variant="ghost"
+                      size="sm" // using size prop if available or class override
                       onClick={() => handleRemove(m.id)}
-                      className="text-red-500 hover:text-red-700 text-xs font-medium"
+                      className="text-red-500 hover:text-red-700 text-xs font-medium h-auto px-2 py-1"
                     >
                       Remove
-                    </button>
+                    </Button>
                   )}
                 </td>
               </tr>
@@ -207,12 +221,14 @@ export default function TeamSettingsPage() {
                   </span>
                 </td>
                 <td className="px-4 py-3 text-right">
-                  <button
+                  <Button
+                    variant="ghost"
+                    size="sm"
                     onClick={() => handleRevoke(i.id)}
-                    className="text-gray-400 hover:text-red-500 text-xs"
+                    className="text-gray-400 hover:text-red-500 text-xs h-auto px-2 py-1"
                   >
                     Revoke
-                  </button>
+                  </Button>
                 </td>
               </tr>
             ))}
@@ -242,10 +258,11 @@ export default function TeamSettingsPage() {
             <h2 className="text-lg font-bold mb-4">Invite Team Member</h2>
             <form onSubmit={handleInvite} className="space-y-4">
               <div>
-                <label className="block text-xs font-bold text-gray-500 mb-1">
+                <label htmlFor="invite-email" className="block text-xs font-bold text-gray-500 mb-1">
                   Email
                 </label>
                 <input
+                  id="invite-email"
                   name="email"
                   type="email"
                   required
@@ -254,10 +271,11 @@ export default function TeamSettingsPage() {
                 />
               </div>
               <div>
-                <label className="block text-xs font-bold text-gray-500 mb-1">
+                <label htmlFor="invite-role" className="block text-xs font-bold text-gray-500 mb-1">
                   Role
                 </label>
                 <select
+                  id="invite-role"
                   name="role"
                   className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm"
                 >
@@ -265,13 +283,17 @@ export default function TeamSettingsPage() {
                   <option value="support">Support</option>
                   <option value="finance">Finance</option>
                   <option value="admin">Admin</option>
+                  {customRoles.map((role: any) => (
+                    <option key={role.id} value={role.id}>{role.name}</option>
+                  ))}
                 </select>
               </div>
               <div>
-                <label className="block text-xs font-bold text-gray-500 mb-1">
+                <label htmlFor="invite-phone" className="block text-xs font-bold text-gray-500 mb-1">
                   Phone (Optional)
                 </label>
                 <input
+                  id="invite-phone"
                   name="phone"
                   type="tel"
                   className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm"
@@ -279,19 +301,20 @@ export default function TeamSettingsPage() {
                 />
               </div>
               <div className="flex justify-end gap-3 mt-6">
-                <button
+                <Button
                   type="button"
+                  variant="ghost"
                   onClick={() => setShowInviteModal(false)}
                   className="text-gray-500 font-medium text-sm hover:text-black"
                 >
                   Cancel
-                </button>
-                <button
+                </Button>
+                <Button
                   type="submit"
                   className="bg-black text-white px-4 py-2 rounded-lg text-sm font-bold hover:bg-gray-800"
                 >
                   Send Invite
-                </button>
+                </Button>
               </div>
             </form>
           </div>

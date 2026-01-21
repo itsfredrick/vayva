@@ -1,8 +1,9 @@
 import { NextResponse } from "next/server";
 import { getSessionUser } from "@/lib/session";
-import { prisma } from "@vayva/db";
+import { prisma } from "@/lib/prisma";
 import { authorizeAction, AppRole } from "@/lib/permissions";
 import { logAuditEvent, AuditEventType } from "@/lib/audit";
+import { OrderStateService } from "@/services/order-state.service";
 
 export async function POST(request: Request) {
   try {
@@ -22,25 +23,40 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: "Invalid payload" }, { status: 400 });
     }
 
-    // Verify status validity (optional but good practice)
-    // For simplicity, assuming status is valid enum key string
+    // Verify status validity
+    if (!status) return NextResponse.json({ error: "Invalid status" }, { status: 400 });
 
-    await prisma.order.updateMany({
-      where: {
-        id: { in: ids },
-        storeId: user.storeId,
-      },
-      data: {
-        status: status,
-      },
-    });
+    let successCount = 0;
+    const errors: any[] = [];
+
+    // Process each order individually to ensure state rules & notifications trigger
+    await Promise.all(
+      ids.map(async (id: string) => {
+        try {
+          await OrderStateService.transition(id, status, user.id, user.storeId);
+          successCount++;
+        } catch (error: any) {
+          console.error(`Failed to update order ${id}`, error);
+          errors.push({ id, error: error.message });
+        }
+      })
+    );
 
     // Audit Log
     await logAuditEvent(
       user.storeId,
       user.id,
       AuditEventType.ORDER_BULK_STATUS_CHANGED,
-      { count: ids.length, toStatus: status },
+      {
+        targetType: "ORDER_BATCH",
+        targetId: "bulk-update",
+        meta: {
+          requested: ids.length,
+          success: successCount,
+          toStatus: status,
+          errors
+        }
+      },
     );
 
     return NextResponse.json({ success: true, count: ids.length });

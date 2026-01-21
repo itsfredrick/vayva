@@ -1,6 +1,7 @@
 "use client";
 
 import * as React from "react";
+import { Button } from "@vayva/ui";
 import { StoreShell } from "@/components/StoreShell";
 import { useStore } from "@/context/StoreContext";
 import NextLink from "next/link";
@@ -71,16 +72,16 @@ export default function OrderSuccessPage() {
           className="flex flex-col gap-4"
         >
           <Link href={`/orders?store=${store.slug}`}>
-            <button className="w-full bg-black text-white h-16 rounded-2xl font-bold hover:bg-gray-900 transition-all shadow-lg shadow-black/10 flex items-center justify-center gap-2 group">
+            <Button className="w-full bg-black text-white h-16 rounded-2xl font-bold hover:bg-gray-900 transition-all shadow-lg shadow-black/10 flex items-center justify-center gap-2 group">
               Track Order Status
               <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />
-            </button>
+            </Button>
           </Link>
           <Link href={`/?store=${store.slug}`}>
-            <button className="w-full bg-white text-gray-600 h-16 rounded-2xl font-bold hover:bg-gray-50 border border-gray-100 transition-all flex items-center justify-center gap-2">
+            <Button className="w-full bg-white text-gray-600 h-16 rounded-2xl font-bold hover:bg-gray-50 border border-gray-100 transition-all flex items-center justify-center gap-2">
               <ShoppingBag size={18} />
               Continue Shopping
-            </button>
+            </Button>
           </Link>
         </motion.div>
       </div>

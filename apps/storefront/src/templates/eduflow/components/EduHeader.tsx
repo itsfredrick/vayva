@@ -1,6 +1,7 @@
 import React from "react";
 import { User, BookOpen, GraduationCap } from "lucide-react";
 import Link from "next/link";
+import { Button } from "@vayva/ui";
 
 interface EduHeaderProps {
   storeName?: string;
@@ -42,9 +43,9 @@ export const EduHeader = ({ storeName }: EduHeaderProps) => {
           >
             My Learning
           </Link>
-          <button className="flex items-center gap-2 text-sm font-bold text-white bg-blue-600 hover:bg-blue-700 px-4 py-2 rounded-lg transition-colors">
+          <Button className="flex items-center gap-2 text-sm font-bold text-white bg-blue-600 hover:bg-blue-700 px-4 py-2 rounded-lg transition-colors h-auto" aria-label="Go to dashboard">
             <User size={16} /> Dashboard
-          </button>
+          </Button>
         </div>
       </div>
     </header>

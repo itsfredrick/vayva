@@ -2,6 +2,7 @@ import React from "react";
 import { MapPin, ShoppingBag } from "lucide-react";
 import Link from "next/link";
 import { useStore } from "@/context/StoreContext";
+import { Button } from "@vayva/ui";
 
 export const ChopnowHeader = () => {
   const { cart } = useStore();
@@ -15,11 +16,11 @@ export const ChopnowHeader = () => {
           <span className="text-[10px] uppercase text-gray-400 font-bold tracking-wider">
             Delivering to
           </span>
-          <button className="flex items-center gap-1 text-red-600 font-bold text-sm">
+          <Button variant="ghost" className="flex items-center gap-1 text-red-600 font-bold text-sm h-auto p-1" aria-label="Change delivery location">
             <MapPin size={14} />
             <span className="truncate max-w-[150px]">Lekki Phase 1, Lagos</span>
             <span className="text-xs text-gray-400">▼</span>
-          </button>
+          </Button>
         </div>
 
         {/* Actions */}
@@ -40,12 +41,12 @@ export const ChopnowHeader = () => {
 
       {/* Delivery/Pickup Toggle */}
       <div className="border-t border-gray-100 flex text-sm font-bold text-center">
-        <button className="flex-1 py-3 text-red-600 border-b-2 border-red-600 bg-red-50">
+        <Button variant="ghost" className="flex-1 py-3 text-red-600 border-b-2 border-red-600 bg-red-50 h-auto rounded-none" aria-label="Delivery">
           Delivery
-        </button>
-        <button className="flex-1 py-3 text-gray-400 hover:text-gray-600">
+        </Button>
+        <Button variant="ghost" className="flex-1 py-3 text-gray-400 hover:text-gray-600 h-auto rounded-none" aria-label="Pickup">
           Pickup
-        </button>
+        </Button>
       </div>
     </header>
   );

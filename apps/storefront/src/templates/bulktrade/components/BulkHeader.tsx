@@ -1,6 +1,7 @@
 import React from "react";
 import { Truck, Search, User, FileText } from "lucide-react";
 import Link from "next/link";
+import { Button } from "@vayva/ui";
 
 interface BulkHeaderProps {
   storeName?: string;
@@ -68,13 +69,14 @@ export const BulkHeader = ({
 
         {/* Actions */}
         <div className="flex items-center gap-2 ml-auto">
-          <button className="hidden sm:flex items-center gap-2 text-sm font-bold text-gray-600 hover:text-[#0F172A] px-3 py-2 rounded-lg transition-colors">
+          <Button variant="ghost" className="hidden sm:flex items-center gap-2 text-sm font-bold text-gray-600 hover:text-[#0F172A] px-3 py-2 rounded-lg transition-colors h-auto" aria-label="Account">
             <User size={18} /> Account
-          </button>
+          </Button>
 
-          <button
+          <Button
             onClick={onOpenRFQ}
-            className="flex items-center gap-2 bg-[#2563EB] hover:bg-blue-700 text-white font-bold px-5 py-3 rounded-lg transition-colors shadow-sm relative group"
+            className="flex items-center gap-2 bg-[#2563EB] hover:bg-blue-700 text-white font-bold px-5 py-3 rounded-lg transition-colors shadow-sm relative group h-auto"
+            aria-label={`Request quote${rfqCount > 0 ? `, ${rfqCount} items` : ""}`}
           >
             <FileText size={18} />
             <span>Request Quote</span>
@@ -83,7 +85,7 @@ export const BulkHeader = ({
                 {rfqCount}
               </span>
             )}
-          </button>
+          </Button>
         </div>
       </div>
     </header>

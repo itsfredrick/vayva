@@ -101,13 +101,13 @@ export function HelpAIChat() {
                         </div>
                         <div className="flex flex-wrap gap-2 justify-center">
                             {SUGGESTED_PROMPTS.map((prompt) => (
-                                <button
+                                <Button
                                     key={prompt}
                                     onClick={() => handleSend(prompt)}
                                     className="px-3 py-1.5 bg-white border border-gray-200 rounded-full text-xs text-gray-600 hover:border-[#22C55E] hover:text-[#22C55E] transition-all"
                                 >
                                     {prompt}
-                                </button>
+                                </Button>
                             ))}
                         </div>
                     </div>
@@ -154,13 +154,13 @@ export function HelpAIChat() {
                         className="w-full pl-4 pr-12 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-[#22C55E] focus:border-transparent outline-none text-sm transition-all resize-none max-h-32"
                         rows={1}
                     />
-                    <button
+                    <Button
                         onClick={() => handleSend(input)}
                         disabled={!input.trim() || isLoading}
                         className="absolute right-2 bottom-2 p-2 bg-[#22C55E] text-white rounded-lg hover:bg-[#16A34A] disabled:opacity-50 disabled:grayscale transition-all"
                     >
                         <Send className="w-4 h-4" />
-                    </button>
+                    </Button>
                 </div>
                 <p className="text-[10px] text-gray-400 mt-2 text-center">
                     Vayva AI may provide inaccurate info. Verification is recommended.

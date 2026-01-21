@@ -23,5 +23,6 @@ export async function catalogRoutes(fastify: FastifyInstance) {
   fastify.post("/inventory/adjust", CatalogController.adjustInventory);
 
   // Collections
-  // TODO: fastify.post('/collections', CatalogController.createCollection);
+  fastify.post("/collections", CatalogController.createCollection);
+  fastify.get("/collections", CatalogController.getCollections);
 }

@@ -1,4 +1,9 @@
-import { PrismaClient, Prisma } from "@prisma/client";
+import { PrismaClient, Prisma } from "./generated/client";
+// import { PrismaPg } from "@prisma/adapter-pg";
+// import pg from "pg";
+
+// Re-export PrismaClient and Prisma
+
 
 export {
   PrismaClient,
@@ -17,9 +22,6 @@ export {
   Channel,
   ChecklistCategory,
   ChecklistStatus,
-  ConsentChannel,
-  ConsentEventType,
-  ConsentSource,
   CouponStatus,
   DLQStatus,
   DataRequestStatus,
@@ -77,10 +79,24 @@ export {
   ExportStatus,
   DataDeletionStatus,
   DeletionStatus,
-} from "@prisma/client";
+  MerchantType,
+  ImportOrderState,
+
+  // Additional Enums from schema.prisma
+  BookingStatus,
+  RaffleEntryStatus,
+  Transmission,
+  FuelType,
+  AccommodationType,
+  PostStatus,
+  AutomationTrigger,
+  AutomationAction,
+  LedgerAccountType,
+  TransactionType,
+} from "./generated/client";
 
 // Types are safe to wildcard export as they don't trigger Turbopack re-export warnings
-export type * from "@prisma/client";
+export type * from "./generated/client";
 export type {
   AbuseRule,
   AccountDeletionRequest,
@@ -105,6 +121,8 @@ export type {
   AuditEvent,
   AuditLog,
   AutomationRule,
+  LedgerAccount,
+  LedgerTransaction,
   BackupReceipt,
   BankBeneficiary,
   BillingProfile,
@@ -125,6 +143,9 @@ export type {
   CustomerAddress,
   CustomerRiskProfile,
   CustomerSession,
+  Cart,
+  CartItem,
+
   DataDeletionRequest,
   DataExportArtifact,
   DataExportRequest,
@@ -156,7 +177,7 @@ export type {
   HandoffEvent,
   HealthScore,
   IdempotencyKeyV2,
-  IdempotencyRecord,
+  FulfillmentGroup,
   ImportJob,
   IntegrationEvent,
   InternalNote,
@@ -164,7 +185,6 @@ export type {
   InventoryItem,
   InventoryLocation,
   InventoryMovement,
-  Invoice,
   InvoiceLineV2,
   InvoiceV2,
   JobRun,
@@ -172,23 +192,20 @@ export type {
   KnowledgeEmbedding,
   KycRecord,
   LedgerEntry,
-  LegacyApiKey,
   LegalAcceptance,
   LegalTemplate,
   MarketplaceListing,
   MediaAsset,
   Membership,
-  MerchantAccountLifecycle,
   MerchantAiProfile,
   MerchantAiSubscription,
   MerchantCostDaily,
   MerchantFeatureOverride,
   MerchantFlag,
   MerchantOnboarding,
+  OnboardingAnalyticsEvent,
   MerchantPolicy,
-  MerchantSecuritySettings,
   MerchantSession,
-  MerchantSubscription,
   MerchantTheme,
   MerchantThemeHistory,
   Message,
@@ -199,7 +216,6 @@ export type {
   NotificationPreference,
   NotificationTemplate,
   ObjectionEvent,
-  OnboardingAnalyticsEvent,
   OnboardingFlow,
   OpsAuditEvent,
   OpsSession,
@@ -225,6 +241,7 @@ export type {
   Plan,
   PlatformCostDaily,
   PlatformKillSwitch,
+  PricingTier,
   Product,
   ProductImage,
   ProductVariant,
@@ -250,6 +267,7 @@ export type {
   Segment,
   Shipment,
   SignupAbuseSignal,
+  SourcingRequest,
   StaffInvite,
   StatusIncident,
   Store,
@@ -289,45 +307,20 @@ export type {
   WebhookEvent,
   WebhookEventV2,
   WebhookSubscription,
-  WhatsAppAgentSettings,
-  WhatsappChannel,
-  WhatsappCredential,
-  WhatsappTemplate,
-  Withdrawal,
-  analytics_event,
-  checkout_recovery_message,
-  checkout_recovery_settings,
-  checkout_session,
-  communication_consent,
-  compliance_event,
-  conversation_tag,
-  conversation_tag_map,
-  email_message,
-  email_suppression,
-  fraud_signal,
-  idempotency_key,
-  incident,
-  incident_link,
-  inventory_item,
-  job_dead_letter,
-  password_reset_token,
-  quick_reply,
-  restore_drill_run,
-  return_event,
-  return_request,
-  status_incident_update,
-  status_incident_v2,
-  stock_movement,
-  stock_reservation,
-  uptime_check_result,
-  user_email_verification,
-  webhook_delivery,
-} from "@prisma/client";
+
+} from "./generated/client";
 
 const globalForPrisma = globalThis as unknown as {
   prisma: PrismaClient | undefined;
 };
 
-export const prisma = globalForPrisma.prisma ?? new PrismaClient();
+// import { PrismaPg } from "@prisma/adapter-pg";
+// import pg from "pg";
+// const pool = new pg.Pool({ connectionString: process.env.DATABASE_URL });
+// const adapter = new PrismaPg(pool);
+
+export const prisma = globalForPrisma.prisma ?? new PrismaClient(); // Removed { adapter }
+
+export * from "./helpers/idempotency";
 
 if (process.env.NODE_ENV !== "production") globalForPrisma.prisma = prisma;

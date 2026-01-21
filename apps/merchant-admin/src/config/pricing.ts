@@ -11,11 +11,11 @@ export const CURRENCY = "NGN";
 
 // Transaction Fees
 export const FEES = {
-  WITHDRAWAL_PERCENTAGE: 5, // 5% fee on every withdrawal
+  WITHDRAWAL_PERCENTAGE: 3, // 3% fee on every withdrawal
 };
 
 // 1:1 Mapping to Prisma SubscriptionPlan enum
-export type PlanKey = "FREE" | "STARTER" | "PRO";
+export type PlanKey = "STARTER" | "GROWTH" | "PRO";
 
 export type Plan = {
   key: PlanKey;
@@ -31,7 +31,7 @@ export type Plan = {
 
 export const PLANS: Plan[] = [
   {
-    key: "FREE",
+    key: "STARTER",
     name: "Free",
     monthlyAmount: 0,
     trialDays: 7,
@@ -45,7 +45,7 @@ export const PLANS: Plan[] = [
     ctaLabel: "Start Free",
   },
   {
-    key: "STARTER",
+    key: "GROWTH",
     name: "Starter",
     monthlyAmount: 32250,
     baseAmount: 30000,

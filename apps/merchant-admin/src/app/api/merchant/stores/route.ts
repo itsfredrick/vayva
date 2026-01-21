@@ -1,77 +1,73 @@
 import { NextRequest, NextResponse } from "next/server";
-import { getServerSession } from "next-auth"; // Test or real
-import { authOptions } from "@/lib/auth";
-import { prisma } from "@vayva/db";
+import { prisma } from "@/lib/prisma";
+import { withVayvaAPI, HandlerContext } from "@/lib/api-handler";
+import { PERMISSIONS } from "@/lib/team/permissions";
 
-export async function GET(req: NextRequest) {
-  const session = await getServerSession(authOptions);
-  if (!(session?.user as any)?.id)
-    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+export const GET = withVayvaAPI(
+  PERMISSIONS.COMMERCE_VIEW,
+  async (req: NextRequest, { user }: HandlerContext) => {
+    try {
+      const memberships = await prisma.membership.findMany({
+        where: { userId: user.id },
+        include: { store: true },
+      });
 
-  try {
-    // Find all stores where user is a member
-    const memberships = await prisma.membership.findMany({
-      where: { userId: (session!.user as any).id },
-      include: { store: true },
-    });
-
-    const stores = memberships.map((m: any) => m.store);
-
-    return NextResponse.json({ stores });
-  } catch (e: any) {
-    return new NextResponse(e.message, { status: 500 });
+      const stores = memberships.map((m: any) => m.store);
+      return NextResponse.json({ stores });
+    } catch (error: any) {
+      console.error("Fetch Stores Error:", error);
+      return NextResponse.json({ error: error.message || "Internal Error" }, { status: 500 });
+    }
   }
-}
+);
 
-export async function POST(req: NextRequest) {
-  const session = await getServerSession(authOptions);
-  if (!(session?.user as any)?.id)
-    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+export const POST = withVayvaAPI(
+  PERMISSIONS.COMMERCE_VIEW,
+  async (req: NextRequest, { user }: HandlerContext) => {
+    try {
+      const body = await req.json();
+      const { name, slug, category } = body;
 
-  // Check if user is allowed to create more stores (Growth/Pro limit?)
-  // For now, allow open creation.
+      if (!name || !slug) {
+        return NextResponse.json({ error: "Name and Slug required" }, { status: 400 });
+      }
 
-  const body = await req.json();
-  const { name, slug, category } = body;
-  const { id: userId } = session!.user as any;
+      const existing = await prisma.store.findUnique({ where: { slug } });
+      if (existing) {
+        return NextResponse.json({ error: "Slug already taken" }, { status: 409 });
+      }
 
-  if (!name || !slug)
-    return new NextResponse("Name and Slug required", { status: 400 });
-
-  try {
-    // Check slug uniqueness
-    const existing = await prisma.store.findUnique({ where: { slug } });
-    if (existing)
-      return new NextResponse("Slug already taken", { status: 409 });
-
-    const newStore = await prisma.store.create({
-      data: {
-        name,
-        slug,
-        category: category || "general",
-        onboardingStatus: "NOT_STARTED", // Explicitly new
-        memberships: {
-          create: {
-            userId: (session!.user as any).id,
-            role: "OWNER",
+      const newStore = await prisma.store.create({
+        data: {
+          name,
+          slug,
+          category: category || "general",
+          onboardingStatus: "NOT_STARTED",
+          memberships: {
+            create: {
+              userId: user.id,
+              role_enum: "OWNER",
+            },
+          },
+          aiSubscription: {
+            create: {
+              plan: {
+                connect: { name: "STARTER" },
+              },
+              planKey: "STARTER",
+              status: "TRIAL_ACTIVE",
+              periodStart: new Date(),
+              periodEnd: new Date(Date.now() + 14 * 24 * 60 * 60 * 1000),
+              trialExpiresAt: new Date(Date.now() + 14 * 24 * 60 * 60 * 1000),
+            },
           },
         },
-        merchantSubscription: {
-          create: {
-            planSlug: "FREE",
-            status: "trial",
-            trialStartedAt: new Date(),
-            trialEndsAt: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000), // 7 days from now
-          } as any
-        }
-      },
-    });
+      });
 
-    // Initialize default settings, policies etc if needed
-    // ...
-
-    return NextResponse.json({ store: newStore });
-  } catch (e: any) {
-    return new NextResponse(e.message, { status: 500 });
+      return NextResponse.json({ store: newStore });
+    } catch (error: any) {
+      console.error("Create Store Error:", error);
+      return NextResponse.json({ error: error.message || "Internal Error" }, { status: 500 });
+    }
   }
-}
+);

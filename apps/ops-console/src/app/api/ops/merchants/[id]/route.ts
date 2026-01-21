@@ -1,7 +1,7 @@
-
 import { NextResponse } from "next/server";
 import { prisma } from "@vayva/db";
 import { OpsAuthService } from "@/lib/ops-auth";
+import { validateStoreCompliance } from "@vayva/compliance";
 
 export const dynamic = "force-dynamic";
 
@@ -18,27 +18,30 @@ export async function GET(
         const resolvedParams = await params;
         const { id } = resolvedParams;
 
-        const store = await prisma.store.findUnique({
-            where: { id },
-            include: {
-                tenant: {
-                    include: {
-                        TenantMembership: {
-                            include: {
-                                User: { select: { id: true, firstName: true, lastName: true, email: true } }
+        const [store, complianceReport] = await Promise.all([
+            prisma.store.findUnique({
+                where: { id },
+                include: {
+                    tenant: {
+                        include: {
+                            tenantMemberships: {
+                                include: {
+                                    user: { select: { id: true, firstName: true, lastName: true, email: true } }
+                                }
                             }
                         }
-                    }
-                },
-                _count: {
-                    select: {
-                        orders: true,
-                        products: true,
-                        customers: true
+                    },
+                    _count: {
+                        select: {
+                            orders: true,
+                            products: true,
+                            customers: true
+                        }
                     }
                 }
-            }
-        });
+            }),
+            validateStoreCompliance(id)
+        ]);
 
         if (!store) {
             return NextResponse.json({ error: "Store not found" }, { status: 404 });
@@ -53,8 +56,8 @@ export async function GET(
             where: { storeId: id }
         });
 
-        const ownerMember = store.tenant?.TenantMembership.find(m => m.role === "OWNER");
-        const ownerEmail = ownerMember?.User.email;
+        const ownerMember = store.tenant?.tenantMemberships.find((m: any) => m.role === "OWNER");
+        const ownerEmail = ownerMember?.user.email;
 
         // Parse settings for notes
         const settings = (store.settings as any) || {};
@@ -77,13 +80,14 @@ export async function GET(
                 gmv: gmvAggregate._sum.total || 0,
                 walletBalance: wallet ? Number(wallet.availableKobo) / 100 : 0,
             },
-            users: store.tenant?.TenantMembership.map(m => ({
-                id: m.User.id,
-                name: `${m.User.firstName || ""} ${m.User.lastName || ""}`.trim() || "Unknown",
-                email: m.User.email,
+            users: store.tenant?.tenantMemberships.map((m: any) => ({
+                id: m.user.id,
+                name: `${m.user.firstName || ""} ${m.user.lastName || ""}`.trim() || "Unknown",
+                email: m.user.email,
                 role: m.role
             })) || [],
-            notes // Return notes array
+            notes,
+            compliance: complianceReport
         });
 
     } catch (error: any) {

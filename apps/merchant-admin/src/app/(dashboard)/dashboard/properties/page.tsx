@@ -1,86 +1,121 @@
-"use client";
-
-import React, { useState, useEffect } from "react";
-import { Icon, Button, EmptyState } from "@vayva/ui";
+import { prisma } from "@/lib/prisma";
+import { requireAuth } from "@/lib/auth/session";
+import { Button } from "@vayva/ui";
+import { Building2, Users, Bed, DoorOpen } from "lucide-react";
 import Link from "next/link";
-import { toast } from "sonner";
+import Image from "next/image";
+import { CreatePropertyModal } from "@/components/properties/CreatePropertyModal";
+import { PropertyListActions } from "@/components/properties/PropertyListActions";
 
-export default function PropertiesPage() {
-    const [properties, setProperties] = useState<any[]>([]);
-    const [loading, setLoading] = useState(true);
+export default async function PropertiesPage() {
+    const session = await requireAuth();
+    const storeId = session.user.storeId;
 
-    useEffect(() => {
-        fetchProperties();
-    }, []);
-
-    const fetchProperties = async () => {
-        try {
-            // Using generic product API with type filter for now
-            const res = await fetch("/api/products?type=REAL_ESTATE");
-            const data = await res.json();
-            if (Array.isArray(data)) {
-                setProperties(data);
+    // Fetch Accommodation Products
+    const properties = await prisma.accommodationProduct.findMany({
+        where: {
+            product: {
+                storeId: storeId
             }
-        } catch (error) {
-            toast.error("Failed to load properties");
-        } finally {
-            setLoading(false);
-        }
-    };
-
-    if (loading) {
-        return <div className="p-8 text-gray-500">Loading properties...</div>;
-    }
+        },
+        include: {
+            product: {
+                include: {
+                    productImages: {
+                        orderBy: { position: 'asc' },
+                        take: 1
+                    }
+                }
+            }
+        },
+        orderBy: { product: { createdAt: 'desc' } }
+    });
 
     return (
-        <div className="p-6 h-full flex flex-col">
-            <div className="flex justify-between items-center mb-6">
+        <div className="p-6 md:p-8 max-w-7xl mx-auto space-y-8">
+            <div className="flex justify-between items-center">
                 <div>
-                    <h1 className="text-2xl font-bold text-gray-900">Properties</h1>
-                    <p className="text-gray-500">Manage your real estate listings.</p>
+                    <h1 className="text-2xl font-bold tracking-tight text-gray-900">Properties & Listings</h1>
+                    <p className="text-gray-500">Manage your units, rooms, and listings</p>
                 </div>
-                <Link href="/dashboard/products/new?type=REAL_ESTATE">
-                    <Button><Icon name="Plus" size={16} className="mr-2" /> New Property</Button>
-                </Link>
+                <div className="flex gap-2">
+                    <Link href="/dashboard/viewings">
+                        <Button variant="outline">
+                            View Requests
+                        </Button>
+                    </Link>
+                    <CreatePropertyModal />
+                </div>
             </div>
 
             {properties.length === 0 ? (
-                <EmptyState
-                    title="No properties listed"
-                    description="Add your first property to start accepting inquiries."
-                    icon="Home"
-                    action={
-                        <Link href="/dashboard/products/new?type=REAL_ESTATE">
-                            <Button>Add Property</Button>
-                        </Link>
-                    }
-                />
+                <div className="bg-white rounded-xl border border-dashed border-gray-300 p-16 text-center">
+                    <Building2 className="w-16 h-16 text-gray-300 mx-auto mb-4" />
+                    <h3 className="text-xl font-semibold text-gray-900">No properties listed</h3>
+                    <p className="text-gray-500 mt-2 max-w-md mx-auto">
+                        Start by adding your first room, apartment, or villa to accept bookings.
+                    </p>
+                    <div className="mt-8">
+                        <CreatePropertyModal isFirst />
+                    </div>
+                </div>
             ) : (
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                    {properties.map((property) => (
-                        <div key={property.id} className="bg-white rounded-xl border border-gray-200 overflow-hidden shadow-sm hover:shadow-md transition-all group">
-                            <div className="h-48 bg-gray-100 relative">
-                                {/* Image Placeholder or Actual Image */}
-                                <div className="absolute inset-0 flex items-center justify-center text-gray-400">
-                                    <Icon name="Image" size={32} />
+                    {properties.map((prop) => (
+                        <div key={prop.id} className="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden hover:shadow-md transition-shadow group">
+                            <div className="aspect-video bg-gray-100 relative">
+                                {prop.product.productImages && prop.product.productImages.length > 0 ? (
+                                    <div className="relative w-full h-full">
+                                        <Image
+                                            src={prop.product.productImages[0].url}
+                                            alt={prop.product.title}
+                                            fill
+                                            className="object-cover"
+                                            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                                        />
+                                    </div>
+                                ) : (
+                                    <div className="w-full h-full flex items-center justify-center text-gray-400">
+                                        <Building2 size={32} />
+                                    </div>
+                                )}
+                                <div className="absolute top-2 right-2">
+                                    <span className={`px-2 py-1 rounded-md text-xs font-bold bg-white/90 shadow-sm ${prop.product.status === 'ACTIVE' ? 'text-green-600' : 'text-gray-500'}`}>
+                                        {prop.product.status}
+                                    </span>
                                 </div>
                             </div>
-                            <div className="p-4">
-                                <div className="flex justify-between items-start mb-2">
-                                    <h3 className="font-bold text-gray-900 truncate pr-4">{property.name}</h3>
-                                    <span className="px-2 py-1 bg-green-100 text-green-700 text-xs rounded-full font-medium">Active</span>
-                                </div>
-                                <p className="text-sm text-gray-500 mb-4 line-clamp-2">{property.description || "No description provided."}</p>
 
-                                <div className="flex items-center gap-4 text-sm text-gray-600 mb-4">
-                                    <div className="flex items-center gap-1"><Icon name="BedDouble" size={14} /> 3</div>
-                                    <div className="flex items-center gap-1"><Icon name="Bath" size={14} /> 2</div>
-                                    <div className="flex items-center gap-1"><Icon name="Maximize" size={14} /> 150m²</div>
+                            <div className="p-4 space-y-4">
+                                <div>
+                                    <div className="text-xs font-medium text-blue-600 mb-1 uppercase tracking-wider">{prop.type}</div>
+                                    <h3 className="font-bold text-gray-900 truncate">{prop.product.title}</h3>
+                                    <p className="text-sm text-gray-500 line-clamp-2 mt-1">{prop.product.description}</p>
                                 </div>
 
-                                <div className="pt-4 border-t border-gray-100 flex justify-between items-center">
-                                    <span className="font-bold text-lg">₦{property.price?.toLocaleString()}</span>
-                                    <Button variant="ghost" size="sm" className="text-gray-500 hover:text-gray-900">Edit</Button>
+                                <div className="flex items-center gap-4 text-sm text-gray-600">
+                                    <div className="flex items-center gap-1" title="Max Guests">
+                                        <Users size={14} />
+                                        <span>{prop.maxGuests}</span>
+                                    </div>
+                                    <div className="flex items-center gap-1" title="Beds">
+                                        <Bed size={14} />
+                                        <span>{prop.bedCount}</span>
+                                    </div>
+                                    <div className="flex items-center gap-1" title="Units Available">
+                                        <DoorOpen size={14} />
+                                        <span>{prop.totalUnits}</span>
+                                    </div>
+                                </div>
+
+                                <div className="pt-4 border-t border-gray-100 flex items-center justify-between">
+                                    <div>
+                                        <span className="text-lg font-bold text-gray-900">
+                                            NGN {Number(prop.product.price).toLocaleString()}
+                                        </span>
+                                        <span className="text-xs text-gray-500 ml-1">/ night</span>
+                                    </div>
+                                    <PropertyListActions property={prop} />
                                 </div>
                             </div>
                         </div>

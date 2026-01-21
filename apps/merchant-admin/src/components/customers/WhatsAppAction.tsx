@@ -1,5 +1,5 @@
 import React from "react";
-import { Icon, Button } from "@vayva/ui";
+import { Button, Icon } from "@vayva/ui";
 
 interface WhatsAppActionProps {
   phone: string;
@@ -39,13 +39,14 @@ export const WhatsAppAction = ({
 
   if (variant === "icon") {
     return (
-      <button
+      <Button
+        variant="ghost"
         onClick={handleClick}
-        className={`w-8 h-8 rounded-full bg-green-50 text-green-600 flex items-center justify-center hover:bg-green-100 transition-colors ${className}`}
+        className={`w-8 h-8 rounded-full bg-green-50 text-green-600 flex items-center justify-center hover:bg-green-100 transition-colors ${className} p-0`}
         title={`Message ${name || "Customer"}`}
       >
         <Icon name="MessageCircle" size={16} />
-      </button>
+      </Button>
     );
   }
 

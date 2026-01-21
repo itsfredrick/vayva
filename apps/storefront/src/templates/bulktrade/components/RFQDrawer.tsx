@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { X, Send, Trash2, ArrowRight } from "lucide-react";
 import { PublicProduct } from "@/types/storefront";
+import { Button } from "@vayva/ui";
 
 interface RFQItem {
   product: PublicProduct;
@@ -50,12 +51,15 @@ export const RFQDrawer = ({
               {items.length} items ready for pricing review
             </p>
           </div>
-          <button
+          <Button
+            variant="ghost"
+            size="icon"
             onClick={onClose}
-            className="p-2 hover:bg-white/10 rounded-full transition-colors"
+            className="p-2 hover:bg-white/10 rounded-full transition-colors h-auto text-white hover:text-white"
+            aria-label="Close RFQ drawer"
           >
             <X size={20} />
-          </button>
+          </Button>
         </div>
 
         {/* Items List */}
@@ -63,12 +67,14 @@ export const RFQDrawer = ({
           {items.length === 0 ? (
             <div className="text-center text-gray-400 py-12">
               <p>Your RFQ list is empty.</p>
-              <button
+              <Button
+                variant="link"
                 onClick={onClose}
-                className="mt-4 text-blue-600 font-bold hover:underline"
+                className="mt-4 text-blue-600 font-bold hover:underline h-auto p-0"
+                aria-label="Browse catalog"
               >
                 Browse Catalog
-              </button>
+              </Button>
             </div>
           ) : (
             items.map(({ product, qty }) => {
@@ -83,6 +89,7 @@ export const RFQDrawer = ({
                   <div className="w-16 h-16 bg-gray-100 rounded-lg overflow-hidden shrink-0">
                     <img
                       src={product.images?.[0]}
+                      alt={product.name}
                       className="w-full h-full object-cover"
                     />
                   </div>
@@ -96,10 +103,14 @@ export const RFQDrawer = ({
 
                     <div className="flex items-center gap-4">
                       <div className="flex items-center gap-2">
-                        <label className="text-xs font-bold text-gray-500">
+                        <label
+                          htmlFor={`qty-${product.id}`}
+                          className="text-xs font-bold text-gray-500"
+                        >
                           Qty:
                         </label>
                         <input
+                          id={`qty-${product.id}`}
                           type="number"
                           value={qty}
                           onChange={(e) =>
@@ -111,12 +122,15 @@ export const RFQDrawer = ({
                           className={`w-20 px-2 py-1 border rounded text-sm ${!isMoqMet ? "border-red-300 bg-red-50 text-red-900" : "border-gray-300"}`}
                         />
                       </div>
-                      <button
+                      <Button
+                        variant="ghost"
+                        size="icon"
                         onClick={() => onRemoveItem(product.id)}
-                        className="text-gray-400 hover:text-red-500"
+                        className="text-gray-400 hover:text-red-500 h-auto p-1"
+                        aria-label={`Remove ${product.name} from RFQ`}
                       >
                         <Trash2 size={16} />
-                      </button>
+                      </Button>
                     </div>
                     {!isMoqMet && (
                       <p className="text-[10px] text-red-600 mt-1 font-bold">
@@ -131,10 +145,14 @@ export const RFQDrawer = ({
 
           {items.length > 0 && (
             <div>
-              <label className="block text-sm font-bold text-gray-700 mb-2">
+              <label
+                htmlFor="rfq-notes"
+                className="block text-sm font-bold text-gray-700 mb-2"
+              >
                 Additional Notes / Delivery Terms
               </label>
               <textarea
+                id="rfq-notes"
                 value={notes}
                 onChange={(e) => setNotes(e.target.value)}
                 className="w-full h-32 p-3 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-600"
@@ -158,7 +176,7 @@ export const RFQDrawer = ({
                   .toLocaleString()}
               </span>
             </div>
-            <button
+            <Button
               onClick={handleSubmit}
               disabled={
                 submitting ||
@@ -166,7 +184,8 @@ export const RFQDrawer = ({
                   (i) => i.qty < (i.product.wholesaleDetails?.moq || 1),
                 )
               }
-              className="w-full bg-[#0F172A] hover:bg-[#1E293B] disabled:opacity-50 disabled:cursor-not-allowed text-white font-bold py-4 rounded-lg flex items-center justify-center gap-2 transition-all"
+              className="w-full bg-[#0F172A] hover:bg-[#1E293B] disabled:opacity-50 disabled:cursor-not-allowed text-white font-bold py-4 rounded-lg flex items-center justify-center gap-2 transition-all h-auto"
+              aria-label="Submit quote request"
             >
               {submitting ? (
                 "Submitting Request..."
@@ -175,7 +194,7 @@ export const RFQDrawer = ({
                   Submit Quote Request <ArrowRight size={18} />
                 </>
               )}
-            </button>
+            </Button>
             <p className="text-center text-[10px] text-gray-400 mt-3">
               This is not a final invoice. You will receive a formal quote
               within 24 hours.

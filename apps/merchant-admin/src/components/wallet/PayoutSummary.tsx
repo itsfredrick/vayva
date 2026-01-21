@@ -1,5 +1,5 @@
 import React from "react";
-import { Icon } from "@vayva/ui";
+import { Icon, Button } from "@vayva/ui";
 
 export const PayoutSummary = () => {
   // Hardcoded for test based on API spec
@@ -54,9 +54,12 @@ export const PayoutSummary = () => {
         </div>
       </div>
 
-      <button className="w-full mt-6 py-2 border border-gray-200 rounded-lg text-xs font-bold text-gray-700 hover:bg-gray-50 transition-colors">
+      <Button
+        variant="outline"
+        className="w-full mt-6 py-2 border border-gray-200 rounded-lg text-xs font-bold text-gray-700 hover:bg-gray-50 transition-colors h-auto"
+      >
         Manage Payout Settings
-      </button>
+      </Button>
     </div>
   );
 };

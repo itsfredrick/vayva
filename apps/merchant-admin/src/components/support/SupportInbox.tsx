@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import { Button, Icon, cn, GlassPanel } from "@vayva/ui";
+import { Button, GlassPanel, Icon, cn } from "@vayva/ui";
 
 interface Ticket {
   id: string;
@@ -50,7 +50,7 @@ export function SupportInbox() {
       {/* 1. Ticket List */}
       <div className="w-80 border-r border-gray-50 flex flex-col">
         <div className="p-6 border-b border-gray-50">
-          <h3 className="text-lg font-bold text-[#0B0B0B]">Inbox</h3>
+          <h3 className="text-lg font-bold text-black">Inbox</h3>
           <div className="flex gap-2 mt-4">
             <span className="px-2 py-1 bg-green-50 text-green-600 text-[10px] font-bold rounded-full">
               3 Open
@@ -62,9 +62,10 @@ export function SupportInbox() {
         </div>
         <div className="flex-1 overflow-y-auto">
           {tickets.map((ticket) => (
-            <button
+            <Button
               key={ticket.id}
               onClick={() => setSelectedTicket(ticket)}
+              variant="ghost"
               className={cn(
                 "w-full text-left p-6 border-b border-gray-50 transition-colors",
                 selectedTicket?.id === ticket.id
@@ -73,7 +74,7 @@ export function SupportInbox() {
               )}
             >
               <div className="flex justify-between items-start mb-1">
-                <span className="text-xs font-bold text-[#0B0B0B]">
+                <span className="text-xs font-bold text-black">
                   {ticket.buyerName}
                 </span>
                 <span
@@ -87,7 +88,7 @@ export function SupportInbox() {
                   {ticket.priority.toUpperCase()}
                 </span>
               </div>
-              <p className="text-xs text-[#0B0B0B] font-medium truncate mb-1">
+              <p className="text-xs text-black font-medium truncate mb-1">
                 {ticket.subject}
               </p>
               <div className="flex justify-between items-center mt-3">
@@ -99,7 +100,7 @@ export function SupportInbox() {
                   {ticket.lastMessageAt}
                 </span>
               </div>
-            </button>
+            </Button>
           ))}
         </div>
       </div>
@@ -118,7 +119,7 @@ export function SupportInbox() {
                   <p className="text-[10px] font-bold text-blue-500 uppercase tracking-widest mb-1">
                     AI Handoff Insight
                   </p>
-                  <p className="text-sm text-[#0B0B0B] font-medium leading-relaxed">
+                  <p className="text-sm text-black font-medium leading-relaxed">
                     {selectedTicket.summary}
                   </p>
                   <div className="mt-3 flex gap-2">
@@ -147,7 +148,7 @@ export function SupportInbox() {
                 Hello, I noticed a double charge for my delivery to Lekki. Can
                 you check?
               </div>
-              <div className="self-start bg-white text-[#0B0B0B] p-4 rounded-2xl rounded-tl-none max-w-md border border-gray-100 text-sm italic text-gray-400">
+              <div className="self-start bg-white text-black p-4 rounded-2xl rounded-tl-none max-w-md border border-gray-100 text-sm italic text-gray-400">
                 AI: I apologize for the confusion with your payment. I'm
                 alerting our finance team right now to look into this for you.
                 One moment.
@@ -162,15 +163,15 @@ export function SupportInbox() {
             {/* Reply Area */}
             <div className="p-6 bg-white border-t border-gray-100 mt-auto">
               <div className="flex gap-2 mb-4">
-                <button className="text-[10px] font-bold text-gray-400 hover:text-black transition-colors">
+                <Button className="text-[10px] font-bold text-gray-400 hover:text-black transition-colors" variant="ghost">
                   /refund
-                </button>
-                <button className="text-[10px] font-bold text-gray-400 hover:text-black transition-colors">
+                </Button>
+                <Button className="text-[10px] font-bold text-gray-400 hover:text-black transition-colors" variant="ghost">
                   /status
-                </button>
-                <button className="text-[10px] font-bold text-gray-400 hover:text-black transition-colors">
+                </Button>
+                <Button className="text-[10px] font-bold text-gray-400 hover:text-black transition-colors" variant="ghost">
                   /apology
-                </button>
+                </Button>
               </div>
               <div className="flex gap-4">
                 <input
@@ -188,7 +189,7 @@ export function SupportInbox() {
             <div className="w-16 h-16 bg-gray-100 text-gray-300 rounded-full flex items-center justify-center mb-4">
               <Icon name="MessageSquare" size={32} />
             </div>
-            <h3 className="text-lg font-bold text-[#0B0B0B]">
+            <h3 className="text-lg font-bold text-black">
               Select a conversation
             </h3>
             <p className="text-sm text-gray-500 mt-1 max-w-xs">

@@ -127,16 +127,19 @@ export const WebhookController = {
 
     const secret = Buffer.from(endpoint.secretEnc, "base64").toString();
 
-    // Sign payload
+    // Sign payload (Ensure deterministic stringification or use raw body if available in real scenario)
     const timestamp = Date.now();
-    const payloadStr = JSON.stringify(event.payload);
+    
+    // FIX: Stringify manually to ensure signature matches the exact body sent
+    const payloadStr = JSON.stringify(event.payload); 
+    
     const signature = crypto
       .createHmac("sha256", secret)
       .update(`${timestamp}.${payloadStr}`)
       .digest("hex");
 
     try {
-      const response = await axios.post(endpoint.url, event.payload, {
+      const response = await axios.post(endpoint.url, payloadStr, { // Send string directly
         headers: {
           "Content-Type": "application/json",
           "X-Vayva-Signature": signature,
@@ -206,7 +209,9 @@ export const WebhookController = {
       },
     });
 
-    // Trigger delivery
-    await WebhookController.deliverWebhook(deliveryId);
+    // Trigger delivery (Fire and Forget)
+    WebhookController.deliverWebhook(deliveryId).catch(err => {
+        console.error(`[Replay] Failed to trigger delivery ${deliveryId}:`, err);
+    });
   },
 };

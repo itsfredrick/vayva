@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import { Button, Icon, cn, Input } from "@vayva/ui";
+import { Button, Icon, Input, cn } from "@vayva/ui";
 import { StorefrontConfig, StorefrontProduct } from "@/types/storefront";
 import { getThemeStyles } from "@/utils/theme-utils";
 import { WhatsAppPreviewModal } from "./WhatsAppPreviewModal";
@@ -68,12 +68,14 @@ const ServiceDetailModal = ({
               <PaymentBadge rule={service.paymentRule} />
             </div>
           </div>
-          <button
+          <Button
+            variant="ghost"
+            size="icon"
             onClick={onClose}
-            className="p-2 bg-gray-100 hover:bg-gray-200 rounded-full transition-colors"
+            className="p-2 bg-gray-100 hover:bg-gray-200 rounded-full transition-colors h-auto w-auto text-black"
           >
             <Icon name="X" size={20} />
-          </button>
+          </Button>
         </div>
 
         {/* Body */}
@@ -186,6 +188,7 @@ const BookingRequestModal = ({
             <select
               className="w-full h-10 rounded-md border border-gray-300 px-3 text-sm bg-white"
               onChange={(e) => setTime(e.target.value)}
+              aria-label="Select booking time"
             >
               <option value="">Select Time...</option>
               <option value="Morning (9AM - 12PM)">Morning (9AM - 12PM)</option>
@@ -204,12 +207,13 @@ const BookingRequestModal = ({
         >
           <Icon name="MessageCircle" size={18} /> Send Request
         </Button>
-        <button
+        <Button
+          variant="ghost"
           onClick={onClose}
-          className="w-full py-3 text-sm text-gray-500 mt-2 font-medium"
+          className="w-full py-3 text-sm text-gray-500 mt-2 font-medium h-auto hover:bg-gray-50"
         >
           Cancel
-        </button>
+        </Button>
       </div>
     </div>
   );

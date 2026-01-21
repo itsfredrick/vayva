@@ -1,5 +1,12 @@
 import { NextResponse } from "next/server";
-import { prisma } from "@vayva/db";
+import { prisma } from "@/lib/prisma";
+
+interface MessageRequestBody {
+  message: string;
+  sender?: string;
+  senderId: string;
+  attachments?: string[];
+}
 
 export async function POST(
   req: Request,
@@ -7,15 +14,15 @@ export async function POST(
 ) {
   const { id } = await params;
   try {
-    const body = await req.json();
+    const body: MessageRequestBody = await req.json();
     const { message, sender, senderId, attachments } = body;
 
-    // @ts-ignore
     const newMessage = await prisma.ticketMessage.create({
       data: {
         ticketId: id,
         message,
         sender: sender || "merchant",
+        authorType: "MERCHANT", // Explicitly set for Merchant Admin context
         senderId,
         attachments: attachments || [],
       },

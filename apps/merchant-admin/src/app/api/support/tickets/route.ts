@@ -1,12 +1,24 @@
 import { NextResponse } from "next/server";
-import { prisma } from "@vayva/db";
+import { prisma } from "@/lib/prisma";
+import { getServerSession } from "next-auth";
+import { authOptions } from "@/lib/auth";
+
+interface CreateTicketRequest {
+  type: string;
+  subject: string;
+  description: string;
+  priority?: "low" | "medium" | "high" | "urgent";
+  metadata?: Record<string, any>;
+}
 
 export async function GET(req: Request) {
   try {
-    const { searchParams } = new URL(req.url);
-    // In real app, extracting merchantId/storeId from session is critical
-    // For now, assuming storeId is passed or we fetch first store for demo
-    const storeId = searchParams.get("storeId") || "store-123";
+    const session = await getServerSession(authOptions);
+    const user = session?.user as { id: string; storeId: string } | undefined;
+    if (!user?.id || !user.storeId) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    }
+    const storeId = user.storeId;
 
     const tickets = await prisma.supportTicket.findMany({
       where: { storeId },
@@ -31,30 +43,35 @@ export async function GET(req: Request) {
 
 export async function POST(req: Request) {
   try {
-    const body = await req.json();
-    const { storeId, type, subject, description, priority, metadata } = body;
+    const session = await getServerSession(authOptions);
+    const user = session?.user as { id: string; storeId: string; name: string } | undefined;
+    if (!user?.id || !user.storeId) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    }
+    const storeId = user.storeId;
 
-    // @ts-ignore
-    // @ts-ignore
+    const body: CreateTicketRequest = await req.json();
+    const { type, subject, description, priority, metadata } = body;
+
     const ticket = await prisma.supportTicket.create({
       data: {
-        storeId: storeId || "store-123", // Fallback for dev
+        storeId,
         type,
         subject,
         description,
         priority: priority || "medium",
-        metadata: metadata || {},
+        metadata: (metadata as any) || {},
         status: "open",
-        // Add initial message if description exists?
-        // Alternatively, separate message creation.
-        // Let's create an initial message if description is provided to act as the "body"
+        // Add initial message if description exists
         ticketMessages: description
           ? {
-              create: {
-                sender: "merchant",
-                message: description,
-              },
-            }
+            create: {
+              sender: "merchant",
+              authorType: "MERCHANT",
+              authorName: user.name || "Merchant",
+              message: description,
+            },
+          }
           : undefined,
       },
     });

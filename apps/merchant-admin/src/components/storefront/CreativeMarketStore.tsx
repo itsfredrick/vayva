@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { Button } from "@vayva/ui";
 import {
   useStorefrontProducts,
   useStorefrontStore,
@@ -67,10 +68,10 @@ export function CreativeMarketStore({
           </div>
 
           <div className="flex items-center gap-4">
-            <button className="text-gray-500 hover:text-red-500">
+            <Button className="text-gray-500 hover:text-red-500">
               <Heart className="w-5 h-5" />
-            </button>
-            <button
+            </Button>
+            <Button
               onClick={() => setIsCartOpen(true)}
               className="bg-gray-100 p-2 rounded-full hover:bg-gray-200 relative text-gray-700"
             >
@@ -80,10 +81,10 @@ export function CreativeMarketStore({
                   {cart.length}
                 </span>
               )}
-            </button>
-            <button className="bg-green-500 text-white px-4 py-2 rounded text-sm font-bold hover:bg-green-600 transition-colors">
+            </Button>
+            <Button className="bg-green-500 text-white px-4 py-2 rounded text-sm font-bold hover:bg-green-600 transition-colors">
               Sign In
-            </button>
+            </Button>
           </div>
         </div>
       </nav>
@@ -98,9 +99,9 @@ export function CreativeMarketStore({
           <div className="relative w-full max-w-md bg-white h-full shadow-2xl flex flex-col animate-in slide-in-from-right">
             <div className="p-5 border-b border-gray-100 flex justify-between items-center">
               <h2 className="font-bold text-lg text-gray-800">Shopping Cart</h2>
-              <button onClick={() => setIsCartOpen(false)}>
+              <Button onClick={() => setIsCartOpen(false)}>
                 <X className="w-5 h-5 text-gray-400" />
-              </button>
+              </Button>
             </div>
 
             <div className="flex-1 overflow-auto p-5 space-y-5">
@@ -134,12 +135,12 @@ export function CreativeMarketStore({
                         <span className="font-bold text-green-600">
                           ₦{item.price.toLocaleString()}
                         </span>
-                        <button
+                        <Button
                           onClick={() => removeFromCart(item.id)}
                           className="text-xs text-red-500 hover:underline"
                         >
                           Remove
-                        </button>
+                        </Button>
                       </div>
                     </div>
                   </div>
@@ -155,7 +156,7 @@ export function CreativeMarketStore({
                     ₦{total.toLocaleString()}
                   </span>
                 </div>
-                <button
+                <Button
                   onClick={() => {
                     setIsCartOpen(false);
                     setIsCheckoutOpen(true);
@@ -163,7 +164,7 @@ export function CreativeMarketStore({
                   className="w-full bg-green-500 text-white py-3 rounded-md font-bold hover:bg-green-600 shadow-md transition-colors"
                 >
                   Proceed to Checkout
-                </button>
+                </Button>
               </div>
             )}
           </div>
@@ -186,9 +187,9 @@ export function CreativeMarketStore({
             placeholder="Search fonts, graphics, and more..."
             className="flex-1 px-4 py-2 outline-none text-gray-700"
           />
-          <button className="bg-red-500 text-white px-6 py-2 rounded-md font-bold hover:bg-red-600">
+          <Button className="bg-red-500 text-white px-6 py-2 rounded-md font-bold hover:bg-red-600">
             Search
-          </button>
+          </Button>
         </div>
       </div>
 
@@ -229,9 +230,9 @@ export function CreativeMarketStore({
                     className="w-full h-full object-cover"
                   />
                   <div className="absolute top-2 right-2 flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
-                    <button className="bg-white p-2 rounded-md text-gray-600 hover:text-red-500 shadow-sm">
+                    <Button className="bg-white p-2 rounded-md text-gray-600 hover:text-red-500 shadow-sm">
                       <Heart className="w-4 h-4" />
-                    </button>
+                    </Button>
                   </div>
                 </div>
                 <div className="p-4">
@@ -247,7 +248,7 @@ export function CreativeMarketStore({
                     <div className="font-bold text-lg text-gray-900">
                       ₦{product.price.toLocaleString()}
                     </div>
-                    <button
+                    <Button
                       className="bg-gray-100 hover:bg-green-500 hover:text-white px-3 py-1 rounded text-xs font-bold transition-colors flex items-center gap-1"
                       onClick={(e) => {
                         e.stopPropagation();
@@ -255,7 +256,7 @@ export function CreativeMarketStore({
                       }}
                     >
                       <ShoppingCart className="w-3 h-3" /> Add
-                    </button>
+                    </Button>
                   </div>
                 </div>
               </div>

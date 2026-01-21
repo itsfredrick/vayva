@@ -10,7 +10,7 @@ export function InactivityListener() {
     const timerRef = useRef<NodeJS.Timeout | null>(null);
 
     const handleLogout = useCallback(() => {
-        // console.log("User inactive for 10m, logging out...");
+        // 
         logout();
     }, [logout]);
 

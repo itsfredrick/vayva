@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
+import { Button } from "@vayva/ui";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
@@ -33,7 +34,7 @@ export function GlobalHeader() {
           {/* Left - Logo */}
           <div className="flex-shrink-0">
             <Link href="/" className="flex items-center">
-              <span className="text-2xl font-bold text-[#0F172A]">Vayva</span>
+              <span className="text-2xl font-bold text-black">Vayva</span>
             </Link>
           </div>
 
@@ -45,16 +46,16 @@ export function GlobalHeader() {
               onMouseEnter={() => setActiveDropdown("product")}
               onMouseLeave={() => setActiveDropdown(null)}
             >
-              <button className="text-sm font-medium text-[#0F172A] hover:text-[#22C55E] transition-colors">
+              <Button className="text-sm font-bold text-black hover:text-vayva-green transition-colors">
                 Product
-              </button>
+              </Button>
               {activeDropdown === "product" && (
                 <div className="absolute top-full left-0 mt-2 w-56 bg-white border border-gray-200 rounded-lg shadow-lg py-2">
                   {productLinks.map((link) => (
                     <Link
                       key={link.href}
                       href={link.href}
-                      className="block px-4 py-2 text-sm text-[#0F172A] hover:bg-gray-50 hover:text-[#22C55E] transition-colors"
+                      className="block px-4 py-2 text-sm text-black hover:bg-studio-gray hover:text-vayva-green transition-colors font-medium"
                     >
                       {link.label}
                     </Link>
@@ -69,16 +70,16 @@ export function GlobalHeader() {
               onMouseEnter={() => setActiveDropdown("company")}
               onMouseLeave={() => setActiveDropdown(null)}
             >
-              <button className="text-sm font-medium text-[#0F172A] hover:text-[#22C55E] transition-colors">
+              <Button className="text-sm font-bold text-black hover:text-vayva-green transition-colors">
                 Company
-              </button>
+              </Button>
               {activeDropdown === "company" && (
                 <div className="absolute top-full left-0 mt-2 w-48 bg-white border border-gray-200 rounded-lg shadow-lg py-2">
                   {companyLinks.map((link) => (
                     <Link
                       key={link.href}
                       href={link.href}
-                      className="block px-4 py-2 text-sm text-[#0F172A] hover:bg-gray-50 hover:text-[#22C55E] transition-colors"
+                      className="block px-4 py-2 text-sm text-black hover:bg-studio-gray hover:text-vayva-green transition-colors font-medium"
                     >
                       {link.label}
                     </Link>
@@ -93,16 +94,16 @@ export function GlobalHeader() {
               onMouseEnter={() => setActiveDropdown("support")}
               onMouseLeave={() => setActiveDropdown(null)}
             >
-              <button className="text-sm font-medium text-[#0F172A] hover:text-[#22C55E] transition-colors">
+              <Button className="text-sm font-bold text-black hover:text-vayva-green transition-colors">
                 Support
-              </button>
+              </Button>
               {activeDropdown === "support" && (
                 <div className="absolute top-full left-0 mt-2 w-48 bg-white border border-gray-200 rounded-lg shadow-lg py-2">
                   {supportLinks.map((link) => (
                     <Link
                       key={link.href}
                       href={link.href}
-                      className="block px-4 py-2 text-sm text-[#0F172A] hover:bg-gray-50 hover:text-[#22C55E] transition-colors"
+                      className="block px-4 py-2 text-sm text-black hover:bg-studio-gray hover:text-vayva-green transition-colors font-medium"
                     >
                       {link.label}
                     </Link>
@@ -116,22 +117,22 @@ export function GlobalHeader() {
           <div className="hidden md:flex items-center space-x-4">
             <Link
               href="/signin"
-              className="text-sm font-medium text-[#0F172A] hover:text-[#22C55E] transition-colors"
+              className="text-sm font-medium text-black hover:text-[#22C55E] transition-colors"
             >
               Sign in
             </Link>
             <Link
               href="/signup"
-              className="px-4 py-2 bg-[#22C55E] hover:bg-[#16A34A] text-white text-sm font-semibold rounded transition-colors"
+              className="px-4 py-2 bg-vayva-green hover:bg-vayva-green/90 text-white text-sm font-bold rounded-xl transition-all shadow-lg shadow-green-500/20"
             >
               Create account
             </Link>
           </div>
 
           {/* Mobile Menu Button */}
-          <button
+          <Button
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="md:hidden p-2 text-[#0F172A]"
+            className="md:hidden p-2 text-black"
             aria-label="Toggle menu"
           >
             <svg
@@ -156,7 +157,7 @@ export function GlobalHeader() {
                 />
               )}
             </svg>
-          </button>
+          </Button>
         </div>
       </div>
 
@@ -174,7 +175,7 @@ export function GlobalHeader() {
                   <Link
                     key={link.href}
                     href={link.href}
-                    className="block text-sm text-[#0F172A] hover:text-[#22C55E] transition-colors"
+                    className="block text-sm text-black hover:text-[#22C55E] transition-colors"
                     onClick={() => setMobileMenuOpen(false)}
                   >
                     {link.label}
@@ -193,7 +194,7 @@ export function GlobalHeader() {
                   <Link
                     key={link.href}
                     href={link.href}
-                    className="block text-sm text-[#0F172A] hover:text-[#22C55E] transition-colors"
+                    className="block text-sm text-black hover:text-[#22C55E] transition-colors"
                     onClick={() => setMobileMenuOpen(false)}
                   >
                     {link.label}
@@ -212,7 +213,7 @@ export function GlobalHeader() {
                   <Link
                     key={link.href}
                     href={link.href}
-                    className="block text-sm text-[#0F172A] hover:text-[#22C55E] transition-colors"
+                    className="block text-sm text-black hover:text-[#22C55E] transition-colors"
                     onClick={() => setMobileMenuOpen(false)}
                   >
                     {link.label}
@@ -225,7 +226,7 @@ export function GlobalHeader() {
             <div className="pt-4 border-t border-gray-200 space-y-2">
               <Link
                 href="/signin"
-                className="block text-center text-sm font-medium text-[#0F172A] hover:text-[#22C55E] transition-colors"
+                className="block text-center text-sm font-medium text-black hover:text-[#22C55E] transition-colors"
                 onClick={() => setMobileMenuOpen(false)}
               >
                 Sign in

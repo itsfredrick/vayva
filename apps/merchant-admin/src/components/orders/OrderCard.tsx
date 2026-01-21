@@ -1,6 +1,6 @@
 import React from "react";
 import { UnifiedOrder, UnifiedOrderStatus, OrderType } from "@vayva/shared";
-import { Icon, cn } from "@vayva/ui";
+import { Icon, cn, Button } from "@vayva/ui";
 
 interface OrderCardProps {
   order: UnifiedOrder;
@@ -52,9 +52,9 @@ export const OrderCard = ({
           <span className="text-xs font-bold text-gray-400 bg-gray-50 px-1.5 py-0.5 rounded uppercase">
             {order.timestamps?.createdAt
               ? new Date(order.timestamps.createdAt).toLocaleTimeString([], {
-                  hour: "2-digit",
-                  minute: "2-digit",
-                })
+                hour: "2-digit",
+                minute: "2-digit",
+              })
               : "Now"}
           </span>
         </div>
@@ -104,16 +104,16 @@ export const OrderCard = ({
   return (
     <div
       onClick={() => onClick(order)}
-      className="group bg-white p-5 rounded-2xl border border-gray-200 hover:border-gray-300 hover:shadow-sm cursor-pointer transition-all flex flex-col md:flex-row md:items-center gap-4"
+      className="group bg-white p-5 rounded-2xl border border-studio-border hover:border-vayva-black hover:shadow-xl hover:shadow-black/5 cursor-pointer transition-all duration-300 flex flex-col md:flex-row md:items-center gap-4 animate-in fade-in slide-in-from-bottom-2"
     >
       {/* Left: Icon & ID */}
       <div className="flex items-center gap-4 min-w-[180px]">
         <div
           className={cn(
-            "w-12 h-12 rounded-xl flex items-center justify-center shrink-0 text-xl",
+            "w-14 h-14 rounded-2xl flex items-center justify-center shrink-0 text-xl transition-colors duration-300",
             order.type === OrderType.FOOD
-              ? "bg-orange-50 text-orange-600"
-              : "bg-gray-50 text-gray-700",
+              ? "bg-orange-50 text-orange-600 group-hover:bg-orange-600 group-hover:text-white"
+              : "bg-studio-gray text-vayva-black group-hover:bg-vayva-green group-hover:text-white",
           )}
         >
           <Icon
@@ -124,14 +124,14 @@ export const OrderCard = ({
                   ? "Utensils"
                   : "Calendar"
             }
-            size={20}
+            size={24}
           />
         </div>
         <div>
-          <p className="font-mono text-xs text-gray-400 mb-1">
+          <p className="font-mono text-[10px] text-gray-400 mb-1 uppercase tracking-widest font-bold">
             Ref: #{order.id.split("_")[1]}
           </p>
-          <h4 className="font-bold text-gray-900">{order.customer.name}</h4>
+          <h4 className="font-black text-vayva-black text-lg group-hover:translate-x-1 transition-transform">{order.customer.name}</h4>
         </div>
       </div>
 
@@ -170,9 +170,13 @@ export const OrderCard = ({
           {order.status.replace("_", " ")}
         </div>
 
-        <button className="w-8 h-8 rounded-full bg-gray-50 flex items-center justify-center text-gray-400 group-hover:bg-black group-hover:text-white transition-colors">
+        <Button
+          variant="ghost"
+          size="icon"
+          className="w-8 h-8 rounded-full bg-studio-gray text-gray-400 group-hover:bg-vayva-green group-hover:text-white transition-colors p-0"
+        >
           <Icon name="ChevronRight" size={16} />
-        </button>
+        </Button>
       </div>
     </div>
   );

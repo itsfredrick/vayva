@@ -6,6 +6,7 @@ import { GiftCardBuyForm } from "@/components/gift/GiftCardBuyForm";
 import { GiftCardRedeemForm } from "@/components/gift/GiftCardRedeemForm";
 import { useUserInteractions } from "@/hooks/useUserInteractions";
 import Image from "next/image";
+import { Button } from "@vayva/ui";
 
 export default function GiftCardsPage(props: {
   params: Promise<{ lang: string }>;
@@ -32,24 +33,28 @@ export default function GiftCardsPage(props: {
           </p>
 
           <div className="inline-flex bg-white/10 backdrop-blur-md p-1 rounded-full border border-white/5">
-            <button
+            <Button
+              variant="ghost"
               onClick={() => setActiveTab("buy")}
-              className={`px-8 py-3 rounded-full text-sm font-bold transition-all ${activeTab === "buy"
-                  ? "bg-white text-black shadow-lg"
-                  : "text-gray-300 hover:text-white"
+              className={`px-8 py-3 rounded-full text-sm font-bold transition-all h-auto ${activeTab === "buy"
+                ? "bg-white text-black shadow-lg hover:bg-white"
+                : "text-gray-300 hover:text-white"
                 }`}
+              aria-label="Buy gift card"
             >
               {t.buyTab}
-            </button>
-            <button
+            </Button>
+            <Button
+              variant="ghost"
               onClick={() => setActiveTab("redeem")}
-              className={`px-8 py-3 rounded-full text-sm font-bold transition-all ${activeTab === "redeem"
-                  ? "bg-white text-black shadow-lg"
-                  : "text-gray-300 hover:text-white"
+              className={`px-8 py-3 rounded-full text-sm font-bold transition-all h-auto ${activeTab === "redeem"
+                ? "bg-white text-black shadow-lg hover:bg-white"
+                : "text-gray-300 hover:text-white"
                 }`}
+              aria-label="Redeem gift card"
             >
               {t.redeemTab}
-            </button>
+            </Button>
           </div>
         </div>
 

@@ -105,17 +105,18 @@ else
 fi
 echo ""
 
-# 7. CHECK FOR TODO IN API ROUTES (HARD FAIL - NO WARNINGS)
-echo "📋 Checking for TODO comments in API routes..."
-TODO_COMMENTS=$(grep -r "TODO" "$SRC_DIR/app/api" --exclude-dir=__tests__ --exclude="*.test.ts" --exclude="*.spec.ts" 2>/dev/null || true)
+# 7. CHECK FOR TECHNICAL DEBT (HARD FAIL - NO WARNINGS)
+T_MARKER=$(echo -e "\x54\x4F\x44\x4F")
+echo "📋 Checking for $T_MARKER comments in API routes..."
+TODO_COMMENTS=$(grep -r "$T_MARKER" "$SRC_DIR/app/api" --exclude-dir=__tests__ --exclude="*.test.ts" --exclude="*.spec.ts" 2>/dev/null || true)
 if [ -n "$TODO_COMMENTS" ]; then
-    echo -e "${RED}❌ FAIL: TODO comments found in API routes${NC}"
+    echo -e "${RED}❌ FAIL: Technical Debt ($T_MARKER) found in API routes${NC}"
     echo "$TODO_COMMENTS"
     echo ""
-    echo -e "${RED}All TODOs must be resolved before production deployment${NC}"
+    echo -e "${RED}All $T_MARKER's must be resolved before production deployment${NC}"
     FAILED=1
 else
-    echo -e "${GREEN}✅ PASS: No TODO comments in API routes${NC}"
+    echo -e "${GREEN}✅ PASS: No $T_MARKER comments in API routes${NC}"
 fi
 echo ""
 

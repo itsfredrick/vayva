@@ -15,6 +15,7 @@ import {
   Minus,
   Video,
 } from "lucide-react";
+import { Button } from "@vayva/ui";
 
 export function ProConsultBooking({
   storeName: initialStoreName,
@@ -73,16 +74,17 @@ export function ProConsultBooking({
           </a>
         </div>
         <div className="flex gap-4">
-          <button className="text-sm font-bold text-slate-600 hover:text-blue-600">
+          <Button variant="link" className="text-sm font-bold text-slate-600 hover:text-blue-600 h-auto" aria-label="Log in to your account">
             Login
-          </button>
-          <button
-            className="px-5 py-2 bg-slate-900 text-white text-sm font-bold rounded-lg hover:bg-slate-800 flex items-center gap-2"
+          </Button>
+          <Button
+            className="px-5 py-2 bg-slate-900 text-white text-sm font-bold rounded-lg hover:bg-slate-800 flex items-center gap-2 h-auto"
             onClick={() => setIsCartOpen(true)}
+            aria-label={`View bookings (${cart.length})`}
           >
             <ShoppingBag className="w-4 h-4" />
             <span>Bookings ({cart.length})</span>
-          </button>
+          </Button>
         </div>
       </nav>
 
@@ -98,9 +100,9 @@ export function ProConsultBooking({
               <h2 className="text-xl font-bold text-slate-900">
                 Session Summary
               </h2>
-              <button onClick={() => setIsCartOpen(false)}>
+              <Button variant="ghost" size="icon" onClick={() => setIsCartOpen(false)} aria-label="Close session summary" className="h-auto">
                 <X className="w-5 h-5 text-slate-400" />
-              </button>
+              </Button>
             </div>
 
             <div className="flex-1 overflow-auto space-y-4">
@@ -132,26 +134,34 @@ export function ProConsultBooking({
                       </div>
                       <div className="flex items-center gap-3">
                         <div className="flex items-center border border-slate-200 rounded px-1">
-                          <button
+                          <Button
+                            variant="ghost"
+                            size="icon"
                             onClick={() => updateQuantity(item.id, -1)}
-                            className="p-1 hover:text-blue-600"
+                            className="h-6 w-6 hover:text-blue-600 rounded-none p-0"
+                            aria-label="Decrease quantity"
                           >
                             <Minus className="w-3 h-3" />
-                          </button>
+                          </Button>
                           <span className="text-xs px-2">{item.quantity}</span>
-                          <button
+                          <Button
+                            variant="ghost"
+                            size="icon"
                             onClick={() => updateQuantity(item.id, 1)}
-                            className="p-1 hover:text-blue-600"
+                            className="h-6 w-6 hover:text-blue-600 rounded-none p-0 h-auto"
+                            aria-label="Increase quantity"
                           >
                             <Plus className="w-3 h-3" />
-                          </button>
+                          </Button>
                         </div>
-                        <button
+                        <Button
+                          variant="link"
                           onClick={() => removeFromCart(item.id)}
-                          className="text-xs text-red-500 hover:text-red-700"
+                          className="text-xs text-red-500 hover:text-red-700 p-0 h-auto"
+                          aria-label={`Remove session for ${item.name}`}
                         >
                           Remove
-                        </button>
+                        </Button>
                       </div>
                     </div>
                   </div>
@@ -165,15 +175,16 @@ export function ProConsultBooking({
                   <span>Total Due</span>
                   <span>₦{total.toLocaleString()}</span>
                 </div>
-                <button
+                <Button
                   onClick={() => {
                     setIsCartOpen(false);
                     setIsCheckoutOpen(true);
                   }}
-                  className="w-full bg-blue-600 text-white py-4 rounded-lg font-bold hover:bg-blue-700 shadow-lg shadow-blue-100 transition-all"
+                  className="w-full bg-blue-600 text-white py-6 h-auto rounded-lg font-bold hover:bg-blue-700 shadow-lg shadow-blue-100 transition-all"
+                  aria-label="Confirm sessions and pay"
                 >
                   Confirm & Pay
-                </button>
+                </Button>
               </div>
             )}
           </div>
@@ -198,12 +209,12 @@ export function ProConsultBooking({
               and finance via high-quality video calls.
             </p>
             <div className="flex gap-4">
-              <button className="px-8 py-3 bg-blue-600 text-white font-bold rounded-lg hover:bg-blue-500 transition-colors">
+              <Button className="px-8 py-6 h-auto bg-blue-600 text-white font-bold rounded-lg hover:bg-blue-500 transition-colors h-auto" aria-label="Find an expert for consultation">
                 Find an Expert
-              </button>
-              <button className="px-8 py-3 bg-white/10 text-white font-bold rounded-lg hover:bg-white/20 transition-colors backdrop-blur">
+              </Button>
+              <Button variant="ghost" className="px-8 py-6 h-auto bg-white/10 text-white font-bold rounded-lg hover:bg-white/20 transition-colors backdrop-blur h-auto" aria-label="Learn how it works">
                 How it Works
-              </button>
+              </Button>
             </div>
           </div>
           <div className="hidden md:block relative">
@@ -236,9 +247,13 @@ export function ProConsultBooking({
             </h2>
             <p className="text-slate-500">Book a 1-on-1 session today.</p>
           </div>
-          <button className="text-blue-600 font-bold flex items-center gap-2 hover:gap-3 transition-all">
+          <Button
+            variant="link"
+            className="text-blue-600 font-bold flex items-center gap-2 hover:gap-3 transition-all h-auto p-0 h-auto"
+            aria-label="View all consultant categories"
+          >
             View All Categories <ArrowRight className="w-4 h-4" />
-          </button>
+          </Button>
         </div>
 
         {isLoading && products.length === 0 ? (
@@ -265,6 +280,7 @@ export function ProConsultBooking({
                           expert.image ||
                           `https://via.placeholder.com/100x100?text=${expert.name.charAt(0)}`
                         }
+                        alt={expert.name}
                         className="w-full h-full object-cover"
                       />
                     </div>
@@ -303,9 +319,14 @@ export function ProConsultBooking({
                         </span>
                       </div>
                     </div>
-                    <button className="bg-slate-900 text-white p-2 rounded-lg hover:bg-blue-600 transition-colors group-hover:shadow-lg">
+                    <Button
+                      variant="primary"
+                      size="icon"
+                      className="bg-slate-900 text-white h-10 w-10 rounded-lg hover:bg-blue-600 transition-colors group-hover:shadow-lg h-auto"
+                      aria-label={`Book session with ${expert.name}`}
+                    >
                       <ArrowRight className="w-5 h-5" />
-                    </button>
+                    </Button>
                   </div>
                 </div>
               </div>

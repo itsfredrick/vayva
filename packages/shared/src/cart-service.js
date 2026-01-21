@@ -1,0 +1,169 @@
+import { prisma } from "@vayva/db";
+// Define return types that include relations
+const cartInclude = {
+    items: {
+        include: {
+            variant: {
+                include: {
+                    productImage: true,
+                    product: {
+                        include: {
+                            productImages: true,
+                            store: {
+                                include: {
+                                    deliverySettings: true
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+};
+export class CartService {
+    static async getCart(cartId) {
+        const cart = await prisma.cart.findUnique({
+            where: { id: cartId },
+            include: cartInclude.items.include ? cartInclude : undefined,
+        });
+        if (!cart)
+            return null;
+        // Cast to any to handle deep relations if types are strict
+        const typedCart = cart;
+        // Group items by store
+        const groups = {};
+        let cartTotal = 0;
+        for (const item of typedCart.items) {
+            const product = item.variant.product;
+            const store = product.store;
+            if (!store)
+                continue; // Should not happen for active products
+            if (!groups[store.id]) {
+                groups[store.id] = {
+                    storeId: store.id,
+                    storeName: store.businessName || "Unknown Store",
+                    items: [],
+                    subtotal: 0,
+                    deliveryFee: 0,
+                    deliveryFeeType: "FLAT",
+                    canDeliver: false,
+                };
+            }
+            groups[store.id].items.push(item);
+            const price = Number(item.variant.price || 0);
+            groups[store.id].subtotal += price * item.quantity;
+            cartTotal += price * item.quantity;
+        }
+        // Calculate Fees per Group and Payable Total
+        let totalPayable = 0;
+        const resultGroups = Object.values(groups).map(group => {
+            // ... fee logic ...
+            const firstItem = group.items[0];
+            const settings = firstItem.variant.product.store.deliverySettings;
+            let fee = 0;
+            let feeType = "FLAT";
+            let canDeliver = false;
+            if (settings && settings.isEnabled) {
+                canDeliver = true;
+                fee = Number(settings.baseDeliveryFee || 0);
+                feeType = settings.deliveryFeeType || "FLAT";
+            }
+            else {
+                fee = 1000;
+                canDeliver = true;
+            }
+            // Calculate Payable for this group
+            // If item has deposit, we only pay deposit portion of ITEM price + full delivery fee (usually)
+            // Strategy: 
+            // Delivery Fee: Always pay 100% now? Yes.
+            // Items: Pay deposit % if applicable.
+            let groupPayable = fee;
+            group.items.forEach(item => {
+                const product = item.variant.product;
+                const price = Number(item.variant.price || 0) * item.quantity;
+                if (product.depositRequired && product.depositPercentage) {
+                    groupPayable += price * product.depositPercentage;
+                }
+                else {
+                    groupPayable += price;
+                }
+            });
+            totalPayable += groupPayable;
+            return {
+                ...group,
+                deliveryFee: fee,
+                deliveryFeeType: feeType,
+                canDeliver
+            };
+        });
+        return {
+            id: cart.id,
+            userId: cart.userId,
+            items: typedCart.items,
+            cartTotal,
+            payableAmount: totalPayable, // Expose this
+            groups: resultGroups
+        };
+    }
+    static async addItem(cartId, variantId, quantity = 1) {
+        // Upsert logic handled by manual check to prevent race conditions or simple upsert
+        // Prisma upsert on unique constraint [cartId, variantId]
+        // 1. Fetch Product rules (MOQ)
+        const variant = await prisma.productVariant.findUnique({
+            where: { id: variantId },
+            include: { product: true }
+        });
+        const product = variant?.product;
+        if (!product)
+            return null; // Should throw
+        const moq = product.moq || 1;
+        // If adding new item or incrementing, ensure final qty >= MOQ
+        // For simple add, we just check if quantity < MOQ, we upgrade it.
+        // But what if they already have 2, and add 1 (Total 3, MOQ 10)?
+        // We'll trust the input 'quantity' is the ADDITION. 
+        // We need to check existing cart item too? The "Simple" rule is: Can't have < MOQ in cart.
+        // Simplification: If input quantity < MOQ, bump it up.
+        // User adds 1, but MOQ is 10 -> We add 10.
+        const effectiveQty = Math.max(quantity, moq);
+        return prisma.cartItem.upsert({
+            where: {
+                cartId_variantId: {
+                    cartId,
+                    variantId
+                }
+            },
+            create: {
+                cartId,
+                variantId,
+                quantity: effectiveQty
+            },
+            update: {
+                quantity: { increment: quantity } // Just increment by requested amount? Or force total to be >= MOQ?
+                // Edge case: Current 0 (doesn't exist) -> Create 10.
+                // Current 5 (below MOQ? shouldn't happen) -> Add 1 -> 6. 
+                // Let's stick to simple "Add at least MOQ".
+            }
+        });
+    }
+    static async updateItem(itemId, quantity) {
+        if (quantity <= 0) {
+            return prisma.cartItem.delete({ where: { id: itemId } });
+        }
+        return prisma.cartItem.update({
+            where: { id: itemId },
+            data: { quantity }
+        });
+    }
+    static async removeItem(itemId) {
+        return prisma.cartItem.delete({ where: { id: itemId } });
+    }
+    static async createCart(userId, sessionToken) {
+        return prisma.cart.create({
+            data: {
+                userId,
+                sessionToken
+            }
+        });
+    }
+}

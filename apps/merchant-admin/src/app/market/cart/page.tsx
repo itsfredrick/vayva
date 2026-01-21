@@ -52,10 +52,10 @@ export default function MarketCartPage() {
                       <h3 className="font-bold text-white">
                         MacBook Pro M3 Max
                       </h3>
-                      <button className="text-text-secondary hover:text-state-danger">
+                      <Button className="text-text-secondary hover:text-state-danger">
                         <Icon name={"CircleHelp" as any} size={16} /> Need help
                         with this order?
-                      </button>
+                      </Button>
                     </div>
                     <p className="text-sm text-text-secondary">
                       Space Black • 1TB
@@ -64,15 +64,15 @@ export default function MarketCartPage() {
                   <div className="flex justify-between items-end">
                     <div className="flex items-center gap-3">
                       <div className="flex items-center bg-white/5 border border-white/10 rounded-full h-8 px-2">
-                        <button className="w-6 h-full flex items-center justify-center text-white/50 hover:text-white">
+                        <Button className="w-6 h-full flex items-center justify-center text-white/50 hover:text-white">
                           <Icon name="Minus" size={14} />
-                        </button>
+                        </Button>
                         <span className="w-6 text-center text-xs text-white font-bold">
                           1
                         </span>
-                        <button className="w-6 h-full flex items-center justify-center text-white/50 hover:text-white">
+                        <Button className="w-6 h-full flex items-center justify-center text-white/50 hover:text-white">
                           <Icon name="Plus" size={14} />
-                        </button>
+                        </Button>
                       </div>
                     </div>
                     <div className="font-bold text-white">₦ 3,500,000</div>

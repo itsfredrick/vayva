@@ -30,7 +30,7 @@ export default function TrustVisualSection() {
                             </div>
                         </div>
                         <div className="p-8 lg:p-12">
-                            <div className="grid lg:grid-cols-2 gap-12 items-center">
+                            <div className="grid lg:grid-cols-[1fr_0.65fr] gap-12 items-center">
                                 <div>
                                     <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-green-50 text-[#22C55E] text-xs font-bold uppercase mb-6">
                                         The Vayva Engine

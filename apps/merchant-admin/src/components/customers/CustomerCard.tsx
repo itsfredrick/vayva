@@ -1,6 +1,6 @@
 import React from "react";
 import { Customer, CustomerStatus } from "@vayva/shared";
-import { Icon, cn } from "@vayva/ui";
+import { Icon, cn, Button } from "@vayva/ui";
 
 interface CustomerCardProps {
   customer: Customer;
@@ -86,7 +86,7 @@ export const CustomerCard = ({ customer, onSelect }: CustomerCardProps) => {
         </p>
 
         {/* Secondary Action - Message WhatsApp directly */}
-        <button
+        <Button
           onClick={(e) => {
             e.stopPropagation();
             // Link logic would go here
@@ -95,7 +95,7 @@ export const CustomerCard = ({ customer, onSelect }: CustomerCardProps) => {
           title="Message on WhatsApp"
         >
           <Icon name="MessageCircle" size={16} />
-        </button>
+        </Button>
       </div>
     </div>
   );

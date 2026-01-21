@@ -1,5 +1,6 @@
 import React from "react";
 import { TemplateProps } from "../registry";
+import { Button } from "@vayva/ui";
 
 export const FashionDesignerTemplate: React.FC<TemplateProps> = ({
   businessName,
@@ -16,9 +17,9 @@ export const FashionDesignerTemplate: React.FC<TemplateProps> = ({
             {businessName ? businessName.split(" ")[1] : "KUNLE"}
           </span>
         </div>
-        <button className="text-xs font-bold uppercase tracking-widest border border-white/20 px-6 py-3 hover:bg-white hover:text-black transition-colors">
+        <Button variant="outline" className="text-xs font-bold uppercase tracking-widest border border-white/20 px-6 py-3 hover:bg-white hover:text-black transition-colors bg-transparent text-white h-auto">
           Book Consultation
-        </button>
+        </Button>
       </header>
 
       {/* Lookbook Grid */}

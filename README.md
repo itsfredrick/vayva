@@ -1,4 +1,4 @@
-# Vayva Platform 🚀
+# Vayva 🚀
 
 [![CI](https://github.com/itsfredrick/vayva-platform/actions/workflows/ci.yml/badge.svg)](https://github.com/itsfredrick/vayva-platform/actions/workflows/ci.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
@@ -31,9 +31,9 @@ The platform is designed as **infrastructure**, not just a storefront—combinin
 **The Problem**:
 In emerging markets like Nigeria, **trust and data** are the biggest barriers to e-commerce adoption.
 
-1.  Customers don't trust websites they've never heard of.
-2.  Data is expensive; users live in WhatsApp where data is bundled/cheap.
-3.  Downloading an app for a single store is high friction.
+1. Customers don't trust websites they've never heard of.
+2. Data is expensive; users live in WhatsApp where data is bundled/cheap.
+3. Downloading an app for a single store is high friction.
 
 **Our Approach**:
 Vayva brings the _entire store_ into WhatsApp.

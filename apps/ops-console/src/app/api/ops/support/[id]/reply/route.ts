@@ -13,7 +13,7 @@ export async function POST(
         OpsAuthService.requireRole(user, "OPERATOR");
 
         const { id: ticketId } = await params;
-        const { message } = await req.json();
+        const { message, attachments } = await req.json();
 
         if (!message || !message.trim()) {
             return NextResponse.json({ error: "Message cannot be empty" }, { status: 400 });
@@ -27,6 +27,14 @@ export async function POST(
             return NextResponse.json({ error: "Ticket not found" }, { status: 404 });
         }
 
+        if (attachments && Array.isArray(attachments)) {
+            for (const att of attachments) {
+                if (!att.url || !att.type) {
+                    return NextResponse.json({ error: "Invalid attachment structure" }, { status: 400 });
+                }
+            }
+        }
+
         // Create the message
         const newMessage = await prisma.ticketMessage.create({
             data: {
@@ -37,7 +45,7 @@ export async function POST(
                 authorId: user.id,
                 authorName: user.name,
                 message: message.trim(),
-                attachments: [], // TODO: attachment support
+                attachments: Array.isArray(attachments) ? attachments : [],
             },
         });
 

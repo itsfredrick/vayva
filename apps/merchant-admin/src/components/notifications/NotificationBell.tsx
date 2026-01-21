@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Icon, Button, cn } from "@vayva/ui";
+import { Button, Icon, cn } from "@vayva/ui";
 
 interface NotificationBellProps {
   onClick: () => void;

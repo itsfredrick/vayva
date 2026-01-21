@@ -10,6 +10,6 @@ export async function GET() {
     countPendingPayment: 2,
   };
 
-  await new Promise((resolve) => setTimeout(resolve, 400));
+
   return NextResponse.json(stats);
 }

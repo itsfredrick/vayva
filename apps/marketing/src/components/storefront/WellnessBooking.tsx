@@ -6,6 +6,7 @@ import {
 import { useStorefrontCart } from "@/hooks/storefront/useStorefrontCart";
 import { CheckoutModal } from "./CheckoutModal";
 import { ShoppingBag, X, Plus, Minus } from "lucide-react";
+import { Button } from "@vayva/ui";
 
 export function WellnessBooking({
   storeName: initialStoreName,
@@ -60,15 +61,17 @@ export function WellnessBooking({
             Contact
           </a>
         </div>
-        <button
-          className="flex items-center gap-2 bg-[#8B7355] text-white px-5 py-2 rounded-full hover:bg-[#6F5B43] transition-colors"
+        <Button
+          variant="primary"
+          className="flex items-center gap-2 bg-[#8B7355] text-white px-5 py-2 rounded-full hover:bg-[#6F5B43] transition-colors h-auto"
           onClick={() => setIsCartOpen(true)}
+          aria-label={`View ${cart.length} bookings`}
         >
           <ShoppingBag className="w-4 h-4" />
           <span className="text-xs font-bold uppercase tracking-widest">
             Bookings ({cart.length})
           </span>
-        </button>
+        </Button>
       </nav>
 
       {/* Cart Drawer */}
@@ -83,9 +86,9 @@ export function WellnessBooking({
               <h2 className="text-2xl font-serif text-[#8B7355]">
                 Your Sessions
               </h2>
-              <button onClick={() => setIsCartOpen(false)}>
+              <Button variant="ghost" size="icon" onClick={() => setIsCartOpen(false)} aria-label="Close bookings side bar">
                 <X className="w-6 h-6 text-[#8B7355]" />
-              </button>
+              </Button>
             </div>
 
             <div className="flex-1 overflow-auto space-y-6">
@@ -107,26 +110,33 @@ export function WellnessBooking({
                     </div>
                     <div className="flex items-center justify-between mt-2">
                       <div className="text-xs text-[#8B7355] font-medium uppercase tracking-wider flex items-center gap-2">
-                        <button
+                        <Button
+                          variant="ghost"
+                          size="icon"
                           onClick={() => updateQuantity(item.id, -1)}
-                          className="p-1 hover:bg-[#FAF7F5] rounded"
+                          className="p-1 hover:bg-[#FAF7F5] rounded h-6 w-6"
+                          aria-label="Decrease quantity"
                         >
                           <Minus className="w-3 h-3" />
-                        </button>
+                        </Button>
                         <span>{item.quantity} Session(s)</span>
-                        <button
+                        <Button
+                          variant="ghost"
+                          size="icon"
                           onClick={() => updateQuantity(item.id, 1)}
-                          className="p-1 hover:bg-[#FAF7F5] rounded"
+                          className="p-1 hover:bg-[#FAF7F5] rounded h-6 w-6"
+                          aria-label="Increase quantity"
                         >
                           <Plus className="w-3 h-3" />
-                        </button>
+                        </Button>
                       </div>
-                      <button
+                      <Button
+                        variant="link"
                         onClick={() => removeFromCart(item.id)}
-                        className="text-xs text-red-400 hover:text-red-500"
+                        className="text-xs text-red-400 hover:text-red-500 p-0 h-auto"
                       >
                         Remove
-                      </button>
+                      </Button>
                     </div>
                   </div>
                 ))
@@ -139,15 +149,15 @@ export function WellnessBooking({
                   <span>Total</span>
                   <span>₦{total.toLocaleString()}</span>
                 </div>
-                <button
+                <Button
                   onClick={() => {
                     setIsCartOpen(false);
                     setIsCheckoutOpen(true);
                   }}
-                  className="w-full bg-[#8B7355] text-white py-4 rounded-full font-bold uppercase tracking-widest hover:bg-[#6F5B43] shadow-lg shadow-[#D8CFC4] transition-all"
+                  className="w-full bg-[#8B7355] text-white py-6 h-auto rounded-full font-bold uppercase tracking-widest hover:bg-[#6F5B43] shadow-lg shadow-[#D8CFC4] transition-all"
                 >
                   Confirm Booking
-                </button>
+                </Button>
               </div>
             )}
           </div>
@@ -165,9 +175,9 @@ export function WellnessBooking({
             body and spirit. Book your appointment online today.
           </p>
           <div className="flex justify-center gap-4">
-            <button className="px-8 py-3 bg-[#8B7355] text-white rounded-full font-medium shadow-lg hover:bg-[#6F5B43] transition-colors">
+            <Button className="px-8 py-6 bg-[#8B7355] text-white rounded-full font-medium shadow-lg hover:bg-[#6F5B43] transition-colors h-auto">
               Book an Appointment
-            </button>
+            </Button>
           </div>
         </div>
       </header>
@@ -202,6 +212,7 @@ export function WellnessBooking({
                       service.image ||
                       `https://via.placeholder.com/400x300?text=${encodeURIComponent(service.name)}`
                     }
+                    alt={service.name}
                     className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 opacity-90"
                   />
                   <div className="absolute top-4 right-4 bg-white/90 backdrop-blur px-3 py-1 rounded-full text-xs font-bold text-[#8B7355]">
@@ -219,12 +230,13 @@ export function WellnessBooking({
                     <div className="text-lg font-bold text-[#8B7355]">
                       ₦{service.price.toLocaleString()}
                     </div>
-                    <button
+                    <Button
+                      variant="link"
                       onClick={() => addToCart(service)}
-                      className="text-sm font-bold text-[#5D5D5D] hover:text-[#8B7355] uppercase tracking-wider flex items-center gap-1"
+                      className="text-sm font-bold text-[#5D5D5D] hover:text-[#8B7355] uppercase tracking-wider flex items-center gap-1 p-0 h-auto"
                     >
                       Book Now <span className="text-lg">→</span>
-                    </button>
+                    </Button>
                   </div>
                 </div>
               </div>

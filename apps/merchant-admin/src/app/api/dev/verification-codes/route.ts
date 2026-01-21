@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { prisma } from "@vayva/db";
+import { prisma } from "@/lib/prisma";
 
 /**
  * DEV/TEST ONLY: Get verification codes for an email or the latest ones.

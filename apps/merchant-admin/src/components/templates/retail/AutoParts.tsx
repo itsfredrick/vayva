@@ -1,6 +1,6 @@
 import { TemplateProps } from "@/components/templates/registry";
 import { useStore } from "@/context/StoreContext";
-import { Icon } from "@vayva/ui";
+import { Icon, Button } from "@vayva/ui";
 
 export const AutoPartsTemplate: React.FC<TemplateProps> = ({
   businessName,
@@ -19,44 +19,44 @@ export const AutoPartsTemplate: React.FC<TemplateProps> = ({
   // Demo Data Override for Auto Parts
   const partItems = demoMode
     ? [
-        {
-          id: "ap_1",
-          name: "Toyota Camry Engine (2009)",
-          price: 450000,
-          type: "retail",
-          condition: "Tokunbo Grade A",
-          tags: ["Warranty Included"],
-          img: "https://images.unsplash.com/photo-1486262715619-67b85e0b08d3?w=800&q=80",
-        },
-        {
-          id: "ap_2",
-          name: "Brake Pad",
-          price: 18000,
-          type: "retail",
-          condition: "Brand New",
-          tags: ["OEM"],
-          img: "https://images.unsplash.com/photo-1552176625-e47ff529b595?w=800&q=80",
-        },
-        {
-          id: "ap_3",
-          name: "Lexus RX350 Headlamp",
-          price: 180000,
-          type: "retail",
-          condition: "Belgium Used",
-          tags: [],
-          img: "https://images.unsplash.com/photo-1506469717960-433cebe3f181?w=800&q=80",
-        },
-      ]
+      {
+        id: "ap_1",
+        name: "Toyota Camry Engine (2009)",
+        price: 450000,
+        type: "retail",
+        condition: "Tokunbo Grade A",
+        tags: ["Warranty Included"],
+        img: "https://images.unsplash.com/photo-1486262715619-67b85e0b08d3?w=800&q=80",
+      },
+      {
+        id: "ap_2",
+        name: "Brake Pad",
+        price: 18000,
+        type: "retail",
+        condition: "Brand New",
+        tags: ["OEM"],
+        img: "https://images.unsplash.com/photo-1552176625-e47ff529b595?w=800&q=80",
+      },
+      {
+        id: "ap_3",
+        name: "Lexus RX350 Headlamp",
+        price: 180000,
+        type: "retail",
+        condition: "Belgium Used",
+        tags: [],
+        img: "https://images.unsplash.com/photo-1506469717960-433cebe3f181?w=800&q=80",
+      },
+    ]
     : products
-        .filter((p) => p.type === "retail")
-        .map((p) => ({
-          ...p,
-          img:
-            p.images?.[0] ||
-            "https://images.unsplash.com/photo-1486262715619-67b85e0b08d3?w=800&q=80",
-          condition: p.category || "Used",
-          tags: (p as any).searchTags || [],
-        }));
+      .filter((p) => p.type === "retail")
+      .map((p) => ({
+        ...p,
+        img:
+          p.images?.[0] ||
+          "https://images.unsplash.com/photo-1486262715619-67b85e0b08d3?w=800&q=80",
+        condition: p.category || "Used",
+        tags: (p as any).searchTags || [],
+      }));
 
   return (
     <div className="font-sans min-h-screen bg-slate-50 text-slate-900 pb-20">
@@ -98,12 +98,12 @@ export const AutoPartsTemplate: React.FC<TemplateProps> = ({
             "Electrical",
             "Body Parts",
           ].map((cat) => (
-            <button
+            <Button
               key={cat}
-              className="text-xs font-bold bg-slate-100 text-slate-700 px-3 py-1.5 rounded-md hover:bg-slate-200 border border-slate-200 whitespace-nowrap"
+              className="text-xs font-bold bg-slate-100 text-slate-700 px-3 py-1.5 rounded-md hover:bg-slate-200 border border-slate-200 whitespace-nowrap h-auto"
             >
               {cat}
-            </button>
+            </Button>
           ))}
         </div>
       </div>
@@ -146,14 +146,14 @@ export const AutoPartsTemplate: React.FC<TemplateProps> = ({
                 <span className="font-bold text-red-600 text-sm">
                   {currency} {item.price.toLocaleString()}
                 </span>
-                <button
+                <Button
                   onClick={() =>
                     addToCart({ ...item, quantity: 1, productId: item.id })
                   }
-                  className="bg-slate-900 text-white text-[10px] font-bold px-3 py-1.5 rounded hover:bg-slate-800"
+                  className="bg-slate-900 text-white text-[10px] font-bold px-3 py-1.5 rounded hover:bg-slate-800 h-auto"
                 >
                   Select Part
-                </button>
+                </Button>
               </div>
             </div>
           </div>
@@ -174,15 +174,15 @@ export const AutoPartsTemplate: React.FC<TemplateProps> = ({
               Send us your VIN or a picture of the part you need replaced before
               payment.
             </p>
-            <button
+            <Button
               onClick={() => checkout("whatsapp")}
               disabled={isCheckoutProcessing}
-              className="bg-green-600 text-white w-full rounded-md py-2 font-bold text-xs hover:bg-green-700 transition-colors"
+              className="bg-green-600 text-white w-full rounded-md py-2 font-bold text-xs hover:bg-green-700 transition-colors h-auto"
             >
               {itemCount > 0
                 ? `Request Inspection for ${itemCount} Item(s)`
                 : "Chat on WhatsApp"}
-            </button>
+            </Button>
           </div>
         </div>
       </div>

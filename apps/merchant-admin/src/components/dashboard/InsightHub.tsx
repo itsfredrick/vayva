@@ -1,5 +1,5 @@
 import React from "react";
-import { Icon, cn } from "@vayva/ui";
+import { Icon, cn, Button } from "@vayva/ui";
 
 interface Insight {
   id: string;
@@ -62,12 +62,12 @@ export const InsightHub = ({ insights }: { insights: Insight[] }) => {
             </div>
 
             <div className="flex items-center gap-2 sm:self-center self-end">
-              <button className="text-xs font-bold text-gray-400 hover:text-gray-600 px-3 py-2">
+              <Button size="sm" className="text-gray-400 hover:text-gray-600">
                 Dismiss
-              </button>
-              <button className="bg-black text-white text-xs font-bold px-4 py-2 rounded-lg hover:bg-gray-800 transition-colors whitespace-nowrap">
+              </Button>
+              <Button variant="primary" size="sm" className="whitespace-nowrap">
                 {insight.action_label}
-              </button>
+              </Button>
             </div>
           </div>
         ))}

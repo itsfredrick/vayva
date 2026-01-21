@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { prisma } from "@vayva/db";
+import { prisma } from "@/lib/prisma";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 import { logAuditEvent, AuditEventType } from "@/lib/audit";
@@ -40,9 +40,13 @@ export async function POST(req: NextRequest) {
 
     // Audit Log
     await logAuditEvent(storeId, userId, AuditEventType.EXPORT_CREATED, {
-      requestId: exportRequest.id,
-      type,
-      filters,
+      targetType: "EXPORT_REQUEST",
+      targetId: exportRequest.id,
+      meta: {
+        requestId: exportRequest.id,
+        type,
+        filters,
+      }
     });
 
     return NextResponse.json({

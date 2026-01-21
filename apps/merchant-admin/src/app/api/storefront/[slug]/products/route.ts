@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { prisma } from "@vayva/db";
+import { prisma } from "@/lib/prisma";
 
 export async function GET(
   req: NextRequest,
@@ -59,7 +59,7 @@ export async function GET(
         compareAtPrice: true,
         handle: true,
         productType: true,
-        ProductImage: {
+        productImages: {
           orderBy: { position: "asc" },
           take: 1,
           select: { url: true }, // Optimization
@@ -74,7 +74,7 @@ export async function GET(
       description: p.description,
       price: Number(p.price),
       originalPrice: p.compareAtPrice ? Number(p.compareAtPrice) : null,
-      image: p.ProductImage?.[0]?.url || "",
+      image: p.productImages?.[0]?.url || "",
       category: p.productType,
       rating: 5.0,
     }));

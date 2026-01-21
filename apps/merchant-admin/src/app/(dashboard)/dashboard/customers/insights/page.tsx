@@ -1,8 +1,9 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { Card, Button, Badge } from "@vayva/ui";
+import { Badge, Button, Card } from "@vayva/ui";
 import { Users, TrendingUp, AlertCircle, Sparkles, Mail } from "lucide-react";
+import { logger, ErrorCategory } from "@/lib/logger";
 
 export default function InsightsPage() {
   const [data, setData] = useState<any>(null);
@@ -15,7 +16,7 @@ export default function InsightsPage() {
         const json = await res.json();
         if (json.stats) setData(json);
       } catch (e) {
-        console.error(e);
+        logger.error("Failed to load customer insights", ErrorCategory.API, e as Error);
       } finally {
         setLoading(false);
       }

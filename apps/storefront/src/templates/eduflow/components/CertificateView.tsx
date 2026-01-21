@@ -1,4 +1,5 @@
 import React from "react";
+import { Button } from "@vayva/ui";
 import { X, Award, Download, Share2 } from "lucide-react";
 import { PublicProduct } from "@/types/storefront";
 
@@ -16,12 +17,12 @@ export const CertificateView = ({
   return (
     <div className="fixed inset-0 z-[110] flex items-center justify-center bg-black/80 backdrop-blur-sm p-4">
       <div className="bg-white w-full max-w-2xl rounded-xl shadow-2xl relative overflow-hidden animate-in zoom-in-95 duration-500">
-        <button
+        <Button
           onClick={onClose}
           className="absolute top-4 right-4 text-gray-400 hover:text-gray-900 z-10"
         >
           <X size={24} />
-        </button>
+        </Button>
 
         <div className="border-8 border-double border-blue-900/10 m-2 p-8 md:p-12 text-center rounded-lg bg-[#FAFAFA]">
           <div className="w-20 h-20 mx-auto bg-blue-600 text-white rounded-full flex items-center justify-center mb-6 shadow-xl">
@@ -69,12 +70,12 @@ export const CertificateView = ({
             {Math.random().toString(36).substr(2, 9).toUpperCase()}
           </p>
           <div className="flex gap-2">
-            <button className="flex items-center gap-1.5 px-3 py-1.5 bg-white border border-gray-200 rounded text-xs font-bold text-gray-700 hover:bg-gray-50">
+            <Button className="flex items-center gap-1.5 px-3 py-1.5 bg-white border border-gray-200 rounded text-xs font-bold text-gray-700 hover:bg-gray-50">
               <Share2 size={14} /> Share
-            </button>
-            <button className="flex items-center gap-1.5 px-3 py-1.5 bg-blue-600 rounded text-xs font-bold text-white hover:bg-blue-700">
+            </Button>
+            <Button className="flex items-center gap-1.5 px-3 py-1.5 bg-blue-600 rounded text-xs font-bold text-white hover:bg-blue-700">
               <Download size={14} /> Download PDF
-            </button>
+            </Button>
           </div>
         </div>
       </div>

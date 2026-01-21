@@ -1,5 +1,6 @@
 import React from "react";
 import Image from "next/image";
+import { Button } from "@vayva/ui";
 
 interface LifestyleHeroProps {
   imageUrl?: string;
@@ -31,9 +32,9 @@ export const LifestyleHero = ({
         <h2 className="font-serif text-3xl md:text-5xl text-[#2E2E2E] mb-6 leading-tight">
           {headline}
         </h2>
-        <button className="border-b border-[#2E2E2E] pb-1 text-[#2E2E2E] text-sm uppercase tracking-widest hover:text-[#C9B7A2] hover:border-[#C9B7A2] transition-all duration-300">
+        <Button variant="link" className="border-b border-[#2E2E2E] pb-1 text-[#2E2E2E] text-sm uppercase tracking-widest hover:text-[#C9B7A2] hover:border-[#C9B7A2] transition-all duration-300 h-auto p-0 rounded-none" aria-label={ctaText}>
           {ctaText}
-        </button>
+        </Button>
       </div>
     </section>
   );

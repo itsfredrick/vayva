@@ -29,7 +29,7 @@ export default function EditorialHome({ store }: { store: any }) {
                     <span className="text-xs font-bold uppercase tracking-widest text-gray-400">Featured Story</span>
                     <h2 className="text-5xl font-medium mt-4 mb-6 leading-tight">The Art of Slow Living in a Fast World.</h2>
                     <p className="text-xl text-gray-500 mb-8">We explore how modern creatives are finding balance through intentional design.</p>
-                    <Button variant="outline" className="border-black text-black hover:bg-black hover:text-white rounded-none px-8">Read Story</Button>
+                    <Button variant="outline" className="border-black text-black hover:bg-black hover:text-white rounded-none px-8 h-auto" aria-label="Read story">Read Story</Button>
                 </div>
             </section>
 

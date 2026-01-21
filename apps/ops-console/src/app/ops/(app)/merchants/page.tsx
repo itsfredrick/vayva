@@ -11,10 +11,14 @@ import {
     XCircle,
     TrendingUp,
     MoreHorizontal,
-    Loader2
+    Loader2,
+    CheckCircle
 } from "lucide-react";
+import { Button } from "@vayva/ui";
+import { OpsPagination } from "@/components/shared/OpsPagination";
 import { useRouter, useSearchParams } from "next/navigation";
 import { toast } from "sonner";
+import { useOpsQuery } from "@/hooks/useOpsQuery";
 
 interface Merchant {
     id: string;
@@ -199,18 +203,20 @@ export default function MerchantsListPage() {
                             onChange={(e) => setSearchInput(e.target.value)}
                         />
                     </form>
-                    <button
+                    <Button
+                        variant="outline"
                         onClick={() => setShowFilters(!showFilters)}
-                        className={`px-4 py-2.5 rounded-lg border text-sm font-medium transition-colors flex items-center gap-2 ${showFilters || plan || kyc || risk ? "bg-indigo-50 border-indigo-200 text-indigo-700" : "bg-white border-gray-200 text-gray-700 hover:bg-gray-50"}`}
+                        className={`flex items-center gap-2 h-auto ${showFilters || plan || kyc || risk ? "bg-indigo-50 border-indigo-200 text-indigo-700 hover:bg-indigo-100" : ""}`}
+                        aria-label={showFilters ? "Hide filters" : "Show filters"}
                     >
-                        <Filter className="h-4 w-4" />
+                        <Filter className="h-4 w-4 mr-2" />
                         Filters
                         {(plan || kyc || risk) && (
-                            <span className="bg-indigo-600 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
+                            <span className="ml-2 bg-indigo-600 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
                                 {[plan, kyc, risk].filter(Boolean).length}
                             </span>
                         )}
-                    </button>
+                    </Button>
                 </div>
 
                 {/* Filter Options */}
@@ -218,7 +224,7 @@ export default function MerchantsListPage() {
                     <div className="grid grid-cols-3 gap-4 pt-4 border-t border-gray-200">
                         <div>
                             <label className="block text-xs font-medium text-gray-700 mb-2">Plan</label>
-                            <select value={plan} onChange={(e) => handleFilterChange("plan", e.target.value)} className="w-full px-3 py-2 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                            <select aria-label="Filter by Plan" title="Filter by Plan" value={plan} onChange={(e) => handleFilterChange("plan", e.target.value)} className="w-full px-3 py-2 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500">
                                 <option value="">All Plans</option>
                                 <option value="FREE">Free</option>
                                 <option value="STARTER">Starter</option>
@@ -228,7 +234,7 @@ export default function MerchantsListPage() {
                         </div>
                         <div>
                             <label className="block text-xs font-medium text-gray-700 mb-2">KYC Status</label>
-                            <select value={kyc} onChange={(e) => handleFilterChange("kyc", e.target.value)} className="w-full px-3 py-2 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                            <select aria-label="Filter by KYC" title="Filter by KYC Status" value={kyc} onChange={(e) => handleFilterChange("kyc", e.target.value)} className="w-full px-3 py-2 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500">
                                 <option value="">All Statuses</option>
                                 <option value="APPROVED">Approved</option>
                                 <option value="PENDING">Pending</option>
@@ -238,7 +244,7 @@ export default function MerchantsListPage() {
                         </div>
                         <div>
                             <label className="block text-xs font-medium text-gray-700 mb-2">Risk</label>
-                            <select value={risk} onChange={(e) => handleFilterChange("risk", e.target.value)} className="w-full px-3 py-2 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                            <select aria-label="Filter by Risk" title="Filter by Risk" value={risk} onChange={(e) => handleFilterChange("risk", e.target.value)} className="w-full px-3 py-2 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500">
                                 <option value="">All Merchants</option>
                                 <option value="flagged">Flagged Only</option>
                                 <option value="clean">Clean Only</option>
@@ -256,9 +262,11 @@ export default function MerchantsListPage() {
                             <th className="px-6 py-3 w-10">
                                 <input
                                     type="checkbox"
+                                    title="Select All"
                                     checked={data.length > 0 && selectedIds.size === data.length}
                                     onChange={toggleSelectAll}
                                     className="rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
+                                    aria-label="Select All"
                                 />
                             </th>
                             <th className="px-6 py-3">Merchant</th>
@@ -290,9 +298,11 @@ export default function MerchantsListPage() {
                                     <td className="px-6 py-4">
                                         <input
                                             type="checkbox"
+                                            title={`Select ${merchant.name}`}
                                             checked={selectedIds.has(merchant.id)}
                                             onChange={() => toggleSelectOne(merchant.id)}
                                             className="rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
+                                            aria-label={`Select ${merchant.name}`}
                                         />
                                     </td>
                                     <td className="px-6 py-4">
@@ -351,15 +361,12 @@ export default function MerchantsListPage() {
 
                 {/* Pagination */}
                 {meta && (
-                    <div className="bg-gray-50 border-t border-gray-200 px-6 py-3 flex items-center justify-between">
-                        <div className="text-xs text-gray-500">
-                            Showing <span className="font-medium">{(meta.page - 1) * meta.limit + 1}</span> to <span className="font-medium">{Math.min(meta.page * meta.limit, meta.total)}</span> of <span className="font-medium">{meta.total}</span> results
-                        </div>
-                        <div className="flex gap-2">
-                            <button onClick={() => handlePageChange(meta.page - 1)} disabled={meta.page <= 1} className="px-3 py-1.5 border border-gray-300 rounded-lg text-xs font-medium text-gray-600 hover:bg-white disabled:opacity-50">Previous</button>
-                            <button onClick={() => handlePageChange(meta.page + 1)} disabled={meta.page >= meta.totalPages} className="px-3 py-1.5 border border-gray-300 rounded-lg text-xs font-medium text-gray-600 hover:bg-white disabled:opacity-50">Next</button>
-                        </div>
-                    </div>
+                    <OpsPagination
+                        currentPage={meta.page}
+                        totalItems={meta.total}
+                        limit={meta.limit}
+                        onPageChange={handlePageChange}
+                    />
                 )}
             </div>
 
@@ -374,33 +381,45 @@ export default function MerchantsListPage() {
                     </div>
 
                     <div className="flex items-center gap-2">
-                        <button
+                        <Button
+                            variant="destructive"
+                            size="sm"
                             onClick={() => executeBatchAction("SUSPEND")}
                             disabled={!!processingAction}
-                            className="px-4 py-2 hover:bg-white/10 rounded-lg text-sm font-medium text-red-400 hover:text-red-300 transition-colors"
+                            className="bg-red-500 hover:bg-red-600 text-white border-none h-auto"
+                            aria-label={`Suspend ${selectedIds.size} selected merchant accounts`}
                         >
                             Suspend Accounts
-                        </button>
-                        <button
+                        </Button>
+                        <Button
+                            variant="primary"
+                            size="sm"
                             onClick={() => executeBatchAction("force_kyc")}
                             disabled={!!processingAction}
-                            className="px-4 py-2 hover:bg-white/10 rounded-lg text-sm font-medium text-yellow-400 hover:text-yellow-300 transition-colors"
+                            className="bg-yellow-500 hover:bg-yellow-600 text-black border-none h-auto"
+                            aria-label={`Force KYC for ${selectedIds.size} selected merchants`}
                         >
                             Force KYC
-                        </button>
-                        <button
+                        </Button>
+                        <Button
+                            variant="primary"
+                            size="sm"
                             onClick={() => executeBatchAction("enable_payouts")}
                             disabled={!!processingAction}
-                            className="px-4 py-2 hover:bg-white/10 rounded-lg text-sm font-medium text-green-400 hover:text-green-300 transition-colors"
+                            className="bg-green-600 hover:bg-green-700 text-white border-none h-auto"
+                            aria-label={`Enable payouts for ${selectedIds.size} selected merchants`}
                         >
                             Enable Payouts
-                        </button>
-                        <button
+                        </Button>
+                        <Button
+                            variant="ghost"
+                            size="sm"
                             onClick={() => setSelectedIds(new Set())}
-                            className="ml-2 p-2 hover:bg-white/10 rounded-lg text-gray-400 hover:text-white"
+                            className="text-gray-400 hover:text-white hover:bg-white/10 h-auto"
+                            aria-label="Cancel bulk selection"
                         >
                             Cancel
-                        </button>
+                        </Button>
                     </div>
                 </div>
             )}

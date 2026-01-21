@@ -1,5 +1,6 @@
 import React from "react";
 import { X, Check, Lock, Star, ShieldCheck } from "lucide-react";
+import { Button } from "@vayva/ui";
 import { PublicProduct } from "@/types/storefront";
 
 interface FileDetailProps {
@@ -23,23 +24,29 @@ export const FileDetail = ({
             alt={product.name}
             className="max-w-full max-h-[300px] shadow-2xl rounded-lg border border-gray-700"
           />
-          <button
+          <Button
+            variant="ghost"
+            size="icon"
             onClick={onClose}
-            className="absolute top-4 left-4 md:hidden bg-black/50 p-2 rounded-full text-white"
+            className="absolute top-4 left-4 md:hidden bg-black/50 p-2 rounded-full text-white h-auto"
+            aria-label="Close modal"
           >
             <X size={20} />
-          </button>
+          </Button>
         </div>
 
         {/* Content Section */}
         <div className="flex-1 p-8 overflow-y-auto bg-[#1F2937]">
           <div className="flex justify-end mb-4 hidden md:flex">
-            <button
+            <Button
+              variant="ghost"
+              size="icon"
               onClick={onClose}
-              className="text-gray-500 hover:text-white transition-colors"
+              className="text-gray-500 hover:text-white transition-colors h-auto"
+              aria-label="Close modal"
             >
               <X size={24} />
-            </button>
+            </Button>
           </div>
 
           <div className="mb-6">
@@ -106,12 +113,13 @@ export const FileDetail = ({
                 ₦{product.price.toLocaleString()}
               </span>
             </div>
-            <button
+            <Button
               onClick={onPurchase}
-              className="w-full bg-indigo-600 text-white font-bold py-4 rounded-xl hover:bg-indigo-500 transition-all shadow-lg hover:shadow-indigo-500/25 flex items-center justify-center gap-2"
+              className="w-full bg-indigo-600 text-white font-bold py-4 rounded-xl hover:bg-indigo-500 transition-all shadow-lg hover:shadow-indigo-500/25 flex items-center justify-center gap-2 h-auto"
+              aria-label={`Buy and download for ₦${product.price.toLocaleString()}`}
             >
               <Lock size={18} /> Buy & Download
-            </button>
+            </Button>
             <div className="text-center text-xs text-gray-500 flex items-center justify-center gap-2">
               <ShieldCheck size={12} /> Secure 256-bit encrypted checkout
             </div>

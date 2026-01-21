@@ -129,11 +129,30 @@ export class NotificationManager {
         },
       });
 
-      // Trigger stub sender for WA if needed
+      // Trigger WhatsApp Sender
       if (channel === "WHATSAPP") {
-        console.log(
-          `[NotificationManager] [STUB] Sending WhatsApp to ${recipient}: ${body}`,
-        );
+        try {
+          const waUrl = process.env.SERVICE_URL_WHATSAPP;
+
+          if (!waUrl) {
+            console.warn(`[NotificationManager] Skipping WhatsApp send - SERVICE_URL_WHATSAPP not configured`);
+            continue;
+          }
+
+          await fetch(`${waUrl}/v1/whatsapp/send-notification`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              to: recipient,
+              // Map to specific template names if needed, otherwise use default
+              templateName: `notification_${type.toLowerCase()}`,
+              parameters: variables,
+              textBody: body // Fallback text
+            })
+          });
+        } catch (err) {
+          console.error(`[NotificationManager] Failed to send WA to ${recipient}:`, err);
+        }
       }
     }
 
@@ -153,10 +172,13 @@ export class NotificationManager {
 
     if (channel === "EMAIL") {
       const membership = await prisma.membership.findFirst({
-        where: { storeId, role: "OWNER" },
-        include: { User: true },
+        where: {
+          storeId,
+          role_enum: { equals: "OWNER" }
+        },
+        include: { user: true },
       });
-      return (membership as any)?.User?.email || null;
+      return membership?.user?.email || null;
     }
 
     return null;

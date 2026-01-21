@@ -6,6 +6,7 @@ import {
 import { useStorefrontCart } from "@/hooks/storefront/useStorefrontCart";
 import { CheckoutModal } from "./CheckoutModal";
 import { ShoppingCart, X, Heart, Eye } from "lucide-react";
+import { Button } from "@vayva/ui";
 
 export function CreativeMarketStore({
   storeName: initialStoreName,
@@ -67,12 +68,15 @@ export function CreativeMarketStore({
           </div>
 
           <div className="flex items-center gap-4">
-            <button className="text-gray-500 hover:text-red-500">
+            <Button variant="ghost" className="text-gray-500 hover:text-red-500 p-0 h-auto hover:bg-transparent" aria-label="Add to favorites">
               <Heart className="w-5 h-5" />
-            </button>
-            <button
+            </Button>
+            <Button
+              variant="ghost"
+              size="icon"
               onClick={() => setIsCartOpen(true)}
-              className="bg-gray-100 p-2 rounded-full hover:bg-gray-200 relative text-gray-700"
+              className="bg-gray-100 p-2 rounded-full hover:bg-gray-200 relative text-gray-700 h-10 w-10 flex items-center justify-center"
+              aria-label={`View cart with ${cart.length} items`}
             >
               <ShoppingCart className="w-5 h-5" />
               {cart.length > 0 && (
@@ -80,10 +84,10 @@ export function CreativeMarketStore({
                   {cart.length}
                 </span>
               )}
-            </button>
-            <button className="bg-green-500 text-white px-4 py-2 rounded text-sm font-bold hover:bg-green-600 transition-colors">
+            </Button>
+            <Button variant="primary" className="bg-green-500 text-white px-4 py-2 rounded text-sm font-bold hover:bg-green-600 transition-colors h-auto border-none">
               Sign In
-            </button>
+            </Button>
           </div>
         </div>
       </nav>
@@ -98,9 +102,9 @@ export function CreativeMarketStore({
           <div className="relative w-full max-w-md bg-white h-full shadow-2xl flex flex-col animate-in slide-in-from-right">
             <div className="p-5 border-b border-gray-100 flex justify-between items-center">
               <h2 className="font-bold text-lg text-gray-800">Shopping Cart</h2>
-              <button onClick={() => setIsCartOpen(false)}>
+              <Button variant="ghost" size="icon" onClick={() => setIsCartOpen(false)} aria-label="Close cart sidebar">
                 <X className="w-5 h-5 text-gray-400" />
-              </button>
+              </Button>
             </div>
 
             <div className="flex-1 overflow-auto p-5 space-y-5">
@@ -119,6 +123,7 @@ export function CreativeMarketStore({
                       {item.image && (
                         <img
                           src={item.image}
+                          alt={item.name}
                           className="w-full h-full object-cover"
                         />
                       )}
@@ -134,12 +139,13 @@ export function CreativeMarketStore({
                         <span className="font-bold text-green-600">
                           ₦{item.price.toLocaleString()}
                         </span>
-                        <button
+                        <Button
+                          variant="link"
                           onClick={() => removeFromCart(item.id)}
-                          className="text-xs text-red-500 hover:underline"
+                          className="text-xs text-red-500 hover:underline p-0 h-auto"
                         >
                           Remove
-                        </button>
+                        </Button>
                       </div>
                     </div>
                   </div>
@@ -155,15 +161,15 @@ export function CreativeMarketStore({
                     ₦{total.toLocaleString()}
                   </span>
                 </div>
-                <button
+                <Button
                   onClick={() => {
                     setIsCartOpen(false);
                     setIsCheckoutOpen(true);
                   }}
-                  className="w-full bg-green-500 text-white py-3 rounded-md font-bold hover:bg-green-600 shadow-md transition-colors"
+                  className="w-full bg-green-500 text-white py-6 h-auto rounded-md font-bold hover:bg-green-600 shadow-md transition-colors"
                 >
                   Proceed to Checkout
-                </button>
+                </Button>
               </div>
             )}
           </div>
@@ -186,9 +192,9 @@ export function CreativeMarketStore({
             placeholder="Search fonts, graphics, and more..."
             className="flex-1 px-4 py-2 outline-none text-gray-700"
           />
-          <button className="bg-red-500 text-white px-6 py-2 rounded-md font-bold hover:bg-red-600">
+          <Button className="bg-red-500 text-white px-6 py-2 rounded-md font-bold hover:bg-red-600 h-auto border-none">
             Search
-          </button>
+          </Button>
         </div>
       </div>
 
@@ -226,12 +232,13 @@ export function CreativeMarketStore({
                       product.image ||
                       `https://via.placeholder.com/400x300?text=${encodeURIComponent(product.name)}`
                     }
+                    alt={product.name}
                     className="w-full h-full object-cover"
                   />
                   <div className="absolute top-2 right-2 flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
-                    <button className="bg-white p-2 rounded-md text-gray-600 hover:text-red-500 shadow-sm">
+                    <Button variant="ghost" size="icon" className="bg-white p-2 rounded-md text-gray-600 hover:text-red-500 shadow-sm w-8 h-8 flex items-center justify-center p-0" aria-label="Add to favorites">
                       <Heart className="w-4 h-4" />
-                    </button>
+                    </Button>
                   </div>
                 </div>
                 <div className="p-4">
@@ -247,15 +254,17 @@ export function CreativeMarketStore({
                     <div className="font-bold text-lg text-gray-900">
                       ₦{product.price.toLocaleString()}
                     </div>
-                    <button
-                      className="bg-gray-100 hover:bg-green-500 hover:text-white px-3 py-1 rounded text-xs font-bold transition-colors flex items-center gap-1"
+                    <Button
+                      variant="primary"
+                      className="bg-gray-100 hover:bg-green-500 hover:text-white px-3 py-2 text-xs font-bold transition-colors flex items-center gap-1 h-auto text-gray-700"
                       onClick={(e) => {
                         e.stopPropagation();
                         addToCart(product);
                       }}
+                      aria-label={`Add ${product.name} to cart`}
                     >
                       <ShoppingCart className="w-3 h-3" /> Add
-                    </button>
+                    </Button>
                   </div>
                 </div>
               </div>

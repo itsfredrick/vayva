@@ -5,6 +5,8 @@ declare module "next-auth" {
     storeId: string;
     storeName: string;
     role: string;
+    emailVerified: boolean;
+    onboardingCompleted: boolean;
   }
 
   interface Session {
@@ -15,6 +17,8 @@ declare module "next-auth" {
       storeId: string;
       storeName: string;
       role: string;
+      onboardingCompleted: boolean;
+      emailVerified: boolean;
     };
   }
 }
@@ -24,5 +28,7 @@ declare module "next-auth/jwt" {
     storeId: string;
     storeName: string;
     role: string;
+    onboardingCompleted: boolean;
+    emailVerified: boolean;
   }
 }

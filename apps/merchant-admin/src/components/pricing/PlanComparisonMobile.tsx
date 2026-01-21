@@ -1,10 +1,11 @@
 "use client";
 
 import React, { useState } from "react";
-import { PLANS, FEES } from "@/config/pricing";
+import { PLANS, FEES, PlanKey } from "@/config/pricing";
+import { Button, cn } from "@vayva/ui";
 
 export const PlanComparisonMobile = () => {
-  const [selectedPlan, setSelectedPlan] = useState<"STARTER" | "GROWTH" | "PRO">(
+  const [selectedPlan, setSelectedPlan] = useState<PlanKey>(
     "GROWTH",
   );
 
@@ -13,26 +14,29 @@ export const PlanComparisonMobile = () => {
       {/* Plan Selector */}
       <div className="flex p-1 bg-gray-100 rounded-xl">
         {PLANS.map((plan) => (
-          <button
+          <Button
             key={plan.key}
             onClick={() => setSelectedPlan(plan.key)}
-            className={`flex-1 py-3 text-xs font-black uppercase tracking-widest rounded-lg transition-all ${selectedPlan === plan.key
-              ? "bg-white text-[#0F172A] shadow-sm"
-              : "text-gray-400 hover:text-gray-600"
-              }`}
+            variant="ghost"
+            className={cn(
+              "flex-1 py-3 h-auto text-xs font-black uppercase tracking-widest rounded-lg transition-all",
+              selectedPlan === plan.key
+                ? "bg-white text-black shadow-sm hover:bg-white"
+                : "text-gray-400 hover:text-gray-600 bg-transparent"
+            )}
           >
             {plan.key === "STARTER"
               ? "Free"
               : plan.monthlyAmount === 30000
                 ? "₦30k"
                 : "₦40k"}
-          </button>
+          </Button>
         ))}
       </div>
 
       {/* Feature List */}
       <div className="bg-white rounded-3xl border border-gray-100 p-8 shadow-xl">
-        <h3 className="text-xl font-black text-[#0F172A] mb-6">
+        <h3 className="text-xl font-black text-black mb-6">
           {PLANS.find((p) => p.key === selectedPlan)?.name} Details
         </h3>
         <div className="space-y-6">
@@ -72,7 +76,7 @@ export const PlanComparisonMobile = () => {
               <span className="text-sm font-bold text-gray-400 uppercase tracking-widest">
                 {feat.name}
               </span>
-              <div className="text-sm font-black text-[#0F172A]">
+              <div className="text-sm font-black text-black">
                 {typeof feat.val === "boolean" ? (
                   feat.val ? (
                     <svg

@@ -34,7 +34,7 @@ export function DeprecationNotice({
 
           {hasReplacement && replacementTemplateName && (
             <div className="bg-white border border-amber-200 rounded p-4 mb-4">
-              <p className="text-sm font-semibold text-[#0F172A] mb-2">
+              <p className="text-sm font-semibold text-black mb-2">
                 Suggested alternative:
               </p>
               <p className="text-sm text-[#64748B] mb-3">
@@ -65,13 +65,15 @@ export function DeprecationNotice({
         </div>
 
         {onDismiss && (
-          <button
+          <Button
+            variant="ghost"
+            size="icon"
             onClick={onDismiss}
-            className="text-amber-600 hover:text-amber-700 text-sm flex-shrink-0"
+            className="text-amber-600 hover:text-amber-700 h-6 w-6"
             aria-label="Dismiss"
           >
             ×
-          </button>
+          </Button>
         )}
       </div>
     </div>

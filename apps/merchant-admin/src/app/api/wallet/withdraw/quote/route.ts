@@ -8,13 +8,20 @@ const calculateFee = (amount: number) => {
   return 50;
 };
 
+import { getSessionUser } from "@/lib/session";
+
 export async function POST(request: Request) {
+  const user = await getSessionUser();
+  if (!user?.storeId) {
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  }
+
   const body = await request.json();
   const { amount } = body;
 
   const fee = calculateFee(amount);
 
-  await new Promise((resolve) => setTimeout(resolve, 500));
+
 
   const quote: WithdrawalQuote = {
     amount,

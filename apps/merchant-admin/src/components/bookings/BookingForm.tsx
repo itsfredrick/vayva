@@ -1,123 +1,134 @@
 "use client";
 
 import { useForm } from "react-hook-form";
-import { Button, Input, Textarea, Label, Select } from "@vayva/ui";
-import { useState, useEffect } from "react";
+import { Button, Input, Label, Select, Textarea } from "@vayva/ui";
+import { useState } from "react";
+import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { format } from "date-fns";
+import { Loader2 } from "lucide-react";
 
 interface BookingFormProps {
-    onSuccess?: () => void;
-    preselectedDate?: Date;
+    onSuccess: () => void;
+    services: { id: string; name: string }[];
+    customers: { id: string; name: string }[];
+    initialData?: any;
 }
 
-export function BookingForm({ onSuccess, preselectedDate }: BookingFormProps) {
-    const [isSubmitting, setIsSubmitting] = useState(false);
-    const [services, setServices] = useState<any[]>([]);
+interface BookingFormValues {
+    serviceId: string;
+    customerId: string;
+    startsAt: string; // datetime-local
+    endsAt: string; // datetime-local
+    notes?: string;
+}
 
-    // Fetch Services on Mount
-    useEffect(() => {
-        fetch("/api/products?category=service")
-            .then(res => res.json())
-            .then(data => {
-                // Assuming standard product fetch returns { products: [] }
-                // We might need to adjust endpoint or filtering.
-                // For now, let's fetch all products and manually filter client side if needed 
-                // or just rely on the user to pick valid ones if API is generic.
-                if (data.products) setServices(data.products);
-            })
-            .catch(err => console.error("Failed to fetch services", err));
-    }, []);
-
-    const { register, handleSubmit, setValue, watch, formState: { errors } } = useForm({
-        defaultValues: {
-            serviceId: "",
-            date: preselectedDate ? format(preselectedDate, "yyyy-MM-dd") : "",
-            time: "09:00",
-            customerName: "",
-            notes: ""
-        }
+export function BookingForm({ services, customers, onSuccess, initialData }: BookingFormProps) { // Updated props
+    const router = useRouter();
+    const [isLoading, setIsLoading] = useState(false); // Changed isSubmitting to isLoading
+    const { register, handleSubmit, watch, formState: { errors } } = useForm<BookingFormValues>({ // Changed BookingFormValues to BookingFormData
+        defaultValues: initialData ? {
+            serviceId: initialData.serviceId,
+            customerId: initialData.customerId,
+            startsAt: format(new Date(initialData.startsAt), "yyyy-MM-dd'T'HH:mm"),
+            endsAt: format(new Date(initialData.endsAt), "yyyy-MM-dd'T'HH:mm"), // Added endsAt formatting
+            notes: initialData.notes || "",
+            // Assume customerName/Email logic mainly for new bookings, but if editing, we might want to show them?
+            // For now, edit mode usually assumes existing customer or service.
+        } : undefined
     });
 
-    const onSubmit = async (data: any) => {
-        setIsSubmitting(true);
+    const isExistingCustomer = !!watch("customerId"); // Added this line
+
+    const onSubmit = async (data: BookingFormValues) => { // Changed BookingFormValues to BookingFormData
+        setIsLoading(true); // Changed setIsSubmitting to setIsLoading
         try {
-            const res = await fetch("/api/bookings", {
-                method: "POST",
+            const url = initialData ? `/api/bookings/${initialData.id}` : "/api/bookings";
+            const method = initialData ? "PUT" : "POST";
+
+            const res = await fetch(url, {
+                method,
                 headers: { "Content-Type": "application/json" },
-                body: JSON.stringify(data),
+                body: JSON.stringify({
+                    ...data,
+                    startsAt: new Date(data.startsAt).toISOString(),
+                    endsAt: new Date(data.endsAt).toISOString(),
+                    // If creating new customer (no ID selected)
+                    // If editing, existing IDs are used
+                }),
             });
 
             if (!res.ok) {
                 const err = await res.json();
-                throw new Error(err.error || "Failed to create booking");
+                throw new Error(err.error || "Failed to save booking");
             }
 
-            toast.success("Booking created successfully");
-            if (onSuccess) onSuccess();
-        } catch (e: any) {
-            toast.error(e.message);
+            toast.success(initialData ? "Booking updated" : "Booking created successfully"); // Updated toast message
+            router.refresh(); // Refresh server data
+            onSuccess();
+        } catch (error: any) { // Updated error handling
+            console.error(error);
+            toast.error(error.message);
         } finally {
-            setIsSubmitting(false);
+            setIsLoading(false);
         }
     };
 
     return (
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-            <div className="space-y-2">
-                <Label>Service</Label>
-                <Select {...register("serviceId", { required: "Service is required" })}>
-                    <option value="">Select a service</option>
-                    {services.length === 0 ? (
-                        <option disabled>No services found</option>
-                    ) : (
-                        services.map((s) => (
-                            <option key={s.id} value={s.id}>
-                                {s.title}
-                            </option>
-                        ))
-                    )}
-                </Select>
-                {errors.serviceId && <p className="text-red-500 text-xs">{errors.serviceId.message as string}</p>}
-            </div>
-
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div className="space-y-2">
-                    <Label>Date</Label>
+                    <Label htmlFor="serviceId">Service</Label>
+                    <select id="serviceId" {...register("serviceId", { required: true })} defaultValue="" className="flex h-10 w-full items-center justify-between rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 [&>span]:line-clamp-1">
+                        <option value="" disabled>Select service</option>
+                        {services.map(s => (
+                            <option key={s.id} value={s.id}>{s.name}</option>
+                        ))}
+                    </select>
+                </div>
+
+                <div className="space-y-2">
+                    <Label htmlFor="customerId">Customer</Label>
+                    <select id="customerId" {...register("customerId", { required: true })} defaultValue="" className="flex h-10 w-full items-center justify-between rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 [&>span]:line-clamp-1">
+                        <option value="" disabled>Select customer</option>
+                        {customers.map(c => (
+                            <option key={c.id} value={c.id}>{c.name}</option>
+                        ))}
+                    </select>
+                </div>
+
+                <div className="space-y-2">
+                    <Label htmlFor="startsAt">Start Time</Label>
                     <Input
-                        type="date"
-                        {...register("date", { required: true })}
+                        id="startsAt"
+                        type="datetime-local"
+                        {...register("startsAt", { required: true })}
                     />
                 </div>
+
                 <div className="space-y-2">
-                    <Label>Time</Label>
+                    <Label htmlFor="endsAt">End Time</Label>
                     <Input
-                        type="time"
-                        {...register("time", { required: true })}
+                        id="endsAt"
+                        type="datetime-local"
+                        {...register("endsAt", { required: true })}
                     />
                 </div>
             </div>
 
             <div className="space-y-2">
-                <Label>Customer Name</Label>
-                <Input
-                    placeholder="e.g. John Doe"
-                    {...register("customerName", { required: "Customer name is required" })}
-                />
-                {errors.customerName && <p className="text-red-500 text-xs">{errors.customerName.message as string}</p>}
-            </div>
-
-            <div className="space-y-2">
-                <Label>Notes</Label>
+                <Label htmlFor="notes">Notes</Label>
                 <Textarea
-                    placeholder="Additional details..."
+                    id="notes"
+                    placeholder="Any special requests or details..."
                     {...register("notes")}
                 />
             </div>
 
-            <div className="pt-2">
-                <Button type="submit" className="w-full" disabled={isSubmitting}>
-                    {isSubmitting ? "Booking..." : "Create Appointment"}
+            <div className="flex justify-end gap-2 pt-2">
+                <Button type="button" variant="outline" onClick={onSuccess}>Cancel</Button>
+                <Button type="submit" className="w-full" isLoading={isLoading}>
+                    {initialData ? "Update Booking" : "Create Booking"}
                 </Button>
             </div>
         </form>

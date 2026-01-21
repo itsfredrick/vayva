@@ -1,4 +1,5 @@
-import { TEMPLATE_REGISTRY, OnboardingProfile } from "./templates-registry";
+import { TEMPLATE_REGISTRY } from "./templates-registry";
+import { OnboardingProfile } from "@/lib/templates/types";
 
 export const TEMPLATE_CONFIGS: Record<string, OnboardingProfile> =
   Object.values(TEMPLATE_REGISTRY).reduce(

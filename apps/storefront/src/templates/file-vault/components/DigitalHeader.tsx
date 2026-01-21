@@ -2,6 +2,7 @@ import React from "react";
 import { Download, Search, ShoppingCart, User } from "lucide-react";
 import Link from "next/link";
 import { useStore } from "@/context/StoreContext";
+import { Button } from "@vayva/ui";
 
 interface DigitalHeaderProps {
   storeName?: string;
@@ -41,9 +42,9 @@ export const DigitalHeader = ({
 
         {/* Right */}
         <div className="flex items-center gap-4">
-          <button className="p-2 hover:bg-gray-800 rounded-full text-gray-400 hover:text-white transition-colors">
+          <Button variant="ghost" size="icon" className="p-2 hover:bg-gray-800 rounded-full text-gray-400 hover:text-white transition-colors h-auto" aria-label="Search">
             <Search size={20} />
-          </button>
+          </Button>
           <Link
             href="/cart"
             className="p-2 hover:bg-gray-800 rounded-full text-gray-400 hover:text-white transition-colors relative"
@@ -53,10 +54,10 @@ export const DigitalHeader = ({
               <span className="absolute top-1 right-1 h-2 w-2 bg-indigo-500 rounded-full"></span>
             )}
           </Link>
-          <button className="hidden sm:flex items-center gap-2 bg-gray-800 hover:bg-gray-700 px-4 py-2 rounded-lg text-sm font-medium transition-colors ml-2">
+          <Button variant="ghost" className="hidden sm:flex items-center gap-2 bg-gray-800 hover:bg-gray-700 px-4 py-2 rounded-lg text-sm font-medium transition-colors ml-2 h-auto" aria-label="Sign in">
             <User size={16} />
             <span>Sign In</span>
-          </button>
+          </Button>
         </div>
       </div>
     </header>

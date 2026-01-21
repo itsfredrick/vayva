@@ -1,40 +1,63 @@
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
+import { prisma } from "@/lib/prisma";
+import { withVayvaAPI, HandlerContext } from "@/lib/api-handler";
+import { PERMISSIONS } from "@/lib/team/permissions";
 
-export async function GET(request: Request) {
-  const { searchParams } = new URL(request.url);
-  const id = searchParams.get("id");
+export const GET = withVayvaAPI(
+  PERMISSIONS.COMMERCE_VIEW,
+  async (request: NextRequest, { storeId }: HandlerContext) => {
+    const { searchParams } = new URL(request.url);
+    const id = searchParams.get("id");
 
-  await new Promise((resolve) => setTimeout(resolve, 300));
+    if (!id) return NextResponse.json({ error: "Missing ID" }, { status: 400 });
 
-  // Test History Data
-  const history = [
-    {
-      id: "act_1",
-      type: "order",
-      amount: 15000,
-      status: "completed",
-      date: new Date().toISOString(),
-    },
-    {
-      id: "act_2",
-      type: "order",
-      amount: 8500,
-      status: "completed",
-      date: new Date(Date.now() - 86400000 * 5).toISOString(),
-    },
-    {
-      id: "act_3",
-      type: "inquiry",
-      status: "resolved",
-      date: new Date(Date.now() - 86400000 * 10).toISOString(),
-    },
-  ];
+    try {
+      const customer = await prisma.customer.findUnique({
+        where: { id, storeId },
+        include: {
+          orders: {
+            take: 5,
+            orderBy: { createdAt: "desc" },
+            select: {
+              id: true,
+              orderNumber: true,
+              total: true,
+              status: true,
+              createdAt: true
+            }
+          }
+        }
+      });
 
-  if (!id) return NextResponse.json({ error: "Missing ID" }, { status: 400 });
+      if (!customer) {
+        return NextResponse.json({ error: "Customer not found" }, { status: 404 });
+      }
 
-  return NextResponse.json({
-    id,
-    history,
-    notes: "Customer prefers delivery to office address on weekdays.",
-  });
-}
+      const history = customer.orders.map((o: any) => ({
+        id: o.id,
+        type: "order",
+        amount: Number(o.total),
+        status: o.status,
+        date: o.createdAt.toISOString(),
+        ref: o.orderNumber
+      }));
+
+      return NextResponse.json({
+        id: customer.id,
+        name: `${customer.firstName || ""} ${customer.lastName || ""}`.trim(),
+        email: customer.email,
+        phone: customer.phone,
+        history,
+        notes: (customer as any).notes || "No notes.",
+        stats: {
+          totalSpend: 0,
+          lastOrderDate: null
+        }
+      });
+
+    } catch (error) {
+      console.error("Customer Details Error:", error);
+      return NextResponse.json({ error: "Failed to fetch customer details" }, { status: 500 });
+    }
+  }
+);

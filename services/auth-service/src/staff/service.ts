@@ -33,7 +33,7 @@ export const TeamService = {
     const members = await prisma.membership.findMany({
       where: { storeId },
       include: {
-        User: {
+        user: {
           select: {
             id: true,
             email: true,
@@ -42,7 +42,7 @@ export const TeamService = {
             phone: true,
           },
         },
-        Role: true,
+        role: true,
       },
     });
 

@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import { Drawer, Button, Icon } from "@vayva/ui";
+import { Button, Drawer, Icon } from "@vayva/ui";
 // import { SelfResolutionFlow } from './SelfResolutionFlow';
 // import { TicketList } from './TicketList';
 // import { TicketForm } from './TicketForm';
@@ -159,11 +159,11 @@ const CategoryButton = ({
   label: string;
   onClick: () => void;
 }) => (
-  <button
+  <Button
     onClick={onClick}
     className="flex flex-col items-center justify-center p-4 bg-white border border-gray-200 rounded-lg hover:border-gray-900 transition-colors"
-  >
+   variant="outline">
     <Icon name={icon} size={24} className="mb-2 text-gray-700" />
     <span className="text-xs font-medium text-gray-900">{label}</span>
-  </button>
+  </Button>
 );

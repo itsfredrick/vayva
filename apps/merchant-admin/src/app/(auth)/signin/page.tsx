@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 import { useAuth } from "@/context/AuthContext";
 import { AuthService } from "@/services/auth";
 import { SplitAuthLayout } from "@/components/auth/SplitAuthLayout";
+import { Button, Input, Label } from "@vayva/ui";
 
 export default function SigninPage() {
   const { login } = useAuth();
@@ -26,7 +27,6 @@ export default function SigninPage() {
     try {
       const data = await AuthService.login({ email, password, rememberMe });
       login(data.token, data.user);
-      // AuthContext handles redirect
     } catch (err: any) {
       console.error(err);
       setError(err.response?.data?.error || "Incorrect email or password");
@@ -35,20 +35,12 @@ export default function SigninPage() {
     }
   };
 
-  const handleGoogleSignIn = () => {
-    setShowGoogleModal(true);
-  };
-
   return (
     <SplitAuthLayout
       title="Welcome back"
       subtitle="Sign in to manage your business operations"
       showSignUpLink
     >
-      {/* Google Sign In */}
-      {/* Google Sign In removed as per user request */}
-
-      {/* Form */}
       <form onSubmit={handleSubmit} className="space-y-5">
         {error && (
           <div className="p-3 text-sm text-red-700 bg-red-50 border border-red-200 rounded-lg">
@@ -57,93 +49,60 @@ export default function SigninPage() {
         )}
 
         {/* Email */}
-        <div>
-          <label
-            htmlFor="email"
-            className="block text-sm font-medium text-gray-900 mb-2"
-          >
-            Email address
-          </label>
-          <input
+        <div className="space-y-2">
+          <Label htmlFor="email">Email address</Label>
+          <Input
             id="email"
             type="email"
             placeholder="you@business.com"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             required
-            className="w-full h-12 px-4 border border-gray-300 rounded-lg text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#22C55E] focus:border-transparent"
             data-testid="auth-signin-email"
           />
         </div>
 
         {/* Password */}
-        <div>
-          <label
-            htmlFor="password"
-            className="block text-sm font-medium text-gray-900 mb-2"
-          >
-            Password
-          </label>
+        <div className="space-y-2">
+          <Label htmlFor="password">Password</Label>
           <div className="relative">
-            <input
+            <Input
               id="password"
               type={showPassword ? "text" : "password"}
               placeholder="••••••••"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               required
-              className="w-full h-12 px-4 pr-12 border border-gray-300 rounded-lg text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#22C55E] focus:border-transparent"
               data-testid="auth-signin-password"
             />
-            <button
+            <Button
               type="button"
+              variant="ghost"
+              size="icon"
               onClick={() => setShowPassword(!showPassword)}
-              className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-colors"
+              className="absolute right-2 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 h-8 w-8"
+              aria-label={showPassword ? "Hide password" : "Show password"}
             >
               {showPassword ? (
-                <svg
-                  className="w-5 h-5"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l3.59 3.59m0 0A9.953 9.953 0 0112 5c4.478 0 8.268 2.943 9.543 7a10.025 10.025 0 01-4.132 5.411m0 0L21 21"
-                  />
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l3.59 3.59m0 0A9.953 9.953 0 0112 5c4.478 0 8.268 2.943 9.543 7a10.025 10.025 0 01-4.132 5.411m0 0L21 21" />
                 </svg>
               ) : (
-                <svg
-                  className="w-5 h-5"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
-                  />
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"
-                  />
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
                 </svg>
               )}
-            </button>
+            </Button>
           </div>
           <div className="flex items-center justify-between mt-3">
-            <label className="flex items-center gap-2 cursor-pointer group">
+            <label htmlFor="remember-me" className="flex items-center gap-2 cursor-pointer group">
               <input
+                id="remember-me"
                 type="checkbox"
                 checked={rememberMe}
                 onChange={(e) => setRememberMe(e.target.checked)}
-                className="w-4 h-4 rounded border-gray-300 text-[#22C55E] focus:ring-[#22C55E] transition-all cursor-pointer"
+                className="w-4 h-4 rounded border-gray-300 text-primary focus:ring-primary transition-all cursor-pointer"
               />
               <span className="text-sm text-gray-600 group-hover:text-gray-900 transition-colors">
                 Remember me
@@ -158,18 +117,16 @@ export default function SigninPage() {
           </div>
         </div>
 
-        {/* Submit Button */}
-        <button
+        <Button
           type="submit"
-          disabled={loading}
-          className="w-full h-12 bg-[#22C55E] hover:bg-[#16A34A] text-white font-semibold rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+          isLoading={loading}
+          className="w-full h-12"
           data-testid="auth-signin-submit"
         >
-          {loading ? "Signing in..." : "Sign in"}
-        </button>
+          Sign in
+        </Button>
       </form>
 
-      {/* Sign Up Link */}
       <div className="mt-6 text-center text-sm text-gray-600">
         New here?{" "}
         <Link
@@ -190,40 +147,24 @@ export default function SigninPage() {
         </div>
       </div>
 
-      {/* Google OAuth Placeholder Modal */}
       {showGoogleModal && (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
           <div className="bg-white rounded-lg p-6 max-w-sm w-full shadow-xl">
             <div className="text-center mb-4">
               <div className="w-12 h-12 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-3">
-                <svg
-                  className="w-6 h-6 text-gray-600"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-                  />
+                <svg className="w-6 h-6 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                 </svg>
               </div>
-              <h3 className="text-lg font-semibold text-gray-900 mb-2">
-                Google Sign-In Not Configured
-              </h3>
-              <p className="text-sm text-gray-600">
-                Google OAuth is not yet configured for this environment. Please
-                sign in with your email and password.
-              </p>
+              <h3 className="text-lg font-semibold text-gray-900 mb-2">Google Sign-In Not Configured</h3>
+              <p className="text-sm text-gray-600">Please sign in with your email and password.</p>
             </div>
-            <button
-              className="w-full h-10 bg-gray-900 hover:bg-black text-white font-medium rounded-lg transition-colors"
+            <Button
+              className="w-full h-10"
               onClick={() => setShowGoogleModal(false)}
             >
               Got it
-            </button>
+            </Button>
           </div>
         </div>
       )}

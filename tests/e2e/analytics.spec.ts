@@ -16,7 +16,7 @@ test.describe("Analytics System", () => {
       path: "/home",
     });
 
-    const evt = await prisma.analytics_event.findFirst({
+    const evt = await prisma.analyticsEvent.findFirst({
       where: { merchantId, eventName: "page_view" },
       orderBy: { createdAt: "desc" },
     });

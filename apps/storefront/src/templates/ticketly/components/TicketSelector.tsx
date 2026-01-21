@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { Button } from "@vayva/ui";
 import { Minus, Plus, Ticket } from "lucide-react";
 import { PublicProduct } from "@/types/storefront";
 
@@ -55,22 +56,22 @@ export const TicketSelector = ({ event, onSelect }: TicketSelectorProps) => {
               </div>
 
               <div className="flex items-center gap-4 bg-gray-50 p-2 rounded-lg">
-                <button
+                <Button
                   onClick={() => handleQtyChange(type.id, -1)}
                   className="w-8 h-8 flex items-center justify-center bg-white rounded shadow-sm hover:bg-gray-100 disabled:opacity-50"
                   disabled={!quantities[type.id]}
                 >
                   <Minus size={16} />
-                </button>
+                </Button>
                 <span className="font-bold w-6 text-center">
                   {quantities[type.id] || 0}
                 </span>
-                <button
+                <Button
                   onClick={() => handleQtyChange(type.id, 1)}
                   className="w-8 h-8 flex items-center justify-center bg-white rounded shadow-sm hover:bg-gray-100"
                 >
                   <Plus size={16} />
-                </button>
+                </Button>
               </div>
             </div>
           ))}
@@ -85,12 +86,12 @@ export const TicketSelector = ({ event, onSelect }: TicketSelectorProps) => {
                   ₦{totalPrice.toLocaleString()}
                 </div>
               </div>
-              <button
+              <Button
                 onClick={() => onSelect("mixed", totalTickets, totalPrice)} // Simplified ID for test
                 className="flex-1 md:flex-none md:w-64 bg-purple-600 hover:bg-purple-700 text-white font-bold py-4 rounded-xl shadow-lg shadow-purple-200 transition-colors"
               >
                 Checkout (₦{totalPrice.toLocaleString()})
-              </button>
+              </Button>
             </div>
           </div>
         )}

@@ -1,7 +1,8 @@
 import { NextResponse } from "next/server";
-import { prisma } from "@vayva/db";
+import { prisma } from "@/lib/prisma";
 import { PaystackService } from "@/services/PaystackService";
 
+// Public: Customer checkout flow
 export async function POST(request: Request) {
   try {
     const { orderId, callbackUrl } = await request.json();
@@ -15,7 +16,7 @@ export async function POST(request: Request) {
 
     const order = await prisma.order.findUnique({
       where: { id: orderId },
-      include: { Customer: true },
+      include: { customer: true },
     });
 
     if (!order) {
@@ -37,7 +38,7 @@ export async function POST(request: Request) {
     // Schema says `total` is Decimal.
     const amountKobo = Math.round(Number(order.total) * 100);
     const email =
-      order.Customer?.email || order.customerEmail || "guest@vayva.ng";
+      order.customer?.email || order.customerEmail || "guest@vayva.ng";
 
     const origin = request.headers.get("origin") || process.env.VAYVA_CANONICAL_ORIGIN || "https://vayva.ng";
     const initResponse = await PaystackService.initializeTransaction(

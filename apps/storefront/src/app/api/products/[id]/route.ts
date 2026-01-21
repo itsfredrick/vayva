@@ -11,8 +11,8 @@ export async function GET(
     const product = await prisma.product.findUnique({
       where: { id: id },
       include: {
-        ProductImage: true,
-        InventoryItem: {
+        productImages: true,
+        inventoryItems: {
           select: { available: true }
         }
       },
@@ -23,17 +23,17 @@ export async function GET(
     }
 
     // Calculate total stock from all inventory locations
-    const stockLevel = product.InventoryItem.reduce((sum: number, item: any) => sum + item.available, 0);
+    const stockLevel = product.inventoryItems.reduce((sum: number, item: any) => sum + item.available, 0);
 
     const publicProduct = {
       id: product.id,
-      title: product.title,
+      name: product.title,
       description: product.description,
       price: Number(product.price),
       compareAtPrice: product.compareAtPrice
         ? Number(product.compareAtPrice)
         : null,
-      images: product.ProductImage.sort(
+      images: product.productImages.sort(
         (a: any, b: any) => a.position - b.position,
       ).map((img: any) => img.url),
       handle: product.handle,

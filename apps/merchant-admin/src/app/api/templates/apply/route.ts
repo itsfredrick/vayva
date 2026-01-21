@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
-import { prisma } from "@vayva/db";
+import { prisma } from "@/lib/prisma";
 import { TEMPLATE_REGISTRY } from "@/lib/templates-registry";
 import { checkRateLimit } from "@/lib/rate-limit";
 import { FlagService } from "@/lib/flags/flagService";

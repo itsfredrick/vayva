@@ -11,6 +11,7 @@ import {
     XCircle,
     AlertTriangle
 } from "lucide-react";
+import { Button } from "@vayva/ui";
 
 interface HealthStatus {
     status: "ok" | "degraded" | "down";
@@ -68,12 +69,15 @@ export default function SystemHealthPage() {
                     </h1>
                     <p className="text-gray-500 mt-1">Real-time infrastructure status</p>
                 </div>
-                <button
+                <Button
+                    variant="outline"
+                    size="icon"
                     onClick={fetchHealth}
-                    className="p-2 bg-white border border-gray-200 rounded-lg text-gray-600 hover:bg-gray-50"
+                    className="p-2 bg-white border border-gray-200 rounded-lg text-gray-600 hover:bg-gray-50 h-10 w-10 flex items-center justify-center"
+                    aria-label="Refresh system health status"
                 >
                     <RefreshCw className={loading ? "animate-spin" : ""} size={20} />
-                </button>
+                </Button>
             </div>
 
             {data && (

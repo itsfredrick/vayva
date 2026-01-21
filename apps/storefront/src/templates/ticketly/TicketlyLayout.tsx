@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { Button } from "@vayva/ui";
 import { PublicStore, PublicProduct } from "@/types/storefront";
 import { EventHeader } from "./components/EventHeader";
 import { EventHero } from "./components/EventHero";
@@ -81,9 +82,9 @@ export const TicketlyLayout = ({ store, products }: TicketlyLayoutProps) => {
                     <p className="text-sm text-gray-500 mb-4">
                       {evt.eventDetails?.venue}
                     </p>
-                    <button className="text-sm font-bold border border-gray-200 px-4 py-2 rounded-lg hover:border-purple-600 hover:text-purple-600 transition-colors">
+                    <Button className="text-sm font-bold border border-gray-200 px-4 py-2 rounded-lg hover:border-purple-600 hover:text-purple-600 transition-colors">
                       See Details
-                    </button>
+                    </Button>
                   </div>
                 </div>
               ))}

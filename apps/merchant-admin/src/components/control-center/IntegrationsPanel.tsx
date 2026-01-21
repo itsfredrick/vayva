@@ -1,6 +1,6 @@
 import React from "react";
 import { Integration } from "@vayva/shared";
-import { Icon, cn } from "@vayva/ui";
+import { Icon, cn, Button } from "@vayva/ui";
 
 interface IntegrationsPanelProps {
   integrations: Integration[];
@@ -70,9 +70,9 @@ export const IntegrationsPanel = ({
                 {integration.category}
               </span>
               {isConnected && (
-                <button className="text-xs font-bold text-gray-900 flex items-center gap-1 hover:underline">
+                <Button className="text-xs font-bold text-gray-900 flex items-center gap-1 hover:underline" variant="link">
                   <Icon name="Settings" size={12} /> Configure
-                </button>
+                </Button>
               )}
             </div>
           </div>

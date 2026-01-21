@@ -1,4 +1,5 @@
 import React, { useEffect } from "react";
+import { Button } from "@vayva/ui";
 import { Check, Calendar, ArrowRight } from "lucide-react";
 
 interface BookingConfirmationProps {
@@ -42,12 +43,12 @@ export const BookingConfirmation = ({
           </div>
         </div>
 
-        <button
+        <Button
           onClick={onClose}
           className="w-full bg-blue-600 text-white font-bold py-3.5 rounded-xl hover:bg-blue-700 transition-colors flex items-center justify-center gap-2"
         >
           Done <ArrowRight size={18} />
-        </button>
+        </Button>
       </div>
     </div>
   );

@@ -98,16 +98,18 @@ const ResetPasswordContent = () => {
               onChange={(e) => setPassword(e.target.value)}
               required
             />
-            <button
+            <Button
               type="button"
+              variant="ghost"
+              size="icon"
               onClick={() => setShowPassword(!showPassword)}
-              className="absolute right-3 top-[38px] text-gray-400 hover:text-black transition-colors"
+              className="absolute right-3 top-[38px] text-gray-400 hover:text-black h-8 w-8"
             >
               <Icon
                 name={(showPassword ? "EyeOff" : "Eye") as any}
                 className="w-5 h-5"
               />
-            </button>
+            </Button>
           </div>
           <PasswordStrengthIndicator password={password} />
         </div>
@@ -121,16 +123,18 @@ const ResetPasswordContent = () => {
             onChange={(e) => setConfirmPassword(e.target.value)}
             required
           />
-          <button
+          <Button
             type="button"
+            variant="ghost"
+            size="icon"
             onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-            className="absolute right-3 top-[38px] text-gray-400 hover:text-black transition-colors"
+            className="absolute right-3 top-[38px] text-gray-400 hover:text-black h-8 w-8"
           >
             <Icon
               name={(showConfirmPassword ? "EyeOff" : "Eye") as any}
               className="w-5 h-5"
             />
-          </button>
+          </Button>
           {confirmPassword.length > 0 && password !== confirmPassword && (
             <p className="text-xs text-red-600 mt-1">Passwords do not match</p>
           )}

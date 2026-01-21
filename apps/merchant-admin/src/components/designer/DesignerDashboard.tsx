@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import { Icon, cn } from "@vayva/ui";
+import { Icon, cn, Button } from "@vayva/ui";
 import { DesignerTemplate } from "@/types/designer";
 import { useRouter } from "next/navigation";
 
@@ -51,12 +51,12 @@ export const DesignerDashboard = () => {
             Manage your template submissions and earnings.
           </p>
         </div>
-        <button
+        <Button
           onClick={() => router.push("/designer/submit")}
-          className="bg-black text-white px-6 py-3 rounded-xl font-bold hover:bg-gray-800 transition-colors shadow-lg flex items-center gap-2"
+          className="bg-black text-white px-6 py-3 rounded-xl font-bold hover:bg-gray-800 transition-colors shadow-lg flex items-center gap-2 h-auto"
         >
           <Icon name="Plus" size={20} /> Submit New Template
-        </button>
+        </Button>
       </header>
 
       {/* Stats Overview */}
@@ -103,9 +103,12 @@ export const DesignerDashboard = () => {
           <p className="text-gray-500 text-sm mb-4">
             Start by submitting your first masterpiece.
           </p>
-          <button className="bg-white border border-gray-200 text-black px-4 py-2 rounded-lg font-bold text-sm">
+          <Button
+            variant="outline"
+            className="bg-white border border-gray-200 text-black px-4 py-2 rounded-lg font-bold text-sm h-auto"
+          >
             Read Guidelines
-          </button>
+          </Button>
         </div>
       ) : (
         <div className="space-y-4">
@@ -169,9 +172,13 @@ export const DesignerDashboard = () => {
                     ₦{tpl.revenue.toLocaleString()} Rev
                   </div>
                 </div>
-                <button className="p-2 hover:bg-gray-100 rounded-lg text-gray-400 hover:text-black transition-colors">
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className="p-2 hover:bg-gray-100 rounded-lg text-gray-400 hover:text-black transition-colors h-auto w-auto"
+                >
                   <Icon name="EllipsisVertical" size={20} />
-                </button>
+                </Button>
               </div>
             </div>
           ))}

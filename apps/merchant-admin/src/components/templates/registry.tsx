@@ -23,6 +23,8 @@ import { PharmacyHealthTemplate } from "./services/PharmacyHealth";
 import { RealEstateTemplate } from "./services/RealEstate";
 import { TrainingSchoolTemplate } from "./services/TrainingSchool";
 import { CommunityCoopTemplate } from "./services/CommunityCoop";
+import { HotelBookingTemplate } from "./hospitality/HotelBooking";
+import { ElectronicsMarketTemplate } from "./retail/ElectronicsMarket";
 
 export interface TemplateProps {
   businessName: string;
@@ -53,6 +55,8 @@ export const TEMPLATE_REGISTRY: Record<
   "real-estate": RealEstateTemplate,
   "training-school": TrainingSchoolTemplate,
   "community-coop": CommunityCoopTemplate,
+  "hotel-booking": HotelBookingTemplate,
+  "electronics-market": ElectronicsMarketTemplate,
 };
 
 export const getTemplateComponent = (templateId: string) => {

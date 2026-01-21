@@ -18,6 +18,7 @@ import {
   ArrowRight,
 } from "lucide-react";
 import { StorefrontService } from "@/services/storefront.service";
+import { Button } from "@vayva/ui";
 
 export default function MenuPage({ params }: any) {
   const { lang: rawLang } = useParams() as { lang: string };
@@ -185,7 +186,7 @@ export default function MenuPage({ params }: any) {
                   isLocked={isLocked}
                   lang={lang}
                   onToggle={handleToggleMeal}
-                  onViewDetails={() => {}}
+                  onViewDetails={() => { }}
                 />
               ))}
             </div>
@@ -226,18 +227,17 @@ export default function MenuPage({ params }: any) {
             </div>
             <div className="text-xs text-gray-500 font-medium">Tot: ₺1200</div>
           </div>
-          <button
+          <Button
             onClick={handleSave}
             disabled={isLocked || selectedMealIds.length !== mealsPerWeek}
-            className={`px-8 py-3 rounded-xl text-sm font-bold transition-all shadow-lg active:scale-95 ${
-              selectedMealIds.length === mealsPerWeek
-                ? "bg-black text-white hover:bg-gray-900 shadow-black/20"
-                : "bg-gray-200 text-gray-400 cursor-not-allowed"
-            }`}
+            className={`px-8 py-3 rounded-xl text-sm font-bold transition-all shadow-lg active:scale-95 h-auto ${selectedMealIds.length === mealsPerWeek
+              ? "bg-black text-white hover:bg-gray-900 shadow-black/20"
+              : "bg-gray-200 text-gray-400 cursor-not-allowed"
+              }`}
             aria-label="Save selection"
           >
             {isLocked ? "Locked" : t.saveSelection}
-          </button>
+          </Button>
         </div>
       </div>
     </div>

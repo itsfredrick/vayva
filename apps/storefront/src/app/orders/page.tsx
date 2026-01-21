@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
+import { Button } from "@vayva/ui";
 import { StoreShell } from "@/components/StoreShell";
 import { useStore } from "@/context/StoreContext";
 import { StorefrontService } from "@/services/storefront.service";
@@ -73,13 +74,13 @@ export default function OrderStatusPage() {
                 required
               />
             </div>
-            <button
+            <Button
               type="submit"
               disabled={loading}
               className="w-full bg-black text-white py-4 rounded-lg font-bold hover:bg-gray-900 transition-colors disabled:opacity-50"
             >
               {loading ? "Searching..." : "Track Order"}
-            </button>
+            </Button>
           </div>
           {error && (
             <p className="text-red-500 text-sm mt-4 text-center">{error}</p>

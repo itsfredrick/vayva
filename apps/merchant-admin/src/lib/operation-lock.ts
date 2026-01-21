@@ -46,9 +46,12 @@ export async function acquireWithdrawalLock(
 
     if (withdrawal?.lockedAt && withdrawal.lockedAt > lockTimeout) {
       await logAuditEvent(storeId, userId, AuditEventType.OPERATION_LOCKED, {
-        withdrawalId,
-        lockedBy: withdrawal.lockedBy,
-        referenceCode: withdrawal.referenceCode,
+        targetType: "WITHDRAWAL",
+        targetId: withdrawalId,
+        meta: {
+          lockedBy: withdrawal.lockedBy,
+          referenceCode: withdrawal.referenceCode,
+        }
       });
       throw new LockError(
         "Withdrawal is currently being processed by another admin",
@@ -60,8 +63,9 @@ export async function acquireWithdrawalLock(
 
   // Log successful lock
   await logAuditEvent(storeId, userId, AuditEventType.OPERATION_LOCKED, {
-    withdrawalId,
-    action: "acquired",
+    targetType: "WITHDRAWAL",
+    targetId: withdrawalId,
+    meta: { action: "acquired" }
   });
 }
 
@@ -101,7 +105,7 @@ export async function cleanupStaleLocks(): Promise<number> {
   });
 
   if (result.count > 0) {
-    console.log(`Cleaned up ${result.count} stale withdrawal locks`);
+
   }
 
   return result.count;

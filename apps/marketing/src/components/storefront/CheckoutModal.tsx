@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { CartItem } from "@/hooks/storefront/useStorefrontCart";
-import { Modal } from "@vayva/ui";
+import { Modal, Button } from "@vayva/ui";
 import { Loader2 } from "lucide-react";
 import { toast } from "sonner";
 
@@ -163,14 +163,15 @@ export function CheckoutModal({
             <span className="text-gray-500">Subtotal</span>
             <span>₦{total.toLocaleString()}</span>
           </div>
-          <button
+          <Button
             type="submit"
             disabled={isLoading}
-            className="w-full bg-black text-white py-3 rounded-lg font-bold hover:bg-gray-800 disabled:opacity-50 flex items-center justify-center gap-2"
+            className="w-full bg-black text-white py-3 rounded-lg font-bold hover:bg-gray-800 disabled:opacity-50 flex items-center justify-center gap-2 h-auto"
+            aria-label={`Pay ₦${total.toLocaleString()}`}
           >
             {isLoading ? <Loader2 className="animate-spin w-4 h-4" /> : null}
             Pay ₦{total.toLocaleString()}
-          </button>
+          </Button>
         </div>
       </form >
     </Modal >

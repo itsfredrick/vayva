@@ -1,7 +1,19 @@
 import React from "react";
 import { View, Text, ScrollView } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { Bell, CreditCard, Truck } from "lucide-react-native";
+import { Bell, CreditCard, Truck, LucideIcon } from "lucide-react-native";
+
+const Icon = ({
+  name: Component,
+  size,
+  color,
+}: {
+  name: LucideIcon;
+  size: number;
+  color: string;
+}) => {
+  return <Component size={size} color={color} />;
+};
 
 const NOTIFICATIONS = [
   {
@@ -41,14 +53,11 @@ export default function NotificationsScreen() {
           >
             <View className="w-10 h-10 rounded-full bg-white/5 items-center justify-center border border-white/10">
               {n.type === "payment" ? (
-                // @ts-ignore
-                <CreditCard size={18} color="#46EC13" />
+                <Icon name={CreditCard} size={18} color="#46EC13" />
               ) : n.type === "delivery" ? (
-                // @ts-ignore
-                <Truck size={18} color="#3b82f6" />
+                <Icon name={Truck} size={18} color="#3b82f6" />
               ) : (
-                // @ts-ignore
-                <Bell size={18} color="#f59e0b" />
+                <Icon name={Bell} size={18} color="#f59e0b" />
               )}
             </View>
             <View className="flex-1">

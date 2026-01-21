@@ -1,5 +1,6 @@
 import React from "react";
 import type { DemoStore } from "@/lib/preview/demo-data";
+import { Button } from "@vayva/ui";
 
 export function DemoHome({ demo }: { demo: DemoStore }) {
   const featured = demo.products.slice(0, 6);
@@ -31,12 +32,12 @@ export function DemoHome({ demo }: { demo: DemoStore }) {
               <div className="mt-1 text-xs text-gray-500">
                 ₦{p.price.toLocaleString()}
               </div>
-              <button
+              <Button
                 type="button"
-                className="mt-3 w-full rounded-lg bg-black px-3 py-2 text-sm text-white hover:opacity-90"
+                className="mt-3 w-full rounded-lg bg-black px-3 py-2 text-sm text-white hover:opacity-90 h-auto"
               >
                 Add to cart (preview)
-              </button>
+              </Button>
             </div>
           ))}
         </div>

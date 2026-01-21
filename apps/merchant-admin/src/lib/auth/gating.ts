@@ -27,7 +27,7 @@ export async function checkFeatureAccess(
     where: { id: storeId },
     include: {
       wallet: true,
-      merchantSubscription: true,
+      aiSubscription: true,
     },
   });
 
@@ -107,8 +107,9 @@ export async function checkFeatureAccess(
     "referral_rewards",
   ];
   if (subscriptionRequiredFeatures.includes(feature)) {
-    const subStatus = store.merchantSubscription?.status;
-    if (subStatus !== "active" && subStatus !== "trialing") {
+    const subStatus = store.aiSubscription?.status;
+    const isActive = subStatus && ["TRIAL_ACTIVE", "TRIAL_EXPIRED_GRACE", "UPGRADED_ACTIVE"].includes(subStatus);
+    if (!isActive) {
       return {
         allowed: false,
         reason: "Active subscription required",

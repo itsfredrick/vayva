@@ -15,32 +15,18 @@ export async function GET(req: NextRequest) {
         }
 
         const { searchParams } = new URL(req.url);
-        const userId = searchParams.get("id");
+        const search = searchParams.get("q") || "";
 
-        if (userId) {
-            const user = await prisma.opsUser.findUnique({
-                where: { id: userId },
-                select: {
-                    id: true,
-                    name: true,
-                    email: true,
-                    role: true,
-                    isActive: true,
-                    lastLoginAt: true,
-                    createdAt: true,
-                }
-            });
-            if (!user) return NextResponse.json({ error: "User not found" }, { status: 404 });
-            // Return array format for consistency or object? Let's check consistency. 
-            // Existing returns array. If fetching one, maybe return object? 
-            // The client usually expects array for list. 
-            // Let's keep it specific: if ?id passed, return single object or wrap in array?
-            // Best practice: if ?id, return object. If list, return array.
-            // But simpler: just return object if ID present.
-            return NextResponse.json(user);
+        const where: any = {};
+        if (search) {
+            where.OR = [
+                { name: { contains: search, mode: "insensitive" } },
+                { email: { contains: search, mode: "insensitive" } },
+            ];
         }
 
         const users = await prisma.opsUser.findMany({
+            where,
             select: {
                 id: true,
                 name: true,
@@ -142,5 +128,59 @@ export async function DELETE(req: NextRequest) {
 
     } catch (error: any) {
         return NextResponse.json({ error: "Failed to delete user" }, { status: 500 });
+    }
+}
+export async function PATCH(req: NextRequest) {
+    try {
+        const { user: currentUser } = await OpsAuthService.requireSession();
+        if (currentUser.role !== "OPS_OWNER") {
+            return NextResponse.json({ error: "Unauthorized" }, { status: 403 });
+        }
+
+        const body = await req.json();
+        const { userId, action } = body;
+
+        if (!userId || !action) {
+            return NextResponse.json({ error: "Missing required fields" }, { status: 400 });
+        }
+
+        if (userId === currentUser.id) {
+            return NextResponse.json({ error: "Cannot modify yourself" }, { status: 400 });
+        }
+
+        const user = await prisma.opsUser.findUnique({ where: { id: userId } });
+        if (!user) return NextResponse.json({ error: "User not found" }, { status: 404 });
+
+        let logAction = "";
+        let updateData: any = {};
+
+        switch (action) {
+            case "TOGGLE_STATUS":
+                updateData = { isActive: !user.isActive };
+                logAction = user.isActive ? "OPS_USER_DEACTIVATED" : "OPS_USER_ACTIVATED";
+                break;
+                // Reset 2FA by clearing the secret
+                updateData = { twoFactorSecret: null };
+                logAction = "OPS_USER_2FA_RESET";
+                break;
+            default:
+                return NextResponse.json({ error: "Invalid action" }, { status: 400 });
+        }
+
+        const updated = await prisma.opsUser.update({
+            where: { id: userId },
+            data: updateData
+        });
+
+        await OpsAuthService.logEvent(currentUser.id, logAction, {
+            targetUserId: userId,
+            targetUserEmail: user.email
+        });
+
+        return NextResponse.json({ success: true, user: updated });
+
+    } catch (error: any) {
+        console.error("Update User Error:", error);
+        return NextResponse.json({ error: "Failed to update user" }, { status: 500 });
     }
 }

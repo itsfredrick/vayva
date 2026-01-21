@@ -29,7 +29,7 @@ export interface CustomerOrderSummary {
 export const CustomersService = {
   // 1. Get Customers List
   getCustomers: async (search?: string): Promise<Customer[]> => {
-    await new Promise((resolve) => setTimeout(resolve, 800));
+
     return [
       {
         id: "cust_1",
@@ -65,7 +65,7 @@ export const CustomersService = {
 
   // 2. Get Single Customer
   getCustomer: async (id: string): Promise<Customer | null> => {
-    await new Promise((resolve) => setTimeout(resolve, 600));
+
     return {
       id: id,
       name: "Chioma Adebayo",
@@ -81,7 +81,7 @@ export const CustomersService = {
 
   // 3. Get Customer Orders
   getCustomerOrders: async (id: string): Promise<CustomerOrderSummary[]> => {
-    await new Promise((resolve) => setTimeout(resolve, 800));
+
     return [
       {
         id: "ord_1",
@@ -112,7 +112,7 @@ export const CustomersService = {
 
   // 4. Get Customer Notes
   getNotes: async (id: string): Promise<CustomerNote[]> => {
-    await new Promise((resolve) => setTimeout(resolve, 600));
+
     return [
       {
         id: "note_1",
@@ -131,7 +131,7 @@ export const CustomersService = {
 
   // 5. Add Note
   addNote: async (id: string, content: string): Promise<CustomerNote> => {
-    await new Promise((resolve) => setTimeout(resolve, 1000));
+
     return {
       id: "note_" + Math.random().toString(36).substr(2, 9),
       content,

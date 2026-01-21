@@ -2,7 +2,7 @@
 
 import React from "react";
 import Link from "next/link";
-import Image from "next/image";
+import { motion } from "framer-motion";
 import { Button, Icon } from "@vayva/ui";
 import { PLANS, formatNGN, FEES } from "@/config/pricing";
 import { APP_URL } from "@/lib/constants";
@@ -15,42 +15,68 @@ export default function PricingPage() {
   const { tier, isAuthenticated, loading } = useUserPlan();
 
   return (
-    <div className="min-h-screen bg-white">
-      {/* Header */}
-      <section className="pt-12 pb-20 px-4">
-        <div className="max-w-4xl mx-auto text-center">
-          <p className="text-xl text-[#64748B] max-w-2xl mx-auto mb-8">
-            Choose a plan that matches your business volume. Every plan includes
-            our core WhatsApp capture engine.
-          </p>
+    <div className="min-h-screen bg-white relative overflow-hidden">
+      {/* Background Orbs */}
+      <div className="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none z-0">
+        <div className="absolute top-[-5%] right-[-5%] w-[40%] h-[40%] bg-blue-50 rounded-full blur-[120px] opacity-60 animate-pulse" />
+        <div className="absolute bottom-[20%] left-[-10%] w-[35%] h-[35%] bg-green-50 rounded-full blur-[100px] opacity-40 animate-pulse delay-1000" />
+      </div>
 
-          <Link href={`${APP_URL}/signup`}>
-            <Button className="mb-10 bg-[#22C55E] hover:bg-[#16A34A] text-white px-8 py-4 rounded-xl text-lg font-bold shadow-lg shadow-green-100 transition-all hover:scale-105">
-              Start Selling for Free
-            </Button>
-          </Link>
+      {/* Header */}
+      <section className="pt-24 pb-20 px-4 relative z-10">
+        <div className="max-w-4xl mx-auto text-center">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-50 text-blue-600 text-[10px] font-black uppercase tracking-widest mb-6 border border-blue-100"
+          >
+            Transparent Pricing
+          </motion.div>
+          <motion.h1
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.1 }}
+            className="text-5xl md:text-7xl font-bold text-[#0F172A] mb-8 leading-[1.1] tracking-tight"
+          >
+            Scale your business, <br />not your costs.
+          </motion.h1>
+          <motion.p
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.2 }}
+            className="text-xl text-[#64748B] max-w-2xl mx-auto mb-10 leading-relaxed"
+          >
+            Choose a plan that matches your volume. Every plan includes
+            our core WhatsApp capture engine and local payment infrastructure.
+          </motion.p>
+
 
           {/* FEE DISCLOSURE - CLEAR & HONEST */}
-          <div className="inline-flex items-center gap-3 px-6 py-3 bg-red-50 border border-red-100 rounded-2xl animate-in fade-in slide-in-from-top-4 duration-700">
-            <div className="w-8 h-8 rounded-full bg-red-100 flex items-center justify-center text-red-600">
-              <Icon name="Info" size={18} />
+          <motion.div
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ delay: 0.3 }}
+            className="flex justify-center"
+          >
+            <div className="inline-flex items-center gap-3 px-6 py-3 bg-red-50/50 backdrop-blur-md border border-red-100 rounded-2xl">
+              <div className="w-8 h-8 rounded-full bg-red-100 flex items-center justify-center text-red-600 shrink-0">
+                <Icon name="Info" size={18} />
+              </div>
+              <p className="text-sm font-bold text-red-900">
+                Honest Disclosure: A {FEES.WITHDRAWAL_PERCENTAGE}% transaction fee
+                is charged on every withdrawal.
+              </p>
             </div>
-            <p className="text-sm font-bold text-red-900">
-              Honest Disclosure: A {FEES.WITHDRAWAL_PERCENTAGE}% transaction fee
-              is charged on every withdrawal.
-            </p>
-          </div>
+          </motion.div>
         </div>
       </section>
 
       {/* Pricing Cards */}
-      <section className="pb-32 px-4">
+      <section className="pb-32 px-4 relative z-10">
         <div className="max-w-7xl mx-auto">
-          <div className="grid lg:grid-cols-3 gap-8">
-            {PLANS.map((plan) => {
+          <div className="flex lg:grid lg:grid-cols-3 gap-6 lg:gap-8 overflow-visible overflow-x-auto pt-12 pb-12 lg:pb-0 px-4 -mx-4 lg:px-0 lg:mx-0 snap-x snap-mandatory scrollbar-hide">
+            {PLANS.map((plan, idx) => {
               const isCurrentPlan = isAuthenticated && tier === plan.key;
-              const isUpgrade = isAuthenticated && tier === "free" && plan.key !== "free";
-              const isDowngrade = isAuthenticated && tier !== "free" && plan.key === "free";
 
               let href = plan.monthlyAmount === 0
                 ? `${APP_URL}/signup`
@@ -59,75 +85,76 @@ export default function PricingPage() {
               let label = plan.ctaLabel;
 
               if (loading) {
-                // Keep defaults
               } else if (isAuthenticated) {
                 if (isCurrentPlan) {
                   href = `${APP_URL}/settings/billing`;
                   label = "Current Plan";
                 } else {
                   href = `${APP_URL}/settings/billing`;
-                  label = isDowngrade ? "Downgrade" : "Switch Plan";
+                  label = tier === "free" ? "Switch Plan" : (plan.monthlyAmount > 0 ? "Switch Plan" : "Downgrade");
                 }
               }
 
               return (
-                <div
+                <motion.div
                   key={plan.key}
-                  className={`relative flex flex-col p-8 rounded-[32px] border ${isCurrentPlan
-                    ? "border-blue-500 shadow-2xl shadow-blue-100 ring-4 ring-blue-50 bg-blue-50/10"
+                  initial={{ opacity: 0, y: 30 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: idx * 0.1 + 0.3 }}
+                  className={`relative flex flex-col p-8 lg:p-10 rounded-[40px] border transition-all duration-500 snap-center shrink-0 w-[85vw] lg:w-full ${isCurrentPlan
+                    ? "border-blue-500 shadow-[0_32px_64px_-16px_rgba(59,130,246,0.15)] ring-4 ring-blue-50 bg-blue-50/10"
                     : plan.featured
-                      ? "border-[#22C55E] shadow-2xl shadow-green-100 ring-4 ring-green-50"
-                      : "border-gray-100 shadow-xl"
-                    } bg-white`}
+                      ? "border-[#22C55E] shadow-[0_32px_64px_-16px_rgba(34,197,94,0.15)] ring-4 ring-green-50"
+                      : "border-gray-100 shadow-[0_20px_40px_-15px_rgba(0,0,0,0.05)]"
+                    } bg-white hover:translate-y-[-4px]`}
                 >
                   {plan.featured && !isCurrentPlan && (
-                    <div className="absolute -top-4 left-1/2 -translate-x-1/2 bg-[#22C55E] text-white text-[10px] font-black uppercase tracking-widest px-4 py-1.5 rounded-full shadow-lg">
+                    <div className="absolute -top-4 left-1/2 -translate-x-1/2 bg-[#22C55E] text-white text-[10px] font-black uppercase tracking-widest px-6 py-2 rounded-full shadow-[0_10px_20px_-5px_rgba(34,197,94,0.4)]">
                       Most Popular
                     </div>
                   )}
 
                   {isCurrentPlan && (
-                    <div className="absolute -top-4 left-1/2 -translate-x-1/2 bg-blue-500 text-white text-[10px] font-black uppercase tracking-widest px-4 py-1.5 rounded-full shadow-lg">
+                    <div className="absolute -top-4 left-1/2 -translate-x-1/2 bg-blue-500 text-white text-[10px] font-black uppercase tracking-widest px-6 py-2 rounded-full shadow-[0_10px_20px_-5px_rgba(59,130,246,0.4)]">
                       Your Plan
                     </div>
                   )}
 
                   <div className="mb-8">
-                    <h3 className="text-2xl font-black text-[#0F172A] mb-2">
+                    <h3 className="text-2xl lg:text-3xl font-bold text-[#0F172A] mb-3 tracking-tight">
                       {plan.name}
                     </h3>
-                    <p className="text-sm text-gray-400 font-medium">
+                    <p className="text-sm text-[#64748B] font-medium leading-relaxed">
                       {plan.tagline}
                     </p>
                   </div>
 
                   <div className="mb-8">
                     <div className="flex items-baseline gap-1">
-                      <span className="text-5xl font-black text-[#0F172A]">
-                        {formatNGN(plan.monthlyAmount)}
+                      <span className="text-5xl lg:text-6xl font-bold text-[#0F172A] tracking-tighter">
+                        {formatNGN(plan.baseAmount)}
                       </span>
-                      {plan.monthlyAmount > 0 ? (
-                        <div className="flex flex-col">
-                          <span className="text-gray-400 font-bold ml-1">/mo</span>
-                          <span className="text-[10px] text-gray-400 font-bold ml-1 font-mono">+ 7.5% VAT</span>
-                        </div>
-                      ) : (
-                        <span className="text-gray-400 font-bold ml-1">Free</span>
+                      {plan.baseAmount > 0 && (
+                        <span className="text-[#64748B] text-lg font-semibold">/mo</span>
                       )}
                     </div>
-                    {plan.key === "free" && (
-                      <div className="inline-flex items-center gap-1 bg-green-50 px-2 py-1 rounded-md mt-2">
-                        <span className="text-[10px] font-black text-[#22C55E] uppercase tracking-wider italic">
-                          Includes 7-Day Full Pro Access
-                        </span>
-                      </div>
+                    {plan.vatAmount > 0 && (
+                      <p className="text-[10px] font-bold text-[#64748B] mt-2 uppercase tracking-widest">
+                        + {formatNGN(plan.vatAmount)} VAT ({formatNGN(plan.monthlyAmount)} total)
+                      </p>
+                    )}
+                    {plan.trialDays && !isAuthenticated && (
+                      <p className="text-xs font-bold text-[#22C55E] mt-3 uppercase tracking-wider">
+                        Includes {plan.trialDays} days free trial
+                      </p>
                     )}
                   </div>
 
-                  <ul className="space-y-4 mb-10 flex-grow">
+                  <ul className="space-y-5 mb-12 flex-grow">
                     {plan.bullets.map((bullet, i) => (
-                      <li key={i} className="flex items-start gap-3">
-                        <div className="mt-1 w-5 h-5 rounded-full bg-green-50 flex items-center justify-center shrink-0">
+                      <li key={i} className="flex items-start gap-3 group/item">
+                        <div className="mt-1 w-5 h-5 rounded-full bg-green-50 flex items-center justify-center shrink-0 group-hover/item:scale-110 transition-transform">
                           <svg
                             className="w-3 h-3 text-[#22C55E]"
                             fill="none"
@@ -142,7 +169,7 @@ export default function PricingPage() {
                             />
                           </svg>
                         </div>
-                        <span className="text-sm font-medium text-gray-600">
+                        <span className="text-sm font-medium text-[#475569]">
                           {bullet}
                         </span>
                       </li>
@@ -151,53 +178,39 @@ export default function PricingPage() {
 
                   <Link
                     href={href}
-                    className="block"
+                    className="block mt-auto"
                   >
                     {plan.featured || isCurrentPlan ? (
-                      <PremiumButton disabled={isCurrentPlan} className={`w-full py-6 rounded-2xl ${isCurrentPlan ? "opacity-90 grayscale-[0.5]" : ""}`}>
+                      <PremiumButton disabled={isCurrentPlan} className={`w-full py-8 text-lg rounded-[24px] ${isCurrentPlan ? "opacity-90 grayscale-[0.5]" : "shadow-[0_20px_40px_-10px_rgba(34,197,94,0.3)]"}`}>
                         {label}
                       </PremiumButton>
                     ) : (
                       <Button
-                        className={`w-full py-6 text-lg font-bold rounded-2xl transition-all hover:scale-[1.02] bg-gray-900 hover:bg-black text-white`}
+                        className={`w-full py-8 text-lg font-bold rounded-[24px] transition-all hover:scale-[1.02] bg-[#0F172A] hover:bg-black text-white`}
                       >
                         {label}
                       </Button>
                     )}
                   </Link>
-                </div>
+                </motion.div>
               )
             })}
-          </div>
-
-          {/* Trust Signal: Paystack Badge */}
-          <div className="mt-16 flex flex-col items-center justify-center gap-4 py-8 border-t border-gray-100">
-            <div className="flex items-center gap-3 opacity-60">
-              <span className="text-xs font-bold text-gray-400 uppercase tracking-widest">Payments Secured & Processed by</span>
-              <Image
-                src="/logos/partner-paystack.png"
-                alt="Paystack Verified"
-                width={100}
-                height={30}
-                className="grayscale hover:grayscale-0 transition-all opacity-80"
-              />
-            </div>
-            <p className="text-[10px] text-gray-400 max-w-md text-center">
-              All subscriptions are managed securely via Paystack. We do not store your card details on our servers. 7.5% VAT is added to all local transactions.
-            </p>
           </div>
         </div>
       </section>
 
       {/* Feature Comparison */}
-      <section className="py-24 px-4 bg-gray-50/50">
-        <div className="max-w-6xl mx-auto">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl font-black text-[#0F172A] mb-4">
-              Compare every detail
+      <section className="py-32 px-4 bg-gray-50/50 relative overflow-hidden">
+        <div className="max-w-6xl mx-auto relative z-10">
+          <div className="text-center mb-20">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-slate-100 text-slate-600 text-[10px] font-black uppercase tracking-widest mb-6 border border-slate-200">
+              Detailed Breakdown
+            </div>
+            <h2 className="text-4xl md:text-5xl font-bold text-[#0F172A] mb-4 tracking-tight">
+              Compare every detail.
             </h2>
-            <p className="text-gray-500 font-medium">
-              No hidden limits. See exactly what you get on each plan.
+            <p className="text-[#64748B] text-lg">
+              No hidden limits. See exactly what you get on each tier.
             </p>
           </div>
 
@@ -209,9 +222,9 @@ export default function PricingPage() {
           </div>
 
           {/* REPEATED FEE DISCLOSURE IN COMPARISON */}
-          <div className="mt-12 p-6 bg-white border border-gray-100 rounded-2xl shadow-sm text-center">
-            <p className="text-sm font-bold text-gray-400">
-              <span className="text-red-500 mr-2">●</span>
+          <div className="mt-16 p-8 bg-white/80 backdrop-blur-md border border-gray-100 rounded-[32px] shadow-sm text-center">
+            <p className="text-sm font-bold text-[#64748B] flex items-center justify-center gap-3">
+              <span className="w-2 h-2 rounded-full bg-red-500 animate-pulse" />
               Note: All plans are subject to a {FEES.WITHDRAWAL_PERCENTAGE}%
               transaction fee on every withdrawal from your Vayva Wallet.
             </p>
@@ -220,37 +233,49 @@ export default function PricingPage() {
       </section>
 
       {/* Simple FAQ */}
-      <section className="py-24 px-4">
-        <div className="max-w-3xl mx-auto">
-          <h2 className="text-3xl font-black text-[#0F172A] mb-12 text-center">
-            Frequently Asked Questions
-          </h2>
-          <div className="space-y-6">
+      <section className="py-32 px-4 relative z-10">
+        <div className="max-w-4xl mx-auto">
+          <div className="text-center mb-16">
+            <h2 className="text-4xl font-bold text-[#0F172A] mb-4 tracking-tight">
+              Frequently Asked Questions
+            </h2>
+            <p className="text-[#64748B]">Everything you need to know about Vayva pricing.</p>
+          </div>
+          <div className="grid md:grid-cols-2 gap-6">
             {[
               {
                 q: "How does the 7-day trial work?",
-                a: "You get full access to the Pro features for 7 days. At the end of the trial, you can choose to subscribe or your account will be limited to the Free tier features.",
+                a: "You get full access to all features for 7 days. No credit card required. If you don't subscribe after the trial, your account will be paused.",
               },
               {
                 q: "When is the withdrawal fee charged?",
-                a: "The 5% fee is automatically calculated and deducted when you request a payout from your Vayva wallet to your local bank account.",
+                a: "The 3% fee is deducted only when you move money from your Vayva Wallet to your external bank account. No fees for incoming payments.",
               },
               {
-                q: "Can I cancel my subscription any time?",
-                a: "Yes. There are no long-term contracts. You can cancel your paid plan at any time from your billing dashboard.",
+                q: "Can I cancel any time?",
+                a: "Yes. Vayva is month-to-month. You can cancel, upgrade, or downgrade your plan instantly from your dashboard.",
+              },
+              {
+                q: "Are there transaction fees?",
+                a: "Vayva doesn't charge per-transaction fees. You only pay your monthly subscription and the withdrawal fee when moving cash out.",
               },
             ].map((faq, i) => (
-              <div
+              <motion.div
                 key={i}
-                className="p-6 bg-gray-50 rounded-2xl border border-gray-100"
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: i * 0.1 }}
+                className="p-8 bg-gray-50/50 rounded-[32px] border border-gray-100 hover:bg-white hover:shadow-xl transition-all"
               >
-                <h4 className="font-bold text-[#0F172A] mb-2">{faq.q}</h4>
-                <p className="text-sm text-gray-600 leading-relaxed">{faq.a}</p>
-              </div>
+                <h4 className="font-bold text-[#0F172A] mb-3 text-lg">{faq.q}</h4>
+                <p className="text-sm text-[#64748B] leading-relaxed">{faq.a}</p>
+              </motion.div>
             ))}
           </div>
         </div>
       </section>
     </div>
+
   );
 }

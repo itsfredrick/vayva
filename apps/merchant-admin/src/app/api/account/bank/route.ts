@@ -1,9 +1,10 @@
 import { NextResponse } from "next/server";
-import { prisma, BankBeneficiary } from "@vayva/db";
+import { prisma } from "@/lib/prisma";
+import { BankBeneficiary } from "@vayva/db";
 import { requireAuth } from "@/lib/auth/session";
 import { checkPermission } from "@/lib/team/rbac";
 import { PERMISSIONS } from "@/lib/team/permissions";
-import { logAudit, AuditAction } from "@/lib/audit";
+import { logAuditEvent as logAudit, AuditEventType } from "@/lib/audit";
 
 export async function GET() {
   try {
@@ -93,16 +94,15 @@ export async function POST(request: Request) {
       });
     });
 
-    await logAudit({
+    await logAudit(
       storeId,
-      actor: {
-        type: "USER",
-        id: session.user.id,
-        label: session.user.email || "Merchant",
-      },
-      action: "PAYOUTS_DESTINATION_CHANGED",
-      after: { bankName, accountNumberLast4: accountNumber.slice(-4) },
-    });
+      session.user.id,
+      AuditEventType.PAYOUT_SETTING_CHANGED,
+      {
+        reason: "Payout destination changed",
+        after: { bankName, accountNumberLast4: accountNumber.slice(-4) },
+      }
+    );
 
     return NextResponse.json({ success: true, beneficiary });
   } catch (error: any) {

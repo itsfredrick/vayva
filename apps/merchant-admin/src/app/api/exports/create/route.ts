@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { getSessionUser } from "@/lib/session";
-import { prisma } from "@vayva/db";
+import { prisma } from "@/lib/prisma";
 import { authorizeAction, AppRole } from "@/lib/permissions";
 import { logAuditEvent, AuditEventType } from "@/lib/audit";
 import { checkRateLimit } from "@/lib/rate-limit";
@@ -53,7 +53,11 @@ export async function POST(request: Request) {
       user.storeId,
       user.id,
       AuditEventType.EXPORT_CREATED, // Make sure this enum exists
-      { type, jobId: job.id },
+      {
+        targetType: "EXPORT_JOB",
+        targetId: job.id,
+        meta: { type, jobId: job.id }
+      },
     );
 
     return NextResponse.json({ exportId: job.id, expiresAt });

@@ -2,6 +2,7 @@
 
 import React from "react";
 import { Search, Heart, Share2 } from "lucide-react";
+import { Button } from "@vayva/ui";
 import { useStorefrontStore } from "@/hooks/storefront/useStorefront";
 
 interface GiveFlowHomeProps {
@@ -48,24 +49,24 @@ export default function GiveFlowHome({
                     <div className="text-2xl font-bold tracking-tight text-emerald-800">
                         {displayName}
                     </div>
-                    <button className="bg-emerald-600 text-white px-6 py-2 rounded-full font-bold hover:bg-emerald-700">
+                    <Button variant="primary" className="bg-emerald-600 text-white px-6 py-2 rounded-full font-bold hover:bg-emerald-700 h-auto border-none">
                         Donate Now
-                    </button>
+                    </Button>
                 </div>
             </nav>
 
             {/* Hero */}
             <div className="relative h-[60vh] bg-emerald-900 overflow-hidden flex items-center justify-center text-center text-white px-4">
                 <div className="absolute inset-0 opacity-40">
-                    <img src="https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?auto=format&fit=crop&q=80&w=2000" className="w-full h-full object-cover" />
+                    <img src="https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?auto=format&fit=crop&q=80&w=2000" alt="Giving Hero" className="w-full h-full object-cover" />
                 </div>
                 <div className="relative z-10 max-w-3xl">
                     <h1 className="text-5xl font-bold mb-6">Make a Difference Today</h1>
                     <p className="text-xl mb-8 opacity-90">Join our mission to create sustainable change in communities worldwide.</p>
                     <div className="flex justify-center gap-4">
-                        <button className="bg-white text-emerald-900 px-8 py-3 rounded-full font-bold hover:bg-gray-100">
+                        <Button variant="outline" className="bg-white text-emerald-900 px-8 py-3 rounded-full font-bold hover:bg-gray-100 h-auto border-none">
                             Our Campaigns
-                        </button>
+                        </Button>
                     </div>
                 </div>
             </div>
@@ -78,25 +79,25 @@ export default function GiveFlowHome({
                         <div key={c.id} className="bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition-shadow">
                             <div className="h-48 relative">
                                 <img src={c.image} alt={c.name} className="w-full h-full object-cover" />
-                                <button className="absolute top-4 right-4 bg-white/80 p-2 rounded-full hover:bg-white text-emerald-600">
+                                <Button variant="ghost" size="icon" className="absolute top-4 right-4 bg-white/80 p-2 rounded-full hover:bg-white text-emerald-600 h-8 w-8 flex items-center justify-center p-0" aria-label="Share campaign">
                                     <Share2 className="w-4 h-4" />
-                                </button>
+                                </Button>
                             </div>
                             <div className="p-6">
                                 <h3 className="font-bold text-xl mb-2">{c.name}</h3>
                                 <div className="w-full bg-gray-100 h-3 rounded-full mb-4 overflow-hidden">
                                     <div
                                         className="bg-emerald-500 h-full rounded-full"
-                                        style={{ width: `${Math.min((c.raised / c.goal) * 100, 100)}%` }}
+                                        ref={(el) => { if (el) el.style.width = `${Math.min((c.raised / c.goal) * 100, 100)}%`; }}
                                     />
                                 </div>
                                 <div className="flex justify-between text-sm font-medium mb-6">
                                     <span className="text-emerald-700">₦{c.raised.toLocaleString()} raised</span>
                                     <span className="text-gray-400">Goal: ₦{c.goal.toLocaleString()}</span>
                                 </div>
-                                <button className="w-full border-2 border-emerald-600 text-emerald-600 py-2 rounded-xl font-bold hover:bg-emerald-50">
+                                <Button variant="outline" className="w-full border-2 border-emerald-600 text-emerald-600 py-3 rounded-xl font-bold hover:bg-emerald-50 h-auto">
                                     Donate
-                                </button>
+                                </Button>
                             </div>
                         </div>
                     ))}

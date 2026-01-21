@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { LocaleKey, LOCALES } from "@/data/locales";
 import { Check, Copy, CreditCard, Gift, Loader2 } from "lucide-react";
+import { Button } from "@vayva/ui";
 
 interface GiftCardBuyFormProps {
   lang: LocaleKey;
@@ -63,30 +64,34 @@ export function GiftCardBuyForm({ lang }: GiftCardBuyFormProps) {
           <span className="font-mono text-xl font-bold tracking-wider text-gray-900">
             {successCode}
           </span>
-          <button
+          <Button
+            variant="ghost"
+            size="icon"
             onClick={copyToClipboard}
-            className="text-gray-500 hover:text-black transition-colors"
-            title={t.copy}
+            className="text-gray-500 hover:text-black transition-colors h-auto"
+            aria-label={copied ? "Copied" : "Copy gift code"}
           >
             {copied ? (
               <Check size={20} className="text-green-600" />
             ) : (
               <Copy size={20} />
             )}
-          </button>
+          </Button>
         </div>
 
-        <button
+        <Button
+          variant="ghost"
           onClick={() => {
             setSuccessCode(null);
             setAmount(1000);
             setRecipientName("");
             setRecipientEmail("");
           }}
-          className="text-sm font-bold text-gray-900 underline hover:text-gray-600"
+          className="text-sm font-bold text-gray-900 underline hover:text-gray-600 h-auto"
+          aria-label="Buy another gift card"
         >
           {lang === "tr" ? "Yeni Bir Tane Al" : "Buy Another"}
-        </button>
+        </Button>
       </div>
     );
   }
@@ -104,18 +109,19 @@ export function GiftCardBuyForm({ lang }: GiftCardBuyFormProps) {
       {/* Amounts */}
       <div className="grid grid-cols-2 md:grid-cols-3 gap-4 mb-8">
         {AMOUNTS.map((val) => (
-          <button
+          <Button
             key={val}
             type="button"
+            variant="ghost"
             onClick={() => setAmount(val)}
-            className={`h-14 rounded-xl border-2 font-bold transition-all ${
-              amount === val
-                ? "border-green-500 bg-green-50 text-green-700"
-                : "border-gray-100 hover:border-gray-200 text-gray-600"
-            }`}
+            className={`h-14 rounded-xl border-2 font-bold transition-all h-auto ${amount === val
+              ? "border-green-500 bg-green-50 text-green-700"
+              : "border-gray-100 hover:border-gray-200 text-gray-600"
+              }`}
+            aria-label={`Select amount ${val}₺`}
           >
             {val}₺
-          </button>
+          </Button>
         ))}
         <div className="relative">
           <input
@@ -127,11 +133,10 @@ export function GiftCardBuyForm({ lang }: GiftCardBuyFormProps) {
               setCustomAmount(e.target.value);
             }}
             onClick={() => setAmount("custom")}
-            className={`w-full h-14 pl-4 pr-4 rounded-xl border-2 font-bold outline-none transition-all ${
-              amount === "custom"
-                ? "border-green-500 bg-white ring-0"
-                : "border-gray-100 focus:border-gray-200"
-            }`}
+            className={`w-full h-14 pl-4 pr-4 rounded-xl border-2 font-bold outline-none transition-all ${amount === "custom"
+              ? "border-green-500 bg-white ring-0"
+              : "border-gray-100 focus:border-gray-200"
+              }`}
           />
           {amount === "custom" && (
             <span className="absolute right-4 top-1/2 -translate-y-1/2 font-bold text-gray-400">
@@ -182,35 +187,38 @@ export function GiftCardBuyForm({ lang }: GiftCardBuyFormProps) {
           {t.timing}
         </label>
         <div className="flex gap-4">
-          <button
+          <Button
             type="button"
+            variant="ghost"
             onClick={() => setSendStrategy("now")}
-            className={`flex-1 py-3 px-4 rounded-xl border text-sm font-bold transition-all ${
-              sendStrategy === "now"
-                ? "border-black bg-black text-white"
-                : "border-gray-200 text-gray-600 hover:border-gray-300"
-            }`}
+            className={`flex-1 py-3 px-4 rounded-xl border text-sm font-bold transition-all h-auto ${sendStrategy === "now"
+              ? "border-black bg-black text-white"
+              : "border-gray-200 text-gray-600 hover:border-gray-300"
+              }`}
+            aria-label="Send now"
           >
             {t.now}
-          </button>
-          <button
+          </Button>
+          <Button
             type="button"
+            variant="ghost"
             onClick={() => setSendStrategy("date")}
-            className={`flex-1 py-3 px-4 rounded-xl border text-sm font-bold transition-all ${
-              sendStrategy === "date"
-                ? "border-black bg-black text-white"
-                : "border-gray-200 text-gray-600 hover:border-gray-300"
-            }`}
+            className={`flex-1 py-3 px-4 rounded-xl border text-sm font-bold transition-all h-auto ${sendStrategy === "date"
+              ? "border-black bg-black text-white"
+              : "border-gray-200 text-gray-600 hover:border-gray-300"
+              }`}
+            aria-label="Select date"
           >
             {t.date}
-          </button>
+          </Button>
         </div>
       </div>
 
-      <button
+      <Button
         type="submit"
         disabled={loading}
-        className="w-full bg-[#0B1220] text-white font-bold h-14 rounded-xl hover:bg-black transition-all flex items-center justify-center gap-2 disabled:opacity-70 disabled:cursor-not-allowed"
+        className="w-full bg-[#0B1220] text-white font-bold h-14 rounded-xl hover:bg-black transition-all flex items-center justify-center gap-2 disabled:opacity-70 disabled:cursor-not-allowed h-auto"
+        aria-label="Submit gift card purchase"
       >
         {loading ? (
           <Loader2 className="animate-spin" />
@@ -218,7 +226,7 @@ export function GiftCardBuyForm({ lang }: GiftCardBuyFormProps) {
           <CreditCard size={20} />
         )}
         {t.submit}
-      </button>
+      </Button>
     </form>
   );
 }

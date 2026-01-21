@@ -9,7 +9,7 @@ import { HeroDownloadButton } from "@/components/marketing/HeroDownloadButton";
 import { APP_URL } from "@/lib/constants";
 
 interface LandingHeroProps {
-    headline: string;
+    headline: React.ReactNode;
     sub: string;
 }
 
@@ -22,13 +22,7 @@ export function LandingHero({ headline, sub }: LandingHeroProps) {
                 transition={{ duration: 0.5 }}
                 className="max-w-4xl mx-auto text-center"
             >
-                {/* Status Pill */}
-                <div className="inline-flex items-center gap-2 bg-gray-50 border border-gray-200 rounded-full px-4 py-2 mb-8">
-                    <span className="w-2 h-2 rounded-full bg-[#22C55E]"></span>
-                    <span className="text-sm text-gray-600 font-medium">
-                        Vayva Platform v1.0
-                    </span>
-                </div>
+                {/* Status Pill Removed */}
 
                 <h1 className="text-5xl md:text-7xl font-bold text-[#0F172A] mb-8 leading-[1.1] tracking-tight">
                     {headline}
@@ -51,20 +45,22 @@ export function LandingHero({ headline, sub }: LandingHeroProps) {
                 <div className="relative max-w-5xl mx-auto mb-20">
                     <div className="absolute -inset-0.5 bg-gradient-to-r from-[#22C55E] to-blue-500 rounded-[40px] blur opacity-20 animate-pulse"></div>
                     <div className="relative bg-white border border-gray-100 rounded-[40px] shadow-2xl p-4 md:p-8">
-                        <div className="aspect-[16/10] md:aspect-[16/8] bg-gray-50 rounded-[32px] overflow-hidden relative border border-gray-100">
+                        {/* Removed inner overflow-hidden container to allow full image visibility */}
+                        <div className="relative rounded-[32px] border border-gray-100 bg-gray-50 flex justify-center">
                             <Image
-                                src="/images/dashboard-demo-alt.png"
-                                alt="Vayva AI Demo"
-                                fill
+                                src="/images/mobile-showcase.png"
+                                alt="Vayva Mobile Showcase"
+                                width={1200}
+                                height={800}
                                 priority
-                                className="object-cover"
+                                className="object-contain w-full h-auto rounded-[32px]"
                             />
                             {/* Floating Notification Simulation */}
                             <motion.div
                                 initial={{ x: 100, opacity: 0 }}
                                 animate={{ x: 0, opacity: 1 }}
                                 transition={{ delay: 2, duration: 0.5 }}
-                                className="absolute top-8 right-8 bg-white/90 backdrop-blur-md p-4 rounded-2xl shadow-xl border border-green-100 max-w-[240px]"
+                                className="absolute top-8 right-8 bg-white/90 backdrop-blur-md p-4 rounded-2xl shadow-xl border border-green-100 max-w-[240px] hidden sm:block"
                             >
                                 <div className="flex items-center gap-3">
                                     <div className="w-8 h-8 rounded-full bg-green-500 flex items-center justify-center">
@@ -84,7 +80,7 @@ export function LandingHero({ headline, sub }: LandingHeroProps) {
                     Trusted by modern businesses
                 </p>
 
-                <div className="flex flex-wrap justify-center items-center gap-8 md:gap-12 opacity-80 grayscale hover:grayscale-0 transition-all duration-500">
+                <div className="flex flex-wrap justify-center items-center gap-8 md:gap-12 transition-all duration-500">
                     <Image
                         src="/logos/partner-paystack.png"
                         alt="Paystack"
@@ -107,11 +103,11 @@ export function LandingHero({ headline, sub }: LandingHeroProps) {
                         className="h-10 w-auto object-contain mix-blend-multiply"
                     />
                     <Image
-                        src="/logos/oral4_logo.png"
-                        alt="Oral4"
+                        src="/logos/kwikdelivery_logo.jpeg"
+                        alt="Kwik Delivery"
                         width={120}
                         height={40}
-                        className="h-10 w-auto object-contain mix-blend-multiply"
+                        className="h-10 w-auto object-contain"
                     />
                 </div>
 

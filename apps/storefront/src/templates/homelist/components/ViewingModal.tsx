@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { Button } from "@vayva/ui";
 import { Calendar, Clock, CheckCircle, X } from "lucide-react";
 
 interface ViewingModalProps {
@@ -45,12 +46,12 @@ export const ViewingModal = ({
             <span className="font-bold text-gray-900">{selectedDate}</span> at{" "}
             <span className="font-bold text-gray-900">{selectedTime}</span>.
           </p>
-          <button
+          <Button
             onClick={onClose}
             className="text-sm font-bold text-gray-400 hover:text-gray-600"
           >
             Close
-          </button>
+          </Button>
         </div>
       </div>
     );
@@ -68,12 +69,12 @@ export const ViewingModal = ({
               {listingTitle}
             </p>
           </div>
-          <button
+          <Button
             onClick={onClose}
             className="p-2 hover:bg-gray-200 rounded-full transition-colors text-gray-500"
           >
             <X size={20} />
-          </button>
+          </Button>
         </div>
 
         <form onSubmit={handleSubmit} className="p-6">
@@ -83,14 +84,14 @@ export const ViewingModal = ({
             </label>
             <div className="flex gap-2 overflow-x-auto pb-2">
               {dates.map((date) => (
-                <button
+                <Button
                   key={date}
                   type="button"
                   onClick={() => setSelectedDate(date)}
                   className={`px-4 py-2 rounded-lg border text-sm font-bold whitespace-nowrap transition-all ${selectedDate === date ? "border-[#2563EB] bg-blue-50 text-[#2563EB]" : "border-gray-200 text-gray-600 hover:border-gray-300"}`}
                 >
                   {date}
-                </button>
+                </Button>
               ))}
             </div>
           </div>
@@ -101,14 +102,14 @@ export const ViewingModal = ({
             </label>
             <div className="grid grid-cols-2 gap-3">
               {times.map((time) => (
-                <button
+                <Button
                   key={time}
                   type="button"
                   onClick={() => setSelectedTime(time)}
                   className={`px-4 py-3 rounded-lg border text-sm font-bold transition-all ${selectedTime === time ? "border-[#2563EB] bg-blue-50 text-[#2563EB]" : "border-gray-200 text-gray-600 hover:border-gray-300"}`}
                 >
                   {time}
-                </button>
+                </Button>
               ))}
             </div>
           </div>
@@ -128,13 +129,13 @@ export const ViewingModal = ({
             />
           </div>
 
-          <button
+          <Button
             type="submit"
             disabled={!selectedDate || !selectedTime}
             className="w-full bg-[#0F172A] hover:bg-[#1E293B] disabled:opacity-50 disabled:cursor-not-allowed text-white font-bold py-4 rounded-xl transition-colors shadow-lg"
           >
             Request Appointment
-          </button>
+          </Button>
         </form>
       </div>
     </div>

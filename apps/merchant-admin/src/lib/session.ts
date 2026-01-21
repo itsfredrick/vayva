@@ -167,7 +167,7 @@ export async function getSessionUser(): Promise<SessionUser | null> {
     lastName: user.lastName,
     storeId: membership.storeId,
     storeName: membership.store.name,
-    role: membership.role,
+    role: membership.role_enum,
   };
 }
 

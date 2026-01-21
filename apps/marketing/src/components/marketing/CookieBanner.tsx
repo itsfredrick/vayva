@@ -125,12 +125,12 @@ export const CookieBanner: React.FC = () => {
             >
               <div className="p-6 border-b border-gray-100 flex items-center justify-between">
                 <h3 className="font-bold text-lg">Cookie Preferences</h3>
-                <button
+                <Button
                   onClick={() => setShowPreferences(false)}
                   className="text-gray-400 hover:text-black"
                 >
                   <Icon name="X" size={20} />
-                </button>
+                </Button>
               </div>
               <div className="p-6 space-y-6">
                 <div className="flex items-center justify-between">
@@ -151,7 +151,7 @@ export const CookieBanner: React.FC = () => {
                       Help us understand how visitors interact with the site.
                     </p>
                   </div>
-                  <button
+                  <Button
                     onClick={() =>
                       setPreferences({
                         ...preferences,
@@ -169,7 +169,7 @@ export const CookieBanner: React.FC = () => {
                         preferences.analytics ? "right-1" : "left-1",
                       )}
                     ></div>
-                  </button>
+                  </Button>
                 </div>
                 <div className="flex items-center justify-between">
                   <div>
@@ -178,7 +178,7 @@ export const CookieBanner: React.FC = () => {
                       Used to deliver more relevant advertisements.
                     </p>
                   </div>
-                  <button
+                  <Button
                     onClick={() =>
                       setPreferences({
                         ...preferences,
@@ -196,7 +196,7 @@ export const CookieBanner: React.FC = () => {
                         preferences.marketing ? "right-1" : "left-1",
                       )}
                     ></div>
-                  </button>
+                  </Button>
                 </div>
               </div>
               <div className="p-6 bg-gray-50 flex gap-3">

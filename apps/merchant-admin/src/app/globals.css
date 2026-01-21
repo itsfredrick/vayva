@@ -1,3 +1,6 @@
+/* Touch-Friendly UI Standards */
+@import "../styles/touch-friendly.css";
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -5,7 +8,7 @@
 @layer base {
     :root {
         --background: 0 0% 100%;
-        --foreground: 0 0% 3.9%;
+        --foreground: 0 0% 0%;
         --primary: 0 0% 9%;
         --primary-foreground: 0 0% 98%;
         --accent: 0 0% 96.1%;
@@ -29,8 +32,35 @@
         --chart-3: 197 37% 24%;
         --chart-4: 43 74% 66%;
         --chart-5: 27 87% 67%;
+
+        /* Semantic Colors */
+        --success: 142 76% 45%;
+        --success-foreground: 0 0% 98%;
+        --warning: 45 93% 47%;
+        --warning-foreground: 0 0% 98%;
     }
-  .dark {
+
+    /* FLUID TYPOGRAPHY: Scale down UI on mobile */
+    html {
+        font-size: 14px;
+        /* Mobile: 1rem = 14px */
+    }
+
+    @media (min-width: 768px) {
+        html {
+            font-size: 15px;
+            /* Tablet: 1rem = 15px */
+        }
+    }
+
+    @media (min-width: 1024px) {
+        html {
+            font-size: 16px;
+            /* Desktop: 1rem = 16px */
+        }
+    }
+
+    .dark {
         --background: 0 0% 3.9%;
         --foreground: 0 0% 98%;
         --card: 0 0% 3.9%;
@@ -55,6 +85,12 @@
         --chart-3: 30 80% 55%;
         --chart-4: 280 65% 60%;
         --chart-5: 340 75% 55%;
+
+        /* Semantic Colors - Dark Mode */
+        --success: 142 70% 50%;
+        --success-foreground: 0 0% 9%;
+        --warning: 45 90% 50%;
+        --warning-foreground: 0 0% 9%;
     }
 }
 
@@ -64,8 +100,9 @@
     }
 
     body {
-        @apply bg-background text-text-primary;
+        @apply bg-background text-foreground;
         font-family: var(--font-inter), Inter, system-ui, -apple-system, sans-serif;
+        transition: background-color 0.3s ease;
     }
 
     h1,
@@ -78,41 +115,90 @@
     }
 }
 
+/* Glass Utilities & Surfaces */
 @layer utilities {
+
+    /* Surface Primitives */
+    .surface-base {
+        @apply bg-background text-foreground;
+    }
+
+    .surface-muted {
+        @apply bg-muted text-muted-foreground;
+    }
+
+    .surface-glass {
+        @apply bg-white/60 backdrop-blur-md border border-white/20 shadow-glass;
+    }
+
+    .surface-elevated {
+        @apply bg-white shadow-elevated border border-gray-100;
+    }
+
+    /* Redundant legacy classes mapped to new system for compatibility */
     .glass-panel {
-        background: rgba(255, 255, 255, 0.8);
-        backdrop-filter: blur(12px);
-        border: 1px solid rgba(0, 0, 0, 0.08);
-        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        @apply surface-glass;
     }
 
     .glass-card {
-        background: rgba(255, 255, 255, 0.6);
-        backdrop-filter: blur(8px);
-        border: 1px solid rgba(0, 0, 0, 0.05);
-        box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+        @apply surface-glass rounded-xl;
+    }
+
+    /* Typography Roles */
+    .text-display {
+        @apply font-heading text-4xl font-bold tracking-tight;
+    }
+
+    .text-title {
+        @apply font-heading text-2xl font-semibold tracking-tight;
+    }
+
+    .text-section {
+        @apply font-sans text-lg font-medium text-foreground;
+    }
+
+    .text-body {
+        @apply font-sans text-base text-foreground leading-relaxed;
+    }
+
+    .text-meta {
+        @apply font-sans text-sm text-muted-foreground;
+    }
+
+    .text-link {
+        @apply font-sans text-sm font-medium text-primary hover:underline underline-offset-4 cursor-pointer;
     }
 
     .bg-noise {
         background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.03'/%3E%3C/svg%3E");
     }
 
-    @keyframes shimmer {
-        0% { transform: translateX(-100%); }
-        100% { transform: translateX(100%); }
-    }
-    .animate-shimmer {
-        animation: shimmer 1.5s infinite;
+    /* Layout Primitives */
+    .divider-h {
+        @apply h-px w-full bg-border/40 my-4;
     }
 }
 
+/* Density Systems - Global overrides for standard components */
+@layer components {
 
-
-@layer base {
-  * {
-    @apply border-border;
+    /* Compact Mode */
+    .density-compact table tr td,
+    .density-compact table tr th {
+        @apply py-2 px-3 text-xs;
     }
-  body {
-    @apply bg-background text-foreground;
+
+    .density-compact .btn-std {
+        @apply h-8 px-3 text-xs;
+    }
+
+    /* Comfortable Mode (Merchant Admin Default) */
+    .density-comfortable table tr td,
+    .density-comfortable table tr th {
+        @apply py-4 px-6 text-sm;
+    }
+
+    .density-comfortable .btn-std {
+        @apply h-10 px-4 text-sm;
     }
 }

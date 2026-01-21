@@ -1,5 +1,6 @@
 import React from "react";
 import { X, ShoppingBag, Package } from "lucide-react";
+import { Button } from "@vayva/ui";
 import { PublicProduct } from "@/types/storefront";
 
 interface CartItem {
@@ -59,12 +60,15 @@ export const MultiVendorCart = ({
               Your Cart ({items.length})
             </h2>
           </div>
-          <button
+          <Button
+            variant="ghost"
+            size="icon"
             onClick={onClose}
-            className="p-2 hover:bg-gray-100 rounded-full transition-colors text-gray-500"
+            className="p-2 hover:bg-gray-100 rounded-full transition-colors text-gray-500 h-auto"
+            aria-label="Close cart"
           >
             <X size={20} />
-          </button>
+          </Button>
         </div>
 
         {/* Content */}
@@ -73,12 +77,14 @@ export const MultiVendorCart = ({
             <div className="text-center py-12 text-gray-400">
               <ShoppingBag size={48} className="mx-auto mb-4 opacity-20" />
               <p>Your cart is empty.</p>
-              <button
+              <Button
+                variant="link"
                 onClick={onClose}
-                className="mt-4 text-[#10B981] font-bold hover:underline"
+                className="mt-4 text-[#10B981] font-bold hover:underline h-auto p-0"
+                aria-label="Start shopping"
               >
                 Start Shopping
-              </button>
+              </Button>
             </div>
           ) : (
             Object.entries(groupedItems).map(([vendorId, group]) => (
@@ -107,6 +113,7 @@ export const MultiVendorCart = ({
                       <div className="w-16 h-16 bg-gray-100 rounded-md overflow-hidden shrink-0">
                         <img
                           src={product.images?.[0]}
+                          alt={product.name}
                           className="w-full h-full object-cover"
                         />
                       </div>
@@ -125,12 +132,14 @@ export const MultiVendorCart = ({
                             <span className="text-xs text-gray-500">
                               Qty: {qty}
                             </span>
-                            <button
+                            <Button
+                              variant="link"
                               onClick={() => onRemove(product.id)}
-                              className="text-xs text-red-500 hover:underline"
+                              className="text-xs text-red-500 hover:underline h-auto p-0 font-normal"
+                              aria-label={`Remove ${product.name} from cart`}
                             >
                               Remove
-                            </button>
+                            </Button>
                           </div>
                         </div>
                       </div>
@@ -153,12 +162,13 @@ export const MultiVendorCart = ({
                 ₦{subTotal.toLocaleString()}
               </span>
             </div>
-            <button
+            <Button
               onClick={onCheckout}
-              className="w-full bg-[#111827] hover:bg-[#1F2937] text-white font-bold py-3.5 rounded-xl transition-colors shadow-lg shadow-gray-200"
+              className="w-full bg-[#111827] hover:bg-[#1F2937] text-white font-bold py-3.5 rounded-xl transition-colors shadow-lg shadow-gray-200 h-auto"
+              aria-label="Proceed to checkout"
             >
               Checkout Now
-            </button>
+            </Button>
           </div>
         )}
       </div>

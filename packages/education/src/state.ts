@@ -126,6 +126,6 @@ export const StateTransitions = {
    * Check if transition is valid
    */
   isValid(from: EducationState, to: EducationState): boolean {
-    return this.ALLOWED[from]?.includes(to) || false;
+    return (this.ALLOWED as any)[from]?.includes(to) || false;
   },
 };

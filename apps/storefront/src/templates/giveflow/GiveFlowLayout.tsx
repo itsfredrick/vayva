@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { Button } from "@vayva/ui";
 import { PublicStore, PublicProduct } from "@/types/storefront";
 import { GiveHeader } from "./components/GiveHeader";
 import { CampaignHero } from "./components/CampaignHero";
@@ -96,12 +97,12 @@ export const GiveFlowLayout = ({ store, products }: GiveFlowLayoutProps) => {
                           <span>{percentage}%</span>
                         </div>
 
-                        <button
+                        <Button
                           onClick={() => openDonation(campaign)}
                           className="w-full border border-[#16A34A] text-[#16A34A] hover:bg-green-50 font-bold py-2.5 rounded-lg transition-colors"
                         >
                           Donate
-                        </button>
+                        </Button>
                       </div>
                     </div>
                   </div>

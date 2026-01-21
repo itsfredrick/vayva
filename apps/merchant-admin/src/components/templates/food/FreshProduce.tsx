@@ -1,5 +1,6 @@
 import React from "react";
 import { TemplateProps } from "../registry";
+import { Button } from "@vayva/ui";
 
 export const FreshProduceTemplate: React.FC<TemplateProps> = ({
   businessName,
@@ -51,12 +52,12 @@ export const FreshProduceTemplate: React.FC<TemplateProps> = ({
       {/* Search/Filter */}
       <div className="p-4 bg-white shadow-sm mb-6">
         <div className="flex gap-2 mb-4">
-          <button className="flex-1 bg-green-600 text-white py-2 rounded-lg text-sm font-bold">
+          <Button className="flex-1 bg-green-600 text-white py-2 rounded-lg text-sm font-bold h-auto">
             Bulk / Wholesale
-          </button>
-          <button className="flex-1 bg-green-50 text-green-700 py-2 rounded-lg text-sm font-bold border border-green-100">
+          </Button>
+          <Button variant="outline" className="flex-1 bg-green-50 text-green-700 py-2 rounded-lg text-sm font-bold border border-green-100 h-auto">
             Retail / Kg
-          </button>
+          </Button>
         </div>
         <input
           type="text"
@@ -125,15 +126,15 @@ export const FreshProduceTemplate: React.FC<TemplateProps> = ({
                   {item.price}
                 </span>
                 <div className="flex items-center border border-gray-200 rounded-lg overflow-hidden">
-                  <button className="px-2 py-1 bg-gray-50 text-gray-600 hover:bg-gray-100">
+                  <Button variant="ghost" className="px-2 py-1 bg-gray-50 text-gray-600 hover:bg-gray-100 h-auto rounded-none">
                     -
-                  </button>
+                  </Button>
                   <span className="px-2 py-1 text-xs font-bold w-6 text-center">
                     0
                   </span>
-                  <button className="px-2 py-1 bg-green-50 text-green-700 hover:bg-green-100">
+                  <Button variant="ghost" className="px-2 py-1 bg-green-50 text-green-700 hover:bg-green-100 h-auto rounded-none">
                     +
-                  </button>
+                  </Button>
                 </div>
               </div>
             </div>
@@ -152,9 +153,9 @@ export const FreshProduceTemplate: React.FC<TemplateProps> = ({
               Tomorrow, 6:00 AM - 9:00 AM
             </div>
           </div>
-          <button className="bg-white text-blue-600 border border-blue-200 px-3 py-1.5 rounded-lg text-xs font-bold">
+          <Button variant="outline" className="bg-white text-blue-600 border border-blue-200 px-3 py-1.5 rounded-lg text-xs font-bold h-auto">
             Change
-          </button>
+          </Button>
         </div>
       </div>
     </div>

@@ -1,24 +1,15 @@
 import { NextRequest, NextResponse } from "next/server";
-import { getServerSession } from "next-auth";
-import { authOptions } from "@/lib/auth";
-import { prisma } from "@vayva/db";
+import { withVayvaAPI, HandlerContext } from "@/lib/api-handler";
+import { PERMISSIONS } from "@/lib/team/permissions";
 
-export async function POST(req: NextRequest) {
-  const session = await getServerSession(authOptions);
-  if (!(session?.user as any)?.storeId)
-    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-
-  try {
-    await prisma.merchantSubscription.update({
-      where: { storeId: (session!.user as any).storeId },
-      data: { cancelAtPeriodEnd: true },
-    });
-
-    // Log Audit
-    // ...
-
-    return NextResponse.json({ ok: true });
-  } catch (e: any) {
-    return new NextResponse(e.message, { status: 500 });
+// NOTE: Disabled - aiSubscription model does not exist in current schema
+// This route needs to be refactored to use the correct subscription model
+export const POST = withVayvaAPI(
+  PERMISSIONS.FINANCE_VIEW,
+  async (req: NextRequest, { storeId }: HandlerContext) => {
+    return NextResponse.json(
+      { error: "Subscription management not implemented" },
+      { status: 501 }
+    );
   }
-}
+);

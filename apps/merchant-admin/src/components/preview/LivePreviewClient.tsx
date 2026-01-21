@@ -8,7 +8,7 @@ import { DemoHome } from "@/components/preview/demo/DemoHome";
 import { DemoCollection } from "@/components/preview/demo/DemoCollection";
 import { DemoProductView } from "@/components/preview/demo/DemoProduct";
 import Link from "next/link";
-import { cn } from "@/lib/utils";
+import { Button, cn } from "@vayva/ui";
 
 type Mode = "live" | "images";
 type Device = "desktop" | "mobile";
@@ -22,6 +22,7 @@ type Props = {
 
   fallbackDesktopImage: string;
   fallbackMobileImage: string;
+  storeData?: any;
 };
 
 class PreviewErrorBoundary extends React.Component<
@@ -53,13 +54,17 @@ export function LivePreviewClient({
   LayoutComponent,
   fallbackDesktopImage,
   fallbackMobileImage,
+  storeData,
 }: Props) {
   const router = useRouter();
   const params = useSearchParams();
 
   const supportsLive = Boolean(LayoutComponent);
 
-  const demo = React.useMemo(() => getDemoStore(slug), [slug]);
+  // SAFETY: Only use demo data if no real store data is provided
+  // This supports both Template Gallery (Demo) and Store Builder (Live)
+  const demoStore = React.useMemo(() => getDemoStore(slug), [slug]);
+  const demo = storeData || demoStore; // Minimal change to support real data injection
 
   const initialMode = clamp(
     params.get("mode"),
@@ -140,20 +145,20 @@ export function LivePreviewClient({
       <div>
         <div className="mx-auto max-w-6xl px-4 pt-6">
           <div className="flex flex-wrap gap-2">
-            {demo.categories.map((c) => (
-              <button
+            {demo.categories.map((c: any) => (
+              <Button
                 key={c}
-                type="button"
+                variant="ghost"
                 onClick={() => setActiveCategory(c)}
                 className={cn(
-                  "rounded-full border px-3 py-1 text-sm",
+                  "rounded-full border px-3 py-1 text-sm h-auto",
                   c === activeCategory
-                    ? "bg-black text-white"
+                    ? "bg-black text-white hover:bg-black/90 hover:text-white"
                     : "hover:bg-gray-100",
                 )}
               >
                 {c}
-              </button>
+              </Button>
             ))}
           </div>
         </div>
@@ -179,99 +184,101 @@ export function LivePreviewClient({
           <div className="flex flex-wrap items-center gap-2">
             {/* Live / Images */}
             <div className="flex overflow-hidden rounded-lg border bg-white">
-              <button
-                type="button"
+              <Button
+                variant="ghost"
                 onClick={() => setMode("live")}
                 disabled={!supportsLive}
                 className={cn(
-                  "px-3 py-2 text-sm",
-                  mode === "live" ? "bg-black text-white" : "hover:bg-gray-100",
+                  "px-3 py-2 text-sm h-auto rounded-none",
+                  mode === "live"
+                    ? "bg-black text-white hover:bg-black/90 hover:text-white"
+                    : "hover:bg-gray-100",
                   !supportsLive && "opacity-50",
                 )}
               >
                 Live
-              </button>
-              <button
-                type="button"
+              </Button>
+              <Button
+                variant="ghost"
                 onClick={() => setMode("images")}
                 className={cn(
-                  "px-3 py-2 text-sm",
+                  "px-3 py-2 text-sm h-auto rounded-none",
                   mode === "images"
-                    ? "bg-black text-white"
+                    ? "bg-black text-white hover:bg-black/90 hover:text-white"
                     : "hover:bg-gray-100",
                 )}
               >
                 Images
-              </button>
+              </Button>
             </div>
 
             {/* Desktop / Mobile */}
             <div className="flex overflow-hidden rounded-lg border bg-white">
-              <button
-                type="button"
+              <Button
+                variant="ghost"
                 onClick={() => setDevice("desktop")}
                 className={cn(
-                  "px-3 py-2 text-sm",
+                  "px-3 py-2 text-sm h-auto rounded-none",
                   device === "desktop"
-                    ? "bg-black text-white"
+                    ? "bg-black text-white hover:bg-black/90 hover:text-white"
                     : "hover:bg-gray-100",
                 )}
               >
                 Desktop
-              </button>
-              <button
-                type="button"
+              </Button>
+              <Button
+                variant="ghost"
                 onClick={() => setDevice("mobile")}
                 className={cn(
-                  "px-3 py-2 text-sm",
+                  "px-3 py-2 text-sm h-auto rounded-none",
                   device === "mobile"
-                    ? "bg-black text-white"
+                    ? "bg-black text-white hover:bg-black/90 hover:text-white"
                     : "hover:bg-gray-100",
                 )}
               >
                 Mobile
-              </button>
+              </Button>
             </div>
 
             {/* Home / Collection / Product */}
             {mode === "live" && supportsLive && (
               <div className="flex overflow-hidden rounded-lg border bg-white">
-                <button
-                  type="button"
+                <Button
+                  variant="ghost"
                   onClick={() => setView("home")}
                   className={cn(
-                    "px-3 py-2 text-sm",
+                    "px-3 py-2 text-sm h-auto rounded-none",
                     view === "home"
-                      ? "bg-black text-white"
+                      ? "bg-black text-white hover:bg-black/90 hover:text-white"
                       : "hover:bg-gray-100",
                   )}
                 >
                   Home
-                </button>
-                <button
-                  type="button"
+                </Button>
+                <Button
+                  variant="ghost"
                   onClick={() => setView("collection")}
                   className={cn(
-                    "px-3 py-2 text-sm",
+                    "px-3 py-2 text-sm h-auto rounded-none",
                     view === "collection"
-                      ? "bg-black text-white"
+                      ? "bg-black text-white hover:bg-black/90 hover:text-white"
                       : "hover:bg-gray-100",
                   )}
                 >
                   Collection
-                </button>
-                <button
-                  type="button"
+                </Button>
+                <Button
+                  variant="ghost"
                   onClick={() => setView("product")}
                   className={cn(
-                    "px-3 py-2 text-sm",
+                    "px-3 py-2 text-sm h-auto rounded-none",
                     view === "product"
-                      ? "bg-black text-white"
+                      ? "bg-black text-white hover:bg-black/90 hover:text-white"
                       : "hover:bg-gray-100",
                   )}
                 >
                   Product
-                </button>
+                </Button>
               </div>
             )}
 

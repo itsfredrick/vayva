@@ -1,9 +1,15 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import { Icon, cn } from "@vayva/ui";
-import { AICoachMessage } from "@/app/api/ai/coach/messages/route";
+import { Icon, cn, Button } from "@vayva/ui";
 import { useRouter } from "next/navigation";
+interface AICoachMessage {
+  content: string;
+  actions?: {
+    label: string,
+    link?: string
+  }[];
+}
 
 export const AICoachWidget = () => {
   const [messages, setMessages] = useState<AICoachMessage[]>([]);
@@ -45,21 +51,21 @@ export const AICoachWidget = () => {
           </p>
           {latestMessage.actions && (
             <div className="flex gap-2 mt-3">
-              {latestMessage.actions.map((action, idx) => (
-                <button
+              {latestMessage.actions.map((action: any, idx: number) => (
+                <Button
                   key={idx}
                   onClick={() => action.link && router.push(action.link)}
                   className="bg-white text-green-700 px-3 py-1.5 rounded-lg text-xs font-bold border border-green-200 hover:bg-green-50 transition-colors shadow-sm"
                 >
                   {action.label}
-                </button>
+                </Button>
               ))}
             </div>
           )}
         </div>
-        <button className="text-green-300 hover:text-green-600 transition-colors p-1">
+        <Button className="text-green-300 hover:text-green-600 p-1">
           <Icon name="X" size={16} />
-        </button>
+        </Button>
       </div>
 
       {/* Decoration */}

@@ -148,7 +148,7 @@ describe("DeliveryService", () => {
     );
 
     if (result.status !== "DISPATCHED")
-      console.log("AUTO Mode Failed Reason:", result.reason);
+      
 
     expect(result.status).toBe("DISPATCHED");
     expect(prisma.shipment.upsert).toHaveBeenCalledWith(

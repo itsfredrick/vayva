@@ -1,59 +1,73 @@
 import { NextRequest, NextResponse } from "next/server";
-import { OpsAuthService } from "@/lib/ops-auth";
 import { prisma } from "@vayva/db";
-
-export const dynamic = "force-dynamic";
+import { OpsAuthService } from "@/lib/ops-auth";
 
 export async function GET(req: NextRequest) {
     try {
-        await OpsAuthService.requireSession();
+        // Authenticate ops user
+        const session = await OpsAuthService.getSession();
+        if (!session) {
+            return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+        }
 
-        const [
-            activeMerchants,
-            totalOrders,
-            openTickets,
-            pendingDisputes,
-            recentRevenue
-        ] = await Promise.all([
-            // Active Merchants
-            prisma.store.count({ where: { isLive: true } }),
-
-            // Total Orders (Last 30 days) - Mock time window for now
-            prisma.order.count(),
-
-            // Open Support Tickets
-            prisma.supportTicket.count({ where: { status: "open" } }),
-
-            // Pending Disputes (Mock table or based on earlier implementation)
-            // Using a hardcoded value if table doesn't exist, but we audited Dispute table earlier?
-            // Wait, we didn't create a Dispute model in schema.prisma, we mocked it in UI API.
-            // We'll mock this count here since the model is missing in schema.
-            Promise.resolve(3),
-
-            // Total Revenue (Sum of all completed order totals)
-            prisma.order.aggregate({
-                _sum: { total: true },
-                where: { paymentStatus: "SUCCESS" }
+        // Aggregate platform-wide stats for ops dashboard
+        const [merchantCount, recentActivity] = await Promise.all([
+            prisma.store.count({
+                where: { isActive: true }
+            }),
+            prisma.opsAuditEvent.findMany({
+                take: 5,
+                orderBy: { createdAt: "desc" },
+                select: {
+                    eventType: true,
+                    createdAt: true
+                }
             })
         ]);
 
-        return NextResponse.json({
-            merchants: {
-                total: activeMerchants,
-                delta: "+5%", // Mock delta
+        // Calculate revenue (last 30 days)
+        const thirtyDaysAgo = new Date();
+        thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
+
+        const orders = await prisma.order.aggregate({
+            where: {
+                createdAt: { gte: thirtyDaysAgo },
+                paymentStatus: "SUCCESS"
             },
-            revenue: {
-                total: recentRevenue._sum.total || 0,
-                currency: "NGN"
-            },
-            operations: {
-                tickets: openTickets,
-                disputes: pendingDisputes
+            _sum: {
+                total: true
             }
         });
 
+        const revenue = {
+            total: Number(orders._sum?.total || 0)
+        };
+
+        const merchants = {
+            total: merchantCount,
+            delta: "+5 this week" // TODO: Calculate actual delta
+        };
+
+        const operations = {
+            tickets: 0 // TODO: Implement support ticket count
+        };
+
+        const formattedActivity = recentActivity.map(log => ({
+            message: `${log.eventType} performed`,
+            timestamp: new Date(log.createdAt).toLocaleString()
+        }));
+
+        return NextResponse.json({
+            revenue,
+            merchants,
+            operations,
+            recentActivity: formattedActivity
+        });
     } catch (error) {
-        console.error("Dashboard stats error:", error);
-        return NextResponse.json({ error: "Failed to fetch stats" }, { status: 500 });
+        console.error("Dashboard Stats Error:", error);
+        return NextResponse.json(
+            { error: "Failed to fetch dashboard stats" },
+            { status: 500 }
+        );
     }
 }

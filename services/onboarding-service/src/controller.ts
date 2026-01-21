@@ -36,10 +36,26 @@ export const OnboardingController = {
       updates.skippedSteps = [...flow.skippedSteps, stepKey];
     }
 
-    return await prisma.onboardingFlow.update({
+    const updatedFlow = await prisma.onboardingFlow.update({
       where: { storeId },
       data: updates,
     });
+
+    // Check if fully complete and dispatch notification
+    const checklist = await OnboardingController.getChecklist(storeId);
+    if (checklist.every(i => i.status === "DONE")) {
+      fetch(`${process.env.NOTIFICATIONS_SERVICE_URL || "http://notifications-service:3000"}/v1/internal/event`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          type: "ONBOARDING_COMPLETED",
+          storeId,
+          payload: { flowId: updatedFlow.id }
+        })
+      }).catch(console.error);
+    }
+
+    return updatedFlow;
   },
 
   // --- Checklist Engine ---
@@ -57,48 +73,63 @@ export const OnboardingController = {
       where: { storeId },
     });
 
+    const [paymentAccount, deliveryOption, whatsappChannel, tosTemplate] = await Promise.all([
+      prisma.paymentAccount.findFirst({
+        where: { storeId, status: "CONNECTED" },
+      }),
+      prisma.deliveryOption.findFirst({
+        where: { storeId, enabled: true },
+      }),
+      prisma.whatsappChannel.findFirst({
+        where: { storeId, status: "CONNECTED" },
+      }),
+      prisma.legalTemplate.findFirst({
+        where: { storeId, key: "TERMS", isActive: true },
+      }),
+    ]);
+
     const items = [
       {
         key: "storefront.products_added",
         title: "Add Products",
         description: "Add at least one product to your catalog",
         category: "STOREFRONT",
-        status: (store?.products?.length || 0) > 0 ? "DONE" : "TODO",
+        status: (store?.products?.length && store.products.length > 0) ? "DONE" : "PENDING",
       },
       {
         key: "storefront.logo_set",
         title: "Upload Logo",
         description: "Set your store logo for branding",
         category: "STOREFRONT",
-        status: settings?.logoS3Key ? "DONE" : "TODO",
+        status: settings?.logoS3Key ? "DONE" : "PENDING",
       },
       {
         key: "payments.connected",
         title: "Connect Payment Provider",
         description: "Link your Paystack or Stripe account",
         category: "PAYMENTS",
-        status: "TODO", // Would check payment_account table
+        status: paymentAccount ? "DONE" : "PENDING",
       },
       {
         key: "delivery.configured",
         title: "Setup Delivery",
         description: "Configure delivery options",
         category: "DELIVERY",
-        status: "TODO", // Would check delivery_option table
+        status: deliveryOption ? "DONE" : "PENDING",
       },
       {
         key: "whatsapp.connected",
         title: "Connect WhatsApp",
         description: "Link your WhatsApp Business account",
         category: "WHATSAPP",
-        status: "TODO", // Would check channel table
+        status: whatsappChannel ? "DONE" : "PENDING",
       },
       {
         key: "policies.terms_published",
         title: "Publish Terms of Service",
         description: "Review and publish your terms",
         category: "POLICIES",
-        status: "TODO", // Would check legal_template table
+        status: tosTemplate ? "DONE" : "PENDING",
       },
     ];
 

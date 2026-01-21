@@ -58,7 +58,7 @@ export default function AcceptableUsePolicyPage() {
                 <strong>Status:</strong> Enforceable
               </p>
               <p>
-                <strong>Governing Entity:</strong> Vayva Inc. (operating in
+                <strong>Governing Entity:</strong> Vayva Tech (operating in
                 Nigeria)
               </p>
             </div>
@@ -139,8 +139,7 @@ export default function AcceptableUsePolicyPage() {
 
             <h2>4. Reporting</h2>
             <p>
-              Report violations of this policy to{" "}
-              <strong>abuse@vayva.shop</strong>.
+              report violations of this policy to <strong>abuse@vayva.ng</strong>.
             </p>
           </main>
         </div>

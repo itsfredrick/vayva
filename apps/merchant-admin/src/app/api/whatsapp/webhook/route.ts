@@ -12,7 +12,17 @@ export async function POST(req: NextRequest) {
         const body = await req.json();
 
         // Log basic heartbeat (remove in prod high volume)
-        // Log basic heartbeat (remove in prod high volume)
+        // Security: Verify Webhook Secret (Evolution API sends this)
+        const secret = process.env.WHATSAPP_WEBHOOK_SECRET;
+        const authHeader = req.headers.get("apikey") || req.headers.get("authorization");
+
+        // Remove 'Bearer ' if present for comparison
+        const token = authHeader?.replace("Bearer ", "") || "";
+
+        if (!secret || token !== secret) {
+            console.warn("[Webhook] Unauthorized attempt:", { ip: req.headers.get("x-forwarded-for") });
+            return NextResponse.json({ status: "forbidden" }, { status: 403 });
+        }
 
         if (body.event !== "messages.upsert") {
             return NextResponse.json({ status: "ignored_event" });

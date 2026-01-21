@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { getSessionUser } from "@/lib/session";
-import { prisma } from "@vayva/db";
+import { prisma } from "@/lib/prisma";
 import { FEATURES } from "@/lib/env-validation";
 
 export async function GET(request: Request) {
@@ -19,7 +19,7 @@ export async function GET(request: Request) {
       where: { id: user.storeId },
       include: {
         paymentAccounts: true, // For Payment Status
-        waAgentSettings: true, // For WhatsApp Status
+        agent: true, // For WhatsApp Status
       },
     } as any);
 
@@ -37,9 +37,9 @@ export async function GET(request: Request) {
     // Determine WhatsApp Status
     let whatsappStatus = "NOT_CONFIGURED";
     if (FEATURES.WHATSAPP_ENABLED) {
-      if (store?.waAgentSettings?.isActive) {
+      if (store?.agent?.isActive) {
         whatsappStatus = "ACTIVE";
-      } else if (store?.waAgentSettings) {
+      } else if (store?.agent) {
         whatsappStatus = "ATTENTION"; // Exists but inactive
       }
     } else {

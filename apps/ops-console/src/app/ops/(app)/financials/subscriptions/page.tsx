@@ -3,6 +3,7 @@
 import React from "react";
 import { CreditCard, Calendar, CheckCircle2, RefreshCw } from "lucide-react";
 import { useOpsQuery } from "@/hooks/useOpsQuery";
+import { Button } from "@vayva/ui";
 
 export default function BillingPage() {
     const { data: subs, isLoading, refetch } = useOpsQuery(
@@ -20,9 +21,15 @@ export default function BillingPage() {
                     </h1>
                     <p className="text-gray-500 mt-1">Track active SaaS subscriptions and revenue.</p>
                 </div>
-                <button onClick={() => refetch()} className="p-2 hover:bg-gray-100 rounded-full">
+                <Button
+                    variant="ghost"
+                    size="icon"
+                    onClick={() => refetch()}
+                    className="rounded-full h-8 w-8"
+                    aria-label="Refresh billing subscriptions"
+                >
                     <RefreshCw className={`w-5 h-5 text-gray-500 ${isLoading ? 'animate-spin' : ''}`} />
-                </button>
+                </Button>
             </div>
 
             <div className="bg-white border border-gray-200 rounded-xl shadow-sm overflow-hidden">
@@ -48,7 +55,7 @@ export default function BillingPage() {
                                     <td className="px-6 py-4 font-mono text-xs text-purple-600 font-bold">{s.planKey}</td>
                                     <td className="px-6 py-4">
                                         <span className={`px-2 py-0.5 rounded text-xs font-bold ${s.status === "ACTIVE" ? "bg-green-100 text-green-700" :
-                                                s.status === "TRIALING" ? "bg-blue-100 text-blue-700" : "bg-red-100 text-red-700"
+                                            s.status === "TRIALING" ? "bg-blue-100 text-blue-700" : "bg-red-100 text-red-700"
                                             }`}>
                                             {s.status}
                                         </span>

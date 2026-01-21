@@ -1,4 +1,5 @@
 import React from "react";
+import { Button } from "@vayva/ui";
 
 interface StickyCTAProps {
   price: number;
@@ -16,12 +17,13 @@ export const StickyCTA = ({ price, onBuy }: StickyCTAProps) => {
           ₦{price.toLocaleString()}
         </span>
       </div>
-      <button
+      <Button
         onClick={onBuy}
-        className="flex-1 bg-[#111827] text-white font-bold py-3 rounded-xl shadow-lg"
+        className="flex-1 bg-[#111827] text-white font-bold py-3 rounded-xl shadow-lg h-auto"
+        aria-label={`Buy now for ₦${price.toLocaleString()}`}
       >
         Buy Now
-      </button>
+      </Button>
     </div>
   );
 };

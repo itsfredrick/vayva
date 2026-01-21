@@ -172,4 +172,33 @@ export class AiUsageService {
 
     return { allowed: true, usage };
   }
+
+  /**
+   * Get usage statistics for the last N days
+   */
+  static async getUsageStats(storeId: string, days: number = 14) {
+    const startDate = new Date();
+    startDate.setDate(startDate.getDate() - days);
+    startDate.setHours(0, 0, 0, 0);
+
+    const dailyStats = await prisma.aiUsageDaily.findMany({
+      where: {
+        storeId,
+        date: { gte: startDate },
+      },
+      orderBy: { date: "asc" },
+      select: {
+        date: true,
+        requestsCount: true,
+        tokensCount: true,
+      },
+    });
+
+    return dailyStats.map((stat) => ({
+      date: stat.date.toISOString().split("T")[0],
+      totalRequests: stat.requestsCount,
+      totalTokens: stat.tokensCount,
+      totalCost: Math.floor(stat.tokensCount * 0.005), // Estimate in kobo
+    }));
+  }
 }

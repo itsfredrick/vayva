@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Modal, Icon, cn, Button } from "@vayva/ui";
+import { Button, Icon, Modal, cn } from "@vayva/ui";
 import {
   WithdrawalEligibility,
   WithdrawalQuote,
@@ -202,9 +202,9 @@ export const WithdrawalModal = ({
                 </div>
               ))}
               {/* Placeholder for Add Functionality */}
-              <button className="text-xs font-bold text-black underline pl-1 pt-1">
+              <Button variant="link" className="text-xs font-bold text-black underline pl-1 pt-1 h-auto p-0 hover:no-underline">
                 + Add another account
-              </button>
+              </Button>
             </div>
 
             <div className="space-y-2">
@@ -225,12 +225,13 @@ export const WithdrawalModal = ({
               </div>
               <div className="flex justify-between items-center text-xs text-gray-500 px-1">
                 <span>Balance: ₦{availableBalance.toLocaleString()}</span>
-                <button
+                <Button
+                  variant="link"
                   onClick={() => setAmount(availableBalance)}
-                  className="font-bold text-blue-600 hover:underline"
+                  className="font-bold text-blue-600 hover:underline h-auto p-0"
                 >
                   Max
-                </button>
+                </Button>
               </div>
             </div>
 

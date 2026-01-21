@@ -1,67 +1,19 @@
-import { prisma } from "@vayva/db";
 
-export enum AuditAction {
-  LOGIN_SUCCESS = "LOGIN_SUCCESS",
-  LOGIN_FAILED = "LOGIN_FAILED",
-  PROFILE_UPDATED = "PROFILE_UPDATED",
-  BANK_ACCOUNT_UPDATED = "BANK_ACCOUNT_UPDATED",
-  TEMPLATE_CHANGED = "TEMPLATE_CHANGED",
-  PLAN_CHANGED = "PLAN_CHANGED",
-  KYC_SUBMITTED = "KYC_SUBMITTED",
-  KYC_RESULT_RECEIVED = "KYC_RESULT_RECEIVED",
-  WEBHOOK_FAILURE_SPIKE = "WEBHOOK_FAILURE_SPIKE",
-  REFUND_PROCESSED = "REFUND_PROCESSED",
-  ORDER_CANCELLED = "ORDER_CANCELLED",
-  TEAM_INVITE_SENT = "TEAM_INVITE_SENT",
-  TEAM_MEMBER_REMOVED = "TEAM_MEMBER_REMOVED",
-  EXPORT_GENERATED = "EXPORT_GENERATED",
-}
+import { prisma } from "@/lib/prisma";
 
-export type AuditActor = {
-  type: "USER" | "SYSTEM" | "OPS";
-  id: string;
-  label: string;
-};
-
-export async function logAudit(params: {
-  storeId?: string;
-  actor: AuditActor;
-  action: AuditAction | string;
-  entity?: { type: string; id: string };
-  before?: any;
-  after?: any;
-  ipAddress?: string;
-  userAgent?: string;
-  correlationId?: string;
-}) {
-  try {
-    await (prisma as any).auditLog.create({
-      data: {
-        storeId: params.storeId,
-        actorType: params.actor.type,
-        actorId: params.actor.id,
-        actorLabel: params.actor.label,
-        action: params.action,
-        entityType: params.entity?.type,
-        entityId: params.entity?.id,
-        beforeState: params.before,
-        afterState: params.after,
-        ipAddress: params.ipAddress,
-        userAgent: params.userAgent,
-        correlationId: params.correlationId || `req_${Date.now()}`,
-      },
-    });
-  } catch (error: any) {
-    console.error("[Audit] Failed to log action:", params.action, error);
-  }
-}
-
-// Backward compatibility for legacy code
 export enum AuditEventType {
+  SETTINGS_CHANGED = "SETTINGS_CHANGED",
+  WITHDRAWAL_REQUESTED = "WITHDRAWAL_REQUESTED",
+  USER_INVITED = "USER_INVITED",
+  ROLE_UPDATED = "ROLE_UPDATED",
+  API_KEY_CREATED = "API_KEY_CREATED",
+  WEBHOOK_UPDATED = "WEBHOOK_UPDATED",
+  LOGIN_ATTEMPT_FAILED = "LOGIN_ATTEMPT_FAILED",
+  SENSITIVE_ACCESS = "SENSITIVE_ACCESS",
+  // Legacy mappings
   ORDER_BULK_STATUS_CHANGED = "ORDER_BULK_STATUS_CHANGED",
   ORDER_STATUS_CHANGED = "ORDER_STATUS_CHANGED",
   ORDER_EXPORTED = "ORDER_EXPORTED",
-  WITHDRAWAL_REQUESTED = "WITHDRAWAL_REQUESTED",
   WITHDRAWAL_BLOCKED_KYC = "WITHDRAWAL_BLOCKED_KYC",
   WITHDRAWAL_STATUS_CHANGED = "WITHDRAWAL_STATUS_CHANGED",
   WITHDRAWAL_EXPORTED = "WITHDRAWAL_EXPORTED",
@@ -83,7 +35,6 @@ export enum AuditEventType {
   TEAM_INVITE_SENT = "TEAM_INVITE_SENT",
   TEAM_ROLE_CHANGED = "TEAM_ROLE_CHANGED",
   TEAM_MEMBER_REMOVED = "TEAM_MEMBER_REMOVED",
-  SETTINGS_CHANGED = "SETTINGS_CHANGED",
   REFUND_PROCESSED = "REFUND_PROCESSED",
   PRODUCT_CREATED = "PRODUCT_CREATED",
   PRODUCT_UPDATED = "PRODUCT_UPDATED",
@@ -92,16 +43,60 @@ export enum AuditEventType {
   ACCOUNT_SECURITY_ACTION = "ACCOUNT_SECURITY_ACTION",
 }
 
+// Type alias for backward compatibility
+export type AuditAction = AuditEventType;
+
 export async function logAuditEvent(
-  merchantId: string,
+  storeId: string | null,
   userId: string,
-  type: AuditEventType | string,
-  metadata: any = {},
+  action: AuditEventType | string,
+  details: {
+    targetType?: string;
+    targetId?: string;
+    reason?: string;
+    before?: any;
+    after?: any;
+    keysChanged?: string[];
+    meta?: any;
+    ipAddress?: string;
+    userAgent?: string;
+  }
 ) {
-  return logAudit({
-    storeId: merchantId,
-    actor: { type: "USER", id: userId, label: "Merchant" },
-    action: type.toString(),
-    after: metadata,
-  });
+  try {
+    await prisma.adminAuditLog.create({
+      data: {
+        storeId,
+        actorUserId: userId,
+        action: action.toString(),
+        targetType: details.targetType,
+        targetId: details.targetId,
+        reason: details.reason,
+        before: details.before ? JSON.parse(JSON.stringify(details.before)) : undefined,
+        after: details.after ? JSON.parse(JSON.stringify(details.after)) : undefined,
+        ipAddress: details.ipAddress,
+        userAgent: details.userAgent,
+      },
+    });
+  } catch (error) {
+    console.error("Failed to write audit log:", error);
+  }
+}
+
+// Helper for diffing
+export function computeDiff(oldObj: any, newObj: any): { before: any; after: any } {
+  const before: any = {};
+  const after: any = {};
+
+  const allKeys = new Set([...Object.keys(oldObj || {}), ...Object.keys(newObj || {})]);
+
+  for (const key of Array.from(allKeys)) {
+    const oldVal = oldObj?.[key];
+    const newVal = newObj?.[key];
+    if (JSON.stringify(oldVal) !== JSON.stringify(newVal)) {
+      before[key] = oldVal;
+      after[key] = newVal;
+    }
+  }
+
+  return { before, after };
 }

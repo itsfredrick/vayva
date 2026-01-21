@@ -1,10 +1,10 @@
 import { NextResponse } from "next/server";
 import { PaystackService } from "@/lib/payment/paystack";
-import { prisma } from "@vayva/db";
+import { prisma } from "@/lib/prisma";
 import { requireAuth } from "@/lib/auth/session";
 import { checkPermission } from "@/lib/team/rbac";
 import { PERMISSIONS } from "@/lib/team/permissions";
-import { logAudit, AuditAction } from "@/lib/audit";
+import { logAuditEvent as logAudit, AuditEventType } from "@/lib/audit";
 
 export async function POST(request: Request) {
   try {
@@ -81,20 +81,20 @@ export async function POST(request: Request) {
       const periodEnd = new Date(now);
       periodEnd.setMonth(periodEnd.getMonth() + 1);
 
-      await tx.merchantSubscription.upsert({
+      await tx.aiSubscription.upsert({
         where: { storeId },
         create: {
           storeId,
-          planSlug: newPlan,
+          planKey: newPlan,
           status: "ACTIVE",
-          currentPeriodStart: now,
-          currentPeriodEnd: periodEnd,
+          periodStart: now,
+          periodEnd: periodEnd,
         },
         update: {
-          planSlug: newPlan,
+          planKey: newPlan,
           status: "ACTIVE",
-          currentPeriodStart: now,
-          currentPeriodEnd: periodEnd,
+          periodStart: now,
+          periodEnd: periodEnd,
         },
       });
 
@@ -118,17 +118,17 @@ export async function POST(request: Request) {
       });
 
       // 6. Audit Event
-      await logAudit({
+      await logAudit(
         storeId,
-        actor: {
-          type: "USER",
-          id: userId,
-          label: session.user.email || "Merchant",
-        },
-        action: AuditAction.PLAN_CHANGED,
-        before: { plan: oldPlan },
-        after: { plan: newPlan, reference },
-      });
+        userId,
+        AuditEventType.SETTINGS_CHANGED,
+        {
+          targetType: "SUBSCRIPTION",
+          reason: "Plan Changed",
+          before: { plan: oldPlan },
+          after: { plan: newPlan, reference },
+        }
+      );
     });
 
     return NextResponse.json({

@@ -36,6 +36,12 @@ export const notifyHandler = async (
       severity: "info",
       userId: body.userId,
       storeId: body.storeId,
+      // Store recipient (email/phone) in metadata for audit
+      metadata: {
+        recipient: body.recipient,
+        channel: body.channel,
+        originalData: body.data
+      }
     },
   });
 

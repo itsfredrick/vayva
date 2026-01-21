@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import { Button, Icon, cn, Card } from "@vayva/ui";
+import { Button, Card, Icon, cn } from "@vayva/ui";
 import { motion } from "framer-motion";
 
 export default function ReferralsPage() {
@@ -48,12 +48,12 @@ export default function ReferralsPage() {
           </p>
           <div className="flex items-center gap-3">
             <code className="text-2xl font-mono font-bold">{data?.code}</code>
-            <button
+            <Button
               onClick={copyCode}
               className="p-2 hover:bg-white/10 rounded-lg transition-colors"
             >
               <Icon name={copied ? "Check" : "Copy"} size={20} />
-            </button>
+            </Button>
           </div>
         </div>
         <Icon

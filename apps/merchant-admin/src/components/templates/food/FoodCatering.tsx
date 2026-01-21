@@ -1,6 +1,6 @@
 import { TemplateProps } from "@/components/templates/registry";
 import { useStore } from "@/context/StoreContext";
-import { Icon } from "@vayva/ui";
+import { Icon, Button } from "@vayva/ui";
 
 export const FoodCateringTemplate: React.FC<TemplateProps> = ({
   businessName,
@@ -21,48 +21,48 @@ export const FoodCateringTemplate: React.FC<TemplateProps> = ({
   // Demo Data Override for Food Catering
   const cateringItems = demoMode
     ? [
-        {
-          id: "cat_1",
-          name: "Jollof Rice",
-          price: 2500,
-          type: "food",
-          desc: "Smokey party jollof with plaintain",
-          time: "15m",
-        },
-        {
-          id: "cat_2",
-          name: "Fried Rice",
-          price: 2800,
-          type: "food",
-          desc: "Rich nigerian fried rice",
-          time: "15m",
-        },
-        {
-          id: "cat_3",
-          name: "Chicken",
-          price: 1200,
-          type: "food",
-          desc: "Peppered or Fried",
-          time: "10m",
-        },
-        {
-          id: "cat_4",
-          name: "Extra Beef",
-          price: 1500,
-          type: "food",
-          desc: "Tender spicy beef",
-          time: "10m",
-        },
-      ]
+      {
+        id: "cat_1",
+        name: "Jollof Rice",
+        price: 2500,
+        type: "food",
+        desc: "Smokey party jollof with plaintain",
+        time: "15m",
+      },
+      {
+        id: "cat_2",
+        name: "Fried Rice",
+        price: 2800,
+        type: "food",
+        desc: "Rich nigerian fried rice",
+        time: "15m",
+      },
+      {
+        id: "cat_3",
+        name: "Chicken",
+        price: 1200,
+        type: "food",
+        desc: "Peppered or Fried",
+        time: "10m",
+      },
+      {
+        id: "cat_4",
+        name: "Extra Beef",
+        price: 1500,
+        type: "food",
+        desc: "Tender spicy beef",
+        time: "10m",
+      },
+    ]
     : products
-        .filter((p) => p.type === "food")
-        .map((p) => ({
-          ...p,
-          desc: p.description,
-          time: (p as any).prepTimeMinutes
-            ? `${(p as any).prepTimeMinutes}m`
-            : "15m",
-        }));
+      .filter((p) => p.type === "food")
+      .map((p) => ({
+        ...p,
+        desc: p.description,
+        time: (p as any).prepTimeMinutes
+          ? `${(p as any).prepTimeMinutes}m`
+          : "15m",
+      }));
 
   return (
     <div className="font-sans min-h-screen bg-orange-50/30 text-gray-900 pb-24">
@@ -93,9 +93,9 @@ export const FoodCateringTemplate: React.FC<TemplateProps> = ({
           <div className="w-full max-w-sm bg-white h-full p-6 flex flex-col animate-in slide-in-from-right">
             <div className="flex justify-between items-center mb-6">
               <h2 className="text-xl font-bold">Your Order</h2>
-              <button onClick={() => toggleCart(false)}>
+              <Button variant="ghost" size="icon" onClick={() => toggleCart(false)} className="h-auto w-auto p-0">
                 <Icon name="X" size={24} />
-              </button>
+              </Button>
             </div>
             <div className="flex-1 overflow-auto space-y-4">
               {itemCount === 0 ? (
@@ -116,20 +116,21 @@ export const FoodCateringTemplate: React.FC<TemplateProps> = ({
               )}
             </div>
             <div className="grid gap-3 pt-4 border-t border-gray-100">
-              <button
+              <Button
                 onClick={() => checkout("website")}
                 disabled={isCheckoutProcessing || itemCount === 0}
-                className="w-full bg-orange-600 text-white py-3.5 rounded-xl font-bold hover:bg-orange-700 disabled:opacity-50"
+                className="w-full bg-orange-600 text-white py-3.5 rounded-xl font-bold hover:bg-orange-700 disabled:opacity-50 h-auto"
               >
                 Pay Now
-              </button>
-              <button
+              </Button>
+              <Button
+                variant="outline"
                 onClick={() => checkout("whatsapp")}
                 disabled={isCheckoutProcessing || itemCount === 0}
-                className="w-full bg-white text-green-600 border-2 border-green-600 py-3.5 rounded-xl font-bold flex items-center justify-center gap-2 hover:bg-green-50 disabled:opacity-50"
+                className="w-full bg-white text-green-600 border-2 border-green-600 py-3.5 rounded-xl font-bold flex items-center justify-center gap-2 hover:bg-green-50 disabled:opacity-50 h-auto"
               >
                 <Icon name="MessageCircle" size={20} /> Or Order on WhatsApp
-              </button>
+              </Button>
             </div>
           </div>
         </div>
@@ -200,9 +201,9 @@ export const FoodCateringTemplate: React.FC<TemplateProps> = ({
                   <span className="font-bold text-orange-600">
                     {currency} {item.price.toLocaleString()}
                   </span>
-                  <button className="bg-black text-white w-8 h-8 rounded-full flex items-center justify-center hover:bg-orange-600 transition-colors shadow-lg shadow-orange-200">
+                  <Button className="bg-black text-white w-8 h-8 rounded-full flex items-center justify-center hover:bg-orange-600 transition-colors shadow-lg shadow-orange-200 h-auto p-0 min-w-[2rem]">
                     <Icon name="Plus" size={16} />
-                  </button>
+                  </Button>
                 </div>
               </div>
             </div>
@@ -213,9 +214,9 @@ export const FoodCateringTemplate: React.FC<TemplateProps> = ({
       {/* Cart Floating Action Button - Only if items exist and cart closed */}
       {!isCartOpen && itemCount > 0 && (
         <div className="fixed bottom-6 inset-x-4 z-40">
-          <button
+          <Button
             onClick={() => toggleCart(true)}
-            className="w-full bg-black text-white py-4 rounded-2xl font-bold flex items-center justify-between px-6 shadow-xl shadow-orange-900/10 active:scale-95 transition-transform"
+            className="w-full bg-black text-white py-4 rounded-2xl font-bold flex items-center justify-between px-6 shadow-xl shadow-orange-900/10 active:scale-95 transition-transform h-auto"
           >
             <span className="bg-orange-500 text-white w-6 h-6 rounded-full flex items-center justify-center text-xs">
               {itemCount}
@@ -224,7 +225,7 @@ export const FoodCateringTemplate: React.FC<TemplateProps> = ({
             <span>
               {currency} {cartTotal.toLocaleString()}
             </span>
-          </button>
+          </Button>
         </div>
       )}
     </div>

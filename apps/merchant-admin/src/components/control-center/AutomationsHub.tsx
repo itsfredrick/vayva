@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Icon, cn } from "@vayva/ui";
+import { Icon, cn, Button } from "@vayva/ui";
 
 interface Automation {
   id: string;
@@ -87,9 +87,9 @@ export const AutomationsHub = () => {
             </div>
 
             <div className="flex items-center gap-4">
-              <button className="text-xs font-bold text-gray-400 hover:text-black">
+              <Button size="sm" className="text-gray-400 hover:text-black">
                 Edit Logic
-              </button>
+              </Button>
               <label className="relative inline-flex items-center cursor-pointer">
                 <input
                   type="checkbox"

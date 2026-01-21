@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Customer, CustomerActivity } from "@vayva/shared";
-import { Icon, cn } from "@vayva/ui";
+import { Icon, cn, Button } from "@vayva/ui";
 
 interface CustomerDetailPanelProps {
   customer: Customer | null;
@@ -53,12 +53,12 @@ export const CustomerDetailPanel = ({
             <p className="text-sm text-gray-500 font-mono">{customer.phone}</p>
           </div>
         </div>
-        <button
+        <Button
           onClick={onClose}
           className="p-2 hover:bg-gray-200 rounded-full text-gray-500 transition-colors"
         >
           <Icon name="X" size={20} />
-        </button>
+        </Button>
       </div>
 
       <div className="flex-1 overflow-y-auto p-6 space-y-8">
@@ -92,16 +92,16 @@ export const CustomerDetailPanel = ({
 
         {/* Quick Actions */}
         <div>
-          <button className="w-full py-3 bg-green-600 text-white rounded-xl font-bold flex items-center justify-center gap-2 hover:bg-green-700 transition-colors mb-3 shadow-lg shadow-green-100">
+          <Button className="w-full py-3 bg-green-600 text-white rounded-xl font-bold flex items-center justify-center gap-2 hover:bg-green-700 transition-colors mb-3 shadow-lg shadow-green-100">
             <Icon name="MessageCircle" size={18} /> Message on WhatsApp
-          </button>
+          </Button>
           <div className="grid grid-cols-2 gap-3">
-            <button className="py-2.5 border border-gray-200 rounded-lg text-sm font-bold text-gray-700 hover:bg-gray-50">
+            <Button className="py-2.5 border border-gray-200 rounded-lg text-sm font-bold text-gray-700 hover:bg-gray-50">
               Create Order
-            </button>
-            <button className="py-2.5 border border-gray-200 rounded-lg text-sm font-bold text-gray-700 hover:bg-gray-50">
+            </Button>
+            <Button className="py-2.5 border border-gray-200 rounded-lg text-sm font-bold text-gray-700 hover:bg-gray-50">
               Book Appt
-            </button>
+            </Button>
           </div>
         </div>
 

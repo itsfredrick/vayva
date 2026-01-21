@@ -21,6 +21,12 @@
     "paths": {
       "@/*": [
         "./src/*"
+      ],
+      "@vayva/compliance": [
+        "../../packages/compliance/src/index.ts"
+      ],
+      "@vayva/db": [
+        "../../infra/db/src/client.ts"
       ]
     }
   },

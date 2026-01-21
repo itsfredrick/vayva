@@ -9,10 +9,8 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     const corePages = [
         "",
         "/pricing",
-        "/templates",
-        "/marketplace",
+        "/pricing",
         "/how-vayva-works",
-        "/features",
         "/about",
         "/blog",
         "/contact",

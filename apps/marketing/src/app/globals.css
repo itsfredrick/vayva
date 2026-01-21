@@ -23,6 +23,7 @@
     --muted-foreground: 215.4 16.3% 46.9%;
 
     --accent: 210 40% 96.1%;
+    /* ... variables ... */
     --accent-foreground: 222.2 47.4% 11.2%;
 
     --destructive: 0 84.2% 60.2%;
@@ -33,6 +34,32 @@
     --ring: 222.2 84% 4.9%;
 
     --radius: 0.5rem;
+
+    /* Semantic Colors */
+    --success: 142 76% 45%;
+    --success-foreground: 0 0% 98%;
+    --warning: 45 93% 47%;
+    --warning-foreground: 0 0% 98%;
+  }
+
+  /* FLUID TYPOGRAPHY: Scale down UI on mobile */
+  html {
+    font-size: 14px;
+    /* Mobile: 1rem = 14px */
+  }
+
+  @media (min-width: 768px) {
+    html {
+      font-size: 15px;
+      /* Tablet: 1rem = 15px */
+    }
+  }
+
+  @media (min-width: 1024px) {
+    html {
+      font-size: 16px;
+      /* Desktop: 1rem = 16px */
+    }
   }
 
   /* MARKETING SITE IS STRICTLY LIGHT MODE */
@@ -65,6 +92,12 @@
     --border: 214.3 31.8% 91.4%;
     --input: 214.3 31.8% 91.4%;
     --ring: 222.2 84% 4.9%;
+
+    /* Semantic Colors - Dark Mode */
+    --success: 142 70% 50%;
+    --success-foreground: 0 0% 9%;
+    --warning: 45 90% 50%;
+    --warning-foreground: 0 0% 9%;
   }
 }
 
@@ -109,5 +142,67 @@
 
   .animate-pulse-green {
     animation: pulse-green 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  }
+
+  /* --- Vayva Design System --- */
+  /* Surface Primitives */
+  .surface-base {
+    @apply bg-background text-foreground;
+  }
+
+  .surface-muted {
+    @apply bg-muted text-muted-foreground;
+  }
+
+  .surface-glass {
+    @apply bg-white/60 backdrop-blur-md border border-white/20 shadow-glass;
+  }
+
+  .surface-elevated {
+    @apply bg-white shadow-elevated border border-gray-100;
+  }
+
+  /* Typography Roles */
+  .text-display {
+    @apply font-heading text-4xl font-bold tracking-tight;
+  }
+
+  .text-title {
+    @apply font-heading text-2xl font-semibold tracking-tight;
+  }
+
+  .text-section {
+    @apply font-sans text-lg font-medium text-foreground;
+  }
+
+  .text-body {
+    @apply font-sans text-base text-foreground leading-relaxed;
+  }
+
+  .text-meta {
+    @apply font-sans text-sm text-muted-foreground;
+  }
+
+  .text-link {
+    @apply font-sans text-sm font-medium text-primary hover:underline underline-offset-4 cursor-pointer;
+  }
+
+  /* Layout Primitives */
+  .divider-h {
+    @apply h-px w-full bg-border/40 my-4;
+  }
+}
+
+/* Density Systems */
+@layer components {
+
+  /* Comfortable Mode (Marketing Default) */
+  .density-comfortable table tr td,
+  .density-comfortable table tr th {
+    @apply py-4 px-6 text-sm;
+  }
+
+  .density-comfortable .btn-std {
+    @apply h-10 px-4 text-sm;
   }
 }

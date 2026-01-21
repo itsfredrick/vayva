@@ -1,6 +1,7 @@
 "use client";
 
 import { Search, SlidersHorizontal } from "lucide-react";
+import { Button } from "@vayva/ui";
 import { LocaleKey, LOCALES } from "@/data/locales";
 
 interface MenuFilterBarProps {
@@ -46,26 +47,31 @@ export function MenuFilterBar({
 
           {/* Filters */}
           <div className="flex items-center gap-2 overflow-x-auto w-full md:w-auto pb-1 md:pb-0 no-scrollbar">
-            <button className="flex items-center gap-2 px-4 py-2 rounded-full border border-gray-200 text-sm font-medium text-gray-700 hover:bg-gray-50">
+            <Button
+              variant="outline"
+              className="flex items-center gap-2 px-4 py-2 rounded-full border border-gray-200 text-sm font-medium text-gray-700 hover:bg-gray-50 h-auto"
+              aria-label="Filter preferences"
+            >
               <SlidersHorizontal className="w-4 h-4" />
               {t.preferences}
-            </button>
+            </Button>
             <div className="h-6 w-px bg-gray-200 mx-2" />
             {FILTERS.map((f) => (
-              <button
+              <Button
                 key={f.key}
+                variant="ghost"
                 onClick={() => onToggleFilter(f.key)}
                 className={`
-                                    whitespace-nowrap px-4 py-2 rounded-full text-sm font-medium transition-colors border
-                                    ${
-                                      activeFilters.includes(f.key)
-                                        ? "bg-[#22C55E] text-white border-[#22C55E]"
-                                        : "bg-white text-gray-600 border-gray-200 hover:border-[#22C55E]/50"
-                                    }
+                                    whitespace-nowrap px-4 py-2 rounded-full text-sm font-medium transition-colors border h-auto
+                                    ${activeFilters.includes(f.key)
+                    ? "bg-[#22C55E] text-white border-[#22C55E] hover:bg-[#16A34A]"
+                    : "bg-white text-gray-600 border-gray-200 hover:border-[#22C55E]/50"
+                  }
                                 `}
+                aria-label={`Toggle ${f.label} filter`}
               >
                 {f.label}
-              </button>
+              </Button>
             ))}
           </div>
         </div>

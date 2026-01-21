@@ -1,5 +1,6 @@
 import React from "react";
 import { TemplateProps } from "../registry";
+import { Button } from "@vayva/ui";
 
 export const CommunityCoopTemplate: React.FC<TemplateProps> = ({
   businessName,
@@ -66,8 +67,8 @@ export const CommunityCoopTemplate: React.FC<TemplateProps> = ({
               {/* Membership Progress Bar */}
               <div className="bg-gray-100 h-2.5 rounded-full overflow-hidden mb-2">
                 <div
-                  className="bg-orange-400 h-full rounded-full"
-                  style={{ width: `${deal.progress}%` }}
+                  className="bg-orange-400 h-full rounded-full transition-all duration-300"
+                  ref={(el) => { if (el) el.style.width = `${deal.progress}%`; }}
                 ></div>
               </div>
               <div className="flex justify-between items-center text-xs font-bold text-stone-500 mb-4">
@@ -75,12 +76,13 @@ export const CommunityCoopTemplate: React.FC<TemplateProps> = ({
                 <span>{deal.slots}</span>
               </div>
 
-              <button
+              <Button
+                draggable={false}
                 disabled={deal.progress === 100}
-                className="w-full bg-stone-900 text-white py-3 rounded-xl font-bold hover:bg-stone-700 disabled:bg-gray-200 disabled:text-gray-400 cursor-pointer disabled:cursor-not-allowed"
+                className="w-full bg-stone-900 text-white py-3 rounded-xl font-bold hover:bg-stone-700 disabled:bg-gray-200 disabled:text-gray-400 cursor-pointer disabled:cursor-not-allowed h-auto"
               >
                 {deal.progress === 100 ? "Closed" : "Join Deal"}
-              </button>
+              </Button>
             </div>
           ))}
         </div>
@@ -97,9 +99,9 @@ export const CommunityCoopTemplate: React.FC<TemplateProps> = ({
               Join for ₦1,000/mo
             </div>
           </div>
-          <button className="bg-orange-500 text-white px-4 py-2 rounded-lg font-bold text-sm hover:bg-orange-600">
+          <Button className="bg-orange-500 text-white px-4 py-2 rounded-lg font-bold text-sm hover:bg-orange-600 h-auto">
             Register
-          </button>
+          </Button>
         </div>
       </section>
     </div>

@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, Suspense } from "react";
+import { Button } from "@vayva/ui";
 import { useSearchParams, useRouter } from "next/navigation";
 
 function PaystackTestContent() {
@@ -72,20 +73,20 @@ function PaystackTestContent() {
                     </div>
 
                     <div className="space-y-3">
-                        <button
+                        <Button
                             onClick={() => handleSimulate("success")}
                             disabled={loading}
                             className="w-full bg-[#3bb75e] text-white py-4 rounded-lg font-bold hover:bg-[#34a353] transition-colors disabled:opacity-50"
                         >
                             {loading ? "Processing..." : "Simulate Successful Payment"}
-                        </button>
-                        <button
+                        </Button>
+                        <Button
                             onClick={() => handleSimulate("failed")}
                             disabled={loading}
                             className="w-full bg-white text-red-500 border border-red-100 py-4 rounded-lg font-bold hover:bg-red-50 transition-colors disabled:opacity-50"
                         >
                             Simulate Payment Failure
-                        </button>
+                        </Button>
                     </div>
 
                     <p className="text-[10px] text-gray-400 text-center uppercase tracking-widest leading-loose">

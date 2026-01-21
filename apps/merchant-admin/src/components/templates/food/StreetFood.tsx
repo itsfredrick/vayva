@@ -1,6 +1,6 @@
 import { TemplateProps } from "@/components/templates/registry";
 import { useStore } from "@/context/StoreContext";
-import { Icon } from "@vayva/ui";
+import { Icon, Button } from "@vayva/ui";
 
 export const StreetFoodTemplate: React.FC<TemplateProps> = ({
   businessName,
@@ -19,46 +19,46 @@ export const StreetFoodTemplate: React.FC<TemplateProps> = ({
   // Demo Data Override for Street Food
   const foodItems = demoMode
     ? [
-        {
-          id: "sf_1",
-          name: "Beef Suya",
-          price: 1500,
-          type: "food",
-          detail: "Per Stick",
-          isSpicy: true,
-        },
-        {
-          id: "sf_2",
-          name: "Chicken Suya",
-          price: 2000,
-          type: "food",
-          detail: "Per Stick",
-          isSpicy: true,
-        },
-        {
-          id: "sf_3",
-          name: "Massive Platter",
-          price: 15000,
-          type: "food",
-          detail: "Feeds 4 People",
-          isSpicy: true,
-        },
-        {
-          id: "sf_4",
-          name: "Masa (Rice Cake)",
-          price: 200,
-          type: "food",
-          detail: "Per Piece",
-          isSpicy: false,
-        },
-      ]
+      {
+        id: "sf_1",
+        name: "Beef Suya",
+        price: 1500,
+        type: "food",
+        detail: "Per Stick",
+        isSpicy: true,
+      },
+      {
+        id: "sf_2",
+        name: "Chicken Suya",
+        price: 2000,
+        type: "food",
+        detail: "Per Stick",
+        isSpicy: true,
+      },
+      {
+        id: "sf_3",
+        name: "Massive Platter",
+        price: 15000,
+        type: "food",
+        detail: "Feeds 4 People",
+        isSpicy: true,
+      },
+      {
+        id: "sf_4",
+        name: "Masa (Rice Cake)",
+        price: 200,
+        type: "food",
+        detail: "Per Piece",
+        isSpicy: false,
+      },
+    ]
     : products
-        .filter((p) => p.type === "food")
-        .map((p) => ({
-          ...p,
-          detail: p.category || "Delicious",
-          isSpicy: !!p.isTodaysSpecial,
-        }));
+      .filter((p) => p.type === "food")
+      .map((p) => ({
+        ...p,
+        detail: p.category || "Delicious",
+        isSpicy: !!p.isTodaysSpecial,
+      }));
 
   return (
     <div className="font-sans min-h-screen bg-yellow-400 text-black pb-24">
@@ -92,14 +92,14 @@ export const StreetFoodTemplate: React.FC<TemplateProps> = ({
 
         {/* WhatsApp Checkout Button (Floating or Hero) */}
         <div className="flex justify-center">
-          <button
+          <Button
             onClick={() => checkout("whatsapp")}
             disabled={isCheckoutProcessing || itemCount === 0}
-            className="bg-green-600 text-white px-6 py-4 font-bold uppercase tracking-wide border-2 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:bg-green-700 active:translate-y-1 active:shadow-none transition-all flex items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
+            className="bg-green-600 text-white px-6 py-4 font-bold uppercase tracking-wide border-2 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:bg-green-700 active:translate-y-1 active:shadow-none transition-all flex items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed h-auto"
           >
             <Icon name="MessageCircle" size={24} />
             {itemCount === 0 ? "Add Items to Order" : `Order on WhatsApp`}
-          </button>
+          </Button>
         </div>
       </div>
 
@@ -125,9 +125,9 @@ export const StreetFoodTemplate: React.FC<TemplateProps> = ({
               <div className="font-black text-2xl">
                 {currency} {item.price.toLocaleString()}
               </div>
-              <button className="bg-black text-white text-[10px] font-bold uppercase px-2 py-1 mt-1">
+              <Button className="bg-black text-white text-[10px] font-bold uppercase px-2 py-1 mt-1 h-auto min-h-0 min-w-0">
                 Add +
-              </button>
+              </Button>
             </div>
           </div>
         ))}
@@ -142,15 +142,15 @@ export const StreetFoodTemplate: React.FC<TemplateProps> = ({
       {/* Mobile Bottom Bar if items in cart */}
       {itemCount > 0 && (
         <div className="fixed bottom-4 left-4 right-4 z-40">
-          <button
+          <Button
             onClick={() => checkout("whatsapp")}
-            className="w-full bg-black text-yellow-400 py-4 font-black text-xl uppercase tracking-widest border-4 border-white shadow-xl flex justify-center items-center gap-2"
+            className="w-full bg-black text-yellow-400 py-4 font-black text-xl uppercase tracking-widest border-4 border-white shadow-xl flex justify-center items-center gap-2 h-auto"
           >
             Place Order{" "}
             <span className="bg-white text-black px-2 text-sm rounded">
               {currency} {cartTotal.toLocaleString()}
             </span>
-          </button>
+          </Button>
         </div>
       )}
     </div>

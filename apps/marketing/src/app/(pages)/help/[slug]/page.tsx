@@ -90,12 +90,12 @@ export default function HelpArticlePage() {
               Was this helpful?
             </span>
             <div className="flex gap-2">
-              <button className="px-4 py-2 rounded-lg border border-gray-200 hover:bg-green-50 hover:border-green-200 hover:text-green-600 transition-all text-sm font-bold">
+              <Button className="px-4 py-2 rounded-lg border border-gray-200 hover:bg-green-50 hover:border-green-200 hover:text-green-600 transition-all text-sm font-bold">
                 Yes
-              </button>
-              <button className="px-4 py-2 rounded-lg border border-gray-200 hover:bg-red-50 hover:border-red-200 hover:text-red-600 transition-all text-sm font-bold">
+              </Button>
+              <Button className="px-4 py-2 rounded-lg border border-gray-200 hover:bg-red-50 hover:border-red-200 hover:text-red-600 transition-all text-sm font-bold">
                 No
-              </button>
+              </Button>
             </div>
           </div>
         </div>
@@ -109,7 +109,7 @@ export default function HelpArticlePage() {
             </p>
           </div>
           <a
-            href="mailto:support@vayva.io"
+            href="mailto:support@vayva.ng"
             className="px-6 py-3 bg-[#22C55E] text-white font-bold rounded-xl shadow-lg transition-all hover:scale-105"
           >
             Talk to Support

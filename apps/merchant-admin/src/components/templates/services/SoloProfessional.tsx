@@ -1,6 +1,6 @@
 import { TemplateProps } from "@/components/templates/registry";
 import { useStore } from "@/context/StoreContext";
-import { Icon } from "@vayva/ui";
+import { Icon, Button } from "@vayva/ui";
 
 export const SoloProfessionalTemplate: React.FC<TemplateProps> = ({
   businessName,
@@ -19,48 +19,48 @@ export const SoloProfessionalTemplate: React.FC<TemplateProps> = ({
   // Demo Data Override for Solo Professional
   const serviceItems = demoMode
     ? [
-        {
-          id: "svc_1",
-          name: "Full Bridal Glam",
-          price: 150000,
-          type: "service",
-          duration: "3 hrs",
-          desc: "Complete consultation, trial session, and wedding day makeup.",
-        },
-        {
-          id: "svc_2",
-          name: "Photoshoot/Editorial",
-          price: 45000,
-          type: "service",
-          duration: "2 hrs",
-          desc: "High definition makeup for studio lighting.",
-        },
-        {
-          id: "svc_3",
-          name: "Gele Tying",
-          price: 5000,
-          type: "service",
-          duration: "30 mins",
-          desc: "Expert gele styling (Avant-garde or Traditional).",
-        },
-        {
-          id: "svc_4",
-          name: "Home Service Haircut",
-          price: 15000,
-          type: "service",
-          duration: "1 hr",
-          desc: "Premium haircut at your convenience.",
-        },
-      ]
+      {
+        id: "svc_1",
+        name: "Full Bridal Glam",
+        price: 150000,
+        type: "service",
+        duration: "3 hrs",
+        desc: "Complete consultation, trial session, and wedding day makeup.",
+      },
+      {
+        id: "svc_2",
+        name: "Photoshoot/Editorial",
+        price: 45000,
+        type: "service",
+        duration: "2 hrs",
+        desc: "High definition makeup for studio lighting.",
+      },
+      {
+        id: "svc_3",
+        name: "Gele Tying",
+        price: 5000,
+        type: "service",
+        duration: "30 mins",
+        desc: "Expert gele styling (Avant-garde or Traditional).",
+      },
+      {
+        id: "svc_4",
+        name: "Home Service Haircut",
+        price: 15000,
+        type: "service",
+        duration: "1 hr",
+        desc: "Premium haircut at your convenience.",
+      },
+    ]
     : products
-        .filter((p) => p.type === "service")
-        .map((p) => ({
-          ...p,
-          desc: p.description,
-          duration: (p as any).durationMinutes
-            ? `${(p as any).durationMinutes} mins`
-            : "1 hr",
-        }));
+      .filter((p) => p.type === "service")
+      .map((p) => ({
+        ...p,
+        desc: p.description,
+        duration: (p as any).durationMinutes
+          ? `${(p as any).durationMinutes} mins`
+          : "1 hr",
+      }));
 
   return (
     <div className="font-sans min-h-screen bg-neutral-50 text-neutral-900 pb-20">
@@ -81,19 +81,19 @@ export const SoloProfessionalTemplate: React.FC<TemplateProps> = ({
         </p>
 
         <div className="flex justify-center gap-4">
-          <button
+          <Button
             onClick={() =>
               document
                 .getElementById("services")
                 ?.scrollIntoView({ behavior: "smooth" })
             }
-            className="bg-black text-white px-6 py-2.5 rounded-full text-sm font-bold shadow-lg hover:shadow-xl hover:-translate-y-0.5 transition-all"
+            className="bg-black text-white px-6 py-2.5 rounded-full text-sm font-bold shadow-lg hover:shadow-xl hover:-translate-y-0.5 transition-all h-auto"
           >
             Book Appointment
-          </button>
-          <button className="bg-white text-black border border-neutral-200 px-4 py-2.5 rounded-full w-10 h-10 flex items-center justify-center hover:bg-neutral-50">
+          </Button>
+          <Button variant="outline" className="bg-white text-black border border-neutral-200 px-4 py-2.5 rounded-full w-10 h-10 flex items-center justify-center hover:bg-neutral-50 h-auto">
             <Icon name="MessageCircle" size={16} />
-          </button>
+          </Button>
         </div>
       </div>
 
@@ -132,9 +132,9 @@ export const SoloProfessionalTemplate: React.FC<TemplateProps> = ({
                   <div className="font-bold">
                     {currency} {item.price.toLocaleString()}
                   </div>
-                  <button className="text-[10px] font-bold uppercase border-b border-black pb-0.5 mt-2 hover:opacity-50">
+                  <Button variant="link" className="text-[10px] font-bold uppercase border-b border-black pb-0.5 mt-2 hover:opacity-50 h-auto p-0 rounded-none">
                     Book
-                  </button>
+                  </Button>
                 </div>
               </div>
             ))}
@@ -148,18 +148,22 @@ export const SoloProfessionalTemplate: React.FC<TemplateProps> = ({
           <div className="grid grid-cols-2 gap-2">
             <img
               src="https://images.unsplash.com/photo-1487412947132-232a8b71a0d1?w=400&q=80"
+              alt="Bridal makeup portfolio shot"
               className="rounded-2xl w-full h-40 object-cover"
             />
             <img
               src="https://images.unsplash.com/photo-1522336572468-97b06e8ef143?w=400&q=80"
+              alt="Editorial makeup portfolio shot"
               className="rounded-2xl w-full h-40 object-cover translate-y-4"
             />
             <img
               src="https://images.unsplash.com/photo-1512496015851-a90fb38ba796?w=400&q=80"
+              alt="Eye makeup detail shot"
               className="rounded-2xl w-full h-40 object-cover"
             />
             <img
               src="https://images.unsplash.com/photo-1516975080664-ed2fc6a32937?w=400&q=80"
+              alt="Creative makeup portfolio shot"
               className="rounded-2xl w-full h-40 object-cover translate-y-4"
             />
           </div>
@@ -169,9 +173,9 @@ export const SoloProfessionalTemplate: React.FC<TemplateProps> = ({
       {/* Sticky Booking Footer */}
       {itemCount > 0 && (
         <div className="fixed bottom-6 left-6 right-6">
-          <button
+          <Button
             onClick={() => checkout("whatsapp")}
-            className="w-full bg-black text-white py-4 rounded-full font-bold shadow-2xl shadow-neutral-500/30 flex items-center justify-between px-8"
+            className="w-full bg-black text-white py-4 rounded-full font-bold shadow-2xl shadow-neutral-500/30 flex items-center justify-between px-8 h-auto"
           >
             <span>
               {itemCount} Service{itemCount > 1 ? "s" : ""}
@@ -180,7 +184,7 @@ export const SoloProfessionalTemplate: React.FC<TemplateProps> = ({
               Confirm Booking{" "}
               <Icon name="ArrowRight" size={16} className="inline ml-1" />
             </span>
-          </button>
+          </Button>
         </div>
       )}
     </div>

@@ -99,12 +99,13 @@ const VerifyContent = () => {
       {/* Resend Code */}
       <div className="text-center mb-6">
         {canResend ? (
-          <button
+          <Button
+            variant="link"
             onClick={handleResend}
-            className="text-sm text-[#0D1D1E] hover:text-black font-medium transition-colors"
+            className="text-sm text-[#0D1D1E] hover:text-black font-medium pl-0 pr-0"
           >
             Resend code
-          </button>
+          </Button>
         ) : (
           <p className="text-sm text-gray-400">Resend code in {resendTimer}s</p>
         )}
@@ -133,13 +134,14 @@ const VerifyContent = () => {
       <div className="mt-6 text-center">
         <p className="text-xs text-gray-400">
           Didn't receive the code? Check your spam folder or{" "}
-          <button
+          <Button
+            variant="link"
             onClick={handleResend}
             disabled={!canResend}
-            className="text-[#0D1D1E] hover:text-black disabled:opacity-50 disabled:cursor-not-allowed font-medium"
+            className="text-[#0D1D1E] hover:text-black disabled:opacity-50 disabled:cursor-not-allowed font-medium pl-0 pr-0 h-auto"
           >
             request a new one
-          </button>
+          </Button>
         </p>
       </div>
     </SplitAuthLayout>

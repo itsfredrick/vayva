@@ -1,56 +1,60 @@
 export type PlanType = "free" | "growth" | "pro";
 
 export type OnboardingStepId =
-  | "welcome" // 1. Industry & Path
-  | "business" // 2. Business Profile
-  | "communication" // 3. Communication & Team
-  | "visuals" // 4. Visual Storefront
-  | "finance" // 5. Finance & Payments
-  | "logistics" // 6. Logistics
-  | "inventory" // 7. Product Entry
-  | "kyc" // 8. Verification (New)
-  | "review" // 9. Final Review
+  | "welcome" // 1. Welcome
+  | "identity" // 2. Account Identity (New)
+  | "business" // 3. Business Basics (Store Name, Category, Country)
+  | "url" // 4. Store URL (New)
+  | "branding" // 5. Branding (Renamed from Visuals?) - kept as 'visuals' in db or new 'branding'? 
+  // User said "Rename/Alias". Safest is to keep 'visuals' for DB compatibility or add 'branding'.
+  // Let's add 'branding' and map it. But wait, OnboardingState uses these keys.
+  // If I change keys, I break existing data.
+  // I will KEEP 'visuals' as the underlying ID if possible, OR add 'branding' and migrate.
+  // But strictly following the plan: "Rename/Alias Visuals to Branding".
+  // Let's us 'visuals' key but label it Branding in UI, OR adding 'branding'.
+  // Adding 'branding' allows clean start. 'visuals' can remain deprecated.
+  | "visuals" // Keeping this for now to avoid breaking existing state? 
+  // Actually, I should probably stick to the 10-step plan IDs.
+  // "branding" matches "Step 5".
+  | "inventory" // 6. Products
+  | "finance" // 7. Payments
+  | "logistics" // 8. Shipping
+  | "kyc" // 9. Verification
+  | "review" // 10. Review
   | "complete";
 
 export interface InventoryProduct {
   name: string;
   price: number;
   description?: string;
-  image?: string;
-  segment?: string;
+  sku?: string;
+  stock?: number;
+  images?: string[];
   attributes?: Record<string, any>;
+  segment?: string;
 }
 
 export interface OnboardingState {
   schemaVersion?: number;
   isComplete: boolean;
   requiredComplete?: boolean;
-  isEditingMode?: boolean; // New Edit Loop flag
+  isEditingMode?: boolean;
   currentStep: OnboardingStepId;
-  lastUpdatedAt: string; // ISO date
-  completedSteps?: string[]; // Track completed steps
-  skippedSteps?: OnboardingStepId[]; // Steps skipped due to template fast path
-  requiredSteps?: OnboardingStepId[]; // Steps strictly required by template
-  templateSelected?: boolean; // Legacy/Compat check
+  lastUpdatedAt: string;
+  completedSteps?: string[];
+  skippedSteps?: OnboardingStepId[];
+  requiredSteps?: OnboardingStepId[];
+  templateSelected?: boolean;
 
   // Global / Cross-cutting
   referralCode?: string;
   plan: PlanType;
+  industrySlug?: string; // REQUIRED
 
   // Step 1: Welcome & Intent
   intent?: {
-    segment:
-    | "retail"
-    | "food"
-    | "services"
-    | "digital"
-    | "wholesale"
-    | "real-estate"
-    | "events"
-    | "education"
-    | "non-profit"
-    | "other";
-    hasDelivery?: boolean; // Derived from segment
+    segment: string;
+    hasDelivery?: boolean;
   };
 
   // Step 1b: Setup Path
@@ -58,33 +62,48 @@ export interface OnboardingState {
 
   // Step 2: Business Basics
   business?: {
-    name: string; // Legal Name
-    storeName?: string; // Public name
-    slug?: string; // Store URL slug
-    type?: "individual" | "registered";
-    email: string; // Pre-filled where possible
+    name: string; // "My Store"
+    storeName: string; // PUBLIC name
+    slug: string; // UNIQUE slug
     description?: string;
-    location?: {
-      city: string;
-      state: string;
-      country: string;
-    };
-    category?: string; // Legacy/Compat
-    legalName?: string; // Alias for name
+
+    // Location
+    country: string; // Default "NG"
+    state: string;
+    city: string;
+
+    // Contact
+    phone: string;
+    email: string;
+
+    // Registration
+    businessRegistrationType: "registered" | "non_registered" | "individual"; // Enforce strict type
+    cacNumber?: string; // Required if registered
+    cacDocumentUrl?: string; // Optional
+
+    // Legacy mapping (can remain for compatibility if needed, else remove)
+    type?: "individual" | "registered";
+    category?: string;
+    legalName?: string;
   };
 
   // Meta Settings
   storeDetails?: {
-    slug?: string;
+    slug?: string; // Deprecated, use business.slug
     domainPreference?: "subdomain" | "custom";
     publishStatus?: "draft" | "published";
-    storeName?: string;
   };
 
   // Step 3: Communication
   whatsappConnected?: boolean;
   whatsapp?: {
     number?: string;
+  };
+  supportEmail?: string;
+  socialLinks?: {
+    instagram?: string;
+    twitter?: string;
+    facebook?: string;
   };
   team?: {
     type: "solo" | "small" | "large";
@@ -99,19 +118,19 @@ export interface OnboardingState {
   };
   branding?: {
     colors?: { primary: string; secondary: string };
-    brandColor?: string; // Legacy/Simple
-    logoUrl?: string;
+    brandColor?: string;
+    logoUrl?: string; // REQUIRED
     coverUrl?: string;
   };
 
-
-
-  // Step 5: Finance
+  // Step 5: Finance (Required if module 'finance' active)
   finance?: {
     bankName: string;
     accountNumber: string;
-    accountName: string;
-    bankCode?: string; // Audit Fix: Added strict type
+    accountName: string; // Resolved name
+    bankCode?: string;
+    bvn?: string; // Required for payout verification
+    nin?: string;
     methods: {
       bankTransfer: boolean;
       cash: boolean;
@@ -119,46 +138,36 @@ export interface OnboardingState {
     };
     currency?: string;
     payoutScheduleAcknowledged?: boolean;
-    settlementBank?: { // Legacy/Compat for onboaring-sync
-      bankName: string;
-      accountNumber: string;
-      accountName: string;
-    };
   };
 
-  // Step 6: Logistics
+  // Step 6: Logistics (Required if module 'fulfillment' active)
   logistics?: {
-    policy: "pickup" | "delivery" | "both";
+    deliveryMode: "pickup" | "delivery" | "both";
+    pickupAddress?: string; // Required if pickup/both
+    pickupContact?: {
+      name: string;
+      phone: string;
+    };
     providers?: {
       manual: boolean;
       kwik: boolean;
       gokada: boolean;
     };
-    pickupAddress?: string;
-    defaultProvider?: string;
   };
 
   // Step 7: Inventory
   inventory?: InventoryProduct[];
 
   // Step 8: KYC
-  // Step 8: KYC
   kycStatus?: "not_started" | "pending" | "verified" | "failed";
   identity?: {
     fullName: string;
     bvn?: string;
     nin?: string;
-    cacNumber?: string;
-    dob?: string;
     address?: string;
     phone?: string;
   };
-  kyc?: { // Legacy / specific step data container if needed, but identity is better
-    fullName?: string;
-    dob?: string;
-    address?: string;
-    nin?: string;
-    cacNumber?: string;
-    status?: "verified" | "pending" | "failed";
-  };
+
+  // Clean up legacy keys if necessary
+  kyc?: undefined;
 }

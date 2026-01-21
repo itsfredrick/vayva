@@ -10,6 +10,10 @@ export function PWAInstallPrompt() {
     const [isIOS, setIsIOS] = useState(false);
 
     useEffect(() => {
+        // Check if previously dismissed
+        const ignored = localStorage.getItem("vayva_pwa_prompt_dismissed");
+        if (ignored) return;
+
         // Check if running on iOS
         const isIosDevice =
             /iPad|iPhone|iPod/.test(navigator.userAgent) && !(window as any).MSStream;
@@ -43,10 +47,18 @@ export function PWAInstallPrompt() {
         return () => window.removeEventListener("beforeinstallprompt", handler);
     }, []);
 
+    const handleDismiss = () => {
+        localStorage.setItem("vayva_pwa_prompt_dismissed", "true");
+        setIsVisible(false);
+    };
+
     const handleInstallClick = async () => {
         if (isIOS) {
-            // iOS doesn"t support programmatic install, show instructions
+            // iOS doesn't support programmatic install, show instructions
             alert("To install Vayva:\n1. Tap the Share button below\n2. Select 'Add to Home Screen'");
+            // Don't dismiss permanently on iOS instruction click, maybe they failed. 
+            // Or maybe we do? Let's just close for now.
+            setIsVisible(false);
             return;
         }
 
@@ -58,6 +70,7 @@ export function PWAInstallPrompt() {
         if (outcome === "accepted") {
             setDeferredPrompt(null);
             setIsVisible(false);
+            // Ideally track successful install
         }
     };
 
@@ -85,7 +98,7 @@ export function PWAInstallPrompt() {
                             {isIOS ? "How to Install" : "Install App"}
                         </Button>
                         <Button
-                            onClick={() => setIsVisible(false)}
+                            onClick={handleDismiss}
                             size="sm"
                             variant="ghost"
                             className="h-8 text-xs text-gray-500 hover:text-gray-900"
@@ -94,12 +107,14 @@ export function PWAInstallPrompt() {
                         </Button>
                     </div>
                 </div>
-                <button
-                    onClick={() => setIsVisible(false)}
-                    className="text-gray-400 hover:text-gray-600 transition-colors"
+                <Button
+                    onClick={handleDismiss}
+                    variant="ghost"
+                    size="icon"
+                    className="text-gray-400 hover:text-gray-600 w-auto h-auto p-1"
                 >
                     <X size={16} />
-                </button>
+                </Button>
             </div>
         </div>
     );

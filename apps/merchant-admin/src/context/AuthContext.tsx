@@ -10,6 +10,7 @@ import {
   OnboardingStatus,
   BusinessType,
 } from "@vayva/shared";
+import { getAuthRedirect } from "@/lib/auth/redirects";
 
 import { InactivityListener } from "@/components/auth/InactivityListener";
 
@@ -60,11 +61,8 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     setUser(newUser);
     setMerchant(newMerchant || null);
 
-    if (newMerchant?.onboardingStatus === OnboardingStatus.COMPLETE) {
-      router.push("/admin/dashboard");
-    } else {
-      router.push("/onboarding/resume");
-    }
+    const destination = getAuthRedirect(newUser, newMerchant || null);
+    router.push(destination);
   };
 
   const logout = async () => {
@@ -111,60 +109,53 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     );
     const isAuthRoute = ["/signin", "/signup", "/verify"].includes(pathname);
 
+    // 1. Unauthenticated -> Redirect to Signin (protect private routes)
     if (!user && !isPublicRoute) {
       router.push("/signin");
       return;
     }
 
+    // 2. Authenticated
     if (user) {
+      const destination = getAuthRedirect(user, merchant);
+
+      // If we are on an Auth Route, ALWAYs redirect to correct destination
       if (isAuthRoute) {
-        if (merchant?.onboardingStatus === OnboardingStatus.COMPLETE) {
-          router.push("/admin/dashboard");
-        } else {
-          router.push("/onboarding/resume");
+        // Special case: If we are on /verify and the destination IS /verify, stay.
+        if (pathname.startsWith("/verify") && destination.startsWith("/verify")) {
+          return;
         }
+        router.push(destination);
         return;
       }
 
-      // Enhanced Onboarding Gating
-      if (merchant) {
-        const isConfigured = [
-          OnboardingStatus.COMPLETE,
-          OnboardingStatus.REQUIRED_COMPLETE,
-          OnboardingStatus.OPTIONAL_INCOMPLETE,
-        ].includes(merchant.onboardingStatus);
+      // If we are on a Private Route (e.g. Dashboard), ensure we are allowed to be here.
+      // logic: If destination != /dashboard, and we are currently ON /dashboard (or anything that is not onboarding/verify), force redirect.
 
-        // Block dashboard access if onboarding incomplete/not configured
-        if (pathname.startsWith("/admin") && !isConfigured) {
-          router.push("/onboarding/resume");
+      const isDestinationDashboard = destination === "/dashboard";
+      const isDestinationOnboarding = destination.startsWith("/onboarding");
+      const isDestinationVerify = destination.startsWith("/verify");
+
+      if (isDestinationVerify && !pathname.startsWith("/verify")) {
+        router.push(destination);
+        return;
+      }
+
+      if (isDestinationOnboarding) {
+        // Allowed to be on /onboarding/*
+        if (!pathname.startsWith("/onboarding")) {
+          router.push(destination);
           return;
         }
+      }
 
-        // Block direct onboarding access if already fully configured (optional)
-        // However, user might want to access optional steps via /onboarding URLs.
-        // The prompt says: "send to /admin/dashboard with checklist" if REQUIRED_COMPLETE.
-        if (
-          pathname.startsWith("/onboarding") &&
-          isConfigured &&
-          pathname !== "/onboarding/resume"
-        ) {
-          // Allow specific onboarding sub-routes if they are part of the optional checklist
-          const allowedOptionalRoutes = [
-            "/onboarding/whatsapp",
-            "/onboarding/order-flow",
-            "/onboarding/payments",
-            "/onboarding/delivery",
-            "/onboarding/team",
-            "/onboarding/kyc",
-          ];
-
-          const isOptionalStep = allowedOptionalRoutes.some((p) =>
-            pathname.startsWith(p),
-          );
-          if (!isOptionalStep) {
-            router.push("/admin/dashboard");
-            return;
-          }
+      if (isDestinationDashboard) {
+        // If we are supposed to be on dashboard, but we are on /onboarding allow user to finish optional steps?
+        // Or force dashboard?
+        // Prompt: "Visiting /onboarding when onboarding complete -> redirected to /dashboard"
+        if (pathname.startsWith("/onboarding")) {
+          router.push(destination);
+          return;
         }
       }
     }

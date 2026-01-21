@@ -123,17 +123,17 @@ export class OpsAuthService {
 
     const session = await prisma.opsSession.findUnique({
       where: { token },
-      include: { OpsUser: true },
+      include: { opsUser: true },
     });
 
     if (!session || session.expiresAt < new Date()) {
       return null;
     }
 
-    if (!session.OpsUser.isActive) return null;
+    if (!session.opsUser.isActive) return null;
 
     return {
-      user: session.OpsUser,
+      user: session.opsUser,
       session,
     };
   }

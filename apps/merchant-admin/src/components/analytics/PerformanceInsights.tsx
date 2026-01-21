@@ -1,5 +1,5 @@
 import React from "react";
-import { Icon, cn } from "@vayva/ui";
+import { Icon, cn, Button } from "@vayva/ui";
 import { Insight, Recommendation } from "@/types/analytics";
 
 export const PerformanceInsights = ({
@@ -62,9 +62,10 @@ export const PerformanceInsights = ({
               >
                 {insight.message}
               </p>
-              <button
+              <Button
+                variant="link"
                 className={cn(
-                  "text-xs font-bold underline decoration-dotted underline-offset-2",
+                  "text-xs font-bold underline decoration-dotted underline-offset-2 p-0 h-auto",
                   insight.type === "positive"
                     ? "text-green-700"
                     : insight.type === "warning"
@@ -73,7 +74,7 @@ export const PerformanceInsights = ({
                 )}
               >
                 {insight.action}
-              </button>
+              </Button>
             </div>
           </div>
         ))}
@@ -104,9 +105,9 @@ export const PerformanceInsights = ({
                 +{recommendation.potential_uplift.orders}% Orders
               </div>
             </div>
-            <button className="bg-indigo-600 text-white text-xs font-bold px-4 py-2 rounded-lg shadow-sm hover:bg-indigo-700 transition-colors">
+            <Button size="sm" className="bg-indigo-600 text-white hover:bg-indigo-700 shadow-sm transition-colors text-xs font-bold">
               Preview Template
-            </button>
+            </Button>
           </div>
         </div>
       )}

@@ -1,4 +1,4 @@
-# Vayva Platform Architecture
+# Vayva Architecture
 
 ## System Overview
 

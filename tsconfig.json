@@ -29,6 +29,12 @@
             ],
             "@vayva/shared/*": [
                 "packages/shared/src/*"
+            ],
+            "@vayva/education/*": [
+                "packages/education/src/*"
+            ],
+            "@vayva/analytics/*": [
+                "packages/analytics/src/*"
             ]
         }
     },

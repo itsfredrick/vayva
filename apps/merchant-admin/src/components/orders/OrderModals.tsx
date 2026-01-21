@@ -4,6 +4,7 @@ import React, { useState } from "react";
 import { Button, Icon } from "@vayva/ui";
 import { motion, AnimatePresence } from "framer-motion";
 import { Order } from "@/services/orders";
+import { useToast } from "@/components/ui/use-toast";
 
 // --- Delivery Task Modal ---
 interface DeliveryTaskModalProps {
@@ -17,6 +18,7 @@ export const DeliveryTaskModal = ({
   onClose,
   order,
 }: DeliveryTaskModalProps) => {
+  const { toast } = useToast();
   const [loading, setLoading] = useState(false);
 
   if (!isOpen) return null;
@@ -31,13 +33,20 @@ export const DeliveryTaskModal = ({
 
       if (!res.ok) throw new Error("Failed to create shipment");
 
-      alert("Delivery Task Created & Order Fulfilled!");
+      toast({
+        title: "Success",
+        description: "Delivery Task Created & Order Fulfilled!",
+      });
       onClose();
       // Ideally trigger refresh of order details here
       window.location.reload();
     } catch (error) {
       console.error(error);
-      alert("Failed to create delivery task");
+      toast({
+        title: "Error",
+        description: "Failed to create delivery task",
+        variant: "destructive",
+      });
     } finally {
       setLoading(false);
     }
@@ -55,10 +64,10 @@ export const DeliveryTaskModal = ({
         className="bg-white rounded-xl shadow-xl w-full max-w-lg overflow-hidden"
       >
         <div className="p-4 border-b border-gray-100 flex justify-between items-center bg-gray-50">
-          <h3 className="font-bold text-[#0B0B0B]">Create Delivery Task</h3>
-          <button onClick={onClose}>
+          <h3 className="font-bold text-black">Create Delivery Task</h3>
+          <Button variant="ghost" size="icon" onClick={onClose} aria-label="Close" className="h-8 w-8">
             <Icon name="X" size={18} />
-          </button>
+          </Button>
         </div>
         <div className="p-6 flex flex-col gap-4">
           <div className="bg-blue-50 p-3 rounded-lg text-sm text-blue-800 flex items-start gap-2">
@@ -100,10 +109,10 @@ export const DeliveryTaskModal = ({
           </div>
 
           <div className="flex flex-col gap-1">
-            <label className="text-xs font-bold text-[#525252]">
+            <label className="text-xs font-bold text-[#525252]" htmlFor="rider-pref">
               Rider Preference
             </label>
-            <select className="h-10 border border-gray-200 rounded-lg px-2 bg-white">
+            <select id="rider-pref" aria-label="Rider Preference" className="h-10 border border-gray-200 rounded-lg px-2 bg-white">
               <option>Standard Bike (Next Available)</option>
               <option>Express (Priority)</option>
             </select>
@@ -130,6 +139,7 @@ interface RefundModalProps {
 }
 
 export const RefundModal = ({ isOpen, onClose, order }: RefundModalProps) => {
+  const { toast } = useToast();
   const [loading, setLoading] = useState(false);
   const [amount, setAmount] = useState(order.total.toString());
   const [reason, setReason] = useState("");
@@ -142,7 +152,10 @@ export const RefundModal = ({ isOpen, onClose, order }: RefundModalProps) => {
     await new Promise((resolve) => setTimeout(resolve, 1500));
     setLoading(false);
     onClose();
-    alert("Refund Initiated!");
+    toast({
+      title: "Refund Initiated",
+      description: "The refund process has started.",
+    });
   };
 
   return (
@@ -157,17 +170,18 @@ export const RefundModal = ({ isOpen, onClose, order }: RefundModalProps) => {
         className="bg-white rounded-xl shadow-xl w-full max-w-md overflow-hidden"
       >
         <div className="p-4 border-b border-gray-100 flex justify-between items-center bg-gray-50">
-          <h3 className="font-bold text-[#0B0B0B]">Initiate Refund</h3>
-          <button onClick={onClose}>
+          <h3 className="font-bold text-black">Initiate Refund</h3>
+          <Button variant="ghost" size="icon" onClick={onClose} aria-label="Close" className="h-8 w-8">
             <Icon name="X" size={18} />
-          </button>
+          </Button>
         </div>
         <div className="p-6 flex flex-col gap-4">
           <div className="flex flex-col gap-1">
-            <label className="text-xs font-bold text-[#525252]">
+            <label className="text-xs font-bold text-[#525252]" htmlFor="refund-amount">
               Refund Amount (₦)
             </label>
             <input
+              id="refund-amount"
               type="number"
               className="h-10 border border-gray-200 rounded-lg px-3 focus:ring-2 focus:ring-black/5 outline-none"
               value={amount}
@@ -179,8 +193,10 @@ export const RefundModal = ({ isOpen, onClose, order }: RefundModalProps) => {
           </div>
 
           <div className="flex flex-col gap-1">
-            <label className="text-xs font-bold text-[#525252]">Reason</label>
+            <label className="text-xs font-bold text-[#525252]" htmlFor="refund-reason">Reason</label>
             <select
+              id="refund-reason"
+              aria-label="Refund Reason"
               className="h-10 border border-gray-200 rounded-lg px-2 bg-white"
               value={reason}
               onChange={(e) => setReason(e.target.value)}

@@ -27,7 +27,7 @@ export class EvidenceVault {
    * Securely deletes evidence (Tested)
    */
   static async secureDelete(fileUrl: string) {
-    console.log("Deleting from vault:", fileUrl);
+    
     return true;
   }
 }

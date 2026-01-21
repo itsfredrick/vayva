@@ -103,13 +103,12 @@ export const TemplatePreviewModal = ({
             <div className="flex justify-between items-start mb-6">
               <div>
                 <span
-                  className={`text-[10px] font-bold uppercase px-2 py-1 rounded ${
-                    template.tier === "pro"
+                  className={`text-[10px] font-bold uppercase px-2 py-1 rounded ${template.tier === "pro"
                       ? "bg-purple-100 text-purple-700"
                       : template.tier === "growth"
                         ? "bg-green-100 text-green-700"
                         : "bg-gray-100 text-gray-600"
-                  }`}
+                    }`}
                 >
                   {template.tier === "pro"
                     ? "₦40,000"
@@ -122,9 +121,11 @@ export const TemplatePreviewModal = ({
                   {template.name}
                 </h2>
               </div>
-              <button
+              <Button
+                variant="ghost"
+                size="icon"
                 onClick={onClose}
-                className="p-2 hover:bg-gray-100 rounded-full transition-colors text-gray-400"
+                className="hover:bg-gray-100 rounded-full transition-colors text-gray-400"
               >
                 <svg
                   className="w-6 h-6"
@@ -139,7 +140,7 @@ export const TemplatePreviewModal = ({
                     d="M6 18L18 6M6 6l18 18"
                   />
                 </svg>
-              </button>
+              </Button>
             </div>
 
             <p className="text-gray-600 leading-relaxed mb-8">

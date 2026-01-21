@@ -34,7 +34,7 @@ export const BillingController = {
         storeId,
         planKey,
         status: trial ? "TRIALING" : "ACTIVE",
-        provider: "STRIPE",
+        provider: "PAYSTACK",
         currentPeriodStart: now,
         currentPeriodEnd: new Date(now.getTime() + 30 * 24 * 60 * 60 * 1000),
         trialEndsAt: trial ? trialEnd : null,
@@ -158,7 +158,7 @@ export const BillingController = {
 
   // --- Invoices ---
   listInvoices: async (storeId: string) => {
-    return await prisma.invoice.findMany({
+    return await prisma.invoiceV2.findMany({
       where: { storeId },
       orderBy: { createdAt: "desc" },
     });

@@ -1,6 +1,6 @@
 "use client";
 
-import { Card, Button, StatusChip } from "@vayva/ui";
+import { Button, Card, StatusChip } from "@vayva/ui";
 import { formatDistanceToNow } from "date-fns";
 import { CheckCircle, Clock, Loader2 } from "lucide-react";
 import { useState } from "react";
@@ -8,9 +8,9 @@ import { toast } from "sonner";
 
 interface OrderItem {
     id: string;
-    productName: string; // or title depending on schema relation
+    title: string;
     quantity: number;
-    variantName?: string;
+    // Notes/Metadata are not in current OrderItem schema, but we keep the optional field for future use if extended
     notes?: string;
 }
 
@@ -18,7 +18,7 @@ interface Order {
     id: string;
     orderNumber: string;
     items: OrderItem[];
-    createdAt: string;
+    createdAt: string; // Serialized date
     fulfillmentStatus: string;
     customerNote?: string;
 }
@@ -72,10 +72,7 @@ export function KitchenTicket({ order, onStatusChange }: KitchenTicketProps) {
                         <div className="flex gap-2">
                             <span className="font-bold text-gray-900 w-6">{item.quantity}x</span>
                             <div>
-                                <p className="font-medium text-gray-900">{item.productName || "Unknown Item"}</p>
-                                {item.variantName && (
-                                    <p className="text-xs text-gray-500">{item.variantName}</p>
-                                )}
+                                <p className="font-medium text-gray-900">{item.title}</p>
                                 {item.notes && (
                                     <p className="text-xs text-amber-600 italic mt-0.5">Note: {item.notes}</p>
                                 )}

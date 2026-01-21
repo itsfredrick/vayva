@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import { Button, Input, GlassPanel, Icon, cn } from "@vayva/ui";
+import { Button, GlassPanel, Icon, Input, cn } from "@vayva/ui";
 
 interface KYCVerificationProps {
   onSuccess?: () => void;
@@ -89,7 +89,7 @@ export function KYCVerification({ onSuccess, onCancel }: KYCVerificationProps) {
 
       {step === "SELECT" ? (
         <div className="grid grid-cols-1 gap-4">
-          <button
+          <Button
             onClick={() => {
               setMethod("BVN");
               setStep("FORM");
@@ -107,9 +107,9 @@ export function KYCVerification({ onSuccess, onCancel }: KYCVerificationProps) {
                 Instant verification via your 11-digit BVN.
               </p>
             </div>
-          </button>
+          </Button>
 
-          <button
+          <Button
             onClick={() => {
               setMethod("NIN");
               setStep("FORM");
@@ -127,7 +127,7 @@ export function KYCVerification({ onSuccess, onCancel }: KYCVerificationProps) {
                 Verify using your 11-digit National ID.
               </p>
             </div>
-          </button>
+          </Button>
 
           <div className="pt-4">
             <Button variant="ghost" onClick={onCancel} className="w-full">

@@ -4,6 +4,7 @@ import { useState } from "react";
 import { LocaleKey, LOCALES } from "@/data/locales";
 import { useUserInteractions } from "@/hooks/useUserInteractions";
 import { CheckCircle, AlertCircle, ArrowRight } from "lucide-react";
+import { Button } from "@vayva/ui";
 
 interface GiftCardRedeemFormProps {
   lang: LocaleKey;
@@ -57,11 +58,10 @@ export function GiftCardRedeemForm({ lang }: GiftCardRedeemFormProps) {
 
       {result && (
         <div
-          className={`mb-6 p-4 rounded-xl flex items-center gap-3 text-sm font-bold animate-fade-in-up ${
-            result.success
-              ? "bg-green-50 text-green-700"
-              : "bg-red-50 text-red-700"
-          }`}
+          className={`mb-6 p-4 rounded-xl flex items-center gap-3 text-sm font-bold animate-fade-in-up ${result.success
+            ? "bg-green-50 text-green-700"
+            : "bg-red-50 text-red-700"
+            }`}
         >
           {result.success ? (
             <CheckCircle size={18} />
@@ -72,14 +72,16 @@ export function GiftCardRedeemForm({ lang }: GiftCardRedeemFormProps) {
         </div>
       )}
 
-      <button
+      <Button
         type="submit"
+        variant="outline"
         disabled={!code}
-        className="w-full bg-white border-2 border-black text-black font-bold h-14 rounded-xl hover:bg-gray-50 transition-all flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-white"
+        className="w-full bg-white border-2 border-black text-black font-bold h-14 rounded-xl hover:bg-gray-50 transition-all flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-white h-auto"
+        aria-label="Redeem gift card"
       >
         {t.submit}
         <ArrowRight size={20} />
-      </button>
+      </Button>
     </form>
   );
 }

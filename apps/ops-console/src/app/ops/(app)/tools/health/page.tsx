@@ -4,6 +4,7 @@ import { OpsShell } from "@/components/OpsShell";
 import { useOpsQuery } from "@/hooks/useOpsQuery";
 import { Activity, Database, Server, CheckCircle2, AlertTriangle, RefreshCw } from "lucide-react";
 import { useState } from "react";
+import { Button } from "@vayva/ui";
 
 export default function HealthPage() {
     const { data, isLoading: loading, error, refetch: refresh } = useOpsQuery(
@@ -48,12 +49,14 @@ export default function HealthPage() {
                     </div>
                     <div className="flex items-center gap-4">
                         {data && <StatusBadge status={data.status} />}
-                        <button
+                        <Button
+                            variant="ghost"
+                            size="icon"
                             onClick={handleRefresh}
-                            className={`p-2 text-gray-400 hover:text-indigo-600 transition-colors rounded-lg hover:bg-gray-50 ${refreshing || loading ? "animate-spin" : ""}`}
+                            className="text-gray-400 hover:text-indigo-600 hover:bg-gray-50"
                         >
-                            <RefreshCw size={18} />
-                        </button>
+                            <RefreshCw size={18} className={refreshing || loading ? "animate-spin" : ""} />
+                        </Button>
                     </div>
                 </div>
 
@@ -88,7 +91,7 @@ export default function HealthPage() {
                             {data && <StatusBadge status={data.checks?.external_apis?.status} />}
                         </div>
                         <h3 className="text-sm font-medium text-gray-900">External Gateways</h3>
-                        <p className="text-xs text-gray-500 mt-1">Stripe, Paystack, Resend</p>
+                        <p className="text-xs text-gray-500 mt-1">Paystack, Resend</p>
 
                         <div className="mt-6 flex items-center justify-between text-sm">
                             <span className="text-gray-500">Status</span>

@@ -1,4 +1,4 @@
-# Vayva Platform: Staging Rehearsal Script
+# Vayva: Staging Rehearsal Script
 
 **Status:** Required before Production.
 **Env:** `*.vayva-staging.vercel.app` (Staging Environment)

@@ -6,6 +6,7 @@ import {
 import { useStorefrontCart } from "@/hooks/storefront/useStorefrontCart";
 import { CheckoutModal } from "./CheckoutModal";
 import { ShoppingBag, X } from "lucide-react";
+import { Button } from "@vayva/ui";
 
 export function BloomeHome({
   storeName: initialStoreName,
@@ -65,15 +66,17 @@ export function BloomeHome({
           {displayName}
         </div>
         <div className="flex gap-4 items-center">
-          <button className="text-sm font-sans tracking-widest uppercase hover:text-black">
+          <Button variant="ghost" className="text-sm font-sans tracking-widest uppercase hover:text-black h-auto p-0 hover:bg-transparent">
             Account
-          </button>
-          <button
-            className="text-sm font-sans tracking-widest uppercase hover:text-black flex items-center gap-2"
+          </Button>
+          <Button
+            variant="ghost"
+            className="text-sm font-sans tracking-widest uppercase hover:text-black flex items-center gap-2 h-auto p-0 hover:bg-transparent"
             onClick={() => setIsCartOpen(true)}
+            aria-label={`View cart with ${cart.length} items`}
           >
             Cart ({cart.length})
-          </button>
+          </Button>
         </div>
       </nav>
 
@@ -87,24 +90,28 @@ export function BloomeHome({
           <div className="relative w-full max-w-md bg-[#FAFAF9] h-full p-8 flex flex-col shadow-2xl animate-in slide-in-from-right duration-500">
             <div className="flex justify-between items-center mb-8">
               <h2 className="text-2xl font-serif text-[#292524]">Your Cart</h2>
-              <button
+              <Button
+                variant="ghost"
+                size="icon"
                 onClick={() => setIsCartOpen(false)}
-                className="opacity-50 hover:opacity-100 transition-opacity"
+                className="opacity-50 hover:opacity-100 transition-opacity p-0 h-auto"
+                aria-label="Close cart sidebar"
               >
                 <X className="w-6 h-6" />
-              </button>
+              </Button>
             </div>
 
             <div className="flex-1 overflow-auto space-y-8 pr-2">
               {cart.length === 0 ? (
                 <div className="text-center py-20 text-[#A8A29E]">
                   <p className="mb-4">Your cart is currently empty.</p>
-                  <button
+                  <Button
+                    variant="link"
                     onClick={() => setIsCartOpen(false)}
-                    className="text-[#292524] underline underline-offset-4"
+                    className="text-[#292524] underline underline-offset-4 p-0 h-auto"
                   >
                     Continue Browsing
-                  </button>
+                  </Button>
                 </div>
               ) : (
                 cart.map((item) => (
@@ -113,6 +120,7 @@ export function BloomeHome({
                       {item.image && (
                         <img
                           src={item.image}
+                          alt={item.name}
                           className="w-full h-full object-cover mix-blend-multiply"
                         />
                       )}
@@ -127,12 +135,13 @@ export function BloomeHome({
                         </p>
                       </div>
                       <div className="flex justify-between items-end">
-                        <button
+                        <Button
+                          variant="link"
                           onClick={() => removeFromCart(item.id)}
-                          className="text-xs text-[#A8A29E] hover:text-[#78716C] underline underline-offset-2"
+                          className="text-xs text-[#A8A29E] hover:text-[#78716C] underline underline-offset-2 p-0 h-auto"
                         >
                           Remove
-                        </button>
+                        </Button>
                         <span className="font-serif text-lg">
                           ₦{(item.price * item.quantity).toLocaleString()}
                         </span>
@@ -153,15 +162,15 @@ export function BloomeHome({
                     ₦{total.toLocaleString()}
                   </span>
                 </div>
-                <button
+                <Button
                   onClick={() => {
                     setIsCartOpen(false);
                     setIsCheckoutOpen(true);
                   }}
-                  className="w-full bg-[#292524] text-[#FAFAF9] py-4 text-sm font-bold uppercase tracking-widest hover:bg-[#1C1917] transition-colors"
+                  className="w-full bg-[#292524] text-[#FAFAF9] py-6 h-auto text-sm font-bold uppercase tracking-widest hover:bg-[#1C1917] transition-colors rounded-none"
                 >
                   Proceed to Checkout
-                </button>
+                </Button>
               </div>
             )}
           </div>
@@ -184,7 +193,8 @@ export function BloomeHome({
         <div className="aspect-[16/9] bg-[#E7E5E4] w-full overflow-hidden">
           <img
             src="https://images.unsplash.com/photo-1616486338812-3dadae4b4ace?auto=format&fit=crop&q=80&w=2000"
-            className="w-full h-full object-cover opacity-90 hover:scale-105 transition-transform duration-[2s]"
+            alt="Mindful Living Interior"
+            className="w-full h-full object-cover opacity-90 hover:scale-105 transition-transform duration-2000"
           />
         </div>
       </header>
@@ -219,17 +229,21 @@ export function BloomeHome({
                       product.image ||
                       `https://via.placeholder.com/400x500?text=${encodeURIComponent(product.name)}`
                     }
+                    alt={product.name}
                     className="w-full h-full object-cover mix-blend-multiply opacity-90 group-hover:opacity-100 group-hover:scale-105 transition-all duration-700"
                   />
-                  <button
+                  <Button
+                    variant="ghost"
+                    size="icon"
                     onClick={(e) => {
                       e.stopPropagation();
                       addToCart(product);
                     }}
-                    className="absolute bottom-4 right-4 bg-white p-3 rounded-full shadow-sm hover:shadow-md opacity-0 group-hover:opacity-100 transition-all duration-300 translate-y-4 group-hover:translate-y-0"
+                    className="absolute bottom-4 right-4 bg-white p-3 rounded-full shadow-sm hover:shadow-md opacity-0 group-hover:opacity-100 transition-all duration-300 translate-y-4 group-hover:translate-y-0 h-10 w-10 flex items-center justify-center"
+                    aria-label={`Add ${product.name} to cart`}
                   >
                     <ShoppingBag className="w-4 h-4 text-[#292524]" />
-                  </button>
+                  </Button>
                 </div>
                 <h3 className="text-lg text-[#292524] mb-1 group-hover:underline underline-offset-4 decoration-[#D6D3D1] transition-all">
                   {product.name}

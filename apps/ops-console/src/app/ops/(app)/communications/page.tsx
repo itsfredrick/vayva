@@ -3,6 +3,7 @@
 import React, { useState } from "react";
 import { MessageSquare, Mail, Smartphone, CheckCircle, AlertCircle, RefreshCw, Filter } from "lucide-react";
 import { useOpsQuery } from "@/hooks/useOpsQuery";
+import { Button } from "@vayva/ui";
 
 export default function CommunicationsPage() {
     const [filter, setFilter] = useState("ALL");
@@ -27,20 +28,28 @@ export default function CommunicationsPage() {
                     </h1>
                     <p className="text-gray-500 mt-1">Audit trail of all outbound notifications.</p>
                 </div>
-                <button onClick={() => refetch()} className="p-2 hover:bg-gray-100 rounded-full">
+                <Button
+                    variant="ghost"
+                    size="icon"
+                    onClick={() => refetch()}
+                    className="rounded-full h-8 w-8"
+                    aria-label="Refresh communication logs"
+                >
                     <RefreshCw className={`w-5 h-5 text-gray-500 ${isLoading ? 'animate-spin' : ''}`} />
-                </button>
+                </Button>
             </div>
 
             <div className="flex gap-2 border-b border-gray-200 pb-2">
                 {["ALL", "SENT", "FAILED", "PENDING"].map(s => (
-                    <button
+                    <Button
                         key={s}
+                        variant={filter === s ? "secondary" : "ghost"}
                         onClick={() => setFilter(s)}
-                        className={`px-3 py-1.5 text-xs font-bold rounded-lg transition-colors ${filter === s ? "bg-indigo-100 text-indigo-700" : "text-gray-600 hover:bg-gray-50"}`}
+                        className={`px-3 py-1.5 text-xs font-bold rounded-lg transition-colors h-auto ${filter === s ? "bg-indigo-100 text-indigo-700 hover:bg-indigo-200" : "text-gray-600 hover:bg-gray-50"}`}
+                        aria-label={`Filter logs by status: ${s.toLowerCase()}`}
                     >
                         {s}
-                    </button>
+                    </Button>
                 ))}
             </div>
 

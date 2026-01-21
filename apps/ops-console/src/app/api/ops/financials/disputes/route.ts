@@ -14,9 +14,36 @@ export async function GET(req: NextRequest) {
 
         const skip = (page - 1) * limit;
 
+        const search = searchParams.get("q") || "";
+
         const where: any = {};
         if (status) {
             where.status = status;
+        }
+
+        if (search) {
+            where.AND = [
+                {
+                    OR: [
+                        { id: { contains: search, mode: "insensitive" } },
+                        { reasonCode: { contains: search, mode: "insensitive" } },
+                        {
+                            store: {
+                                name: { contains: search, mode: "insensitive" }
+                            }
+                        },
+                        {
+                            order: {
+                                OR: [
+                                    { orderNumber: { contains: search, mode: "insensitive" } },
+                                    { customerEmail: { contains: search, mode: "insensitive" } },
+                                    { customerPhone: { contains: search, mode: "insensitive" } }
+                                ]
+                            }
+                        }
+                    ]
+                }
+            ];
         }
 
         const [disputes, total] = await Promise.all([
@@ -77,14 +104,16 @@ export async function PATCH(req: NextRequest) {
                 logAction = "DISPUTE_ACCEPT_LIABILITY";
                 break;
             case "SUBMIT_EVIDENCE_MOCK":
-                // In real world this would upload to Stripe/Paystack
-                // For now we simulate submission success
                 updateData = { status: "UNDER_REVIEW" };
                 logAction = "DISPUTE_EVIDENCE_SUBMITTED";
                 break;
             case "MARK_WON":
                 updateData = { status: "WON" };
                 logAction = "DISPUTE_FORCE_WON"; // Admin override
+                break;
+            case "REFUND":
+                updateData = { status: "LOST" }; // A refund implies we lost the dispute but resolved it manually
+                logAction = "DISPUTE_REFUNDED_MANUALLY";
                 break;
             default:
                 return NextResponse.json({ error: "Invalid action" }, { status: 400 });

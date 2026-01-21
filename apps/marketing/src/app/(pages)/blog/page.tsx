@@ -10,13 +10,26 @@ export const metadata = {
   description: "Expert advice, success stories, and updates for Nigerian businesses running on WhatsApp.",
 };
 
-const POSTS = [
+interface BlogPost {
+  id: number;
+  title: string;
+  excerpt: string;
+  category: string;
+  author: string;
+  authorImage: string;
+  date: string;
+  image: string;
+  slug: string;
+}
+
+const POSTS: BlogPost[] = [
   {
     id: 1,
     title: "How to Automate WhatsApp Sales Without Losing the Personal Touch",
-    excerpt: "Learn the balance between AI automation and human connection to maximize your conversion rates.",
+    excerpt: "Automation doesn't have to feel robotic. Learn how successful Nigerian brands use Vayva's AI to handle inquiries 24/7 while keeping customers happy and engaged with personalized responses.",
     category: "Guides",
     author: "Tola Adesina",
+    authorImage: "https://randomuser.me/api/portraits/women/44.jpg",
     date: "Dec 28, 2025",
     image: "/images/step-1-whatsapp.png",
     slug: "automate-whatsapp-sales",
@@ -24,9 +37,10 @@ const POSTS = [
   {
     id: 2,
     title: "5 Nigerian Brands That Scaled to ₦10M/Month on WhatsApp",
-    excerpt: "Case studies of local fashion and food businesses that transformed their operations with Vayva.",
+    excerpt: "From fashion to food, see how these local businesses transformed their chaotic WhatsApp DMs into streamlined sales channels. Case studies included.",
     category: "Success Stories",
     author: "Chidi Nwafor",
+    authorImage: "https://randomuser.me/api/portraits/men/32.jpg",
     date: "Dec 20, 2025",
     image: "/images/calm-solution.jpg",
     slug: "nigerian-brands-scale",
@@ -34,12 +48,24 @@ const POSTS = [
   {
     id: 3,
     title: "Understanding the New CBN KYC Requirements for Online Sellers",
-    excerpt: "What the recent regulations mean for your social commerce business and how to stay compliant.",
+    excerpt: "Confused by the latest banking regulations? We break down exactly what online vendors need to know to keep their business accounts compliant in 2026.",
     category: "Regulation",
-    author: "Vayva Legal",
+    author: "Sarah Okonjo",
+    authorImage: "https://randomuser.me/api/portraits/women/68.jpg",
     date: "Dec 15, 2025",
     image: "/images/chaos-problem.jpg",
     slug: "cbn-kyc-requirements",
+  },
+  {
+    id: 4,
+    title: "The Ultimate Guide to Inventory Management for IG vendors",
+    excerpt: "Stop overselling and disappointing customers. Discover simple strategies to track stock levels across Instagram, WhatsApp, and your physical store.",
+    category: "Operations",
+    author: "David Ibrahim",
+    authorImage: "https://randomuser.me/api/portraits/men/86.jpg",
+    date: "Dec 10, 2025",
+    image: "/images/mobile-showcase.png",
+    slug: "inventory-management-guide",
   },
 ];
 
@@ -120,9 +146,22 @@ export default function BlogPage() {
                   </p>
                   <div className="flex items-center justify-between mt-auto pt-6 border-t border-gray-50">
                     <div className="flex items-center gap-2">
-                      <div className="w-8 h-8 bg-gray-100 rounded-full flex items-center justify-center text-gray-400">
-                        <User size={14} />
-                      </div>
+                      {post.authorImage ? (
+                        <div className="w-8 h-8 rounded-full overflow-hidden border border-gray-100">
+                          <Image
+                            src={post.authorImage}
+                            alt={post.author}
+                            width={32}
+                            height={32}
+                            className="w-full h-full object-cover"
+                            unoptimized
+                          />
+                        </div>
+                      ) : (
+                        <div className="w-8 h-8 bg-gray-100 rounded-full flex items-center justify-center text-gray-400">
+                          <User size={14} />
+                        </div>
+                      )}
                       <span className="text-xs font-bold text-gray-900">{post.author}</span>
                     </div>
                     <span className="text-[#22C55E] text-sm font-bold flex items-center gap-1 group-hover:translate-x-1 transition-transform">

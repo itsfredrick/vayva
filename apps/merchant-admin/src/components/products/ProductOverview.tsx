@@ -1,6 +1,6 @@
 import React from "react";
 import { ProductServiceItem, ProductServiceStatus } from "@vayva/shared";
-import { Icon } from "@vayva/ui";
+import { Icon, IconName } from "@vayva/ui";
 
 interface ProductOverviewProps {
   items: ProductServiceItem[];
@@ -20,7 +20,7 @@ export const ProductOverview = ({ items }: ProductOverviewProps) => {
       i.status === ProductServiceStatus.DRAFT,
   ).length;
 
-  const stats = [
+  const stats: { label: string; value: number; icon: IconName; color: string }[] = [
     {
       label: "Total Items",
       value: total,
@@ -57,7 +57,6 @@ export const ProductOverview = ({ items }: ProductOverviewProps) => {
           <div
             className={`w-10 h-10 rounded-full flex items-center justify-center shrink-0 ${stat.color}`}
           >
-            {/* @ts-ignore */}
             <Icon name={stat.icon} size={20} />
           </div>
           <div>

@@ -1,6 +1,7 @@
 import React from "react";
 import { Calendar, MapPin, User, Ticket } from "lucide-react";
 import Link from "next/link";
+import { Button } from "@vayva/ui";
 
 interface EventHeaderProps {
   storeName?: string;
@@ -36,9 +37,9 @@ export const EventHeader = ({ storeName }: EventHeaderProps) => {
 
         {/* Account */}
         <div className="flex items-center gap-3">
-          <button className="hidden sm:flex items-center gap-2 text-sm font-bold text-gray-900 bg-gray-100 hover:bg-gray-200 px-4 py-2 rounded-full transition-colors">
+          <Button variant="outline" className="hidden sm:flex items-center gap-2 text-sm font-bold text-gray-900 bg-gray-100 hover:bg-gray-200 px-4 py-2 rounded-full transition-colors h-auto" aria-label="View my tickets">
             <User size={16} /> My Tickets
-          </button>
+          </Button>
         </div>
       </div>
     </header>

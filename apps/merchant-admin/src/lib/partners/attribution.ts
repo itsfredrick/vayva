@@ -37,7 +37,7 @@ export class AttributionService {
     // We need `merchantId` from `storeId`.
     const store = await prisma.store.findUnique({
       where: { id: storeId },
-      include: { memberships: { where: { role: "OWNER" } } },
+      include: { memberships: { where: { role_enum: "OWNER" } } },
     });
 
     const ownerId = store?.memberships[0]?.userId; // Assuming membership links to User (Merchant)
@@ -59,7 +59,7 @@ export class AttributionService {
   static async trackPayment(storeId: string, amount: number) {
     const store = await prisma.store.findUnique({
       where: { id: storeId },
-      include: { memberships: { where: { role: "OWNER" } } },
+      include: { memberships: { where: { role_enum: "OWNER" } } },
     });
     const ownerId = store?.memberships[0]?.userId;
     if (!ownerId) return;

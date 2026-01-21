@@ -1,385 +1,144 @@
 "use client";
 
 import React from "react";
+import { Button, cn } from "@vayva/ui";
 import Link from "next/link";
 
 export function MarketingFooter() {
   return (
-    <footer className="bg-white text-black border-t border-gray-200">
-      {/* Main Footer Content */}
+    <footer className="bg-white text-[#0F172A] border-t border-slate-100">
+      {/* Main Navigation Grid - Compact */}
       <div className="max-w-7xl mx-auto px-6 py-16">
-        <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-5 gap-12">
-          {/* Column 1 - Brand */}
-          <div className="col-span-2 lg:col-span-1">
-            <div className="mb-6">
-              <Link href="/" className="inline-block">
-                <span className="text-2xl font-bold text-black">Vayva</span>
+        <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-12">
+          {/* Column 1 - Brand Summary */}
+          <div className="col-span-2 md:col-span-1">
+            <div className="mb-4">
+              <Link href="/" className="inline-block hover:opacity-80 transition-opacity">
+                <span className="text-xl font-bold text-[#0F172A] tracking-tighter">Vayva</span>
               </Link>
             </div>
-
-            <p className="text-sm text-gray-600 leading-relaxed mb-6">
-              Vayva is an operating system for businesses that sell on WhatsApp.
-              We help African merchants turn conversations into orders,
-              payments, deliveries, and reliable business records.
+            <p className="text-xs text-slate-500 leading-relaxed font-medium max-w-[200px]">
+              The operating system for commerce on WhatsApp. Turning conversations into reliable business records.
             </p>
-
-            {/* Social Icons */}
-            <div className="flex gap-4">
-              <a
-                href="https://twitter.com/vayva"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-gray-600 hover:text-[#22C55E] transition-colors"
-                aria-label="X (Twitter)"
-              >
-                <svg
-                  className="w-5 h-5"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M23 3a10.9 10.9 0 01-3.14 1.53 4.48 4.48 0 00-7.86 3v1A10.66 10.66 0 013 4s-4 9 5 13a11.64 11.64 0 01-7 2c9 5 20 0 20-11.5a4.5 4.5 0 00-.08-.83A7.72 7.72 0 0023 3z"
-                  />
-                </svg>
-              </a>
-              <a
-                href="https://linkedin.com/company/vayva"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-gray-600 hover:text-[#22C55E] transition-colors"
-                aria-label="LinkedIn"
-              >
-                <svg
-                  className="w-5 h-5"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-2-2 2 2 0 00-2 2v7h-4v-7a6 6 0 016-6zM2 9h4v12H2z"
-                  />
-                  <circle
-                    cx="4"
-                    cy="4"
-                    r="2"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                  />
-                </svg>
-              </a>
-              <a
-                href="https://instagram.com/vayva"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-gray-600 hover:text-[#22C55E] transition-colors"
-                aria-label="Instagram"
-              >
-                <svg
-                  className="w-5 h-5"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <rect
-                    x="2"
-                    y="2"
-                    width="20"
-                    height="20"
-                    rx="5"
-                    ry="5"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                  />
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M16 11.37A4 4 0 1112.63 8 4 4 0 0116 11.37z"
-                  />
-                  <line
-                    x1="17.5"
-                    y1="6.5"
-                    x2="17.51"
-                    y2="6.5"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                  />
-                </svg>
-              </a>
-              <a
-                href="https://facebook.com/vayva"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-gray-600 hover:text-[#22C55E] transition-colors"
-                aria-label="Facebook"
-              >
-                <svg
-                  className="w-5 h-5"
-                  fill="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z" />
-                </svg>
-              </a>
-            </div>
           </div>
 
-          {/* Column 2 - Product */}
-          <div>
-            <h3 className="text-sm font-semibold text-black mb-4">Product</h3>
+          {/* Nav Column: Product */}
+          <div className="space-y-6">
+            <h4 className="text-[10px] font-black text-[#0F172A] uppercase tracking-[0.2em]">Product</h4>
             <ul className="space-y-3">
-              <li>
-                <Link
-                  href="/how-vayva-works"
-                  className="text-sm text-gray-600 hover:text-black transition-colors"
-                >
-                  How Vayva Works
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/features"
-                  className="text-sm text-gray-600 hover:text-black transition-colors"
-                >
-                  Features
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/pricing"
-                  className="text-sm text-gray-600 hover:text-black transition-colors"
-                >
-                  Pricing
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/templates"
-                  className="text-sm text-gray-600 hover:text-black transition-colors"
-                >
-                  Templates
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/store-builder"
-                  className="text-sm text-gray-600 hover:text-black transition-colors"
-                >
-                  Store Builder
-                </Link>
-              </li>
+              {[
+                { label: "How Vayva Works", href: "/how-it-works" },
+                { label: "Pricing Plans", href: "/pricing" },
+                { label: "Store Builder", href: "/store-builder" },
+                { label: "Marketplace", href: "/marketplace" }
+              ].map((link) => (
+                <li key={link.label}>
+                  <Link href={link.href} className="text-xs font-semibold text-slate-500 hover:text-[#22C55E] transition-colors">
+                    {link.label}
+                  </Link>
+                </li>
+              ))}
             </ul>
           </div>
 
-          {/* Column 3 - Company */}
-          <div>
-            <h3 className="text-sm font-semibold text-black mb-4">Company</h3>
+          {/* Nav Column: Company */}
+          <div className="space-y-6">
+            <h4 className="text-[10px] font-black text-[#0F172A] uppercase tracking-[0.2em]">Company</h4>
             <ul className="space-y-3">
-              <li>
-                <Link
-                  href="/about"
-                  className="text-sm text-gray-600 hover:text-black transition-colors"
-                >
-                  About Vayva
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/careers"
-                  className="text-sm text-gray-600 hover:text-black transition-colors"
-                >
-                  Careers
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/blog"
-                  className="text-sm text-gray-600 hover:text-black transition-colors"
-                >
-                  Blog
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/contact"
-                  className="text-sm text-gray-600 hover:text-black transition-colors"
-                >
-                  Contact
-                </Link>
-              </li>
+              {[
+                { label: "About Vayva", href: "/about" },
+                { label: "Our Blog", href: "/blog" },
+                { label: "Contact Us", href: "/contact" }
+              ].map((link) => (
+                <li key={link.label}>
+                  <Link href={link.href} className="text-xs font-semibold text-slate-500 hover:text-[#22C55E] transition-colors">
+                    {link.label}
+                  </Link>
+                </li>
+              ))}
             </ul>
           </div>
 
-          {/* Column 4 - Support */}
-          <div>
-            <h3 className="text-sm font-semibold text-black mb-4">Support</h3>
+          {/* Nav Column: Resources */}
+          <div className="space-y-6">
+            <h4 className="text-[10px] font-black text-[#0F172A] uppercase tracking-[0.2em]">Resources</h4>
             <ul className="space-y-3">
-              <li>
-                <Link
-                  href="/help"
-                  className="text-sm text-gray-600 hover:text-black transition-colors"
-                >
-                  Help Center
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/system-status"
-                  className="text-sm text-gray-600 hover:text-black transition-colors"
-                >
-                  System Status
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/trust"
-                  className="text-sm text-gray-600 hover:text-black transition-colors"
-                >
-                  Trust & Security
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/community"
-                  className="text-sm text-gray-600 hover:text-black transition-colors"
-                >
-                  Community
-                </Link>
-              </li>
+              {[
+                { label: "Help Center", href: "/help" },
+                { label: "System Status", href: "/system-status" },
+                { label: "Trust & Security", href: "/trust" }
+              ].map((link) => (
+                <li key={link.label}>
+                  <Link href={link.href} className="text-xs font-semibold text-slate-500 hover:text-[#22C55E] transition-colors">
+                    {link.label}
+                  </Link>
+                </li>
+              ))}
             </ul>
           </div>
 
-          {/* Column 5 - Legal & Compliance */}
-          <div>
-            <h3 className="text-sm font-semibold text-black mb-4">
-              Legal & Compliance
-            </h3>
+          {/* Nav Column: Legal */}
+          <div className="space-y-6">
+            <h4 className="text-[10px] font-black text-[#0F172A] uppercase tracking-[0.2em]">Legal</h4>
             <ul className="space-y-3">
-              <li>
-                <Link
-                  href="/legal"
-                  className="text-sm text-gray-600 hover:text-black transition-colors"
-                >
-                  Legal Hub
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/legal/terms"
-                  className="text-sm text-gray-600 hover:text-black transition-colors"
-                >
-                  Terms of Service
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/legal/privacy"
-                  className="text-sm text-gray-600 hover:text-black transition-colors"
-                >
-                  Privacy Policy
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/legal/acceptable-use"
-                  className="text-sm text-gray-600 hover:text-black transition-colors"
-                >
-                  Acceptable Use
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/legal/prohibited-items"
-                  className="text-sm text-gray-600 hover:text-black transition-colors"
-                >
-                  Prohibited Items
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/legal/refund-policy"
-                  className="text-sm text-gray-600 hover:text-black transition-colors"
-                >
-                  Refund Policy
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/legal/kyc-safety"
-                  className="text-sm text-gray-600 hover:text-black transition-colors"
-                >
-                  KYC & Safety
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/legal/cookies"
-                  className="text-sm text-gray-600 hover:text-black transition-colors"
-                >
-                  Manage Cookies
-                </Link>
-              </li>
+              {[
+                { label: "Legal Hub", href: "/legal" },
+                { label: "Privacy Policy", href: "/legal/privacy" },
+                { label: "Terms of Service", href: "/legal/terms" }
+              ].map((link) => (
+                <li key={link.label}>
+                  <Link href={link.href} className="text-xs font-semibold text-slate-500 hover:text-[#22C55E] transition-colors">
+                    {link.label}
+                  </Link>
+                </li>
+              ))}
             </ul>
-          </div>
-        </div>
-
-        {/* Newsletter Section */}
-        <div className="mt-16 pt-12 border-t border-gray-200">
-          <div className="max-w-md">
-            <h3 className="text-lg font-semibold text-black mb-2">
-              Stay updated.
-            </h3>
-            <p className="text-sm text-gray-600 mb-4">
-              Product updates, operational insights, and platform announcements.
-              No noise.
-            </p>
-
-            <div className="p-4 bg-gray-50 border border-gray-200 rounded text-sm text-gray-500">
-              Newsletter updates are currently paused.
-              <br />
-              Contact{" "}
-              <a
-                href="mailto:support@vayva.ng"
-                className="text-[#22C55E] hover:underline"
-              >
-                support@vayva.ng
-              </a>{" "}
-              for inquiries.
-            </div>
           </div>
         </div>
       </div>
 
-      {/* Bottom Bar */}
-      <div className="border-t border-gray-200">
-        <div className="max-w-7xl mx-auto px-6 py-6">
-          <div className="flex flex-col md:flex-row justify-between items-center gap-4">
-            <p className="text-sm text-gray-600">
-              © 2025 Vayva Inc. Built for Africa.
+      {/* Bottom Bar - Ultra Tiny */}
+      <div className="border-t border-slate-50 py-8">
+        <div className="max-w-7xl mx-auto px-6 flex flex-col md:flex-row items-center justify-between gap-6">
+          <div className="flex items-center gap-4">
+            <p className="text-[10px] text-slate-400 font-bold uppercase tracking-widest">
+              © 2025 Vayva Tech
             </p>
-            <div className="flex gap-6">
-              <Link
-                href="/legal/privacy"
-                className="text-sm text-gray-600 hover:text-black transition-colors"
-              >
-                Privacy Policy
-              </Link>
-              <Link
-                href="/legal/terms"
-                className="text-sm text-gray-600 hover:text-black transition-colors"
-              >
-                Terms of Service
-              </Link>
+            <div className="h-4 w-[1px] bg-slate-100 hidden md:block" />
+            <div className="flex items-center px-3 py-1 rounded-full bg-slate-50 border border-slate-100">
+              <span className="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse mr-2" />
+              <span className="text-[9px] font-black uppercase tracking-widest text-[#64748B]">
+                Vayva Merchant v1.0
+              </span>
+            </div>
+          </div>
+
+          <div className="flex items-center gap-8">
+            <Link
+              href="/legal"
+              className="text-[10px] font-black text-slate-400 hover:text-[#22C55E] transition-all uppercase tracking-[0.2em]"
+            >
+              Legal Hub
+            </Link>
+
+            {/* Minimal Social Icons */}
+            <div className="flex gap-4">
+              {["Twitter", "LinkedIn", "Instagram"].map((social) => (
+                <Button
+                  key={social}
+                  className="text-slate-300 hover:text-black transition-colors"
+                  aria-label={social}
+                >
+                  <div
+                    className={cn(
+                      "w-4 h-4 bg-current",
+                      `[mask-image:url(/icons/${social.toLowerCase()}.svg)]`,
+                      "[mask-repeat:no-repeat]",
+                      "[mask-position:center]"
+                    )}
+                  />
+                </Button>
+              ))}
             </div>
           </div>
         </div>

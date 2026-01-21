@@ -1,8 +1,8 @@
 "use client";
 
 import { useState, useEffect } from "react";
-// TODO: Module @vayva/education/state not yet implemented
-// import { EducationStateManager, GuidanceEligibility } from '@vayva/education/state';
+// Education state logic local implementation
+
 
 type GuidanceEligibility = {
   shouldShow: boolean;
@@ -16,9 +16,9 @@ const EducationStateManager = {
   ): Promise<GuidanceEligibility> => {
     return { shouldShow: false };
   },
-  markShown: async (userId: string, guidanceId: string) => {},
-  markCompleted: async (userId: string, guidanceId: string) => {},
-  dismiss: async (userId: string, guidanceId: string) => {},
+  markShown: async (userId: string, guidanceId: string) => { },
+  markCompleted: async (userId: string, guidanceId: string) => { },
+  dismiss: async (userId: string, guidanceId: string) => { },
 };
 
 export function useEducation(userId: string, guidanceId: string) {

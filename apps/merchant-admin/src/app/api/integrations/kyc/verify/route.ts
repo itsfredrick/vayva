@@ -14,13 +14,8 @@ export async function POST(request: NextRequest) {
         const baseUrl = process.env.YOUVERIFY_BASE_URL || "https://api.youverify.co";
 
         if (!apiKey) {
-            console.warn("KYC API credentials missing. Running in mock mode.");
-            // Mock response
-            return NextResponse.json({
-                success: true,
-                status: "pending",
-                message: "Verification initiated (Mock)"
-            });
+            console.error("KYC API credentials missing.");
+            return NextResponse.json({ error: "Configuration Error: Missing API Key" }, { status: 500 });
         }
 
         // Real YouVerify Call (Simplified v2 identity verification)

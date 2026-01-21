@@ -1,6 +1,6 @@
 import React from "react";
-import { Icon, Button } from "@vayva/ui";
-import { Switch } from "@/components/ui/Switch";
+import { Button, Icon } from "@vayva/ui";
+import { Switch } from "@/components/ui/switch";
 
 interface WhatsAppSettingsCardProps {
   isConnected: boolean;

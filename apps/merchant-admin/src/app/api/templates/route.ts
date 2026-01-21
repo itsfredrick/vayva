@@ -1,9 +1,8 @@
-import { NextResponse } from "next/server";
-import { prisma } from "@vayva/db";
-import { withRBAC } from "@/lib/team/rbac";
+import { NextRequest, NextResponse } from "next/server";
+import { prisma } from "@/lib/prisma";
+import { withVayvaAPI, HandlerContext } from "@/lib/api-handler";
 import { PERMISSIONS } from "@/lib/team/permissions";
-
-export const GET = withRBAC(PERMISSIONS.COMMERCE_VIEW, async (session: any) => {
+export const GET = withVayvaAPI(PERMISSIONS.COMMERCE_VIEW, async (request: NextRequest, { storeId }: HandlerContext) => {
   try {
     const templates = await prisma.template.findMany({
       where: { isActive: true },

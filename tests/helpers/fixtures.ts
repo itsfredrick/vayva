@@ -88,7 +88,7 @@ export async function createTestInventory(
   variantId?: string,
   quantity = 100,
 ) {
-  const inventory = await prisma.inventory_item.create({
+  const inventory = await prisma.inventoryItem.create({
     data: {
       merchantId,
       productId,
@@ -112,7 +112,7 @@ export async function cleanupTestStore(storeId: string) {
   await prisma.customer.deleteMany({ where: { storeId } });
   await prisma.productVariant.deleteMany({ where: { product: { storeId } } });
   await prisma.product.deleteMany({ where: { storeId } });
-  await prisma.inventory_item.deleteMany({ where: { storeId } });
+  await prisma.inventoryItem.deleteMany({ where: { storeId } });
 }
 
 /**

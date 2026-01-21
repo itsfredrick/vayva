@@ -1,0 +1,14 @@
+"use client";
+import { jsx as _jsx, jsxs as _jsxs } from "react/jsx-runtime";
+import { useState } from "react";
+import { Search, Filter, Tag, RefreshCw } from "lucide-react";
+import { Button } from "@vayva/ui";
+export function ProductsFilterBar({ search, onSearch, filters, onFilterChange, onRefresh }) {
+    const [status, setStatus] = useState(filters.status || "ALL");
+    const handleStatusChange = (e) => {
+        const val = e.target.value;
+        setStatus(val);
+        onFilterChange({ ...filters, status: val });
+    };
+    return (_jsxs("div", { className: "flex flex-col md:flex-row gap-4 mb-8 p-1", children: [_jsxs("div", { className: "flex-1 relative group", children: [_jsx(Search, { className: "absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-black transition-colors", size: 18 }), _jsx("input", { type: "text", placeholder: "Search products by name, SKU or brand...", className: "w-full pl-10 pr-4 py-2.5 border border-gray-200 rounded-xl focus:ring-4 focus:ring-vayva-green/10 focus:border-vayva-green transition-all font-medium text-sm placeholder:text-gray-400", value: search, onChange: (e) => onSearch(e.target.value) })] }), _jsxs("div", { className: "flex gap-2 text-sm", children: [_jsxs("div", { className: "relative", children: [_jsx(Filter, { className: "absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none", size: 14 }), _jsxs("select", { "aria-label": "Filter by Status", className: "pl-9 pr-8 py-2.5 border border-gray-200 rounded-xl bg-white focus:ring-4 focus:ring-vayva-green/10 focus:border-vayva-green appearance-none font-bold text-gray-700 cursor-pointer min-w-[120px]", value: status, onChange: handleStatusChange, children: [_jsx("option", { value: "ALL", children: "Status" }), _jsx("option", { value: "ACTIVE", children: "Active" }), _jsx("option", { value: "DRAFT", children: "Draft" }), _jsx("option", { value: "ARCHIVED", children: "Archived" })] })] }), _jsxs("div", { className: "relative", children: [_jsx(Tag, { className: "absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none", size: 14 }), _jsxs("select", { "aria-label": "Filter by Category", className: "pl-9 pr-8 py-2.5 border border-gray-200 rounded-xl bg-white focus:ring-4 focus:ring-vayva-green/10 focus:border-vayva-green appearance-none font-bold text-gray-700 cursor-pointer min-w-[140px]", onChange: (e) => onFilterChange({ ...filters, category: e.target.value }), children: [_jsx("option", { value: "ALL", children: "Category" }), _jsx("option", { value: "retail", children: "Retail" }), _jsx("option", { value: "food", children: "Food" }), _jsx("option", { value: "service", children: "Service" })] })] }), _jsx(Button, { variant: "outline", size: "icon", onClick: onRefresh, className: "border-gray-200 hover:bg-gray-50 text-gray-500 w-11 h-11 rounded-xl shadow-sm transition-all active:scale-90", children: _jsx(RefreshCw, { size: 18 }) })] })] }));
+}

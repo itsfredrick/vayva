@@ -1,6 +1,7 @@
 import React from "react";
 import { Heart, Globe, Menu, Search } from "lucide-react";
 import Link from "next/link";
+import { Button } from "@vayva/ui";
 
 interface GiveHeaderProps {
   storeName?: string;
@@ -38,9 +39,9 @@ export const GiveHeader = ({ storeName }: GiveHeaderProps) => {
 
         {/* Actions */}
         <div className="flex items-center gap-4">
-          <button className="text-gray-400 hover:text-gray-900 md:block hidden">
+          <Button variant="ghost" size="icon" className="text-gray-400 hover:text-gray-900 md:block hidden h-auto" aria-label="Search">
             <Search size={20} />
-          </button>
+          </Button>
           <Link
             href="#"
             className="hidden sm:inline-block text-sm font-bold text-gray-900 hover:text-[#16A34A]"
@@ -53,9 +54,9 @@ export const GiveHeader = ({ storeName }: GiveHeaderProps) => {
           >
             Start Fundraising
           </Link>
-          <button className="md:hidden text-gray-600">
+          <Button variant="ghost" size="icon" className="md:hidden text-gray-600 h-auto" aria-label="Open mobile menu">
             <Menu size={24} />
-          </button>
+          </Button>
         </div>
       </div>
     </header>

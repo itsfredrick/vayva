@@ -13,14 +13,6 @@ export function buildJsonLdFor(path: string, ctx?: Record<string, any>) {
   switch (pt) {
     case "home":
       return homeSchema();
-    case "template_detail":
-      return templateSchema(path, ctx);
-    case "market_category":
-    case "market_products":
-    case "market_sellers":
-      return collectionSchema(path, ctx);
-    case "storefront":
-      return storeSchema(path, ctx);
     case "blog_post":
       return articleSchema(path, ctx);
     case "compare_page":

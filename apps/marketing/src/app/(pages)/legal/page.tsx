@@ -185,7 +185,7 @@ export default function LegalHubPage() {
                     Governing Entity
                   </dt>
                   <dd className="text-gray-700">
-                    Vayva Inc. (operating in Nigeria)
+                    Vayva Tech (operating in Nigeria)
                   </dd>
                 </div>
               </dl>

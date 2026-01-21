@@ -1,4 +1,5 @@
 import { Bell } from "lucide-react";
+import { Button } from "@vayva/ui";
 import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -85,7 +86,7 @@ export function HeaderBell() {
 
   return (
     <div className="relative" ref={dropdownRef}>
-      <button
+      <Button
         onClick={() => setIsOpen(!isOpen)}
         className="p-2 text-gray-500 hover:text-gray-900 relative rounded-full hover:bg-gray-100 transition-colors"
         aria-label="Notifications"
@@ -94,19 +95,19 @@ export function HeaderBell() {
         {unreadCount > 0 && (
           <span className="absolute top-1.5 right-1.5 w-2 h-2 bg-red-500 rounded-full ring-2 ring-white" />
         )}
-      </button>
+      </Button>
 
       {isOpen && (
         <div className="absolute right-0 mt-2 w-80 bg-white rounded-lg shadow-xl ring-1 ring-black ring-opacity-5 z-50 overflow-hidden text-left">
           <div className="px-4 py-3 border-b border-gray-50 flex justify-between items-center bg-gray-50/50 backdrop-blur-sm">
             <h3 className="text-sm font-medium text-gray-900">Notifications</h3>
             <div className="flex space-x-2">
-              <button
+              <Button
                 onClick={handleMarkAllRead}
                 className="text-xs text-indigo-600 hover:text-indigo-800 font-medium"
               >
                 Mark all read
-              </button>
+              </Button>
             </div>
           </div>
 

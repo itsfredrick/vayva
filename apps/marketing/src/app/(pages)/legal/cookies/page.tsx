@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { Button } from "@vayva/ui";
 import Link from "next/link";
 import { format } from "date-fns";
 
@@ -131,7 +132,7 @@ export default function ManageCookiesPage() {
                 <strong>Jurisdiction:</strong> Federal Republic of Nigeria
               </p>
               <p>
-                <strong>Governing Entity:</strong> Vayva Inc. (operating in
+                <strong>Governing Entity:</strong> Vayva Tech (operating in
                 Nigeria)
               </p>
             </div>
@@ -172,6 +173,8 @@ export default function ManageCookiesPage() {
                     <div className="flex items-center">
                       <input
                         type="checkbox"
+                        title="Essential Cookies"
+                        placeholder="Essential Cookies"
                         checked={essentialEnabled}
                         disabled
                         className="w-5 h-5 text-gray-400 border-gray-300 rounded cursor-not-allowed"
@@ -202,6 +205,8 @@ export default function ManageCookiesPage() {
                     <div className="flex items-center">
                       <input
                         type="checkbox"
+                        title="Analytics Cookies"
+                        placeholder="Analytics Cookies"
                         checked={analyticsEnabled}
                         onChange={(e) => setAnalyticsEnabled(e.target.checked)}
                         className="w-5 h-5 text-[#22C55E] border-gray-300 rounded focus:ring-[#22C55E]"
@@ -231,6 +236,8 @@ export default function ManageCookiesPage() {
                     <div className="flex items-center">
                       <input
                         type="checkbox"
+                        title="Marketing Cookies"
+                        placeholder="Marketing Cookies"
                         checked={marketingEnabled}
                         onChange={(e) => setMarketingEnabled(e.target.checked)}
                         className="w-5 h-5 text-[#22C55E] border-gray-300 rounded focus:ring-[#22C55E]"
@@ -246,7 +253,7 @@ export default function ManageCookiesPage() {
 
             {/* Save Button */}
             <div className="flex items-center gap-4 mb-12">
-              <button
+              <Button
                 onClick={handleSave}
                 disabled={status === "saving"}
                 className={`px-6 py-3 font-semibold rounded transition-colors ${
@@ -256,7 +263,7 @@ export default function ManageCookiesPage() {
                 }`}
               >
                 {status === "saving" ? "Saving..." : "Save Preferences"}
-              </button>
+              </Button>
 
               {status === "success" && (
                 <span className="text-sm text-[#22C55E] flex items-center">
@@ -348,11 +355,11 @@ export default function ManageCookiesPage() {
               <h2>Contact Information</h2>
               <p>For questions about cookies or this page, please contact:</p>
               <p>
-                <strong>Vayva Inc.</strong>
+                <strong>Vayva Tech</strong>
                 <br />
-                Email: privacy@vayva.shop
+                Email: privacy@vayva.ng
                 <br />
-                Support: support@vayva.shop
+                Support: support@vayva.ng
               </p>
             </div>
 

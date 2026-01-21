@@ -1,64 +1,117 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@vayva/db";
 import { reportError } from "@/lib/error";
+import { z } from "zod";
 
 export async function POST(req: NextRequest) {
   let storeId: string | undefined;
 
   try {
     const body = await req.json();
-    storeId = body.storeId; // Capture for error context
-    const { items, customer, deliveryMethod, subtotal, total } = body;
 
-    // Basic validation
-    if (!storeId || !items || items.length === 0 || !total) {
-      return NextResponse.json(
-        { message: "Invalid order data" },
-        { status: 400 },
-      );
+    // Zod Validation Schema
+    const OrderSchema = z.object({
+      storeId: z.string().uuid(),
+      items: z.array(z.object({
+        id: z.string().uuid(),
+        quantity: z.number().int().positive(),
+        metadata: z.record(z.any()).optional()
+      })).min(1),
+      customer: z.object({
+        email: z.string().email(),
+        phone: z.string().optional(),
+        note: z.string().optional()
+      }).optional(),
+      deliveryMethod: z.string().optional(),
+      paymentMethod: z.string().optional()
+    });
+
+    const parseResult = OrderSchema.safeParse(body);
+    if (!parseResult.success) {
+      return NextResponse.json({
+        message: "Invalid payload",
+        errors: parseResult.error.flatten()
+      }, { status: 400 });
     }
 
-    // Generate Order Details
+    const { storeId, items, customer, deliveryMethod, paymentMethod } = parseResult.data;
+
+    // Generate Identifiers
     const count = await prisma.order.count({ where: { storeId } });
     const orderNumber = `ORD-${Date.now().toString().slice(-6)}-${count + 1}`;
     const refCode = `REF-${Math.random().toString(36).substring(7).toUpperCase()}`;
 
     let initialPaymentStatus = "PENDING";
     if (deliveryMethod === "pickup" && body.paymentMethod === "cash") {
-      // If we supported cash on pickup, it could be INITIATED or PENDING
       initialPaymentStatus = "PENDING";
     }
 
-    // Execute as a Transaction to ensure Inventory Integrity
+    // Transaction: Inventory Check & Order Creation with Server-Side Pricing
     const result = await prisma.$transaction(async (tx) => {
-      // 1. Check and Decrement Inventory
+      let calculatedSubtotal = 0;
+      const orderItemsData = [];
+
+      // 1. Process Items & Inventory
       for (const item of items) {
-        if (item.id) {
-          const product = await tx.product.findUnique({
-            where: { id: item.id },
+        if (!item.id) continue;
+
+        // Fetch Product from DB to get TRUSTED price
+        const product = await tx.product.findUnique({
+          where: { id: item.id },
+          select: { id: true, title: true, price: true, trackInventory: true }
+        });
+
+        if (!product) {
+          throw new Error(`Product not found: ${item.id}`);
+        }
+
+        // Use DB Price
+        const itemPrice = Number(product.price);
+        const itemTotal = itemPrice * item.quantity;
+        calculatedSubtotal += itemTotal;
+
+        // Type logic for metadata?
+        // Assuming body.items has metadata: { spiciness?: string, bookingDate?: string }
+        // We need to store this in OrderItem.metadata (Json)
+
+        orderItemsData.push({
+          productId: product.id,
+          title: product.title,
+          quantity: item.quantity,
+          price: itemPrice, // TRUSTED PRICE
+          metadata: item.metadata || {}, // Pass through client metadata (validated?)
+        });
+
+        // Inventory Management
+        if (product.trackInventory) {
+          // Find default location first (Relation filtering constraint in updateMany)
+          const defaultLocation = await tx.inventoryLocation.findFirst({
+            where: { storeId, isDefault: true },
+            select: { id: true }
           });
 
-          if (product && product.trackInventory) {
-            // Attempt to update only if enough stock exists
-            const updateResult = await tx.inventoryItem.updateMany({
-              where: {
-                productId: item.id,
-                InventoryLocation: { isDefault: true },
-                available: { gte: item.quantity }, // Integrity Guard
-              },
-              data: {
-                available: { decrement: item.quantity },
-              },
-            });
+          if (!defaultLocation) throw new Error("Default inventory location not found");
 
-            if (updateResult.count === 0) {
-              throw new Error(`Out of stock for product: ${item.title}`);
-            }
+          const updateResult = await tx.inventoryItem.updateMany({
+            where: {
+              productId: product.id,
+              locationId: defaultLocation.id,
+              available: { gte: item.quantity },
+            },
+            data: {
+              available: { decrement: item.quantity },
+            },
+          });
+
+          if (updateResult.count === 0) {
+            throw new Error(`Out of stock for product: ${product.title}`);
           }
         }
       }
 
-      // 2. Create Order
+      // 2. Create Order with Calculated Totals
+      const finalTotal = calculatedSubtotal; // + delivery if logic exists
+
       const order = await tx.order.create({
         data: {
           storeId: storeId!,
@@ -67,32 +120,24 @@ export async function POST(req: NextRequest) {
           status: "DRAFT",
           paymentStatus: initialPaymentStatus as any,
           fulfillmentStatus: "UNFULFILLED",
-          total: total,
-          subtotal: subtotal || total,
+          total: finalTotal,
+          subtotal: calculatedSubtotal,
           customerEmail: customer?.email,
           customerPhone: customer?.phone,
           customerNote: customer?.note,
           deliveryMethod: deliveryMethod || "shipping",
           items: {
-            create: items.map((item: any) => ({
-              title: item.title,
-              quantity: item.quantity,
-              price: item.price,
-              productId: item.id,
-            })),
+            create: orderItemsData,
           },
         },
       });
 
-      // 3. Wallet Credit Logic
+      // 3. Wallet Logic (If Auto-Success)
       if (initialPaymentStatus === "SUCCESS") {
-        const amountKobo = BigInt(Math.round((total || 0) * 100));
-
+        const amountKobo = BigInt(Math.round(finalTotal * 100));
         await tx.wallet.upsert({
           where: { storeId: storeId! },
-          update: {
-            availableKobo: { increment: amountKobo },
-          },
+          update: { availableKobo: { increment: amountKobo } },
           create: {
             storeId: storeId!,
             availableKobo: amountKobo,
@@ -108,7 +153,7 @@ export async function POST(req: NextRequest) {
       return order;
     });
 
-    // 4. Fetch Merchant Wallet Details for Display
+    // 4. Fetch Details for Response
     const wallet = await prisma.wallet.findUnique({
       where: { storeId: storeId! },
       select: { vaBankName: true, vaAccountNumber: true, vaAccountName: true }
@@ -119,7 +164,6 @@ export async function POST(req: NextRequest) {
       select: { name: true }
     });
 
-    // Return success
     return NextResponse.json({
       success: true,
       orderId: result.id,

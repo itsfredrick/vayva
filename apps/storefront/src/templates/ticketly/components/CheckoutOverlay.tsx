@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { X, ArrowRight, Lock } from "lucide-react";
+import { Button } from "@vayva/ui";
 
 interface CheckoutOverlayProps {
   storeId: string;
@@ -65,12 +66,15 @@ export const CheckoutOverlay = ({
       <div className="bg-white rounded-2xl w-full max-w-md overflow-hidden flex flex-col max-h-[90vh]">
         <div className="p-4 border-b border-gray-100 flex items-center justify-between">
           <h3 className="font-bold text-lg">Checkout</h3>
-          <button
+          <Button
+            variant="ghost"
+            size="icon"
             onClick={onClose}
-            className="p-2 hover:bg-gray-100 rounded-full"
+            className="p-2 hover:bg-gray-100 rounded-full h-auto"
+            aria-label="Close checkout"
           >
             <X size={20} />
-          </button>
+          </Button>
         </div>
 
         <form onSubmit={handleSubmit} className="p-6 space-y-6 overflow-y-auto">
@@ -119,10 +123,11 @@ export const CheckoutOverlay = ({
         </form>
 
         <div className="p-4 border-t border-gray-100">
-          <button
+          <Button
             onClick={handleSubmit}
             disabled={isProcessing}
-            className="w-full bg-purple-600 hover:bg-purple-700 disabled:opacity-70 text-white font-bold py-4 rounded-xl flex items-center justify-center gap-2 transition-all"
+            className="w-full bg-purple-600 hover:bg-purple-700 disabled:opacity-70 text-white font-bold py-4 rounded-xl flex items-center justify-center gap-2 transition-all h-auto"
+            aria-label={isProcessing ? "Processing order" : `Pay ₦${total.toLocaleString()}`}
           >
             {isProcessing ? (
               "Processing..."
@@ -131,7 +136,7 @@ export const CheckoutOverlay = ({
                 Pay ₦{total.toLocaleString()} <ArrowRight size={18} />
               </>
             )}
-          </button>
+          </Button>
           <div className="flex justify-center items-center gap-2 mt-3 text-xs text-gray-400">
             <Lock size={10} /> Secured by Vayva Pay
           </div>

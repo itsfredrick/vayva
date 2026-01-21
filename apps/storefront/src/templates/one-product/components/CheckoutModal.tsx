@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { X, ShoppingBag, CheckCircle } from "lucide-react";
+import { Button } from "@vayva/ui";
 import { PublicProduct } from "@/types/storefront";
 
 interface CheckoutModalProps {
@@ -133,9 +134,9 @@ export const CheckoutModal = ({
             </div>
           )}
 
-          <button onClick={onClose} className="w-full bg-black text-white font-bold py-3 rounded-xl">
+          <Button onClick={onClose} className="w-full bg-black text-white font-bold py-3 rounded-xl h-auto" aria-label="I have made payment">
             I have made payment
-          </button>
+          </Button>
         </div>
       </div>
     );
@@ -148,9 +149,9 @@ export const CheckoutModal = ({
           <h2 className="font-bold text-lg text-gray-900 flex items-center gap-2">
             <ShoppingBag size={20} /> Checkout
           </h2>
-          <button onClick={onClose}>
+          <Button variant="ghost" size="icon" onClick={onClose} className="h-auto" aria-label="Close checkout">
             <X size={24} className="text-gray-400" />
-          </button>
+          </Button>
         </div>
 
         <div className="flex-1 overflow-y-auto p-6">
@@ -163,6 +164,7 @@ export const CheckoutModal = ({
               <div className="w-16 h-16 bg-gray-100 rounded-lg overflow-hidden shrink-0">
                 <img
                   src={product.images?.[0]}
+                  alt={product.name}
                   className="w-full h-full object-cover"
                 />
               </div>
@@ -186,10 +188,12 @@ export const CheckoutModal = ({
               >
                 <div className="flex items-start gap-4">
                   <input
+                    id="upsell-added"
                     type="checkbox"
                     checked={upsellAdded}
                     onChange={() => setUpsellAdded(!upsellAdded)}
                     className="mt-1 w-5 h-5 rounded text-green-600 focus:ring-green-500"
+                    aria-label={`Add ${upsellProduct.name} to order`}
                   />
                   <div className="flex-1">
                     <div className="flex justify-between items-start">
@@ -216,10 +220,14 @@ export const CheckoutModal = ({
             className="space-y-4"
           >
             <div>
-              <label className="block text-xs font-bold text-gray-700 uppercase mb-1">
+              <label
+                htmlFor="checkout-email"
+                className="block text-xs font-bold text-gray-700 uppercase mb-1"
+              >
                 Contact Info
               </label>
               <input
+                id="checkout-email"
                 type="email"
                 placeholder="Email Address"
                 required
@@ -229,41 +237,52 @@ export const CheckoutModal = ({
               />
             </div>
             <div>
-              <label className="block text-xs font-bold text-gray-700 uppercase mb-1">
+              <label
+                htmlFor="checkout-fullname"
+                className="block text-xs font-bold text-gray-700 uppercase mb-1"
+              >
                 Shipping Address
               </label>
               <input
+                id="checkout-fullname"
                 type="text"
                 placeholder="Full Name"
                 required
                 value={fullName}
                 onChange={(e) => setFullName(e.target.value)}
                 className="w-full border border-gray-300 rounded-lg px-4 py-3 text-sm focus:ring-2 focus:ring-black focus:outline-none mb-2"
+                aria-label="Full Name"
               />
               <input
+                id="checkout-address"
                 type="text"
                 placeholder="Street Address"
                 required
                 value={address}
                 onChange={(e) => setAddress(e.target.value)}
                 className="w-full border border-gray-300 rounded-lg px-4 py-3 text-sm focus:ring-2 focus:ring-black focus:outline-none mb-2"
+                aria-label="Street Address"
               />
               <div className="flex gap-2">
                 <input
+                  id="checkout-city"
                   type="text"
                   placeholder="City"
                   required
                   value={city}
                   onChange={(e) => setCity(e.target.value)}
                   className="w-1/2 border border-gray-300 rounded-lg px-4 py-3 text-sm focus:ring-2 focus:ring-black focus:outline-none"
+                  aria-label="City"
                 />
                 <input
+                  id="checkout-state"
                   type="text"
                   placeholder="State"
                   required
                   value={state}
                   onChange={(e) => setState(e.target.value)}
                   className="w-1/2 border border-gray-300 rounded-lg px-4 py-3 text-sm focus:ring-2 focus:ring-black focus:outline-none"
+                  aria-label="State"
                 />
               </div>
             </div>
@@ -277,14 +296,15 @@ export const CheckoutModal = ({
               ₦{total.toLocaleString()}
             </span>
           </div>
-          <button
+          <Button
             form="checkout-form"
             type="submit"
             disabled={loading}
-            className="w-full bg-[#111827] text-white font-bold py-4 rounded-xl shadow-lg hover:bg-black transition-all disabled:opacity-50"
+            className="w-full bg-[#111827] text-white font-bold py-4 rounded-xl shadow-lg hover:bg-black transition-all disabled:opacity-50 h-auto"
+            aria-label={loading ? "Processing order" : `Pay ₦${total.toLocaleString()}`}
           >
             {loading ? "Processing..." : `Pay ₦${total.toLocaleString()}`}
-          </button>
+          </Button>
           <div className="text-center mt-3 flex items-center justify-center gap-2 text-xs text-gray-400">
             <span>🔒 Secure Checkout</span>
           </div>

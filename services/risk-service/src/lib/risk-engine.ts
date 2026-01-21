@@ -1,11 +1,4 @@
-import { prisma } from "@vayva/db";
-import {
-  RiskScope,
-  RiskSeverity,
-  RiskStatus,
-  EnforcementActionType,
-  Prisma,
-} from "@prisma/client";
+import { prisma, RiskScope, RiskSeverity, EnforcementActionType } from "@vayva/db";
 
 export class RiskEngine {
   // Ingest a signal and evaluate side effects

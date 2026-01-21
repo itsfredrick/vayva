@@ -1,12 +1,10 @@
 import "./globals.css";
 
 import type { Metadata } from "next";
-import { Manrope } from "next/font/google";
 import { OpsShell } from "@/components/OpsShell";
 import QueryProvider from "@/providers/QueryProvider";
 import { Toaster } from "sonner";
 
-const manrope = Manrope({ subsets: ["latin"], variable: "--font-manrope" });
 
 export const metadata: Metadata = {
   title: "Vayva Ops Console",
@@ -25,9 +23,10 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <body
-        className={`${manrope.variable} font-sans antialiased min-h-screen bg-background text-foreground`}
+        className={`font-sans antialiased min-h-screen bg-background text-foreground density-compact`}
+        suppressHydrationWarning
       >
         <QueryProvider>
           {children}

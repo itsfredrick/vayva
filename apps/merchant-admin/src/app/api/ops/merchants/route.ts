@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { prisma } from "@vayva/db";
+import { prisma } from "@/lib/prisma";
 import { OpsAuthService } from "@/lib/ops-auth";
 
 export async function GET(request: Request) {
@@ -23,7 +23,6 @@ export async function GET(request: Request) {
       },
       include: {
         kycRecord: true,
-        merchantSubscription: true,
       },
       orderBy: { createdAt: "desc" },
       take: 50,
@@ -34,7 +33,7 @@ export async function GET(request: Request) {
       name: m.name,
       slug: m.slug,
       ownerEmail: "Unknown", // Placeholder, field missing in Store model
-      plan: m.merchantSubscription?.plan || "FREE",
+      plan: m.aiSubscription?.plan || "FREE",
       kycStatus: m.kycRecord?.status || "PENDING",
       createdAt: m.createdAt,
       lastActive: m.updatedAt, // Placeholder

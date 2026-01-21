@@ -1,0 +1,96 @@
+import { NextResponse } from "next/server";
+import { prisma } from "@vayva/db";
+export async function GET(req) {
+    const { searchParams } = new URL(req.url);
+    const slug = searchParams.get("slug") || "chopnow-demo"; // Default for demo
+    try {
+        const store = await prisma.store.findUnique({
+            where: { slug },
+        });
+        if (!store) {
+            return NextResponse.json({ error: "Store not found" }, { status: 404 });
+        }
+        const collections = await prisma.collection.findMany({
+            where: { storeId: store.id },
+            include: {
+                collectionProducts: {
+                    include: {
+                        product: {
+                            select: {
+                                id: true,
+                                title: true,
+                                description: true,
+                                price: true,
+                                handle: true,
+                                tags: true,
+                                productImages: true,
+                            },
+                        },
+                    },
+                },
+            },
+        });
+        const products = await prisma.product.findMany({
+            where: { storeId: store.id },
+            include: {
+                productImages: true,
+            },
+        });
+        const weeks = collections
+            .filter((c) => c.handle.startsWith("week-"))
+            .map((c) => {
+            const datePart = c.handle.replace("week-", "");
+            const deliveryDate = new Date(datePart);
+            const cutoffDate = new Date(deliveryDate);
+            cutoffDate.setDate(deliveryDate.getDate() - 5);
+            return {
+                id: c.id,
+                label: { tr: c.title, en: c.title },
+                deliveryDate: datePart,
+                cutoffDate: cutoffDate.toISOString(),
+                isLocked: new Date() > cutoffDate,
+            };
+        })
+            .sort((a, b) => a.deliveryDate.localeCompare(b.deliveryDate));
+        const meals = products.map((p) => {
+            const tagsObj = {};
+            // Parse tags... logic remains same but typed output
+            p.tags.forEach((tag) => {
+                const [key, val] = tag.split(":");
+                if (key !== "allergen" && key !== "isPro") {
+                    tagsObj[key] = val;
+                    // Try parse number
+                    if (["prepTime", "kcal", "protein"].includes(key)) {
+                        tagsObj[key] = parseInt(val) || 0;
+                    }
+                }
+            });
+            // Default if missing
+            if (!tagsObj.category)
+                tagsObj.category = "General";
+            return {
+                id: p.id,
+                storeId: p.storeId,
+                name: p.title,
+                description: p.description || "",
+                price: Number(p.price) || 0,
+                images: p.productImages?.map((img) => img.url) || [],
+                variants: [],
+                inStock: true,
+                category: tagsObj.category,
+                // Extra fields stored in tags for specific template can be part of 'specs' or custom fields
+                // For now mapping to PublicProduct standard fields
+                handle: p.handle,
+            };
+        });
+        const response = {
+            weeks,
+            meals,
+        };
+        return NextResponse.json(response);
+    }
+    catch (error) {
+        console.error(error);
+        return NextResponse.json({ error: "Failed to fetch menu" }, { status: 500 });
+    }
+}

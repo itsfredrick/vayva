@@ -1,6 +1,7 @@
 "use client";
 
 import React from "react";
+import { Button } from "@vayva/ui";
 
 interface UpdateNotificationProps {
   templateName: string;
@@ -28,21 +29,24 @@ export function UpdateNotification({
             A newer version ({latestVersion}) of your template is available.
             You're currently on {currentVersion}.
           </p>
-          <button
+          <Button
+            variant="link"
             onClick={onReview}
-            className="text-sm text-blue-600 hover:text-blue-700 underline font-semibold"
+            className="text-sm text-blue-600 hover:text-blue-700 underline font-semibold h-auto p-0"
           >
             Review update
-          </button>
+          </Button>
         </div>
         {onDismiss && (
-          <button
+          <Button
+            variant="ghost"
+            size="icon"
             onClick={onDismiss}
-            className="text-blue-600 hover:text-blue-700 text-sm flex-shrink-0"
+            className="text-blue-600 hover:text-blue-700 h-6 w-6"
             aria-label="Dismiss"
           >
             ×
-          </button>
+          </Button>
         )}
       </div>
     </div>

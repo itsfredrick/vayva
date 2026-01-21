@@ -5,6 +5,8 @@ import { StoreProvider } from "@/context/StoreContext";
 import { Suspense } from "react";
 import { headers } from "next/headers";
 import { prisma } from "@vayva/db";
+import { Analytics } from "@vercel/analytics/react";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 
 const spaceGrotesk = Space_Grotesk({
   subsets: ["latin"],
@@ -28,10 +30,12 @@ export async function generateMetadata(
   // Domain resolution logic
   if (process.env.NEXT_PUBLIC_ROOT_DOMAIN && host.includes(process.env.NEXT_PUBLIC_ROOT_DOMAIN)) {
     slug = host.replace(`.${process.env.NEXT_PUBLIC_ROOT_DOMAIN}`, "");
+  } else if (host.endsWith(".vayva.com")) {
+    slug = host.replace(".vayva.com", "");
   } else if (host.endsWith(".vayva.shop")) {
     slug = host.replace(".vayva.shop", "");
   } else if (host.endsWith(".vayva.ng")) {
-    slug = host.replace(".vayva.ng", ""); // Production
+    slug = host.replace(".vayva.ng", "");
   }
 
   // Handle localhost via manual override for testing if needed, though hard on server layout without params
@@ -46,7 +50,6 @@ export async function generateMetadata(
           // tagline: true, // Legacy field removed
           seoTitle: true,
           seoDescription: true,
-          seoKeywords: true,
           socialImage: true,
           logoUrl: true
         }
@@ -60,7 +63,6 @@ export async function generateMetadata(
         return {
           title,
           description,
-          keywords: store.seoKeywords || [],
           openGraph: {
             title,
             description,
@@ -92,7 +94,7 @@ export async function generateMetadata(
 
 export default function RootLayout({ children }: { children: any }) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <head>
         <link
           rel="preconnect"
@@ -104,10 +106,14 @@ export default function RootLayout({ children }: { children: any }) {
       </head>
       <body
         className={`${spaceGrotesk.variable} ${inter.variable} font-sans antialiased bg-white text-black min-h-screen flex flex-col`}
+        suppressHydrationWarning
       >
         <Suspense fallback={<div className="p-10 text-center">Loading...</div>}>
           <StoreProvider>{children}</StoreProvider>
         </Suspense>
+        {/* Performance Monitoring */}
+        <Analytics />
+        <SpeedInsights />
       </body>
     </html>
   );

@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { prisma } from "@vayva/db";
+import { prisma } from "@/lib/prisma";
 import { TEMPLATE_REGISTRY } from "@/lib/templates-registry";
 import { CanonicalTemplateId } from "@/types/templates";
 
@@ -50,7 +50,7 @@ export async function POST(req: Request) {
         tags: template.compare.bestFor || [],
         supportedPages: [],
         configSchema: {}, // No schema for now
-        isArchived: template.status !== "implemented",
+        isArchived: template.status === "deprecated",
       },
       update: {
         name: template.displayName,
@@ -61,7 +61,7 @@ export async function POST(req: Request) {
           (template.preview as any).desktopUrl ||
           "",
         tags: template.compare.bestFor || [],
-        isArchived: template.status !== "implemented",
+        isArchived: template.status === "deprecated",
       },
     });
 

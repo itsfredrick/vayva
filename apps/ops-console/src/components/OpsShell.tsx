@@ -4,6 +4,7 @@ import { OpsSidebar } from "./OpsSidebar";
 import { CommandMenu } from "./CommandMenu";
 import { Search, Bell } from "lucide-react";
 import { useEffect, useState } from "react";
+import { Button } from "@vayva/ui";
 
 interface OpsUser {
   name: string;
@@ -97,17 +98,23 @@ export function OpsShell({ children }: { children: React.ReactNode }) {
         </div>
 
         <div className="flex items-center gap-4">
-          <button
+          <Button
+            variant="outline"
             onClick={toggleDensity}
-            title={`Switch to ${density === 'relaxed' ? 'Compact' : 'Relaxed'} View`}
-            className="text-xs font-bold px-3 py-1.5 rounded-md border border-gray-200 hover:bg-gray-50 text-gray-600 transition-colors uppercase"
+            className="text-xs font-bold px-3 py-1.5 rounded-md border border-gray-200 hover:bg-gray-50 text-gray-600 transition-colors uppercase h-auto"
+            aria-label={`Switch to ${density === 'relaxed' ? 'Compact' : 'Relaxed'} View`}
           >
             {density}
-          </button>
-          <button className="w-8 h-8 flex items-center justify-center text-gray-500 hover:text-black relative">
+          </Button>
+          <Button
+            variant="ghost"
+            size="icon"
+            className="w-8 h-8 flex items-center justify-center text-gray-500 hover:text-black relative"
+            aria-label="View notifications"
+          >
             <Bell size={18} />
             <span className="absolute top-1 right-1 w-2 h-2 bg-red-500 rounded-full"></span>
-          </button>
+          </Button>
           <div
             className="w-8 h-8 bg-gray-200 rounded-full flex items-center justify-center text-xs font-bold"
             title={user ? `${user.name} (${user.role})` : "Loading..."}

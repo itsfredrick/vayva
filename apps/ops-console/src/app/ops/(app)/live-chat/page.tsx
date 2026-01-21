@@ -4,6 +4,7 @@ import React from "react";
 import { useOpsQuery } from "@/hooks/useOpsQuery";
 import { MessageSquare, PauseCircle, CheckCircle, AlertTriangle } from "lucide-react";
 import { toast } from "sonner";
+import { Button } from "@vayva/ui";
 
 export default function LiveChatPage() {
     const { data: handoffs, isLoading } = useOpsQuery(
@@ -74,12 +75,14 @@ export default function LiveChatPage() {
                                         }
                                     </td>
                                     <td className="px-6 py-4 text-right">
-                                        <button
+                                        <Button
+                                            variant="ghost"
                                             onClick={() => handlePauseAi(h.id, h.customerPhone)}
-                                            className="text-red-600 hover:text-red-700 font-medium text-xs flex items-center gap-1 justify-end w-full"
+                                            className="text-red-600 hover:text-red-700 font-medium text-xs flex items-center gap-1 justify-end w-full h-auto p-0 hover:bg-transparent"
+                                            aria-label={`Pause AI agent for customer ${h.customerPhone}`}
                                         >
                                             <PauseCircle size={14} /> Pause AI
-                                        </button>
+                                        </Button>
                                     </td>
                                 </tr>
                             ))

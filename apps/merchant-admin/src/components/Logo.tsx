@@ -25,7 +25,7 @@ export function Logo({
   const content = (
     <div className={`flex items-center gap-2 ${className}`}>
       <Image
-        src="/brand-logo.png"
+        src="/icons/icon-512.png"
         alt="Vayva Logo"
         width={width}
         height={height}
@@ -33,7 +33,7 @@ export function Logo({
         priority
       />
       {showText && (
-        <span className={`font-bold tracking-tight text-[#0B0B0B] ${text}`}>
+        <span className={`font-bold tracking-tight text-black ${text}`}>
           Vayva
         </span>
       )}

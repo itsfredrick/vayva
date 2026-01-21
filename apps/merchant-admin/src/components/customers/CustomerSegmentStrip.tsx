@@ -1,5 +1,5 @@
 import React from "react";
-import { Icon, cn } from "@vayva/ui";
+import { Icon, IconName, cn, Button } from "@vayva/ui";
 
 interface CustomerSegmentStripProps {
   activeFilter: string;
@@ -13,12 +13,20 @@ interface CustomerSegmentStripProps {
   };
 }
 
+interface CustomerSegment {
+  id: string;
+  label: string;
+  count: number;
+  icon: IconName;
+  color?: string;
+}
+
 export const CustomerSegmentStrip = ({
   activeFilter,
   onFilterChange,
   stats,
 }: CustomerSegmentStripProps) => {
-  const segments = [
+  const segments: CustomerSegment[] = [
     {
       id: "all",
       label: "All Customers",
@@ -61,7 +69,7 @@ export const CustomerSegmentStrip = ({
         const isActive = activeFilter === seg.id;
 
         return (
-          <button
+          <Button
             key={seg.id}
             onClick={() => onFilterChange(seg.id)}
             className={cn(
@@ -79,7 +87,6 @@ export const CustomerSegmentStrip = ({
                   : "bg-gray-50 text-gray-500",
               )}
             >
-              {/* @ts-ignore */}
               <Icon name={seg.icon} size={16} />
             </div>
             <div className="text-left">
@@ -95,7 +102,7 @@ export const CustomerSegmentStrip = ({
                 {seg.count}
               </p>
             </div>
-          </button>
+          </Button>
         );
       })}
     </div>

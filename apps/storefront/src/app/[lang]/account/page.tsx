@@ -6,6 +6,7 @@ import { Gift, Package, Utensils, LogOut } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { StoreShell } from "@/components/StoreShell";
+import { Button } from "@vayva/ui";
 
 export default function AccountPage({
   params,
@@ -50,13 +51,15 @@ export default function AccountPage({
                 </h1>
                 <p className="opacity-60 font-mono text-sm">{user.email}</p>
               </div>
-              <button
+              <Button
+                variant="ghost"
+                size="icon"
                 onClick={handleLogout}
-                className="text-white/50 hover:text-white transition-colors"
-                title="Logout"
+                className="text-white/50 hover:text-white transition-colors h-auto"
+                aria-label="Logout"
               >
                 <LogOut size={20} />
-              </button>
+              </Button>
             </div>
             {/* Decor */}
             <div className="absolute top-0 right-0 w-64 h-64 bg-blue-500 rounded-full blur-[100px] opacity-20 -translate-y-1/2 translate-x-1/2" />

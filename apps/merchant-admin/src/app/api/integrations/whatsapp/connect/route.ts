@@ -17,9 +17,8 @@ export async function POST(request: NextRequest) {
         const evolutionKey = process.env.WHATSAPP_API_KEY; // Using existing env var or new one
 
         if (!evolutionUrl || !evolutionKey) {
-            console.warn("Evolution API credentials missing. Running in mock mode.");
-            // Simulation so app doesn't crash during demo if keys missing
-            return NextResponse.json({ status: "mock_otp_sent", debug: "Missing API Keys" });
+            console.error("Evolution API credentials missing.");
+            return NextResponse.json({ error: "Configuration Error: Missing API Keys" }, { status: 500 });
         }
 
         // Real Evolution API Call: Create Instance & Send OTP

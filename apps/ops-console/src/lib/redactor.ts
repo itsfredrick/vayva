@@ -4,7 +4,7 @@ const SENSITIVE_PATTERNS = [
     /(Bearer\s+)[a-zA-Z0-9\._\-]{20,}/gi,
     // API Keys (General)
     /(key-|api-key-|sk-)[a-zA-Z0-9]{20,}/gi,
-    // Paystack/Stripe Secret Keys
+    // Paystack Secret Keys
     /(sk_test_|sk_live_)[a-zA-Z0-9]{20,}/gi,
     // Passwords in JSON
     /("password"\s*:\s*")[^"]+(")/gi,

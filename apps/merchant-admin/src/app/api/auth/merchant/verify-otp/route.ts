@@ -1,10 +1,19 @@
 import { NextRequest, NextResponse } from "next/server";
-import { prisma } from "@vayva/db";
+import { prisma } from "@/lib/prisma";
 import { createSession } from "@/lib/session";
 
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
+
+    // Rate Limit: Prevent brute forcing OTP
+    const { applyRateLimit, RATE_LIMITS } = await import("@/lib/rate-limit-enhanced");
+    const rateLimitResult = await applyRateLimit(request, "verify-otp", RATE_LIMITS.OTP_VERIFY);
+
+    if (!rateLimitResult.allowed) {
+      return rateLimitResult.response!;
+    }
+
     const { email, code } = body;
 
     // Validation
@@ -21,7 +30,10 @@ export async function POST(request: NextRequest) {
       include: {
         memberships: {
           where: { status: "active" },
-          include: { store: true },
+          include: {
+            store: true,
+            role: true
+          },
         },
       },
     });
@@ -107,7 +119,7 @@ export async function POST(request: NextRequest) {
       lastName: user.lastName,
       storeId: membership.storeId,
       storeName: membership.store.name,
-      role: membership.role,
+      role: membership.role?.name || "MEMBER",
     };
 
     await createSession(sessionUser);

@@ -13,8 +13,8 @@ export async function GET(
         const incident = await prisma.rescueIncident.findUnique({
             where: { id },
             include: {
-                FixActions: { orderBy: { createdAt: "desc" } },
-                AuditLogs: { orderBy: { createdAt: "desc" } },
+                fixActions: { orderBy: { createdAt: "desc" } },
+                auditLogs: { orderBy: { createdAt: "desc" } },
             },
         });
 

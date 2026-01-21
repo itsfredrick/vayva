@@ -42,7 +42,7 @@ export const CustomerOrdersTable = ({
                 className="cursor-pointer hover:bg-gray-50 transition-colors"
                 onClick={() => router.push(`/admin/orders/${order.id}`)}
               >
-                <td className="px-6 py-4 font-bold text-[#0B0B0B]">
+                <td className="px-6 py-4 font-bold text-black">
                   {order.orderNumber}
                   <span className="text-xs font-normal text-gray-400 ml-2">
                     ({order.itemsCount} items)
@@ -56,7 +56,7 @@ export const CustomerOrdersTable = ({
                     {order.status}
                   </span>
                 </td>
-                <td className="px-6 py-4 text-right font-bold text-[#0B0B0B]">
+                <td className="px-6 py-4 text-right font-bold text-black">
                   ₦ {order.total.toLocaleString()}
                 </td>
               </tr>
@@ -107,7 +107,7 @@ export const NotesSection = ({ notes, onAddNote }: NotesSectionProps) => {
               key={note.id}
               className="bg-yellow-50/50 border border-yellow-100 p-4 rounded-xl flex flex-col gap-2"
             >
-              <p className="text-sm text-[#0B0B0B] whitespace-pre-wrap">
+              <p className="text-sm text-black whitespace-pre-wrap">
                 {note.content}
               </p>
               <div className="flex justify-between items-center text-xs text-gray-400 mt-2">
@@ -138,10 +138,10 @@ export const NotesSection = ({ notes, onAddNote }: NotesSectionProps) => {
               className="bg-white rounded-xl shadow-xl w-full max-w-md overflow-hidden"
             >
               <div className="p-4 border-b border-gray-100 flex justify-between items-center bg-gray-50">
-                <h3 className="font-bold text-[#0B0B0B]">Add Note</h3>
-                <button onClick={() => setIsModalOpen(false)}>
+                <h3 className="font-bold text-black">Add Note</h3>
+                <Button variant="ghost" size="icon" onClick={() => setIsModalOpen(false)} className="h-6 w-6">
                   <Icon name="X" size={18} />
-                </button>
+                </Button>
               </div>
               <div className="p-6 flex flex-col gap-4">
                 <textarea

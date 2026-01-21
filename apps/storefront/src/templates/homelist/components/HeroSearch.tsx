@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Search, MapPin } from "lucide-react";
+import { Button } from "@vayva/ui";
 
 export const HeroSearch = () => {
   const [activeTab, setActiveTab] = useState<"buy" | "rent" | "shortlet">(
@@ -18,13 +19,15 @@ export const HeroSearch = () => {
         {/* Tabs */}
         <div className="inline-flex bg-white/20 backdrop-blur-md p-1 rounded-t-xl overflow-hidden">
           {(["buy", "rent", "shortlet"] as const).map((tab) => (
-            <button
+            <Button
               key={tab}
+              variant="ghost"
               onClick={() => setActiveTab(tab)}
-              className={`px-8 py-3 text-sm font-bold capitalize transition-all ${activeTab === tab ? "bg-white text-[#0F172A] rounded-t-lg" : "text-white hover:bg-white/10"}`}
+              className={`px-8 py-3 text-sm font-bold capitalize transition-all h-auto ${activeTab === tab ? "bg-white text-[#0F172A] rounded-t-lg" : "text-white hover:bg-white/10"}`}
+              aria-label={`Search for properties to ${tab}`}
             >
               {tab}
-            </button>
+            </Button>
           ))}
         </div>
 
@@ -41,24 +44,24 @@ export const HeroSearch = () => {
             />
           </div>
 
-          <button className="w-full md:w-auto bg-[#2563EB] hover:bg-[#1D4ED8] text-white px-8 py-4 rounded-lg font-bold flex items-center justify-center gap-2 transition-colors shadow-lg shadow-blue-200">
+          <Button className="w-full md:w-auto bg-[#2563EB] hover:bg-[#1D4ED8] text-white px-8 py-4 rounded-lg font-bold flex items-center justify-center gap-2 transition-colors shadow-lg shadow-blue-200 h-auto" aria-label="Search properties">
             <Search size={20} />
             <span>Search</span>
-          </button>
+          </Button>
         </div>
 
         <div className="mt-6 flex flex-wrap justify-center gap-3 text-white/80 text-xs font-medium">
           <span>Popular:</span>
-          <button className="hover:text-white hover:underline">
+          <Button variant="link" className="text-white hover:text-white hover:underline h-auto p-0 font-medium text-xs" aria-label="Search Lagos, Lekki Phase 1">
             Lekki Phase 1
-          </button>
-          <button className="hover:text-white hover:underline">Ikoyi</button>
-          <button className="hover:text-white hover:underline">
+          </Button>
+          <Button variant="link" className="text-white hover:text-white hover:underline h-auto p-0 font-medium text-xs" aria-label="Search Lagos, Ikoyi">Ikoyi</Button>
+          <Button variant="link" className="text-white hover:text-white hover:underline h-auto p-0 font-medium text-xs" aria-label="Search Lagos, Banana Island">
             Banana Island
-          </button>
-          <button className="hover:text-white hover:underline">
+          </Button>
+          <Button variant="link" className="text-white hover:text-white hover:underline h-auto p-0 font-medium text-xs" aria-label="Search Lagos, Victoria Island">
             Victoria Island
-          </button>
+          </Button>
         </div>
       </div>
     </section>

@@ -1,0 +1,8 @@
+import { NextResponse } from "next/server";
+export async function POST(request) {
+    const { ids } = await request.json();
+    return NextResponse.json({
+        success: true,
+        marked_read_count: ids.length,
+    });
+}

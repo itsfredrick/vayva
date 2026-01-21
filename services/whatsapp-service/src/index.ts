@@ -9,6 +9,18 @@ server.register(cors);
 // Health check
 server.get("/health", async () => ({ status: "ok" }));
 
+// Register Custom Parser for Webhook Signature Verification
+server.addContentTypeParser("application/json", { parseAs: "buffer" }, (req, body, done) => {
+  try {
+    (req as any).rawBody = body; // Store buffer for HMAC verification
+    const json = JSON.parse(body.toString());
+    done(null, json);
+  } catch (err: any) {
+    err.statusCode = 400;
+    done(err, undefined);
+  }
+});
+
 // Register Routes
 server.register(whatsappRoutes, { prefix: "/v1/whatsapp" });
 

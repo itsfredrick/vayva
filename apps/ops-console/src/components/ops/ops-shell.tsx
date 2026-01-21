@@ -3,7 +3,7 @@
 import React from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Icon, Button } from "@vayva/ui";
+import { Button, Icon, IconName } from "@vayva/ui";
 
 interface OpsShellProps {
   children: React.ReactNode;
@@ -12,7 +12,7 @@ interface OpsShellProps {
   actions?: React.ReactNode;
 }
 
-const NAV_ITEMS = [
+const NAV_ITEMS: { name: string; path: string; icon: IconName }[] = [
   { name: "Merchants", path: "/ops/merchants", icon: "Store" },
   { name: "Moderation", path: "/ops/moderation", icon: "Gavel" },
   { name: "Disputes", path: "/ops/disputes", icon: "AlertTriangle" },
@@ -54,7 +54,7 @@ export function OpsShell({
                                 `}
                 >
                   <Icon
-                    name={item.icon as any}
+                    name={item.icon}
                     size={20}
                     className={isActive ? "text-white" : "text-text-secondary"}
                   />

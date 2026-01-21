@@ -18,8 +18,8 @@ export const RbacService = {
         ],
       },
       include: {
-        RolePermission: {
-          include: { Permission: true },
+        rolePermissions: {
+          include: { permission: true },
         },
       },
     });
@@ -41,13 +41,13 @@ export const RbacService = {
         storeId,
         name,
         isSystem: false,
-        RolePermission: {
+        rolePermissions: {
           create: perms.map((p) => ({
             permissionId: p.id,
           })),
         },
       },
-      include: { RolePermission: true },
+      include: { rolePermissions: true },
     });
   },
 
@@ -73,7 +73,7 @@ export const RbacService = {
       where: { id: roleId },
       data: {
         name,
-        RolePermission: {
+        rolePermissions: {
           deleteMany: {}, // Clear old
           create: perms.map((p) => ({
             permissionId: p.id,
@@ -113,8 +113,8 @@ export const PermissionGuard = {
     const member = await prisma.membership.findUnique({
       where: { userId_storeId: { userId, storeId } },
       include: {
-        Role: {
-          include: { RolePermission: { include: { Permission: true } } },
+        role: {
+          include: { rolePermissions: { include: { permission: true } } },
         },
       },
     });
@@ -125,12 +125,12 @@ export const PermissionGuard = {
     if ((member as any).role_enum === "OWNER") return true;
 
     // Check Role Relation permissions
-    if (member.Role) {
+    if (member.role) {
       // System Role super-admin check?
-      if (member.Role.name === "Owner") return true;
+      if (member.role.name === "Owner") return true;
 
-      const hasPerm = member.Role.RolePermission.some(
-        (rp: any) => rp.Permission.key === requiredPermission,
+      const hasPerm = (member.role as any).rolePermissions.some(
+        (rp: any) => rp.permission.key === requiredPermission,
       );
       if (hasPerm) return true;
     }

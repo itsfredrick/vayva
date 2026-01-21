@@ -1,6 +1,7 @@
 "use client";
 
 import React from "react";
+import { Button } from "@vayva/ui";
 import { useEducation } from "@/hooks/useEducation";
 
 interface WorkflowNudgeProps {
@@ -24,13 +25,13 @@ export function WorkflowNudge({
     <div className="bg-amber-50 border border-amber-200 rounded-lg p-4 mb-4">
       <div className="flex justify-between items-start gap-4">
         <p className="text-sm text-amber-900">{message}</p>
-        <button
+        <Button
           onClick={dismiss}
           className="text-amber-600 hover:text-amber-700 text-sm flex-shrink-0"
           aria-label="Dismiss"
         >
           ×
-        </button>
+        </Button>
       </div>
     </div>
   );

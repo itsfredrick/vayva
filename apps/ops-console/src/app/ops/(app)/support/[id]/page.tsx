@@ -6,6 +6,7 @@ import { useOpsQuery } from "@/hooks/useOpsQuery";
 import { ArrowLeft, User, MessageSquare, Send, CheckCircle, Smartphone } from "lucide-react";
 import { toast } from "sonner";
 import Link from "next/link";
+import { Button } from "@vayva/ui";
 
 export default function SupportDetailPage() {
     const { id } = useParams() as { id: string };
@@ -69,19 +70,20 @@ export default function SupportDetailPage() {
                 </div>
                 <div className="flex gap-2">
                     {ticket.status !== "RESOLVED" ? (
-                        <button
+                        <Button
                             onClick={() => handleStatusUpdate("RESOLVED")}
-                            className="bg-green-600 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-green-700 flex items-center gap-2"
+                            className="bg-green-600 hover:bg-green-700 text-white flex items-center gap-2 h-9"
                         >
                             <CheckCircle size={16} /> Mark Resolved
-                        </button>
+                        </Button>
                     ) : (
-                        <button
+                        <Button
+                            variant="secondary"
                             onClick={() => handleStatusUpdate("OPEN")}
-                            className="bg-gray-100 text-gray-600 px-4 py-2 rounded-lg text-sm font-medium hover:bg-gray-200"
+                            className="h-9"
                         >
                             Re-open Ticket
-                        </button>
+                        </Button>
                     )}
                 </div>
             </div>
@@ -117,13 +119,14 @@ export default function SupportDetailPage() {
                                 placeholder="Type your reply..."
                                 className="w-full p-4 pr-12 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-indigo-500 outline-none resize-none h-24 text-sm"
                             />
-                            <button
+                            <Button
                                 type="submit"
+                                size="icon"
                                 disabled={sending || !reply.trim()}
-                                className="absolute bottom-3 right-3 p-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 disabled:opacity-50 transition-colors"
+                                className="absolute bottom-3 right-3 h-8 w-8"
                             >
                                 <Send size={16} />
-                            </button>
+                            </Button>
                         </form>
                     </div>
                 </div>

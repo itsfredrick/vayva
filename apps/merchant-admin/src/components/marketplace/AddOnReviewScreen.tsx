@@ -20,7 +20,7 @@ export function AddOnReviewScreen({
       <div className="max-w-2xl w-full bg-white rounded-lg border border-gray-200 p-8">
         {/* Header */}
         <div className="mb-8">
-          <h1 className="text-3xl font-bold text-[#0F172A] mb-2">
+          <h1 className="text-3xl font-bold text-black mb-2">
             Review Add-On
           </h1>
           <p className="text-[#64748B]">
@@ -30,19 +30,19 @@ export function AddOnReviewScreen({
 
         {/* Description */}
         <div className="mb-8">
-          <p className="text-[#0F172A]">{addon.description}</p>
+          <p className="text-black">{addon.description}</p>
         </div>
 
         {/* This add-on will */}
         <div className="mb-8">
-          <h2 className="text-lg font-semibold text-[#0F172A] mb-4">
+          <h2 className="text-lg font-semibold text-black mb-4">
             This add-on will:
           </h2>
           <ul className="space-y-2">
             {addon.whatItAdds.map((item, i) => (
               <li key={i} className="flex items-start gap-2">
                 <span className="text-[#22C55E] mt-1">✓</span>
-                <span className="text-[#0F172A]">{item}</span>
+                <span className="text-black">{item}</span>
               </li>
             ))}
           </ul>
@@ -50,7 +50,7 @@ export function AddOnReviewScreen({
 
         {/* This add-on will not */}
         <div className="mb-8 bg-gray-50 rounded-lg p-6">
-          <h3 className="text-sm font-semibold text-[#0F172A] mb-3">
+          <h3 className="text-sm font-semibold text-black mb-3">
             This add-on will not:
           </h3>
           <ul className="space-y-2">

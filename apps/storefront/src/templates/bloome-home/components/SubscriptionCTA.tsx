@@ -1,4 +1,5 @@
 import React from "react";
+import { Button } from "@vayva/ui";
 
 export const SubscriptionCTA = () => {
   return (
@@ -10,9 +11,9 @@ export const SubscriptionCTA = () => {
         Subscribe to your favorite products and save 15% on every order. Pause,
         skip, or cancel anytime.
       </p>
-      <button className="bg-[#C9B7A2] text-white px-8 py-4 uppercase tracking-widest text-xs font-bold hover:bg-[#B8A690] transition-colors">
+      <Button className="bg-[#C9B7A2] text-white px-8 py-4 uppercase tracking-widest text-xs font-bold hover:bg-[#B8A690] transition-colors h-auto" aria-label="Explore subscriptions">
         Explore Subscriptions
-      </button>
+      </Button>
     </section>
   );
 };

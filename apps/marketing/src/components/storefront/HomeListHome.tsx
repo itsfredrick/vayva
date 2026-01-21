@@ -2,6 +2,7 @@
 
 import React from "react";
 import { Search, MapPin, Bed, Bath } from "lucide-react";
+import { Button } from "@vayva/ui";
 import { useStorefrontStore } from "@/hooks/storefront/useStorefront";
 
 interface HomeListHomeProps {
@@ -59,15 +60,15 @@ export default function HomeListHome({
                         <a href="#">Rent</a>
                         <a href="#">Sell</a>
                     </div>
-                    <button className="border border-slate-300 px-4 py-2 rounded-lg font-medium hover:bg-slate-50">
+                    <Button variant="outline" className="border border-slate-300 px-4 py-2 rounded-lg font-medium hover:bg-slate-50 h-auto">
                         Contact Us
-                    </button>
+                    </Button>
                 </div>
             </nav>
 
             {/* Hero with Search */}
             <div className="relative h-[50vh] bg-slate-900 flex flex-col items-center justify-center p-4">
-                <img src="https://images.unsplash.com/photo-1564013799919-ab600027ffc6?auto=format&fit=crop&q=80&w=2000" className="absolute inset-0 w-full h-full object-cover opacity-50" />
+                <img src="https://images.unsplash.com/photo-1564013799919-ab600027ffc6?auto=format&fit=crop&q=80&w=2000" alt="Home Hero" className="absolute inset-0 w-full h-full object-cover opacity-50" />
                 <div className="relative z-10 w-full max-w-4xl text-center">
                     <h1 className="text-white text-4xl md:text-5xl font-bold mb-8 shadow-black/50 drop-shadow-lg">Find Your Dream Home</h1>
                     <div className="bg-white p-2 rounded-xl flex shadow-xl">
@@ -76,10 +77,10 @@ export default function HomeListHome({
                             placeholder="Search by city, neighborhood, or address..."
                             className="flex-1 px-4 py-3 outline-none text-lg rounded-l-lg"
                         />
-                        <button className="bg-indigo-600 text-white px-8 py-3 rounded-lg font-bold hover:bg-indigo-700 flex items-center gap-2">
+                        <Button className="bg-indigo-600 text-white px-8 py-3 rounded-lg font-bold hover:bg-indigo-700 flex items-center gap-2 h-auto">
                             <Search className="w-5 h-5" />
                             Search
-                        </button>
+                        </Button>
                     </div>
                 </div>
             </div>
@@ -105,7 +106,7 @@ export default function HomeListHome({
                                 </div>
                                 <div className="flex items-center justify-between border-t border-slate-100 pt-4">
                                     <span className="text-2xl font-bold text-indigo-600">₦{(p.price / 1000000).toFixed(1)}M</span>
-                                    <button className="text-sm font-bold border border-indigo-600 text-indigo-600 px-3 py-1 rounded hover:bg-indigo-50">Details</button>
+                                    <Button variant="outline" className="text-sm font-bold border border-indigo-600 text-indigo-600 px-3 py-2 rounded hover:bg-indigo-50 h-auto">Details</Button>
                                 </div>
                             </div>
                         </div>

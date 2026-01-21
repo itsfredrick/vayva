@@ -1,6 +1,6 @@
 import { TemplateProps } from "@/components/templates/registry";
 import { useStore } from "@/context/StoreContext";
-import { Icon } from "@vayva/ui";
+import { Icon, Button } from "@vayva/ui";
 
 export const SimpleRetailTemplate: React.FC<TemplateProps> = ({
   businessName,
@@ -21,36 +21,36 @@ export const SimpleRetailTemplate: React.FC<TemplateProps> = ({
   // Demo Data Override for Simple Retail
   const retailProducts = demoMode
     ? [
-        {
-          id: "demo_1",
-          name: "Polo Shirt",
-          price: 7500,
-          type: "retail",
-          itemsSold: 20,
-          isTodaysSpecial: true,
-        },
-        {
-          id: "demo_2",
-          name: "Handbag",
-          price: 15000,
-          type: "retail",
-          itemsSold: 15,
-        },
-        {
-          id: "demo_3",
-          name: "Sneakers",
-          price: 28000,
-          type: "retail",
-          itemsSold: 10,
-        },
-        {
-          id: "demo_4",
-          name: "Wristwatch",
-          price: 12000,
-          type: "retail",
-          itemsSold: 5,
-        },
-      ]
+      {
+        id: "demo_1",
+        name: "Polo Shirt",
+        price: 7500,
+        type: "retail",
+        itemsSold: 20,
+        isTodaysSpecial: true,
+      },
+      {
+        id: "demo_2",
+        name: "Handbag",
+        price: 15000,
+        type: "retail",
+        itemsSold: 15,
+      },
+      {
+        id: "demo_3",
+        name: "Sneakers",
+        price: 28000,
+        type: "retail",
+        itemsSold: 10,
+      },
+      {
+        id: "demo_4",
+        name: "Wristwatch",
+        price: 12000,
+        type: "retail",
+        itemsSold: 5,
+      },
+    ]
     : products.filter((p) => p.type === "retail");
 
   // Featured Splice
@@ -64,17 +64,17 @@ export const SimpleRetailTemplate: React.FC<TemplateProps> = ({
           {businessName || "Store Name"}
         </div>
         <div className="flex gap-4">
-          <button className="relative" onClick={() => toggleCart()}>
+          <Button variant="ghost" size="icon" className="relative h-auto w-auto p-2" onClick={() => toggleCart()}>
             <Icon name="ShoppingBag" size={24} />
             {itemCount > 0 && (
               <span className="absolute -top-1 -right-1 bg-black text-white text-[10px] w-4 h-4 flex items-center justify-center rounded-full font-bold">
                 {itemCount}
               </span>
             )}
-          </button>
-          <button>
+          </Button>
+          <Button variant="ghost" size="icon" className="h-auto w-auto p-2">
             <Icon name="Menu" size={24} />
-          </button>
+          </Button>
         </div>
       </header>
 
@@ -84,9 +84,9 @@ export const SimpleRetailTemplate: React.FC<TemplateProps> = ({
           <div className="w-full max-w-sm bg-white h-full p-6 flex flex-col animate-in slide-in-from-right">
             <div className="flex justify-between items-center mb-6">
               <h2 className="text-xl font-bold">Your Bag</h2>
-              <button onClick={() => toggleCart(false)}>
+              <Button variant="ghost" size="icon" onClick={() => toggleCart(false)} className="h-auto w-auto p-0">
                 <Icon name="X" size={24} />
-              </button>
+              </Button>
             </div>
             <div className="flex-1 overflow-auto">
               {/* Cart Items would go here */}
@@ -109,10 +109,10 @@ export const SimpleRetailTemplate: React.FC<TemplateProps> = ({
                   {currency} {cartTotal.toLocaleString()}
                 </span>
               </div>
-              <button
+              <Button
                 onClick={() => checkout("whatsapp")}
                 disabled={isCheckoutProcessing || itemCount === 0}
-                className="w-full bg-green-500 text-white py-3 rounded-full font-bold flex items-center justify-center gap-2"
+                className="w-full bg-green-500 text-white py-3 rounded-full font-bold flex items-center justify-center gap-2 h-auto"
               >
                 {isCheckoutProcessing ? (
                   "Processing..."
@@ -121,7 +121,7 @@ export const SimpleRetailTemplate: React.FC<TemplateProps> = ({
                     <Icon name="MessageCircle" size={20} /> Checkout on WhatsApp
                   </>
                 )}
-              </button>
+              </Button>
             </div>
           </div>
         </div>
@@ -140,9 +140,9 @@ export const SimpleRetailTemplate: React.FC<TemplateProps> = ({
               <h1 className="text-3xl md:text-5xl font-bold mb-4">
                 New Arrivals
               </h1>
-              <button className="bg-white text-black px-6 py-3 rounded-full font-bold text-sm uppercase tracking-wide hover:bg-gray-100 transition-colors">
+              <Button className="bg-white text-black px-6 py-3 rounded-full font-bold text-sm uppercase tracking-wide hover:bg-gray-100 transition-colors h-auto border-none">
                 Shop Now
-              </button>
+              </Button>
             </div>
           </div>
         </div>
@@ -162,7 +162,7 @@ export const SimpleRetailTemplate: React.FC<TemplateProps> = ({
             <div key={product.id} className="group cursor-pointer">
               <div className="aspect-[3/4] bg-gray-100 rounded-md overflow-hidden mb-3 relative">
                 <div className="absolute top-2 right-2 z-10 opacity-0 group-hover:opacity-100 transition-opacity">
-                  <button
+                  <Button
                     onClick={() =>
                       addToCart({
                         ...product,
@@ -170,10 +170,10 @@ export const SimpleRetailTemplate: React.FC<TemplateProps> = ({
                         productId: product.id,
                       })
                     }
-                    className="bg-white text-black p-2 rounded-full shadow-lg hover:bg-black hover:text-white transition-colors"
+                    className="bg-white text-black p-2 rounded-full shadow-lg hover:bg-black hover:text-white transition-colors h-auto w-auto min-w-0"
                   >
                     <Icon name="Plus" size={16} />
-                  </button>
+                  </Button>
                 </div>
                 <img
                   src={

@@ -4,7 +4,7 @@ import {
   WhatsAppMessageSender,
   WhatsAppConversation,
 } from "@vayva/shared";
-import { Icon, cn } from "@vayva/ui";
+import { Icon, cn, Button } from "@vayva/ui";
 
 interface ChatWindowProps {
   conversation: WhatsAppConversation | null;
@@ -95,12 +95,12 @@ export const ChatWindow = ({
         </div>
         {/* Actions */}
         <div className="flex gap-2">
-          <button className="p-2 hover:bg-gray-100 rounded-lg text-gray-500">
+          <Button size="icon" variant="ghost" className="text-gray-500 hover:bg-gray-100" aria-label="Call Customer" title="Call Customer">
             <Icon name="Phone" size={18} />
-          </button>
-          <button className="p-2 hover:bg-gray-100 rounded-lg text-gray-500">
+          </Button>
+          <Button size="icon" variant="ghost" className="text-gray-500 hover:bg-gray-100" aria-label="Search Messages" title="Search Messages">
             <Icon name="Search" size={18} />
-          </button>
+          </Button>
         </div>
       </header>
       {/* Messages Area */}
@@ -159,40 +159,50 @@ export const ChatWindow = ({
       {/* QUICK REPLY BAR */}
       <div className="bg-white border-t border-gray-200 p-2 overflow-x-auto whitespace-nowrap flex gap-2 custom-scrollbar shrink-0">
         {QUICK_REPLIES.map((qr) => (
-          <button
+          <Button
             key={qr}
+            variant="outline"
+            size="sm"
             onClick={() => handleQuickReply(qr)}
-            className="px-3 py-1.5 rounded-full border border-gray-200 bg-gray-50 text-xs text-gray-600 hover:bg-gray-100 hover:border-gray-300 transition-colors"
+            className="rounded-full bg-gray-50 text-xs text-gray-600 border-gray-200 h-8"
           >
             {qr}
-          </button>
+          </Button>
         ))}
       </div>
       {/* Input Area */}
       <div className="p-3 bg-white flex items-end gap-2 shrink-0">
-        <button className="p-2 text-gray-400 hover:text-gray-600 hover:bg-gray-100 rounded-full">
+        <Button size="icon" variant="ghost" className="text-gray-400 hover:text-gray-600 hover:bg-gray-100 rounded-full" aria-label="Add attachment" title="Add attachment">
           <Icon name="Plus" size={20} />
-        </button>
+        </Button>
         <div className="flex-1 bg-gray-100 rounded-xl px-4 py-2 flex items-center">
           <input
             className="w-full bg-transparent border-none outline-none text-sm text-gray-900 placeholder:text-gray-400"
             placeholder="Type a message..."
             value={inputValue}
             onChange={(e) => setInputValue(e.target.value)}
-            onKeyDown={(e) => e.key === "Enter" && handleSend()}
+            onKeyDown={(e) => {
+              if (e.key === "Enter" && !e.shiftKey) {
+                e.preventDefault();
+                handleSend();
+              }
+            }}
           />
         </div>
-        <button
+        <Button
+          size="icon"
           onClick={handleSend}
           disabled={!inputValue.trim()}
-          className="p-2 bg-green-600 text-white rounded-full hover:bg-green-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+          className="bg-green-600 hover:bg-green-700 text-white rounded-full transition-colors h-10 w-10"
+          aria-label="Send message"
+          title="Send message"
         >
           <Icon
             name="Send"
             size={18}
             className={inputValue.trim() ? "translate-x-0.5" : ""}
           />
-        </button>
+        </Button>
       </div>
     </div>
   );

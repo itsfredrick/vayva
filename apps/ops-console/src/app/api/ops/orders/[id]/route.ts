@@ -17,11 +17,11 @@ export async function GET(
             where: { id },
             include: {
                 store: { select: { id: true, name: true, logoUrl: true } },
-                Customer: { select: { id: true, firstName: true, lastName: true, email: true, phone: true } },
+                customer: { select: { id: true, firstName: true, lastName: true, email: true, phone: true } },
                 items: true,
-                Shipment: true,
-                PaymentTransaction: { orderBy: { createdAt: "desc" } },
-                OrderEvent: { orderBy: { createdAt: "desc" } }
+                shipment: true,
+                paymentTransactions: { orderBy: { createdAt: "desc" } },
+                orderEvents: { orderBy: { createdAt: "desc" } }
             }
         });
 

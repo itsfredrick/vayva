@@ -1,7 +1,7 @@
 "use client";
 
 import { useForm } from "react-hook-form";
-import { Button, Input, Textarea, Label } from "@vayva/ui";
+import { Button, Input, Label, Textarea } from "@vayva/ui";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
@@ -34,13 +34,12 @@ export function RealEstateProductForm({ productId }: { productId?: string }) {
                 title: data.title,
                 description: data.description,
                 price: contactForPrice ? 0 : Number(data.price),
-                metadata: {
-                    type: "real_estate",
-                    contactForPrice: data.contactForPrice,
+                attributes: {
+                    property_type: "Apartment", // Default or add selector
                     bedrooms: Number(data.bedrooms),
                     bathrooms: Number(data.bathrooms),
-                    parkingSpaces: Number(data.parkingSpaces),
-                    virtualTourUrl: data.virtualTourUrl,
+                    parking_spaces: Number(data.parkingSpaces),
+                    virtual_tour_url: data.virtualTourUrl || undefined,
                     amenities: data.amenities
                 }
             };

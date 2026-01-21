@@ -8,7 +8,20 @@ import {
   Bell,
   Menu,
   ShieldCheck,
+  LucideIcon
 } from "lucide-react-native";
+
+const Icon = ({
+  name: Component,
+  size,
+  color,
+}: {
+  name: LucideIcon;
+  size: number;
+  color: string;
+}) => {
+  return <Component size={size} color={color} />;
+};
 
 export default function TabLayout() {
   return (
@@ -49,8 +62,7 @@ export default function TabLayout() {
         options={{
           title: "Home",
           tabBarIcon: ({ color }) => (
-            // @ts-ignore
-            <Home size={24} color={color} />
+            <Icon name={Home} size={24} color={color} />
           ),
         }}
       />
@@ -59,8 +71,7 @@ export default function TabLayout() {
         options={{
           title: "Orders",
           tabBarIcon: ({ color }) => (
-            // @ts-ignore
-            <ShoppingBag size={24} color={color} />
+            <Icon name={ShoppingBag} size={24} color={color} />
           ),
         }}
       />
@@ -70,8 +81,7 @@ export default function TabLayout() {
           title: "Approvals",
           tabBarIcon: ({ color }) => (
             <View>
-              {/* @ts-ignore */}
-              <ShieldCheck size={24} color={color} />
+              <Icon name={ShieldCheck} size={24} color={color} />
               <View className="absolute -top-1 -right-1 w-3 h-3 bg-red-500 rounded-full border border-[#0b141a]" />
             </View>
           ),
@@ -82,8 +92,7 @@ export default function TabLayout() {
         options={{
           title: "Alerts",
           tabBarIcon: ({ color }) => (
-            // @ts-ignore
-            <Bell size={24} color={color} />
+            <Icon name={Bell} size={24} color={color} />
           ),
         }}
       />
@@ -92,8 +101,7 @@ export default function TabLayout() {
         options={{
           title: "Menu",
           tabBarIcon: ({ color }) => (
-            // @ts-ignore
-            <Menu size={24} color={color} />
+            <Icon name={Menu} size={24} color={color} />
           ),
         }}
       />

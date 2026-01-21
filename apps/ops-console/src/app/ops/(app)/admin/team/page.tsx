@@ -3,7 +3,8 @@
 import React, { useState } from "react";
 import { Users, Shield, Plus, Lock, Copy, Check } from "lucide-react";
 import { useOpsQuery } from "@/hooks/useOpsQuery";
-import { toast } from "sonner"; // Assuming sonner is used for toasts
+import { toast } from "sonner";
+import { Button } from "@vayva/ui";
 
 export default function TeamPage() {
     const { data: team, isLoading, refetch } = useOpsQuery(
@@ -53,22 +54,25 @@ export default function TeamPage() {
                     </h1>
                     <p className="text-gray-500 mt-1">Manage Ops Console access and roles.</p>
                 </div>
-                <button
+                <Button
                     onClick={() => setIsInviteOpen(!isInviteOpen)}
-                    className="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg flex items-center gap-2 font-medium"
+                    className="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg flex items-center gap-2 font-medium h-auto"
+                    aria-label="Invite a new team member"
                 >
                     <Plus size={16} /> Invite Member
-                </button>
+                </Button>
             </div>
 
             {createdCreds && (
                 <div className="bg-green-50 border border-green-200 rounded-xl p-6 relative">
-                    <button
+                    <Button
+                        variant="ghost"
                         onClick={() => setCreatedCreds(null)}
-                        className="absolute top-4 right-4 text-green-700 hover:text-green-900"
+                        className="absolute top-4 right-4 text-green-700 hover:text-green-900 h-auto p-2"
+                        aria-label="Close credentials popup"
                     >
                         Close
-                    </button>
+                    </Button>
                     <h3 className="font-bold text-green-800 text-lg mb-2 flex items-center gap-2">
                         <Check size={20} /> User Created Successfully
                     </h3>
@@ -82,9 +86,15 @@ export default function TeamPage() {
                             <span className="text-gray-500">Temp Password:</span>
                             <div className="flex items-center gap-2">
                                 <span className="font-bold select-all bg-gray-100 px-2 py-0.5 rounded">{createdCreds.tempPassword}</span>
-                                <button onClick={() => copyToClipboard(createdCreds.tempPassword)} className="text-gray-400 hover:text-gray-600">
+                                <Button
+                                    variant="ghost"
+                                    size="icon"
+                                    onClick={() => copyToClipboard(createdCreds.tempPassword)}
+                                    className="text-gray-400 hover:text-gray-600 h-8 w-8"
+                                    aria-label="Copy temporary password to clipboard"
+                                >
                                     <Copy size={14} />
-                                </button>
+                                </Button>
                             </div>
                         </div>
                     </div>
@@ -113,7 +123,7 @@ export default function TeamPage() {
                                 className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
                                 value={formData.email}
                                 onChange={e => setFormData({ ...formData, email: e.target.value })}
-                                placeholder="jane@vayva.com"
+                                placeholder="jane@vayva.ng"
                             />
                         </div>
                         <div>
@@ -122,6 +132,7 @@ export default function TeamPage() {
                                 className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
                                 value={formData.role}
                                 onChange={e => setFormData({ ...formData, role: e.target.value })}
+                                aria-label="Select member role"
                             >
                                 <option value="OPS_SUPPORT">Support Agent (L1)</option>
                                 <option value="OPS_ADMIN">Admin (L2)</option>
@@ -129,19 +140,22 @@ export default function TeamPage() {
                             </select>
                         </div>
                         <div className="flex justify-end gap-2 pt-2">
-                            <button
+                            <Button
                                 type="button"
+                                variant="ghost"
                                 onClick={() => setIsInviteOpen(false)}
-                                className="px-3 py-2 text-gray-600 hover:bg-gray-100 rounded-lg text-sm font-medium"
+                                className="px-3 py-2 text-gray-600 hover:bg-gray-100 rounded-lg text-sm font-medium h-auto"
+                                aria-label="Cancel invitation"
                             >
                                 Cancel
-                            </button>
-                            <button
+                            </Button>
+                            <Button
                                 type="submit"
-                                className="px-3 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg text-sm font-medium"
+                                className="px-3 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg text-sm font-medium h-auto"
+                                aria-label="Send invitation email"
                             >
                                 Send Invite
-                            </button>
+                            </Button>
                         </div>
                     </form>
                 </div>
@@ -171,8 +185,8 @@ export default function TeamPage() {
                                     </td>
                                     <td className="px-6 py-4">
                                         <span className={`px-2 py-0.5 rounded text-xs font-bold ${u.role === 'OPS_OWNER' ? 'bg-purple-100 text-purple-700' :
-                                                u.role === 'OPS_ADMIN' ? 'bg-indigo-100 text-indigo-700' :
-                                                    'bg-blue-100 text-blue-700'
+                                            u.role === 'OPS_ADMIN' ? 'bg-indigo-100 text-indigo-700' :
+                                                'bg-blue-100 text-blue-700'
                                             }`}>
                                             {u.role.replace("OPS_", "")}
                                         </span>

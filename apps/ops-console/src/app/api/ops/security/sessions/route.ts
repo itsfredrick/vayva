@@ -16,7 +16,7 @@ export async function GET(request: Request) {
         },
         orderBy: { createdAt: "desc" },
         include: {
-            User: {
+            user: {
                 select: { email: true, firstName: true, lastName: true }
             }
         },

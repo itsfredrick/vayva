@@ -1,4 +1,5 @@
 import React, { useState, useMemo } from "react";
+import { Button } from "@vayva/ui";
 import {
   useStorefrontProducts,
   useStorefrontStore,
@@ -87,13 +88,13 @@ export function QuickBitesFood({
               Menu
             </div>
             {categories.map((cat) => (
-              <button
+              <Button
                 key={cat}
                 onClick={() => setSelectedCategory(cat)}
                 className={`w-full text-left px-4 py-3 rounded-xl text-sm font-medium transition-colors ${selectedCategory === cat ? "bg-orange-500 text-white shadow-lg shadow-orange-200" : "text-gray-500 hover:bg-gray-50"}`}
               >
                 {cat}
-              </button>
+              </Button>
             ))}
           </nav>
         </div>
@@ -107,9 +108,9 @@ export function QuickBitesFood({
             <p className="text-xs text-blue-100 mb-3">
               On all orders over ₦5,000
             </p>
-            <button className="text-xs bg-white text-blue-500 px-4 py-2 rounded-lg font-bold">
+            <Button className="text-xs bg-white text-blue-500 px-4 py-2 rounded-lg font-bold">
               Details
-            </button>
+            </Button>
           </div>
         </div>
       </aside>
@@ -127,12 +128,12 @@ export function QuickBitesFood({
             />
           </div>
 
-          <button
+          <Button
             className="md:hidden p-2 bg-orange-100 text-orange-600 rounded-lg"
             onClick={() => setIsCartOpen(true)}
           >
             <ShoppingBag className="w-5 h-5" />
-          </button>
+          </Button>
         </header>
 
         {/* Content Scroll Area */}
@@ -157,12 +158,12 @@ export function QuickBitesFood({
               {selectedCategory} Menu
             </h2>
             <div className="flex gap-2">
-              <button className="p-2 border rounded-lg hover:bg-gray-50">
+              <Button className="p-2 border rounded-lg hover:bg-gray-50">
                 <Clock className="w-4 h-4" />
-              </button>
-              <button className="p-2 border rounded-lg hover:bg-gray-50">
+              </Button>
+              <Button className="p-2 border rounded-lg hover:bg-gray-50">
                 <Heart className="w-4 h-4" />
-              </button>
+              </Button>
             </div>
           </div>
 
@@ -182,11 +183,12 @@ export function QuickBitesFood({
                         p.image ||
                         `https://via.placeholder.com/300x200?text=${p.name}`
                       }
+                      alt={p.name}
                       className="w-full h-full object-cover group-hover:scale-105 transition-transform"
                     />
-                    <button className="absolute bottom-2 right-2 bg-white rounded-full p-2 shadow-md opacity-0 group-hover:opacity-100 transition-opacity">
+                    <Button className="absolute bottom-2 right-2 bg-white rounded-full p-2 shadow-md opacity-0 group-hover:opacity-100 transition-opacity">
                       <Plus className="w-4 h-4 text-orange-500" />
-                    </button>
+                    </Button>
                   </div>
                   <div className="flex justify-between items-start mb-2">
                     <h3 className="font-bold text-gray-900">{p.name}</h3>
@@ -214,9 +216,9 @@ export function QuickBitesFood({
             <div className="text-xs bg-orange-100 text-orange-600 px-2 py-1 rounded font-bold">
               {cart.length}
             </div>
-            <button className="md:hidden" onClick={() => setIsCartOpen(false)}>
+            <Button className="md:hidden" onClick={() => setIsCartOpen(false)}>
               <X className="w-5 h-5" />
-            </button>
+            </Button>
           </div>
 
           <div className="flex-1 overflow-y-auto p-6 space-y-6">
@@ -231,6 +233,7 @@ export function QuickBitesFood({
                     {item.image && (
                       <img
                         src={item.image}
+                        alt={item.name}
                         className="w-full h-full object-cover"
                       />
                     )}
@@ -244,21 +247,21 @@ export function QuickBitesFood({
                     </div>
                   </div>
                   <div className="flex items-center gap-2 bg-gray-100 rounded-lg p-1">
-                    <button
+                    <Button
                       onClick={() => updateQuantity(item.id, -1)}
                       className="p-1 hover:bg-white rounded"
                     >
                       <Minus className="w-3 h-3" />
-                    </button>
+                    </Button>
                     <span className="text-xs font-bold w-3 text-center">
                       {item.quantity}
                     </span>
-                    <button
+                    <Button
                       onClick={() => updateQuantity(item.id, 1)}
                       className="p-1 hover:bg-white rounded"
                     >
                       <Plus className="w-3 h-3" />
-                    </button>
+                    </Button>
                   </div>
                 </div>
               ))
@@ -280,13 +283,13 @@ export function QuickBitesFood({
                 <span>₦{total.toLocaleString()}</span>
               </div>
             </div>
-            <button
+            <Button
               disabled={cart.length === 0}
               onClick={() => setIsCheckoutOpen(true)}
               className="w-full bg-orange-500 text-white py-4 rounded-xl font-bold shadow-lg shadow-orange-200 hover:bg-orange-600 disabled:opacity-50 disabled:shadow-none transition-all flex items-center justify-center gap-2"
             >
               Checkout <ChevronRight className="w-4 h-4" />
-            </button>
+            </Button>
           </div>
         </aside>
       )}

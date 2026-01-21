@@ -43,4 +43,11 @@ export async function webhookRoutes(server: FastifyInstance) {
     await WebhookController.replayDelivery(id);
     return { success: true };
   });
+
+  // --- Trigger (Internal) ---
+  server.post("/trigger", async (req: any, reply) => {
+    const storeId = req.headers["x-store-id"];
+    const { type, payload } = req.body;
+    return await WebhookController.publishEvent(storeId, type, payload);
+  });
 }

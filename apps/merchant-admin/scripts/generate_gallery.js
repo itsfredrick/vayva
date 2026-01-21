@@ -19,7 +19,6 @@ function generate() {
     var galleryItems = Object.entries(core_1.Templates).map(function (_a) {
         var key = _a[0], renderFn = _a[1];
         var data = MOCKS[key] || {};
-        // @ts-ignore
         var html = renderFn(data);
         return { key: key, html: html, subject: 'Subject Preview' };
     });

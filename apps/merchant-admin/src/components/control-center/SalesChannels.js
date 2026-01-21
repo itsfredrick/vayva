@@ -1,0 +1,11 @@
+import { jsx as _jsx, jsxs as _jsxs } from "react/jsx-runtime";
+import { Icon, cn } from "@vayva/ui";
+export const SalesChannels = ({ channels }) => {
+    return (_jsxs("section", { className: "mb-12", children: [_jsx("div", { className: "flex items-center justify-between mb-6", children: _jsxs("div", { children: [_jsx("h2", { className: "text-lg font-bold text-gray-900", children: "Sales Channels" }), _jsx("p", { className: "text-sm text-gray-500", children: "Where customers can place orders." })] }) }), _jsx("div", { className: "grid grid-cols-1 md:grid-cols-2 gap-6", children: channels.map((channel) => (_jsxs("div", { className: "bg-white rounded-2xl border border-gray-200 p-5 flex items-center justify-between hover:border-gray-300 transition-colors", children: [_jsxs("div", { className: "flex items-center gap-4", children: [_jsx("div", { className: cn("w-12 h-12 rounded-xl flex items-center justify-center shrink-0", channel.type === "whatsapp"
+                                        ? "bg-[#25D366]/10 text-[#25D366]"
+                                        : "bg-indigo-50 text-indigo-600"), children: _jsx(Icon, { name: channel.type === "whatsapp" ? "MessageCircle" : "Globe", size: 24 }) }), _jsxs("div", { children: [_jsx("h4", { className: "font-bold text-gray-900", children: channel.name }), _jsxs("a", { href: channel.url, target: "_blank", rel: "noreferrer", className: "text-xs text-gray-500 hover:text-blue-600 hover:underline flex items-center gap-1 mt-0.5", children: ["Visit Channel ", _jsx(Icon, { name: "ExternalLink", size: 10 })] })] })] }), _jsxs("div", { className: "flex items-center gap-3", children: [_jsx("span", { className: cn("text-xs font-bold uppercase tracking-wider", channel.status === "enabled"
+                                        ? "text-green-600"
+                                        : "text-gray-400"), children: channel.status }), _jsx("div", { className: cn("w-11 h-6 rounded-full relative transition-colors cursor-pointer", channel.status === "enabled" ? "bg-green-500" : "bg-gray-200"), children: _jsx("div", { className: cn("w-5 h-5 bg-white rounded-full shadow absolute top-0.5 transition-transform", channel.status === "enabled"
+                                            ? "left-[calc(100%-1.375rem)]"
+                                            : "left-0.5") }) })] })] }, channel.id))) })] }));
+};

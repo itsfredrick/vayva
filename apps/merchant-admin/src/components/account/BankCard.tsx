@@ -1,6 +1,6 @@
 import React from "react";
 import { PayoutAccount } from "@vayva/shared";
-import { Icon, Button } from "@vayva/ui";
+import { Button, Icon } from "@vayva/ui";
 
 interface BankCardProps {
   account?: PayoutAccount;

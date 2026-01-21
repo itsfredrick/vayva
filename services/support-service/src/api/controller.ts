@@ -35,13 +35,13 @@ export const SupportController = {
         ticketMessages: {
           create: description
             ? [
-                {
-                  storeId, // Assuming ticketMessage has storeId
-                  message: description,
-                  sender: "merchant",
-                  senderId: userId,
-                } as any,
-              ]
+              {
+                storeId, // Assuming ticketMessage has storeId
+                message: description,
+                sender: "merchant",
+                senderId: userId,
+              } as any,
+            ]
             : [],
         },
       },
@@ -62,8 +62,8 @@ export const SupportController = {
         status: (status as any) || undefined,
       },
       include: {
-        Customer: true,
-        Order: true,
+        customer: true,
+        order: true,
       },
       orderBy: { updatedAt: "desc" },
     });
@@ -79,8 +79,8 @@ export const SupportController = {
       where: { id },
       include: {
         ticketMessages: { orderBy: { createdAt: "asc" } },
-        Customer: true,
-        Order: true,
+        customer: true,
+        order: true,
       },
     });
     if (!ticket) return reply.status(404).send({ error: "Ticket not found" });

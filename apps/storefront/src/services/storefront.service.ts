@@ -89,7 +89,6 @@ export const StorefrontService = {
   initializePayment: async (paymentData: {
     orderId: string;
     email: string;
-    amount: number;
     callbackUrl: string;
   }): Promise<any> => {
     try {

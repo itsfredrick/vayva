@@ -157,17 +157,23 @@ export default function OpsDashboardPage() {
                     </div>
 
                     <div className="space-y-6">
-                        {[1, 2, 3].map((_, i) => (
-                            <div key={i} className="flex gap-4 items-start">
-                                <div className="h-2 w-2 mt-2 rounded-full bg-indigo-400 shrink-0"></div>
-                                <div>
-                                    <p className="text-sm text-gray-900 font-medium">
-                                        System scheduled maintenance completed.
-                                    </p>
-                                    <p className="text-xs text-gray-500">2 hours ago</p>
+                        {data?.recentActivity?.length > 0 ? (
+                            data.recentActivity.map((activity: any, i: number) => (
+                                <div key={i} className="flex gap-4 items-start">
+                                    <div className="h-2 w-2 mt-2 rounded-full bg-indigo-400 shrink-0"></div>
+                                    <div>
+                                        <p className="text-sm text-gray-900 font-medium">
+                                            {activity.message}
+                                        </p>
+                                        <p className="text-xs text-gray-500">{activity.timestamp}</p>
+                                    </div>
                                 </div>
+                            ))
+                        ) : (
+                            <div className="text-center py-8 text-gray-500">
+                                <p className="text-sm">No recent activity</p>
                             </div>
-                        ))}
+                        )}
                     </div>
                 </div>
 

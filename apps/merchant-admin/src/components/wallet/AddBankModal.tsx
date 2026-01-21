@@ -56,13 +56,15 @@ export const AddBankModal = ({
         className="bg-white rounded-xl shadow-xl w-full max-w-md overflow-hidden"
       >
         <div className="flex items-center justify-between p-4 border-b border-gray-100">
-          <h3 className="font-bold text-[#0B0B0B]">Add Bank Account</h3>
-          <button
+          <h3 className="font-bold text-black">Add Bank Account</h3>
+          <Button
+            variant="ghost"
+            size="icon"
             onClick={onClose}
-            className="p-1 hover:bg-gray-100 rounded-full text-gray-400"
+            className="p-1 hover:bg-gray-100 rounded-full text-gray-400 h-auto w-auto"
           >
             <Icon name="X" size={18} />
-          </button>
+          </Button>
         </div>
 
         <form onSubmit={handleSubmit} className="p-6 flex flex-col gap-4">

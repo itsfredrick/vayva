@@ -14,10 +14,22 @@ export async function POST(req: Request) {
 
     const storeId = (session.user as any).storeId;
 
+    const { query, history, conversationId: clientConversationId } = await req.json();
+
+    if (!query) {
+      return NextResponse.json({ error: "Missing query" }, { status: 400 });
+    }
+
+    const conversationId = clientConversationId || `conv_${storeId}_${Date.now()}`;
+
     // 0. Feature Flags & Kill Switch
-    const ALLOWLIST = ["store_placeholder_123", "store_dev_pilot"]; // Replace with real IDs
-    const IS_ENABLED =
-      process.env.SUPPORT_BOT_ENABLED === "true" || ALLOWLIST.includes(storeId);
+    // Allowed stores are defined in env or assume enabled if env is set to *
+    const envAllowList = process.env.SUPPORT_BOT_ALLOWLIST?.split(",") || [];
+    const ALLOWLIST = [...envAllowList];
+    const isGlobalEnabled = process.env.SUPPORT_BOT_ENABLED === "true";
+
+    // Enable if globally enabled OR explicitly allowlisted
+    const IS_ENABLED = isGlobalEnabled || ALLOWLIST.includes(storeId) || ALLOWLIST.includes("*");
     const MODE = process.env.SUPPORT_BOT_MODE || "normal"; // 'normal' | 'escalate_only' | 'disabled'
 
     if (!IS_ENABLED || MODE === "disabled") {
@@ -33,33 +45,58 @@ export async function POST(req: Request) {
       );
     }
 
-    // Rate Limiting (30 requests / 10 mins)
-    const now = Date.now();
-    const limit = rateLimitMap.get(storeId) || {
-      count: 0,
-      resetAt: now + 600000,
-    };
+    // Rate Limiting (Distributed via DB - using OtpCode as store)
+    const MAX_REQUESTS = 30;
+    const WINDOW_MS = 600000; // 10 mins
+    const now = new Date();
+    const rateLimitKey = `rate_limit_support_${storeId}`;
 
-    if (now > limit.resetAt) {
-      limit.count = 0;
-      limit.resetAt = now + 600000;
+    // --- Rate Limit Check (Distributed) ---
+    // Use a scoped variable for prisma to avoid top-level shadowing if that was the issue,
+    // or just reuse the import properly.
+    const prismaRateLimit = (global as any).prisma || (await import("@vayva/db")).prisma;
+
+    // Clean up old entries (Lazy cleanup)
+    // await prismaCtx.otpCode.deleteMany({ where: { expiresAt: { lt: now }, type: "SUPPORT_RATE_LIMIT" } }); 
+
+    // Find existing bucket
+    let limitEntry = await prismaRateLimit.otpCode.findFirst({
+      where: { identifier: rateLimitKey, type: "SUPPORT_RATE_LIMIT", expiresAt: { gt: now } }
+    });
+
+    let currentCount = 0;
+
+    if (limitEntry) {
+      currentCount = parseInt(limitEntry.code, 10);
+      if (currentCount >= MAX_REQUESTS) {
+        return NextResponse.json(
+          { error: "Rate limit exceeded. Please try again later." },
+          { status: 429 }
+        );
+      }
+      // Increment
+      await prismaRateLimit.otpCode.update({
+        where: { id: limitEntry.id },
+        data: { code: (currentCount + 1).toString() }
+      });
+    } else {
+      // Create new bucket
+      await prismaRateLimit.otpCode.create({
+        data: {
+          identifier: rateLimitKey,
+          code: "1",
+          type: "SUPPORT_RATE_LIMIT",
+          expiresAt: new Date(now.getTime() + WINDOW_MS)
+        }
+      });
     }
 
-    if (limit.count >= 30) {
-      return NextResponse.json(
-        { error: "Rate limit exceeded. Please try again later." },
-        { status: 429 },
-      );
-    }
+    // Old in-memory map removed
+    // const now = Date.now();
+    // const limit = rateLimitMap.get(storeId) ...
 
-    limit.count++;
-    rateLimitMap.set(storeId, limit);
-
-    const { query, history } = await req.json();
-
-    if (!query) {
-      return NextResponse.json({ error: "Missing query" }, { status: 400 });
-    }
+    // Old body parse removed
+    // const { query, history } = await req.json();
 
     // Emergency Mode: Auto-Escalate Everything
     if (MODE === "escalate_only") {
@@ -97,7 +134,7 @@ export async function POST(req: Request) {
     await prismaCtx.supportTelemetryEvent.create({
       data: {
         storeId,
-        conversationId: "unknown", // Need client to pass this in next refactor
+        conversationId, // Synced with client or generated
         eventType: "BOT_MESSAGE_CREATED",
         messageId,
         payload: {

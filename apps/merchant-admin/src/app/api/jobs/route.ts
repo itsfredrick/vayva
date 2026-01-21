@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { prisma } from "@vayva/db";
+import { prisma } from "@/lib/prisma";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 
@@ -22,7 +22,7 @@ export async function GET(req: Request) {
       ];
     }
 
-    const jobs = await (prisma as any).jobRun.findMany({
+    const jobs = await prisma.jobRun.findMany({
       where,
       orderBy: { startedAt: "desc" },
       take: 20,

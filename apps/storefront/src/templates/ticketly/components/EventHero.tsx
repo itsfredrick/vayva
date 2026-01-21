@@ -1,4 +1,5 @@
 import React from "react";
+import { Button } from "@vayva/ui";
 import { Calendar, MapPin, Share2 } from "lucide-react";
 import { PublicProduct } from "@/types/storefront";
 
@@ -63,12 +64,12 @@ export const EventHero = ({ event, onBuy }: EventHeroProps) => {
           <div className="text-3xl font-black mb-6">
             ₦{event.price.toLocaleString()}
           </div>
-          <button
+          <Button
             onClick={onBuy}
             className="w-full bg-purple-600 hover:bg-purple-700 text-white font-bold py-4 rounded-xl text-lg transition-colors shadow-lg shadow-purple-200"
           >
             Get Tickets
-          </button>
+          </Button>
           <p className="text-center text-xs text-gray-400 mt-4">
             {event.eventDetails?.capacity
               ? `${event.eventDetails.capacity - event.eventDetails.ticketsSold} tickets remaining`

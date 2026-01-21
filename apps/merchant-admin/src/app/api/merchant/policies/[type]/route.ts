@@ -1,8 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getServerSession } from "next-auth";
-import { prisma } from "@vayva/db";
+import { prisma, PolicyType } from "@/lib/prisma";
 import { authOptions } from "@/lib/auth";
-// @ts-ignore
 import { sanitizeMarkdown, validatePolicyContent } from "@vayva/policies";
 
 export const dynamic = "force-dynamic";
@@ -14,15 +13,17 @@ export async function GET(
   try {
     const { type } = await params;
     const session = await getServerSession(authOptions);
-    if (!(session?.user as any)?.storeId) {
+    const user = session?.user as { storeId?: string } | undefined;
+
+    if (!user?.storeId) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
     const policy = await prisma.merchantPolicy.findUnique({
       where: {
         storeId_type: {
-          storeId: (session!.user as any).storeId,
-          type: type.toUpperCase().replace("-", "_") as any,
+          storeId: user.storeId,
+          type: type.toUpperCase().replace("-", "_") as PolicyType,
         },
       },
     });
@@ -48,7 +49,9 @@ export async function POST( // Changed from PUT to POST as per instruction
   try {
     const { type } = await params;
     const session = await getServerSession(authOptions);
-    if (!(session?.user as any)?.storeId) {
+    const user = session?.user as { storeId?: string } | undefined;
+
+    if (!user?.storeId) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
@@ -67,8 +70,8 @@ export async function POST( // Changed from PUT to POST as per instruction
     const policy = await prisma.merchantPolicy.update({
       where: {
         storeId_type: {
-          storeId: (session!.user as any).storeId,
-          type: type.toUpperCase().replace("-", "_") as any,
+          storeId: user.storeId,
+          type: type.toUpperCase().replace("-", "_") as PolicyType,
         },
       },
       data: {

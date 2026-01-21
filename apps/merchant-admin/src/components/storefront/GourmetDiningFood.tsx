@@ -1,4 +1,5 @@
 import React, { useState, useMemo } from "react";
+import { Button } from "@vayva/ui";
 import {
   useStorefrontProducts,
   useStorefrontStore,
@@ -76,7 +77,7 @@ export function GourmetDiningFood({
           </a>
         </div>
         <div className="flex gap-6">
-          <button
+          <Button
             className="text-xs font-sans tracking-[0.2em] uppercase border border-gold px-6 py-2 hover:bg-[#d4af37] hover:text-black transition-colors"
             onClick={() =>
               document
@@ -85,13 +86,13 @@ export function GourmetDiningFood({
             }
           >
             Book Table
-          </button>
-          <button className="relative p-2" onClick={() => setIsCartOpen(true)}>
+          </Button>
+          <Button className="relative p-2" onClick={() => setIsCartOpen(true)}>
             <ShoppingBag className="w-5 h-5 text-[#d4af37]" />
             {cart.length > 0 && (
               <span className="absolute top-0 right-0 w-2 h-2 bg-red-500 rounded-full"></span>
             )}
-          </button>
+          </Button>
         </div>
       </nav>
 
@@ -105,9 +106,9 @@ export function GourmetDiningFood({
           <div className="relative w-full max-w-md bg-white h-full p-8 flex flex-col animate-in slide-in-from-right duration-500">
             <div className="flex justify-between items-center mb-8">
               <h2 className="text-2xl font-serif text-black">Your Order</h2>
-              <button onClick={() => setIsCartOpen(false)}>
+              <Button onClick={() => setIsCartOpen(false)}>
                 <X className="w-6 h-6 text-gray-400" />
-              </button>
+              </Button>
             </div>
 
             <div className="flex-1 overflow-auto space-y-6 pr-2">
@@ -127,27 +128,27 @@ export function GourmetDiningFood({
                       </div>
                       <div className="flex items-center gap-4 mt-2">
                         <div className="flex items-center border border-gray-200 rounded-full px-2">
-                          <button
+                          <Button
                             onClick={() => updateQuantity(item.id, -1)}
                             disabled={item.quantity <= 1}
                             className="p-1 hover:text-orange-500 disabled:opacity-30"
                           >
                             <Minus className="w-3 h-3" />
-                          </button>
+                          </Button>
                           <span className="px-3 text-sm">{item.quantity}</span>
-                          <button
+                          <Button
                             onClick={() => updateQuantity(item.id, 1)}
                             className="p-1 hover:text-orange-500"
                           >
                             <Plus className="w-3 h-3" />
-                          </button>
+                          </Button>
                         </div>
-                        <button
+                        <Button
                           onClick={() => removeFromCart(item.id)}
                           className="text-xs text-red-500 hover:underline"
                         >
                           Remove
-                        </button>
+                        </Button>
                       </div>
                     </div>
                   </div>
@@ -161,7 +162,7 @@ export function GourmetDiningFood({
                   <span>Total</span>
                   <span>₦{total.toLocaleString()}</span>
                 </div>
-                <button
+                <Button
                   onClick={() => {
                     setIsCartOpen(false);
                     setIsCheckoutOpen(true);
@@ -169,7 +170,7 @@ export function GourmetDiningFood({
                   className="w-full bg-[#1c1c1c] text-[#d4af37] py-4 text-xs font-bold uppercase tracking-[0.2em] hover:bg-black transition-colors"
                 >
                   Complete Order
-                </button>
+                </Button>
               </div>
             )}
           </div>
@@ -196,7 +197,7 @@ export function GourmetDiningFood({
             A culinary journey through contemporary flavors and traditional
             techniques.
           </p>
-          <button
+          <Button
             onClick={() =>
               document
                 .getElementById("menu")
@@ -205,7 +206,7 @@ export function GourmetDiningFood({
             className="border border-white/20 px-8 py-4 text-xs font-sans font-bold tracking-[0.2em] uppercase hover:border-[#d4af37] hover:text-[#d4af37] transition-all"
           >
             View Menu
-          </button>
+          </Button>
         </div>
       </header>
 
@@ -277,12 +278,12 @@ export function GourmetDiningFood({
                       <p className="text-gray-500 text-sm italic mb-3">
                         {dish.description}
                       </p>
-                      <button
+                      <Button
                         onClick={() => addToCart(dish)}
                         className="text-[10px] font-sans font-bold uppercase tracking-widest text-[#d4af37] hover:text-white transition-colors opacity-0 group-hover:opacity-100"
                       >
                         + Add to Order
-                      </button>
+                      </Button>
                     </div>
                   ))}
                 </div>
@@ -310,9 +311,9 @@ export function GourmetDiningFood({
               <option>4 Guests</option>
               <option>6+ Guests</option>
             </select>
-            <button className="bg-[#d4af37] text-black px-10 py-4 font-bold font-sans tracking-widest uppercase hover:bg-white transition-colors">
+            <Button className="bg-[#d4af37] text-black px-10 py-4 font-bold font-sans tracking-widest uppercase hover:bg-white transition-colors">
               Find Table
-            </button>
+            </Button>
           </div>
         </div>
       </section>

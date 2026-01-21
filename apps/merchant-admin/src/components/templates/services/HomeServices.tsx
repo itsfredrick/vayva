@@ -1,5 +1,6 @@
 import React from "react";
 import { TemplateProps } from "../registry";
+import { Button } from "@vayva/ui";
 
 export const HomeServicesTemplate: React.FC<TemplateProps> = ({
   businessName,
@@ -27,9 +28,9 @@ export const HomeServicesTemplate: React.FC<TemplateProps> = ({
           </div>
           {businessName || "Sparkle Clean"}
         </div>
-        <button className="bg-blue-600 text-white px-4 py-2 rounded-lg text-xs font-bold hover:bg-blue-700 transition-colors">
+        <Button className="bg-blue-600 text-white px-4 py-2 rounded-lg text-xs font-bold hover:bg-blue-700 transition-colors h-auto">
           Get Quote
-        </button>
+        </Button>
       </header>
 
       {/* Hero Trust Indicators */}
@@ -116,9 +117,9 @@ export const HomeServicesTemplate: React.FC<TemplateProps> = ({
               <p className="text-sm text-slate-500 leading-relaxed mb-4">
                 {item.desc}
               </p>
-              <button className="w-full border border-slate-200 py-2 rounded-lg text-xs font-bold text-slate-600 hover:bg-slate-50 hover:text-slate-900 transition-colors">
+              <Button variant="outline" className="w-full border border-slate-200 py-2 rounded-lg text-xs font-bold text-slate-600 hover:bg-slate-50 hover:text-slate-900 transition-colors h-auto">
                 View Details
-              </button>
+              </Button>
             </div>
           ))}
         </div>

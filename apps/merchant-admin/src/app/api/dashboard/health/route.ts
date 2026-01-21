@@ -1,11 +1,10 @@
-import { NextResponse } from "next/server";
-import { prisma } from "@vayva/db";
-import { withRBAC } from "@/lib/team/rbac";
+import { NextResponse, NextRequest } from "next/server";
+import { prisma } from "@/lib/prisma";
+import { withVayvaAPI, HandlerContext } from "@/lib/api-handler";
 import { PERMISSIONS } from "@/lib/team/permissions";
 
-export const GET = withRBAC(PERMISSIONS.COMMERCE_VIEW, async (session: any) => {
+export const GET = withVayvaAPI(PERMISSIONS.COMMERCE_VIEW, async (request: NextRequest, { storeId }: HandlerContext) => {
   try {
-    const storeId = session.user.storeId;
 
     // 1. Calculate Score based on real metrics
     // Metrics: Order Success Rate, AI Resolution Rate, Return Rate
@@ -71,12 +70,12 @@ export const GET = withRBAC(PERMISSIONS.COMMERCE_VIEW, async (session: any) => {
         factors.length > 0
           ? factors
           : [
-              {
-                id: "df",
-                text: "Platform initialization complete",
-                sentiment: "positive",
-              },
-            ],
+            {
+              id: "df",
+              text: "Platform initialization complete",
+              sentiment: "positive",
+            },
+          ],
     };
 
     return NextResponse.json({

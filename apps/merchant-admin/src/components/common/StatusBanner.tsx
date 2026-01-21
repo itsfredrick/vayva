@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from "react";
 import { AlertTriangle, ChevronRight, X } from "lucide-react";
 import Link from "next/link";
+import { Button } from "@vayva/ui";
 
 export function StatusBanner() {
   const [status, setStatus] = useState<"IDLE" | "DEGRADED" | "DOWN">("IDLE");
@@ -50,12 +51,14 @@ export function StatusBanner() {
       >
         View Status Report <ChevronRight className="w-3 h-3" />
       </Link>
-      <button
+      <Button
+        variant="ghost"
+        size="icon"
         onClick={() => setIsDismissed(true)}
-        className="absolute right-4 opacity-70 hover:opacity-100"
+        className="absolute right-4 opacity-70 hover:opacity-100 h-6 w-6 text-white hover:bg-white/20 hover:text-white"
       >
         <X className="w-4 h-4" />
-      </button>
+      </Button>
     </div>
   );
 }

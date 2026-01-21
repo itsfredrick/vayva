@@ -1,86 +1,96 @@
-import { NextResponse } from "next/server";
-import { prisma } from "@vayva/db";
-import { withRBAC } from "@/lib/team/rbac";
+import { NextResponse, NextRequest } from "next/server";
+import { prisma } from "@/lib/prisma";
+import { withVayvaAPI, HandlerContext } from "@/lib/api-handler";
 import { PERMISSIONS } from "@/lib/team/permissions";
 
-export const GET = withRBAC(PERMISSIONS.COMMERCE_VIEW, async (session: any) => {
-  try {
-    const storeId = session.user.storeId;
+export const GET = withVayvaAPI(
+  PERMISSIONS.METRICS_VIEW,
+  async (request: NextRequest, { storeId }: HandlerContext) => {
+    try {
 
-    // Parallelize counts
-    const [revenueResult, activeOrdersCount, customersCount, totalOrdersCount] =
-      await Promise.all([
+      // 1. Sales Today (Revenue)
+      const startOfToday = new Date();
+      startOfToday.setHours(0, 0, 0, 0);
+
+      const salesToday = await prisma.order.aggregate({
+        where: {
+          storeId,
+          paymentStatus: "SUCCESS",
+          createdAt: { gte: startOfToday },
+        },
+        _sum: { total: true },
+      });
+
+      // 2. Pending Orders
+      const pendingOrders = await prisma.order.count({
+        where: {
+          storeId,
+          fulfillmentStatus: "UNFULFILLED",
+        },
+      });
+
+      // 3. Customers Count
+      const customersCount = await prisma.customer.count({
+        where: { storeId },
+      });
+
+      // 4. Trend calculation
+      const startOfLastMonth = new Date(startOfToday.getFullYear(), startOfToday.getMonth() - 1, 1);
+      const endOfLastMonth = new Date(startOfToday.getFullYear(), startOfToday.getMonth(), 0, 23, 59, 59, 999);
+
+      const [prevSales, prevOrders, prevCustomers] = await Promise.all([
         prisma.order.aggregate({
           where: {
             storeId,
-            paymentStatus: "PAID" as any,
+            paymentStatus: "SUCCESS",
+            createdAt: { gte: startOfLastMonth, lte: endOfLastMonth },
           },
           _sum: { total: true },
         }),
         prisma.order.count({
           where: {
             storeId,
-            OR: [{ status: "PENDING" as any }, { status: "PROCESSING" as any }],
+            createdAt: { gte: startOfLastMonth, lte: endOfLastMonth },
           },
         }),
         prisma.customer.count({
-          where: { storeId },
-        }),
-        prisma.order.count({
-          where: { storeId },
+          where: {
+            storeId,
+            createdAt: { gte: startOfLastMonth, lte: endOfLastMonth },
+          },
         }),
       ]);
 
-    const totalRevenue = Number(revenueResult._sum?.total || 0);
-    const avgOrderValue =
-      totalOrdersCount > 0 ? totalRevenue / totalOrdersCount : 0;
+      const calculateTrend = (current: number, previous: number) => {
+        if (previous === 0) return current > 0 ? 100 : 0;
+        return Math.round(((current - previous) / previous) * 100);
+      };
 
-    // Current metrics
-    const metrics = {
-      revenue: {
-        label: "Total Revenue",
-        value: `₦${totalRevenue.toLocaleString()}`,
-        trend: "stable",
-      },
-      orders: {
-        label: "Active Orders",
-        value: activeOrdersCount.toString(),
-        trend: activeOrdersCount > 0 ? "up" : "stable",
-      },
-      customers: {
-        label: "Total Customers",
-        value: customersCount.toString(),
-        trend: "stable",
-      },
-      avgOrder: {
-        label: "Avg Order Value",
-        value: `₦${avgOrderValue.toLocaleString(undefined, { maximumFractionDigits: 0 })}`,
-        trend: "stable",
-      },
-    };
+      const currentRevenue = Number(salesToday._sum.total || 0);
+      const lastMonthRevenue = Number(prevSales._sum.total || 0);
 
-    return NextResponse.json({
-      metrics,
-      charts: {
-        status: "NOT_IMPLEMENTED",
-        reason: "time_series_aggregation_missing",
-        revenue: [],
-        orders: [],
-        fulfillment: {
-          status: "NOT_IMPLEMENTED",
-          avgTime: null,
-          targetTime: null,
-          percentage: null,
+      return NextResponse.json({
+        metrics: {
+          revenue: {
+            value: currentRevenue,
+            trend: calculateTrend(currentRevenue, lastMonthRevenue),
+          },
+          orders: {
+            value: pendingOrders,
+            trend: calculateTrend(pendingOrders, prevOrders),
+          },
+          customers: {
+            value: customersCount,
+            trend: calculateTrend(customersCount, prevCustomers),
+          },
         },
-      },
-    });
-  } catch (error) {
-    return NextResponse.json(
-      {
-        code: "internal_error",
-        message: "Failed to fetch metrics",
-      },
-      { status: 500 },
-    );
+      });
+    } catch (error) {
+      console.error("Dashboard Metrics Error:", error);
+      return NextResponse.json(
+        { error: "Failed to fetch dashboard metrics" },
+        { status: 500 }
+      );
+    }
   }
-});
+);

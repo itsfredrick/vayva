@@ -25,6 +25,15 @@ const onboardingRoute: FastifyPluginAsync = async (fastify) => {
       const body = WizardSchema.parse(request.body);
       const user = (request as any).user as { id: string; email: string };
 
+      // 0. Check for slug collision
+      const existingStore = await prisma.store.findUnique({
+        where: { slug: body.slug },
+      });
+
+      if (existingStore) {
+        return reply.status(409).send({ error: "Store URL (slug) is already taken." });
+      }
+
       // 1. Create Tenant (One-to-one with User for V1 solo founders)
       // In a real app we might check if user already has a tenant or if we are inviting.
       // For V1 Signup -> Onboarding flow, we create a new Tenant.
@@ -32,8 +41,8 @@ const onboardingRoute: FastifyPluginAsync = async (fastify) => {
       const tenant = await prisma.tenant.create({
         data: {
           name: body.name,
-          slug: body.slug, // TODO: Ensure unique slug globally
-          TenantMembership: {
+          slug: body.slug,
+          tenantMemberships: {
             create: {
               userId: user.id,
               role: "OWNER",

@@ -4,6 +4,7 @@ import React from "react";
 import { ShieldAlert, Monitor, Smartphone, Trash2, RefreshCw } from "lucide-react";
 import { useOpsQuery } from "@/hooks/useOpsQuery";
 import { toast } from "sonner";
+import { Button } from "@vayva/ui";
 
 export default function SessionManagerPage() {
     const { data: sessions, isLoading, refetch } = useOpsQuery(
@@ -37,9 +38,9 @@ export default function SessionManagerPage() {
                     </h1>
                     <p className="text-gray-500 mt-1">Review and revoke active merchant sessions.</p>
                 </div>
-                <button onClick={() => refetch()} className="p-2 hover:bg-gray-100 rounded-full">
+                <Button variant="ghost" size="icon" onClick={() => refetch()} className="rounded-full">
                     <RefreshCw className={`w-5 h-5 text-gray-500 ${isLoading ? 'animate-spin' : ''}`} />
-                </button>
+                </Button>
             </div>
 
             <div className="bg-white border border-gray-200 rounded-xl shadow-sm overflow-hidden">
@@ -75,13 +76,15 @@ export default function SessionManagerPage() {
                                     <td className="px-6 py-4 text-gray-500 text-xs">{new Date(s.createdAt).toLocaleString()}</td>
                                     <td className="px-6 py-4 text-gray-500 text-xs">{new Date(s.expiresAt).toLocaleString()}</td>
                                     <td className="px-6 py-4">
-                                        <button
+                                        <Button
+                                            variant="ghost"
+                                            size="icon"
                                             onClick={() => handleRevoke(s.id, s.User?.email)}
-                                            className="text-red-600 hover:text-red-800 p-2 hover:bg-red-50 rounded-lg transition-colors"
+                                            className="text-red-600 hover:text-red-800 hover:bg-red-50"
                                             title="Revoke Session"
                                         >
                                             <Trash2 size={16} />
-                                        </button>
+                                        </Button>
                                     </td>
                                 </tr>
                             ))

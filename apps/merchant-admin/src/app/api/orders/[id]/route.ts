@@ -1,103 +1,60 @@
-import { NextResponse } from "next/server";
-import { getServerSession } from "next-auth";
-import { authOptions } from "@/lib/auth";
+import { NextRequest, NextResponse } from "next/server";
+import { withVayvaAPI, HandlerContext } from "@/lib/api-handler";
+import { PERMISSIONS } from "@/lib/team/permissions";
 import { prisma } from "@vayva/db";
+import { OrderStateService } from "@/services/order-state.service";
 
-// Helper to bypass strict types if models are missing in generated client
-const db = prisma as any;
+// GET /api/orders/[id] - Get Order Details
+export const GET = withVayvaAPI(
+  PERMISSIONS.ORDERS_VIEW,
+  async (req: NextRequest, { storeId, params }: HandlerContext) => {
+    try {
+      const { id } = params;
 
-export async function GET(
-  request: Request,
-  context: { params: Promise<{ id: string }> },
-) {
-  try {
-    const { id } = await context.params;
-    const session = await getServerSession(authOptions);
-    if (!session?.user)
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+      const order = await prisma.order.findUnique({
+        where: { id, storeId },
+        include: {
+          items: { include: { productVariant: true } },
+          customer: true, // lowercase per schema
+          shipment: true,
+          paymentTransactions: true,
+          orderEvents: { orderBy: { createdAt: 'desc' } }
+        }
+      });
 
-    const storeId = (session.user as any).storeId;
+      if (!order) {
+        return NextResponse.json({ error: "Order not found" }, { status: 404 });
+      }
 
-    // Use safe access to db
-    const order = await db.order.findUnique({
-      where: { id, storeId },
-      include: {
-        items: true,
-        Customer: true,
-        Shipment: true,
-        timeline: { orderBy: { createdAt: "desc" } },
-      },
-    });
-
-    if (!order)
-      return NextResponse.json({ error: "Order Not Found" }, { status: 404 });
-
-    // Map to Service Interface (Order interface in services/orders.ts)
-    const mapped = {
-      id: order.id,
-      refCode: order.refCode || order.orderNumber,
-      status: order.status,
-      paymentStatus: order.paymentStatus,
-      fulfillmentStatus: order.fulfillmentStatus,
-      createdAt: order.createdAt,
-
-      customer: order.Customer
-        ? {
-            id: order.Customer.id,
-            name: order.Customer.name || "Guest",
-            email: order.Customer.email || "",
-            phone: order.Customer.phone || "",
-          }
-        : { id: "guest", name: "Guest", email: "", phone: "" },
-
-      items: Array.isArray(order.items)
-        ? order.items.map((i: any) => ({
-            id: i.id,
-            title: i.productName || "Product",
-            quantity: i.quantity,
-            price: Number(i.price),
-            image: i.imageUrl,
-          }))
-        : [],
-
-      subtotal: Number(order.subtotal || 0),
-      shippingTotal: Number(order.shippingTotal || 0),
-      total: Number(order.total || 0),
-      channel: order.channel || "online",
-      paymentMethod: order.paymentMethod,
-      transactionReference: order.transactionReference,
-
-      timeline: Array.isArray(order.timeline)
-        ? order.timeline.map((t: any) => ({
-            id: t.id,
-            type: "event",
-            text: t.title,
-            createdAt: t.createdAt,
-          }))
-        : [],
-
-      // Critical for Delivery Status UI
-      deliveryTask: order.Shipment
-        ? {
-            id: order.Shipment.id,
-            status: order.Shipment.status,
-            trackingUrl: order.Shipment.trackingUrl,
-            riderName: order.Shipment.provider, // Using provider as rider name proxy
-          }
-        : undefined,
-
-      shippingAddress: {
-        street:
-          order.Shipment?.addressLine1 || order.shippingAddressLine1 || "",
-        city: order.Shipment?.addressCity || order.shippingCity || "",
-        state: order.shippingState || "",
-        country: "Nigeria",
-      },
-    };
-
-    return NextResponse.json(mapped);
-  } catch (e: any) {
-    console.error("Order Detail API Error:", e);
-    return NextResponse.json({ error: e.message }, { status: 500 });
+      return NextResponse.json(order);
+    } catch (error: any) {
+      console.error("[ORDER_GET]", error);
+      return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
+    }
   }
-}
+);
+
+// PATCH /api/orders/[id] - Update Order Status
+export const PATCH = withVayvaAPI(
+  PERMISSIONS.ORDERS_MANAGE,
+  async (req: NextRequest, { storeId, user, params }: HandlerContext) => {
+    try {
+      const { id } = params;
+      const body = await req.json();
+      const { status } = body; // Expecting FulfillmentStatus
+
+      if (!status) {
+        return NextResponse.json({ error: "Missing status" }, { status: 400 });
+      }
+
+      // Use OrderStateService for transition logic & notifications
+      const updatedOrder = await OrderStateService.transition(id, status, user.id, storeId);
+
+      return NextResponse.json({ success: true, order: updatedOrder });
+    } catch (error: any) {
+      console.error("[ORDER_UPDATE]", error);
+      const status = error.message === "Order not found" ? 404 : 500;
+      return NextResponse.json({ error: error.message }, { status });
+    }
+  }
+);

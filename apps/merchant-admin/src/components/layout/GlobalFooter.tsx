@@ -5,7 +5,7 @@ import Link from "next/link";
 
 export function GlobalFooter() {
   return (
-    <footer className="bg-[#0F172A] text-white">
+    <footer className="bg-white text-black border-t border-studio-border">
       {/* Main Footer Content */}
       <div className="max-w-7xl mx-auto px-6 py-16">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-12">
@@ -13,7 +13,7 @@ export function GlobalFooter() {
           <div className="lg:col-span-1">
             <div className="mb-6">
               <Link href="/" className="inline-block">
-                <span className="text-2xl font-bold text-white">Vayva</span>
+                <span className="text-2xl font-bold text-black border-b-2 border-vayva-green">Vayva</span>
               </Link>
             </div>
 
@@ -136,7 +136,7 @@ export function GlobalFooter() {
 
           {/* Column 2 - Product */}
           <div>
-            <h3 className="text-sm font-semibold text-white mb-4">Product</h3>
+            <h3 className="text-sm font-bold text-black mb-4">Product</h3>
             <ul className="space-y-3">
               <li>
                 <Link
@@ -183,7 +183,7 @@ export function GlobalFooter() {
 
           {/* Column 3 - Company */}
           <div>
-            <h3 className="text-sm font-semibold text-white mb-4">Company</h3>
+            <h3 className="text-sm font-bold text-black mb-4">Company</h3>
             <ul className="space-y-3">
               <li>
                 <Link
@@ -222,7 +222,7 @@ export function GlobalFooter() {
 
           {/* Column 4 - Support */}
           <div>
-            <h3 className="text-sm font-semibold text-white mb-4">Support</h3>
+            <h3 className="text-sm font-bold text-black mb-4">Support</h3>
             <ul className="space-y-3">
               <li>
                 <Link
@@ -253,7 +253,7 @@ export function GlobalFooter() {
 
           {/* Column 5 - Legal & Compliance */}
           <div>
-            <h3 className="text-sm font-semibold text-white mb-4">
+            <h3 className="text-sm font-bold text-black mb-4">
               Legal & Compliance
             </h3>
             <ul className="space-y-3">
@@ -326,9 +326,9 @@ export function GlobalFooter() {
         </div>
 
         {/* Newsletter Section */}
-        <div className="mt-16 pt-12 border-t border-gray-800">
+        <div className="mt-16 pt-12 border-t border-studio-border">
           <div className="max-w-md">
-            <h3 className="text-lg font-semibold text-white mb-2">
+            <h3 className="text-lg font-bold text-black mb-2">
               Stay updated.
             </h3>
             <p className="text-sm text-gray-400 mb-4">
@@ -353,7 +353,7 @@ export function GlobalFooter() {
       </div>
 
       {/* Bottom Bar */}
-      <div className="border-t border-gray-800">
+      <div className="border-t border-studio-border">
         <div className="max-w-7xl mx-auto px-6 py-6">
           <div className="flex flex-col md:flex-row justify-between items-center gap-4">
             <p className="text-sm text-gray-400">

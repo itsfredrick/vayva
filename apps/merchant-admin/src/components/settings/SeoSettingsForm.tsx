@@ -11,7 +11,7 @@ import { updateStoreSeo } from "@/app/(dashboard)/dashboard/settings/seo/actions
 const seoSchema = z.object({
     seoTitle: z.string().max(60, "Title should be under 60 characters").optional().nullable(),
     seoDescription: z.string().max(160, "Description should be under 160 characters").optional().nullable(),
-    seoKeywords: z.string().optional(), // Comma separated string for input
+    // seoKeywords: z.string().optional(), // Comma separated string for input
     socialImage: z.string().url("Must be a valid URL").optional().nullable().or(z.literal("")),
 });
 
@@ -21,7 +21,7 @@ interface SeoSettingsFormProps {
     initialData: {
         seoTitle?: string | null;
         seoDescription?: string | null;
-        seoKeywords?: string[];
+        // seoKeywords?: string[];
         socialImage?: string | null;
     };
 }
@@ -51,7 +51,7 @@ export function SeoSettingsForm({ initialData }: SeoSettingsFormProps) {
         defaultValues: {
             seoTitle: initialData.seoTitle || "",
             seoDescription: initialData.seoDescription || "",
-            seoKeywords: initialData.seoKeywords?.join(", ") || "",
+            // seoKeywords: initialData.seoKeywords?.join(", ") || "",
             socialImage: initialData.socialImage || "",
         },
     });
@@ -61,7 +61,7 @@ export function SeoSettingsForm({ initialData }: SeoSettingsFormProps) {
             const formattedData = {
                 seoTitle: data.seoTitle || null,
                 seoDescription: data.seoDescription || null,
-                seoKeywords: data.seoKeywords ? data.seoKeywords.split(",").map((k) => k.trim()).filter(Boolean) : [],
+                // seoKeywords: data.seoKeywords ? data.seoKeywords.split(",").map((k) => k.trim()).filter(Boolean) : [],
                 socialImage: data.socialImage || null,
             };
 
@@ -110,7 +110,7 @@ export function SeoSettingsForm({ initialData }: SeoSettingsFormProps) {
                     <div className="text-xs text-gray-400 mb-2">
                         Comma-separated keywords relevant to your store.
                     </div>
-                    <Input {...register("seoKeywords")} placeholder="fashion, lagos, boutique, affordable, delivery" />
+                    {/* <Input {...register("seoKeywords")} placeholder="fashion, lagos, boutique, affordable, delivery" /> */}
                 </div>
 
                 <div>

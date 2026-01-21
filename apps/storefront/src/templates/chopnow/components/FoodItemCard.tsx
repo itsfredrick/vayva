@@ -1,5 +1,6 @@
 import React from "react";
 import { Plus } from "lucide-react";
+import { Button } from "@vayva/ui";
 import { PublicProduct } from "@/types/storefront";
 
 interface FoodItemCardProps {
@@ -31,9 +32,9 @@ export const FoodItemCard = ({ item, onClick }: FoodItemCardProps) => {
           alt={item.name}
           className="w-full h-full object-cover rounded-xl bg-gray-100 shadow-sm"
         />
-        <button className="absolute -bottom-2 -right-2 bg-white text-red-600 p-1.5 rounded-full shadow-md border border-gray-100">
+        <Button size="icon" className="absolute -bottom-2 -right-2 bg-white text-red-600 p-1.5 rounded-full shadow-md border border-gray-100 h-auto" aria-label={`Add ${item.name} to order`}>
           <Plus size={18} strokeWidth={3} />
-        </button>
+        </Button>
       </div>
     </div>
   );

@@ -1,32 +1,34 @@
 import { NextRequest, NextResponse } from "next/server";
-import { getServerSession } from "next-auth";
-import { authOptions } from "@/lib/auth";
 import { ReportsService } from "@/lib/reports";
+import { withVayvaAPI, HandlerContext } from "@/lib/api-handler";
+import { PERMISSIONS } from "@/lib/team/permissions";
 
-export async function GET(
-  req: NextRequest,
-  { params }: { params: Promise<{ type: string }> },
-) {
-  const session = await getServerSession(authOptions);
-  if (!session?.user)
-    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+export const GET = withVayvaAPI(
+  PERMISSIONS.METRICS_VIEW,
+  async (req: NextRequest, { storeId, params }: HandlerContext) => {
+    try {
+      const { type } = await params;
 
-  const { type } = await params; // 'orders', 'payments', 'reconciliation'
+      // Validate type
+      if (!["reconciliation"].includes(type)) {
+        return NextResponse.json({ error: "Invalid Type" }, { status: 400 });
+      }
 
-  // Validate type
-  if (!["reconciliation"].includes(type))
-    return new NextResponse("Invalid Type", { status: 400 });
+      const csv = await ReportsService.generateCSV(
+        storeId,
+        type as any,
+        { from: new Date(0), to: new Date() }
+      );
 
-  const csv = await ReportsService.generateCSV(
-    (session!.user as any).storeId,
-    type as any,
-    { from: new Date(0), to: new Date() }, // All time for V1 export? or parse query params
-  );
-
-  return new NextResponse(csv, {
-    headers: {
-      "Content-Type": "text/csv",
-      "Content-Disposition": `attachment; filename="${type}-${Date.now()}.csv"`,
-    },
-  });
-}
+      return new NextResponse(csv, {
+        headers: {
+          "Content-Type": "text/csv",
+          "Content-Disposition": `attachment; filename="${type}-${Date.now()}.csv"`,
+        },
+      });
+    } catch (error) {
+      console.error("Reports Export API Error:", error);
+      return NextResponse.json({ error: "Internal Error" }, { status: 500 });
+    }
+  }
+);

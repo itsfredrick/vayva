@@ -1,4 +1,4 @@
-# Vayva Platform: Go-Live Checklist (30-Minute Launch)
+# Vayva: Go-Live Checklist (30-Minute Launch)
 
 **Target:** Production (`vayva.ng`)
 

@@ -1,6 +1,6 @@
 
 import { NextResponse } from "next/server";
-import { prisma } from "@vayva/db";
+import { prisma, ApprovalStatus } from "@vayva/db";
 import { OpsAuthService } from "@/lib/ops-auth";
 
 export const dynamic = "force-dynamic";
@@ -12,19 +12,26 @@ export async function GET(request: Request) {
         if (!user) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 
         const { searchParams } = new URL(request.url);
-        const status = searchParams.get("status") || "PENDING";
-        const limit = parseInt(searchParams.get("limit") || "50");
+        const page = parseInt(searchParams.get("page") || "1");
+        const limit = parseInt(searchParams.get("limit") || "20");
+        const status = (searchParams.get("status") || "PENDING") as ApprovalStatus | "HISTORY";
+        const skip = (page - 1) * limit;
 
-        const approvals = await prisma.approval.findMany({
-            where: {
-                // @ts-ignore
-                status: status === "HISTORY" ? { in: ["APPROVED", "REJECTED", "FAILED"] } : status,
-            },
-            orderBy: { createdAt: "desc" },
-            take: limit,
-            // We might want to include merchant name, but Approval model usually has merchantId
-            // Let's infer details client-side or fetch store names if needed.
-        });
+        const whereCondition: { status: ApprovalStatus | { in: ApprovalStatus[] } } = {
+            status: status === "HISTORY" ? { in: ["APPROVED", "REJECTED", "FAILED"] as ApprovalStatus[] } : status,
+        };
+
+        const [approvals, total] = await Promise.all([
+            prisma.approval.findMany({
+                where: whereCondition,
+                orderBy: { createdAt: "desc" },
+                take: limit,
+                skip
+            }),
+            prisma.approval.count({
+                where: whereCondition
+            })
+        ]);
 
         // Fetch store names if storeId is present
         const storeIds = [...new Set(approvals.map(a => a.storeId).filter(Boolean) as string[])];
@@ -40,7 +47,15 @@ export async function GET(request: Request) {
             store: a.storeId ? storeMap.get(a.storeId) : null
         }));
 
-        return NextResponse.json({ data });
+        return NextResponse.json({
+            data,
+            meta: {
+                total,
+                page,
+                limit,
+                totalPages: Math.ceil(total / limit)
+            }
+        });
 
     } catch (error) {
         console.error("Fetch Approvals Error:", error);

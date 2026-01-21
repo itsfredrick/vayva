@@ -1,193 +1,189 @@
 "use client";
 
-import React, { Suspense } from "react";
-import dynamic from "next/dynamic";
-import { ErrorBoundary } from "@vayva/ui";
+import useSWR from "swr";
 import Link from "next/link";
-import { Skeleton } from "@/components/LoadingSkeletons";
+import { redirect } from "next/navigation";
+import { useAuth } from "@/context/AuthContext";
+import { useStore } from "@/context/StoreContext";
+import { INDUSTRY_CONFIG } from "@/config/industry";
+import { IndustrySlug } from "@/lib/templates/types";
+import { formatCurrency } from "@/lib/i18n";
+import { Button, Card, Icon } from "@vayva/ui";
+import { DashboardSetupChecklist } from "@/components/dashboard/DashboardSetupChecklist";
+import { extensionRegistry } from "@/lib/extensions/registry";
 
-// Lazy Load Heavy Components
-const GoLiveCard = dynamic(
-  () =>
-    import("@/components/dashboard/GoLiveCard").then((mod) => mod.GoLiveCard),
-  {
-    loading: () => <Skeleton className="h-48 w-full rounded-xl" />,
-    ssr: false, // Client-side interaction mostly
-  },
-);
+const fetcher = (url: string) => fetch(url).then((r) => r.json());
 
-const WelcomeModal = dynamic(
-  () => import("@/components/dashboard/WelcomeModal").then((mod) => mod.WelcomeModal),
-  { ssr: false }
-);
+import { motion } from "framer-motion";
 
-const DashboardSetupChecklist = dynamic(
-  () =>
-    import("@/components/dashboard/DashboardSetupChecklist").then(
-      (mod) => mod.DashboardSetupChecklist,
-    ),
-  {
-    loading: () => <Skeleton className="h-64 w-full rounded-xl" />,
-  },
-);
-
-const ActivationWelcome = dynamic(
-  () =>
-    import("@/components/dashboard/ActivationWelcome").then(
-      (mod) => mod.ActivationWelcome,
-    ),
-  {
-    loading: () => <Skeleton className="h-32 w-full rounded-xl" />,
-  },
-);
-
-// Import Widgets lazily as well
-const BusinessHealthWidget = dynamic(
-  () =>
-    import("@/components/dashboard/BusinessHealthWidget").then(
-      (mod) => mod.BusinessHealthWidget,
-    ),
-  {
-    loading: () => <Skeleton className="h-64 w-full rounded-xl" />,
-  },
-);
-
-const AiUsageWidget = dynamic(
-  () =>
-    import("@/components/dashboard/AiUsageWidget").then(
-      (mod) => mod.AiUsageWidget,
-    ),
-  {
-    loading: () => <Skeleton className="h-64 w-full rounded-xl" />,
-  },
+const StatWidget = ({
+  title,
+  value,
+  loading,
+  icon,
+}: {
+  title: string;
+  value: string | number | null;
+  loading?: boolean;
+  icon?: string;
+}) => (
+  <motion.div
+    whileHover={{ y: -4, transition: { duration: 0.2, ease: "easeOut" } }}
+    className="p-5 bg-white border border-studio-border shadow-xl shadow-black/5 hover:shadow-2xl transition-shadow duration-300 group rounded-lg"
+  >
+    <div className="flex justify-between items-start mb-3">
+      <div className="text-xs font-bold text-gray-400 uppercase tracking-wider">{title}</div>
+      <div className="p-2 bg-studio-gray rounded-lg group-hover:bg-vayva-green transition-colors">
+        <Icon name={(icon as any) || "Activity"} size={16} className="text-gray-400 group-hover:text-white" />
+      </div>
+    </div>
+    <div className="text-3xl font-black text-black">
+      {loading ? (
+        <div className="h-8 w-24 bg-gray-100 rounded-lg animate-pulse" />
+      ) : (
+        value ?? "—"
+      )}
+    </div>
+  </motion.div>
 );
 
 export default function DashboardPage() {
-  const [healthData, setHealthData] = React.useState<any>(null);
-  const [category, setCategory] = React.useState<string>("retail");
-  const [merchantData, setMerchantData] = React.useState<any>(null);
-  const [showWelcome, setShowWelcome] = React.useState(false);
+  const { merchant } = useAuth();
+  const { store } = useStore();
+  const { data: metricsData, isLoading: metricsLoading } = useSWR(
+    "/api/dashboard/metrics",
+    fetcher,
+  );
 
-  React.useEffect(() => {
-    fetch("/api/dashboard/health")
-      .then((res) => res.json())
-      .then((res) => {
-        if (res.success) setHealthData(res.data);
-      })
-      .catch(console.error);
+  if (!merchant) return (
+    <div className="p-8 max-w-7xl mx-auto space-y-6">
+      <div className="h-8 w-48 bg-gray-100 rounded-lg animate-pulse mb-2" />
+      <div className="h-4 w-64 bg-gray-50 rounded-lg animate-pulse mb-8" />
+      <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+        {[1, 2, 3, 4].map((i) => (
+          <div key={i} className="h-32 bg-gray-50 rounded-2xl animate-pulse" />
+        ))}
+      </div>
+    </div>
+  );
 
-    fetch("/api/auth/merchant/me")
-      .then((res) => res.json())
-      .then((data) => {
-        setMerchantData(data);
-        if (data.store?.category) setCategory(data.store.category);
+  // Redirect if no industry set — send to onboarding entry to resolve the correct step dynamically
+  // Redirect if no industry set
+  if (!(merchant as any).industrySlug) {
+    // Fallback or send to settings
+    return <div className="p-8">Please complete your store profile in Settings.</div>;
+  }
 
-        // Show welcome if first time (using local storage for now, ideally DB)
-        const hasSeen = localStorage.getItem("vayva_welcome_seen");
-        if (!hasSeen && data.store?.slug) {
-          setShowWelcome(true);
-          localStorage.setItem("vayva_welcome_seen", "true");
-        }
-      })
-      .catch(console.error);
-  }, []);
+  const industrySlug = (store?.industrySlug as IndustrySlug) || (merchant as any).industrySlug;
+  const config = INDUSTRY_CONFIG[industrySlug];
+
+  if (!config) {
+    return <div className="p-8">Configuration Error: Unknown Industry</div>;
+  }
+
+  // Determine Main CTA
+  let ctaLabel = `Create ${config.primaryObject.replace(/_/g, " ")}`;
+  let ctaLink = `/dashboard/products/new`; // Safe default
+
+  // Smart Lookup for Create Route
+  // Find the module that handles the primary object (usually catalog, or explicitly defined create route)
+  for (const mod of config.modules) {
+    const route = config.moduleRoutes?.[mod]?.create;
+    if (route) {
+      ctaLink = route;
+      break; // Found a specific create route, use it
+    }
+  }
+
+  // Fallback Mapping if no explicit route found in config
+  if (ctaLink === '/dashboard/products/new') {
+    const map: Record<string, string> = {
+      service: "/dashboard/services/new",
+      event: "/dashboard/events/new",
+      course: "/dashboard/courses/new",
+      listing: "/dashboard/listings/new",
+      post: "/dashboard/posts/new",
+      project: "/dashboard/projects/new",
+      campaign: "/dashboard/campaigns/new",
+      menu_item: "/dashboard/menu-items/new",
+      digital_asset: "/dashboard/digital-assets/new"
+    };
+    if (map[config.primaryObject]) {
+      ctaLink = map[config.primaryObject];
+    }
+  }
+
+  const metrics = metricsData?.metrics || {};
 
   return (
-    <div className="p-4 md:p-6 max-w-7xl mx-auto space-y-6">
-      {/* Welcome Modal */}
-      {merchantData && (
-        <React.Suspense fallback={null}>
-          {/* @ts-ignore */}
-          <WelcomeModal
-            isOpen={showWelcome}
-            onClose={() => setShowWelcome(false)}
-            merchantName={merchantData.user?.firstName || "Merchant"}
-            storeSlug={merchantData.store?.slug || ""}
-            category={category}
-          />
-        </React.Suspense>
-      )}
-
-      {/* ... Header and other components ... */}
-
-      <header className="mb-4 md:mb-8">
-        <h1 className="text-2xl md:text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-gray-900 to-gray-600">
-          Overview
-        </h1>
-        <p className="text-sm md:text-base text-gray-500 mt-1">
-          Welcome back to Vayva.
-        </p>
-      </header>
-
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        <div className="lg:col-span-2 space-y-6">
-          {/* Go Live Checklist (First 24h) - Replaces ActivationWelcome for now */}
-          <Suspense fallback={<Skeleton className="h-64 w-full" />}>
-            <DashboardSetupChecklist />
-          </Suspense>
-
-          {/* Main Metrics Area */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <ErrorBoundary>
-              <Suspense fallback={<Skeleton className="h-64 w-full" />}>
-                {healthData ? (
-                  <BusinessHealthWidget data={healthData} />
-                ) : (
-                  <Skeleton className="h-64 w-full rounded-xl" />
-                )}
-              </Suspense>
-            </ErrorBoundary>
-            <ErrorBoundary>
-              <Suspense fallback={<Skeleton className="h-64 w-full" />}>
-                <AiUsageWidget />
-              </Suspense>
-            </ErrorBoundary>
-          </div>
+    <div className="p-6 max-w-7xl mx-auto space-y-6">
+      {/* Header */}
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+        <div>
+          <h1 className="text-2xl font-bold tracking-tight">Dashboard</h1>
+          <p className="text-gray-500">
+            Overview for {store?.name || "Your Store"} • <span className="capitalize">{config.displayName}</span>
+          </p>
         </div>
+        <Link href={ctaLink}>
+          <Button size="lg" className="bg-vayva-green text-white hover:bg-vayva-green/90 shadow-xl shadow-green-500/20 font-bold">
+            <Icon name="Plus" className="mr-2 h-4 w-4" />
+            {ctaLabel}
+          </Button>
+        </Link>
+      </div>
 
-        {/* ... Right Column components ... */}
-        <div className="space-y-6">
-          {/* Operations Column */}
-          <Suspense fallback={<Skeleton className="h-48 w-full" />}>
-            <GoLiveCard />
-          </Suspense>
+      {/* Widgets Grid */}
+      <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+        {config.dashboardWidgets.map((widget) => {
+          if (widget.id === "setup_checklist") return null;
+          if (widget.type === "stat") {
+            let icon = "Activity";
+            let title = widget.title;
+            let value: string | number = "—";
 
-          {/* Quick Actions */}
-          <div className="bg-white p-6 rounded-xl border border-gray-100 shadow-sm">
-            <h3 className="font-bold mb-4 text-gray-900">Quick Actions</h3>
-            <div className="space-y-2">
-              {/* Dynamic Primary Action */}
-              {category === "real-estate" ? (
-                <Link href="/dashboard/products/new" className="w-full text-left px-3 py-2 text-sm text-gray-600 hover:bg-gray-50 hover:text-black rounded-lg transition-colors flex items-center justify-between group">
-                  <span>Add Property</span>
-                  <span className="opacity-0 group-hover:opacity-100 transition-opacity">→</span>
-                </Link>
-              ) : category === "services" || category === "education" ? (
-                <Link href="/dashboard/bookings/new" className="w-full text-left px-3 py-2 text-sm text-gray-600 hover:bg-gray-50 hover:text-black rounded-lg transition-colors flex items-center justify-between group">
-                  <span>Create Booking</span>
-                  <span className="opacity-0 group-hover:opacity-100 transition-opacity">→</span>
-                </Link>
-              ) : (
-                <Link href="/dashboard/products/new" className="w-full text-left px-3 py-2 text-sm text-gray-600 hover:bg-gray-50 hover:text-black rounded-lg transition-colors flex items-center justify-between group">
-                  <span>Add {category === "food" ? "Menu Item" : "Product"}</span>
-                  <span className="opacity-0 group-hover:opacity-100 transition-opacity">→</span>
-                </Link>
-              )}
+            if (widget.id === "sales_today") {
+              const amount = metrics.revenue?.value || 0;
+              value = formatCurrency(amount, store?.currency || "NGN");
+              icon = "DollarSign";
+            } else if (widget.id === "orders_pending") {
+              value = metrics.orders?.value || 0;
+              icon = "ShoppingBag";
+            } else if (widget.id === "customers_count") {
+              value = metrics.customers?.value || 0;
+              icon = "Users";
+            }
 
-              <Link href="/dashboard/settings/branding" className="w-full text-left px-3 py-2 text-sm text-gray-600 hover:bg-gray-50 hover:text-black rounded-lg transition-colors flex items-center justify-between group">
-                <span>Customize Theme</span>
-                <span className="opacity-0 group-hover:opacity-100 transition-opacity">→</span>
-              </Link>
+            return (
+              <div key={widget.id} className={`md:col-span-${widget.w || 1}`}>
+                <StatWidget
+                  title={title}
+                  value={value}
+                  loading={metricsLoading}
+                  icon={icon}
+                />
+              </div>
+            );
+          }
+          return null;
+        })}
 
-              {!["real-estate", "services", "education"].includes(category) && (
-                <Link href="/dashboard/orders" className="w-full text-left px-3 py-2 text-sm text-gray-600 hover:bg-gray-50 hover:text-black rounded-lg transition-colors flex items-center justify-between group">
-                  <span>View Orders</span>
-                  <span className="opacity-0 group-hover:opacity-100 transition-opacity">→</span>
-                </Link>
-              )}
+        {/* Extension Widgets (P2) */}
+        {extensionRegistry.getActiveForStore(industrySlug, (merchant as any).enabledExtensionIds || []).map(ext =>
+          ext.dashboardWidgets?.map(widget => (
+            <div key={widget.id} className={`md:col-span-${widget.gridCols || 1}`}>
+              <StatWidget
+                title={widget.label}
+                value={metrics[widget.id]?.value || metrics.custom?.[widget.id] || "—"}
+                loading={metricsLoading}
+              />
             </div>
-          </div>
-        </div>
+          ))
+        )}
+      </div>
+
+      <div className="grid grid-cols-1 gap-6">
+        <DashboardSetupChecklist />
       </div>
     </div>
   );

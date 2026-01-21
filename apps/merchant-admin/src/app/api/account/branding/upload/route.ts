@@ -1,39 +1,52 @@
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import { requireAuth } from "@/lib/auth/session";
 import { randomUUID } from "crypto";
+import { validateUploadedFile, DEFAULT_IMAGE_MAX_SIZE } from "@/lib/file-validation";
+import { applyRateLimit, RATE_LIMITS } from "@/lib/rate-limit-enhanced";
 
-export async function POST(request: Request) {
+export async function POST(request: NextRequest) {
   try {
+    // Apply rate limiting
+    const rateLimitResult = await applyRateLimit(request, "branding-upload", RATE_LIMITS.FILE_UPLOAD);
+    if (!rateLimitResult.allowed) {
+      return rateLimitResult.response!;
+    }
+
     const session = await requireAuth();
     const storeId = session.user.storeId;
 
     const formData = await request.formData();
-    const file = formData.get("file") as File;
 
-    if (!file) {
-      return NextResponse.json({ error: "No file provided" }, { status: 400 });
-    }
+    // Validate uploaded file with comprehensive checks
+    const validation = await validateUploadedFile(formData, "file", {
+      maxSizeBytes: DEFAULT_IMAGE_MAX_SIZE,
+      allowedMimeTypes: ["image/png", "image/jpeg", "image/jpg", "image/webp"],
+      minWidth: 100,
+      maxWidth: 4000,
+      minHeight: 100,
+      maxHeight: 4000
+    });
 
-    // Validate file type
-    const allowedTypes = ["image/png", "image/jpeg", "image/jpg"];
-    if (!allowedTypes.includes(file.type)) {
+    if (!validation.valid) {
       return NextResponse.json(
-        { error: "Invalid file type. Only PNG and JPG are allowed" },
-        { status: 400 },
+        {
+          error: validation.error,
+          code: validation.code
+        },
+        { status: 400 }
       );
     }
 
-    // Validate file size (2MB max)
-    const maxSize = 2 * 1024 * 1024; // 2MB
-    if (file.size > maxSize) {
-      return NextResponse.json(
-        { error: "File too large. Maximum size is 2MB" },
-        { status: 400 },
-      );
-    }
+    const file = validation.file!;
 
-    // Generate unique filename
-    const ext = file.name.split(".").pop();
+    // Security: Derive extension from MIME type, do NOT trust user input
+    const mimeMap: Record<string, string> = {
+      "image/png": "png",
+      "image/jpeg": "jpg",
+      "image/jpg": "jpg",
+      "image/webp": "webp"
+    };
+    const ext = mimeMap[file.type] || "bin";
     const filename = `${storeId}-${randomUUID()}.${ext}`;
 
     let logoUrl = "";
@@ -48,9 +61,13 @@ export async function POST(request: Request) {
       logoUrl = blob.url;
     } else {
       // Local fallback for development
-      const { writeFile } = await import("fs/promises");
+      const { writeFile, mkdir } = await import("fs/promises");
       const { join } = await import("path");
       const uploadDir = join(process.cwd(), "public", "uploads", "logos");
+
+      // Ensure directory exists
+      await mkdir(uploadDir, { recursive: true });
+
       const filepath = join(uploadDir, filename);
 
       const bytes = await file.arrayBuffer();

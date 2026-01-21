@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { Icon } from "@vayva/ui";
+import { Icon, Button } from "@vayva/ui";
 
 export const ServicesOverview = () => {
   return (
@@ -15,7 +15,7 @@ export const ServicesOverview = () => {
             </h2>
             <div className="flex items-center gap-2 text-sm font-bold text-gray-900">
               <Icon name="Calendar" size={16} />
-              December 23, 2025
+              {new Date().toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric" })}
             </div>
           </div>
 
@@ -31,12 +31,12 @@ export const ServicesOverview = () => {
               filling your calendar.
             </p>
             <div className="flex items-center gap-3">
-              <button className="px-8 py-3 bg-black text-white rounded-full text-sm font-bold hover:scale-105 transition-transform">
+              <Button variant="primary" size="lg" className="hover:scale-105">
                 Share Booking Link
-              </button>
-              <button className="px-8 py-3 bg-white border border-gray-100 text-gray-900 rounded-full text-sm font-bold hover:bg-gray-50 transition-colors">
+              </Button>
+              <Button variant="secondary" size="lg" className="bg-white border border-gray-100 text-gray-900 hover:bg-gray-50">
                 Add Manual Booking
-              </button>
+              </Button>
             </div>
           </div>
         </div>
@@ -47,17 +47,17 @@ export const ServicesOverview = () => {
           <div className="bg-white p-8 rounded-[40px] border border-gray-100 shadow-sm overflow-hidden relative group">
             <h3 className="font-bold text-lg mb-4 flex items-center justify-between">
               Booking Requests
-              <span className="w-2 h-2 rounded-full bg-green-500"></span>
+              <span className="w-2 h-2 rounded-full bg-gray-300"></span>
             </h3>
-            <div className="p-4 rounded-2xl bg-green-50 border border-green-100 text-green-900 flex items-center gap-3">
-              <div className="w-8 h-8 rounded-full bg-white flex items-center justify-center text-green-600 shadow-sm">
+            <div className="p-4 rounded-2xl bg-gray-50 border border-gray-100 text-gray-500 flex items-center gap-3">
+              <div className="w-8 h-8 rounded-full bg-white flex items-center justify-center text-gray-400 shadow-sm">
                 <Icon name="Bell" size={14} />
               </div>
-              <p className="text-xs font-bold">0 new requests</p>
+              <p className="text-xs font-bold">No new requests</p>
             </div>
-            <button className="w-full mt-4 py-3 text-sm font-bold text-gray-500 hover:text-black transition-colors">
+            <Button size="lg" className="w-full mt-4 text-gray-500 hover:text-black">
               Manage availability →
-            </button>
+            </Button>
           </div>
 
           {/* Quick Stats */}
@@ -72,18 +72,8 @@ export const ServicesOverview = () => {
               <p className="text-sm font-bold text-gray-500 mb-1">
                 Recent Clients
               </p>
-              <div className="mt-4 flex -space-x-3">
-                {[1, 2, 3].map((i) => (
-                  <div
-                    key={i}
-                    className="w-10 h-10 rounded-full border-2 border-white bg-gray-100 flex items-center justify-center text-[10px] font-bold text-gray-400"
-                  >
-                    ?
-                  </div>
-                ))}
-                <div className="w-10 h-10 rounded-full border-2 border-white bg-gray-50 flex items-center justify-center text-[10px] font-bold text-gray-400 italic">
-                  Empty
-                </div>
+              <div className="mt-4 flex -space-x-3 text-sm text-gray-400 italic">
+                No recent clients
               </div>
             </div>
           </div>

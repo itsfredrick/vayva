@@ -1,0 +1,46 @@
+import { useState, useEffect } from "react";
+export function useUserPlan() {
+    const [plan, setPlan] = useState("free");
+    const [source, setSource] = useState("initial");
+    const [isAuthenticated, setIsAuthenticated] = useState(false);
+    const [loading, setLoading] = useState(true);
+    useEffect(() => {
+        let mounted = true;
+        async function fetchPlan() {
+            try {
+                const res = await fetch("/api/me/plan");
+                // Handle non-OK responses gracefully
+                if (!res.ok) {
+                    console.warn(`Failed to fetch plan: ${res.status} ${res.statusText}`);
+                    if (mounted) {
+                        setSource("api_error_fallback");
+                        setLoading(false);
+                    }
+                    return;
+                }
+                const data = await res.json();
+                if (mounted) {
+                    setPlan(data.plan || "free");
+                    setSource(data.source || "api");
+                    setIsAuthenticated(!!data.isAuthenticated);
+                }
+            }
+            catch (err) {
+                console.error("Error fetching user plan:", err);
+                if (mounted) {
+                    setSource("error_fallback");
+                }
+            }
+            finally {
+                if (mounted) {
+                    setLoading(false);
+                }
+            }
+        }
+        fetchPlan();
+        return () => {
+            mounted = false;
+        };
+    }, []);
+    return { tier: plan, loading, source, isAuthenticated };
+}

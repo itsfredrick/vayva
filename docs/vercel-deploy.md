@@ -1,7 +1,7 @@
 # Vercel Deployment Guide (Staging & Production)
 
 ## Topology
-We deploy Vayva Platform as **3 separate Vercel Projects** from the same monorepo.
+We deploy Vayva as **3 separate Vercel Projects** from the same monorepo.
 
 | Project Name | Framework Preset | Root Directory | Production Domain | Staging Domain |
 |---|---|---|---|---|

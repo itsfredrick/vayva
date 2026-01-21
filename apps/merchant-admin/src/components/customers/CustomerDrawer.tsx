@@ -1,12 +1,18 @@
 import React, { useState, useEffect } from "react";
-import { Drawer, Button, Icon, cn } from "@vayva/ui";
+import { Button, Drawer, Icon, IconName, cn, Modal } from "@vayva/ui";
 import { Customer, CustomerInsight, CustomerActivity } from "@vayva/shared";
 import { WhatsAppAction } from "./WhatsAppAction";
+import { CustomerForm } from "./CustomerForm";
 
 interface CustomerDrawerProps {
   isOpen: boolean;
   onClose: () => void;
   customerId: string | null;
+}
+
+interface CustomerStats {
+  aov: number;
+  [key: string]: any;
 }
 
 export const CustomerDrawer = ({
@@ -17,9 +23,11 @@ export const CustomerDrawer = ({
   const [customer, setCustomer] = useState<Customer | null>(null);
   const [insights, setInsights] = useState<CustomerInsight[]>([]);
   const [history, setHistory] = useState<CustomerActivity[]>([]);
-  const [stats, setStats] = useState<any>(null);
+  const [stats, setStats] = useState<CustomerStats | null>(null);
   const [loading, setLoading] = useState(false);
   const [activeTab, setActiveTab] = useState<"timeline" | "notes">("timeline");
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  const [isDeleting, setIsDeleting] = useState(false);
 
   useEffect(() => {
     if (isOpen && customerId) {
@@ -48,6 +56,28 @@ export const CustomerDrawer = ({
       console.error(e);
     } finally {
       setLoading(false);
+    }
+  };
+
+  const handleDelete = async () => {
+    if (!customer || !window.confirm("Are you sure you want to delete this customer? This action cannot be undone.")) return;
+
+    setIsDeleting(true);
+    try {
+      const res = await fetch(`/api/customers/${customer.id}`, {
+        method: "DELETE"
+      });
+      if (!res.ok) {
+        const data = await res.json();
+        alert(data.error || "Failed to delete customer");
+        return;
+      }
+      onClose();
+    } catch (e) {
+      console.error(e);
+      alert("An error occurred while deleting the customer");
+    } finally {
+      setIsDeleting(false);
     }
   };
 
@@ -80,7 +110,7 @@ export const CustomerDrawer = ({
                     <Icon name="Phone" size={12} /> {customer.phone}
                   </p>
                   <div className="flex gap-2 mt-2">
-                    {insights.some((i) => i.type === "risk") && (
+                    {insights.some((i: CustomerInsight) => i.type === "risk") && (
                       <span className="text-[10px] font-bold bg-red-100 text-red-700 px-2 py-0.5 rounded-full uppercase tracking-wider">
                         High Risk
                       </span>
@@ -91,12 +121,37 @@ export const CustomerDrawer = ({
                   </div>
                 </div>
               </div>
-              <WhatsAppAction
-                phone={customer.phone}
-                name={customer.name}
-                label="Message"
-                size="sm"
-              />
+              <div className="flex gap-2">
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => setIsEditModalOpen(true)}
+                  className="h-9 w-9 p-0 rounded-full"
+                  title="Edit Profile"
+                >
+                  <Icon name="Edit3" size={14} />
+                </Button>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={handleDelete}
+                  disabled={isDeleting}
+                  className="h-9 w-9 p-0 rounded-full text-red-500 hover:text-red-600 hover:bg-red-50 border-gray-200"
+                  title="Delete Customer"
+                >
+                  {isDeleting ? (
+                    <div className="animate-spin w-3 h-3 border-2 border-red-500 border-t-transparent rounded-full" />
+                  ) : (
+                    <Icon name="Trash2" size={14} />
+                  )}
+                </Button>
+                <WhatsAppAction
+                  phone={customer.phone}
+                  name={customer.name}
+                  label="Message"
+                  size="sm"
+                />
+              </div>
             </div>
 
             {/* SECTION B: SUMMARY STATS */}
@@ -134,15 +189,14 @@ export const CustomerDrawer = ({
                 Smart Insights
               </h3>
               <div className="flex gap-3 overflow-x-auto pb-2 no-scrollbar">
-                {insights.map((insight) => (
+                {insights.map((insight: CustomerInsight) => (
                   <div
                     key={insight.id}
                     className="min-w-[200px] p-3 bg-indigo-50/50 border border-indigo-100 rounded-xl"
                   >
                     <div className="flex items-center gap-2 mb-1">
-                      {/* @ts-ignore */}
                       <Icon
-                        name={insight.icon}
+                        name={insight.icon as IconName}
                         size={14}
                         className="text-indigo-600"
                       />
@@ -162,33 +216,35 @@ export const CustomerDrawer = ({
           <div className="flex-1 overflow-auto p-6">
             {/* SECTION C & D: TIMELINE */}
             <div className="flex gap-4 border-b border-gray-200 mb-6">
-              <button
+              <Button
+                variant="ghost"
                 onClick={() => setActiveTab("timeline")}
                 className={cn(
-                  "pb-2 text-sm font-bold transition-colors",
+                  "pb-2 text-sm font-bold transition-colors rounded-none hover:bg-transparent h-auto p-0 hover:no-underline",
                   activeTab === "timeline"
                     ? "border-b-2 border-black text-black"
-                    : "text-gray-400",
+                    : "text-gray-400 hover:text-gray-600",
                 )}
               >
                 History
-              </button>
-              <button
+              </Button>
+              <Button
+                variant="ghost"
                 onClick={() => setActiveTab("notes")}
                 className={cn(
-                  "pb-2 text-sm font-bold transition-colors",
+                  "pb-2 text-sm font-bold transition-colors rounded-none hover:bg-transparent h-auto p-0 hover:no-underline",
                   activeTab === "notes"
                     ? "border-b-2 border-black text-black"
-                    : "text-gray-400",
+                    : "text-gray-400 hover:text-gray-600",
                 )}
               >
                 Notes
-              </button>
+              </Button>
             </div>
 
             {activeTab === "timeline" && (
               <div className="space-y-6 relative pl-4 border-l-2 border-gray-100 ml-2">
-                {history.map((item, idx) => (
+                {history.map((item: CustomerActivity, idx: number) => (
                   <div key={item.id} className="relative pl-6">
                     <div
                       className={cn(
@@ -202,11 +258,11 @@ export const CustomerDrawer = ({
                     >
                       <Icon
                         name={
-                          item.type === "order"
+                          (item.type === "order"
                             ? "ShoppingBag"
                             : item.type === "message"
                               ? "MessageCircle"
-                              : "FileText"
+                              : "FileText") as IconName
                         }
                         size={14}
                       />
@@ -251,6 +307,21 @@ export const CustomerDrawer = ({
           </div>
         </div>
       )}
+
+      {/* Edit Modal */}
+      <Modal
+        isOpen={isEditModalOpen}
+        onClose={() => setIsEditModalOpen(false)}
+        title="Edit Customer Profile"
+      >
+        <CustomerForm
+          initialData={customer}
+          onSuccess={() => {
+            setIsEditModalOpen(false);
+            fetchData(); // Refresh profile
+          }}
+        />
+      </Modal>
     </Drawer>
   );
 };

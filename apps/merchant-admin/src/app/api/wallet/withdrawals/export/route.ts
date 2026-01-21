@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { getSessionUser } from "@/lib/session";
-import { prisma } from "@vayva/db";
+import { prisma } from "@/lib/prisma";
 import { authorizeAction, AppRole } from "@/lib/permissions";
 import { logAuditEvent, AuditEventType } from "@/lib/audit";
 
@@ -66,7 +66,11 @@ export async function GET(request: Request) {
       user.storeId,
       user.id,
       AuditEventType.WITHDRAWAL_EXPORTED,
-      { count: withdrawals.length, statusFilter: status || "ALL" },
+      {
+        targetType: "WITHDRAWAL_BATCH",
+        targetId: "export_csv",
+        meta: { count: withdrawals.length, statusFilter: status || "ALL" }
+      }
     );
 
     // Telemetry

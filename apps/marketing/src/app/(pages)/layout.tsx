@@ -14,7 +14,6 @@ export const metadata = metadataFor("/");
 
 import { DownloadModalProvider } from "@/context/DownloadModalContext";
 import { PWAInstallToast } from "@/components/marketing/PWAInstallToast";
-import { WhatsAppSupportButton } from "@/components/marketing/WhatsAppSupportButton";
 
 // ... existing imports
 
@@ -33,7 +32,6 @@ export default function MarketingLayout({
         <main>{children}</main>
         <MarketingFooter />
         <PWAInstallToast />
-        <WhatsAppSupportButton />
         <CookieBanner />
       </DownloadModalProvider>
     </MarketingShell>

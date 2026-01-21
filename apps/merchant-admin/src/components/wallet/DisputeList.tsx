@@ -1,6 +1,6 @@
 import React from "react";
 import { Dispute, DisputeStatus } from "@vayva/shared";
-import { Icon, cn } from "@vayva/ui";
+import { Icon, cn, Button } from "@vayva/ui";
 
 interface DisputeListProps {
   disputes: Dispute[];
@@ -84,12 +84,15 @@ export const DisputeList = ({ disputes, isLoading }: DisputeListProps) => {
               </div>
 
               <div className="flex gap-2">
-                <button className="px-4 py-2 bg-black text-white rounded-lg text-xs font-bold hover:bg-gray-800 transition-colors">
+                <Button className="px-4 py-2 bg-black text-white rounded-lg text-xs font-bold hover:bg-gray-800 transition-colors h-auto">
                   Submit Evidence
-                </button>
-                <button className="px-4 py-2 border border-gray-200 rounded-lg text-xs font-bold text-gray-700 hover:bg-gray-50 transition-colors">
+                </Button>
+                <Button
+                  variant="outline"
+                  className="px-4 py-2 border border-gray-200 rounded-lg text-xs font-bold text-gray-700 hover:bg-gray-50 transition-colors h-auto"
+                >
                   View Details
-                </button>
+                </Button>
               </div>
             </div>
           </div>

@@ -1,5 +1,6 @@
 import React from "react";
 import { AlertCircle } from "lucide-react";
+import { Button } from "./Button";
 
 interface ErrorStateProps {
   title?: string;
@@ -19,12 +20,14 @@ export function ErrorState({
         <h4 className="font-bold text-red-900 text-sm mb-1">{title}</h4>
         <p className="text-sm text-red-700">{message}</p>
         {onRetry && (
-          <button
+          <Button
             onClick={onRetry}
-            className="mt-3 text-xs font-bold text-red-600 hover:text-red-800 underline"
+            variant="link"
+            size="sm"
+            className="mt-3 text-xs font-bold text-red-600 hover:text-red-800 underline p-0 h-auto"
           >
             Try Again
-          </button>
+          </Button>
         )}
       </div>
     </div>

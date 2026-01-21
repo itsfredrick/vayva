@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { MarketShell } from "@/components/market/market-shell";
 import {
@@ -20,67 +20,33 @@ const CATEGORIES = [
   { name: "More", icon: "LayoutGrid", count: "View all" },
 ];
 
-const DEMO_PRODUCTS: MarketProduct[] = [
-  {
-    id: "1",
-    name: "MacBook Pro M3 Max",
-    price: "₦ 3,500,000",
-    image: "",
-    sellerName: "TechDepot",
-    sellerVerified: true,
-    inStock: true,
-    rating: 4.8,
-  },
-  {
-    id: "2",
-    name: "Nike Air Jordan 1 High",
-    price: "₦ 180,000",
-    image: "",
-    sellerName: "KicksLagos",
-    sellerVerified: true,
-    inStock: true,
-    rating: 4.9,
-  },
-  {
-    id: "3",
-    name: 'Samsung 65" 4K TV',
-    price: "₦ 850,000",
-    image: "",
-    sellerName: "GadgetWorld",
-    sellerVerified: false,
-    inStock: true,
-    rating: 4.5,
-  },
-  {
-    id: "4",
-    name: "Gucci Marmont Bag",
-    price: "₦ 1,200,000",
-    image: "",
-    sellerName: "LuxuryHub",
-    sellerVerified: true,
-    inStock: false,
-    rating: 5.0,
-  },
-  {
-    id: "5",
-    name: "PlayStation 5 Slim",
-    price: "₦ 650,000",
-    image: "",
-    sellerName: "GamingArea",
-    sellerVerified: true,
-    inStock: true,
-    rating: 4.7,
-  },
-];
-
-const FEATURED_SELLERS = [
-  { name: "TechDepot", cat: "Electronics", logo: "T", verified: true },
-  { name: "KicksLagos", cat: "Fashion", logo: "K", verified: true },
-  { name: "OrganicLife", cat: "Groceries", logo: "O", verified: false },
-  { name: "LuxuryHub", cat: "Fashion", logo: "L", verified: true },
-];
-
 export default function MarketHomePage() {
+  const [products, setProducts] = useState<MarketProduct[]>([]);
+  const [sellers, setSellers] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    async function fetchData() {
+      try {
+        const [prodRes, sellRes] = await Promise.all([
+          fetch("/api/market/products?limit=10"),
+          fetch("/api/market/sellers")
+        ]);
+        if (prodRes.ok) {
+          setProducts(await prodRes.json());
+        }
+        if (sellRes.ok) {
+          setSellers(await sellRes.json());
+        }
+      } catch (err) {
+        console.error("Market Load Error", err);
+      } finally {
+        setLoading(false);
+      }
+    }
+    fetchData();
+  }, []);
+
   return (
     <MarketShell>
       {/* Hero Discovery */}
@@ -103,9 +69,9 @@ export default function MarketHomePage() {
               className="w-full h-14 bg-white/10 backdrop-blur-md border border-white/20 rounded-full pl-6 pr-14 text-lg text-white placeholder:text-white/40 focus:outline-none focus:border-primary focus:bg-white/15 transition-all shadow-2xl"
               placeholder="What are you looking for today?"
             />
-            <button className="absolute right-2 top-2 h-10 w-10 bg-primary rounded-full flex items-center justify-center text-black hover:bg-primary/90 transition-colors">
+            <Button className="absolute right-2 top-2 h-10 w-10 bg-primary rounded-full flex items-center justify-center text-black hover:bg-primary/90 transition-colors">
               <Icon name="Search" size={24} />
-            </button>
+            </Button>
           </div>
 
           <div className="flex flex-wrap justify-center gap-2">
@@ -167,11 +133,17 @@ export default function MarketHomePage() {
           <div className="flex justify-between items-end mb-6">
             <h2 className="text-2xl font-bold text-white">Trending on Vayva</h2>
           </div>
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6">
-            {DEMO_PRODUCTS.map((product) => (
-              <MarketProductCard key={product.id} product={product} />
-            ))}
-          </div>
+          {loading ? (
+            <div className="text-white text-center">Loading Market...</div>
+          ) : (
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6">
+              {products.length === 0 ? (
+                <div className="col-span-full text-center text-white/50 py-10">No products found. Be the first to list!</div>
+              ) : products.map((product) => (
+                <MarketProductCard key={product.id} product={product} />
+              ))}
+            </div>
+          )}
         </section>
 
         {/* Featured Sellers */}
@@ -180,9 +152,9 @@ export default function MarketHomePage() {
             <h2 className="text-2xl font-bold text-white">Top Sellers</h2>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-            {FEATURED_SELLERS.map((seller) => (
+            {sellers.map((seller) => (
               <Link
-                href={`/market/sellers/${seller.name.toLowerCase()}`}
+                href={`/market/sellers/${seller.slug}`}
                 key={seller.name}
               >
                 <div className="flex items-center gap-4 p-4 rounded-xl bg-white/5 border border-white/5 hover:bg-white/10 transition-all group cursor-pointer">

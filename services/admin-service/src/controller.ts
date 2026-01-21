@@ -34,7 +34,7 @@ export const AdminController = {
       },
       take: 20,
       include: {
-        merchantSubscription: true,
+        // merchantSubscription: true, // Removed from schema
         // merchantFlags: true // No relation
       },
     });
@@ -44,7 +44,7 @@ export const AdminController = {
     const store = await prisma.store.findUnique({
       where: { id: storeId },
       include: {
-        merchantSubscription: true,
+        // merchantSubscription: true, // Removed from schema
         // merchantFlags: true // No relation
         // featureOverrides: true // No relation
         // supportCases: true // No relation

@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import { Icon, Button, cn } from "@vayva/ui";
+import { Button, Icon, cn } from "@vayva/ui";
 
 interface UsageData {
   messagesUsed: number;
@@ -46,7 +46,7 @@ export const AiUsageWidget = () => {
             <Icon name="Zap" size={16} />
           </div>
           <div>
-            <h3 className="font-bold text-[#0B0B0B] text-sm">AI Messages</h3>
+            <h3 className="font-bold text-black text-sm">AI Messages</h3>
             <p className="text-[10px] text-gray-500 uppercase tracking-wider font-medium">
               {isTrial ? "Free Trial Allocation" : `${usage.planKey} Plan`}
             </p>
@@ -74,7 +74,7 @@ export const AiUsageWidget = () => {
             <span
               className={cn(
                 "font-bold",
-                isCritical ? "text-orange-600" : "text-[#0B0B0B]",
+                isCritical ? "text-orange-600" : "text-black",
               )}
             >
               {usage.messagesUsed} / {usage.messageLimit}
@@ -97,7 +97,7 @@ export const AiUsageWidget = () => {
 
         {/* Verbatim Copy Matrix Implementation */}
         <div className="bg-gray-50 p-3 rounded-lg border border-dashed border-gray-200">
-          <p className="text-[11px] text-[#0B0B0B] font-medium leading-relaxed">
+          <p className="text-[11px] text-black font-medium leading-relaxed">
             {isTrial
               ? usage.isOverLimit
                 ? "Trial complete! Your AI Assistant has handled its first 20 customers beautifully. To keep selling on autopilot, upgrade to a Growth plan today."

@@ -1,7 +1,5 @@
 import { test as base, expect } from "@playwright/test";
-import { PrismaClient } from "@vayva/db";
-
-const prisma = new PrismaClient();
+import { prisma } from "@vayva/db";
 
 // Test merchant ID used across all tests
 export const TEST_MERCHANT_ID = "123e4567-e89b-12d3-a456-426614174000";
@@ -77,7 +75,7 @@ test.afterAll(async () => {
 
   try {
     // Clean up in reverse order of creation (respecting foreign keys)
-    await prisma.communication_consent.deleteMany({
+    await prisma.communicationConsent.deleteMany({
       where: { merchantId: TEST_MERCHANT_ID },
     });
 

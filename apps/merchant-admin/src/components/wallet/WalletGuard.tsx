@@ -2,8 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import { Lock, Unlock, ArrowRight } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
+import { Button, Input } from "@vayva/ui";
 import { toast } from "sonner"; // Assuming sonner is available based on package.json
 
 interface WalletGuardProps {

@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useRef, useEffect } from "react";
+import { Button } from "@vayva/ui";
 import { MessageSquare, X, Send, Loader2, Bot, Sparkles } from "lucide-react";
 
 interface Message {
@@ -99,7 +100,7 @@ export function MarketingAIAssistant() {
                 </div>
               </div>
             </div>
-            <button
+            <Button
               onClick={() => setIsOpen(false)}
               className="p-2 hover:bg-white/10 rounded-full transition-colors"
             >
@@ -116,7 +117,7 @@ export function MarketingAIAssistant() {
                 <line x1="18" y1="6" x2="6" y2="18"></line>
                 <line x1="6" y1="6" x2="18" y2="18"></line>
               </svg>
-            </button>
+            </Button>
           </div>
 
           {/* Messages */}
@@ -162,13 +163,13 @@ export function MarketingAIAssistant() {
                 placeholder="Ask us anything..."
                 className="w-full pl-4 pr-12 py-3.5 bg-gray-50 border-none rounded-xl text-sm focus:ring-2 focus:ring-[#22C55E]/20 transition-all text-gray-900 placeholder:text-gray-400"
               />
-              <button
+              <Button
                 onClick={handleSend}
                 disabled={isLoading || !input.trim()}
                 className="absolute right-2 p-2 bg-[#22C55E] text-white rounded-lg hover:bg-[#16A34A] disabled:opacity-50 disabled:hover:bg-[#22C55E] transition-all"
               >
                 <Send size={18} />
-              </button>
+              </Button>
             </div>
             <p className="text-[10px] text-center text-gray-400 mt-3 font-medium tracking-tight">
               Powered by Vayva Intelligence
@@ -178,7 +179,7 @@ export function MarketingAIAssistant() {
       )}
 
       {/* Toggle Button */}
-      <button
+      <Button
         onClick={() => setIsOpen(!isOpen)}
         className={`group relative flex items-center justify-center w-16 h-16 rounded-full shadow-2xl transition-all duration-500 scale-100 hover:scale-105 active:scale-95 ${
           isOpen ? "bg-[#0F172A] rotate-90" : "bg-[#22C55E]"
@@ -216,7 +217,7 @@ export function MarketingAIAssistant() {
             <div className="absolute right-[-6px] top-1/2 -translate-y-1/2 w-3 h-3 bg-white rotate-45 border-r border-t border-gray-100"></div>
           </div>
         )}
-      </button>
+      </Button>
     </div>
   );
 }

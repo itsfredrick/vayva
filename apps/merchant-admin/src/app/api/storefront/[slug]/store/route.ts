@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { prisma } from "@vayva/db";
+import { prisma } from "@/lib/prisma";
 
 export async function GET(
   req: NextRequest,
@@ -19,12 +19,12 @@ export async function GET(
         category: true,
         plan: true,
         isLive: true,
-        waAgentSettings: {
-          select: {
-            enabled: true,
-            businessHours: true,
-          },
-        },
+        // agent: {
+        //   select: {
+        //     enabled: true,
+        //     businessHours: true,
+        //   },
+        // },
         deliverySettings: {
           select: {
             isEnabled: true,

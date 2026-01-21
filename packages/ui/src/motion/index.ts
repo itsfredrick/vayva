@@ -3,9 +3,9 @@
 import { motion, AnimatePresence } from "framer-motion";
 
 export const fadeIn = {
-  initial: { opacity: 0, y: 5 },
-  animate: { opacity: 1, y: 0 },
-  exit: { opacity: 0, y: 5 },
+  initial: { opacity: 0, translateY: "5px" },
+  animate: { opacity: 1, translateY: "0px" },
+  exit: { opacity: 0, translateY: "5px" },
   transition: { duration: 0.2, ease: "easeOut" },
 };
 
@@ -18,7 +18,8 @@ export const scaleIn = {
 
 export const hoverLift = {
   scale: 1.02,
-  transition: { duration: 0.2 },
+  y: -2,
+  transition: { duration: 0.2, ease: "easeOut" },
 };
 
 export const tapScale = {

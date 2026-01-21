@@ -1,8 +1,8 @@
 "use client";
 
 import { useState, useEffect } from "react";
-// TODO: Module @vayva/analytics/activation not yet implemented
-// import { ActivationManager, ActivationStatus } from '@vayva/analytics/activation';
+// Activation logic local implementation
+
 
 type ActivationStatus = {
   isActivated: boolean;

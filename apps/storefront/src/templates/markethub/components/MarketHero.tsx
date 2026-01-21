@@ -1,4 +1,5 @@
 import React from "react";
+import { Button } from "@vayva/ui";
 import { ArrowRight, BadgeCheck, Star } from "lucide-react";
 
 export const MarketHero = () => {
@@ -21,9 +22,9 @@ export const MarketHero = () => {
               Up to 50% off handmade crafts and vintage fashion from verified
               independent sellers.
             </p>
-            <button className="bg-white text-[#111827] hover:bg-gray-100 font-bold px-8 py-3 rounded-lg inline-flex items-center gap-2 transition-colors">
+            <Button className="bg-white text-[#111827] hover:bg-gray-100 font-bold px-8 py-3 rounded-lg inline-flex items-center gap-2 transition-colors">
               Shop Now <ArrowRight size={18} />
-            </button>
+            </Button>
           </div>
         </div>
 

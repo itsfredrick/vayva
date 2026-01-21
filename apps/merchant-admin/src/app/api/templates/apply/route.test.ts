@@ -1,7 +1,7 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import { POST } from "./route";
 import { getServerSession } from "next-auth";
-import { prisma } from "@vayva/db";
+import { prisma } from "@/lib/prisma";
 import { NextResponse } from "next/server";
 
 // Mocks

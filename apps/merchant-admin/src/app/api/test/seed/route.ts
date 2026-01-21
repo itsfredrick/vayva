@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { prisma } from "@vayva/db";
+import { prisma } from "@/lib/prisma";
 import { hash } from "bcryptjs";
 
 // Only allow in development or test env
@@ -26,7 +26,6 @@ export async function POST(req: NextRequest) {
         data: {
           email,
           password: hashedPassword,
-          role: "OWNER",
         } as any,
       });
 
@@ -37,7 +36,7 @@ export async function POST(req: NextRequest) {
           slug: storeSlug,
           onboardingCompleted: true, // Bypass onboarding
           memberships: {
-            create: { userId: user.id, role: "owner" },
+            create: { userId: user.id, role_enum: "OWNER" },
           },
         },
       });

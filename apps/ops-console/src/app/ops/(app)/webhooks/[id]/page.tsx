@@ -6,6 +6,7 @@ import { useParams } from "next/navigation";
 import { useOpsQuery } from "@/hooks/useOpsQuery";
 import { ArrowLeft, RefreshCw, AlertCircle, CheckCircle, Clock } from "lucide-react";
 import { toast } from "sonner";
+import { Button } from "@vayva/ui";
 
 export default function WebhookDetailPage() {
     const { id } = useParams() as { id: string };
@@ -76,14 +77,14 @@ export default function WebhookDetailPage() {
                     </h1>
                     <p className="text-gray-500 mt-1 font-mono text-sm">{webhook.id}</p>
                 </div>
-                <button
+                <Button
                     onClick={handleReplay}
                     disabled={replaying}
-                    className="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg text-sm font-medium flex items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
+                    className="flex items-center gap-2"
                 >
                     <RefreshCw size={16} className={replaying ? "animate-spin" : ""} />
                     Replay Event
-                </button>
+                </Button>
             </div>
 
             <div className="grid grid-cols-3 gap-6">

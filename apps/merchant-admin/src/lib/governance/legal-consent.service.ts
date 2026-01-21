@@ -9,8 +9,6 @@ export class LegalConsentService {
     return await prisma.store.update({
       where: { id: storeId },
       data: {
-        aiConsentGivenAt: new Date(),
-        aiConsentRevokedAt: null,
         aiConsentVersion: version,
         aiAgencyStatus: "ACTIVE",
       },
@@ -24,7 +22,6 @@ export class LegalConsentService {
     return await prisma.store.update({
       where: { id: storeId },
       data: {
-        aiConsentRevokedAt: new Date(),
         aiAgencyStatus: "INACTIVE",
       },
     });
@@ -46,9 +43,9 @@ export class LegalConsentService {
   static async canAIRespond(storeId: string): Promise<boolean> {
     const store = await prisma.store.findUnique({
       where: { id: storeId },
-      select: { aiAgencyStatus: true, aiConsentGivenAt: true },
+      select: { aiAgencyStatus: true },
     });
 
-    return store?.aiAgencyStatus === "ACTIVE" && !!store.aiConsentGivenAt;
+    return store?.aiAgencyStatus === "ACTIVE";
   }
 }

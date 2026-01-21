@@ -8,6 +8,7 @@ import {
 import { useStorefrontCart } from "@/hooks/storefront/useStorefrontCart";
 import { CheckoutModal } from "./CheckoutModal";
 import { CalendarDays, MapPin, Ticket, User, ArrowRight, X } from "lucide-react";
+import { Button } from "@vayva/ui";
 
 export function StandardEventsHome({
     storeName: initialStoreName,
@@ -55,18 +56,18 @@ export function StandardEventsHome({
                                 {cart.map(item => (
                                     <div key={item.id} className="text-sm flex justify-between">
                                         <span className="truncate w-32">{item.name}</span>
-                                        <button onClick={() => removeFromCart(item.id)} className="text-indigo-300 hover:text-white"><X className="w-3 h-3" /></button>
+                                        <Button variant="ghost" size="icon" onClick={() => removeFromCart(item.id)} className="text-indigo-300 hover:text-white p-0 h-auto" aria-label={`Remove ${item.name} from cart`}><X className="w-3 h-3" /></Button>
                                     </div>
                                 ))}
                             </div>
                         )}
-                        <button
+                        <Button
                             onClick={() => setIsCheckoutOpen(true)}
                             disabled={cart.length === 0}
-                            className="w-full bg-white text-indigo-900 py-3 rounded-xl font-bold hover:bg-indigo-50 transition-colors disabled:opacity-50"
+                            className="w-full bg-white text-indigo-900 py-6 rounded-xl font-bold hover:bg-indigo-50 transition-colors disabled:opacity-50 h-auto"
                         >
                             Checkout
-                        </button>
+                        </Button>
                     </div>
                 </div>
             </div>
@@ -86,7 +87,7 @@ export function StandardEventsHome({
                         {products.map((event) => (
                             <div key={event.id} className="bg-white rounded-2xl shadow-xl shadow-slate-200/50 border border-slate-100 overflow-hidden flex flex-col md:flex-row hover:-translate-y-1 transition-transform duration-300 group">
                                 <div className="w-full md:w-56 bg-slate-200 relative">
-                                    <img src={event.image || `https://via.placeholder.com/300x400?text=${event.name}`} className="w-full h-full object-cover opacity-90 group-hover:opacity-100 transition-opacity" />
+                                    <img src={event.image || `https://via.placeholder.com/300x400?text=${event.name}`} alt={event.name} className="w-full h-full object-cover opacity-90 group-hover:opacity-100 transition-opacity" />
                                     <div className="absolute top-4 left-4 bg-white/90 backdrop-blur px-3 py-1 rounded-lg text-center shadow-sm">
                                         <div className="text-xs text-slate-500 uppercase font-bold">FEB</div>
                                         <div className="text-xl font-bold text-slate-900">24</div>
@@ -107,12 +108,13 @@ export function StandardEventsHome({
                                             <div className="text-xs text-slate-400">Starting from</div>
                                             <div className="text-xl font-bold text-slate-900">₦{event.price.toLocaleString()}</div>
                                         </div>
-                                        <button
+                                        <Button
                                             onClick={() => addToCart(event)}
-                                            className="bg-slate-900 text-white px-6 py-3 rounded-xl font-bold hover:bg-indigo-600 transition-colors flex items-center gap-2"
+                                            className="bg-slate-900 text-white px-6 py-6 rounded-xl font-bold hover:bg-indigo-600 transition-colors flex items-center gap-2 h-auto"
+                                            aria-label={`Get tickets for ${event.name}`}
                                         >
                                             Get Tickets <ArrowRight className="w-4 h-4" />
-                                        </button>
+                                        </Button>
                                     </div>
                                 </div>
                             </div>

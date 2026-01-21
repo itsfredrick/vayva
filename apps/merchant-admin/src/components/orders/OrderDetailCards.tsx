@@ -2,12 +2,12 @@
 
 import React from "react";
 import { Order, OrderTimelineEvent } from "@/services/orders";
-import { Icon, Button, cn } from "@vayva/ui";
+import { Button, Icon, cn } from "@vayva/ui";
 
 // 1. Items Card
 export const ItemsCard = ({ order }: { order: Order }) => (
   <div className="bg-white rounded-xl border border-gray-100 shadow-sm overflow-hidden p-6 flex flex-col gap-6">
-    <h3 className="font-bold text-[#0B0B0B]">Order Items</h3>
+    <h3 className="font-bold text-black">Order Items</h3>
     <div className="flex flex-col gap-4">
       {order.items.map((item) => (
         <div
@@ -24,7 +24,7 @@ export const ItemsCard = ({ order }: { order: Order }) => (
             )}
           </div>
           <div className="flex-1 flex flex-col justify-center">
-            <h4 className="text-sm font-bold text-[#0B0B0B]">{item.title}</h4>
+            <h4 className="text-sm font-bold text-black">{item.title}</h4>
             {item.variantId && (
               <p className="text-xs text-[#525252]">
                 Variant: {item.variantId.split("-").pop()}
@@ -32,7 +32,7 @@ export const ItemsCard = ({ order }: { order: Order }) => (
             )}
           </div>
           <div className="text-right flex flex-col justify-center">
-            <p className="text-sm font-bold text-[#0B0B0B]">
+            <p className="text-sm font-bold text-black">
               ₦ {Number(item.price).toLocaleString()}
             </p>
             <p className="text-xs text-[#525252]">x {item.quantity}</p>
@@ -55,7 +55,7 @@ export const ItemsCard = ({ order }: { order: Order }) => (
           ₦ {Number(order.shippingTotal).toLocaleString()}
         </span>
       </div>
-      <div className="flex justify-between font-bold text-lg text-[#0B0B0B] pt-2 border-t border-gray-200 mt-2">
+      <div className="flex justify-between font-black text-lg text-black pt-2 border-t border-gray-200 mt-2">
         <span>Total</span>
         <span>₦ {Number(order.total).toLocaleString()}</span>
       </div>
@@ -66,12 +66,12 @@ export const ItemsCard = ({ order }: { order: Order }) => (
 // 2. Timeline Card
 export const TimelineCard = ({ events }: { events: OrderTimelineEvent[] }) => (
   <div className="bg-white rounded-xl border border-gray-100 shadow-sm overflow-hidden p-6 flex flex-col gap-6">
-    <h3 className="font-bold text-[#0B0B0B]">Timeline</h3>
+    <h3 className="font-bold text-black">Timeline</h3>
     <div className="relative pl-4 border-l-2 border-gray-100 flex flex-col gap-8">
       {events.map((evt, i) => (
         <div key={evt.id} className="relative">
           <div className="absolute -left-[21px] top-1 w-3 h-3 rounded-full bg-black ring-4 ring-white"></div>
-          <h4 className="text-sm font-bold text-[#0B0B0B]">{evt.text}</h4>
+          <h4 className="text-sm font-bold text-black">{evt.text}</h4>
           <span className="text-[10px] text-gray-400 mt-1 block">
             {new Date(evt.createdAt).toLocaleString()}
           </span>
@@ -85,21 +85,21 @@ export const TimelineCard = ({ events }: { events: OrderTimelineEvent[] }) => (
 export const CustomerCard = ({ customer }: { customer: Order["customer"] }) => (
   <div className="bg-white rounded-xl border border-gray-100 shadow-sm overflow-hidden p-6 flex flex-col gap-4">
     <div className="flex justify-between items-center">
-      <h3 className="font-bold text-[#0B0B0B]">Customer</h3>
+      <h3 className="font-bold text-black">Customer</h3>
       <Link
         href={`/dashboard/customers/${customer.id}`}
-        className="text-xs text-blue-600 hover:underline"
+        className="text-xs text-vayva-green font-bold hover:underline"
       >
         View Profile
       </Link>
     </div>
     <div className="flex flex-col gap-2 text-sm">
       <div className="flex items-center gap-2">
-        <div className="w-8 h-8 rounded-full bg-blue-50 text-blue-600 flex items-center justify-center font-bold text-xs">
+        <div className="w-8 h-8 rounded-full bg-studio-gray text-black flex items-center justify-center font-bold text-xs ring-1 ring-studio-border">
           {customer.name.charAt(0)}
         </div>
         <div>
-          <p className="font-bold text-[#0B0B0B]">{customer.name}</p>
+          <p className="font-bold text-black">{customer.name}</p>
           <p className="text-xs text-[#525252]">1 Order</p>
         </div>
       </div>
@@ -130,10 +130,10 @@ export const DeliveryCard = ({
   onCreateTask: () => void;
 }) => (
   <div className="bg-white rounded-xl border border-gray-100 shadow-sm overflow-hidden p-6 flex flex-col gap-4">
-    <h3 className="font-bold text-[#0B0B0B]">Delivery</h3>
+    <h3 className="font-bold text-black">Delivery</h3>
 
     <div className="text-sm text-[#525252]">
-      <p className="font-bold text-[#0B0B0B] mb-1">Details</p>
+      <p className="font-bold text-black mb-1">Details</p>
       <p>
         Method:{" "}
         {order.timeline?.[0]?.metadata?.deliveryMethod || "Not specified"}

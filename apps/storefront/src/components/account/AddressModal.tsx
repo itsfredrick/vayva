@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { LocaleKey, LOCALES } from "@/data/locales";
 import { X, MapPin } from "lucide-react";
+import { Button } from "@vayva/ui";
 
 interface AddressModalProps {
   lang: LocaleKey;
@@ -61,20 +62,27 @@ export function AddressModal({
             <MapPin size={20} />
             {t.titleAdd}
           </h2>
-          <button
+          <Button
+            variant="ghost"
+            size="icon"
             onClick={onClose}
-            className="p-2 hover:bg-gray-100 rounded-full transition-colors"
+            className="p-2 hover:bg-gray-100 rounded-full transition-colors h-auto"
+            aria-label="Close address modal"
           >
             <X size={20} />
-          </button>
+          </Button>
         </div>
 
         <form onSubmit={handleSubmit} className="p-6 space-y-4">
           <div>
-            <label className="block text-xs font-bold text-gray-400 uppercase tracking-wider mb-2">
+            <label
+              htmlFor="address-title"
+              className="block text-xs font-bold text-gray-400 uppercase tracking-wider mb-2"
+            >
               {t.titleLabel}
             </label>
             <input
+              id="address-title"
               required
               type="text"
               value={title}
@@ -86,10 +94,14 @@ export function AddressModal({
 
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <label className="block text-xs font-bold text-gray-400 uppercase tracking-wider mb-2">
+              <label
+                htmlFor="address-city"
+                className="block text-xs font-bold text-gray-400 uppercase tracking-wider mb-2"
+              >
                 {t.city}
               </label>
               <select
+                id="address-city"
                 value={city}
                 onChange={(e) => setCity(e.target.value)}
                 className="w-full p-3 bg-gray-50 border border-gray-100 rounded-xl font-medium"
@@ -100,10 +112,14 @@ export function AddressModal({
               </select>
             </div>
             <div>
-              <label className="block text-xs font-bold text-gray-400 uppercase tracking-wider mb-2">
+              <label
+                htmlFor="address-district"
+                className="block text-xs font-bold text-gray-400 uppercase tracking-wider mb-2"
+              >
                 {t.district}
               </label>
               <input
+                id="address-district"
                 required
                 type="text"
                 value={district}
@@ -114,10 +130,14 @@ export function AddressModal({
           </div>
 
           <div>
-            <label className="block text-xs font-bold text-gray-400 uppercase tracking-wider mb-2">
+            <label
+              htmlFor="address-neighborhood"
+              className="block text-xs font-bold text-gray-400 uppercase tracking-wider mb-2"
+            >
               {t.neighborhood}
             </label>
             <input
+              id="address-neighborhood"
               required
               type="text"
               value={neighborhood}
@@ -127,10 +147,14 @@ export function AddressModal({
           </div>
 
           <div>
-            <label className="block text-xs font-bold text-gray-400 uppercase tracking-wider mb-2">
+            <label
+              htmlFor="address-details"
+              className="block text-xs font-bold text-gray-400 uppercase tracking-wider mb-2"
+            >
               {t.address}
             </label>
             <textarea
+              id="address-details"
               required
               rows={3}
               value={address}
@@ -140,10 +164,14 @@ export function AddressModal({
           </div>
 
           <div>
-            <label className="block text-xs font-bold text-gray-400 uppercase tracking-wider mb-2">
+            <label
+              htmlFor="address-notes"
+              className="block text-xs font-bold text-gray-400 uppercase tracking-wider mb-2"
+            >
               {t.notes}
             </label>
             <input
+              id="address-notes"
               type="text"
               value={notes}
               onChange={(e) => setNotes(e.target.value)}
@@ -152,19 +180,22 @@ export function AddressModal({
           </div>
 
           <div className="pt-4 flex gap-3">
-            <button
+            <Button
               type="button"
+              variant="ghost"
               onClick={onClose}
-              className="flex-1 py-4 font-bold text-gray-500 hover:bg-gray-50 rounded-xl"
+              className="flex-1 py-4 font-bold text-gray-500 hover:bg-gray-50 rounded-xl h-auto"
+              aria-label="Cancel"
             >
               {t.cancel}
-            </button>
-            <button
+            </Button>
+            <Button
               type="submit"
-              className="flex-1 py-4 bg-black text-white font-bold rounded-xl hover:bg-gray-900 transition-colors"
+              className="flex-1 py-4 bg-black text-white font-bold rounded-xl hover:bg-gray-900 transition-colors h-auto"
+              aria-label="Save address"
             >
               {t.save}
-            </button>
+            </Button>
           </div>
         </form>
       </div>

@@ -19,7 +19,7 @@ export async function POST(
         // Fetch shipment
         const shipment = await prisma.shipment.findUnique({
             where: { id },
-            include: { Order: true }
+            include: { order: true }
         });
 
         if (!shipment) {

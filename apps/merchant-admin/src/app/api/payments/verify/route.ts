@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { prisma } from "@vayva/db";
+import { prisma } from "@/lib/prisma";
 import { PaystackService } from "@/services/PaystackService";
 import { LedgerService } from "@/services/LedgerService";
 import { WalletTransactionType } from "@vayva/shared";
@@ -15,6 +15,7 @@ import crypto from "crypto";
  */
 
 // GET endpoint for redirect-based verification
+// Public: Payment Verification Callback
 export async function GET(request: Request) {
   try {
     const { searchParams } = new URL(request.url);
@@ -77,11 +78,15 @@ export async function GET(request: Request) {
       );
     }
 
+    if (!order.storeId) {
+      return NextResponse.json({ error: "Order validation failed: Missing Store ID" }, { status: 400 });
+    }
+
     // 5. CRITICAL: Update in transaction for data integrity
     await prisma.$transaction(async (tx: any) => {
       // Record Ledger Entry
       await LedgerService.recordTransaction({
-        storeId: order.storeId,
+        storeId: order.storeId!,
         type: WalletTransactionType.PAYMENT,
         amount: paystackAmountKobo,
         currency: "NGN",
@@ -184,11 +189,15 @@ export async function POST(request: Request) {
       );
     }
 
+    if (!order.storeId) {
+      return NextResponse.json({ error: "Order validation failed: Missing Store ID" }, { status: 400 });
+    }
+
     // 6. CRITICAL: Update in transaction
     await prisma.$transaction(async (tx: any) => {
       // Record Ledger Entry
       await LedgerService.recordTransaction({
-        storeId: order.storeId,
+        storeId: order.storeId!,
         type: WalletTransactionType.PAYMENT,
         amount: amountKobo,
         currency: "NGN",

@@ -3,6 +3,7 @@
 
 import React from "react";
 import { Search, Bell, MonitorCheck, MonitorX } from "lucide-react";
+import { Button } from "@vayva/ui";
 
 export function OpsTopbar() {
     const isProd = process.env.NEXT_PUBLIC_VERCEL_ENV === "production" || process.env.NODE_ENV === "production";
@@ -30,10 +31,15 @@ export function OpsTopbar() {
             </div>
 
             <div className="flex items-center gap-4">
-                <button className="w-8 h-8 flex items-center justify-center text-gray-500 hover:text-black relative">
+                <Button
+                    variant="ghost"
+                    size="icon"
+                    className="w-8 h-8 flex items-center justify-center text-gray-500 hover:text-black relative"
+                    aria-label="View notifications"
+                >
                     <Bell size={18} />
                     <span className="absolute top-1 right-1 w-2 h-2 bg-red-500 rounded-full"></span>
-                </button>
+                </Button>
                 <div className="w-8 h-8 bg-gray-200 rounded-full flex items-center justify-center text-xs font-bold text-gray-700">
                     AD
                 </div>

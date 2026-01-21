@@ -4,6 +4,7 @@ import { useState } from "react";
 import Link from "next/link";
 import { AuthService } from "@/services/auth";
 import { SplitAuthLayout } from "@/components/auth/SplitAuthLayout";
+import { Button } from "@vayva/ui";
 
 export default function ForgotPasswordPage() {
   const [email, setEmail] = useState("");
@@ -100,13 +101,13 @@ export default function ForgotPasswordPage() {
           </div>
 
           {/* Submit Button */}
-          <button
+          <Button
             type="submit"
             disabled={loading}
             className="w-full h-12 bg-[#22C55E] hover:bg-[#16A34A] text-white font-semibold rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
           >
             {loading ? "Sending instructions..." : "Send reset instructions"}
-          </button>
+          </Button>
 
           {/* Back to Sign In */}
           <div className="text-center">

@@ -1,5 +1,6 @@
 import React from "react";
 import { TemplateProps } from "../registry";
+import { Button } from "@vayva/ui";
 
 export const DigitalProductTemplate: React.FC<TemplateProps> = ({
   businessName,
@@ -12,9 +13,9 @@ export const DigitalProductTemplate: React.FC<TemplateProps> = ({
         <div className="font-bold tracking-tight">
           {businessName || "Creator Hub"}
         </div>
-        <button className="text-xs font-bold uppercase tracking-widest border border-white/20 px-4 py-2 rounded-full hover:bg-white/10">
+        <Button variant="outline" className="text-xs font-bold uppercase tracking-widest border border-white/20 px-4 py-2 rounded-full hover:bg-white/10 h-auto bg-transparent text-white">
           Log in
-        </button>
+        </Button>
       </header>
 
       {/* Split Hero */}
@@ -33,7 +34,7 @@ export const DigitalProductTemplate: React.FC<TemplateProps> = ({
           </p>
 
           <div className="flex flex-col sm:flex-row gap-4">
-            <button className="bg-white text-indigo-900 px-8 py-4 rounded-xl font-bold text-lg hover:bg-indigo-50 transition-colors shadow-lg shadow-indigo-900/50 flex items-center justify-center gap-2">
+            <Button className="bg-white text-indigo-900 px-8 py-4 rounded-xl font-bold text-lg hover:bg-indigo-50 transition-colors shadow-lg shadow-indigo-900/50 flex items-center justify-center gap-2 h-auto">
               <span>Buy for ₦15,000</span>
               <svg
                 className="w-5 h-5 text-indigo-600"
@@ -48,10 +49,10 @@ export const DigitalProductTemplate: React.FC<TemplateProps> = ({
                   d="M17 8l4 4m0 0l-4 4m4-4H3"
                 />
               </svg>
-            </button>
-            <button className="bg-transparent border border-white/20 text-white px-6 py-4 rounded-xl font-bold hover:bg-white/5 transition-colors">
+            </Button>
+            <Button variant="outline" className="bg-transparent border border-white/20 text-white px-6 py-4 rounded-xl font-bold hover:bg-white/5 transition-colors h-auto">
               View Preview
-            </button>
+            </Button>
           </div>
 
           <div className="mt-8 flex items-center gap-4 text-xs text-indigo-300 font-medium">

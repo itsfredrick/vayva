@@ -1,4 +1,4 @@
-import { prisma } from "@vayva/db";
+import { prisma, AutomationAction, AutomationTrigger } from "@vayva/db";
 
 export const MarketingController = {
   // --- Discounts ---
@@ -87,17 +87,31 @@ export const MarketingController = {
 
   // --- Automations ---
   upsertAutomationRule: async (storeId: string, key: string, data: any) => {
+    const triggerType = data.triggerType as AutomationTrigger | undefined;
+    const actionType = data.actionType as AutomationAction | undefined;
+
+    if (!triggerType || !actionType) {
+      throw new Error("triggerType and actionType are required");
+    }
+
     return await prisma.automationRule.upsert({
-      where: { storeId_key: { storeId, key } },
+      where: { id: key },
       create: {
+        id: key,
+        key: key,
         storeId,
-        key,
+        name: data.name ?? key,
+        triggerType,
+        actionType,
         enabled: data.enabled || false,
         config: data.config || {},
       },
       update: {
-        enabled: data.enabled,
-        config: data.config,
+        name: data.name ?? key,
+        triggerType,
+        actionType,
+        enabled: data.enabled ?? undefined,
+        config: data.config ?? undefined,
       },
     });
   },

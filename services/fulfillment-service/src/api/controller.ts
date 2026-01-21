@@ -71,7 +71,7 @@ export const FulfillmentController = {
     const { storeId } = req.query as any;
     return prisma.deliveryProfile.findMany({
       where: { storeId },
-      include: { DeliveryZone: true, DeliveryOption: true },
+      include: { deliveryZones: true, deliveryOptions: true },
     });
   },
 

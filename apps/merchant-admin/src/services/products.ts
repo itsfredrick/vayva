@@ -1,6 +1,6 @@
 import { apiClient } from "@/lib/apiClient";
 
-export interface ProductVariant {
+export interface productVariants {
   id: string;
   name: string;
   price: number;
@@ -18,7 +18,7 @@ export interface Product {
   inventory: number;
   category: string;
   images: string[];
-  variants: ProductVariant[];
+  variants: productVariants[];
   updatedAt: string;
 }
 
