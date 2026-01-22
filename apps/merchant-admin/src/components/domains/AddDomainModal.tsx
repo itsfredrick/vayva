@@ -36,7 +36,7 @@ export const AddDomainModal = ({
     try {
       await onAdd(domain);
       onClose();
-    } catch (err: any) {
+    } catch (err: unknown) {
       setError(err.message || "Failed to add domain");
     }
   };

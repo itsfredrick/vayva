@@ -10,7 +10,7 @@ import { EventName } from "./events";
 interface TrackEventOptions {
   userId: string;
   eventName: EventName;
-  properties?: Record<string, any>;
+  properties?: Record<string, unknown>;
   templateId?: string;
 }
 

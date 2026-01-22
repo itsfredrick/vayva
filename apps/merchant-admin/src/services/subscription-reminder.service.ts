@@ -16,7 +16,7 @@ export class SubscriptionRemainderService {
     const threeDaysFromNow = startOfDay(addDays(new Date(), 3));
     const endOfThreeDays = endOfDay(threeDaysFromNow);
 
-    const expiringSubscriptions = await (prisma as any).merchantAiSubscription.findMany({
+    const expiringSubscriptions = await (prisma as unknown).merchantAiSubscription.findMany({
       where: {
         periodEnd: {
           gte: threeDaysFromNow,
@@ -36,7 +36,7 @@ export class SubscriptionRemainderService {
 
     for (const sub of expiringSubscriptions) {
       // Find a manager/owner email for this store
-      const membership = await (prisma as any).membership.findFirst({
+      const membership = await (prisma as unknown).membership.findFirst({
         where: {
           storeId: sub.storeId,
           role_enum: "OWNER"
@@ -49,7 +49,7 @@ export class SubscriptionRemainderService {
       });
 
       if (membership?.user?.email) {
-        await (ResendEmailService as any).send(
+        await (ResendEmailService as unknown).send(
           membership.user.email,
           "subscription_reminder",
           {

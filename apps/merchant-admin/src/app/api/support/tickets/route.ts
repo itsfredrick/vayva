@@ -8,7 +8,7 @@ interface CreateTicketRequest {
   subject: string;
   description: string;
   priority?: "low" | "medium" | "high" | "urgent";
-  metadata?: Record<string, any>;
+  metadata?: Record<string, unknown>;
 }
 
 export async function GET(req: Request) {
@@ -60,7 +60,7 @@ export async function POST(req: Request) {
         subject,
         description,
         priority: priority || "medium",
-        metadata: (metadata as any) || {},
+        metadata: (metadata as unknown) || {},
         status: "open",
         // Add initial message if description exists
         ticketMessages: description

@@ -3,14 +3,14 @@
 import React, { useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import { useOpsQuery } from "@/hooks/useOpsQuery";
-import { ArrowLeft, User, MessageSquare, Send, CheckCircle, Smartphone } from "lucide-react";
+import { ArrowLeft, User, Send, CheckCircle, Smartphone } from "lucide-react";
 import { toast } from "sonner";
 import Link from "next/link";
 import { Button } from "@vayva/ui";
 
 export default function SupportDetailPage() {
     const { id } = useParams() as { id: string };
-    const router = useRouter();
+    const _router = useRouter();
     const [reply, setReply] = useState("");
     const [sending, setSending] = useState(false);
 
@@ -30,7 +30,7 @@ export default function SupportDetailPage() {
                 toast.success(`Ticket marked as ${newStatus}`);
                 refetch();
             }
-        } catch (e) {
+        } catch {
             toast.error("Failed to update status");
         }
     };
@@ -161,6 +161,7 @@ export default function SupportDetailPage() {
                             <a
                                 href={`/ops/merchants/${ticket.storeId}`}
                                 target="_blank"
+                                rel="noreferrer"
                                 className="block w-full text-center py-2 border border-gray-300 rounded-lg text-sm font-medium text-gray-700 hover:bg-gray-50"
                             >
                                 View Merchant Profile

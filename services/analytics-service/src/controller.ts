@@ -61,7 +61,7 @@ export const AnalyticsController = {
   },
 
   // --- Reports ---
-  getSalesReport: async (storeId: string, filters: any) => {
+  getSalesReport: async (storeId: string, filters: unknown) => {
     const { dateFrom, dateTo } = filters;
 
     return await prisma.analyticsDailySales.findMany({
@@ -77,7 +77,7 @@ export const AnalyticsController = {
   },
 
   // --- Goals ---
-  createGoal: async (storeId: string, data: any) => {
+  createGoal: async (storeId: string, data: unknown) => {
     return await prisma.goal.create({
       data: {
         storeId,

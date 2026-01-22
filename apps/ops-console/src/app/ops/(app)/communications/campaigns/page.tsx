@@ -61,7 +61,7 @@ export default function CampaignManagerPage() {
                         ) : !campaigns?.length ? (
                             <tr><td colSpan={5} className="p-12 text-center text-gray-400 font-medium">No campaigns found.</td></tr>
                         ) : (
-                            campaigns.map((c: any) => (
+                            campaigns.map((c: unknown) => (
                                 <tr key={c.id} className="hover:bg-gray-50/50 transition-colors group">
                                     <td className="px-6 py-4">
                                         <div className="font-bold text-gray-900">{c.name}</div>

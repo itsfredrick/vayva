@@ -80,10 +80,10 @@ export async function GET(
             tags: product.tags,
             seoTitle: product.seoTitle,
             seoDescription: product.seoDescription,
-            metadata: product.metadata as Record<string, any>,
+            metadata: product.metadata as Record<string, unknown>,
             condition: product.condition,
             warrantyMonths: product.warrantyMonths,
-            techSpecs: product.techSpecs as Record<string, any>,
+            techSpecs: product.techSpecs as Record<string, unknown>,
             moq: product.moq,
             createdAt: product.createdAt.toISOString(),
             updatedAt: product.updatedAt.toISOString(),
@@ -138,7 +138,7 @@ export async function PATCH(
                 ...(body.images && {
                     productImages: {
                         deleteMany: {},
-                        create: body.images.map((img: any, idx: number) => ({
+                        create: body.images.map((img: unknown, idx: number) => ({
                             url: img.url,
                             altText: img.altText || img.alt,
                             position: idx,
@@ -150,7 +150,7 @@ export async function PATCH(
 
         // Handle Variants: Delete removed, Update existing, Create new
         if (body.variants && Array.isArray(body.variants)) {
-            const incomingIds = body.variants.map((v: any) => v.id).filter(Boolean);
+            const incomingIds = body.variants.map((v: unknown) => v.id).filter(Boolean);
 
             await prisma.productVariant.deleteMany({
                 where: {

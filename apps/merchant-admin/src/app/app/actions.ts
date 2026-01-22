@@ -12,7 +12,7 @@ export async function checkAppLaunchStatus() {
   }
 
   const store = await prisma.store.findUnique({
-    where: { id: (session.user as any).storeId },
+    where: { id: (session.user as unknown).storeId },
     select: { onboardingCompleted: true },
   });
 

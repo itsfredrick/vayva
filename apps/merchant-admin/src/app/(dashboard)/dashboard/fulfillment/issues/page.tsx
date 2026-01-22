@@ -90,7 +90,7 @@ export default function DeliveryIssuesPage() {
             if (!res.ok) throw new Error("Failed to create ticket");
 
             toast.success("Support call request submitted", { id: toastId });
-        } catch (error: any) {
+        } catch (error: unknown) {
             console.error(error);
             toast.error(error.message || `Failed to initiate ${action}`, { id: toastId });
         }

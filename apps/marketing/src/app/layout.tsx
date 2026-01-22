@@ -45,11 +45,13 @@ import Script from "next/script";
 
 import { MobileAppWaitlist } from "@/components/MobileAppWaitlist";
 
+interface RootLayoutProps {
+    children: React.ReactNode;
+}
+
 export default function RootLayout({
     children,
-}: {
-    children: React.ReactNode;
-}) {
+}: RootLayoutProps) {
     const jsonLd = {
         "@context": "https://schema.org",
         "@type": "Organization",

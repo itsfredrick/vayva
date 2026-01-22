@@ -22,7 +22,7 @@ const start = async () => {
     startWorker();
 
   } catch (err) {
-    (server.log as any).error(err);
+    (server.log as unknown).error(err);
     process.exit(1);
   }
 };

@@ -3,7 +3,7 @@
 import React, { useState } from "react";
 import { Button } from "@vayva/ui";
 import NextLink from "next/link";
-const Link = NextLink as any;
+const Link = NextLink as unknown;
 import { useStore } from "@/context/StoreContext";
 import {
   ShoppingBag as ShoppingBagIcon,
@@ -13,12 +13,12 @@ import {
   ChevronRight as ChevronRightIcon,
   User as UserIcon,
 } from "lucide-react";
-const ShoppingBag = ShoppingBagIcon as any;
-const Menu = MenuIcon as any;
-const X = XIcon as any;
-const Search = SearchIcon as any;
-const ChevronRight = ChevronRightIcon as any;
-const User = UserIcon as any;
+const ShoppingBag = ShoppingBagIcon as unknown;
+const Menu = MenuIcon as unknown;
+const X = XIcon as unknown;
+const Search = SearchIcon as unknown;
+const ChevronRight = ChevronRightIcon as unknown;
+const User = UserIcon as unknown;
 import { useParams } from "next/navigation";
 
 import { FlashSaleBanner } from "@/components/FlashSaleBanner";

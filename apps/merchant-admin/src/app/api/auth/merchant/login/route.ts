@@ -6,7 +6,7 @@ import { logger } from "@/lib/logger";
 import { checkRateLimit } from "@/lib/rate-limit";
 
 export async function POST(request: NextRequest) {
-  let body: any;
+  let body: unknown;
   try {
     body = await request.json();
     const { email, password, rememberMe } = body;

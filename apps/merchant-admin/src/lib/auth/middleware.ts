@@ -7,7 +7,7 @@ import { can } from "../team/permissions";
  * 1. withRBAC(handler, [permissions]) (Kitchen Style)
  * 2. withRBAC(permission, handler) (Analytics Style)
  */
-export function withRBAC(arg1: any, arg2?: any) {
+export function withRBAC(arg1: unknown, arg2?: unknown) {
     let handler: Function;
     let permissions: string[];
 
@@ -21,7 +21,7 @@ export function withRBAC(arg1: any, arg2?: any) {
         handler = arg2;
     }
 
-    return async (req: Request, ...args: any[]) => {
+    return async (req: Request, ...args: unknown[]) => {
         try {
             const user = await getSessionUser();
             if (!user) {
@@ -56,7 +56,7 @@ export function withRBAC(arg1: any, arg2?: any) {
                 const session = { ...user, user };
                 return await handler(session, req, ...args);
             }
-        } catch (error: any) {
+        } catch (error: unknown) {
             console.error("[RBAC Middleware Error]:", error);
             if (error.message === "Unauthorized") {
                 return NextResponse.json({ error: "Unauthorized" }, { status: 401 });

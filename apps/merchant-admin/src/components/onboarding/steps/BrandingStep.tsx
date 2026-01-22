@@ -54,9 +54,8 @@ export default function BrandingStep() {
                                     title={color.name}
                                 >
                                     <div
-                                        className="absolute inset-1 rounded-lg shadow-inner"
-                                        // eslint-disable-next-line react/inline-styles
-                                        style={{ backgroundColor: color.hex } as React.CSSProperties}
+                                        className="absolute inset-1 rounded-lg shadow-inner bg-[var(--preview-color)]"
+                                        style={{ "--preview-color": color.hex } as React.CSSProperties}
                                     />
                                     {brandColor === color.hex && (
                                         <Icon name="Check" className="relative text-white h-4 w-4 drop-shadow-md" />

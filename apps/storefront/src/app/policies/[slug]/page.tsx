@@ -8,9 +8,9 @@ import axios from "axios";
 const API_URL = process.env.NEXT_PUBLIC_API_URL || "";
 
 
-export default function PublicPolicyPage({ params }: any) {
+export default function PublicPolicyPage({ params }: unknown) {
   const { slug } = useParams() as { slug: string };
-  const [policy, setPolicy] = useState<any>(null);
+  const [policy, setPolicy] = useState<unknown>(null);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {

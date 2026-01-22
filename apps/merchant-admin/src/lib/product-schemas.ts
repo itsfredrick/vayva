@@ -93,7 +93,7 @@ export const MarketplaceAttributesSchema = z.object({
 });
 
 // Map segments to schemas
-export const SCHEMA_MAP: Record<string, z.ZodObject<any>> = {
+export const SCHEMA_MAP: Record<string, z.ZodObject<unknown>> = {
     "retail": RetailAttributesSchema,
     "food": FoodAttributesSchema,
     "services": ServiceAttributesSchema,
@@ -113,5 +113,5 @@ export type FoodAttributes = z.infer<typeof FoodAttributesSchema>;
 
 // Shared Types
 export interface ProductAttributeData {
-    [key: string]: any;
+    [key: string]: unknown;
 }

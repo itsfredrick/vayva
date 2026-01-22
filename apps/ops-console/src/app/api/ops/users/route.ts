@@ -17,7 +17,7 @@ export async function GET(req: NextRequest) {
         const { searchParams } = new URL(req.url);
         const search = searchParams.get("q") || "";
 
-        const where: any = {};
+        const where: unknown = {};
         if (search) {
             where.OR = [
                 { name: { contains: search, mode: "insensitive" } },
@@ -83,7 +83,7 @@ export async function POST(req: NextRequest) {
             tempPassword, // Return temp password to display once
         });
 
-    } catch (error: any) {
+    } catch (error: unknown) {
         if (error.code === "P2002") {
             return NextResponse.json({ error: "Email already exists" }, { status: 409 });
         }
@@ -126,7 +126,7 @@ export async function DELETE(req: NextRequest) {
 
         return NextResponse.json({ success: true });
 
-    } catch (error: any) {
+    } catch (error: unknown) {
         return NextResponse.json({ error: "Failed to delete user" }, { status: 500 });
     }
 }
@@ -152,7 +152,7 @@ export async function PATCH(req: NextRequest) {
         if (!user) return NextResponse.json({ error: "User not found" }, { status: 404 });
 
         let logAction = "";
-        let updateData: any = {};
+        let updateData: unknown = {};
 
         switch (action) {
             case "TOGGLE_STATUS":
@@ -179,7 +179,7 @@ export async function PATCH(req: NextRequest) {
 
         return NextResponse.json({ success: true, user: updated });
 
-    } catch (error: any) {
+    } catch (error: unknown) {
         console.error("Update User Error:", error);
         return NextResponse.json({ error: "Failed to update user" }, { status: 500 });
     }

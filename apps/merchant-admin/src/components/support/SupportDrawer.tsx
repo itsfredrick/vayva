@@ -155,7 +155,7 @@ const CategoryButton = ({
   label,
   onClick,
 }: {
-  icon: any;
+  icon: unknown;
   label: string;
   onClick: () => void;
 }) => (

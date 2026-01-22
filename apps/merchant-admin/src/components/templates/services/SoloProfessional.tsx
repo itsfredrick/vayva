@@ -57,8 +57,8 @@ export const SoloProfessionalTemplate: React.FC<TemplateProps> = ({
       .map((p) => ({
         ...p,
         desc: p.description,
-        duration: (p as any).durationMinutes
-          ? `${(p as any).durationMinutes} mins`
+        duration: (p as unknown).durationMinutes
+          ? `${(p as unknown).durationMinutes} mins`
           : "1 hr",
       }));
 
@@ -122,9 +122,9 @@ export const SoloProfessionalTemplate: React.FC<TemplateProps> = ({
                   <p className="text-sm text-neutral-500 leading-relaxed max-w-[200px]">
                     {item.desc}
                   </p>
-                  {(item as any).duration && (
+                  {(item as unknown).duration && (
                     <div className="text-xs font-medium text-neutral-400 bg-neutral-100 inline-block px-2 py-0.5 rounded">
-                      {(item as any).duration}
+                      {(item as unknown).duration}
                     </div>
                   )}
                 </div>

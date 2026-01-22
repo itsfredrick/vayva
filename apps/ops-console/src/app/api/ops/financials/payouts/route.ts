@@ -11,7 +11,7 @@ export async function GET(request: Request) {
     const { searchParams } = new URL(request.url);
     const status = searchParams.get("status") || "PENDING";
 
-    const where: any = {};
+    const where: unknown = {};
     if (status !== "ALL") where.status = status;
 
     const withdrawals = await prisma.withdrawal.findMany({

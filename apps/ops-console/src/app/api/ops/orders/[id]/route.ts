@@ -28,7 +28,7 @@ export async function GET(
         if (!order) return NextResponse.json({ error: "Order not found" }, { status: 404 });
 
         return NextResponse.json({ data: order });
-    } catch (error: any) {
+    } catch (error: unknown) {
         if (error.message === "Unauthorized") return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
         console.error("Order detail error:", error);
         return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });

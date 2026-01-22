@@ -9,7 +9,7 @@ export interface Project {
     id: string;
     title: string;
     description: string;
-    images: any[];
+    images: unknown[];
     clientMode: boolean;
     createdAt: string;
     updatedAt: string;

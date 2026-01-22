@@ -19,7 +19,7 @@ export async function GET(req: Request) {
       },
     });
 
-    const formattedLedger = ledgerEntries.map((entry: any) => ({
+    const formattedLedger = ledgerEntries.map((entry: unknown) => ({
       id: entry.id,
       storeName: entry.store.name,
       date: entry.occurredAt,
@@ -29,7 +29,7 @@ export async function GET(req: Request) {
       amount: entry.amount,
       currency: entry.currency,
       direction: entry.direction, // DEBIT / CREDIT
-      balanceAfter: (entry.metadata as any)?.balanceAfter || null,
+      balanceAfter: (entry.metadata as unknown)?.balanceAfter || null,
     }));
 
     return NextResponse.json({

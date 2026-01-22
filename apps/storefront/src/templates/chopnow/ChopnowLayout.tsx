@@ -22,7 +22,7 @@ export const ChopnowLayout = ({ store, products }: ChopnowLayoutProps) => {
     new Set(products.map((p) => p.category || "Other")),
   );
 
-  const handleAddToCart = (item: any, total: number) => {
+  const handleAddToCart = (item: unknown, total: number) => {
     addToCart({
       productId: item.id,
       variantId: "default",

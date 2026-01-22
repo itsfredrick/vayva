@@ -48,13 +48,13 @@ export class GroqClient {
      * Generate a completion with safe handling
      */
     async chatCompletion(
-        messages: { role: "system" | "user" | "assistant" | "tool"; content: string | null; tool_call_id?: string; name?: string; tool_calls?: any[] }[],
+        messages: { role: "system" | "user" | "assistant" | "tool"; content: string | null; tool_call_id?: string; name?: string; tool_calls?: unknown[] }[],
         options: {
             model?: string;
             temperature?: number;
             maxTokens?: number;
             jsonMode?: boolean;
-            tools?: any[];
+            tools?: unknown[];
             tool_choice?: "auto" | "none" | any;
             requestId?: string;
             storeId?: string;
@@ -78,7 +78,7 @@ export class GroqClient {
             const timeoutId = setTimeout(() => controller.abort(), 15000); // 15s timeout
 
             const response = await this.client.chat.completions.create({
-                messages: safeMessages as any,
+                messages: safeMessages as unknown,
                 model: options.model || "llama3-70b-8192",
                 temperature: options.temperature ?? 0.7,
                 max_tokens: options.maxTokens ?? 1024,
@@ -102,12 +102,12 @@ export class GroqClient {
                         success: true,
                         channel: this.context === "MERCHANT" ? "INAPP" : "WHATSAPP",
                     }
-                }).catch((e: any) => logger.warn("[GroqClient] Audit log failed", undefined, { error: e }));
+                }).catch((e: unknown) => logger.warn("[GroqClient] Audit log failed", undefined, { error: e }));
             }
 
 
             return response;
-        } catch (error: any) {
+        } catch (error: unknown) {
             logger.error("[GroqClient] API call failed", { error });
             return null; // Graceful degradation
         }

@@ -109,8 +109,9 @@ export class ChinaSyncService {
                 // We'll just log success to simulate the orchestration without crashing.
                 console.log(`Syncing ${supplier.name}...`);
                 results.push({ supplier: supplier.name, status: "ok" });
-            } catch (e: any) {
-                results.push({ supplier: supplier.name, status: "failed", error: e.message });
+            } catch (e: unknown) {
+                const errorMessage = e instanceof Error ? e.message : "Unknown error";
+                results.push({ supplier: supplier.name, status: "failed", error: errorMessage });
             }
         }
         return { success: true, results };
@@ -146,7 +147,7 @@ export class ChinaSyncService {
             }
 
             // Boost based on performance metrics if available
-            const metrics = store.performanceMetrics as any;
+            const metrics = store.performanceMetrics as unknown;
             if (metrics?.responseRate) score += metrics.responseRate * 2;
 
             if (score > highestScore) {

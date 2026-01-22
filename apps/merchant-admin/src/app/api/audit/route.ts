@@ -10,7 +10,7 @@ export async function GET(req: Request) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
-    const storeId = (session.user as any).storeId;
+    const storeId = (session.user as unknown).storeId;
     const { searchParams } = new URL(req.url);
     const page = parseInt(searchParams.get("page") || "1");
     const type = searchParams.get("type") || "ALL";
@@ -19,7 +19,7 @@ export async function GET(req: Request) {
     const limit = 20;
     const skip = (page - 1) * limit;
 
-    const where: any = { storeId };
+    const where: unknown = { storeId };
 
     if (type !== "ALL") {
       if (type === "LOGIN") where.action = { startsWith: "LOGIN" };
@@ -46,7 +46,7 @@ export async function GET(req: Request) {
       ];
     }
 
-    const logs = await (prisma as any).auditLog.findMany({
+    const logs = await (prisma as unknown).auditLog.findMany({
       where,
       orderBy: { createdAt: "desc" },
       take: limit,
@@ -54,7 +54,7 @@ export async function GET(req: Request) {
     });
 
     return NextResponse.json({ logs });
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error("Audit fetch error:", error);
     return NextResponse.json(
       { error: "Internal Server Error" },

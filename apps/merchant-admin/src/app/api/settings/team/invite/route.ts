@@ -48,11 +48,11 @@ export async function POST(req: NextRequest) {
         } else {
             // Invite
             const store = await prisma.store.findUnique({ where: { id: session.user.storeId }, select: { settings: true } });
-            const currentSettings = (store?.settings as any) || {};
+            const currentSettings = (store?.settings as unknown) || {};
             const currentInvites = currentSettings.invites || [];
 
             // Check if already invited
-            if (currentInvites.find((i: any) => i.email === email)) {
+            if (currentInvites.find((i: unknown) => i.email === email)) {
                 return NextResponse.json({ error: "User already invited" }, { status: 409 });
             }
 
@@ -114,10 +114,10 @@ export async function DELETE(req: NextRequest) {
         if (!email) return NextResponse.json({ error: "Email required" }, { status: 400 });
 
         const store = await prisma.store.findUnique({ where: { id: session.user.storeId }, select: { settings: true } });
-        const currentSettings = (store?.settings as any) || {};
+        const currentSettings = (store?.settings as unknown) || {};
         const currentInvites = currentSettings.invites || [];
 
-        const newInvites = currentInvites.filter((i: any) => i.email !== email);
+        const newInvites = currentInvites.filter((i: unknown) => i.email !== email);
 
         await prisma.store.update({
             where: { id: session.user.storeId },

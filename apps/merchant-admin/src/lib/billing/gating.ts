@@ -14,7 +14,7 @@ export interface GateResult {
     requiredPlan?: PlanSlug;
     currentPlan?: PlanSlug;
     upgradeUrl: string;
-    details?: Record<string, any>;
+    details?: Record<string, unknown>;
   };
 }
 
@@ -27,7 +27,7 @@ export const Gating = {
     context?: {
       requiredPlan?: PlanSlug;
       currentPlan?: PlanSlug;
-      details?: Record<string, any>;
+      details?: Record<string, unknown>;
     },
   ): GateResult => {
     return {

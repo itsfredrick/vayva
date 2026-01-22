@@ -15,25 +15,25 @@ export interface BaseEventPayload {
   type: string;
   entityType?: string;
   entityId?: string;
-  payload?: Record<string, any>;
+  payload?: Record<string, unknown>;
   dedupeKey?: string;
   ctx: ActorContext;
 }
 
-export interface NotificationConfig {
-  title: string | ((payload: any) => string);
-  body: string | ((payload: any) => string);
+export interface NotificationConfig<T = unknown> {
+  title: string | ((payload: T) => string);
+  body: string | ((payload: T) => string);
   severity: NotificationSeverity;
-  actionUrl?: string | ((payload: any, entityId?: string) => string);
+  actionUrl?: string | ((payload: T, entityId?: string) => string);
 }
 
-export interface AuditConfig {
+export interface AuditConfig<T = unknown> {
   action: string;
-  beforeState?: (payload: any) => any;
-  afterState?: (payload: any) => any;
+  beforeState?: (payload: T) => unknown;
+  afterState?: (payload: T) => unknown;
 }
 
-export interface EventDefinition {
-  notification?: NotificationConfig;
-  audit?: AuditConfig;
+export interface EventDefinition<T = unknown> {
+  notification?: NotificationConfig<T>;
+  audit?: AuditConfig<T>;
 }

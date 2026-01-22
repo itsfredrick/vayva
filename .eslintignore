@@ -1,0 +1,41 @@
+# ESLint ignore patterns
+
+# Build & Dependency Artifacts
+**/node_modules/**
+**/.next/**
+**/.turbo/**
+**/dist/**
+**/build/**
+**/out/**
+**/public/**
+**/coverage/**
+**/.vercel/**
+
+# Generated Code & Clients
+**/generated/**
+**/generated/client/**
+infra/db/src/generated/**
+packages/api-client/src/generated/**
+
+# Playwright & Automation Artifacts
+**/playwright-report/**
+**/trace/**
+**/test-results/**
+**/test-output/**
+
+# Static Bundles & Maps
+**/*.bundle.js
+**/*.bundle.min.js
+**/*.map
+
+# Project Specific Files
+*.log
+.DS_Store
+lint_report.txt
+lint_results.json
+
+# Tooling specific (sometimes generates JS in src)
+**/src/**/*.js
+**/src/**/*.jsx
+!**/src/**/*.ts
+!**/src/**/*.tsx

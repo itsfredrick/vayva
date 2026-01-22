@@ -19,11 +19,11 @@ const onboardingRoute: FastifyPluginAsync = async (fastify) => {
       const WizardSchema = z.object({
         name: z.string(),
         slug: z.string(),
-        settings: z.record(z.any()).optional(),
+        settings: z.record(z.unknown()).optional(),
       });
 
       const body = WizardSchema.parse(request.body);
-      const user = (request as any).user as { id: string; email: string };
+      const user = (request as unknown).user as { id: string; email: string };
 
       // 0. Check for slug collision
       const existingStore = await prisma.store.findUnique({

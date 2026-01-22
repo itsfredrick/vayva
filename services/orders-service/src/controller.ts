@@ -3,7 +3,7 @@ import { prisma, LedgerAccountType, TransactionType } from "@vayva/db";
 import { WalletService } from "@vayva/shared/wallet-service";
 
 const resolveActor = (req: FastifyRequest) => {
-  const user = (req as any).user as any;
+  const user = (req as unknown).user as unknown;
   const headerId =
     (req.headers["x-user-id"] as string) ||
     (req.headers["x-actor-id"] as string);
@@ -28,10 +28,10 @@ export const OrdersController = {
     const orders = await prisma.order.findMany({
       where: {
         storeId,
-        status: status ? (status as any) : undefined,
-        paymentStatus: paymentStatus ? (paymentStatus as any) : undefined,
+        status: status ? (status as unknown) : undefined,
+        paymentStatus: paymentStatus ? (paymentStatus as unknown) : undefined,
         fulfillmentStatus: fulfillmentStatus
-          ? (fulfillmentStatus as any)
+          ? (fulfillmentStatus as unknown)
           : undefined,
       },
       include: {
@@ -69,10 +69,10 @@ export const OrdersController = {
   // --- ACTIONS ---
 
   createOrder: async (
-    req: FastifyRequest<{ Body: any }>,
+    req: FastifyRequest<{ Body: unknown }>,
     reply: FastifyReply,
   ) => {
-    const { customer, items, paymentMethod, deliveryMethod, notes, location } = req.body as any;
+    const { customer, items, paymentMethod, deliveryMethod, notes, location } = req.body as unknown;
     const storeId = req.headers["x-store-id"] as string;
 
     if (!storeId) return reply.status(400).send({ error: "Store ID required" });
@@ -106,7 +106,7 @@ export const OrdersController = {
 
       // b. Calculate Totals
       const subtotal = items.reduce(
-        (sum: number, item: any) => sum + item.price * item.quantity,
+        (sum: number, item: unknown) => sum + item.price * item.quantity,
         0,
       );
       const total = subtotal;
@@ -150,7 +150,7 @@ export const OrdersController = {
           subtotal: subtotal,
           total: total,
           items: {
-            create: items.map((item: any) => ({
+            create: items.map((item: unknown) => ({
               title: item.title,
               productId: item.productId,
               variantId: item.variantId,
@@ -171,8 +171,8 @@ export const OrdersController = {
       });
 
       // e. Create Shipment on Child Order
-      if (deliveryMethod && (req.body as any).shippingAddress) {
-        const { recipientName, phone, addressLine1, city } = (req.body as any).shippingAddress;
+      if (deliveryMethod && (req.body as unknown).shippingAddress) {
+        const { recipientName, phone, addressLine1, city } = (req.body as unknown).shippingAddress;
         await tx.shipment.create({
           data: {
             storeId,
@@ -226,7 +226,7 @@ export const OrdersController = {
       const u = await tx.order.update({
         where: { id },
         data: {
-          paymentStatus: "SUCCESS" as any,
+          paymentStatus: "SUCCESS" as unknown,
           paymentMethod: method,
           orderEvents: {
             create: {
@@ -296,8 +296,8 @@ export const OrdersController = {
       const u = await tx.order.update({
         where: { id },
         data: {
-          fulfillmentStatus: "DELIVERED" as any,
-          status: "DELIVERED" as any, // Auto-close/fulfill logic
+          fulfillmentStatus: "DELIVERED" as unknown,
+          status: "DELIVERED" as unknown, // Auto-close/fulfill logic
           orderEvents: {
             create: {
               storeId: order.storeId,

@@ -41,7 +41,7 @@ export async function verifyDomainDns(domainMappingId: string) {
         `[DomainJob] ${domain} verification failed: TXT record missing or incorrect.`,
       );
     }
-  } catch (err: any) {
+  } catch (err: unknown) {
     status = "failed";
     error = err.code === "ENOTFOUND" ? "Domain not found" : err.message;
     console.error(`[DomainJob] DNS error for ${domain}:`, err.message);
@@ -53,7 +53,7 @@ export async function verifyDomainDns(domainMappingId: string) {
     data: {
       status,
       provider: {
-        ...((mapping.provider as any) || {}),
+        ...((mapping.provider as unknown) || {}),
         lastCheckedAt: new Date().toISOString(),
         lastError: error,
       },

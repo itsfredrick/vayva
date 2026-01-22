@@ -65,7 +65,7 @@ const MOCK_DATA = {
 };
 
 implementedKeys.forEach((key) => {
-  const tmpl = (Templates as Record<string, (data: any) => string>)[key];
+  const tmpl = (Templates as Record<string, (data: unknown) => string>)[key];
   try {
     const html = tmpl(MOCK_DATA);
     const sizeKB = Buffer.byteLength(html, "utf8") / 1024;
@@ -84,7 +84,7 @@ implementedKeys.forEach((key) => {
         `⚠️ Template ${key} might have unreplaced tokens ({{}} detected)`,
       );
     }
-  } catch (e: any) {
+  } catch (e: unknown) {
     console.error(`❌ Failed to render ${key}: ${e.message}`);
     hasErrors = true;
   }
@@ -98,7 +98,7 @@ const routingTable = getFullRoutingTable();
 // Ensure all registry keys are covered (getRouteForTemplate defaults to SECURITY if missing)
 // But we want to ensure explicit coverage if possible, or at least that it resolves valid senders.
 registryKeys.forEach((key) => {
-  const route = getRouteForTemplate(key as any);
+  const route = getRouteForTemplate(key as unknown);
   if (!route.sender || !route.sender.email.includes("@vayva.ng")) {
     console.error(
       `❌ Invalid sender for ${key}: ${JSON.stringify(route.sender)}`,

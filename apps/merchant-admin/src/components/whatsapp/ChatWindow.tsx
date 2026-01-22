@@ -9,7 +9,7 @@ import { Icon, cn, Button } from "@vayva/ui";
 interface ChatWindowProps {
   conversation: WhatsAppConversation | null;
   messages: WhatsAppMessage[];
-  onSendMessage: (content: string, linkedType?: any, linkedId?: any) => void;
+  onSendMessage: (content: string, linkedType?: unknown, linkedId?: unknown) => void;
   isLoadingMessages: boolean;
 }
 

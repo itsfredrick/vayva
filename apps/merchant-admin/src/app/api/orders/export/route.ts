@@ -21,7 +21,7 @@ export async function GET(request: Request) {
     const status = searchParams.get("status");
     const q = searchParams.get("q");
 
-    let where: any = {
+    let where: unknown = {
       storeId: user.storeId,
     };
 
@@ -39,7 +39,7 @@ export async function GET(request: Request) {
           { orderNumber: { equals: parseInt(q) ? parseInt(q) : undefined } },
           { refCode: { contains: q, mode: "insensitive" } },
           { customerEmail: { contains: q, mode: "insensitive" } },
-        ].filter((c: any) => Object.values(c)[0] !== undefined);
+        ].filter((c: unknown) => Object.values(c)[0] !== undefined);
       }
     }
 
@@ -60,7 +60,7 @@ export async function GET(request: Request) {
       "Payment",
       "Customer",
     ];
-    const rows = orders.map((o: any) => [
+    const rows = orders.map((o: unknown) => [
       o.refCode || o.id,
       new Date(o.createdAt).toISOString(),
       o.status,
@@ -71,9 +71,9 @@ export async function GET(request: Request) {
 
     const csvContent = [
       header.join(","),
-      ...rows.map((row: any) =>
+      ...rows.map((row: unknown) =>
         row
-          .map((field: any) => `"${String(field).replace(/"/g, '""')}"`)
+          .map((field: unknown) => `"${String(field).replace(/"/g, '""')}"`)
           .join(","),
       ),
     ].join("\n");

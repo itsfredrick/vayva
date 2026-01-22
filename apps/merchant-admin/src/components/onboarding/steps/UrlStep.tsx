@@ -45,7 +45,7 @@ export default function UrlStep() {
         if (!slug || !available) return;
         updateData({
             business: {
-                ...(state.business as any),
+                ...(state.business as unknown),
                 slug
             }
         });

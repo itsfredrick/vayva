@@ -102,7 +102,7 @@ export const AccountService = {
       id: Math.random().toString(36).substr(2, 9),
       name: email.split("@")[0],
       email,
-      role: role as any,
+      role: role as unknown,
       status: "invited",
       joinedAt: new Date().toISOString(),
     });
@@ -118,7 +118,7 @@ export const AccountService = {
     return kyc;
   },
 
-  submitKyc: async (data: any): Promise<void> => {
+  submitKyc: async (data: unknown): Promise<void> => {
 
     kyc = { ...kyc, status: "pending", ...data };
   },

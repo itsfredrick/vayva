@@ -2,7 +2,7 @@ export interface CreatePaymentIntentParams {
   amount: number; // in minor units (e.g. kobo/cents)
   currency: string;
   description?: string;
-  metadata?: Record<string, any>;
+  metadata?: Record<string, unknown>;
   customer?: {
     id?: string;
     email?: string;
@@ -23,14 +23,14 @@ export interface PaymentIntentResult {
     | "canceled";
   amount: number;
   currency: string;
-  rawData: any;
+  rawData: unknown;
 }
 
 export interface CreateRefundParams {
   chargeId: string; // provider charge id
   amount?: number; // partial refund if provided
   reason?: string;
-  metadata?: Record<string, any>;
+  metadata?: Record<string, unknown>;
 }
 
 export interface RefundResult {
@@ -38,7 +38,7 @@ export interface RefundResult {
   status: "pending" | "succeeded" | "failed" | "canceled";
   amount: number;
   currency: string;
-  rawData: any;
+  rawData: unknown;
 }
 
 export interface WebhookEventResult {
@@ -46,7 +46,7 @@ export interface WebhookEventResult {
   event?: {
     id: string;
     type: string;
-    data: any;
+    data: unknown;
   };
   error?: string;
 }

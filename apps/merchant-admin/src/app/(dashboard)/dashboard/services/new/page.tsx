@@ -47,7 +47,7 @@ export default function NewServicePage() {
 
             toast.success("Service created!");
             router.push("/dashboard/services");
-        } catch (error: any) {
+        } catch (error: unknown) {
             toast.error(error.message);
         } finally {
             setLoading(false);
@@ -141,7 +141,7 @@ export default function NewServicePage() {
                             <Label>Location</Label>
                             <Select
                                 value={metadata.location}
-                                onValueChange={(val: any) => setMetadata({ ...metadata, location: val })}
+                                onValueChange={(val: unknown) => setMetadata({ ...metadata, location: val })}
                             >
                                 <SelectTrigger>
                                     <SelectValue placeholder="Select location" />

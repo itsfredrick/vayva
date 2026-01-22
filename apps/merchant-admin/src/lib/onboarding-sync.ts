@@ -18,7 +18,7 @@ export async function syncOnboardingData(
   
 
   try {
-    await prisma.$transaction(async (tx: any) => {
+    await prisma.$transaction(async (tx: unknown) => {
       // 1. Update Core Store Details
       await tx.store.update({
         where: { id: storeId },
@@ -192,7 +192,7 @@ export async function syncOnboardingData(
       }
     });
     
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error("[Sync] Failed to sync onboarding data:", error);
     // We log but maybe allow completion logic to proceed or fail?
     // Throwing allows caller to handle it.

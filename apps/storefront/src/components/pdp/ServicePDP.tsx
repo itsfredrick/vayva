@@ -15,7 +15,7 @@ interface ServicePDPProps {
 export function ServicePDP({ product }: ServicePDPProps) {
     const { addToCart } = useStore(); // In reality, this would likely go to a Booking Flow, not Cart
     const [date, setDate] = useState<Date | undefined>(new Date());
-    const metadata = product.metadata as any;
+    const metadata = product.metadata as unknown;
 
     // Mock booking handler
     const handleBookNow = () => {

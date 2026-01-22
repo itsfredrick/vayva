@@ -27,9 +27,9 @@ export const GET = withVayvaAPI(
         user: {
           id: user.id,
           email: user.email,
-          name: (user as any).name || `${(user as any).firstName || ""} ${(user as any).lastName || ""}`.trim(),
+          name: (user as unknown).name || `${(user as unknown).firstName || ""} ${(user as unknown).lastName || ""}`.trim(),
           createdAt: user.createdAt,
-          memberships: user.memberships.map((m: any) => ({
+          memberships: user.memberships.map((m: unknown) => ({
             role: m.role,
             store: {
               id: m.store.id,

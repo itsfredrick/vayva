@@ -5,7 +5,7 @@ import { INDUSTRY_CONFIG } from "./industry";
 export interface SidebarItem {
     name: string;
     href: string;
-    icon?: any;
+    icon?: unknown;
     external?: boolean;
     alwaysShow?: boolean;
 }
@@ -52,17 +52,31 @@ export const SIDEBAR_GROUPS: SidebarGroup[] = [
             MODULE_DEFAULTS.marketing,
             { name: "Creative Editor", href: "/dashboard/creative-editor", icon: "Megaphone" },
             MODULE_DEFAULTS.support,
-        ].map(m => ({ name: (m as any).label || (m as any).name, href: m.href, icon: m.icon }))
+        ].map(m => {
+            const label = "label" in m ? m.label : (m as unknown).name;
+            return {
+                name: label,
+                href: m.href,
+                icon: m.icon
+            };
+        })
     },
     {
         name: "System",
         items: [
-            { label: "Account", href: "/dashboard/account", icon: "Settings" },
-            { label: "WhatsApp Agent", href: "/dashboard/ai-agent", icon: "MessageSquare" },
+            { name: "Account", href: "/dashboard/account", icon: "Settings" },
+            { name: "WhatsApp Agent", href: "/dashboard/ai-agent", icon: "MessageSquare" },
             MODULE_DEFAULTS.control_center,
             MODULE_DEFAULTS.settings,
-            { label: "Store Settings", href: "/dashboard/settings/store", icon: "Settings" },
-        ].map(m => ({ name: (m as any).label, href: (m as any).href, icon: (m as any).icon }))
+            { name: "Store Settings", href: "/dashboard/settings/store", icon: "Settings" },
+        ].map(m => {
+            const label = "label" in m ? m.label : (m as unknown).name;
+            return {
+                name: label,
+                href: m.href,
+                icon: m.icon
+            };
+        })
     }
 ];
 
@@ -108,4 +122,3 @@ export function getSidebar(industrySlug: IndustrySlug, enabledIds?: string[]): S
     // Cleanup empty groups
     return groups.filter(g => g.items.length > 0);
 }
-

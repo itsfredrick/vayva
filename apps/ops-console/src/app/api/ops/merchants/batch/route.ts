@@ -78,7 +78,7 @@ export async function POST(req: NextRequest) {
 
         return NextResponse.json({ success: true, count: updatedCount });
 
-    } catch (error: any) {
+    } catch (error: unknown) {
         console.error("Batch Action Error:", error);
         return NextResponse.json({ error: "Batch action failed" }, { status: 500 });
     }

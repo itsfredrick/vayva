@@ -49,7 +49,7 @@ export default function PartnersPage() {
                         ) : !partners?.length ? (
                             <tr><td colSpan={5} className="p-12 text-center text-gray-400">No partners found.</td></tr>
                         ) : (
-                            partners.map((p: any) => (
+                            partners.map((p: unknown) => (
                                 <tr key={p.id} className="hover:bg-gray-50">
                                     <td className="px-6 py-4 font-medium text-gray-900">{p.name}</td>
                                     <td className="px-6 py-4 text-gray-600 uppercase text-xs font-bold">{p.type}</td>

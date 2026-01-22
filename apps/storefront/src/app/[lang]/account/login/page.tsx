@@ -44,7 +44,7 @@ export default function LoginPage() {
       // Success: API sets httpOnly cookie. We just set local state for UI.
       localStorage.setItem("vayva_user", JSON.stringify(data.customer));
       router.push(`/${lang}/account`);
-    } catch (e: any) {
+    } catch (e: unknown) {
       setError(e.message || "Login failed");
     } finally {
       setIsLoading(false);

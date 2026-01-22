@@ -13,9 +13,9 @@ export default function CheckoutPage() {
   const router = useRouter();
   const productId = searchParams.get("productId");
 
-  const [product, setProduct] = useState<any>(null);
+  const [product, setProduct] = useState<unknown>(null);
   const [address, setAddress] = useState("");
-  const [quote, setQuote] = useState<any>(null);
+  const [quote, setQuote] = useState<unknown>(null);
   const [loading, setLoading] = useState(false);
   const [initPayment, setInitPayment] = useState(false);
 

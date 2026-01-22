@@ -20,14 +20,14 @@ export const createDisputeHandler = async (
 ) => {
   try {
     const dispute = await disputeService.createDispute({
-      ...(request.body as any),
-      evidenceDueAt: (request.body as any).evidenceDueAt
-        ? new Date((request.body as any).evidenceDueAt)
+      ...(request.body as unknown),
+      evidenceDueAt: (request.body as unknown).evidenceDueAt
+        ? new Date((request.body as unknown).evidenceDueAt)
         : undefined,
     });
     return reply.code(201).send(dispute);
   } catch (error) {
-    (request.log as any).error(error);
+    (request.log as unknown).error(error);
     return reply.code(500).send({ error: "Failed to ..." });
   }
 };
@@ -39,7 +39,7 @@ export const addEvidenceHandler = async (
       type: string;
       url?: string;
       textExcerpt?: string;
-      metadata?: any;
+      metadata?: unknown;
     };
   }>,
   reply: FastifyReply,
@@ -47,11 +47,11 @@ export const addEvidenceHandler = async (
   try {
     const evidence = await disputeService.addEvidence(
       request.params.id,
-      request.body as any,
+      request.body as unknown,
     );
     return reply.code(201).send(evidence);
   } catch (error) {
-    (request.log as any).error(error);
+    (request.log as unknown).error(error);
     return reply.code(500).send({ error: "Failed to add evidence" });
   }
 };
@@ -69,7 +69,7 @@ export const listDisputesHandler = async (
     const disputes = await disputeService.getDisputes(request.query.merchantId);
     return reply.send(disputes);
   } catch (error) {
-    (request.log as any).error(error);
+    (request.log as unknown).error(error);
     return reply.code(500).send({ error: "Failed to list disputes" });
   }
 };
@@ -85,7 +85,7 @@ export const getDisputeHandler = async (
     if (!dispute) return reply.code(404).send({ error: "Dispute not found" });
     return reply.send(dispute);
   } catch (error) {
-    (request.log as any).error(error);
+    (request.log as unknown).error(error);
     return reply.code(500).send({ error: "Failed to get dispute" });
   }
 };

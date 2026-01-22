@@ -60,7 +60,7 @@ export default function SessionManagerPage() {
                         ) : !sessions?.length ? (
                             <tr><td colSpan={5} className="p-12 text-center text-gray-400">No active sessions found.</td></tr>
                         ) : (
-                            sessions.map((s: any) => (
+                            sessions.map((s: unknown) => (
                                 <tr key={s.id} className="hover:bg-gray-50">
                                     <td className="px-6 py-4">
                                         <div className="font-medium text-gray-900">{s.User?.email}</div>

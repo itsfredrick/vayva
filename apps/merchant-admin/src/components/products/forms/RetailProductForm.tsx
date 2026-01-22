@@ -129,7 +129,7 @@ export function RetailProductForm({ productId, initialData, storeCategory }: Ret
         const combinations = cartesian(validOptions);
 
         // Map combinations to flat variant objects
-        const newVariants = combinations.map((combo: any[]) => {
+        const newVariants = combinations.map((combo: unknown[]) => {
             // Merge array of objects into single object: [{Color: Red}, {Size: L}] -> {Color: Red, Size: L}
             const optionsMap = combo.reduce((acc, curr) => ({ ...acc, ...curr }), {});
             const title = Object.values(optionsMap).join(" / ");
@@ -153,7 +153,7 @@ export function RetailProductForm({ productId, initialData, storeCategory }: Ret
     }, [options]); // Depend only on options structure changing
 
     const { register, handleSubmit, getValues, formState: { errors } } = useForm<RetailProductFormValues>({
-        defaultValues: (initialData as any) || {
+        defaultValues: (initialData as unknown) || {
             title: "",
             description: "",
             price: 0,

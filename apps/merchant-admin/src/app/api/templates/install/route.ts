@@ -7,7 +7,7 @@ import { CanonicalTemplateId } from "@/types/templates";
 interface StoreSettings {
   modules?: Record<string, boolean>;
   installedTemplateId?: string;
-  [key: string]: any;
+  [key: string]: unknown;
 }
 
 export async function POST(req: Request) {
@@ -42,10 +42,10 @@ export async function POST(req: Request) {
         version: "1.0.0",
         author: "Vayva",
         source: "canonical-registry",
-        homepageUrl: (template as any).demoStoreUrl || "",
+        homepageUrl: (template as unknown).demoStoreUrl || "",
         previewImageUrl:
           template.preview.thumbnailUrl ||
-          (template.preview as any).desktopUrl ||
+          (template.preview as unknown).desktopUrl ||
           "",
         tags: template.compare.bestFor || [],
         supportedPages: [],
@@ -58,7 +58,7 @@ export async function POST(req: Request) {
         version: "1.0.0",
         previewImageUrl:
           template.preview.thumbnailUrl ||
-          (template.preview as any).desktopUrl ||
+          (template.preview as unknown).desktopUrl ||
           "",
         tags: template.compare.bestFor || [],
         isArchived: template.status === "deprecated",
@@ -108,7 +108,7 @@ export async function POST(req: Request) {
     await prisma.store.update({
       where: { id: storeId },
       data: {
-        settings: newSettings as any,
+        settings: newSettings as unknown,
       },
     });
 
@@ -116,7 +116,7 @@ export async function POST(req: Request) {
       success: true,
       message: `Template ${template.displayName} installed successfully`,
     });
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error("Template installation failed:", error);
     return NextResponse.json(
       { error: error.message || "Installation failed" },

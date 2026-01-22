@@ -13,7 +13,7 @@ export const POST = withVayvaAPI(
             const product = await ProductCoreService.createProduct(storeId, body);
 
             return NextResponse.json(product);
-        } catch (error: any) {
+        } catch (error: unknown) {
             console.error("[PRODUCT_CREATE]", error);
             // Basic error mapping
             const status = error.message.includes("limit") ? 403 : 400;

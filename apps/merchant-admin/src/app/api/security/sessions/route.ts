@@ -22,7 +22,7 @@ export async function GET() {
     ];
 
     return NextResponse.json({ sessions });
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error("Sessions fetch error:", error);
 
     if (error.message === "Unauthorized") {

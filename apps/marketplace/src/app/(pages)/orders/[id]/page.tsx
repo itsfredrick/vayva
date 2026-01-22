@@ -41,11 +41,11 @@ export default async function OrderDetailsPage({ params }: { params: { id: strin
     });
 
     if (!order) return notFound();
-    if (order.customerId !== (session.user as any).id) return notFound(); // Basic security
+    if (order.customerId !== session.user?.id) return notFound(); // Basic security
 
     // Helper to get items for a group
     const getItemsForGroup = (groupId: string) => {
-        return (order as any).items.filter((item: any) => item.fulfillmentGroupId === groupId);
+        return (order as unknown).items.filter((item: unknown) => item.fulfillmentGroupId === groupId);
     };
 
     return (
@@ -120,8 +120,8 @@ export default async function OrderDetailsPage({ params }: { params: { id: strin
                             <div className="mb-8">
                                 <h2 className="font-semibold mb-4">Tracking</h2>
                                 <div className="space-y-6 relative pl-4 border-l-2 border-gray-100 ml-2">
-                                    {(order as any).orderTimelineEvents?.length > 0 ? (
-                                        (order as any).orderTimelineEvents.map((event: any) => (
+                                    {(order as unknown).orderTimelineEvents?.length > 0 ? (
+                                        (order as unknown).orderTimelineEvents.map((event: unknown) => (
                                             <div key={event.id} className="relative">
                                                 <div className="absolute -left-[21px] top-1 h-3 w-3 rounded-full bg-blue-500 ring-4 ring-white" />
                                                 <div>
@@ -148,7 +148,7 @@ export default async function OrderDetailsPage({ params }: { params: { id: strin
                             {/* Shipment Groups */}
                             <h2 className="font-semibold mb-4">Packages</h2>
                             <div className="space-y-6">
-                                {((order as any).fulfillmentGroups as any[]).map((group: any) => (
+                                {((order as unknown).fulfillmentGroups as any[]).map((group: unknown) => (
                                     <div key={group.id} className="border rounded-lg p-4">
                                         <div className="flex items-center gap-2 mb-3 pb-3 border-b">
                                             <Store className="h-4 w-4 text-gray-500" />
@@ -161,9 +161,9 @@ export default async function OrderDetailsPage({ params }: { params: { id: strin
                                             {(getItemsForGroup(group.id) as any[]).map(item => (
                                                 <div key={item.id} className="flex gap-3">
                                                     <div className="h-12 w-12 bg-gray-100 rounded relative shrink-0">
-                                                        {((item as any).productVariant?.productImage?.url || (item as any).productVariant?.product?.productImages?.[0]?.url) && (
+                                                        {((item as unknown).productVariant?.productImage?.url || (item as unknown).productVariant?.product?.productImages?.[0]?.url) && (
                                                             <Image
-                                                                src={(item as any).productVariant?.productImage?.url || (item as any).productVariant?.product?.productImages?.[0]?.url || ""}
+                                                                src={(item as unknown).productVariant?.productImage?.url || (item as unknown).productVariant?.product?.productImages?.[0]?.url || ""}
                                                                 alt={item.title}
                                                                 fill
                                                                 className="object-cover rounded"
@@ -234,7 +234,7 @@ export default async function OrderDetailsPage({ params }: { params: { id: strin
 }
 
 // Icon for Store
-function Store(props: any) {
+function Store(props: unknown) {
     return (
         <svg
             {...props}

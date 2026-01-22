@@ -1,7 +1,7 @@
 import { Button, EmptyState } from "@vayva/ui";
 
 export default function LogisticsPage() {
-    const shipments: any[] = [];
+    const shipments: unknown[] = [];
 
     if (shipments.length === 0) {
         return (

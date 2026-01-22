@@ -5,6 +5,8 @@
  * Replaces console.error calls with structured, actionable logging.
  */
 
+import * as Sentry from "@sentry/nextjs";
+
 export enum LogLevel {
   DEBUG = "debug",
   INFO = "info",
@@ -26,13 +28,12 @@ export enum ErrorCategory {
   UNKNOWN = "unknown",
 }
 
-export interface LogContext {
+export interface LogContext extends Record<string, unknown> {
   userId?: string;
   storeId?: string;
   requestId?: string;
   endpoint?: string;
   method?: string;
-  [key: string]: any;
 }
 
 export interface ErrorLogEntry {
@@ -63,11 +64,11 @@ class Logger {
     let finalContext: LogContext | undefined;
 
     // Parse arguments based on types
-    if (typeof categoryOrError === "string" && Object.values(ErrorCategory).includes(categoryOrError as ErrorCategory)) {
+    if (typeof categoryOrError === "string" && Object.values(ErrorCategory).includes(categoryOrError as unknown as ErrorCategory)) {
       category = categoryOrError as ErrorCategory;
       error = errorOrContext;
       finalContext = context;
-    } else if (categoryOrError instanceof Error || typeof categoryOrError === "object") {
+    } else if (categoryOrError instanceof Error || (categoryOrError && typeof categoryOrError === "object")) {
       error = categoryOrError;
       finalContext = errorOrContext as LogContext | undefined;
     }
@@ -77,8 +78,8 @@ class Logger {
     // Console output in development
     if (this.isDevelopment) {
       console.error(`[${category.toUpperCase()}] ${message}`, {
-        error,
-        context: finalContext,
+        error: entry.error, // Use the error from the structured entry
+        context: entry.context, // Use the context from the structured entry
       });
     }
 
@@ -180,18 +181,18 @@ class Logger {
     }
   }
 
-  private redactPII(data: any): any {
+  private redactPII(data: unknown): unknown {
     if (!data) return data;
     if (typeof data === "string") return data;
     if (Array.isArray(data)) return data.map(item => this.redactPII(item));
     if (typeof data === "object") {
       const sensitiveKeys = ["password", "token", "secret", "authorization", "cookie", "key", "pin", "cvv", "creditCard"];
-      const redacted: any = {};
-      for (const key of Object.keys(data)) {
+      const redacted: Record<string, unknown> = {};
+      for (const key of Object.keys(data as Record<string, unknown>)) {
         if (sensitiveKeys.some(s => key.toLowerCase().includes(s))) {
           redacted[key] = "[REDACTED]";
         } else {
-          redacted[key] = this.redactPII(data[key]);
+          redacted[key] = this.redactPII((data as Record<string, unknown>)[key]);
         }
       }
       return redacted;
@@ -202,14 +203,9 @@ class Logger {
   /**
    * Send to error tracking service (e.g., Sentry)
    */
-  /**
-   * Send to error tracking service (e.g., Sentry)
-   */
   private sendToErrorTracking(entry: ErrorLogEntry): void {
     if (process.env.SENTRY_DSN) {
       try {
-        // Dynamic require to avoid build issues if Sentry is not fully configured in all environments
-        const Sentry = require("@sentry/nextjs");
         Sentry.captureException(entry.error || new Error(entry.message), {
           extra: {
             context: entry.context,
@@ -218,7 +214,7 @@ class Logger {
             level: entry.level
           }
         });
-      } catch (e) {
+      } catch {
         // Fail silently if Sentry not available
       }
     }

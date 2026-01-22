@@ -10,13 +10,23 @@ import { BulkActions, bulkExportAction } from "@/components/BulkActions";
 import { PermissionGate } from "@/components/auth/PermissionGate";
 import { PERMISSIONS } from "@/lib/core/permissions";
 
+interface Product {
+    id: string;
+    name: string;
+    inventory?: {
+        quantity: number;
+    };
+    price: number;
+    category?: string;
+}
+
 export default function InventoryPage() {
-    const [products, setProducts] = useState<any[]>([]);
+    const [products, setProducts] = useState<Product[]>([]);
     const [loading, setLoading] = useState(true);
 
     const [selectedIds, setSelectedIds] = useState<string[]>([]);
 
-    const handleAction = async (action: 'Retry' | 'Support Help', product: any) => {
+    const handleAction = async (action: 'Retry' | 'Support Help', product: Product) => {
         const toastId = toast.loading(`${action} initiating...`);
         try {
             const res = await fetch("/api/support/tickets", {

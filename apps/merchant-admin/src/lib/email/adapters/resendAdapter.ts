@@ -71,7 +71,7 @@ export class ResendAdapter implements EmailAdapter {
         success: true,
         providerId: data?.id,
       };
-    } catch (e: any) {
+    } catch (e: unknown) {
       console.error("[ResendAdapter] Exception:", e);
       return { success: false, error: e.message };
     }

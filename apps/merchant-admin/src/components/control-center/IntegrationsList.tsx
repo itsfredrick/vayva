@@ -31,7 +31,7 @@ export const IntegrationsList = ({ integrations }: IntegrationsListProps) => {
               <div className="w-12 h-12 rounded-xl bg-gray-50 flex items-center justify-center shrink-0 border border-gray-100">
                 {/* Use Icon name from data as dynamic lookup if possible, or fallback */}
                 <Icon
-                  name={(integration.logoUrl as any) || "Puzzle"}
+                  name={(integration.logoUrl as unknown) || "Puzzle"}
                   size={24}
                   className="text-gray-700"
                 />

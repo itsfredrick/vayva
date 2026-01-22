@@ -94,7 +94,7 @@ export interface FormFieldConfig {
 export type TemplateStatus = "active" | "beta" | "deprecated" | "coming_soon";
 
 export interface OnboardingProfile {
-    prefill?: Record<string, any>;
+    prefill?: Record<string, unknown>;
     requireSteps?: string[];
     skipSteps?: string[];
 }
@@ -131,12 +131,12 @@ export interface TemplateDefinition {
 
     // Legacy/Optional/Extended
     demoStoreUrl?: string;
-    componentProps?: Record<string, any>;
+    componentProps?: Record<string, unknown>;
 }
 export interface SidebarItem {
     name: string;
     href: string;
-    icon?: any;
+    icon?: unknown;
     external?: boolean;
     alwaysShow?: boolean;
 }

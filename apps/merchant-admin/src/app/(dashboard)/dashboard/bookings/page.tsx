@@ -85,7 +85,7 @@ export default async function BookingsPage() {
                                     </div>
 
                                     <div className="flex items-center gap-3">
-                                        <Badge variant={(booking.status as any) === 'CONFIRMED' ? 'success' : 'default'}>
+                                        <Badge variant={(booking.status as unknown) === 'CONFIRMED' ? 'success' : 'default'}>
                                             {booking.status}
                                         </Badge>
                                         <BookingListActions

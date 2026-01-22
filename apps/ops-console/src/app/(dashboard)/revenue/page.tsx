@@ -34,9 +34,16 @@ interface RevenueSummary {
     };
 }
 
+interface HistoricalRevenue {
+    month: string;
+    subscriptions: number;
+    delivery: number;
+    withdrawal: number;
+}
+
 export default function RevenueDashboardPage() {
     const [data, setData] = useState<RevenueSummary | null>(null);
-    const [chartData, setChartData] = useState<any[]>([]);
+    const [chartData, setChartData] = useState<HistoricalRevenue[]>([]);
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {

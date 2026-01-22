@@ -63,7 +63,7 @@ export default function SystemToolsPage() {
 function AnnouncementCard() {
     const [message, setMessage] = useState("");
     const [loading, setLoading] = useState(false);
-    const [current, setCurrent] = useState<any>(null);
+    const [current, setCurrent] = useState<unknown>(null);
 
     React.useEffect(() => {
         fetch("/api/ops/config/announcements")

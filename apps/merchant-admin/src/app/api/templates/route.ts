@@ -9,7 +9,7 @@ export const GET = withVayvaAPI(PERMISSIONS.COMMERCE_VIEW, async (request: NextR
       orderBy: { stars: "desc" },
     });
 
-    const formatted = templates.map((t: any) => ({
+    const formatted = templates.map((t: unknown) => ({
       id: t.id,
       key: t.slug,
       name: t.name,

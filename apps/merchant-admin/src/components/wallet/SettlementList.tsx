@@ -22,7 +22,7 @@ export const SettlementList = ({
     return (
       <div className="text-center py-16 text-gray-400 border border-dashed border-gray-200 rounded-xl bg-gray-50/50">
         <Icon
-          name={"CheckCircle2" as any}
+          name={"CheckCircle2" as unknown}
           size={48}
           className="mx-auto mb-4 opacity-20"
         />

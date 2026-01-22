@@ -12,7 +12,7 @@ export class SupportBotService {
   static async processMessage(
     storeId: string,
     message: string,
-    history: any[] = [],
+    history: unknown[] = [],
   ) {
     // 1. Delegate to the Core Bot Logic (which already handles context fetching)
     const response = await MerchantSupportBot.handleQuery(

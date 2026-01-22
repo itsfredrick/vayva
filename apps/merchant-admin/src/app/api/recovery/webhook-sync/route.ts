@@ -12,7 +12,7 @@ export async function POST() {
     }
 
     const userId = session.user.id;
-    const storeId = (session.user as any).storeId;
+    const storeId = (session.user as unknown).storeId;
 
     // Safety: Rate limit - 1 per hour
     await checkRateLimit(userId, "recovery_webhook_sync", 1, 3600, storeId);
@@ -34,7 +34,7 @@ export async function POST() {
     );
 
     return NextResponse.json({ success: true });
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error("Recovery sync error:", error);
     return NextResponse.json(
       { error: error.message || "Internal Server Error" },

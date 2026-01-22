@@ -9,7 +9,7 @@ import { Icon, Button } from "@vayva/ui"; // Assume UI lib
 
 export default function MarketProductPage() {
   const params = useParams();
-  const [product, setProduct] = useState<any>(null);
+  const [product, setProduct] = useState<unknown>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
@@ -112,7 +112,7 @@ export default function MarketProductPage() {
               <div className="border-t border-white/10 pt-8">
                 <h3 className="text-lg font-bold text-white mb-4">Technical Specifications</h3>
                 <div className="grid grid-cols-1 gap-y-2">
-                  {Object.entries(product.specs).map(([key, val]: any) => (
+                  {Object.entries(product.specs).map(([key, val]: unknown) => (
                     <div key={key} className="grid grid-cols-2 py-2 border-b border-white/5">
                       <div className="text-sm text-gray-400 capitalize">{key.replace(/([A-Z])/g, ' $1').trim()}</div>
                       <div className="text-sm text-white font-medium">{val}</div>

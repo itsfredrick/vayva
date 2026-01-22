@@ -25,7 +25,7 @@ export async function GET(request: Request) {
       return NextResponse.json({ error: "Store not found" }, { status: 404 });
     }
 
-    const settings: any = store.settings || {};
+    const settings: unknown = store.settings || {};
     const policies = settings.policies || {
       refundPolicy: "",
       shippingPolicy: "",

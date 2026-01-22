@@ -54,7 +54,7 @@ export function OpsShell({
                                 `}
                 >
                   <Icon
-                    name={item.icon as any}
+                    name={item.icon as unknown}
                     size={20}
                     className={isActive ? "text-white" : "text-text-secondary"}
                   />

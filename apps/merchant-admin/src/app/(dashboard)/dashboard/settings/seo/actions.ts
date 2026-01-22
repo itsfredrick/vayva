@@ -14,7 +14,7 @@ export type StoreSeoInput = {
 
 export async function updateStoreSeo(data: StoreSeoInput) {
     const session = await getServerSession(authOptions);
-    const user = session?.user as any;
+    const user = session?.user;
 
     if (!user || !user.storeId) {
         throw new Error("Unauthorized");

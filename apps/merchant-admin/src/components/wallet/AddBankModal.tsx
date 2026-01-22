@@ -35,10 +35,10 @@ export const AddBankModal = ({
         accountName,
         bankCode: "000", // Test code
         isDefault: true,
-      } as any);
+      } as unknown);
       onSuccess();
       onClose();
-    } catch (err: any) {
+    } catch (err: unknown) {
       setError(err.response?.data?.error || "Failed to add bank account");
     } finally {
       setLoading(false);

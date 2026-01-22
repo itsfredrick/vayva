@@ -24,7 +24,7 @@ export async function trackApiError(params: {
         storeId: params.storeId || null,
       },
     });
-  } catch (error: any) {
+  } catch (error: unknown) {
     // Silent fail - don't break the request
     console.error("[API Error Tracker] Failed to log error:", error);
   }

@@ -8,7 +8,7 @@ import { toast } from "sonner";
 
 interface NonprofitProductFormProps {
     productId?: string;
-    initialData?: any;
+    initialData?: unknown;
 }
 
 export function NonprofitProductForm({ productId, initialData }: NonprofitProductFormProps) {
@@ -27,7 +27,7 @@ export function NonprofitProductForm({ productId, initialData }: NonprofitProduc
         defaultValues
     });
 
-    const onSubmit = async (data: any) => {
+    const onSubmit = async (data: unknown) => {
         setIsSubmitting(true);
         try {
             const payload = {

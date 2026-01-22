@@ -19,11 +19,11 @@ export class EscalationService {
     trigger: EscalationTrigger;
     reason: string;
     aiSummary: string;
-    metadata?: any;
+    metadata?: unknown;
   }) {
     try {
       // 1. Create Support Ticket
-      const ticket = await (prisma as any).supportTicket.create({
+      const ticket = await (prisma as unknown).supportTicket.create({
         data: {
           storeId: params.storeId,
           type: this.mapTriggerToType(params.trigger),
@@ -39,7 +39,7 @@ export class EscalationService {
       });
 
       // 2. Create Audit Event
-      await (prisma as any).handoffEvent.create({
+      await (prisma as unknown).handoffEvent.create({
         data: {
           storeId: params.storeId,
           conversationId: params.conversationId,
@@ -56,7 +56,7 @@ export class EscalationService {
         ...params,
       });
       return ticket;
-    } catch (error: any) {
+    } catch (error: unknown) {
       logger.error("[EscalationService] Failed to trigger handoff", error);
       throw error; // Rethrow so the bot knows it failed
     }

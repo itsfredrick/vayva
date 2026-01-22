@@ -64,7 +64,7 @@ export const MarketHubLayout = ({ store, products }: MarketHubLayoutProps) => {
             Trending Vendors
           </h3>
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
-            {vendors.map((v: any) => (
+            {vendors.map((v: unknown) => (
               <VendorCard key={v.id} vendor={v} />
             ))}
           </div>

@@ -61,7 +61,7 @@ export async function POST(request: Request) {
       success: true,
       message: "2FA enabled successfully",
     });
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error("2FA verify error:", error);
 
     if (error.message === "Unauthorized") {

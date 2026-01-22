@@ -10,7 +10,7 @@ export const POST = withVayvaAPI(
             const data = await request.json();
             const product = await MenuService.createMenuItem(storeId, data);
             return NextResponse.json(product);
-        } catch (error: any) {
+        } catch (error: unknown) {
             return NextResponse.json({ error: error.message }, { status: 400 });
         }
     }

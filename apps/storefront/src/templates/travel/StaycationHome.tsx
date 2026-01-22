@@ -2,7 +2,7 @@
 import { BookingWidget } from "@/components/travel/BookingWidget";
 import { MapPin, Wifi, Coffee, Wind } from "lucide-react";
 
-export default function StaycationHome({ store }: { store: any }) {
+export default function StaycationHome({ store }: { store: unknown }) {
     // Mock Product for Demo
     const mockRoom = {
         id: "room-123",

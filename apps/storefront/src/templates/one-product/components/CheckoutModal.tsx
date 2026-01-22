@@ -26,7 +26,15 @@ export const CheckoutModal = ({
   const [state, setState] = useState("");
   const [upsellAdded, setUpsellAdded] = useState(false);
   const [step, setStep] = useState(1);
-  const [confirmationData, setConfirmationData] = useState<{ storeName?: string; orderNumber?: string; bankDetails?: any } | null>(null);
+  const [confirmationData, setConfirmationData] = useState<{
+    storeName?: string;
+    orderNumber?: string;
+    bankDetails?: {
+      bankName: string;
+      accountNumber: string;
+      accountName: string;
+    }
+  } | null>(null);
 
   if (!isOpen) return null;
 
@@ -69,7 +77,7 @@ export const CheckoutModal = ({
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
-            storeId: (product as any).storeId, // Force cast if missing in type definition, checked in next step
+            storeId: product.storeId,
             items,
             customer: {
               firstName: fullName.split(" ")[0],

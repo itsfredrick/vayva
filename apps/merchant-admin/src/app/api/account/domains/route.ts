@@ -24,11 +24,11 @@ export async function GET() {
       customDomain: domainMapping?.domain || null,
       status: domainMapping?.status || "none",
       verificationToken: domainMapping?.verificationToken || null,
-      lastCheckedAt: (domainMapping?.provider as any)?.lastCheckedAt || null,
-      lastError: (domainMapping?.provider as any)?.lastError || null,
+      lastCheckedAt: (domainMapping?.provider as unknown)?.lastCheckedAt || null,
+      lastError: (domainMapping?.provider as unknown)?.lastError || null,
       sslEnabled: domainMapping?.status === "verified",
     });
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error("Domains fetch error:", error);
     return NextResponse.json(
       { error: "Failed to fetch domain details" },
@@ -89,7 +89,7 @@ export async function POST(request: Request) {
     });
 
     return NextResponse.json(mapping);
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error("Add domain error:", error);
     return NextResponse.json(
       { error: "Failed to add domain" },

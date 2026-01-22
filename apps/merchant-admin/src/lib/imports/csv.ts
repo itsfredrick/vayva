@@ -27,7 +27,7 @@ export function parseCurrency(input: string | number): number | null {
   return isNaN(val) ? null : val;
 }
 
-export function validateRow(row: Record<string, any>): ValidationResult {
+export function validateRow(row: Record<string, unknown>): ValidationResult {
   const errors: string[] = [];
 
   // Required Fields

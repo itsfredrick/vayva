@@ -10,7 +10,7 @@ export async function GET(req: Request) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
-    const storeId = (session.user as any).storeId;
+    const storeId = (session.user as unknown).storeId;
     const context = await SupportContextService.getMerchantSnapshot(storeId);
 
     if (!context) {

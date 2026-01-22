@@ -43,7 +43,7 @@ export class MetaProvider implements WhatsAppProvider {
       return {
         providerMessageId: response.data.messages[0].id,
       };
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error("[MetaProvider] Send Failed:", error.response?.data || error.message);
       throw new Error(`WhatsApp Send Failed: ${error.message}`);
     }

@@ -1,7 +1,7 @@
 import { api } from "./api";
 
 export const StoreService = {
-  create: async (data: any) => {
+  create: async (data: unknown) => {
 
 
     return {
@@ -11,7 +11,7 @@ export const StoreService = {
     };
   },
 
-  update: async (storeId: string, data: any) => {
+  update: async (storeId: string, data: unknown) => {
 
     return { id: storeId, ...data };
   },

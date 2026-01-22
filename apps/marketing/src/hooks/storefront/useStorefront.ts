@@ -5,13 +5,13 @@ export interface StoreData {
   name: string;
   slug: string;
   logoUrl: string | null;
-  settings: any;
+  settings: unknown;
   category: string;
   plan: string;
   isLive: boolean;
   waAgentSettings?: {
     enabled: boolean;
-    businessHours: any;
+    businessHours: unknown;
   };
   deliverySettings?: {
     isEnabled: boolean;

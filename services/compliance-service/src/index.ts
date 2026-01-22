@@ -22,7 +22,7 @@ fastify.post("/v1/validate/:storeId", async (request, reply) => {
             success: true,
             report,
         });
-    } catch (error: any) {
+    } catch (error: unknown) {
         fastify.log.error(error);
         return reply.status(error.name === "ZodError" ? 400 : 500).send({
             success: false,

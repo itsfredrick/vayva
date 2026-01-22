@@ -1,7 +1,7 @@
 // src/lib/seo/schema/article.ts
 import { SITE_ORIGIN } from "../route-policy";
 
-export function articleSchema(path: string, ctx?: Record<string, any>) {
+export function articleSchema(path: string, ctx?: Record<string, unknown>) {
   return {
     "@context": "https://schema.org",
     "@type": "BlogPosting",

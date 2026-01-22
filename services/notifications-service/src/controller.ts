@@ -6,7 +6,7 @@ const notifySchema = z.object({
   channel: z.enum(["EMAIL", "SMS", "PUSH", "WHATSAPP"]),
   recipient: z.string(),
   template: z.string(),
-  data: z.record(z.any()).optional(),
+  data: z.record(z.unknown()).optional(),
   storeId: z.string(), // Required by schema
   userId: z.string().optional(), // Added for filtering
 });

@@ -9,7 +9,7 @@ export async function GET(
 ) {
     try {
         const session = await getServerSession(authOptions);
-        const userId = (session?.user as any)?.id || "usr_buyer_demo_123";
+        const userId = (session?.user)?.id || "usr_buyer_demo_123";
         const { id } = await params;
 
         // Verify ownership: conversion -> contact -> externalId == userId
@@ -48,7 +48,7 @@ export async function POST(
 ) {
     try {
         const session = await getServerSession(authOptions);
-        const userId = (session?.user as any)?.id || "usr_buyer_demo_123";
+        const userId = (session?.user)?.id || "usr_buyer_demo_123";
         const { id } = await params;
         const { text } = await req.json();
 

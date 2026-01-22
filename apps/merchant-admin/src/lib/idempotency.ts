@@ -4,11 +4,23 @@ import { redis } from "@/lib/redis";
 const IDEMPOTENCY_HEADER = "x-idempotency-key";
 const EXPIRY_SECONDS = 60 * 60 * 24; // 24 hours
 
-export interface IdempotencyRecord {
+export interface IdempotencyResponse<T> {
   status: number;
-  body: any;
-  headers: Record<string, string>;
-  createdAt: number;
+  body: T | null;
+  headers: Record<string, string> | null;
+}
+
+export async function getIdempotencyResponse<T>(
+  key: string,
+): Promise<IdempotencyResponse<T> | null> {
+  const compositeKey = `idempotency:${key}`;
+  const data = await redis.get(compositeKey);
+
+  if (data) {
+    const record: IdempotencyResponse<T> = JSON.parse(data);
+    return record;
+  }
+  return null;
 }
 
 export async function verifyIdempotency(
@@ -21,12 +33,12 @@ export async function verifyIdempotency(
   const data = await redis.get(compositeKey);
 
   if (data) {
-    const record: IdempotencyRecord = JSON.parse(data);
+    const record: IdempotencyResponse<unknown> = JSON.parse(data);
     return {
       cached: NextResponse.json(record.body, {
         status: record.status,
         headers: {
-          ...record.headers,
+          ...(record.headers || {}),
           "x-idempotency-hit": "true"
         },
       }),
@@ -41,23 +53,18 @@ export async function verifyIdempotency(
   return { cached: null, key: compositeKey };
 }
 
-export async function saveIdempotencyResponse(
-  key: string | null,
-  response: NextResponse,
-  bodyData: any // Pass explicit data since we can't easily read response stream twice
-) {
-  if (!key) return;
-
-  // Only cache successful or definitive failures (e.g. 400, 401). 
-  // Do not cache 500s usually? 
-  // For strict idempotency, we MUST cache whatever happened.
-
-  const record: IdempotencyRecord = {
-    status: response.status,
-    body: bodyData,
-    headers: {}, // Serialize essential headers if needed
-    createdAt: Date.now(),
+export async function saveIdempotencyResponse<T>(
+  key: string,
+  status: number,
+  body: T,
+  headers: Record<string, string>,
+): Promise<void> {
+  const compositeKey = `idempotency:${key}`;
+  const record: IdempotencyResponse<T> = {
+    status,
+    body,
+    headers
   };
 
-  await redis.setex(key, EXPIRY_SECONDS, JSON.stringify(record));
+  await redis.set(compositeKey, JSON.stringify(record), "EX", EXPIRY_SECONDS);
 }

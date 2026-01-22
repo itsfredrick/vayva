@@ -30,7 +30,7 @@ export interface InventoryProduct {
   sku?: string;
   stock?: number;
   images?: string[];
-  attributes?: Record<string, any>;
+  attributes?: Record<string, unknown>;
   segment?: string;
 }
 

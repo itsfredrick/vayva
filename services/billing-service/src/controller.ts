@@ -81,7 +81,7 @@ export const BillingController = {
     });
     if (!plan) return false;
 
-    const limits = plan.limits as any;
+    const limits = plan.limits as unknown;
 
     // Example checks
     if (feature === "custom_domain") return limits.custom_domain === true;
@@ -101,7 +101,7 @@ export const BillingController = {
     const plan = await prisma.plan.findUnique({
       where: { key: subscription.planKey },
     });
-    const limits = (plan?.limits as any) || {};
+    const limits = (plan?.limits as unknown) || {};
     const limit = limits[usageKey] || 0;
 
     const counter = await prisma.usageCounter.findFirst({
@@ -135,7 +135,7 @@ export const BillingController = {
     const plan = await prisma.plan.findUnique({
       where: { key: subscription.planKey },
     });
-    const limits = (plan?.limits as any) || {};
+    const limits = (plan?.limits as unknown) || {};
     const limit = limits[usageKey] || 0;
 
     await prisma.usageCounter.upsert({

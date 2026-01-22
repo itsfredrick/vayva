@@ -15,7 +15,7 @@ export const GET = withVayvaAPI(
                 orderBy: { evidenceDueAt: "asc" }
             });
 
-            const formatted = disputes.map((d: any) => ({
+            const formatted = disputes.map((d: unknown) => ({
                 id: d.id,
                 amount: Number(d.amount),
                 currency: d.currency,

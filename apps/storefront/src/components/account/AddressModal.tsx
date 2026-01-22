@@ -9,7 +9,7 @@ interface AddressModalProps {
   lang: LocaleKey;
   isOpen: boolean;
   onClose: () => void;
-  onSave: (address: any) => void;
+  onSave: (address: unknown) => void;
 }
 
 export function AddressModal({

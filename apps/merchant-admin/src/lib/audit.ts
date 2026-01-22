@@ -54,10 +54,10 @@ export async function logAuditEvent(
     targetType?: string;
     targetId?: string;
     reason?: string;
-    before?: any;
-    after?: any;
+    before?: unknown;
+    after?: unknown;
     keysChanged?: string[];
-    meta?: any;
+    meta?: unknown;
     ipAddress?: string;
     userAgent?: string;
   }
@@ -83,9 +83,9 @@ export async function logAuditEvent(
 }
 
 // Helper for diffing
-export function computeDiff(oldObj: any, newObj: any): { before: any; after: any } {
-  const before: any = {};
-  const after: any = {};
+export function computeDiff(oldObj: unknown, newObj: unknown): { before: unknown; after: unknown } {
+  const before: unknown = {};
+  const after: unknown = {};
 
   const allKeys = new Set([...Object.keys(oldObj || {}), ...Object.keys(newObj || {})]);
 

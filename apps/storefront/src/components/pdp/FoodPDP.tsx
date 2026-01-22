@@ -15,7 +15,7 @@ interface FoodPDPProps {
 export function FoodPDP({ product }: FoodPDPProps) {
     const { addToCart } = useStore();
     const [quantity, setQuantity] = useState(1);
-    const metadata = product.metadata as any;
+    const metadata = product.metadata as unknown;
 
     const handleAddToCart = () => {
         addToCart({

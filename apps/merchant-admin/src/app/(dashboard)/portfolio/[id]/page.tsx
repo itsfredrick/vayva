@@ -1,20 +1,19 @@
 "use client";
 
-import { Button, Card, Input, Label, Textarea } from "@vayva/ui";
+import { Button, Card, Input, Label, Switch, Textarea } from "@vayva/ui";
 import { ArrowLeft, Save, Upload, Lock, Clock, Eye, Trash2, GripVertical, Check } from "lucide-react";
 import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
 import { useEffect, useState, useRef } from "react";
 import { toast } from "sonner";
 import { format } from "date-fns";
-import { Switch } from "@/components/ui/switch";
 
 
 
 export default function ProjectEditorPage() {
     const params = useParams();
     const router = useRouter();
-    const [project, setProject] = useState<any>(null);
+    const [project, setProject] = useState<unknown>(null);
     const [isLoading, setIsLoading] = useState(true);
     const [isSaving, setIsSaving] = useState(false);
 
@@ -218,6 +217,6 @@ export default function ProjectEditorPage() {
     );
 }
 
-function Loader2(props: any) {
+function Loader2(props: unknown) {
     return <svg {...props} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 12a9 9 0 1 1-6.219-8.56" /></svg>;
 }

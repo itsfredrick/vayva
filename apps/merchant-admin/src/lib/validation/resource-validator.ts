@@ -10,7 +10,7 @@ export interface ValidationResult {
 export function validateResource(
     industrySlug: IndustrySlug,
     primaryObject: PrimaryObject,
-    data: Record<string, any>
+    data: Record<string, unknown>
 ): ValidationResult {
     const errors: Record<string, string> = {};
 

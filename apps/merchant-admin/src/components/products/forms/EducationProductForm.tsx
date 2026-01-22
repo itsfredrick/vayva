@@ -17,7 +17,7 @@ export function EducationProductForm({ productId }: { productId?: string }) {
         name: "curriculum" // Expecting [{ moduleTitle: string, lessons: string }]
     });
 
-    const onSubmit = async (data: any) => {
+    const onSubmit = async (data: unknown) => {
         setIsSubmitting(true);
         try {
             const payload = {
@@ -29,7 +29,7 @@ export function EducationProductForm({ productId }: { productId?: string }) {
                     difficulty: data.difficulty,
                     duration: data.duration,
                     instructor: data.instructor,
-                    curriculum: data.curriculum?.map((c: any) => ({
+                    curriculum: data.curriculum?.map((c: unknown) => ({
                         moduleTitle: c.moduleTitle,
                         lessons: c.lessons ? c.lessons.split("\n").filter(Boolean) : []
                     })) || []

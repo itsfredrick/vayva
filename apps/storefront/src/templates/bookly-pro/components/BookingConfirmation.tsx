@@ -2,8 +2,13 @@ import React, { useEffect } from "react";
 import { Button } from "@vayva/ui";
 import { Check, Calendar, ArrowRight } from "lucide-react";
 
+export interface BookingDetails {
+  date: string | number;
+  time: string;
+}
+
 interface BookingConfirmationProps {
-  bookingDetails: any;
+  bookingDetails: BookingDetails;
   onClose: () => void;
 }
 

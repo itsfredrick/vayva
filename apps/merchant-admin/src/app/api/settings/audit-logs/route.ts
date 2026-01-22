@@ -28,7 +28,7 @@ export async function GET(req: Request) {
         pages: Math.ceil(total / limit),
       },
     });
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error("Audit log fetch error:", error);
     return NextResponse.json(
       { error: "Failed to fetch audit logs" },

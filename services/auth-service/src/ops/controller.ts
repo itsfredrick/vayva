@@ -46,7 +46,7 @@ export const verifyMfaHandler = async (
   const { preAuthToken, code } = mfaVerifySchema.parse(req.body);
 
   // Decode/Verify PreAuth Token
-  const decoded = req.server.jwt.verify<any>(preAuthToken);
+  const decoded = req.server.jwt.verify<unknown>(preAuthToken);
   if (decoded.aud !== "ops-pre-mfa") {
     return reply.status(401).send({ error: "Invalid token audience" });
   }
@@ -138,7 +138,7 @@ export const getMeHandler = async (
   req: FastifyRequest,
   reply: FastifyReply,
 ) => {
-  const decoded = req.user as any;
+  const decoded = req.user as { sub: string; email?: string };
   const opsUser = await prisma.opsUser.findUnique({
     where: { id: decoded.sub },
   });

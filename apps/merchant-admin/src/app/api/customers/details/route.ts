@@ -33,7 +33,7 @@ export const GET = withVayvaAPI(
         return NextResponse.json({ error: "Customer not found" }, { status: 404 });
       }
 
-      const history = customer.orders.map((o: any) => ({
+      const history = customer.orders.map((o: unknown) => ({
         id: o.id,
         type: "order",
         amount: Number(o.total),
@@ -48,7 +48,7 @@ export const GET = withVayvaAPI(
         email: customer.email,
         phone: customer.phone,
         history,
-        notes: (customer as any).notes || "No notes.",
+        notes: (customer as unknown).notes || "No notes.",
         stats: {
           totalSpend: 0,
           lastOrderDate: null

@@ -74,7 +74,7 @@ export class ConversionService {
     confidence: number;
   }) {
     try {
-      await (prisma as any).persuasionAttempt.create({
+      await (prisma as unknown).persuasionAttempt.create({
         data: {
           storeId: data.storeId,
           conversationId: data.conversationId,
@@ -83,7 +83,7 @@ export class ConversionService {
           confidenceScore: data.confidence,
         },
       });
-    } catch (error: any) {
+    } catch (error: unknown) {
       logger.error("[ConversionService] Failed to log persuasion", error);
     }
   }
@@ -98,7 +98,7 @@ export class ConversionService {
     valueKobo?: bigint;
   }) {
     try {
-      await (prisma as any).conversionEvent.create({
+      await (prisma as unknown).conversionEvent.create({
         data: {
           storeId: data.storeId,
           conversationId: data.conversationId,
@@ -107,7 +107,7 @@ export class ConversionService {
           aiAttributionScore: 1.0, // Simple for now
         },
       });
-    } catch (error: any) {
+    } catch (error: unknown) {
       logger.error("[ConversionService] Failed to record conversion", error);
     }
   }

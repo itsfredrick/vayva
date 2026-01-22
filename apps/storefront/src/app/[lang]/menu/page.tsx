@@ -20,7 +20,7 @@ import {
 import { StorefrontService } from "@/services/storefront.service";
 import { Button } from "@vayva/ui";
 
-export default function MenuPage({ params }: any) {
+export default function MenuPage({ params }: unknown) {
   const { lang: rawLang } = useParams() as { lang: string };
   const lang = (rawLang === "tr" ? "tr" : "en") as LocaleKey;
   const { store } = useStore();

@@ -49,7 +49,7 @@ export default function CampaignsPage() {
                         ) : !campaigns?.length ? (
                             <tr><td colSpan={5} className="p-12 text-center text-gray-400">No active campaigns.</td></tr>
                         ) : (
-                            campaigns.map((c: any) => {
+                            campaigns.map((c: unknown) => {
                                 const end = new Date(c.endTime);
                                 const now = new Date();
                                 const diff = Math.max(0, Math.ceil((end.getTime() - now.getTime()) / (1000 * 60 * 60))); // Hours

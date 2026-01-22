@@ -17,7 +17,7 @@ export const MERCHANT_VISIBLE_EVENTS = [
   "COMPLIANCE_REPORT_DOWNLOADED",
 ] as const;
 
-export function formatActivityForMerchant(event: any): {
+export function formatActivityForMerchant(event: unknown): {
   time: string;
   actor: string;
   action: string;

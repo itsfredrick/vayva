@@ -19,7 +19,7 @@ export async function GET(request: Request) {
     const startDate = searchParams.get("startDate");
     const endDate = searchParams.get("endDate");
 
-    const where: any = {
+    const where: unknown = {
       storeId: user.storeId,
     };
     if (status && status !== "ALL") where.status = status;
@@ -45,7 +45,7 @@ export async function GET(request: Request) {
       "Fee (NGN)",
       "Net (NGN)",
     ];
-    const rows = withdrawals.map((w: any) => [
+    const rows = withdrawals.map((w: unknown) => [
       new Date(w.createdAt).toISOString(),
       w.referenceCode,
       w.status,
@@ -56,8 +56,8 @@ export async function GET(request: Request) {
 
     const csvContent = [
       header.join(","),
-      ...rows.map((row: any) =>
-        row.map((field: any) => `"${String(field).replace(/"/g, '""')}"`).join(","),
+      ...rows.map((row: unknown) =>
+        row.map((field: unknown) => `"${String(field).replace(/"/g, '""')}"`).join(","),
       ),
     ].join("\n");
 

@@ -30,7 +30,7 @@ export async function POST(req: Request) {
         if (!cartId) {
             // Create new cart
             const newCart = await CartService.createCart(
-                (session?.user as any)?.id as string | undefined, // Cast to string if exists
+                (session?.user)?.id as string | undefined, // Cast to string if exists
                 undefined // Session token logic if needed custom
             );
             cartId = newCart.id;

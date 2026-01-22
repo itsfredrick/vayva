@@ -11,7 +11,7 @@ export async function POST() {
     }
 
     const userId = session.user.id;
-    const storeId = (session.user as any).storeId;
+    const storeId = (session.user as unknown).storeId;
 
     // Logic: Re-validate membership and force session refresh signal
     // (Simulated for MVP)
@@ -29,7 +29,7 @@ export async function POST() {
     );
 
     return NextResponse.json({ success: true });
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error("Recovery fix error:", error);
     return NextResponse.json(
       { error: "Internal Server Error" },

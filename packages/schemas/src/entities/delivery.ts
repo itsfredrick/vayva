@@ -17,8 +17,8 @@ export const DeliveryTaskSchema = z.object({
     .default(DeliveryTaskStatus.SCHEDULED),
 
   // Locations
-  pickupAddress: z.record(z.any()), // Snapshot
-  dropoffAddress: z.record(z.any()), // Snapshot
+  pickupAddress: z.record(z.unknown()), // Snapshot
+  dropoffAddress: z.record(z.unknown()), // Snapshot
 
   // Cost
   estimatedCost: z.number().int().nonnegative(),

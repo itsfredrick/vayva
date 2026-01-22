@@ -77,7 +77,7 @@ export default function WebhookInspectorPage() {
                     ) : logs?.length === 0 ? (
                         <div className="p-12 text-center text-gray-600">No events found in this window.</div>
                     ) : (
-                        logs?.map((log: any) => (
+                        logs?.map((log: unknown) => (
                             <div key={log.id} className="flex p-3 hover:bg-gray-800/50 transition-colors items-center group">
                                 <div className="w-24 flex items-center gap-2">
                                     {getStatusIcon(log.status)}

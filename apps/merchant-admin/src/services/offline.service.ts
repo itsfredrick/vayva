@@ -5,7 +5,7 @@ const DB_VERSION = 1;
 interface OfflineAction {
   id: string;
   type: string;
-  payload: any;
+  payload: unknown;
   idempotencyKey: string;
   createdAt: number;
   synced: boolean;
@@ -47,7 +47,7 @@ class OfflineStorage {
     });
   }
 
-  async queueAction(type: string, payload: any): Promise<string> {
+  async queueAction(type: string, payload: unknown): Promise<string> {
     const action: OfflineAction = {
       id: crypto.randomUUID(),
       type,
@@ -94,7 +94,7 @@ class OfflineStorage {
     });
   }
 
-  async cacheData(storeName: string, data: any[]): Promise<void> {
+  async cacheData(storeName: string, data: unknown[]): Promise<void> {
     return new Promise((resolve, reject) => {
       const tx = this.db!.transaction(storeName, "readwrite");
       const store = tx.objectStore(storeName);
@@ -105,7 +105,7 @@ class OfflineStorage {
     });
   }
 
-  async getCachedData(storeName: string): Promise<any[]> {
+  async getCachedData(storeName: string): Promise<unknown[]> {
     return new Promise((resolve, reject) => {
       const tx = this.db!.transaction(storeName, "readonly");
       const store = tx.objectStore(storeName);

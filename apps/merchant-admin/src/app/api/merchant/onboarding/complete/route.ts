@@ -73,7 +73,7 @@ export async function POST(request: NextRequest) {
             if (step === "kyc") {
               const isRegistered = state.business?.businessRegistrationType === "registered";
               const hasNin = !!state.identity?.nin;
-              const hasCac = !!(state.identity as any)?.cacNumber;
+              const hasCac = !!(state.identity as unknown)?.cacNumber;
               const kycVerified = state.kycStatus === "verified";
               const kycPending = state.kycStatus === "pending";
 

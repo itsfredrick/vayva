@@ -18,7 +18,7 @@ export class MerchantSupportBot {
   static async handleQuery(
     storeId: string,
     query: string,
-    history: any[] = [],
+    history: unknown[] = [],
   ) {
     try {
       // 1. Fetch Real Context (Account Facts)
@@ -75,8 +75,8 @@ Support Guidelines:
         });
 
         // Telemetry: Log Escalation
-        const prismaCtx: any =
-          (global as any).prisma || (await import("@vayva/db")).prisma;
+        const prismaCtx: unknown =
+          (global as unknown).prisma || (await import("@vayva/db")).prisma;
         await prismaCtx.supportTelemetryEvent.create({
           data: {
             storeId,
@@ -95,7 +95,7 @@ Support Guidelines:
         message: reply,
         suggestedActions: this.deriveSupportActions(reply),
       };
-    } catch (error: any) {
+    } catch (error: unknown) {
       logger.error("[SupportBot] Error", error);
       return {
         message:
@@ -117,7 +117,7 @@ Support Guidelines:
         }
       }
       return context;
-    } catch (e: any) {
+    } catch (e: unknown) {
       return "No playbooks found.";
     }
   }

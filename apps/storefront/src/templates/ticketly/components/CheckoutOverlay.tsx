@@ -8,7 +8,7 @@ interface CheckoutOverlayProps {
   total: number;
   count: number;
   onClose: () => void;
-  onComplete: (data: any) => void;
+  onComplete: (data: unknown) => void;
 }
 
 export const CheckoutOverlay = ({

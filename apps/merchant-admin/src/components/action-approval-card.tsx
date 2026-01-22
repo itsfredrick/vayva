@@ -41,7 +41,7 @@ export function ActionApprovalCard({
         className={`p-4 rounded-lg border ${status === "approved" ? "bg-state-success/10 border-state-success/20" : "bg-state-danger/10 border-state-danger/20"} flex items-center gap-3`}
       >
         <Icon
-          name={(status === "approved" ? "CheckCircle" : "X") as any}
+          name={(status === "approved" ? "CheckCircle" : "X") as unknown}
           className={
             status === "approved" ? "text-state-success" : "text-state-danger"
           }
@@ -90,7 +90,7 @@ export function ActionApprovalCard({
                 ? "Banknote"
                 : type === "delivery"
                   ? "Truck"
-                  : "Tag") as any
+                  : "Tag") as unknown
             }
             size={20}
           />

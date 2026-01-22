@@ -14,7 +14,7 @@ export async function GET(request: Request) {
     const limit = parseInt(searchParams.get("limit") || "50");
     const status = searchParams.get("status");
 
-    const where: any = {};
+    const where: unknown = {};
     if (status && status !== "ALL") {
         where.status = status;
     }

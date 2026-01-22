@@ -15,7 +15,7 @@ class KitchenServiceManager {
       where: {
         storeId,
         fulfillmentStatus: { in: ["UNFULFILLED", "PREPARING"] },
-        paymentStatus: { in: ["SUCCESS", "PAID", "VERIFIED"] as any }
+        paymentStatus: { in: ["SUCCESS", "PAID", "VERIFIED"] as unknown}
       },
       include: {
         items: true,
@@ -37,7 +37,7 @@ class KitchenServiceManager {
     const updatedOrder = await db.order.update({
       where: { id: orderId },
       data: {
-        fulfillmentStatus: status as any
+        fulfillmentStatus: status as unknown
       }
     });
 
@@ -112,7 +112,7 @@ class KitchenServiceManager {
     for (const order of completedOrdersToday) {
       // Use explicit "PREPARING" event if available, otherwise assume created -> fulfilled
       // Cast to any because the select type inference is failing in this specific setup
-      const events = (order as any).orderTimelineEvents;
+      const events = (order as unknown).orderTimelineEvents;
       const startTime = events && events[0] ? events[0].createdAt : order.createdAt;
       const endTime = order.updatedAt;
 
@@ -144,12 +144,12 @@ class KitchenServiceManager {
 
   // --- Client-side Compatibility Mocks (No-ops for real DB) ---
 
-  subscribe(callback: (orders: any[]) => void) {
+  subscribe(callback: (orders: unknown[]) => void) {
     // This used to be for in-memory updates. Now handled by polling in KitchenBoard.
     return () => { };
   }
 
-  addOrder(order: any) {
+  addOrder(order: unknown) {
     console.warn("KitchenService.addOrder is a no-op on the server. Use /api/orders instead.");
   }
 }

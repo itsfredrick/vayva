@@ -11,9 +11,9 @@ export default function ListingDetailPage() {
     const { id } = useParams();
     const router = useRouter();
     const { addItem } = useCart();
-    const [product, setProduct] = useState<any>(null);
+    const [product, setProduct] = useState<unknown>(null);
     const [loading, setLoading] = useState(true);
-    const [selectedVariant, setSelectedVariant] = useState<any>(null);
+    const [selectedVariant, setSelectedVariant] = useState<unknown>(null);
     const [chatLoading, setChatLoading] = React.useState(false);
     const [isAddingToCart, setIsAddingToCart] = useState(false);
 
@@ -131,7 +131,7 @@ export default function ListingDetailPage() {
                     </div>
 
                     <div className="flex gap-2 overflow-x-auto pb-2 hide-scrollbar">
-                        {product.productImages?.map((img: any, i: number) => (
+                        {product.productImages?.map((img: unknown, i: number) => (
                             <div key={img.id} className="w-20 h-20 flex-shrink-0 bg-gray-100 rounded-lg overflow-hidden border border-transparent hover:border-black transition-colors cursor-pointer">
                                 <img src={img.url} alt="" className="w-full h-full object-cover" />
                             </div>
@@ -174,7 +174,7 @@ export default function ListingDetailPage() {
                         <div className="bg-gray-100 rounded-lg p-4">
                             <h4 className="text-sm font-bold mb-2">Wholesale Pricing</h4>
                             <div className="grid grid-cols-2 gap-2">
-                                {product.pricingTiers.map((tier: any) => (
+                                {product.pricingTiers.map((tier: unknown) => (
                                     <div key={tier.id} className="bg-white p-2 rounded border text-xs">
                                         <p className="font-bold">{tier.minQty}+ units</p>
                                         <p className="text-gray-500">₦{Number(tier.unitPrice).toLocaleString()}/unit</p>
@@ -189,7 +189,7 @@ export default function ListingDetailPage() {
                         <div>
                             <h3 className="font-bold text-sm mb-2">Select Variant</h3>
                             <div className="flex flex-wrap gap-2">
-                                {product.productVariants.map((v: any) => (
+                                {product.productVariants.map((v: unknown) => (
                                     <Button
                                         key={v.id}
                                         onClick={() => setSelectedVariant(v)}

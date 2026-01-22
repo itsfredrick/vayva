@@ -32,7 +32,7 @@ export interface SessionUser {
  */
 export function generateToken(payload: SessionPayload): string {
   return jwt.sign({ ...payload }, JWT_SECRET, {
-    expiresIn: JWT_EXPIRES_IN as any,
+    expiresIn: JWT_EXPIRES_IN as unknown,
   });
 }
 
@@ -43,7 +43,7 @@ export function verifyToken(token: string): SessionPayload | null {
   try {
     const decoded = jwt.verify(token, JWT_SECRET) as SessionPayload;
     return decoded;
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error("Token verification failed:", error);
     return null;
   }
@@ -184,7 +184,7 @@ export async function clearSession(): Promise<void> {
       await prisma.merchantSession.delete({
         where: { token },
       });
-    } catch (error: any) {
+    } catch (error: unknown) {
       // Session might not exist, ignore error
       console.warn("Session deletion failed:", error);
     }

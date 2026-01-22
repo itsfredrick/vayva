@@ -50,7 +50,7 @@ export function KYCVerification({ onSuccess, onCancel }: KYCVerificationProps) {
 
       setStep("SUCCESS");
       if (onSuccess) onSuccess();
-    } catch (err: any) {
+    } catch (err: unknown) {
       setError(err.message);
     } finally {
       setLoading(false);
@@ -61,7 +61,7 @@ export function KYCVerification({ onSuccess, onCancel }: KYCVerificationProps) {
     return (
       <div className="text-center py-12 space-y-6">
         <div className="w-20 h-20 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center mx-auto">
-          <Icon name={"CheckCircle" as any} size={40} />
+          <Icon name={"CheckCircle" as unknown} size={40} />
         </div>
         <div className="space-y-2">
           <h2 className="text-2xl font-bold text-white">
@@ -201,7 +201,7 @@ export function KYCVerification({ onSuccess, onCancel }: KYCVerificationProps) {
 
           {error && (
             <div className="p-3 bg-red-500/10 border border-red-500/20 rounded-xl flex items-center gap-2 text-red-500 text-sm">
-              <Icon name={"AlertCircle" as any} size={16} />
+              <Icon name={"AlertCircle" as unknown} size={16} />
               {error}
             </div>
           )}

@@ -28,7 +28,7 @@ export function RequirementChecklist({ items }: { items: Item[] }) {
               className={`mt - 0.5 w - 5 h - 5 rounded - full flex items - center justify - center shrink - 0 ${item.met ? "bg-state-success/20 text-state-success" : "bg-state-warning/20 text-state-warning"} `}
             >
               <Icon
-                name={(item.met ? "Check" : "AlertTriangle") as any}
+                name={(item.met ? "Check" : "AlertTriangle") as unknown}
                 size={14}
               />
             </div>

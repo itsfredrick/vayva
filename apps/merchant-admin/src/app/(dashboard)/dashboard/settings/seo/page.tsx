@@ -10,7 +10,7 @@ export const metadata = {
 
 export default async function SeoSettingsPage() {
     const session = await getServerSession(authOptions);
-    const user = session?.user as any;
+    const user = session?.user;
 
     if (!user || !user.storeId) {
         redirect("/signin");

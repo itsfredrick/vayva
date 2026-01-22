@@ -23,7 +23,7 @@ export async function GET(
     }
 
     // Calculate total stock from all inventory locations
-    const stockLevel = product.inventoryItems.reduce((sum: number, item: any) => sum + item.available, 0);
+    const stockLevel = product.inventoryItems.reduce((sum: number, item: unknown) => sum + item.available, 0);
 
     const publicProduct = {
       id: product.id,
@@ -34,8 +34,8 @@ export async function GET(
         ? Number(product.compareAtPrice)
         : null,
       images: product.productImages.sort(
-        (a: any, b: any) => a.position - b.position,
-      ).map((img: any) => img.url),
+        (a: unknown, b: unknown) => a.position - b.position,
+      ).map((img: unknown) => img.url),
       handle: product.handle,
       options: [],
       variants: [],

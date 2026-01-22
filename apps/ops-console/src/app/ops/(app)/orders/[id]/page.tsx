@@ -18,7 +18,7 @@ import { Button } from "@vayva/ui";
 export default function OrderDetailPage() {
     const { id } = useParams() as { id: string };
     const router = useRouter();
-    const [order, setOrder] = useState<any>(null);
+    const [order, setOrder] = useState<unknown>(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState("");
 
@@ -36,7 +36,7 @@ export default function OrderDetailPage() {
             if (!res.ok) throw new Error("Failed to load order");
             const json = await res.json();
             setOrder(json.data);
-        } catch (err: any) {
+        } catch (err: unknown) {
             setError(err.message);
         } finally {
             setLoading(false);
@@ -116,7 +116,7 @@ export default function OrderDetailPage() {
                             <span className="text-sm text-gray-500">{order.items?.length || 0} items</span>
                         </div>
                         <div className="divide-y divide-gray-100">
-                            {order.items?.map((item: any) => (
+                            {order.items?.map((item: unknown) => (
                                 <div key={item.id} className="px-6 py-4 flex justify-between items-center hover:bg-gray-50">
                                     <div className="flex items-center gap-4">
                                         <div className="h-10 w-10 bg-gray-100 rounded-lg flex items-center justify-center text-gray-400">
@@ -151,7 +151,7 @@ export default function OrderDetailPage() {
                         </div>
                         <div className="p-6">
                             <ul className="space-y-6 border-l-2 border-gray-100 ml-3 pl-6 relative">
-                                {order.OrderEvent?.map((evt: any, idx: number) => (
+                                {order.OrderEvent?.map((evt: unknown, idx: number) => (
                                     <li key={idx} className="relative">
                                         <div className="absolute -left-[2.15rem] mt-1.5 h-3 w-3 rounded-full bg-gray-300 ring-4 ring-white"></div>
                                         <p className="text-sm font-medium text-gray-900">{evt.event}</p>

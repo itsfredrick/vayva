@@ -6,13 +6,13 @@ import { useStore } from "@/context/StoreContext";
 import { StorefrontService } from "@/services/storefront.service";
 import { StoreShell } from "@/components/StoreShell";
 import NextLink from "next/link";
-const Link = NextLink as any;
+const Link = NextLink as unknown;
 import {
   ChevronRight as ChevronRightIcon,
   AlertCircle as AlertCircleIcon,
 } from "lucide-react";
-const ChevronRight = ChevronRightIcon as any;
-const AlertCircle = AlertCircleIcon as any;
+const ChevronRight = ChevronRightIcon as unknown;
+const AlertCircle = AlertCircleIcon as unknown;
 import { useRouter } from "next/navigation";
 
 export default function CheckoutPage() {
@@ -94,7 +94,7 @@ export default function CheckoutPage() {
       } else {
         throw new Error("Payment initialization failed: No URL returned");
       }
-    } catch (err: any) {
+    } catch (err: unknown) {
       console.error("Checkout error:", err);
       setError(
         err.message || "An error occurred during checkout. Please try again.",

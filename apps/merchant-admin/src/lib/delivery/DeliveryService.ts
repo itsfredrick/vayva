@@ -8,7 +8,7 @@ import {
 import { getDeliveryProvider, DispatchData } from "./DeliveryProvider";
 
 // Helper to bypass strict typing issues with generated client temporarily
-const db = prisma as any;
+const db = prisma as unknown;
 
 interface AutoDispatchResult {
   success: boolean;
@@ -51,7 +51,7 @@ export class DeliveryService {
     const hasAddress =
       order.Shipment?.addressLine1 ||
       order.Customer?.defaultAddressId || // Weak check, but assume address exists if ID exists? Better to check fields if visible.
-      (order as any).shippingAddress || // Future proofing
+      (order as unknown).shippingAddress || // Future proofing
       ((order.Customer?.phone || order.customerPhone) &&
         order.Customer?.lastName); // Bare minimum?
 
@@ -220,7 +220,7 @@ export class DeliveryService {
             meta: { actor: { type: "SYSTEM", label: "AutoDispatch" } }
           }
         );
-      } catch (ignore: any) { }
+      } catch (ignore: unknown) { }
 
       return {
         success: true,
@@ -319,12 +319,12 @@ export class DeliveryService {
             meta: { actor: { type: "SYSTEM", label: "AutoDispatch" } }
           }
         );
-      } catch (ignore: any) {
+      } catch (ignore: unknown) {
         /* non-blocking */
       }
 
       return { success: true, status: "DISPATCHED", shipment };
-    } catch (error: any) {
+    } catch (error: unknown) {
       return { success: false, status: "BLOCKED", reason: error.message };
     }
   }

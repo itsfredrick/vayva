@@ -1,6 +1,6 @@
 export interface AnalyticsEvent {
     eventName: string;
-    properties?: Record<string, any>;
+    properties?: Record<string, unknown>;
     userId?: string;
     storeId?: string;
 }
@@ -13,7 +13,7 @@ export const AnalyticsProvider = {
         }
     },
 
-    identify: (userId: string, traits?: any) => {
+    identify: (userId: string, traits?: unknown) => {
         console.log(`[Analytics] Identify ${userId}`, traits);
     }
 };

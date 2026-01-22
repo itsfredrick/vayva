@@ -128,7 +128,7 @@ export const NotificationsDrawer = ({
                       getColor(item.type),
                     )}
                   >
-                    <Icon name={getIcon(item.type) as any} size={20} />
+                    <Icon name={getIcon(item.type) as unknown} size={20} />
                   </div>
                   <div className="flex-1 min-w-0">
                     <p

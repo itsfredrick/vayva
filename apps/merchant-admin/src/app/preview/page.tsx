@@ -18,7 +18,7 @@ export default async function PreviewPage() {
     );
   }
 
-  const storeId = (session.user as any).storeId;
+  const storeId = (session.user as unknown).storeId;
   if (!storeId) return <div>No Store Context</div>;
 
   // Fetch the DRAFT to show work-in-progress

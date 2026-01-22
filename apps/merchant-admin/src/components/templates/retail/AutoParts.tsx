@@ -55,7 +55,7 @@ export const AutoPartsTemplate: React.FC<TemplateProps> = ({
           p.images?.[0] ||
           "https://images.unsplash.com/photo-1486262715619-67b85e0b08d3?w=800&q=80",
         condition: p.category || "Used",
-        tags: (p as any).searchTags || [],
+        tags: (p as unknown).searchTags || [],
       }));
 
   return (
@@ -125,7 +125,7 @@ export const AutoPartsTemplate: React.FC<TemplateProps> = ({
                 alt={item.name}
                 className="w-full h-full object-cover"
               />
-              {(item as any).tags?.includes("Warranty Included") && (
+              {(item as unknown).tags?.includes("Warranty Included") && (
                 <div className="absolute bottom-0 left-0 right-0 bg-green-600 text-white text-[8px] font-bold text-center py-0.5">
                   WARRANTY
                 </div>
@@ -138,7 +138,7 @@ export const AutoPartsTemplate: React.FC<TemplateProps> = ({
                 </h3>
                 <div className="flex items-center gap-2 mb-1">
                   <span className="text-[10px] font-bold bg-slate-100 text-slate-600 px-1.5 py-0.5 rounded border border-slate-200 uppercase">
-                    {(item as any).condition || "Used"}
+                    {(item as unknown).condition || "Used"}
                   </span>
                 </div>
               </div>

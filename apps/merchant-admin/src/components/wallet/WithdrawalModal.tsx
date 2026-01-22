@@ -117,7 +117,7 @@ export const WithdrawalModal = ({
                       </span>
                     ) : (
                       <span className="text-xs font-bold text-amber-600 bg-amber-50 px-2 py-1 rounded-md flex items-center gap-1">
-                        <Icon name={"AlertTriangle" as any} size={12} /> Action
+                        <Icon name={"AlertTriangle" as unknown} size={12} /> Action
                         Required
                       </span>
                     )}

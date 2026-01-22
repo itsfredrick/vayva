@@ -12,7 +12,7 @@ interface BookingFormProps {
     onSuccess: () => void;
     services: { id: string; name: string }[];
     customers: { id: string; name: string }[];
-    initialData?: any;
+    initialData?: unknown;
 }
 
 interface BookingFormValues {
@@ -66,7 +66,7 @@ export function BookingForm({ services, customers, onSuccess, initialData }: Boo
             toast.success(initialData ? "Booking updated" : "Booking created successfully"); // Updated toast message
             router.refresh(); // Refresh server data
             onSuccess();
-        } catch (error: any) { // Updated error handling
+        } catch (error: unknown) { // Updated error handling
             console.error(error);
             toast.error(error.message);
         } finally {

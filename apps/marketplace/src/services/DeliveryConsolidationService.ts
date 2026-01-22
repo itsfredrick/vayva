@@ -133,7 +133,7 @@ export class DeliveryConsolidationService {
             },
         });
 
-        const consolidationData = (parentOrder?.metadata as any)
+        const consolidationData = (parentOrder?.metadata as unknown)
             ?.deliveryConsolidation;
 
         return {
@@ -143,7 +143,7 @@ export class DeliveryConsolidationService {
                 orderId: child.id,
                 storeName: child.store!.name,
                 allocatedFee: Number(child.deliveryFee),
-                allocation: (child.metadata as any)?.deliveryFeeAllocation,
+                allocation: (child.metadata as unknown)?.deliveryFeeAllocation,
             })),
             savings: consolidationData?.enabled
                 ? childOrders.reduce((sum, o) => sum + Number(o.deliveryFee), 0) -
@@ -155,12 +155,12 @@ export class DeliveryConsolidationService {
     /**
      * Helper to get order metadata safely
      */
-    private async getOrderMetadata(orderId: string): Promise<any> {
+    private async getOrderMetadata(orderId: string): Promise<unknown> {
         const order = await prisma.order.findUnique({
             where: { id: orderId },
             select: { metadata: true },
         });
-        return (order?.metadata as any) || {};
+        return (order?.metadata as unknown) || {};
     }
 }
 

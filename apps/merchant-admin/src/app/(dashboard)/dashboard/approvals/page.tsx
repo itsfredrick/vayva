@@ -9,7 +9,7 @@ type ApprovalRequest = {
   actionType: string;
   requestedByLabel: string;
   createdAt: string;
-  payload: any;
+  payload: unknown;
   status: "pending" | "approved" | "rejected" | "executed" | "failed";
   reason?: string;
   decisionReason?: string;
@@ -146,14 +146,14 @@ export default function ApprovalsPage() {
                     }`}
                 >
                   {item.status === "pending" && (
-                    <Icon name={"Clock" as any} size={20} />
+                    <Icon name={"Clock" as unknown} size={20} />
                   )}
                   {(item.status === "approved" ||
                     item.status === "executed") && (
-                      <Icon name={"CheckCircle" as any} size={20} />
+                      <Icon name={"CheckCircle" as unknown} size={20} />
                     )}
                   {(item.status === "rejected" || item.status === "failed") && (
-                    <Icon name={"XCircle" as any} size={20} />
+                    <Icon name={"XCircle" as unknown} size={20} />
                   )}
                 </div>
 
@@ -200,7 +200,7 @@ export default function ApprovalsPage() {
                 )}
 
                 <Icon
-                  name={"ChevronRight" as any}
+                  name={"ChevronRight" as unknown}
                   size={16}
                   className="text-gray-300 group-hover:text-black transition-colors"
                 />
@@ -243,7 +243,7 @@ export default function ApprovalsPage() {
                   onClick={() => setSelectedItem(null)}
                   className="rounded-full hover:bg-gray-200"
                 >
-                  <Icon name={"X" as any} size={20} />
+                  <Icon name={"X" as unknown} size={20} />
                 </Button>
               </div>
 

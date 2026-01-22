@@ -15,14 +15,14 @@ import {
   ChevronRight as ChevronRightIcon,
   Phone as PhoneIcon,
 } from "lucide-react";
-const Search = SearchIcon as any;
-const Package = PackageIcon as any;
-const Clock = ClockIcon as any;
-const CheckCircle = CheckCircleIcon as any;
-const Truck = TruckIcon as any;
-const AlertCircle = AlertCircleIcon as any;
-const ChevronRight = ChevronRightIcon as any;
-const Phone = PhoneIcon as any;
+const Search = SearchIcon as unknown;
+const Package = PackageIcon as unknown;
+const Clock = ClockIcon as unknown;
+const CheckCircle = CheckCircleIcon as unknown;
+const Truck = TruckIcon as unknown;
+const AlertCircle = AlertCircleIcon as unknown;
+const ChevronRight = ChevronRightIcon as unknown;
+const Phone = PhoneIcon as unknown;
 
 function OrderStatusContent() {
   const searchParams = useSearchParams();
@@ -30,7 +30,7 @@ function OrderStatusContent() {
 
   const [ref, setRef] = useState(searchParams.get("ref") || "");
   const [phone, setPhone] = useState(searchParams.get("phone") || "");
-  const [order, setOrder] = useState<any>(null);
+  const [order, setOrder] = useState<unknown>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -184,7 +184,7 @@ function OrderStatusContent() {
             <div className="space-y-6">
               <h3 className="font-bold text-lg px-2">Timeline</h3>
               <div className="space-y-8 relative before:absolute before:left-4 before:top-2 before:bottom-2 before:w-0.5 before:bg-gray-100">
-                {order.timeline?.map((event: any, idx: number) => (
+                {order.timeline?.map((event: unknown, idx: number) => (
                   <div key={idx} className="flex gap-6 relative">
                     <div
                       className={`w-8 h-8 rounded-full border-4 border-white flex items-center justify-center z-10 shadow-sm ${idx === 0 ? "bg-black text-white scale-110" : "bg-gray-200 text-gray-400"}`}

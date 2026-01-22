@@ -6,7 +6,7 @@ import { Truck, MapPin } from "lucide-react";
 import { useToast } from "@/components/ui/use-toast";
 
 interface FulfillmentDrawerProps {
-  order: any;
+  order: unknown;
   isOpen: boolean;
   onClose: () => void;
   onUpdate: () => void;

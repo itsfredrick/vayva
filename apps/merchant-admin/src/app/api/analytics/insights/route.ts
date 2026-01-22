@@ -9,7 +9,7 @@ export const GET = withVayvaAPI(
         try {
             const insights = await AnalyticsService.getInsights(storeId);
             return NextResponse.json({ insights });
-        } catch (error: any) {
+        } catch (error: unknown) {
             return NextResponse.json({ error: error.message || "Failed to fetch insights" }, { status: 500 });
         }
     }

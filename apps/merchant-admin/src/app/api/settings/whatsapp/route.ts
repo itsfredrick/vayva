@@ -7,17 +7,17 @@ import { z } from "zod";
 
 const UpdateSchema = z.object({
     type: z.enum(["SETTINGS", "CHANNEL"]),
-    data: z.record(z.any()),
+    data: z.record(z.unknown()),
 });
 
 /**
  * Recursively sanitize string values in an object
  */
-function sanitizePayload(obj: any): any {
+function sanitizePayload(obj: unknown): unknown {
     if (typeof obj === "string") return sanitizeHTML(obj);
     if (Array.isArray(obj)) return obj.map(sanitizePayload);
     if (obj !== null && typeof obj === "object") {
-        const sanitized: any = {};
+        const sanitized: unknown = {};
         for (const key of Object.keys(obj)) {
             sanitized[key] = sanitizePayload(obj[key]);
         }

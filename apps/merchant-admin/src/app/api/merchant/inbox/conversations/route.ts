@@ -11,7 +11,7 @@ export const GET = withVayvaAPI(
       const status = searchParams.get("status") || "OPEN";
       const limit = parseInt(searchParams.get("limit") || "20");
 
-      const where: any = { merchantId: storeId };
+      const where: unknown = { merchantId: storeId };
       if (status !== "ALL") where.status = status;
 
       const items = await prisma.conversation.findMany({
@@ -29,7 +29,7 @@ export const GET = withVayvaAPI(
       });
 
       const now = new Date();
-      const result = items.map((c: any) => {
+      const result = items.map((c: unknown) => {
         let slaStatus = "active";
         if (c.unreadCount > 0 && c.lastInboundAt) {
           const diff = now.getTime() - new Date(c.lastInboundAt).getTime();

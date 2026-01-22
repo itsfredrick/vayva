@@ -27,7 +27,7 @@ export const GET = withVayvaAPI(
       }
 
       return NextResponse.json(order);
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error("[ORDER_GET]", error);
       return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
     }
@@ -51,7 +51,7 @@ export const PATCH = withVayvaAPI(
       const updatedOrder = await OrderStateService.transition(id, status, user.id, storeId);
 
       return NextResponse.json({ success: true, order: updatedOrder });
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error("[ORDER_UPDATE]", error);
       const status = error.message === "Order not found" ? 404 : 500;
       return NextResponse.json({ error: error.message }, { status });

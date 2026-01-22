@@ -9,7 +9,7 @@ export async function checkIdempotency(key: string, tenantId: string) {
 export async function recordIdempotency(
   key: string,
   tenantId: string,
-  result: any,
+  result: unknown,
 ) {
   // Pending implementation
 }

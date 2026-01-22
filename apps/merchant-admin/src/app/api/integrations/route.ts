@@ -18,7 +18,7 @@ export async function GET() {
       return NextResponse.json({ error: "Store not found" }, { status: 404 });
     }
 
-    const settings = (store.settings as any) || {};
+    const settings = (store.settings as unknown) || {};
 
     return NextResponse.json({
       integrations: [
@@ -45,7 +45,7 @@ export async function GET() {
         },
       ],
     });
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error("Integrations fetch error:", error);
 
     if (error.message === "Unauthorized") {

@@ -94,7 +94,7 @@ export const ActionRow = ({
   onAction,
   description,
   destructive,
-}: any) => (
+}: unknown) => (
   <div className="flex items-center justify-between py-4 border-b border-gray-50 last:border-0">
     <div>
       <p className="text-sm font-medium text-black">{label}</p>

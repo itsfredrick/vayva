@@ -29,7 +29,7 @@ export const GET = withVayvaAPI(
       });
 
       return NextResponse.json({
-        members: members.map((m: any) => ({
+        members: members.map((m: unknown) => ({
           id: m.id,
           userId: m.userId,
           name:
@@ -40,7 +40,7 @@ export const GET = withVayvaAPI(
           status: m.status,
           joinedAt: m.createdAt,
         })),
-        invites: invites.map((i: any) => ({
+        invites: invites.map((i: unknown) => ({
           id: i.id,
           email: i.email,
           role: i.role,

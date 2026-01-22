@@ -13,7 +13,7 @@ export async function GET(req: Request) {
     const limit = 50;
     const skip = (page - 1) * limit;
 
-    const where: any = {};
+    const where: unknown = {};
     if (query) {
       where.OR = [
         { action: { contains: query, mode: "insensitive" } },
@@ -30,7 +30,7 @@ export async function GET(req: Request) {
     });
 
     return NextResponse.json({ logs });
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error("Ops Audit fetch error:", error);
     return NextResponse.json(
       { error: "Internal Server Error" },

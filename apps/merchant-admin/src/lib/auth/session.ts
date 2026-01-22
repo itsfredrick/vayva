@@ -14,7 +14,7 @@ export async function requireAuth() {
   // Verify user actually exists in DB and isn't banned/stale
   // (Prevents JWT persistence after account deletion)
   const user = await prisma.user.findUnique({
-    where: { id: (session.user as any).id },
+    where: { id: session.user?.id },
     select: { id: true, isEmailVerified: true } // Add 'isActive' if in schema
   });
 
@@ -38,13 +38,13 @@ export async function requireStoreAccess(storeId?: string) {
 
 // Helper for wrapping API routes with auth
 export function withAuth(
-  handler: (request: Request, session: any) => Promise<NextResponse>,
+  handler: (request: Request, session: unknown) => Promise<NextResponse>,
 ) {
-  return async (request: Request, context?: any) => {
+  return async (request: Request, context?: unknown) => {
     try {
       const session = await requireAuth();
       return await handler(request, session);
-    } catch (error: any) {
+    } catch (error: unknown) {
       if (error.message === "Unauthorized") {
         return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
       }

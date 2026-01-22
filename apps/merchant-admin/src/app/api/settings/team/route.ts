@@ -27,7 +27,7 @@ export async function GET(req: NextRequest) {
             select: { settings: true }
         });
 
-        const settings = (store?.settings as any) || {};
+        const settings = (store?.settings as unknown) || {};
         const invites = settings.invites || [];
 
         return NextResponse.json({

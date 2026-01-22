@@ -65,7 +65,7 @@ export default function HelpCenterPage() {
             </div>
 
             <div className="grid md:grid-cols-2 gap-8">
-              {categories.map((cat: any) => (
+              {categories.map((cat: unknown) => (
                 <div key={cat as string} className="space-y-4">
                   <h3 className="text-xs font-bold text-gray-400 uppercase tracking-widest px-2">
                     {cat as string}

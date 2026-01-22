@@ -61,14 +61,14 @@ export const WalletService = {
   },
 
   // 2. Ledger
-  getLedger: async (filters: any): Promise<Transaction[]> => {
+  getLedger: async (filters: unknown): Promise<Transaction[]> => {
     const entries = await PaymentService.getLedger();
     return entries.map((e) => ({
       id: e.id,
-      type: e.type.toLowerCase() as any,
+      type: e.type.toLowerCase() as unknown,
       amount: Number(e.amountKobo) / 100,
       currency: e.currency,
-      status: e.status.toLowerCase() as any,
+      status: e.status.toLowerCase() as unknown,
       description: e.title,
       date: e.createdAt,
       reference: e.reference,

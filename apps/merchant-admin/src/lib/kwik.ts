@@ -50,7 +50,7 @@ export const KwikService = {
         vehicleType?: "bike" | "car" | "van";
     }) {
         const token = await getKwikToken();
-        const vehicleMap: any = { bike: 1, car: 2, van: 3 };
+        const vehicleMap: unknown = { bike: 1, car: 2, van: 3 };
         const vehicleId = vehicleMap[data.vehicleType || "bike"] || 1;
 
         // Payload strictly per Kwik V2

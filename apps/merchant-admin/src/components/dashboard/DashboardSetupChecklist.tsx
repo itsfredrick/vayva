@@ -16,7 +16,7 @@ export function DashboardSetupChecklist() {
   const [isPersistedHidden, setIsPersistedHidden] = useState(false);
 
   // Detailed progress state
-  const [activation, setActivation] = useState<any>(null);
+  const [activation, setActivation] = useState<unknown>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -69,7 +69,7 @@ export function DashboardSetupChecklist() {
 
   // 1) Get Object name from industry
   const industrySlug = activation.industrySlug || "retail";
-  const config = (INDUSTRY_CONFIG as any)[industrySlug] || (INDUSTRY_CONFIG as any)["retail"];
+  const config = (INDUSTRY_CONFIG as unknown)[industrySlug] || (INDUSTRY_CONFIG as unknown)["retail"];
   const primaryObject = config?.primaryObject || "product";
   const objectLabel = primaryObject.charAt(0).toUpperCase() + primaryObject.slice(1).replace(/_/g, " ");
 

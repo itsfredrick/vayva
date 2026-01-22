@@ -50,7 +50,7 @@ export const DisputeList = ({ disputes, isLoading }: DisputeListProps) => {
           >
             <div className="flex items-start gap-3">
               <div className="w-10 h-10 bg-gray-100 rounded-full flex items-center justify-center text-gray-500 shrink-0">
-                <Icon name={"AlertTriangle" as any} size={20} />
+                <Icon name={"AlertTriangle" as unknown} size={20} />
               </div>
               <div>
                 <div className="flex items-center gap-2 mb-1">

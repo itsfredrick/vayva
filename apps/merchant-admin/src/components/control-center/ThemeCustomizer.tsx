@@ -9,13 +9,13 @@ interface SchemaField {
     id: string;
     label: string;
     type: "color" | "text" | "number" | "image" | "font";
-    default?: any;
+    default?: unknown;
     placeholder?: string;
 }
 
 interface ThemeCustomizerProps {
-    draft: any;
-    onUpdate: (data: any) => void;
+    draft: unknown;
+    onUpdate: (data: unknown) => void;
     onReset: () => void;
 }
 
@@ -24,11 +24,11 @@ interface ThemeCustomizerProps {
  * Renders a form to edit theme settings based on the template's configSchema.
  */
 export const ThemeCustomizer = ({ draft, onUpdate, onReset }: ThemeCustomizerProps) => {
-    const [config, setConfig] = useState<any>(draft.themeConfig || {});
+    const [config, setConfig] = useState<unknown>(draft.themeConfig || {});
     const template = draft.template;
 
     // Derived schema - in a real app this comes from the TemplateManifest
-    const schema: SchemaField[] = (template?.configSchema as any)?.settings || [
+    const schema: SchemaField[] = (template?.configSchema as unknown)?.settings || [
         { id: "primaryColor", label: "Primary Color", type: "color", default: "#000000" },
         { id: "backgroundColor", label: "Background", type: "color", default: "#ffffff" },
         { id: "fontFamily", label: "Typography", type: "font", default: "Inter" },
@@ -36,7 +36,7 @@ export const ThemeCustomizer = ({ draft, onUpdate, onReset }: ThemeCustomizerPro
         { id: "announcementText", label: "Announcement Bar", type: "text", default: "" },
     ];
 
-    const handleChange = (id: string, value: any) => {
+    const handleChange = (id: string, value: unknown) => {
         const newConfig = { ...config, [id]: value };
         setConfig(newConfig);
         onUpdate(newConfig);

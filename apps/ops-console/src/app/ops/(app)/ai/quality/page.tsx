@@ -64,7 +64,7 @@ export default function AiQualityPage() {
                         ) : !feedbacks?.length ? (
                             <tr><td colSpan={5} className="p-12 text-center text-gray-400">No feedback found.</td></tr>
                         ) : (
-                            feedbacks.map((item: any) => (
+                            feedbacks.map((item: unknown) => (
                                 <tr key={item.id} className="hover:bg-gray-50">
                                     <td className="px-6 py-4">
                                         {item.rating === "SOLVED" ? (

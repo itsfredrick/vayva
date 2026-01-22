@@ -24,11 +24,18 @@ import {
     Terminal
 } from "lucide-react";
 
+interface SearchResult {
+    url: string;
+    label: string;
+    type: string;
+    subLabel: string;
+}
+
 export function CommandMenu() {
     const router = useRouter();
     const [open, setOpen] = React.useState(false);
     const [query, setQuery] = React.useState("");
-    const [searchResults, setSearchResults] = React.useState<any[]>([]);
+    const [searchResults, setSearchResults] = React.useState<SearchResult[]>([]);
 
     // Debounce Search
     React.useEffect(() => {

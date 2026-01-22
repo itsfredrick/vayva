@@ -1,6 +1,6 @@
 import { SITE_ORIGIN } from "../route-policy";
 
-export function templateSchema(path: string, ctx?: Record<string, any>) {
+export function templateSchema(path: string, ctx?: Record<string, unknown>) {
   return {
     "@context": "https://schema.org",
     "@type": "Product",

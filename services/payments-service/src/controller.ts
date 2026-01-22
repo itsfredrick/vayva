@@ -1,8 +1,9 @@
 import { FastifyRequest, FastifyReply } from "fastify";
 import { z } from "zod";
-import { prisma, PaymentStatus } from "@vayva/db";
+import { prisma, Prisma } from "@vayva/db";
 import axios from "axios";
 import * as crypto from "crypto";
+// TODO: NotificationManager not yet exported from @vayva/shared
 
 const PAYSTACK_SECRET_KEY = process.env.PAYSTACK_SECRET_KEY;
 const IS_TEST_MODE = process.env.PAYSTACK_MOCK === "true";
@@ -18,7 +19,7 @@ const initializeSchema = z.object({
   amount: z.number(), // In Kobo
   currency: z.string().default("NGN"),
   callbackUrl: z.string().optional(),
-  metadata: z.any().optional(),
+  metadata: z.unknown().optional(),
 });
 
 export const initializeTransactionHandler = async (
@@ -48,8 +49,9 @@ export const initializeTransactionHandler = async (
   });
 
   // --- Trigger Payout Details Missing Notification ---
+  // TODO: Implement NotificationManager in @vayva/shared
+  /*
   try {
-    const { NotificationManager } = require("@vayva/shared");
     const bankCount = await prisma.bankBeneficiary.count({
       where: { storeId: order.storeId },
     });
@@ -62,6 +64,7 @@ export const initializeTransactionHandler = async (
   } catch (err) {
     console.error("[PaymentsService] Notification trigger error:", err);
   }
+  */
 
   // --- Paystack Logic (Existing) ---
   if (IS_TEST_MODE) {
@@ -91,7 +94,7 @@ export const initializeTransactionHandler = async (
         reference,
         callback_url: body.callbackUrl,
         metadata: {
-          ...body.metadata,
+          ...((body.metadata as Record<string, unknown>) || {}),
           orderId: body.orderId,
           storeId: order.storeId,
         },
@@ -102,10 +105,11 @@ export const initializeTransactionHandler = async (
     );
 
     return reply.send(response.data);
-  } catch (error: any) {
+  } catch (error: unknown) {
+    const errorMessage = error instanceof Error ? error.message : "Unknown error";
     console.error(
       "Paystack Initialize Error:",
-      error.response?.data || error.message,
+      axios.isAxiosError(error) ? error.response?.data : errorMessage,
     );
     return reply.status(500).send({ error: "Failed to initialize payment" });
   }
@@ -138,17 +142,22 @@ export const verifyPaymentHandler = async (
         },
       );
       paystackData = response.data.data;
-    } catch (error: any) {
+    } catch (error: unknown) {
+      const errorMessage = error instanceof Error ? error.message : "Unknown error";
       console.error(
         "Paystack Verify Error:",
-        error.response?.data || error.message,
+        axios.isAxiosError(error) ? error.response?.data : errorMessage,
       );
       return reply.status(500).send({ error: "Failed to verify payment" });
     }
   }
 
   if (paystackData.status === "success") {
-    await processSuccessfulPayment(tx, paystackData);
+    if (!tx.orderId) {
+      console.error("[PaymentsService] Transaction missing orderId:", tx.id);
+      return reply.status(400).send({ error: "Transaction missing orderId" });
+    }
+    await processSuccessfulPayment({ ...tx, orderId: tx.orderId, amount: Number(tx.amount) }, paystackData);
     const updated = await prisma.paymentTransaction.findUnique({
       where: { id: tx.id },
     });
@@ -180,7 +189,7 @@ export const webhookHandler = async (
     }
   }
 
-  const event = req.body as any;
+  const event = req.body as { event: string; data: { reference: string } };
   console.log("Paystack Webhook Received:", event.event);
 
   if (event.event === "charge.success") {
@@ -190,20 +199,22 @@ export const webhookHandler = async (
     });
 
     if (tx && tx.status !== "SUCCESS" && tx.status !== "VERIFIED") {
-      await processSuccessfulPayment(tx, event.data);
+      if (tx.orderId) {
+        await processSuccessfulPayment({ ...tx, orderId: tx.orderId, amount: Number(tx.amount) }, event.data);
+      }
     }
   }
 
   return reply.send({ status: "success" });
 };
 
-async function processSuccessfulPayment(tx: any, paystackData: any) {
+async function processSuccessfulPayment(tx: { id: string; orderId: string; currency: string; amount: number; reference: string; storeId: string }, paystackData: unknown) {
   // 1. Update Transaction
   await prisma.paymentTransaction.update({
     where: { id: tx.id },
     data: {
       status: "SUCCESS",
-      metadata: paystackData as any,
+      metadata: paystackData as Prisma.InputJsonValue,
     },
   });
 

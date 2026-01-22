@@ -14,7 +14,7 @@ export default function PickupPage() {
     const [locations, setLocations] = useState<any[]>([]);
     const [isLoading, setIsLoading] = useState(true);
     const [isOpen, setIsOpen] = useState(false);
-    const [editingLocation, setEditingLocation] = useState<any>(null);
+    const [editingLocation, setEditingLocation] = useState<unknown>(null);
 
     const fetchLocations = async () => {
         setIsLoading(true);
@@ -33,7 +33,7 @@ export default function PickupPage() {
         fetchLocations();
     }, []);
 
-    const handleSubmit = async (data: any) => {
+    const handleSubmit = async (data: unknown) => {
         try {
             const url = editingLocation
                 ? `/api/settings/pickup/${editingLocation.id}`

@@ -53,7 +53,7 @@ export default function PaymentStep() {
 
             setResolvedName(data.account_name);
             toast.success("Account verified!");
-        } catch (error: any) {
+        } catch (error: unknown) {
             setResolvedName("");
             toast.error(error.message);
         } finally {
@@ -104,7 +104,7 @@ export default function PaymentStep() {
                         title="Select Bank"
                     >
                         <option value="" disabled>Select a bank</option>
-                        {banks.map((bank: any) => (
+                        {banks.map((bank: unknown) => (
                             <option key={bank.code} value={bank.code}>{bank.name}</option>
                         ))}
                     </select>

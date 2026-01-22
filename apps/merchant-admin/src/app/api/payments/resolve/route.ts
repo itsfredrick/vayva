@@ -15,7 +15,7 @@ export async function GET(req: NextRequest) {
     try {
         const data = await PaystackService.resolveAccount(accountNumber, bankCode);
         return NextResponse.json(data);
-    } catch (error: any) {
+    } catch (error: unknown) {
         console.error("[BANK_RESOLVE]", error);
         return NextResponse.json({ error: "Could not resolve account" }, { status: 422 });
     }

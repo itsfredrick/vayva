@@ -31,7 +31,7 @@ export async function GET() {
 
         const itemFrequency: Record<string, number> = {};
         orders.forEach(o => {
-            o.items.forEach((item: any) => {
+            o.items.forEach((item: unknown) => {
                 itemFrequency[item.title] = (itemFrequency[item.title] || 0) + item.quantity;
             });
         });
@@ -87,7 +87,7 @@ export async function GET() {
             insights: aiInsights,
         });
 
-    } catch (error: any) {
+    } catch (error: unknown) {
         console.error("BI Analytics error:", error);
         return NextResponse.json(
             { error: "Failed to generate business intelligence" },

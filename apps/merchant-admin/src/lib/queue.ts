@@ -23,7 +23,7 @@ function createQueue(name: string, options: Partial<QueueOptions> = {}) {
     const connection = getRedis();
     return new Queue(name, {
         ...options,
-        connection: connection as any,
+        connection: connection as unknown,
         defaultJobOptions: {
             removeOnComplete: true,
             removeOnFail: 1000,
@@ -67,7 +67,7 @@ export const getInboundWhatsappQueue = () => {
 
 let _exportsQueue: Queue | null = null;
 export const getExportsQueue = () => {
-    if (!_exportsQueue) _exportsQueue = createQueue((QUEUES as any).EXPORTS_JOBS || "exports.jobs");
+    if (!_exportsQueue) _exportsQueue = createQueue((QUEUES as unknown).EXPORTS_JOBS || "exports.jobs");
     return _exportsQueue;
 };
 

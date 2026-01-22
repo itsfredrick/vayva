@@ -10,7 +10,7 @@ export async function GET() {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
-    const storeId = (session.user as any).storeId;
+    const storeId = (session.user as unknown).storeId;
 
     // Ensure env var is set for library logic
     process.env.OPS_INTEGRATION_HEALTH_ENABLED = "true";
@@ -18,7 +18,7 @@ export async function GET() {
     const health = await getIntegrationHealth(storeId);
 
     return NextResponse.json({ health });
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error("Integration health error:", error);
     return NextResponse.json(
       { error: "Internal Server Error" },

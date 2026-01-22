@@ -51,7 +51,7 @@ export const Select: React.FC<SelectProps> = ({
 
 export const SelectPrimitive = {
   Root: Select,
-  Trigger: React.forwardRef<HTMLButtonElement, any>(
+  Trigger: React.forwardRef<HTMLButtonElement, unknown>(
     ({ children, className, ...props }, ref) => (
       <div
         className={cn(
@@ -63,10 +63,10 @@ export const SelectPrimitive = {
       </div>
     ),
   ),
-  Value: ({ placeholder, children }: any) => (
+  Value: ({ placeholder, children }: unknown) => (
     <span className="text-sm">{children || placeholder}</span>
   ),
-  Content: ({ children, className }: any) => (
+  Content: ({ children, className }: unknown) => (
     <div
       className={cn(
         "absolute top-full left-0 w-full border bg-background z-50 mt-1 shadow-md rounded-md",
@@ -76,7 +76,7 @@ export const SelectPrimitive = {
       {children}
     </div>
   ),
-  Item: React.forwardRef<HTMLDivElement, any>(
+  Item: React.forwardRef<HTMLDivElement, unknown>(
     ({ children, className, value, ...props }, ref) => {
       const { onValueChange } = React.useContext(SelectContext);
       return (
@@ -97,18 +97,18 @@ export const SelectPrimitive = {
 } as const;
 
 // Exports matching shadcn pattern
-export const SelectGroup = ({ children }: any) => <div>{children}</div>;
+export const SelectGroup = ({ children }: unknown) => <div>{children}</div>;
 export const SelectValue = SelectPrimitive.Value;
 
 export const SelectTrigger = SelectPrimitive.Trigger;
 export const SelectContent = SelectPrimitive.Content;
 
-export const SelectLabel = ({ children, className }: any) => (
+export const SelectLabel = ({ children, className }: unknown) => (
   <div className={cn("px-2 py-1.5 text-sm font-semibold", className)}>
     {children}
   </div>
 );
 export const SelectItem = SelectPrimitive.Item;
-export const SelectSeparator = ({ className }: any) => (
+export const SelectSeparator = ({ className }: unknown) => (
   <div className={cn("-mx-1 my-1 h-px bg-muted", className)} />
 );

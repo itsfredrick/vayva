@@ -4,17 +4,17 @@ import { EventBus } from "@/lib/events/eventBus";
 // Pendingbing external services for V1
 const Services = {
   Refund: {
-    issue: async (payload: any) => {
+    issue: async (payload: unknown) => {
       return { refundId: "ref_test_123" };
     },
   },
   Campaign: {
-    send: async (payload: any) => {
+    send: async (payload: unknown) => {
       return { jobId: "job_camp_123" };
     },
   },
   Policies: {
-    publish: async (payload: any) => {
+    publish: async (payload: unknown) => {
       return { version: "v2" };
     },
   },
@@ -75,7 +75,7 @@ export async function executeApproval(
         data: {
           approvalRequestId: requestId,
           status: "success",
-          output: output as any,
+          output: output as unknown,
           finishedAt: new Date(),
         },
       }),
@@ -93,7 +93,7 @@ export async function executeApproval(
         correlationId,
       },
     });
-  } catch (error: any) {
+  } catch (error: unknown) {
     // Fail
     // Cannot update status to FAILED as it's not in enum. Log error.
 

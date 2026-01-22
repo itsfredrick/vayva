@@ -78,7 +78,7 @@ export class AiUsageService {
           tokensCount: inputTokens + outputTokens,
         },
       });
-    } catch (error: any) {
+    } catch (error: unknown) {
       logger.error("[AiUsageService] Log failure", error, { storeId });
     }
   }

@@ -15,13 +15,13 @@ export async function GET(request: Request) {
     }
 
     // Get store details with integrations
-    const store: any = await prisma.store.findUnique({
+    const store: unknown = await prisma.store.findUnique({
       where: { id: user.storeId },
       include: {
         paymentAccounts: true, // For Payment Status
         agent: true, // For WhatsApp Status
       },
-    } as any);
+    } as unknown);
 
     // Get wallet for KYC status
     const wallet = await prisma.wallet.findUnique({

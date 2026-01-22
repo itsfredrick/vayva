@@ -7,7 +7,7 @@ export async function GET(req: Request) {
     const status = searchParams.get("status");
 
     const disputes = await prisma.dispute.findMany({
-      where: status ? { status: status as any } : undefined,
+      where: status ? { status: status as unknown} : undefined,
       include: {
         store: { select: { name: true } },
         order: { select: { id: true } },
@@ -16,7 +16,7 @@ export async function GET(req: Request) {
       take: 100,
     });
 
-    const formattedDisputes = disputes.map((d: any) => ({
+    const formattedDisputes = disputes.map((d: unknown) => ({
       id: d.id,
       merchant: d.store.name,
       amount: d.amount,

@@ -131,21 +131,21 @@ export function sanitizeNumber(
  * Sanitize object keys and string values
  * Recursively sanitizes all string values in an object
  */
-export function sanitizeObject<T extends Record<string, any>>(
+export function sanitizeObject<T extends Record<string, unknown>>(
     obj: T,
     sanitizer: (value: string) => string = sanitizeText
 ): T {
-    const sanitized: any = {};
+    const sanitized = {} as Record<string, unknown>;
 
     for (const [key, value] of Object.entries(obj)) {
         if (typeof value === 'string') {
             sanitized[key] = sanitizer(value);
         } else if (Array.isArray(value)) {
-            sanitized[key] = value.map(item =>
+            sanitized[key] = value.map((item: unknown) =>
                 typeof item === 'string' ? sanitizer(item) : item
             );
-        } else if (value && typeof value === 'object') {
-            sanitized[key] = sanitizeObject(value, sanitizer);
+        } else if (value !== null && typeof value === 'object') {
+            sanitized[key] = sanitizeObject(value as Record<string, unknown>, sanitizer);
         } else {
             sanitized[key] = value;
         }
@@ -164,10 +164,11 @@ export function sanitizeFilename(filename: string): string {
     return filename
         // Remove path traversal
         .replace(/\.\./g, '')
-        .replace(/[\/\\]/g, '')
+        .replace(/[/\\]/g, '')
         // Remove null bytes
         .replace(/\0/g, '')
         // Remove control characters
+        // eslint-disable-next-line no-control-regex
         .replace(/[\x00-\x1f\x80-\x9f]/g, '')
         // Remove dangerous characters
         .replace(/[<>:"|?*]/g, '')
@@ -197,15 +198,15 @@ export function sanitizeSqlInput(input: string): string {
  * Validate and sanitize JSON input
  * Safely parses JSON and sanitizes string values
  */
-export function sanitizeJson<T = any>(
+export function sanitizeJson<T = unknown>(
     input: string,
     sanitizer: (value: string) => string = sanitizeText
 ): T | null {
     try {
         const parsed = JSON.parse(input);
 
-        if (typeof parsed === 'object' && parsed !== null) {
-            return sanitizeObject(parsed, sanitizer);
+        if (parsed !== null && typeof parsed === 'object' && !Array.isArray(parsed)) {
+            return sanitizeObject(parsed as Record<string, unknown>, sanitizer) as T;
         }
 
         return parsed;
@@ -218,8 +219,8 @@ export function sanitizeJson<T = any>(
  * Comprehensive sanitization for form data
  * Applies appropriate sanitization based on field type
  */
-export function sanitizeFormData(data: Record<string, any>): Record<string, any> {
-    const sanitized: Record<string, any> = {};
+export function sanitizeFormData(data: Record<string, unknown>): Record<string, unknown> {
+    const sanitized: Record<string, unknown> = {};
 
     for (const [key, value] of Object.entries(data)) {
         if (value === null || value === undefined) {
@@ -227,25 +228,25 @@ export function sanitizeFormData(data: Record<string, any>): Record<string, any>
             continue;
         }
 
-        // Determine sanitization based on field name/type
-        if (key.toLowerCase().includes('email')) {
+        const lowerKey = key.toLowerCase();
+        if (lowerKey.includes('email')) {
             sanitized[key] = sanitizeEmail(String(value));
-        } else if (key.toLowerCase().includes('url') || key.toLowerCase().includes('link')) {
+        } else if (lowerKey.includes('url') || lowerKey.includes('link')) {
             sanitized[key] = sanitizeUrl(String(value));
-        } else if (key.toLowerCase().includes('phone')) {
+        } else if (lowerKey.includes('phone')) {
             sanitized[key] = sanitizePhoneNumber(String(value));
-        } else if (key.toLowerCase().includes('html') || key.toLowerCase().includes('content')) {
+        } else if (lowerKey.includes('html') || lowerKey.includes('content')) {
             sanitized[key] = sanitizeHtml(String(value));
         } else if (typeof value === 'string') {
             sanitized[key] = sanitizeText(value);
         } else if (typeof value === 'number') {
             sanitized[key] = sanitizeNumber(value);
         } else if (Array.isArray(value)) {
-            sanitized[key] = value.map(item =>
+            sanitized[key] = value.map((item: unknown) =>
                 typeof item === 'string' ? sanitizeText(item) : item
             );
         } else if (typeof value === 'object') {
-            sanitized[key] = sanitizeFormData(value);
+            sanitized[key] = sanitizeFormData(value as Record<string, unknown>);
         } else {
             sanitized[key] = value;
         }
@@ -270,5 +271,5 @@ export function escapeHtml(input: string): string {
         '/': '&#x2F;'
     };
 
-    return input.replace(/[&<>"'\/]/g, char => htmlEntities[char]);
+    return input.replace(/[&<>"'/]/g, char => htmlEntities[char]);
 }

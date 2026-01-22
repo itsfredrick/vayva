@@ -16,7 +16,7 @@ export async function GET(request: Request) {
     const page = parseInt(searchParams.get("page") || "1");
     const limit = parseInt(searchParams.get("limit") || "25");
 
-    const where: any = {
+    const where: unknown = {
       storeId: user.storeId,
     };
 
@@ -42,7 +42,7 @@ export async function GET(request: Request) {
     ]);
 
     // Convert BigInt to Number for JSON response
-    const serialized = withdrawals.map((w: any) => ({
+    const serialized = withdrawals.map((w: unknown) => ({
       ...w,
       amountKobo: Number(w.amountKobo),
       feeKobo: Number(w.feeKobo),

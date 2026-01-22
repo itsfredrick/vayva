@@ -14,7 +14,7 @@ export async function GET(
   const { id } = await params;
 
   const job = await prisma.importJob.findUnique({ where: { id } });
-  if (!job || job.merchantId !== (session!.user as any).storeId)
+  if (!job || job.merchantId !== (session!.user as unknown).storeId)
     return new NextResponse("Forbidden", { status: 403 });
 
   return NextResponse.json(job);

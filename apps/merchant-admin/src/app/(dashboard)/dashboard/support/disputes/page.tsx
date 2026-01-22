@@ -182,7 +182,7 @@ export default function DisputesPage() {
                             <Textarea
                                 placeholder="Describe the service/product provided, tracking details, and communication history..."
                                 value={evidenceText}
-                                onChange={(e: any) => setEvidenceText(e.target.value)}
+                                onChange={(e: unknown) => setEvidenceText(e.target.value)}
                                 className="min-h-[150px]"
                             />
                         </div>

@@ -85,7 +85,7 @@ export default function StoreSettingsPage() {
             }
 
             toast.success("Store profile updated successfully");
-        } catch (error: any) {
+        } catch (error: unknown) {
             toast.error(error.message);
         } finally {
             setSaving(false);

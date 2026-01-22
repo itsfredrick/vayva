@@ -1,4 +1,4 @@
-import { prisma } from "@vayva/db";
+import { prisma, Prisma } from "@vayva/db";
 import bcrypt from "bcryptjs";
 import { cookies } from "next/headers";
 import crypto from "crypto";
@@ -103,7 +103,7 @@ export class OpsAuthService {
       select: { metadata: true },
     });
 
-    const count = failures.filter((f) => (f.metadata as any)?.ip === ip).length;
+    const count = failures.filter((f) => (f.metadata as Record<string, unknown>)?.ip === ip).length;
     return count >= MAX_ATTEMPTS;
   }
 
@@ -156,13 +156,13 @@ export class OpsAuthService {
   static async logEvent(
     userId: string | null,
     eventType: string,
-    metadata: any = {},
+    metadata: unknown = {},
   ) {
     await prisma.opsAuditEvent.create({
       data: {
         opsUserId: userId,
         eventType,
-        metadata,
+        metadata: (metadata as Prisma.InputJsonValue) ?? Prisma.JsonNull,
       },
     });
   }

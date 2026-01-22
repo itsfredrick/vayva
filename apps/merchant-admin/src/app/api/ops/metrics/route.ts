@@ -11,7 +11,7 @@ export async function GET() {
   try {
     const metrics = await getOpsMetrics();
     return NextResponse.json(metrics);
-  } catch (err: any) {
+  } catch (err: unknown) {
     console.error("Ops Metrics Error:", err);
     return NextResponse.json(
       { error: "Internal Server Error" },

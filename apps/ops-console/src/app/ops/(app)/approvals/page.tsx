@@ -90,7 +90,7 @@ export default function ApprovalsPage() {
         if (selectedIds.length === approvals.length) {
             setSelectedIds([]);
         } else {
-            setSelectedIds(approvals.map((a: any) => a.id));
+            setSelectedIds(approvals.map((a: unknown) => a.id));
         }
     };
 

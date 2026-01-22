@@ -10,14 +10,14 @@ import { PublicProduct } from "@/types/storefront";
 import { useParams } from "next/navigation";
 import NextLink from "next/link";
 import { PDPSkeleton } from "@/components/Skeletons";
-const Link = NextLink as any;
+const Link = NextLink as unknown;
 
 import Image from "next/image";
 import { FoodPDP } from "@/components/pdp/FoodPDP"; import { ServicePDP } from "@/components/pdp/ServicePDP";
 import { ReportProductDialog } from "@/components/pdp/ReportProductDialog";
 
 
-export default function ProductPage(props: any) {
+export default function ProductPage(props: unknown) {
   const { id } = useParams() as { id: string };
   const { store, addToCart } = useStore();
   const [product, setProduct] = useState<PublicProduct | null>(null);

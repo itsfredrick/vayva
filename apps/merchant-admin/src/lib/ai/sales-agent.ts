@@ -22,7 +22,7 @@ const groqClient = new GroqClient("SUPPORT");
 export interface SalesAgentResponse {
   message: string;
   suggestedActions?: string[];
-  data?: any;
+  data?: unknown;
 }
 
 /**
@@ -184,7 +184,7 @@ export class SalesAgent {
       const llmMessages = [
         { role: "system" as const, content: systemPrompt },
         ...messages.map(m => ({
-          role: m.role === "system" ? "system" : m.role === "assistant" ? "assistant" : m.role === "tool" ? "tool" : "user" as any,
+          role: m.role === "system" ? "system" : m.role === "assistant" ? "assistant" : m.role === "tool" ? "tool" : "user" as unknown,
           content: typeof m.content === "string" ? m.content : null
         }))
       ];
@@ -301,7 +301,7 @@ export class SalesAgent {
           name: store?.name || "Merchant",
           phone: settings.supportPhone || "",
           storeName: store?.name,
-        } as any).catch(e => console.error("Failed to notify merchant of lead", e));
+        } as unknown).catch(e => console.error("Failed to notify merchant of lead", e));
       }
 
       // 5.5. AI-Driven Escalation Filter
@@ -325,7 +325,7 @@ export class SalesAgent {
         message: choice.content || "I'm checking that for you right now.",
         suggestedActions: this.deriveActions(choice.content),
       };
-    } catch (error: any) {
+    } catch (error: unknown) {
       reportError(error, { context: "SalesAgent.handleMessage", storeId });
       return {
         message:
@@ -337,9 +337,9 @@ export class SalesAgent {
   private static getSystemPrompt(
     storeName: string,
     category: string | undefined,
-    profile: any,
+    profile: unknown,
     context: string,
-    storeMetadata?: any
+    storeMetadata?: unknown
   ): string {
     const tone = profile?.tonePreset || "Friendly";
     const brevity =

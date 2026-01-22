@@ -19,7 +19,7 @@ export const OrderTimelineEventSchema = z.object({
   type: z.enum(["STATUS_CHANGE", "NOTE", "EMAIL_SENT", "PAYMENT_EVENT"]),
   message: z.string(),
   userId: z.string().uuid().optional(), // If triggered by user
-  metadata: z.record(z.any()).optional(),
+  metadata: z.record(z.unknown()).optional(),
   createdAt: z.date(),
 });
 
@@ -48,8 +48,8 @@ export const OrderSchema = z.object({
   // Customer Info (Snapshot)
   email: z.string().email(),
   phone: z.string().optional(),
-  shippingAddress: z.record(z.any()).optional(), // Structured json
-  billingAddress: z.record(z.any()).optional(),
+  shippingAddress: z.record(z.unknown()).optional(), // Structured json
+  billingAddress: z.record(z.unknown()).optional(),
 
   items: z.array(OrderItemSchema).optional(), // Can be loaded separately
 

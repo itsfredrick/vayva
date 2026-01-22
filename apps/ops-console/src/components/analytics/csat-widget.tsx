@@ -4,7 +4,7 @@ import React, { useState, useEffect } from "react";
 import { Heart, TrendingUp, AlertTriangle, Smile, Meh, Frown } from "lucide-react";
 
 export function MerchantHappinessWidget() {
-    const [data, setData] = useState<any>(null);
+    const [data, setData] = useState<unknown>(null);
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {

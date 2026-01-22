@@ -9,7 +9,7 @@ import { Trash2, Plus, Upload } from "lucide-react";
 
 interface WholesaleProductFormProps {
     productId?: string;
-    initialData?: any;
+    initialData?: unknown;
 }
 
 export function WholesaleProductForm({ productId, initialData }: WholesaleProductFormProps) {
@@ -35,7 +35,7 @@ export function WholesaleProductForm({ productId, initialData }: WholesaleProduc
         name: "pricingTiers"
     });
 
-    const onSubmit = async (data: any) => {
+    const onSubmit = async (data: unknown) => {
         setIsSubmitting(true);
         try {
             // Base price is the price for the first tier (assumed highest price)
@@ -50,7 +50,7 @@ export function WholesaleProductForm({ productId, initialData }: WholesaleProduc
                     type: "wholesale",
                     moq: Number(data.moq),
                     unitOfMeasure: data.unitOfMeasure,
-                    pricingTiers: data.pricingTiers.map((t: any) => ({
+                    pricingTiers: data.pricingTiers.map((t: unknown) => ({
                         minQty: Number(t.minQty),
                         maxQty: Number(t.maxQty) || null, // null means unlimited
                         price: Number(t.price)

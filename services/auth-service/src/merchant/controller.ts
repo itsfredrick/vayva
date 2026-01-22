@@ -52,7 +52,7 @@ export const registerHandler = async (
   reply: FastifyReply,
 ) => {
   const { email, password, firstName, lastName, phone } =
-    (req.body as any) || {};
+    (req.body as unknown) || {};
 
   const existing = await prisma.user.findUnique({ where: { email } });
   if (existing)
@@ -84,7 +84,7 @@ export const loginHandler = async (
   req: FastifyRequest,
   reply: FastifyReply,
 ) => {
-  const { email, password } = (req.body as any) || {};
+  const { email, password } = (req.body as unknown) || {};
   const user = await prisma.user.findUnique({
     where: { email },
     include: { memberships: { include: { store: true } } },
@@ -142,7 +142,7 @@ export const verifyOtpHandler = async (
   req: FastifyRequest,
   reply: FastifyReply,
 ) => {
-  const { email, code } = (req.body as any) || {};
+  const { email, code } = (req.body as unknown) || {};
 
   const otp = await prisma.otpCode.findFirst({
     where: {
@@ -174,7 +174,7 @@ export const resendOtpHandler = async (
   req: FastifyRequest,
   reply: FastifyReply,
 ) => {
-  const { email } = (req.body as any) || {};
+  const { email } = (req.body as unknown) || {};
 
   // Create new OTP
   await storeOtp(email, "VERIFY");
@@ -197,7 +197,7 @@ export const getMeHandler = async (
   req: FastifyRequest,
   reply: FastifyReply,
 ) => {
-  const decoded = req.user as any;
+  const decoded = req.user as { sub: string; email?: string };
   const user = await prisma.user.findUnique({
     where: { id: decoded.sub },
     include: { memberships: { include: { store: true } } },
@@ -235,7 +235,7 @@ export const forgotPasswordHandler = async (
   req: FastifyRequest,
   reply: FastifyReply,
 ) => {
-  const { email } = (req.body as any) || {};
+  const { email } = (req.body as unknown) || {};
   const user = await prisma.user.findUnique({ where: { email } });
 
   if (user) {
@@ -261,7 +261,7 @@ export const resetPasswordHandler = async (
   req: FastifyRequest,
   reply: FastifyReply,
 ) => {
-  const { email, code, newPassword } = (req.body as any) || {};
+  const { email, code, newPassword } = (req.body as unknown) || {};
 
   const otp = await prisma.otpCode.findFirst({
     where: {

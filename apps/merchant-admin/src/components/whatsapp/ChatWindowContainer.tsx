@@ -3,7 +3,7 @@ import { ChatWindow } from "./ChatWindow";
 
 interface ChatWindowContainerProps {
   conversationId: string;
-  conversations: any[]; // Using any[] to match usage, ideally strict type
+  conversations: unknown[]; // Using any[] to match usage, ideally strict type
 }
 
 export function ChatWindowContainer({ conversationId, conversations }: ChatWindowContainerProps) {

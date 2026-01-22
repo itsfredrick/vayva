@@ -7,7 +7,7 @@ import { FlagService } from "@/lib/flags/flagService";
 import { RevenueService } from "@/lib/ai/revenue.service";
 
 export async function POST(request: NextRequest) {
-  let body: any;
+  let body: unknown;
   try {
     body = await request.json();
     const { email, password, firstName, lastName } = body;
@@ -105,7 +105,7 @@ export async function POST(request: NextRequest) {
     otpExpiresAt.setMinutes(otpExpiresAt.getMinutes() + 10); // 10 minutes expiry
 
     // Create user and store in a transaction
-    const user = await prisma.$transaction(async (tx: any) => {
+    const user = await prisma.$transaction(async (tx: unknown) => {
       // Create user
       const newUser = await tx.user.create({
         data: {

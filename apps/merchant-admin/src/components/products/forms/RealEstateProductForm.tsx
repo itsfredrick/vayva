@@ -27,7 +27,7 @@ export function RealEstateProductForm({ productId }: { productId?: string }) {
 
     const amenitiesList = ["WiFi", "Pool", "Gym", "Security", "Parking", "Air Conditioning", "Furnished"];
 
-    const onSubmit = async (data: any) => {
+    const onSubmit = async (data: unknown) => {
         setIsSubmitting(true);
         try {
             const payload = {

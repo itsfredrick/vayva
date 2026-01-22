@@ -3,8 +3,7 @@
 import { useState, useEffect } from "react";
 import { toast } from "sonner";
 import { Bot, Save, Loader2, Sparkles, MessageSquare, ShieldCheck, Zap } from "lucide-react";
-import { Button, Card, Input, Label, Select, Textarea } from "@vayva/ui";
-import { Switch } from "@/components/ui/switch";
+import { Button, Card, Input, Label, Select, Switch, Textarea } from "@vayva/ui";
 
 interface AiAgentSettings {
     enabled: boolean;

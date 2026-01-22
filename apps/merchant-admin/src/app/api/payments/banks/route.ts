@@ -13,7 +13,7 @@ export async function GET() {
             .map(b => ({ name: b.name, code: b.code }));
 
         return NextResponse.json(activeBanks);
-    } catch (error: any) {
+    } catch (error: unknown) {
         console.error("[BANKS_GET]", error);
         return NextResponse.json({ error: "Failed to fetch banks" }, { status: 500 });
     }

@@ -3,11 +3,10 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { Button, Input } from "@vayva/ui";
+import { Button, Input, Switch } from "@vayva/ui";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
-import { Switch } from "@/components/ui/switch";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { toast } from "sonner";
 import { Loader2, ArrowLeft } from "lucide-react";
@@ -52,7 +51,7 @@ export default function NewMenuItemPage() {
 
             toast.success("Menu item created!");
             router.push("/dashboard/menu-items");
-        } catch (error: any) {
+        } catch (error: unknown) {
             toast.error(error.message);
         } finally {
             setLoading(false);
@@ -141,7 +140,7 @@ export default function NewMenuItemPage() {
                                 <Label>Spice Level</Label>
                                 <Select
                                     value={metadata.spiceLevel}
-                                    onValueChange={(val: any) => setMetadata({ ...metadata, spiceLevel: val })}
+                                    onValueChange={(val: unknown) => setMetadata({ ...metadata, spiceLevel: val })}
                                 >
                                     <SelectTrigger>
                                         <SelectValue placeholder="Select level" />

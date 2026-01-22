@@ -5,7 +5,7 @@ import { Button, Input, Label, Icon } from "@vayva/ui";
 import { useRouter } from "next/navigation";
 
 interface CustomerFormProps {
-    initialData?: any;
+    initialData?: unknown;
     onSuccess: () => void;
 }
 
@@ -51,7 +51,7 @@ export function CustomerForm({ initialData, onSuccess }: CustomerFormProps) {
 
             router.refresh();
             onSuccess();
-        } catch (err: any) {
+        } catch (err: unknown) {
             setError(err.message);
         } finally {
             setIsLoading(false);

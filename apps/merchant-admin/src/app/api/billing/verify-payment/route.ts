@@ -62,7 +62,7 @@ export async function POST(request: Request) {
     const { newPlan } = verification;
 
     // 5. Update Store & Subscription in a transaction
-    await prisma.$transaction(async (tx: any) => {
+    await prisma.$transaction(async (tx: unknown) => {
       const store = await tx.store.findUnique({
         where: { id: storeId },
         select: { plan: true },
@@ -73,7 +73,7 @@ export async function POST(request: Request) {
       // Update store plan
       await tx.store.update({
         where: { id: storeId },
-        data: { plan: newPlan as any },
+        data: { plan: newPlan as unknown},
       });
 
       // Create or update subscription
@@ -107,13 +107,13 @@ export async function POST(request: Request) {
           provider: "PAYSTACK",
           amount: 0,
           currency: "NGN",
-          status: "SUCCESS" as any,
+          status: "SUCCESS" as unknown,
           type: "SUBSCRIPTION",
-          metadata: { newPlan, oldPlan } as any,
+          metadata: { newPlan, oldPlan } as unknown,
         },
         update: {
-          status: "SUCCESS" as any,
-          metadata: { newPlan, oldPlan } as any,
+          status: "SUCCESS" as unknown,
+          metadata: { newPlan, oldPlan } as unknown,
         },
       });
 
@@ -135,7 +135,7 @@ export async function POST(request: Request) {
       success: true,
       message: "Subscription updated successfully",
     });
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error("Payment verification error:", error);
 
     if (error.message === "Unauthorized") {

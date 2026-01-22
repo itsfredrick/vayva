@@ -28,7 +28,7 @@ export const OnboardingController = {
   ) => {
     const flow = await OnboardingController.getWizardState(storeId);
 
-    const updates: any = { currentStepKey: stepKey };
+    const updates: unknown = { currentStepKey: stepKey };
 
     if (action === "complete") {
       updates.completedSteps = [...flow.completedSteps, stepKey];
@@ -137,8 +137,8 @@ export const OnboardingController = {
     for (const item of items) {
       await prisma.goLiveChecklistItem.upsert({
         where: { storeId_key: { storeId, key: item.key } },
-        create: { storeId, ...item } as any,
-        update: { status: item.status } as any,
+        create: { storeId, ...item } as unknown,
+        update: { status: item.status } as unknown,
       });
     }
 
@@ -160,7 +160,7 @@ export const OnboardingController = {
     });
   },
 
-  updateStorefrontSettings: async (storeId: string, data: any) => {
+  updateStorefrontSettings: async (storeId: string, data: unknown) => {
     return await prisma.storefrontSettings.upsert({
       where: { storeId },
       create: { storeId, ...data },

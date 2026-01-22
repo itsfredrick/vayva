@@ -7,7 +7,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { toast } from "sonner";
 import { Loader2 } from "lucide-react";
 
-export function TestMessageDialog({ open, onOpenChange }: { open: boolean, onOpenChange: (open: boolean) => void, draftConfig: any }) {
+export function TestMessageDialog({ open, onOpenChange }: { open: boolean, onOpenChange: (open: boolean) => void, draftConfig: unknown }) {
     const [channel, setChannel] = useState("whatsapp");
     const [target, setTarget] = useState("");
     const [isSending, setIsSending] = useState(false);

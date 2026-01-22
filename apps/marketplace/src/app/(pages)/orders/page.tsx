@@ -12,7 +12,7 @@ export default async function OrdersPage({ searchParams }: { searchParams: { tab
     const tab = searchParams.tab || "orders";
 
     const orders = tab === "orders" ? await prisma.order.findMany({
-        where: { customerId: (session.user as any).id },
+        where: { customerId: session.user?.id },
         orderBy: { createdAt: "desc" },
         include: {
             _count: { select: { items: true } }
@@ -20,7 +20,7 @@ export default async function OrdersPage({ searchParams }: { searchParams: { tab
     }) : [];
 
     const requests = tab === "requests" ? await prisma.sourcingRequest.findMany({
-        where: { userId: (session.user as any).id },
+        where: { userId: session.user?.id },
         orderBy: { createdAt: "desc" }
     }) : [];
 

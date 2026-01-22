@@ -57,7 +57,7 @@ export default function LiveChatPage() {
                         ) : !handoffs?.length ? (
                             <tr><td colSpan={6} className="p-12 text-center text-gray-400">No active handoff requests. AI is handling everything!</td></tr>
                         ) : (
-                            handoffs.map((h: any) => (
+                            handoffs.map((h: unknown) => (
                                 <tr key={h.id} className="hover:bg-gray-50">
                                     <td className="px-6 py-4 font-medium text-gray-900">{h.storeName}</td>
                                     <td className="px-6 py-4 font-mono text-gray-600">{h.customerPhone}</td>

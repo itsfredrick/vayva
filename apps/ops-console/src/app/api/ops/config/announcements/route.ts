@@ -21,7 +21,7 @@ export async function GET(req: NextRequest) {
         }
 
         // Check if "deleted" (we will model delete as posting an empty announcement or active:false)
-        const announcement = latestInfo.metadata as any;
+        const announcement = latestInfo.metadata as unknown;
         if (!announcement.active) {
             return NextResponse.json({ announcement: null });
         }

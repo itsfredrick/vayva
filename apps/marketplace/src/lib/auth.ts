@@ -3,6 +3,17 @@ import CredentialsProvider from "next-auth/providers/credentials";
 
 // Simplified Auth Options for Marketplace Demo
 // In production, this would likely share the session with the main Vayva app
+declare module "next-auth" {
+    interface Session {
+        user: {
+            id: string;
+            name?: string | null;
+            email?: string | null;
+            image?: string | null;
+        }
+    }
+}
+
 export const authOptions: NextAuthOptions = {
     providers: [
         CredentialsProvider({
@@ -29,7 +40,7 @@ export const authOptions: NextAuthOptions = {
     callbacks: {
         async session({ session, token }) {
             if (token && session.user) {
-                (session.user as any).id = token.sub!;
+                session.user.id = token.sub!;
             }
             return session;
         }

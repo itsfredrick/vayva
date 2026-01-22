@@ -12,7 +12,7 @@ interface CustomerDrawerProps {
 
 interface CustomerStats {
   aov: number;
-  [key: string]: any;
+  [key: string]: unknown;
 }
 
 export const CustomerDrawer = ({

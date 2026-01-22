@@ -20,12 +20,12 @@ export const CommandPalette = () => {
         };
 
         // Expose trigger globally for button clicks
-        (window as any).triggerCommandPalette = () => setOpen(prev => !prev);
+        (window as unknown).triggerCommandPalette = () => setOpen(prev => !prev);
 
         document.addEventListener("keydown", down);
         return () => {
             document.removeEventListener("keydown", down);
-            delete (window as any).triggerCommandPalette;
+            delete (window as unknown).triggerCommandPalette;
         };
     }, []);
 
@@ -89,7 +89,7 @@ export const CommandPalette = () => {
                                     variant="ghost"
                                     className="w-full flex items-center gap-3 px-2 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-black rounded-lg transition-colors text-left"
                                 >
-                                    <Icon name={item.icon as any} size={16} className="text-gray-500" />
+                                    <Icon name={item.icon as unknown} size={16} className="text-gray-500" />
                                     {item.name}
                                     <Icon name="ArrowRight" size={14} className="ml-auto opacity-0 group-hover:opacity-50" />
                                 </Button>

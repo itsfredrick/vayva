@@ -14,16 +14,12 @@ import {
   Receipt,
   AlertTriangle,
   MessageSquare,
-  AppWindow,
   LogOut,
   ChevronLeft,
   ChevronRight,
   Terminal,
   DollarSign,
   BadgeCheck,
-  Star,
-  Package,
-  Shield,
 } from "lucide-react";
 
 const MENU_ITEMS = [

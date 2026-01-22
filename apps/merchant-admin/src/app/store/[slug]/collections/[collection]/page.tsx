@@ -88,7 +88,7 @@ export default function CollectionPage({
           {/* Toolbar */}
           <div className="flex gap-3 w-full md:w-auto">
             <Button variant="outline" size="sm" className="hidden md:flex">
-              <Icon name={"Sliders" as any} size={14} className="mr-2" />
+              <Icon name={"Sliders" as unknown} size={14} className="mr-2" />
               Filter
             </Button>
             <Button

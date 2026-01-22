@@ -11,7 +11,7 @@ export const PUT = withVayvaAPI(
             const { status } = await request.json();
             const updatedOrder = await KitchenService.updateStatus(id, status);
             return NextResponse.json(updatedOrder);
-        } catch (error: any) {
+        } catch (error: unknown) {
             return NextResponse.json({ error: error.message }, { status: 400 });
         }
     }

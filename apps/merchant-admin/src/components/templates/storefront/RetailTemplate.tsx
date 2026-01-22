@@ -135,7 +135,7 @@ const RetailHome = ({ config }: { config: StorefrontConfig }) => {
                 )}
               >
                 <Icon
-                  name={p.image as any}
+                  name={p.image as unknown}
                   size={48}
                   className="opacity-30 group-hover:scale-110 transition-transform duration-500 text-gray-600"
                 />
@@ -233,7 +233,7 @@ const RetailProduct = ({
       <div className="px-6 pb-24">
         <div className="aspect-square bg-gray-100 rounded-3xl mb-8 flex items-center justify-center">
           <Icon
-            name={currentProduct.image as any}
+            name={currentProduct.image as unknown}
             size={80}
             className="opacity-20"
           />
@@ -383,7 +383,7 @@ const RetailCart = ({ config }: { config: StorefrontConfig }) => {
             >
               <div className="w-20 h-20 bg-gray-100 rounded-lg flex items-center justify-center shrink-0">
                 <Icon
-                  name={item.product.image as any}
+                  name={item.product.image as unknown}
                   size={24}
                   className="opacity-30"
                 />

@@ -14,7 +14,7 @@ export const GET = withVayvaAPI(
 
             const bookings = await BookingService.getBookings(storeId, start, end);
             return NextResponse.json(bookings);
-        } catch (error: any) {
+        } catch (error: unknown) {
             return NextResponse.json({ error: error.message }, { status: 500 });
         }
     }
@@ -32,7 +32,7 @@ export const POST = withVayvaAPI(
                 endsAt: data.endsAt ? new Date(data.endsAt) : undefined
             });
             return NextResponse.json(booking);
-        } catch (error: any) {
+        } catch (error: unknown) {
             return NextResponse.json({ error: error.message }, { status: 400 });
         }
     }

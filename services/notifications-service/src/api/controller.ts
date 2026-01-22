@@ -7,7 +7,7 @@ interface SendNotificationBody {
   channel?: string;
   to: string;
   templateKey: string;
-  variables: Record<string, any>;
+  variables: Record<string, unknown>;
   customerId?: string;
   orderId?: string;
 }
@@ -33,13 +33,13 @@ export const NotificationController = {
   },
 
   updateTemplate: async (
-    req: FastifyRequest<{ Params: { id: string }; Body: any }>,
+    req: FastifyRequest<{ Params: { id: string }; Body: unknown }>,
     reply: FastifyReply,
   ) => {
     const { id } = req.params;
     const template = await prisma.notificationTemplate.update({
       where: { id },
-      data: req.body as any,
+      data: req.body as unknown,
     });
     return template;
   },

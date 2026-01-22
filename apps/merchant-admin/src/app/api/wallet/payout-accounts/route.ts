@@ -66,7 +66,7 @@ export async function POST(req: NextRequest) {
     });
 
     return NextResponse.json(account);
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error("Payout accounts error:", error);
     return NextResponse.json(
       { error: error.message || "Failed to save payout account" },

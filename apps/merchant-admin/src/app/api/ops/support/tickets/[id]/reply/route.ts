@@ -20,7 +20,7 @@ export async function POST(
       return NextResponse.json({ error: "Message required" }, { status: 400 });
 
     // 1. Create Reply
-    const reply = await (prisma as any).ticketMessage.create({
+    const reply = await (prisma as unknown).ticketMessage.create({
       data: {
         ticketId: params.id,
         message,
@@ -33,16 +33,16 @@ export async function POST(
 
     // 2. Update Ticket Timestamp
     // 2. Update Ticket Metadata
-    const ticket = await (prisma as any).supportTicket.findUnique({
+    const ticket = await (prisma as unknown).supportTicket.findUnique({
       where: { id: params.id },
     });
 
-    const updateData: any = { lastMessageAt: new Date() };
+    const updateData: unknown = { lastMessageAt: new Date() };
     if (!ticket.firstOpsReplyAt) {
       updateData.firstOpsReplyAt = new Date();
     }
 
-    await (prisma as any).supportTicket.update({
+    await (prisma as unknown).supportTicket.update({
       where: { id: params.id },
       data: updateData,
     });

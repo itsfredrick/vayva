@@ -1,7 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@vayva/db";
+import { withOpsAuth } from "@/lib/withOpsAuth";
 
-export async function GET(req: NextRequest) {
+export const GET = withOpsAuth(async (req, { user }) => {
     try {
         // Get date ranges for last 6 months
         const now = new Date();
@@ -71,4 +72,4 @@ export async function GET(req: NextRequest) {
             { status: 500 }
         );
     }
-}
+});

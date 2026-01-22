@@ -13,7 +13,7 @@ export function PWAInstallToast() {
         // Try to detect PWA status. If standalone, hide.
         const isStandalone =
             window.matchMedia("(display-mode: standalone)").matches ||
-            (window.navigator as any).standalone;
+            (window.navigator as unknown).standalone;
 
         if (isStandalone) return;
 

@@ -79,7 +79,7 @@ export function DataPrivacySettings() {
                       : "bg-gray-100 text-gray-400",
                   )}
                 >
-                  <Icon name={scope.icon as any} size={20} />
+                  <Icon name={scope.icon as unknown} size={20} />
                 </div>
                 <div className="flex-1">
                   <p className="text-sm font-bold text-black">

@@ -10,8 +10,8 @@ import { RefreshCw, CheckCircle2, AlertCircle, Link as LinkIcon, Unlink } from "
 import { format } from "date-fns";
 
 interface ConnectionCardProps {
-    channel: any;
-    onUpdate: (data: any) => Promise<void>;
+    channel: unknown;
+    onUpdate: (data: unknown) => Promise<void>;
 }
 
 export function ConnectionCard({ channel, onUpdate }: ConnectionCardProps) {

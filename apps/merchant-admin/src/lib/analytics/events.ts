@@ -29,7 +29,7 @@ export interface AnalyticsEvent extends BaseAnalyticsEvent {
   action: string;
   label?: string;
   value?: number;
-  metadata?: Record<string, any>;
+  metadata?: Record<string, unknown>;
 }
 
 // --- TAXONOMY DEFINITIONS ---
@@ -86,7 +86,7 @@ export const ENGAGEMENT_EVENTS = {
 export function createEventPayload(
   category: EventCategory,
   action: string,
-  metadata: Record<string, any> = {},
+  metadata: Record<string, unknown> = {},
   userId?: string,
   storeId?: string,
 ): Omit<AnalyticsEvent, "timestamp" | "eventId"> {

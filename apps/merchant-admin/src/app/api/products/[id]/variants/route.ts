@@ -41,7 +41,7 @@ export async function GET(
             options: v.options, // Ensure JSON is handled
             inventory: v.inventoryItems.reduce((acc, item) => acc + item.onHand, 0), // Sum across locations?
             imageId: v.imageId,
-            imageUrl: (v as any).productImages?.url
+            imageUrl: (v as unknown).productImages?.url
         }));
 
         return NextResponse.json(normalized);

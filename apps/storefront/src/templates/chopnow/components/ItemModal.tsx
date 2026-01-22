@@ -6,13 +6,13 @@ import { PublicProduct } from "@/types/storefront";
 interface ItemModalProps {
   item: PublicProduct;
   onClose: () => void;
-  onAddToCart: (item: any, total: number) => void;
+  onAddToCart: (item: unknown, total: number) => void;
 }
 
 export const ItemModal = ({ item, onClose, onAddToCart }: ItemModalProps) => {
   const [qty, setQty] = useState(1);
   const [selectedModifiers, setSelectedModifiers] = useState<
-    Record<string, any>
+    Record<string, unknown>
   >({});
 
   // Calculate total
@@ -20,7 +20,7 @@ export const ItemModal = ({ item, onClose, onAddToCart }: ItemModalProps) => {
 
   useEffect(() => {
     let modTotal = 0;
-    Object.values(selectedModifiers).forEach((val: any) => {
+    Object.values(selectedModifiers).forEach((val: unknown) => {
       if (typeof val === "number") modTotal += val; // Direct price
       if (Array.isArray(val)) {
         // Multi-select
@@ -34,7 +34,7 @@ export const ItemModal = ({ item, onClose, onAddToCart }: ItemModalProps) => {
     setSelectedModifiers((prev) => ({ ...prev, [modId]: price }));
   };
 
-  const handleToggle = (modId: string, option: any) => {
+  const handleToggle = (modId: string, option: unknown) => {
     // Simple logic for single select radio for now to keep it fast
     // For addons (checkboxes), we'd need array logic.
     // Testing 'addon' as single select for simplicity in this demo unless specified.

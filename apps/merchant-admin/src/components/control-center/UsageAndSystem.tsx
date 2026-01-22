@@ -11,7 +11,7 @@ export const UsageAndSystem = ({
   usage,
   systemStatus,
 }: UsageAndSystemProps) => {
-  const renderProgressBar = (metric: any) => {
+  const renderProgressBar = (metric: unknown) => {
     const percentage =
       metric.limit === "unlimited" ? 0 : (metric.used / metric.limit) * 100;
     const isNearLimit = typeof metric.limit === "number" && percentage > 80;

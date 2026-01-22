@@ -12,9 +12,9 @@ export const GET = withVayvaAPI(PERMISSIONS.COMMERCE_VIEW, async (request: NextR
       await Promise.all([
         prisma.order.count({ where: { storeId } }),
         prisma.order.count({
-          where: { storeId, paymentStatus: "PAID" as any },
+          where: { storeId, paymentStatus: "PAID" as unknown},
         }),
-        prisma.order.count({ where: { storeId, status: "REFUNDED" as any } }),
+        prisma.order.count({ where: { storeId, status: "REFUNDED" as unknown} }),
         prisma.customer.count({ where: { storeId } }),
       ]);
 

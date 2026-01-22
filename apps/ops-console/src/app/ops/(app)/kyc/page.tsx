@@ -49,7 +49,7 @@ export default function KycQueuePage() {
       }
       const data = await res.json();
       setRecords(data.data || []);
-    } catch (e: any) {
+    } catch (e: unknown) {
       setError(e?.message || "Failed to load KYC queue");
     } finally {
       setLoading(false);

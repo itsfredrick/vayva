@@ -3,13 +3,12 @@
 
 import { useState, useEffect } from "react";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
-import { Button, Input, Icon, IconName, cn } from "@vayva/ui";
+import { Button, Icon, IconName, Input, Switch, cn } from "@vayva/ui";
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Label } from "@/components/ui/label";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Switch } from "@/components/ui/switch";
 import { toast } from "sonner";
 import { Loader2, TrendingUp, DollarSign, Wallet, CreditCard, Lock, Building, AlertTriangle } from "lucide-react";
 import { formatCurrency } from "@/lib/utils";
@@ -26,14 +25,14 @@ interface FinanceOverview {
     pendingBalance: number;
     availableBalance: number;
     currency: string;
-    dailySales?: any[];
+    dailySales?: unknown[];
 }
 
 interface Payout {
     id: string;
     amount: number;
     status: string;
-    destination: any;
+    destination: unknown;
     reference: string;
     createdAt: string;
 }
@@ -141,7 +140,7 @@ export default function FinancePage() {
             setPassword("");
             setStep("DETAILS");
             fetchData();
-        } catch (error: any) {
+        } catch (error: unknown) {
             toast.error(error.message);
         } finally {
             setIsWithdrawing(false);

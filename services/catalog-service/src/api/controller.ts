@@ -9,7 +9,7 @@ interface CreateProductBody {
   description: string;
   status: string;
   trackInventory: boolean;
-  variants: any[];
+  variants: unknown[];
 }
 
 interface GenerateVariantsBody {
@@ -54,10 +54,10 @@ export const CatalogController = {
       status,
       trackInventory,
       variants,
-    } = req.body as any;
+    } = req.body as unknown;
 
     // Transaction to create product + variants + initial inventory
-    const result = await prisma.$transaction(async (tx: any) => {
+    const result = await prisma.$transaction(async (tx: unknown) => {
       // Explicit any for now if tx type inference fails
       const product = await tx.product.create({
         data: {
@@ -139,7 +139,7 @@ export const CatalogController = {
     req: FastifyRequest<{ Querystring: { storeId: string; status?: string } }>,
     reply: FastifyReply,
   ) => {
-    const { storeId, status } = req.query as any;
+    const { storeId, status } = req.query as unknown;
     if (!storeId) return reply.status(400).send({ error: "storeId required" });
 
     const products = await prisma.product.findMany({
@@ -177,7 +177,7 @@ export const CatalogController = {
   },
 
   updateProduct: async (
-    req: FastifyRequest<{ Params: { id: string }; Body: any }>,
+    req: FastifyRequest<{ Params: { id: string }; Body: unknown }>,
     reply: FastifyReply,
   ) => {
     const { id } = req.params;
@@ -185,7 +185,7 @@ export const CatalogController = {
 
     const product = await prisma.product.update({
       where: { id },
-      data: data as any,
+      data: data as unknown,
     });
     return product;
   },
@@ -221,26 +221,26 @@ export const CatalogController = {
     reply: FastifyReply,
   ) => {
     const { id } = req.params;
-    const { options } = req.body as any;
+    const { options } = req.body as unknown;
 
     const keys = Object.keys(options);
-    const cartesian = (...a: any[]) =>
+    const cartesian = (...a: unknown[]) =>
       a.reduce((a, b) =>
-        a.flatMap((d: any) => b.map((e: any) => [d, e].flat())),
+        a.flatMap((d: unknown) => b.map((e: unknown) => [d, e].flat())),
       );
 
     const valueArrays = keys.map((k) => options[k]);
     const combinations =
       valueArrays.length > 0
         ? valueArrays.length === 1
-          ? valueArrays[0].map((v: any) => [v])
+          ? valueArrays[0].map((v: unknown) => [v])
           : cartesian(...valueArrays)
         : [];
 
     const product = await prisma.product.findUnique({ where: { id } });
     if (!product) return reply.status(404).send({ error: "Product not found" });
 
-    const variantsToCreate = combinations.map((combo: any[]) => {
+    const variantsToCreate = combinations.map((combo: unknown[]) => {
       const variantOptions: Record<string, string> = {};
       keys.forEach((key, idx) => {
         variantOptions[key] = combo[idx];
@@ -298,7 +298,7 @@ export const CatalogController = {
     req: FastifyRequest<{ Querystring: { storeId: string } }>,
     reply: FastifyReply,
   ) => {
-    const { storeId } = req.query as any;
+    const { storeId } = req.query as unknown;
     // For V1 simple list
     const items = await prisma.inventoryItem.findMany({
       where: {
@@ -317,9 +317,9 @@ export const CatalogController = {
     reply: FastifyReply,
   ) => {
     const { storeId, variantId, quantity, reason, locationId } =
-      req.body as any;
+      req.body as unknown;
 
-    const result = await prisma.$transaction(async (tx: any) => {
+    const result = await prisma.$transaction(async (tx: unknown) => {
       let locId = locationId;
       if (!locId) {
         // Find or create default location
@@ -415,7 +415,7 @@ export const CatalogController = {
     req: FastifyRequest<{ Querystring: { storeId: string } }>,
     reply: FastifyReply,
   ) => {
-    const { storeId } = req.query as any;
+    const { storeId } = req.query as unknown;
     const collections = await prisma.collection.findMany({
       where: { storeId },
       include: { collectionProducts: { include: { product: true } } }

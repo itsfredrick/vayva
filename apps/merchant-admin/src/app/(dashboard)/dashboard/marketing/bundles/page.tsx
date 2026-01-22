@@ -46,7 +46,7 @@ export default function BundlesPage() {
             if (!res.ok) throw new Error("Failed to load bundles");
             const data = await res.json();
             // Client-side filter: Treat discounts applied to specific products/collections as "Bundles"
-            const bundleItems = data.filter((d: any) =>
+            const bundleItems = data.filter((d: unknown) =>
                 (d.appliesTo === "PRODUCTS" || d.appliesTo === "COLLECTIONS")
             );
             setBundles(bundleItems);
@@ -88,7 +88,7 @@ export default function BundlesPage() {
             setIsOpen(false);
             setFormData({ id: "", name: "", discount: "10", productIds: [], startsAt: "", endsAt: "" });
             fetchBundles();
-        } catch (error: any) {
+        } catch (error: unknown) {
             toast.error(error.message);
         } finally {
             setIsSubmitting(false);
@@ -238,7 +238,7 @@ export default function BundlesPage() {
                             <Input
                                 id="name"
                                 value={formData.name}
-                                onChange={(e: any) => setFormData({ ...formData, name: e.target.value })}
+                                onChange={(e: unknown) => setFormData({ ...formData, name: e.target.value })}
                                 placeholder="e.g. Summer Essentials"
                             />
                         </div>
@@ -250,7 +250,7 @@ export default function BundlesPage() {
                                 min="1"
                                 max="100"
                                 value={formData.discount}
-                                onChange={(e: any) => setFormData({ ...formData, discount: e.target.value })}
+                                onChange={(e: unknown) => setFormData({ ...formData, discount: e.target.value })}
                             />
                         </div>
                         <div className="grid grid-cols-2 gap-4">
@@ -260,7 +260,7 @@ export default function BundlesPage() {
                                     id="startsAt"
                                     type="datetime-local"
                                     value={formData.startsAt}
-                                    onChange={(e: any) => setFormData({ ...formData, startsAt: e.target.value })}
+                                    onChange={(e: unknown) => setFormData({ ...formData, startsAt: e.target.value })}
                                 />
                             </div>
                             <div className="grid gap-2">
@@ -269,7 +269,7 @@ export default function BundlesPage() {
                                     id="endsAt"
                                     type="datetime-local"
                                     value={formData.endsAt || ""}
-                                    onChange={(e: any) => setFormData({ ...formData, endsAt: e.target.value })}
+                                    onChange={(e: unknown) => setFormData({ ...formData, endsAt: e.target.value })}
                                 />
                             </div>
                         </div>

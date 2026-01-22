@@ -66,7 +66,7 @@ export async function POST(
             success: true,
             message: "Payouts enabled successfully",
         });
-    } catch (error: any) {
+    } catch (error: unknown) {
         if (error.message === "Unauthorized") {
             return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
         }

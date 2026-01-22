@@ -10,14 +10,14 @@ export async function GET(
     await OpsAuthService.requireSession();
     const { id } = await params;
 
-    const history = await (prisma as any).notificationLog.findMany({
+    const history = await (prisma as unknown).notificationLog.findMany({
       where: { storeId: id },
       orderBy: { createdAt: "desc" },
       take: 50,
     });
 
     return NextResponse.json(history);
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error("Notification history fetch error:", error);
     return NextResponse.json(
       { error: "Failed to fetch notification history" },

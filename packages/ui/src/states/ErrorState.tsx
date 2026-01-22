@@ -7,8 +7,8 @@ import { cn } from "../utils";
 import { Button } from "../components/Button";
 
 // Fix for LucideIcon type mismatch in this specific environment setup
-const AlertCircle = AlertCircleIcon as any;
-const RefreshCw = RefreshCwIcon as any;
+const AlertCircle = AlertCircleIcon as unknown;
+const RefreshCw = RefreshCwIcon as unknown;
 
 interface ErrorStateProps {
   title?: string;

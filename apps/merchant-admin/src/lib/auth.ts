@@ -4,8 +4,8 @@ import { PrismaAdapter } from "@auth/prisma-adapter";
 import { prisma } from "@vayva/db";
 import bcrypt from "bcryptjs";
 
-export const authOptions: any = {
-  adapter: PrismaAdapter(prisma) as any,
+export const authOptions: unknown = {
+  adapter: PrismaAdapter(prisma) as unknown,
   session: {
     strategy: "jwt",
     maxAge: 7 * 24 * 60 * 60, // 7 days
@@ -82,7 +82,7 @@ export const authOptions: any = {
     }),
   ],
   callbacks: {
-    async jwt({ token, user, trigger, session }: any) {
+    async jwt({ token, user, trigger, session }: unknown) {
       // 1. Initial Sign In
       if (user) {
         token.storeId = user.storeId;
@@ -129,7 +129,7 @@ export const authOptions: any = {
 
       return token;
     },
-    async session({ session, token }: any) {
+    async session({ session, token }: unknown) {
       // Enforce Idle Revocation
       if (token.error === "RefreshAccessTokenError") {
         return null; // Force sign out
@@ -137,14 +137,14 @@ export const authOptions: any = {
 
       // Add custom fields to session
       if (session.user) {
-        (session.user as any).id = token.sub!;
-        (session.user as any).storeId = token.storeId;
-        (session.user as any).storeName = token.storeName;
-        (session.user as any).role = token.role;
-        (session.user as any).plan = token.plan;
-        (session.user as any).trialEndsAt = token.trialEndsAt;
-        (session.user as any).emailVerified = token.emailVerified;
-        (session.user as any).onboardingCompleted = token.onboardingCompleted;
+        session.user?.id = token.sub!;
+        (session.user as unknown).storeId = token.storeId;
+        (session.user as unknown).storeName = token.storeName;
+        (session.user as unknown).role = token.role;
+        (session.user as unknown).plan = token.plan;
+        (session.user as unknown).trialEndsAt = token.trialEndsAt;
+        session.user?.emailVerified = token.emailVerified;
+        (session.user as unknown).onboardingCompleted = token.onboardingCompleted;
       }
       return session;
     },

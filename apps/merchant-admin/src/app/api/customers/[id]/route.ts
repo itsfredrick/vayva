@@ -30,7 +30,7 @@ export const GET = withVayvaAPI(
         // Calculate stats
         const totalOrders = customer.orders.length;
         const totalSpend = customer.orders.reduce((acc, order) => {
-            const val = (order.total as any).toNumber ? (order.total as any).toNumber() : Number(order.total);
+            const val = (order.total as unknown).toNumber ? (order.total as unknown).toNumber() : Number(order.total);
             return acc + val;
         }, 0);
         const aov = totalOrders > 0 ? totalSpend / totalOrders : 0;

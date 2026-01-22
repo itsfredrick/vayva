@@ -1,10 +1,10 @@
 export interface TelemetryEventPayload {
   eventName: string;
-  properties?: Record<string, any>;
+  properties?: Record<string, unknown>;
 }
 
 export const telemetry = {
-  track: async (eventName: string, properties?: Record<string, any>) => {
+  track: async (eventName: string, properties?: Record<string, unknown>) => {
     try {
       await fetch("/api/telemetry/event", {
         method: "POST",
@@ -22,7 +22,7 @@ export const telemetry = {
           },
         }),
       });
-    } catch (err: any) {
+    } catch (err: unknown) {
       // fail silently
       console.warn("Telemetry error:", err);
     }

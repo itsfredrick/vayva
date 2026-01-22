@@ -10,7 +10,7 @@ export const MICRO_TEMPLATES: Record<
   {
     name: string;
     description: string;
-    defaultContent: any;
+    defaultContent: unknown;
   }
 > = {
   // RETAIL

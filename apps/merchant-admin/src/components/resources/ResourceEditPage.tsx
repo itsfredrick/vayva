@@ -23,7 +23,7 @@ export function ResourceEditPage({
     const id = params.id as string;
 
     const [isLoading, setIsLoading] = useState(true);
-    const [initialData, setInitialData] = useState<any>(null);
+    const [initialData, setInitialData] = useState<unknown>(null);
     const [error, setError] = useState<string | null>(null);
 
     useEffect(() => {

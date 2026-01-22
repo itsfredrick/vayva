@@ -19,7 +19,7 @@ export const GET = withVayvaAPI(
             }
 
             return NextResponse.json(booking);
-        } catch (error: any) {
+        } catch (error: unknown) {
             return NextResponse.json({ error: error.message }, { status: 400 });
         }
     }
@@ -42,7 +42,7 @@ export const PUT = withVayvaAPI(
 
             const booking = await BookingService.updateBooking(storeId, id, updateData);
             return NextResponse.json(booking);
-        } catch (error: any) {
+        } catch (error: unknown) {
             return NextResponse.json({ error: error.message }, { status: 400 });
         }
     }
@@ -57,7 +57,7 @@ export const DELETE = withVayvaAPI(
             await prisma.booking.delete({
                 where: { id: id, storeId }
             }); return NextResponse.json({ success: true });
-        } catch (error: any) {
+        } catch (error: unknown) {
             return NextResponse.json({ error: error.message }, { status: 400 });
         }
     }

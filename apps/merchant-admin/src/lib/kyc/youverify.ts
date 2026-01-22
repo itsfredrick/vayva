@@ -45,7 +45,7 @@ export class YouverifyService {
     validationData?: VerificationValidationData,
     selfieImage?: string, // URL or base64
   ): Promise<YouverifyResponse> {
-    const payload: any = {
+    const payload: unknown = {
       id,
       isSubjectConsent: true,
     };
@@ -75,7 +75,7 @@ export class YouverifyService {
       );
 
       return response.data;
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error(
         "Youverify vNIN Error:",
         error.response?.data || error.message,
@@ -95,7 +95,7 @@ export class YouverifyService {
     selfieImage?: string,
     premium: boolean = true,
   ): Promise<YouverifyResponse> {
-    const payload: any = {
+    const payload: unknown = {
       id,
       isSubjectConsent: true,
       premiumBVN: premium,
@@ -126,7 +126,7 @@ export class YouverifyService {
       );
 
       return response.data;
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error(
         "Youverify BVN Error:",
         error.response?.data || error.message,

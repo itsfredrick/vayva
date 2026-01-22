@@ -26,7 +26,7 @@ export const TicketlyLayout = ({ store, products }: TicketlyLayoutProps) => {
   } | null>(null);
   const [successData, setSuccessData] = useState<{
     attendee: { name: string; email: string };
-    bankDetails?: any;
+    bankDetails?: unknown;
     storeName?: string;
     orderNumber?: string;
   } | null>(null);
@@ -41,7 +41,7 @@ export const TicketlyLayout = ({ store, products }: TicketlyLayoutProps) => {
     setIsCheckingOut(true);
   };
 
-  const handlePaymentComplete = (data: any) => {
+  const handlePaymentComplete = (data: unknown) => {
     setIsCheckingOut(false);
     setSuccessData(data);
   };

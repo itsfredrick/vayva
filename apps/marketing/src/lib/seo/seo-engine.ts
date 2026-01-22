@@ -20,7 +20,7 @@ export function robotsFor(path: string) {
   return { index: true, follow: true };
 }
 
-export function metadataFor(path: string, ctx?: Record<string, any>): Metadata {
+export function metadataFor(path: string, ctx?: Record<string, unknown>): Metadata {
   const robots = robotsFor(path);
   const canonicalPath = path;
 
@@ -51,7 +51,7 @@ export function metadataFor(path: string, ctx?: Record<string, any>): Metadata {
   };
 }
 
-function computeTitle(path: string, ctx?: Record<string, any>) {
+function computeTitle(path: string, ctx?: Record<string, unknown>) {
   const pt = pageTypeFor(path);
   switch (pt) {
     case "home":
@@ -69,7 +69,7 @@ function computeTitle(path: string, ctx?: Record<string, any>) {
   }
 }
 
-function computeDescription(path: string, ctx?: Record<string, any>) {
+function computeDescription(path: string, ctx?: Record<string, unknown>) {
   const pt = pageTypeFor(path);
   switch (pt) {
     case "home":
@@ -84,6 +84,6 @@ function computeDescription(path: string, ctx?: Record<string, any>) {
   }
 }
 
-export function jsonLdFor(path: string, ctx?: Record<string, any>) {
+export function jsonLdFor(path: string, ctx?: Record<string, unknown>) {
   return buildJsonLdFor(path, ctx);
 }

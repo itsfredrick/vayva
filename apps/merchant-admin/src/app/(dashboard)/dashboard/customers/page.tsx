@@ -26,7 +26,7 @@ export default async function CustomersPage() {
     const customers: Customer[] = dbCustomers.map(c => {
         const totalOrders = c.orders.length;
         const totalSpend = c.orders.reduce((acc, o) => {
-            const val = (o.total as any).toNumber ? (o.total as any).toNumber() : Number(o.total);
+            const val = (o.total as unknown).toNumber ? (o.total as unknown).toNumber() : Number(o.total);
             return acc + val;
         }, 0);
 

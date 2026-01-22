@@ -28,7 +28,7 @@ export default function ProductsPage() {
     const [meta, setMeta] = useState<{ total: number, limit: number, offset: number } | null>(null);
     const [loading, setLoading] = useState(true);
     const [isBulkMode, setIsBulkMode] = useState(false);
-    const [filters, setFilters] = useState<any>({ status: "ALL", category: "ALL" });
+    const [filters, setFilters] = useState<unknown>({ status: "ALL", category: "ALL" });
     const router = useRouter();
     const searchParams = useSearchParams();
 

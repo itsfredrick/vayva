@@ -13,7 +13,7 @@ import { prisma } from "@vayva/db";
 export interface HandlerContext {
     user: SessionUser;
     storeId: string;
-    params: any;
+    params: unknown;
     correlationId: string;
 }
 
@@ -31,7 +31,7 @@ type VayvaHandler = (
  * Implements: Auth, RBAC, Tenant Isolation, Rate Limiting, Idempotency, Step-up, and Structured Logging.
  */
 export function withVayvaAPI(permission: string, handler: VayvaHandler, options: HandlerOptions = {}) {
-    return async (req: NextRequest, ...args: any[]) => {
+    return async (req: NextRequest, ...args: unknown[]) => {
         const correlationId = uuidv4();
         const method = req.method;
         const endpoint = req.nextUrl.pathname;
@@ -136,7 +136,7 @@ export function withVayvaAPI(permission: string, handler: VayvaHandler, options:
             response.headers.set("X-Correlation-ID", correlationId);
             return response;
 
-        } catch (error: any) {
+        } catch (error: unknown) {
             const status = error.message === "Unauthorized" ? 401 : 500;
             const category = status === 401 ? ErrorCategory.AUTH : ErrorCategory.API;
 

@@ -16,7 +16,7 @@ export async function safeFetch(
     });
     clearTimeout(id);
     return response;
-  } catch (error: any) {
+  } catch (error: unknown) {
     clearTimeout(id);
     if (error.name === "AbortError") {
       throw new Error(`Request timed out after ${timeoutMs}ms`);

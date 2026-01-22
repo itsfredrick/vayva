@@ -19,7 +19,7 @@ export const OneProductLayout = ({
 }: OneProductLayoutProps) => {
   // Determine main product and upsell
   // Logic: Look for the first product as main, and the upsellProductId as secondary
-  const config = (store.theme as any).oneProductConfig || {};
+  const config = (store.theme as unknown).oneProductConfig || {};
 
   // Find main product (first one)
   const activeProduct = products[0];

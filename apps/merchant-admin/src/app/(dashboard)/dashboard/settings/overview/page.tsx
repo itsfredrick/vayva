@@ -1,8 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Button, Input, Label } from "@vayva/ui";
-import { Switch } from "@/components/ui/switch";
+import { Button, Input, Label, Switch } from "@vayva/ui";
 import { Save, User, Globe, Shield, CreditCard, Bell } from "lucide-react";
 import Link from "next/link";
 
@@ -75,7 +74,7 @@ export default function SettingsPage() {
                             id="store-name"
                             placeholder="Enter your store name"
                             value={name}
-                            onChange={(e: any) => setName(e.target.value)}
+                            onChange={(e: unknown) => setName(e.target.value)}
                         />
                         <p className="text-xs text-gray-500">This is visible to your customers.</p>
                     </div>
@@ -86,7 +85,7 @@ export default function SettingsPage() {
                             id="support-email"
                             placeholder="support@yourstore.com"
                             value={email}
-                            onChange={(e: any) => setEmail(e.target.value)}
+                            onChange={(e: unknown) => setEmail(e.target.value)}
                         />
                         <p className="text-xs text-gray-500">Where customers can reach you.</p>
                     </div>

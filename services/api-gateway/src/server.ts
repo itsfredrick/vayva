@@ -211,7 +211,7 @@ server.post("/webhooks/paystack", async (request, reply) => {
 
 server.get("/webhooks/whatsapp", async (request, reply) => {
   // Proxy verification to WhatsApp Service
-  const query = new URLSearchParams(request.query as any).toString();
+  const query = new URLSearchParams(request.query as unknown).toString();
   const response = await fetch(
     `${config.services.WHATSAPP}/v1/whatsapp/webhooks/whatsapp?${query}`,
     {
@@ -265,7 +265,7 @@ const start = async () => {
     console.log(`API Gateway running on port ${parseInt(config.PORT) || 4000}`);
     console.log(`Service Registry Loaded: ${Object.keys(config.services).length} services`);
   } catch (err) {
-    (server.log as any).error(err);
+    (server.log as unknown).error(err);
     process.exit(1);
   }
 };

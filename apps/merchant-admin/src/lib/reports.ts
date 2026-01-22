@@ -154,24 +154,24 @@ export class ReportsService {
       nextCursor = nextItem?.id;
     }
 
-    const items: ReconciliationRow[] = itemsRaw.map((o: any) => {
+    const items: ReconciliationRow[] = itemsRaw.map((o: unknown) => {
       const total = Number(o.total);
 
       // Sum successful payments
       const paidTransactions = o.paymentTransactions.filter(
-        (t: any) => t.status === "SUCCESS" && t.type === "CHARGE",
+        (t: unknown) => t.status === "SUCCESS" && t.type === "CHARGE",
       );
       const paidAmount = paidTransactions.reduce(
-        (acc: any, t: any) => acc + Number(t.amount),
+        (acc: unknown, t: unknown) => acc + Number(t.amount),
         0,
       );
 
       // Sum completed refunds via transactions
       const refundTransactions = o.paymentTransactions.filter(
-        (t: any) => t.status === "SUCCESS" && t.type === "REFUND",
+        (t: unknown) => t.status === "SUCCESS" && t.type === "REFUND",
       );
       const refundedAmount = refundTransactions.reduce(
-        (acc: any, t: any) => acc + Number(t.amount),
+        (acc: unknown, t: unknown) => acc + Number(t.amount),
         0,
       );
 

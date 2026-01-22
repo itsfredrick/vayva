@@ -154,7 +154,7 @@ function UserRow({ user, refresh }: { user: OpsUser; refresh: () => void }) {
             }
             toast.success("User removed");
             refresh();
-        } catch (e: any) {
+        } catch (e: unknown) {
             toast.error(e.message);
         } finally {
             setDeleting(false);
@@ -181,7 +181,7 @@ function UserRow({ user, refresh }: { user: OpsUser; refresh: () => void }) {
             }
             toast.success("User updated");
             refresh();
-        } catch (e: any) {
+        } catch (e: unknown) {
             toast.error(e.message);
         } finally {
             setDeleting(false);
@@ -273,7 +273,7 @@ function UserRow({ user, refresh }: { user: OpsUser; refresh: () => void }) {
     );
 }
 
-function InviteUserModal({ isOpen, onClose, onSuccess }: any) {
+function InviteUserModal({ isOpen, onClose, onSuccess }: unknown) {
     const [loading, setLoading] = useState(false);
     const [role, setRole] = useState("OPS_SUPPORT");
 
@@ -301,7 +301,7 @@ function InviteUserModal({ isOpen, onClose, onSuccess }: any) {
             toast.success("Invitation sent");
             onSuccess({ email: json.user.email, tempPass: json.tempPassword });
             onClose();
-        } catch (e: any) {
+        } catch (e: unknown) {
             toast.error(e.message);
         } finally {
             setLoading(false);

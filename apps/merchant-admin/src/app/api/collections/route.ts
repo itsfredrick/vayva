@@ -17,7 +17,7 @@ export const GET = withVayvaAPI(
         orderBy: { updatedAt: "desc" },
       });
 
-      const formatted = collections.map((col: any) => ({
+      const formatted = collections.map((col: unknown) => ({
         id: col.id,
         name: col.title,
         handle: col.handle,
@@ -80,7 +80,7 @@ export const POST = withVayvaAPI(
         success: true,
         data: collection,
       });
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error("Collection Create Error:", error);
       return NextResponse.json(
         { error: error.message || "Failed to create collection" },

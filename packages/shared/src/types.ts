@@ -1,13 +1,4 @@
-export interface ApiResponse<T> {
-  success: boolean;
-  data?: T;
-  error?: string;
-  meta?: {
-    page: number;
-    limit: number;
-    total: number;
-  };
-}
+// ApiResponse moved to ./api/types.ts
 
 export enum UserRole {
   OWNER = "OWNER",
@@ -352,7 +343,7 @@ export interface ProductServiceItem {
     isVirtual?: boolean;
     ticketTiers?: { name: string; price: number }[];
   };
-  metadata?: Record<string, any>;
+  metadata?: Record<string, unknown>;
 
   itemsSold?: number; // For analytics stats
   createdAt: string;
@@ -387,7 +378,7 @@ export interface CustomerActivity {
   status: string; // "completed", "sent", "received"
   date: string;
   description?: string;
-  metadata?: Record<string, any>; // For extra context like message ID or note author
+  metadata?: Record<string, unknown>; // For extra context like message ID or note author
 }
 
 export interface CustomerInsight {
@@ -509,7 +500,7 @@ export interface Notification {
   createdAt: string;
   resolvedAt?: string | null; // For critical issues that get resolved
   channels: NotificationChannel[]; // Which channels this was sent to
-  metadata?: Record<string, any>; // Flexible payload for specific UI needs (e.g. order amount)
+  metadata?: Record<string, unknown>; // Flexible payload for specific UI needs (e.g. order amount)
 }
 
 export interface NotificationPreferences {

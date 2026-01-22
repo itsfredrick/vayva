@@ -58,7 +58,7 @@ export class CartService {
         if (!cart) return null;
 
         // Cast to any to handle deep relations if types are strict
-        const typedCart = cart as any;
+        const typedCart = cart as unknown;
 
         // Group items by store
         const groups: Record<string, SplitCartGroup> = {};
@@ -94,7 +94,7 @@ export class CartService {
         const resultGroups: SplitCartGroup[] = Object.values(groups).map(group => {
             // ... fee logic ...
             const firstItem = group.items[0];
-            const settings = (firstItem as any).variant.product.store.deliverySettings;
+            const settings = (firstItem as unknown).variant.product.store.deliverySettings;
 
             let fee = 0;
             let feeType = "FLAT";
@@ -117,7 +117,7 @@ export class CartService {
             let groupPayable = fee;
 
             group.items.forEach(item => {
-                const product = (item as any).variant.product;
+                const product = (item as unknown).variant.product;
                 const price = Number(item.variant.price || 0) * item.quantity;
 
                 if (product.depositRequired && product.depositPercentage) {
@@ -157,7 +157,7 @@ export class CartService {
             include: { product: true }
         });
 
-        const product = (variant as any)?.product;
+        const product = (variant as unknown)?.product;
         if (!product) return null; // Should throw
 
         const moq = product.moq || 1;

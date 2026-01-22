@@ -46,7 +46,7 @@ export async function GET() {
       },
       invoices,
     });
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error("Billing fetch error:", error);
     return NextResponse.json(
       { error: "Failed to fetch billing info" },

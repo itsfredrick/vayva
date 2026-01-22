@@ -6,7 +6,7 @@ import { Users, TrendingUp, AlertCircle, Sparkles, Mail } from "lucide-react";
 import { logger, ErrorCategory } from "@/lib/logger";
 
 export default function InsightsPage() {
-  const [data, setData] = useState<any>(null);
+  const [data, setData] = useState<unknown>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {

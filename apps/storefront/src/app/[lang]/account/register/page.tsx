@@ -67,7 +67,7 @@ export default function RegisterPage() {
       );
 
       router.push(`/${lang}/account`);
-    } catch (e: any) {
+    } catch (e: unknown) {
       setError(e.message);
     } finally {
       setIsLoading(false);

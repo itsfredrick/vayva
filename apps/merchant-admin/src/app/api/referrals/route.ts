@@ -13,7 +13,7 @@ export async function GET() {
       select: { settings: true },
     });
 
-    let code = (store?.settings as any)?.referralCode;
+    let code = (store?.settings as unknown)?.referralCode;
     if (!code) {
       code = await ReferralService.generateCode(storeId);
     }
@@ -36,10 +36,10 @@ export async function GET() {
       code,
       stats: {
         total: stats.length,
-        conversions: stats.filter((s: any) => !!s.firstPaymentAt).length,
+        conversions: stats.filter((s: unknown) => !!s.firstPaymentAt).length,
       },
       pendingDiscount,
-      rewards: rewards.map((r: any) => ({
+      rewards: rewards.map((r: unknown) => ({
         id: r.id,
         amount: r.amount,
         createdAt: r.createdAt,

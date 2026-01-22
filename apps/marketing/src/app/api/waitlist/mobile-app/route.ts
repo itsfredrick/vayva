@@ -3,7 +3,7 @@ import { NextRequest, NextResponse } from "next/server";
 // Simplified implementation - database table will be added via Prisma migration
 // For now, just validate email and send confirmation
 
-export async function POST(request: NextRequest) {
+export async function POST(request: NextRequest): Promise<NextResponse> {
     try {
         const { email } = await request.json();
 

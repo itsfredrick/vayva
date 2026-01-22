@@ -30,9 +30,9 @@ interface Metric {
 interface DashMetrics {
   metrics: { [key: string]: Metric };
   charts: {
-    revenue: any[];
-    orders: any[];
-    fulfillment: any;
+    revenue: unknown[];
+    orders: unknown[];
+    fulfillment: unknown;
   };
 }
 
@@ -90,7 +90,7 @@ export const RetailOverview = () => {
   }: {
     label: string;
     status: string;
-    icon: any;
+    icon: unknown;
     healthy: boolean;
     detail?: string;
   }) => (

@@ -151,7 +151,7 @@ export class TemplateActivationTracker {
     userId: string,
     templateId: string,
     signal: keyof TemplateActivationSignals,
-    metadata?: Record<string, any>,
+    metadata?: Record<string, unknown>,
   ): Promise<void> {
     // Track as custom event with template context
     await trackEvent({

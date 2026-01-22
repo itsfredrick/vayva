@@ -12,7 +12,7 @@ export const GET = withVayvaAPI(
         where: { storeId },
       });
       return NextResponse.json(beneficiaries);
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error("Beneficiaries fetch error:", error);
       return NextResponse.json({ error: "Failed to fetch beneficiaries" }, { status: 500 });
     }
@@ -63,7 +63,7 @@ export const POST = withVayvaAPI(
       });
 
       return NextResponse.json(beneficiary);
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error("Beneficiary create error:", error);
       return NextResponse.json({ error: "Failed to add payout method" }, { status: 500 });
     }

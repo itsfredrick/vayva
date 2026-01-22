@@ -121,8 +121,8 @@ export const DesignerDashboard = () => {
                 <div className="w-24 h-24 bg-gray-100 rounded-lg overflow-hidden shrink-0">
                   <img
                     src={
-                      (tpl as any).previewImageDesktop ||
-                      (tpl as any).previewImages?.cover ||
+                      (tpl as unknown).previewImageDesktop ||
+                      (tpl as unknown).previewImages?.cover ||
                       "/images/template-previews/default-desktop.png"
                     }
                     alt={tpl.name}

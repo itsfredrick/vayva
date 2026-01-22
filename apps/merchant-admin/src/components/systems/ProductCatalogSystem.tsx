@@ -1,8 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import { Button, Icon, Input, cn } from "@vayva/ui";
-import { Switch } from "@/components/ui/switch";
+import { Button, Icon, Input, Switch, cn } from "@vayva/ui";
 
 // Master Prompt System 1: Product Catalog Onboarding
 // Three Micro-steps: Product -> Variants -> Pricing

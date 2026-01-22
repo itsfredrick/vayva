@@ -47,7 +47,7 @@ export const POST = withVayvaAPI(
         payload: { approvalId: id },
         ctx: {
           actorId: user.id,
-          actorType: "user" as any,
+          actorType: "user" as unknown,
           actorLabel: updated.decidedByLabel || "System",
           correlationId: request.correlationId || `req_${id}`,
         },
@@ -60,12 +60,12 @@ export const POST = withVayvaAPI(
           user.id,
           request.correlationId || `req_${id}`,
         );
-      } catch (err: any) {
+      } catch (err: unknown) {
         console.error("Execution Failed Immediately", err);
       }
 
       return NextResponse.json({ ok: true, status: "approved" });
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error("Approve Action Error:", error);
       return NextResponse.json({ error: "Internal Error" }, { status: 500 });
     }

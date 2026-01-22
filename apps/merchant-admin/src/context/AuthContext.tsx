@@ -6,9 +6,6 @@ import { apiClient } from "@vayva/api-client";
 import {
   User,
   MerchantContext,
-  UserRole,
-  OnboardingStatus,
-  BusinessType,
 } from "@vayva/shared";
 import { getAuthRedirect } from "@/lib/auth/redirects";
 
@@ -36,12 +33,15 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
   const fetchProfile = async () => {
     try {
-      const data = await apiClient.auth.me();
-      setUser(data.user);
-      setMerchant(data.merchant || null);
-    } catch (error) {
-      // API not available in development or user not authenticated - this is expected
-      // console.warn('Profile fetch skipped:', error instanceof Error ? error.message : 'API unavailable');
+      const response = await apiClient.auth.me();
+      if (response.success && response.data) {
+        setUser(response.data.user);
+        setMerchant(response.data.merchant || null);
+      } else {
+        setUser(null);
+        setMerchant(null);
+      }
+    } catch {
       setUser(null);
       setMerchant(null);
     }
@@ -159,7 +159,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         }
       }
     }
-  }, [user, merchant, isLoading, pathname]);
+  }, [user, merchant, isLoading, pathname, router]);
 
   const value = {
     user,

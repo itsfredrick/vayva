@@ -62,7 +62,7 @@ export async function POST(req: NextRequest) {
     await prisma.shipment.update({
         where: { id: shipment.id },
         data: {
-            status: vayvaStatus as any,
+            status: vayvaStatus as unknown,
             // Append to history/notes?
         }
     });

@@ -8,7 +8,7 @@ import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 
 interface PropertyListActionsProps {
-    property: any; // Ideally AccommodationProduct & { product: Product }
+    property: unknown; // Ideally AccommodationProduct & { product: Product }
 }
 
 export function PropertyListActions({ property }: PropertyListActionsProps) {
@@ -29,7 +29,7 @@ export function PropertyListActions({ property }: PropertyListActionsProps) {
             toast.success("Property deleted");
             router.refresh();
             setIsDeleteOpen(false);
-        } catch (error: any) {
+        } catch (error: unknown) {
             toast.error(error.message);
         } finally {
             setIsDeleting(false);

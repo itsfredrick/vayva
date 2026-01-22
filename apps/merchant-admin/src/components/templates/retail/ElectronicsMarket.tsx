@@ -123,7 +123,7 @@ export const ElectronicsMarketTemplate: React.FC<TemplateProps> = ({
                         <div key={item.id} className="group bg-white rounded-[2rem] p-4 border border-gray-100 hover:border-vayva-green/30 hover:shadow-2xl hover:shadow-green-500/5 transition-all duration-500">
                             <div className="aspect-[16/10] bg-gray-50 rounded-[1.5rem] mb-6 overflow-hidden relative">
                                 <img
-                                    src={(item as any).image || (item as any).images?.[0] || ""}
+                                    src={(item as unknown).image || (item as unknown).images?.[0] || ""}
                                     alt={item.name}
                                     className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
                                 />
@@ -138,7 +138,7 @@ export const ElectronicsMarketTemplate: React.FC<TemplateProps> = ({
                                 <div>
                                     <h3 className="text-xl font-black mb-1 group-hover:text-vayva-green transition-colors">{item.name}</h3>
                                     <p className="text-gray-400 text-sm font-bold opacity-0 group-hover:opacity-100 transition-opacity">
-                                        {(item as any).metadata?.specs}
+                                        {(item as unknown).metadata?.specs}
                                     </p>
                                 </div>
 

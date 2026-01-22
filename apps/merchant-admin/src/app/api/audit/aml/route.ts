@@ -9,7 +9,7 @@ export async function GET(req: Request) {
     const highRiskProfiles = await prisma.riskProfile.findMany({
       where: {
         status: riskLevel
-          ? { equals: riskLevel as any }
+          ? { equals: riskLevel as unknown}
           : { in: ["HIGH", "CRITICAL"] },
       },
       include: {
@@ -25,13 +25,13 @@ export async function GET(req: Request) {
       take: 50,
     });
 
-    const flaggedMerchants = highRiskProfiles.map((profile: any) => ({
+    const flaggedMerchants = highRiskProfiles.map((profile: unknown) => ({
       merchantId: profile.merchantId,
       storeName: profile.store.name,
       riskScore: profile.merchantRiskScore,
       riskLevel: profile.status,
       lastEvaluated: profile.lastEvaluatedAt,
-      reason: (profile.metadata as any)?.reason || "Automated Signal",
+      reason: (profile.metadata as unknown)?.reason || "Automated Signal",
       actionRequired:
         profile.status === "CRITICAL" ? "IMMEDIATE_REVIEW" : "MONITOR",
     }));

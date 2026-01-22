@@ -6,7 +6,7 @@ import { formatMoneyNGN } from "@/lib/billing/formatters";
 import { PLANS } from "@/lib/billing/plans";
 
 export default function BillingPage() {
-  const [status, setStatus] = useState<any>(null);
+  const [status, setStatus] = useState<unknown>(null);
   const [loading, setLoading] = useState(true);
   const [processing, setProcessing] = useState<string | null>(null); // plan slug
 
@@ -47,7 +47,7 @@ export default function BillingPage() {
 
       {isPastDue && (
         <div className="bg-red-50 border border-red-100 p-4 rounded-xl mb-8 flex items-center gap-4">
-          <Icon name={"AlertOctagon" as any} className="text-red-500" />
+          <Icon name={"AlertOctagon" as unknown} className="text-red-500" />
           <div className="flex-1">
             <h3 className="font-bold text-red-900">Payment Failed</h3>
             <p className="text-sm text-red-700">
@@ -59,7 +59,7 @@ export default function BillingPage() {
 
       <div className="bg-gray-50 border border-gray-100 rounded-2xl p-6 mb-12 flex items-start gap-4">
         <div className="w-10 h-10 rounded-full bg-white flex items-center justify-center shadow-sm text-gray-400">
-          <Icon name={"Info" as any} size={20} />
+          <Icon name={"Info" as unknown} size={20} />
         </div>
         <div>
           <h4 className="font-bold text-gray-900">Transaction Disclosure</h4>
@@ -98,15 +98,15 @@ export default function BillingPage() {
 
               <ul className="space-y-3 mb-8 text-sm text-gray-600">
                 <li className="flex gap-2">
-                  <Icon name={"Check" as any} size={16} />{" "}
+                  <Icon name={"Check" as unknown} size={16} />{" "}
                   {plan.limits.teamSeats} Team Seat(s)
                 </li>
                 <li className="flex gap-2">
-                  <Icon name={"Check" as any} size={16} /> Campaign Limit:{" "}
+                  <Icon name={"Check" as unknown} size={16} /> Campaign Limit:{" "}
                   {plan.limits.monthlyCampaignSends}
                 </li>
                 <li className="flex gap-2">
-                  <Icon name={"Check" as any} size={16} />{" "}
+                  <Icon name={"Check" as unknown} size={16} />{" "}
                   {plan.features.approvals
                     ? "Approvals Included"
                     : "Basic Tools"}
@@ -145,7 +145,7 @@ export default function BillingPage() {
           </thead>
           <tbody className="divide-y">
             {status?.invoices?.length > 0 ? (
-              status.invoices.map((inv: any) => (
+              status.invoices.map((inv: unknown) => (
                 <tr key={inv.id}>
                   <td className="px-6 py-4">
                     {new Date(inv.issuedAt).toLocaleDateString()}

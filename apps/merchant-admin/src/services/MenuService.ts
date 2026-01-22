@@ -1,7 +1,7 @@
 
 import { db } from "@/lib/db";
-import { FoodProductForm, FoodProductMetadata } from "@/lib/types/food";
-import { Prisma } from "@vayva/db";
+import { FoodProductForm } from "@/lib/types/food";
+import { Prisma, PaymentStatus, FulfillmentStatus } from "@vayva/db";
 
 export const MenuService = {
     async createMenuItem(storeId: string, data: FoodProductForm) {
@@ -34,7 +34,7 @@ export const MenuService = {
                 // Using fulfillmentStatus as proxy for Kitchen Status
                 // In a real system, might want a specific 'kitchenStatus' field
                 fulfillmentStatus: { in: ["UNFULFILLED", "PREPARING"] },
-                paymentStatus: { in: ["SUCCESS", "PAID", "VERIFIED"] as any } // Cast for enum mismatch if any
+                paymentStatus: { in: ["SUCCESS", "PAID"] as PaymentStatus[] } // SUCCESS and PAID are typical members
             },
             include: {
                 items: true,
@@ -54,7 +54,7 @@ export const MenuService = {
         return await db.order.update({
             where: { id: orderId },
             data: {
-                fulfillmentStatus: fulfillmentStatus as any
+                fulfillmentStatus: fulfillmentStatus as FulfillmentStatus
             }
         });
     }

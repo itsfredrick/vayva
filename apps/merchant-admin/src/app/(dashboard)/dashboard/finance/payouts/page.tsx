@@ -159,7 +159,7 @@ function StatusBadge({ status }: { status: string }) {
         FAILED: "bg-red-100 text-red-700 border-red-200",
     };
 
-    const icons: Record<string, any> = {
+    const icons: Record<string, unknown> = {
         SUCCESS: CheckCircle2,
         FAILED: AlertCircle,
     };
@@ -192,7 +192,7 @@ function WithdrawalModal({
     const [pin, setPin] = useState("");
     const [accountId, setAccountId] = useState("");
     const [showStepUp, setShowStepUp] = useState(false);
-    const [pendingWithdrawal, setPendingWithdrawal] = useState<any>(null);
+    const [pendingWithdrawal, setPendingWithdrawal] = useState<unknown>(null);
 
     useEffect(() => {
         if (!accountId && accounts.length > 0) {
@@ -239,7 +239,7 @@ function WithdrawalModal({
             }
 
             onSuccess();
-        } catch (error: any) {
+        } catch (error: unknown) {
             toast.error(error.message);
         } finally {
             setLoading(false);
@@ -366,7 +366,7 @@ function WithdrawalModal({
                                 setShowStepUp(false);
                                 setPendingWithdrawal(null);
                                 onSuccess();
-                            } catch (error: any) {
+                            } catch (error: unknown) {
                                 throw error; // Let StepUpDialog handle the error
                             }
                         }}
@@ -398,7 +398,7 @@ function StepUpDialog({
         try {
             await onVerify(password);
             toast.success("Withdrawal verified successfully");
-        } catch (error: any) {
+        } catch (error: unknown) {
             toast.error(error.message || "Verification failed");
         } finally {
             setLoading(false);

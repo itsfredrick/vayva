@@ -94,7 +94,7 @@ export async function POST(
     });
 
     return NextResponse.json({ success: true, shipment: updated });
-  } catch (error: any) {
+  } catch (error: unknown) {
     return NextResponse.json({ error: error.message }, { status: 500 });
   }
 }

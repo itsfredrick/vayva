@@ -7,7 +7,7 @@ export interface EmailPayload {
   merchantId?: string;
   userId?: string;
   correlationId: string;
-  meta?: any;
+  meta?: unknown;
 }
 
 export interface EmailResult {

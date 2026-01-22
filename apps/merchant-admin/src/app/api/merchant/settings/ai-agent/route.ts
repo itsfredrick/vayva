@@ -12,7 +12,7 @@ export const GET = withVayvaAPI(
                 select: { settings: true }
             });
 
-            const settings = (store?.settings as any) || {};
+            const settings = (store?.settings as unknown) || {};
             const aiAgent = settings.aiAgent || {
                 enabled: false,
                 tone: "PROFESSIONAL",
@@ -40,7 +40,7 @@ export const PATCH = withVayvaAPI(
                 select: { settings: true }
             });
 
-            const currentSettings = (store?.settings as any) || {};
+            const currentSettings = (store?.settings as unknown) || {};
             const updatedAiAgent = {
                 ...currentSettings.aiAgent,
                 enabled: enabled ?? currentSettings.aiAgent?.enabled,

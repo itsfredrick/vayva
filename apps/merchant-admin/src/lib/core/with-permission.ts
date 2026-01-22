@@ -13,7 +13,7 @@ import { redirect } from "next/navigation";
  * export const POST = withPermission("orders:manage", async (req, session) => { ... });
  */
 export function withPermission(permission: PermissionKey, handler: Function) {
-    return async (req: NextRequest, ...args: any[]) => {
+    return async (req: NextRequest, ...args: unknown[]) => {
         try {
             const session = await requireAuth();
 
@@ -30,7 +30,7 @@ export function withPermission(permission: PermissionKey, handler: Function) {
             }
 
             return await handler(req, session, ...args);
-        } catch (error: any) {
+        } catch (error: unknown) {
             if (error.message === "Unauthorized") {
                 return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
             }

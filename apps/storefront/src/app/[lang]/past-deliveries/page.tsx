@@ -31,7 +31,7 @@ function Toast({ message, show }: { message: string; show: boolean }) {
   );
 }
 
-export default function PastDeliveriesPage({ params }: any) {
+export default function PastDeliveriesPage({ params }: unknown) {
   const { lang: rawLang } = useParams() as { lang: string };
   const lang = (rawLang === "tr" ? "tr" : "en") as LocaleKey;
   const { store } = useStore();

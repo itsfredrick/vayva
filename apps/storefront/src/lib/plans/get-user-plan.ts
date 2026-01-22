@@ -19,7 +19,7 @@ interface PlanResolution {
  * @param testOverride - Optional override for testing/demos.
  */
 export async function getUserPlan(
-  store?: any,
+  store?: unknown,
   testOverride?: TemplatePlanTier,
 ): Promise<PlanResolution> {
   // 1. Dev/Demo Override

@@ -14,7 +14,7 @@ export interface OrderTimelineEvent {
   type: string;
   text: string;
   createdAt: string;
-  metadata?: any;
+  metadata?: unknown;
 }
 
 export interface Order {
@@ -53,7 +53,7 @@ export interface Order {
 }
 
 export const OrdersService = {
-  getOrders: async (filters: any): Promise<Order[]> => {
+  getOrders: async (filters: unknown): Promise<Order[]> => {
     const response = await api.get("/orders", { params: filters });
     return response.data;
   },

@@ -17,7 +17,7 @@ export function FashionProductForm({ productId }: { productId?: string }) {
     const [isSubmitting, setIsSubmitting] = useState(false);
     const { register, handleSubmit, formState: { errors } } = useForm();
 
-    const onSubmit = async (data: any) => {
+    const onSubmit = async (data: unknown) => {
         setIsSubmitting(true);
         // Transform flat data into structured metadata
         const payload = {

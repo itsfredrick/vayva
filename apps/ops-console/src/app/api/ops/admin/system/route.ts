@@ -19,7 +19,7 @@ export async function GET(request: Request) {
                 obj[key] = process.env[key];
             }
             return obj;
-        }, {} as any);
+        }, {} as unknown);
 
     const data = {
         env: process.env.NODE_ENV,

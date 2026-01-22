@@ -38,8 +38,9 @@ export const processHandler = async (
       } else {
         responseText = "I couldn't find any recent orders for this phone number.";
       }
-    } catch (err: any) {
-      console.error("AI Order Lookup Failed:", err.message);
+    } catch (err: unknown) {
+      const errorMessage = err instanceof Error ? err.message : "Unknown error";
+      console.error("AI Order Lookup Failed:", errorMessage);
       responseText = "I'm having trouble accessing order details right now. Please allow me to connect you to an agent.";
     }
   } else if (text.includes("discount") || text.includes("promo") || text.includes("coupon")) {
@@ -61,6 +62,8 @@ export const processHandler = async (
     responseText = `I've requested a 10% discount for you. A manager is reviewing it now. (Ref: ${approval.id.slice(0, 8)})`;
   } else if (text.includes("find") || text.includes("source") || text.includes("bulk") || text.includes("import")) {
     // Sourcing / Product Matching
+    // TODO: Implement ChinaSyncService in @vayva/shared
+    /*
     const { ChinaSyncService } = require("@vayva/shared");
     const suggestion = await ChinaSyncService.suggestSupplier(text);
 
@@ -69,6 +72,8 @@ export const processHandler = async (
     } else {
       responseText = "I've logged your interest in sourcing this product. Our agents will look for the best deals in China and get back to you.";
     }
+    */
+    responseText = "I've logged your interest in sourcing this product. Our agents will look for the best deals in China and get back to you.";
   } else if (text.includes("help") || text.includes("support") || text.includes("problem")) {
     responseText = "I've notified our support team! A human agent will jump in to assist you shortly. In the meantime, feel free to share any more details about the issue.";
   } else {

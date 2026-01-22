@@ -32,7 +32,7 @@ interface RequestConfig extends RequestInit {
 interface ApiError extends Error {
   status?: number;
   code?: string;
-  details?: any;
+  details?: unknown;
   correlationId?: string;
 }
 
@@ -66,16 +66,16 @@ class ApiClient {
   /**
    * Make a GET request
    */
-  async get<T = any>(url: string, config?: RequestConfig): Promise<T> {
+  async get<T = unknown>(url: string, config?: RequestConfig): Promise<T> {
     return this.request<T>(url, { ...config, method: "GET" });
   }
 
   /**
    * Make a POST request
    */
-  async post<T = any>(
+  async post<T = unknown>(
     url: string,
-    data?: any,
+    data?: unknown,
     config?: RequestConfig,
   ): Promise<T> {
     return this.request<T>(url, {
@@ -88,9 +88,9 @@ class ApiClient {
   /**
    * Make a PUT request
    */
-  async put<T = any>(
+  async put<T = unknown>(
     url: string,
-    data?: any,
+    data?: unknown,
     config?: RequestConfig,
   ): Promise<T> {
     return this.request<T>(url, {
@@ -103,7 +103,7 @@ class ApiClient {
   /**
    * Make a DELETE request
    */
-  async delete<T = any>(url: string, config?: RequestConfig): Promise<T> {
+  async delete<T = unknown>(url: string, config?: RequestConfig): Promise<T> {
     return this.request<T>(url, { ...config, method: "DELETE" });
   }
 
@@ -114,16 +114,17 @@ class ApiClient {
     url: string,
     config: RequestConfig = {},
   ): Promise<T> {
-    let {
+    const {
       retry = this.defaultRetries,
       retryDelay = this.defaultRetryDelay,
       timeout = this.defaultTimeout,
       ...fetchConfig
     } = config;
+    let finalFetchConfig = fetchConfig;
 
     // Apply Request Interceptors
     for (const interceptor of this.requestInterceptors) {
-      fetchConfig = await interceptor(fetchConfig);
+      finalFetchConfig = await interceptor(finalFetchConfig);
     }
 
     const fullURL = this.baseURL + url;
@@ -138,7 +139,7 @@ class ApiClient {
 
         // Make request
         let response = await fetch(fullURL, {
-          ...fetchConfig,
+          ...finalFetchConfig,
           signal: controller.signal,
         });
 
@@ -171,15 +172,16 @@ class ApiClient {
         // Parse response
         const data = await this.parseResponse<T>(response);
         return data;
-      } catch (error: any) {
+      } catch (err: unknown) {
         // Handle abort/timeout
+        const error = err as Error;
         if (error.name === "AbortError") {
           const timeoutError: ApiError = new Error("Request timeout");
           timeoutError.status = 408;
           timeoutError.code = "TIMEOUT";
           lastError = timeoutError;
         } else {
-          lastError = error;
+          lastError = error as ApiError;
         }
 
         // Retry on network errors
@@ -205,17 +207,17 @@ class ApiClient {
     }
 
     if (contentType?.includes("text/")) {
-      return response.text() as any;
+      return (await response.text()) as unknown as T;
     }
 
-    return response.blob() as any;
+    return (await response.blob()) as unknown as T;
   }
 
   /**
    * Handle error responses
    */
   private async handleErrorResponse(response: Response): Promise<ApiError> {
-    let errorData: any = {};
+    let errorData: unknown = {};
 
     try {
       errorData = await response.json();
@@ -224,10 +226,11 @@ class ApiClient {
       errorData = { error: response.statusText };
     }
 
-    const error: ApiError = new Error(errorData.error || "Request failed");
+    const data = errorData as Record<string, unknown>;
+    const error: ApiError = new Error((data?.error as string) || "Request failed");
     error.status = response.status;
-    error.code = errorData.code;
-    error.details = errorData.details;
+    error.code = data?.code as string;
+    error.details = data?.details;
     error.correlationId = response.headers.get("x-correlation-id") || undefined;
 
     // Log error to console in development

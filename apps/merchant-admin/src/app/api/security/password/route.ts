@@ -56,7 +56,7 @@ export async function POST(request: Request) {
       success: true,
       message: "Password updated successfully",
     });
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error("Password change error:", error);
 
     if (error.message === "Unauthorized") {

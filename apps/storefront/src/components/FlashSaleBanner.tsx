@@ -6,7 +6,7 @@ import { Zap, Clock } from "lucide-react";
 import Link from "next/link";
 
 export function FlashSaleBanner({ storeId }: { storeId: string }) {
-  const [sale, setSale] = useState<any>(null);
+  const [sale, setSale] = useState<unknown>(null);
   const [timeLeft, setTimeLeft] = useState("");
 
   useEffect(() => {

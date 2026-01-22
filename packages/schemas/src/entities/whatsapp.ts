@@ -6,7 +6,7 @@ export const MessageSchema = z.object({
   conversationId: z.string().uuid(),
   sender: z.enum(["USER", "AGENT", "AI", "SYSTEM"]),
   content: z.string(),
-  metadata: z.record(z.any()).optional(), // For templates, buttons
+  metadata: z.record(z.unknown()).optional(), // For templates, buttons
   timestamp: z.date(),
 });
 
@@ -15,7 +15,7 @@ export const AIActionSchema = z.object({
   conversationId: z.string().uuid(),
   type: z.enum(["RECOMMEND_PRODUCT", "CREATE_ORDER", "ANSWER_QUERY"]),
   confidence: z.number().min(0).max(1),
-  parameters: z.record(z.any()),
+  parameters: z.record(z.unknown()),
   wasAccepted: z.boolean().optional(),
   createdAt: z.date(),
 });

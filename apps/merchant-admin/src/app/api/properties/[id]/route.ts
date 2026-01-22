@@ -20,7 +20,7 @@ export const GET = withVayvaAPI(
             }
 
             return NextResponse.json(accommodation);
-        } catch (error: any) {
+        } catch (error: unknown) {
             console.error("Property Fetch Error:", error);
             return NextResponse.json({ error: error.message }, { status: 400 });
         }
@@ -74,7 +74,7 @@ export const PUT = withVayvaAPI(
                 return await tx.accommodationProduct.update({
                     where: { id: accommodationId },
                     data: {
-                        type: (data.type || "ROOM") as any,
+                        type: (data.type || "ROOM") as unknown,
                         maxGuests: Number(data.maxGuests) || 1,
                         bedCount: Number(data.bedCount) || 1,
                         bathrooms: Number(data.bathrooms) || 1,
@@ -86,7 +86,7 @@ export const PUT = withVayvaAPI(
             });
 
             return NextResponse.json(result);
-        } catch (error: any) {
+        } catch (error: unknown) {
             console.error("Property Update Error:", error);
             return NextResponse.json({ error: error.message }, { status: 400 });
         }
@@ -115,7 +115,7 @@ export const DELETE = withVayvaAPI(
             });
 
             return NextResponse.json({ success: true });
-        } catch (error: any) {
+        } catch (error: unknown) {
             console.error("Property Delete Error:", error);
             return NextResponse.json({ error: error.message }, { status: 400 });
         }

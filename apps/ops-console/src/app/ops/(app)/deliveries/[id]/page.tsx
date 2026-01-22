@@ -18,7 +18,7 @@ export default function DeliveryDetailPage() {
     const { id } = useParams() as { id: string };
     const { toast } = useToast();
     const router = useRouter();
-    const [shipment, setShipment] = useState<any>(null);
+    const [shipment, setShipment] = useState<unknown>(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState("");
 
@@ -36,7 +36,7 @@ export default function DeliveryDetailPage() {
             if (!res.ok) throw new Error("Failed to load shipment");
             const json = await res.json();
             setShipment(json.data);
-        } catch (err: any) {
+        } catch (err: unknown) {
             setError(err.message);
         } finally {
             setLoading(false);
@@ -146,7 +146,7 @@ export default function DeliveryDetailPage() {
                         <Navigation size={18} /> Dispatch History
                     </h3>
                     <div className="space-y-4">
-                        {shipment.DispatchJob?.map((job: any) => (
+                        {shipment.DispatchJob?.map((job: unknown) => (
                             <div key={job.id} className="bg-white p-4 rounded-lg border border-gray-200 shadow-sm">
                                 <div className="flex justify-between mb-2">
                                     <span className="font-medium text-gray-800">{job.carrier}</span>

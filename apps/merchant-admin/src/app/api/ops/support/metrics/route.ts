@@ -25,12 +25,12 @@ export async function GET(req: Request) {
 
     // 2. Fetch Aggregates
     // Tickets Created
-    const ticketsCreated = await (prisma as any).supportTicket.count({
+    const ticketsCreated = await (prisma as unknown).supportTicket.count({
       where: dateFilter,
     });
 
     // Overdue (Open & Past Due)
-    const overdueTickets = await (prisma as any).supportTicket.count({
+    const overdueTickets = await (prisma as unknown).supportTicket.count({
       where: {
         status: { not: "RESOLVED" },
         slaDueAt: { lt: now },
@@ -38,7 +38,7 @@ export async function GET(req: Request) {
     });
 
     // Escalation Triggers Breakdown (from Telemetry)
-    const escalations = await (prisma as any).supportTelemetryEvent.groupBy({
+    const escalations = await (prisma as unknown).supportTelemetryEvent.groupBy({
       by: ["payload"],
       where: {
         eventType: "BOT_ESCALATED",
@@ -48,7 +48,7 @@ export async function GET(req: Request) {
 
     // Manual aggregation of JSON payloads (prisma group by json is limited)
     // Ideally we'd map this, but for MVP we count raw events or query all
-    const rawEscalations = await (prisma as any).supportTelemetryEvent.findMany(
+    const rawEscalations = await (prisma as unknown).supportTelemetryEvent.findMany(
       {
         where: { eventType: "BOT_ESCALATED", ...dateFilter },
         select: { payload: true },
@@ -67,10 +67,10 @@ export async function GET(req: Request) {
     }));
 
     // Feedback Stats
-    const feedback = await (prisma as any).supportBotFeedback.findMany({
+    const feedback = await (prisma as unknown).supportBotFeedback.findMany({
       where: dateFilter,
     });
-    const thumbsUp = feedback.filter((f: any) => f.rating === "SOLVED").length;
+    const thumbsUp = feedback.filter((f: unknown) => f.rating === "SOLVED").length;
     const totalFeedback = feedback.length;
     const thumbsUpRate = totalFeedback > 0 ? thumbsUp / totalFeedback : 0;
 
@@ -79,7 +79,7 @@ export async function GET(req: Request) {
     // A crude but effective proxy for now.
     // Better: Count unique ConversationIds in telemetry vs Tickets Created
     const botConversations = await (
-      prisma as any
+      prisma as unknown
     ).supportTelemetryEvent.groupBy({
       by: ["conversationId"],
       where: { eventType: "CHAT_STARTED", ...dateFilter },

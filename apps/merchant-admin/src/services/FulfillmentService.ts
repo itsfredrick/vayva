@@ -1,4 +1,4 @@
-import { prisma } from "@vayva/db";
+import { prisma, Prisma, OrderStatus } from "@vayva/db";
 
 interface CreateShipmentInput {
   storeId: string;
@@ -17,7 +17,7 @@ export class FulfillmentService {
    * Create a Shipment for an Order
    */
   static async createShipment(input: CreateShipmentInput) {
-    return await prisma.$transaction(async (tx: any) => {
+    return await prisma.$transaction(async (tx: Prisma.TransactionClient) => {
       // 1. Validate Order
       const order = await tx.order.findUnique({
         where: { id: input.orderId },
@@ -67,7 +67,7 @@ export class FulfillmentService {
    * Update Shipment Status
    */
   static async updateShipmentStatus(shipmentId: string, status: string) {
-    return await prisma.$transaction(async (tx: any) => {
+    return await prisma.$transaction(async (tx: Prisma.TransactionClient) => {
       const shipment = await tx.shipment.update({
         where: { id: shipmentId },
         data: { status },
@@ -76,7 +76,7 @@ export class FulfillmentService {
       // Sync with Order Status
       // OrderStatus: DRAFT, PENDING_PAYMENT, PAID, PROCESSING, FULFILLING, OUT_FOR_DELIVERY,
       // SHIPPED, DELIVERED, CANCELLED, REFUNDED, DISPUTED
-      let orderStatus: any = undefined; // Use any to bypass TS strict check if needed, or map strictly
+      let orderStatus: OrderStatus | undefined = undefined;
 
       if (status === "DISPATCHED" || status === "IN_TRANSIT") {
         orderStatus = "SHIPPED";

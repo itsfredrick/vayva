@@ -19,7 +19,7 @@ export async function GET(request: Request) {
     const type = searchParams.get("type"); // PAYMENT, PAYOUT, REFUND, etc.
 
     // Get real transactions from ledger
-    const where: any = {
+    const where: unknown = {
       storeId: user.storeId,
     };
 
@@ -35,7 +35,7 @@ export async function GET(request: Request) {
     });
 
     // Transform to match expected format
-    const formattedTransactions = transactions.map((txn: any) => {
+    const formattedTransactions = transactions.map((txn: unknown) => {
       const amount = Number(txn.amount);
       const isDebit = txn.direction === "DEBIT";
 

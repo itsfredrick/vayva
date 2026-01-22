@@ -32,7 +32,7 @@ export async function GET() {
         address: billingProfile?.addressText || "",
       },
     });
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error("Billing fetch error:", error);
     if (error.message === "Unauthorized") {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
@@ -86,7 +86,7 @@ export async function PUT(request: Request) {
       message: "Billing details updated successfully",
       profile: updatedProfile,
     });
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error("Billing update error:", error);
     if (error.message === "Unauthorized") {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });

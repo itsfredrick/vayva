@@ -17,7 +17,7 @@ export default function AccountPage({
   const lang = (rawLang === "tr" ? "tr" : "en") as LocaleKey;
   const t = LOCALES[lang].account.overview;
   const router = useRouter();
-  const [user, setUser] = useState<any>(null);
+  const [user, setUser] = useState<unknown>(null);
 
   // Auth Guard (Test)
   useEffect(() => {

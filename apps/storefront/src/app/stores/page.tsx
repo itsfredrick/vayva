@@ -13,7 +13,7 @@ export default function StoreDirectoryPage() {
 
   const fetchStores = async () => {
     try {
-      const params = new URLSearchParams(filters as any).toString();
+      const params = new URLSearchParams(filters as unknown).toString();
       const res = await axios.get(`${API_URL}/marketplace/stores?${params}`);
       setStores(res.data || []);
     } catch (err) {

@@ -12,7 +12,7 @@ export async function POST(req: NextRequest) {
 
     if (event === "onboarding_complete" || event === "first_sale") {
         // Fetch fresh details
-        const store: any = await prisma.store.findUnique({
+        const store: unknown = await prisma.store.findUnique({
             where: { id: user.storeId },
         });
 
@@ -28,7 +28,7 @@ export async function POST(req: NextRequest) {
         }
 
         const phone = fullUser.phone;
-        const merchantName = fullUser?.firstName || (user as any).name || "Merchant";
+        const merchantName = fullUser?.firstName || (user as unknown).name || "Merchant";
 
         await NotificationService.sendMilestone(event as NotificationEvent, {
             name: merchantName,

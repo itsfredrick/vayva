@@ -5,7 +5,7 @@ import { NextResponse } from "next/server";
 import { prisma } from "@vayva/db";
 
 export type AuthVerificationResult =
-    | { success: true; session: any; store?: any }
+    | { success: true; session: unknown; store?: unknown }
     | { success: false; response: NextResponse };
 
 /**

@@ -5,7 +5,7 @@ import { Button, Card, Icon, cn } from "@vayva/ui";
 import { motion } from "framer-motion";
 
 export default function ReferralsPage() {
-  const [data, setData] = useState<any>(null);
+  const [data, setData] = useState<unknown>(null);
   const [loading, setLoading] = useState(true);
   const [copied, setCopied] = useState(false);
 
@@ -103,7 +103,7 @@ export default function ReferralsPage() {
         </div>
         {data?.rewards?.length > 0 ? (
           <div className="divide-y divide-gray-50">
-            {data.rewards.map((reward: any) => (
+            {data.rewards.map((reward: unknown) => (
               <div
                 key={reward.id}
                 className="p-6 flex items-center justify-between hover:bg-gray-50 transition-colors"

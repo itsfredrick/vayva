@@ -88,7 +88,7 @@ export default function SegmentsPage() {
                         ) : !customers?.length ? (
                             <tr><td colSpan={5} className="p-12 text-center text-gray-400 font-medium">No customers match these criteria.</td></tr>
                         ) : (
-                            customers.map((c: any) => (
+                            customers.map((c: unknown) => (
                                 <tr key={c.id} className="hover:bg-indigo-50/30 transition-colors">
                                     <td className="px-6 py-4 font-bold text-gray-900">{c.firstName} {c.lastName}</td>
                                     <td className="px-6 py-4 text-gray-500">{c.email || c.phone}</td>

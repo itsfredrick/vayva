@@ -42,5 +42,5 @@ export interface Template {
   requiredPlan?: string;
   status: "active" | "inactive" | "deprecated" | string;
   layoutComponent?: string | null;
-  registry: any;
+  registry: unknown;
 }

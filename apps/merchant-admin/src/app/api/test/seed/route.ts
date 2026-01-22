@@ -26,7 +26,7 @@ export async function POST(req: NextRequest) {
         data: {
           email,
           password: hashedPassword,
-        } as any,
+        } as unknown,
       });
 
       // Create Store
@@ -58,7 +58,7 @@ export async function POST(req: NextRequest) {
       storeId: store.id,
       slug: store.slug,
     });
-  } catch (e: any) {
+  } catch (e: unknown) {
     return new NextResponse(e.message, { status: 500 });
   }
 }

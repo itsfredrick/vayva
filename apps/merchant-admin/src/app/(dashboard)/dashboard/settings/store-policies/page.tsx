@@ -202,7 +202,7 @@ export default function StorePoliciesPage() {
                       variant={
                         (policy.status === "PUBLISHED"
                           ? "default"
-                          : "secondary") as any
+                          : "secondary") as unknown
                       }
                     >
                       {policy.status === "PUBLISHED" ? "Published" : "Draft"}
@@ -226,7 +226,7 @@ export default function StorePoliciesPage() {
                 </label>
                 <Input
                   value={title}
-                  onChange={(e: any) => setTitle(e.target.value)}
+                  onChange={(e: unknown) => setTitle(e.target.value)}
                   placeholder="Policy Title"
                 />
               </div>
@@ -237,7 +237,7 @@ export default function StorePoliciesPage() {
                 </label>
                 <Textarea
                   value={content}
-                  onChange={(e: any) => setContent(e.target.value)}
+                  onChange={(e: unknown) => setContent(e.target.value)}
                   placeholder="Policy content in markdown..."
                   rows={20}
                   className="font-mono text-sm"

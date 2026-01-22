@@ -8,9 +8,9 @@ import { useStore } from "@/context/StoreContext";
 import { StorefrontService } from "@/services/storefront.service";
 import { PublicProduct } from "@/types/storefront";
 import NextLink from "next/link";
-const Link = NextLink as any;
+const Link = NextLink as unknown;
 import { ArrowRight as ArrowRightIcon } from "lucide-react";
-const ArrowRight = ArrowRightIcon as any;
+const ArrowRight = ArrowRightIcon as unknown;
 
 // Template Imports
 import dynamic from "next/dynamic";
@@ -69,7 +69,7 @@ const OneProductLayout = dynamic(() =>
 import { TEMPLATE_REGISTRY } from "@/lib/templates-registry";
 
 // Map registry layout keys to components
-const LAYOUT_COMPONENTS: Record<string, React.ComponentType<any>> = {
+const LAYOUT_COMPONENTS: Record<string, React.ComponentType<unknown>> = {
   AAFashionHome: AAFashionHome,
   GizmoTechHome: GizmoTechHome,
   BloomeHomeLayout: BloomeHomeLayout,
@@ -106,7 +106,7 @@ export default function StoreHome() {
 
   // Resolve Template ID from Store (Theme or Slug)
   // Priority: 1. store.theme.templateId (if valid), 2. Look up by store slug in registry
-  let activeTemplateId = (store.theme as any).templateId;
+  let activeTemplateId = (store.theme as unknown).templateId;
 
   if (!activeTemplateId || !TEMPLATE_REGISTRY[activeTemplateId]) {
     // Fallback: check if the slug implies a demo template

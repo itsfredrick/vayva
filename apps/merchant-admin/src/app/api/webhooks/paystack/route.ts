@@ -45,7 +45,7 @@ export async function POST(req: NextRequest) {
         provider: "PAYSTACK",
         providerEventId,
         eventType,
-        payload: event as any,
+        payload: event as unknown,
         status: "RECEIVED",
       },
       update: {
@@ -150,7 +150,7 @@ export async function POST(req: NextRequest) {
     }
 
     return new NextResponse("OK", { status: 200 });
-  } catch (e: any) {
+  } catch (e: unknown) {
     console.error("Webhook ingestion error:", e);
     return new NextResponse("Error", { status: 500 });
   }

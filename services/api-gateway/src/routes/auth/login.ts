@@ -39,7 +39,7 @@ const loginRoute: FastifyPluginAsync = async (fastify) => {
       user: {
         id: user.id,
         email: user.email,
-        name: `${(user as any).firstName} ${(user as any).lastName}`,
+        name: `${(user as unknown).firstName} ${(user as unknown).lastName}`,
       },
     };
   });

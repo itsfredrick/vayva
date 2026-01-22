@@ -24,7 +24,7 @@ export async function GET() {
       where: { storeId },
     });
 
-    const activeSessions = loginLogs.map((log: any) => ({
+    const activeSessions = loginLogs.map((log: unknown) => ({
       id: log.id,
       device: log.userAgent || "Unknown Device",
       location: log.ipAddress || "Unknown Location",
@@ -47,7 +47,7 @@ export async function GET() {
             },
           ],
     });
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error("Security fetch error:", error);
     return NextResponse.json(
       { error: "Failed to fetch security settings" },

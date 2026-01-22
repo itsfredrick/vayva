@@ -25,7 +25,7 @@ export const GET = withVayvaAPI(
         status?: OrderStatus;
         paymentStatus?: PaymentStatus;
         fulfillmentStatus?: FulfillmentStatus;
-        OR?: Array<{ [key: string]: any }>;
+        OR?: Array<{ [key: string]: unknown }>;
         createdAt?: { gte?: Date; lte?: Date };
       } = { storeId };
 
@@ -155,7 +155,7 @@ export const POST = withVayvaAPI(
             customerEmail: body.customer?.email?.toLowerCase() || null,
             customerPhone: body.customer?.phone || null,
             items: body.items ? {
-              create: body.items.map((item: any) => ({
+              create: body.items.map((item: unknown) => ({
                 productId: item.productId,
                 productName: item.title || "Item",
                 quantity: Number(item.quantity) || 1,

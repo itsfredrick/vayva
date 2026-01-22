@@ -45,7 +45,7 @@ export async function GET(
       kyc: merchant.kycRecord?.status || "PENDING",
       payouts: merchant.bankBeneficiaries.length > 0,
       subscription:
-        (merchant.aiSubscription as any)?.status || "INACTIVE",
+        (merchant.aiSubscription as unknown)?.status || "INACTIVE",
       isBlocked: false,
       blockReason: "",
     };

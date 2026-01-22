@@ -4,7 +4,7 @@ import { prisma } from "@vayva/db";
 export class DisputeService {
   async createDispute(data: {
     merchantId: string;
-    provider: any;
+    provider: unknown;
     providerDisputeId: string;
     amount: number;
     currency: string;
@@ -47,10 +47,10 @@ export class DisputeService {
     disputeId: string,
     data: {
       merchantId: string;
-      type: any;
+      type: unknown;
       url?: string;
       textExcerpt?: string;
-      metadata?: any;
+      metadata?: unknown;
     },
   ) {
     const evidence = await prisma.disputeEvidence.create({

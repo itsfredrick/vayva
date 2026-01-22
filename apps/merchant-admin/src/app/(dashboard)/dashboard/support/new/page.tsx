@@ -43,7 +43,7 @@ export default function CreateTicketPage() {
             setFormData({ subject: "", category: "TECHNICAL", priority: "MEDIUM", description: "" });
             // Redirect to list page if it existed, for now stay here or redirect to dashboard
             // router.push("/dashboard/support"); 
-        } catch (error: any) {
+        } catch (error: unknown) {
             toast.error(error.message);
         } finally {
             setIsLoading(false);

@@ -4,8 +4,13 @@ import { useEffect, useState } from "react";
 import { Download, X } from "lucide-react";
 import { Button } from "./Button";
 
+interface BeforeInstallPromptEvent extends Event {
+    prompt: () => Promise<void>;
+    userChoice: Promise<{ outcome: 'accepted' | 'dismissed' }>;
+}
+
 export function PWAInstallPrompt() {
-    const [deferredPrompt, setDeferredPrompt] = useState<any>(null);
+    const [deferredPrompt, setDeferredPrompt] = useState<BeforeInstallPromptEvent | null>(null);
     const [isVisible, setIsVisible] = useState(false);
     const [isIOS, setIsIOS] = useState(false);
 
@@ -16,22 +21,22 @@ export function PWAInstallPrompt() {
 
         // Check if running on iOS
         const isIosDevice =
-            /iPad|iPhone|iPod/.test(navigator.userAgent) && !(window as any).MSStream;
+            /iPad|iPhone|iPod/.test(navigator.userAgent) && !(window as Window & { MSStream?: unknown }).MSStream;
         setIsIOS(isIosDevice);
 
         // Check strict standalone mode
         const isStandalone =
             window.matchMedia("(display-mode: standalone)").matches ||
-            (window.navigator as any).standalone ||
+            (window.navigator as Navigator & { standalone?: boolean }).standalone ||
             document.referrer.includes("android-app://");
 
         if (isStandalone) {
             return; // Already installed/running as app
         }
 
-        const handler = (e: any) => {
+        const handler = (e: Event) => {
             e.preventDefault();
-            setDeferredPrompt(e);
+            setDeferredPrompt(e as BeforeInstallPromptEvent);
             // Show the prompt after a small delay to not annoy immediately
             setTimeout(() => setIsVisible(true), 1500);
         };

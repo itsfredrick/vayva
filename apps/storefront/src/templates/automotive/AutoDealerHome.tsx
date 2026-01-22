@@ -4,7 +4,7 @@ import { Button } from "@vayva/ui";
 // Removed missing Hero import
 
 
-export default function AutoDealerHome({ store }: { store: any }) {
+export default function AutoDealerHome({ store }: { store: unknown }) {
     return (
         <div className="bg-gray-50 min-h-screen font-sans">
             {/* Hero Section */}

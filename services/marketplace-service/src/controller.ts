@@ -2,7 +2,7 @@ import { prisma } from "@vayva/db";
 
 export const MarketplaceController = {
   // --- Directory Search ---
-  searchStores: async (filters: any) => {
+  searchStores: async (filters: unknown) => {
     const {
       state,
       city,
@@ -12,7 +12,7 @@ export const MarketplaceController = {
       limit = 20,
     } = filters;
 
-    const where: any = { isDirectoryListed: true };
+    const where: unknown = { isDirectoryListed: true };
     if (state) where.state = state;
     if (city) where.city = city;
     if (category) where.categories = { has: category };
@@ -36,7 +36,7 @@ export const MarketplaceController = {
   },
 
   // --- Reviews ---
-  createReview: async (data: any) => {
+  createReview: async (data: unknown) => {
     return await prisma.review.create({
       data: {
         storeId: data.storeId,
@@ -57,7 +57,7 @@ export const MarketplaceController = {
     return await prisma.review.findMany({
       where: {
         storeId,
-        ...(status && { status: status as any }),
+        ...(status && { status: status as unknown}),
       },
       orderBy: { createdAt: "desc" },
     });
@@ -97,7 +97,7 @@ export const MarketplaceController = {
     });
 
     const badges: string[] = [];
-    const metrics: any = {};
+    const metrics: unknown = {};
 
     // Verified Store
     const store = await prisma.store.findUnique({
@@ -115,13 +115,13 @@ export const MarketplaceController = {
     }
 
     // Reliable Delivery
-    if (((analytics._avg.deliverySuccessRate as any) || 0) >= 90) {
+    if (((analytics._avg.deliverySuccessRate as unknown) || 0) >= 90) {
       badges.push("reliable_delivery");
       metrics.deliverySuccessRate = analytics._avg.deliverySuccessRate;
     }
 
     // Fast Response
-    if (((support._avg.firstResponseAvgSeconds as any) || 0) <= 300) {
+    if (((support._avg.firstResponseAvgSeconds as unknown) || 0) <= 300) {
       // 5 minutes
       badges.push("fast_response");
       metrics.avgResponseTimeSeconds = support._avg.firstResponseAvgSeconds;
@@ -131,7 +131,7 @@ export const MarketplaceController = {
   },
 
   // --- Moderation ---
-  createReport: async (data: any) => {
+  createReport: async (data: unknown) => {
     return await prisma.report.create({
       data: {
         entityType: data.entityType,
@@ -147,7 +147,7 @@ export const MarketplaceController = {
 
   listReports: async (status?: string) => {
     return await prisma.report.findMany({
-      where: status ? { status: status as any } : undefined,
+      where: status ? { status: status as unknown} : undefined,
       orderBy: { createdAt: "desc" },
     });
   },

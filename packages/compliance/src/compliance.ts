@@ -40,7 +40,7 @@ export async function validateStoreCompliance(storeId: string): Promise<Complian
     }
 
     // 1. Legal Policies
-    const policyTypes = policies.map((p: any) => (p as any).type);
+    const policyTypes = policies.map((p: unknown) => (p as unknown).type);
     const requiredPolicies = ["PRIVACY_POLICY", "TERMS_OF_SERVICE", "REFUND_POLICY"];
     const missingPolicies = requiredPolicies.filter(type => !policyTypes.includes(type));
     const legalPolicies = missingPolicies.length === 0;
@@ -50,7 +50,7 @@ export async function validateStoreCompliance(storeId: string): Promise<Complian
 
     // 3. Branding Readiness
     // Note: Schema uses 'socialImage' as closest proxy for banner currently? Or it's missing. Using socialImage for now.
-    const brandingReadiness = !!(store.logoUrl && (store as any).socialImage); 
+    const brandingReadiness = !!(store.logoUrl && (store as unknown).socialImage); 
 
     // 4. Content Moderation
     const textToScan = `${store.name} ${store.seoDescription || ""}`.toLowerCase();

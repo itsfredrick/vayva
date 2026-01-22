@@ -14,7 +14,7 @@ export async function GET(request: Request) {
     const limit = parseInt(searchParams.get("limit") || "50");
     const rating = searchParams.get("rating");
 
-    const where: any = {};
+    const where: unknown = {};
     if (rating && rating !== "ALL") {
         where.rating = rating;
     }

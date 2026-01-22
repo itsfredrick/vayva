@@ -15,7 +15,7 @@ export async function GET() {
                 role: session.user.role,
             },
         });
-    } catch (error: any) {
+    } catch (error: unknown) {
         if (error.message === "Unauthorized") {
             return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
         }

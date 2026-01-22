@@ -8,7 +8,7 @@ import { useUserInteractions } from "@/hooks/useUserInteractions";
 import { AddressModal } from "@/components/account/AddressModal";
 import { MapPin, Plus, Trash2, CheckCircle } from "lucide-react";
 
-export default function AddressesPage({ params }: any) {
+export default function AddressesPage({ params }: unknown) {
   const { lang: rawLang } = useParams() as { lang: string };
   const lang = (rawLang === "tr" ? "tr" : "en") as LocaleKey;
   const t = LOCALES[lang].account.addresses;

@@ -80,7 +80,7 @@ export const RevenueAreaChart = ({ data }: RevenueChartProps) => {
                 fontSize: "11px",
                 marginBottom: "4px",
               }}
-              formatter={(value: any) => [
+              formatter={(value: unknown) => [
                 `₦${(value || 0).toLocaleString()}`,
                 "Revenue",
               ]}

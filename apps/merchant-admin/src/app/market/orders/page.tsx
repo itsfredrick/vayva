@@ -75,7 +75,7 @@ export default function MarketOrdersPage() {
 
                                     {/* Items */}
                                     <div className="space-y-2">
-                                        {order.items.map((item: any, i: number) => (
+                                        {order.items.map((item: unknown, i: number) => (
                                             <div key={i} className="flex justify-between text-sm text-gray-300 border-b border-white/5 pb-1">
                                                 <span>{item.qty}x {item.name}</span>
                                                 <span>₦ {Number(item.price).toLocaleString()}</span>

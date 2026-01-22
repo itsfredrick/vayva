@@ -8,7 +8,7 @@ export interface AuthOptions {
 export const authenticate = (options: AuthOptions) => {
   return async (req: FastifyRequest, reply: FastifyReply) => {
     try {
-      const decoded = await req.jwtVerify<any>();
+      const decoded = await req.jwtVerify<unknown>();
       if (decoded.aud !== options.audience) {
         return reply.status(401).send({ error: "Invalid token audience" });
       }

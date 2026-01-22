@@ -5,7 +5,7 @@ import { prisma } from "@/lib/prisma";
 export async function POST(req: NextRequest) {
   try {
     const session = await getServerSession();
-    if (!(session?.user as any)?.storeId) {
+    if (!(session?.user)?.storeId) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
@@ -14,7 +14,7 @@ export async function POST(req: NextRequest) {
 
     // Get all policies for this store
     const policies = await prisma.merchantPolicy.findMany({
-      where: { storeId: (session!.user as any).storeId },
+      where: { storeId: (session!.user as unknown).storeId },
     });
 
     // If publishMissing and we don't have 5 policies, generate them first
@@ -34,11 +34,11 @@ export async function POST(req: NextRequest) {
     const today = new Date().toISOString().split("T")[0]; // YYYY-MM-DD
 
     await prisma.$transaction(
-      policyTypes.map((type: any) =>
+      policyTypes.map((type: unknown) =>
         prisma.merchantPolicy.updateMany({
           where: {
-            storeId: (session!.user as any).storeId,
-            type: type as any,
+            storeId: (session!.user as unknown).storeId,
+            type: type as unknown,
           },
           data: {
             status: "PUBLISHED",

@@ -15,7 +15,7 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
     const title = slug.charAt(0).toUpperCase() + slug.slice(1);
 
     // Dynamic Data Fetching
-    let items: any[] = [];
+    let items: unknown[] = [];
 
     if (isFood) {
         // Fetch Restaurants

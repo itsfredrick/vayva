@@ -39,7 +39,7 @@ export async function withIdempotency<T>(
             userId,
             merchantId,
             route,
-            response: result as any,
+            response: result as unknown,
             responseHash: "", // Optional: for integrity checks
             expiresAt: new Date(Date.now() + 24 * 60 * 60 * 1000) // 24h expiry
         }

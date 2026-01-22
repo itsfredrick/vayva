@@ -5,9 +5,9 @@ import { NIGERIAN_STATES } from "@/lib/i18n/addressNG";
 import { COPY } from "@/lib/i18n/copy";
 
 interface AddressInputNGProps {
-  value: any;
-  onChange: (val: any) => void;
-  errors?: any;
+  value: unknown;
+  onChange: (val: unknown) => void;
+  errors?: unknown;
 }
 
 export function AddressInputNG({

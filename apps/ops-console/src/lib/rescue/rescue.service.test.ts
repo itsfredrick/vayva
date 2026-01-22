@@ -6,7 +6,7 @@ const mockCreate = vi.fn();
 vi.mock("@vayva/db", () => ({
     prisma: {
         opsAuditEvent: {
-            create: (...args: any[]) => mockCreate(...args),
+            create: (...args: unknown[]) => mockCreate(...args),
         },
     },
 }));

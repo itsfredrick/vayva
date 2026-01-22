@@ -9,7 +9,7 @@ export const GET = withVayvaAPI(
         try {
             const state = await OnboardingService.getState(storeId);
             return NextResponse.json(state);
-        } catch (error: any) {
+        } catch (error: unknown) {
             console.error("Failed to fetch onboarding state:", error);
             return NextResponse.json(
                 { error: "Failed to fetch onboarding state" },
@@ -43,7 +43,7 @@ export const PUT = withVayvaAPI(
             }
 
             return NextResponse.json(updated);
-        } catch (error: any) {
+        } catch (error: unknown) {
             console.error("Failed to update onboarding state:", error);
             return NextResponse.json(
                 { error: "Failed to update onboarding state" },

@@ -57,7 +57,7 @@ export async function POST(req: NextRequest) {
     });
 
     return NextResponse.json(response);
-  } catch (error: any) {
+  } catch (error: unknown) {
     reportError(error, { route: "POST /api/orders/payment" });
     return NextResponse.json(
       { error: error.message || "Payment initialization failed" },

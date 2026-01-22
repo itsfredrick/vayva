@@ -8,7 +8,7 @@ export interface PublicStore {
     primaryColor: string;
     accentColor: string;
     templateId: string;
-    oneProductConfig?: any;
+    oneProductConfig?: unknown;
   };
   contact: {
     phone?: string;
@@ -121,7 +121,7 @@ export interface PublicProduct {
   };
   licenseType?: "standard" | "extended";
   isAvailable?: boolean;
-  metadata?: any;
+  metadata?: unknown;
 }
 
 export interface ProductVariant {

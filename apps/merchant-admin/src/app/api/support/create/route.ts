@@ -17,7 +17,7 @@ export async function POST(request: Request) {
     // Based on previous contexts, session.user usually has storeId or similar identifier.
     // Let's assume storeId is available or we find the default store for the user.
     // To be safe, let's verify if 'storeId' is in the session or body.
-    let storeId = (session.user as any).storeId;
+    let storeId = (session.user as unknown).storeId;
 
     try {
         const body = await request.json();

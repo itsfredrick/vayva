@@ -16,7 +16,7 @@ export const GET = withVayvaAPI(
 
       const csv = await ReportsService.generateCSV(
         storeId,
-        type as any,
+        type as unknown,
         { from: new Date(0), to: new Date() }
       );
 

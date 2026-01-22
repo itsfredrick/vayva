@@ -14,8 +14,8 @@ import { TestMessageDialog } from "@/components/ai-agent/TestMessageDialog";
 export default function AgentProfilePage() {
     const [isLoading, setIsLoading] = useState(true);
     const [isSaving, setIsSaving] = useState(false);
-    const [agent, setAgent] = useState<any>(null);
-    const [draft, setDraft] = useState<any>(null);
+    const [agent, setAgent] = useState<unknown>(null);
+    const [draft, setDraft] = useState<unknown>(null);
     const [isTestOpen, setIsTestOpen] = useState(false);
 
     useEffect(() => {

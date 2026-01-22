@@ -1,6 +1,7 @@
 import React from "react";
-import { WhatsAppConversation, WhatsAppLinkedEntityType } from "@vayva/shared";
-import { Icon, cn } from "@vayva/ui";
+import Link from "next/link";
+import { WhatsAppConversation } from "@vayva/shared";
+import { Button, cn } from "@vayva/ui";
 
 interface ConversationListProps {
   conversations: WhatsAppConversation[];
@@ -16,7 +17,7 @@ export const ConversationList = ({
   onSelect,
   getHref,
   isLoading,
-}: ConversationListProps) => {
+}: ConversationListProps): React.ReactElement => {
   // Sort: Unread > Open > Recent
   const sorted = [...conversations].sort((a, b) => {
     if (a.unreadCount !== b.unreadCount) return b.unreadCount - a.unreadCount;
@@ -42,72 +43,86 @@ export const ConversationList = ({
   return (
     <div className="flex flex-col h-full overflow-y-auto custom-scrollbar">
       {sorted.map((conv) => {
-        const Wrapper = getHref ? require("next/link").default : "button";
-        const props = getHref
-          ? { href: getHref(conv.id) }
-          : { onClick: () => onSelect?.(conv.id) };
+        const commonClassName = cn(
+          "flex flex-col gap-1 p-4 border-b border-gray-100 hover:bg-gray-50 transition-colors text-left group relative",
+          selectedId === conv.id && "bg-[#F3F4F6]",
+        );
 
-        return (
-          <Wrapper
-            key={conv.id}
-            {...props}
-            className={cn(
-              "flex flex-col gap-1 p-4 border-b border-gray-100 hover:bg-gray-50 transition-colors text-left group relative",
-              selectedId === conv.id && "bg-[#F3F4F6]",
-            )}
-          >
-          <div className="flex justify-between items-start w-full">
-            <span
-              className={cn(
-                "font-medium text-sm text-gray-900 truncate",
-                conv.unreadCount > 0 && "font-bold",
-              )}
-            >
-              {conv.customerName || conv.customerPhone}
-            </span>
-            <span className="text-[10px] text-gray-400 whitespace-nowrap ml-2">
-              {new Date(conv.lastMessageAt).toLocaleTimeString([], {
-                hour: "2-digit",
-                minute: "2-digit",
-              })}
-            </span>
-          </div>
-
-          <p
-            className={cn(
-              "text-xs truncate w-full pr-6",
-              conv.unreadCount > 0
-                ? "text-gray-900 font-medium"
-                : "text-gray-500",
-            )}
-          >
-            {conv.lastMessagePreview}
-          </p>
-
-          {/* Badges Row */}
-          <div className="flex items-center gap-2 mt-2">
-            {conv.tags?.map((tag) => (
+        const content = (
+          <>
+            <div className="flex justify-between items-start w-full">
               <span
-                key={tag}
                 className={cn(
-                  "text-[10px] px-1.5 py-0.5 rounded-full font-medium uppercase tracking-wide",
-                  tag === "order" && "bg-blue-50 text-blue-600",
-                  tag === "booking" && "bg-purple-50 text-purple-600",
-                  tag === "inquiry" && "bg-gray-100 text-gray-500",
+                  "font-medium text-sm text-gray-900 truncate",
+                  conv.unreadCount > 0 && "font-bold",
                 )}
               >
-                {tag}
+                {conv.customerName || conv.customerPhone}
               </span>
-            ))}
-          </div>
-
-          {/* Unread Badge */}
-          {conv.unreadCount > 0 && (
-            <div className="absolute right-4 top-10 w-5 h-5 rounded-full bg-green-500 text-white text-[10px] font-bold flex items-center justify-center shadow-sm">
-              {conv.unreadCount}
+              <span className="text-[10px] text-gray-400 whitespace-nowrap ml-2">
+                {new Date(conv.lastMessageAt).toLocaleTimeString([], {
+                  hour: "2-digit",
+                  minute: "2-digit",
+                })}
+              </span>
             </div>
-          )}
-        </Wrapper>
+
+            <p
+              className={cn(
+                "text-xs truncate w-full pr-6",
+                conv.unreadCount > 0
+                  ? "text-gray-900 font-medium"
+                  : "text-gray-500",
+              )}
+            >
+              {conv.lastMessagePreview}
+            </p>
+
+            {/* Badges Row */}
+            <div className="flex items-center gap-2 mt-2">
+              {conv.tags?.map((tag) => (
+                <span
+                  key={tag}
+                  className={cn(
+                    "text-[10px] px-1.5 py-0.5 rounded-full font-medium uppercase tracking-wide",
+                    tag === "order" && "bg-blue-50 text-blue-600",
+                    tag === "booking" && "bg-purple-50 text-purple-600",
+                    tag === "inquiry" && "bg-gray-100 text-gray-500",
+                  )}
+                >
+                  {tag}
+                </span>
+              ))}
+            </div>
+
+            {/* Unread Badge */}
+            {conv.unreadCount > 0 && (
+              <div className="absolute right-4 top-10 w-5 h-5 rounded-full bg-green-500 text-white text-[10px] font-bold flex items-center justify-center shadow-sm">
+                {conv.unreadCount}
+              </div>
+            )}
+          </>
+        );
+
+        return getHref ? (
+          <Link
+            key={conv.id}
+            href={getHref(conv.id)}
+            className={commonClassName}
+          >
+            {content}
+          </Link>
+        ) : (
+          <Button
+            key={conv.id}
+            variant="ghost"
+            onClick={() => onSelect?.(conv.id)}
+            className={commonClassName}
+          >
+            <div className="flex flex-col gap-1 text-left w-full">
+              {content}
+            </div>
+          </Button>
         );
       })}
     </div>

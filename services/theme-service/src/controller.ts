@@ -4,7 +4,7 @@ const DEFAULT_TEMPLATE_SLUG = "vayva-default";
 
 export const ThemeController = {
   // --- Template Gallery ---
-  listTemplates: async (filters?: any) => {
+  listTemplates: async (filters?: unknown) => {
     const templates = await prisma.template.findMany({
       where: {
         isActive: true,
@@ -81,7 +81,7 @@ export const ThemeController = {
     });
   },
 
-  updateSettings: async (storeId: string, config: any) => {
+  updateSettings: async (storeId: string, config: unknown) => {
     const theme = await prisma.merchantTheme.findFirst({
       where: { storeId, status: "DRAFT" }, // Assume editing draft
     });

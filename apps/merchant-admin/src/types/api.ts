@@ -8,7 +8,7 @@
 // Common Types
 // ============================================================================
 
-export interface ApiResponse<T = any> {
+export interface ApiResponse<T = unknown> {
     success: boolean;
     data?: T;
     error?: string;
@@ -32,7 +32,7 @@ export interface ApiError {
     error: string;
     message?: string;
     code?: string;
-    details?: Record<string, any>;
+    details?: Record<string, unknown>;
 }
 
 // ============================================================================
@@ -71,10 +71,10 @@ export interface ProductCreateRequest {
     status?: 'DRAFT' | 'ACTIVE' | 'ARCHIVED';
     seoTitle?: string;
     seoDescription?: string;
-    metadata?: Record<string, any>;
+    metadata?: Record<string, unknown>;
     condition?: 'NEW' | 'USED' | 'REFURBISHED';
     warrantyMonths?: number;
-    techSpecs?: Record<string, any>;
+    techSpecs?: Record<string, unknown>;
     moq?: number;
 }
 
@@ -105,10 +105,10 @@ export interface ProductResponse {
     tags: string[];
     seoTitle: string | null;
     seoDescription: string | null;
-    metadata: Record<string, any> | null;
+    metadata: Record<string, unknown> | null;
     condition: string | null;
     warrantyMonths: number | null;
-    techSpecs: Record<string, any> | null;
+    techSpecs: Record<string, unknown> | null;
     moq: number;
     createdAt: string;
     updatedAt: string;

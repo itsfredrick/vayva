@@ -31,15 +31,15 @@ export interface ExtensionManifest {
 
     // Object Schema Integration
     primaryObject?: string;
-    forms?: Record<string, any>; // Form configuration for the objects it manages
+    forms?: Record<string, unknown>; // Form configuration for the objects it manages
 
     // Settings
-    settingsSchema?: any; // JSON Schema for extension-specific settings
+    settingsSchema?: unknown; // JSON Schema for extension-specific settings
 }
 
 export interface StoreExtension {
     extensionId: string;
     isEnabled: boolean;
-    config: Record<string, any>;
+    config: Record<string, unknown>;
     installedAt: Date;
 }

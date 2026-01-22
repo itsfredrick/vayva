@@ -34,7 +34,7 @@ export const PATCH = withVayvaAPI(
             });
 
             return NextResponse.json({ success: true, data: updated });
-        } catch (error: any) {
+        } catch (error: unknown) {
             console.error("Update Flash Sale Error:", error);
             return NextResponse.json({ error: "Failed to update flash sale" }, { status: 500 });
         }
@@ -61,7 +61,7 @@ export const DELETE = withVayvaAPI(
             });
 
             return NextResponse.json({ success: true });
-        } catch (error: any) {
+        } catch (error: unknown) {
             console.error("Delete Flash Sale Error:", error);
             return NextResponse.json({ error: "Failed to delete flash sale" }, { status: 500 });
         }

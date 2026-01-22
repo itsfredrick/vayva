@@ -2,13 +2,12 @@
 
 import { useState, useEffect } from "react";
 import { toast } from "sonner";
-import { Button } from "@vayva/ui";
-import { Switch } from "@/components/ui/switch";
+import { Button, Switch } from "@vayva/ui";
 import { Building2, CreditCard, Wallet, Plus, Trash2, AlertCircle } from "lucide-react";
 
 export default function PaymentsSettingsPage() {
     const [bankTransfers, setBankTransfers] = useState(true);
-    const [settlementAccount, setSettlementAccount] = useState<any>(null);
+    const [settlementAccount, setSettlementAccount] = useState<unknown>(null);
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {

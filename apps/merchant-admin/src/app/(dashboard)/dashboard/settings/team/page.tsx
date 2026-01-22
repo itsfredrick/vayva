@@ -137,7 +137,7 @@ export default function TeamSettingsPage() {
       <div className="bg-white p-4 rounded-xl border border-gray-100 shadow-sm flex items-center justify-between">
         <div className="flex items-center gap-2">
           <div className="p-2 bg-green-50 text-green-600 rounded-lg">
-            <Icon name={"Users" as any} size={20} />
+            <Icon name={"Users" as unknown} size={20} />
           </div>
           <div>
             <p className="text-sm font-bold text-black">Seat Usage</p>
@@ -283,7 +283,7 @@ export default function TeamSettingsPage() {
                   <option value="support">Support</option>
                   <option value="finance">Finance</option>
                   <option value="admin">Admin</option>
-                  {customRoles.map((role: any) => (
+                  {customRoles.map((role: unknown) => (
                     <option key={role.id} value={role.id}>{role.name}</option>
                   ))}
                 </select>

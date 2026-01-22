@@ -96,7 +96,7 @@ export class MarketingRescueService {
                 data: {
                     status: nextStatus,
                     diagnostics: {
-                        ...(incident.diagnostics as any),
+                        ...(incident.diagnostics as unknown),
                         aiAnalysis: analysis,
                     },
                 },

@@ -188,7 +188,7 @@ export function Text(
   type: "h1" | "h2" | "h3" | "body" | "small" = "body",
   align: "left" | "center" = "left",
 ): string {
-  const styles: any = {
+  const styles: unknown = {
     margin: "0 0 16px",
     textAlign: align,
     color: Colors.Neutral.DarkGrey,

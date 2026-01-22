@@ -1,7 +1,7 @@
 // src/lib/seo/schema/collection.ts
 import { SITE_ORIGIN } from "../route-policy";
 
-export function collectionSchema(path: string, ctx?: Record<string, any>) {
+export function collectionSchema(path: string, ctx?: Record<string, unknown>) {
   return {
     "@context": "https://schema.org",
     "@type": "CollectionPage",
@@ -12,7 +12,7 @@ export function collectionSchema(path: string, ctx?: Record<string, any>) {
     url: `${SITE_ORIGIN}${path}`,
     mainEntity: {
       "@type": "ItemList",
-      itemListElement: (ctx?.items ?? []).map((item: any, index: number) => ({
+      itemListElement: (ctx?.items ?? []).map((item: unknown, index: number) => ({
         "@type": "ListItem",
         position: index + 1,
         name: item.name,

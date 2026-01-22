@@ -26,7 +26,7 @@ interface TicketMessage {
     authorName: string;
     message: string;
     createdAt: string;
-    attachments: any[];
+    attachments: unknown[];
 }
 
 interface SupportTicket {
@@ -85,7 +85,7 @@ export default function TicketDetailPage() {
         }
     };
 
-    const handleAction = async (action: string, data: any = {}) => {
+    const handleAction = async (action: string, data: unknown = {}) => {
         setPerformingAction(true);
         try {
             const res = await fetch(`/api/ops/support/${id}`, {
@@ -99,7 +99,7 @@ export default function TicketDetailPage() {
             const json = await res.json();
             setTicket(prev => prev ? ({ ...prev, ...data }) : null);
             toast.success(`${action} successful`);
-        } catch (error: any) {
+        } catch (error: unknown) {
             toast.error(error.message);
         } finally {
             setPerformingAction(false);

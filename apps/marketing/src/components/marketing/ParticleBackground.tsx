@@ -34,7 +34,7 @@ export const ParticleBackground: React.FC = () => {
     if (!ctx) return;
 
     let animationFrameId: number = 0;
-    let particles: any[] = [];
+    let particles: unknown[] = [];
     // Reduced particle count for better performance
     const particleCount = 30;
 

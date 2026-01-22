@@ -47,7 +47,7 @@ export async function POST(req: Request) {
       message: "Verification started",
       status: "pending",
     });
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error("Domain verify trigger error:", error);
     return NextResponse.json(
       { error: "Failed to trigger verification" },

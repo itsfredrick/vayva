@@ -12,7 +12,7 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
-    const storeId = (session.user as any).storeId;
+    const storeId = (session.user as unknown).storeId;
 
     const { query, history, conversationId: clientConversationId } = await req.json();
 
@@ -54,7 +54,7 @@ export async function POST(req: Request) {
     // --- Rate Limit Check (Distributed) ---
     // Use a scoped variable for prisma to avoid top-level shadowing if that was the issue,
     // or just reuse the import properly.
-    const prismaRateLimit = (global as any).prisma || (await import("@vayva/db")).prisma;
+    const prismaRateLimit = (global as unknown).prisma || (await import("@vayva/db")).prisma;
 
     // Clean up old entries (Lazy cleanup)
     // await prismaCtx.otpCode.deleteMany({ where: { expiresAt: { lt: now }, type: "SUPPORT_RATE_LIMIT" } }); 
@@ -128,8 +128,8 @@ export async function POST(req: Request) {
 
     // Telemetry: Log Bot Reply
     // In a real event queue, this would be async/fire-and-forget
-    const prismaCtx: any =
-      (global as any).prisma || (await import("@vayva/db")).prisma;
+    const prismaCtx: unknown =
+      (global as unknown).prisma || (await import("@vayva/db")).prisma;
 
     await prismaCtx.supportTelemetryEvent.create({
       data: {

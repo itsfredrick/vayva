@@ -66,7 +66,7 @@ export const WebhookController = {
   },
 
   // --- Event Publishing ---
-  publishEvent: async (storeId: string, type: string, payload: any) => {
+  publishEvent: async (storeId: string, type: string, payload: unknown) => {
     const event = await prisma.webhookEventV2.create({
       data: { storeId, type, payload },
     });
@@ -157,7 +157,7 @@ export const WebhookController = {
           deliveredAt: new Date(),
         },
       });
-    } catch (error: any) {
+    } catch (error: unknown) {
       const maxAttempts = 10;
       const nextAttempt = delivery.attempt + 1;
       const isDeadLetter = nextAttempt > maxAttempts;

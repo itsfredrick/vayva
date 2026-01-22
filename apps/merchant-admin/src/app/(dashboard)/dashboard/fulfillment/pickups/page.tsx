@@ -38,7 +38,7 @@ export default function PickupsPage() {
     );
 }
 
-function Tab({ label, active, onClick, count }: any) {
+function Tab({ label, active, onClick, count }: unknown) {
     return (
         <Button
             onClick={onClick}

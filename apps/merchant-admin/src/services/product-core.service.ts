@@ -16,7 +16,7 @@ export class ProductCoreService {
     /**
      * Create a product with full business logic (Quotas, Inventory, Variants)
      */
-    static async createProduct(storeId: string, payload: any) {
+    static async createProduct(storeId: string, payload: unknown) {
         // 1. Fetch Merchant to know Category & Plan
         const store = await prisma.store.findUnique({
             where: { id: storeId },

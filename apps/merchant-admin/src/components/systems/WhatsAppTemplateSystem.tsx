@@ -1,8 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import { Button, Icon, cn } from "@vayva/ui";
-import { Switch } from "@/components/ui/switch";
+import { Button, Icon, Switch, cn } from "@vayva/ui";
 
 // Master Prompt System 2: WhatsApp Templates
 // State-bound templates (not time-based)

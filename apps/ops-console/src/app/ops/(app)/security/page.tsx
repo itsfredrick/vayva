@@ -18,7 +18,7 @@ import { Button } from "@vayva/ui";
 interface AuditEvent {
     id: string;
     eventType: string;
-    metadata: any;
+    metadata: unknown;
     createdAt: string;
     opsUser: {
         name: string;

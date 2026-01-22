@@ -12,7 +12,7 @@ import { Loader2, Monitor, Smartphone, Globe, ArrowLeft } from "lucide-react";
 export default function StorefrontCustomizePage() {
     const { merchant } = useAuth();
     const router = useRouter();
-    const [draft, setDraft] = useState<any>(null);
+    const [draft, setDraft] = useState<unknown>(null);
     const [loading, setLoading] = useState(true);
     const [viewMode, setViewMode] = useState<"desktop" | "mobile">("desktop");
     const [isSaving, setIsSaving] = useState(false);
@@ -35,7 +35,7 @@ export default function StorefrontCustomizePage() {
         }
     };
 
-    const handleUpdate = async (newConfig: any) => {
+    const handleUpdate = async (newConfig: unknown) => {
         // 1. Sync local status
         setDraft({ ...draft, themeConfig: newConfig });
 

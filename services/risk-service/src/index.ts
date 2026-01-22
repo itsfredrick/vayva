@@ -22,7 +22,7 @@ server.post<{
     scopeId?: string;
     key: string;
     severity: RiskSeverity;
-    metadata?: any;
+    metadata?: unknown;
   };
 }>("/v1/risk/evaluate", async (request, reply) => {
   try {
@@ -39,7 +39,7 @@ const start = async () => {
     await server.listen({ port: 3020, host: "0.0.0.0" }); // Port 3020 for Risk Service
     console.log("Risk Service running on port 3020");
   } catch (err) {
-    (server.log as any).error(err);
+    (server.log as unknown).error(err);
     process.exit(1);
   }
 };

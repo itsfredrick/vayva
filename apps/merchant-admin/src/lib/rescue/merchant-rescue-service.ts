@@ -113,12 +113,12 @@ export class MerchantRescueService {
                 data: {
                     status: nextStatus,
                     diagnostics: {
-                        ...(incident.diagnostics as any),
+                        ...(incident.diagnostics as unknown),
                         aiAnalysis: analysis,
                     },
                 },
             });
-        } catch (error: any) {
+        } catch (error: unknown) {
             console.error("Rescue Analysis Error", error);
         }
     }

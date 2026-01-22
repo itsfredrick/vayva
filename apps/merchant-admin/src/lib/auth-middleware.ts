@@ -24,7 +24,7 @@ export async function requireAuth() {
 /**
  * Check if user has specific role
  */
-export function requireRole(user: any, allowedRoles: string[]) {
+export function requireRole(user: unknown, allowedRoles: string[]) {
   if (!user.role || !allowedRoles.includes(user.role)) {
     return NextResponse.json(
       { error: "Forbidden - Insufficient permissions" },
@@ -38,7 +38,7 @@ export function requireRole(user: any, allowedRoles: string[]) {
  * Wrapper for API routes that require authentication
  */
 export function withAuth(
-  handler: (request: Request, user: any) => Promise<NextResponse>,
+  handler: (request: Request, user: unknown) => Promise<NextResponse>,
 ) {
   return async (request: Request) => {
     const { error, user } = await requireAuth();

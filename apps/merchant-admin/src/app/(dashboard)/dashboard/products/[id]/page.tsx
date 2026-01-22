@@ -19,7 +19,7 @@ export default function EditProductPage() {
     const [deleting, setDeleting] = useState(false);
     const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
     const [showPublishDialog, setShowPublishDialog] = useState(false);
-    const [product, setProduct] = useState<any>(null);
+    const [product, setProduct] = useState<unknown>(null);
     const [publishing, setPublishing] = useState(false);
 
     // Form State
@@ -74,7 +74,7 @@ export default function EditProductPage() {
 
             toast.success("Product updated successfully");
             router.push("/dashboard/products");
-        } catch (err: any) {
+        } catch (err: unknown) {
             toast.error(err.message);
         } finally {
             setSaving(false);
@@ -95,7 +95,7 @@ export default function EditProductPage() {
 
             toast.success("Product deleted successfully");
             router.push("/dashboard/products");
-        } catch (err: any) {
+        } catch (err: unknown) {
             toast.error(err.message);
             setDeleting(false);
             setShowDeleteConfirm(false);

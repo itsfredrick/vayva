@@ -15,7 +15,7 @@ export async function GET(req: NextRequest) {
         });
 
         return NextResponse.json(fixes);
-    } catch (error: any) {
+    } catch (error: unknown) {
         return NextResponse.json({ error: error.message }, { status: 401 });
     }
 }

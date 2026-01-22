@@ -83,7 +83,7 @@ export async function GET(request: Request) {
     }
 
     // 5. CRITICAL: Update in transaction for data integrity
-    await prisma.$transaction(async (tx: any) => {
+    await prisma.$transaction(async (tx: unknown) => {
       // Record Ledger Entry
       await LedgerService.recordTransaction({
         storeId: order.storeId!,
@@ -114,7 +114,7 @@ export async function GET(request: Request) {
       message: "Payment successful",
       order: updatedOrder,
     });
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error("Payment Verify Error:", error);
     return NextResponse.json({ error: error.message }, { status: 500 });
   }
@@ -194,7 +194,7 @@ export async function POST(request: Request) {
     }
 
     // 6. CRITICAL: Update in transaction
-    await prisma.$transaction(async (tx: any) => {
+    await prisma.$transaction(async (tx: unknown) => {
       // Record Ledger Entry
       await LedgerService.recordTransaction({
         storeId: order.storeId!,
@@ -218,7 +218,7 @@ export async function POST(request: Request) {
     });
 
     return NextResponse.json({ message: "Webhook processed successfully" });
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error("Webhook Processing Error:", error);
     return NextResponse.json({ error: error.message }, { status: 500 });
   }

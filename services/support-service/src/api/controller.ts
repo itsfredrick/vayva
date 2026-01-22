@@ -14,7 +14,7 @@ interface AddMessageBody {
   message: string;
   sender?: string;
   senderId?: string;
-  attachments?: any;
+  attachments?: unknown;
 }
 
 export const SupportController = {
@@ -29,7 +29,7 @@ export const SupportController = {
         storeId,
         subject,
         description,
-        priority: (priority || "medium") as any,
+        priority: (priority || "medium") as unknown,
         type: type || "general",
         status: "open",
         ticketMessages: {
@@ -40,7 +40,7 @@ export const SupportController = {
                 message: description,
                 sender: "merchant",
                 senderId: userId,
-              } as any,
+              } as unknown,
             ]
             : [],
         },
@@ -59,7 +59,7 @@ export const SupportController = {
     const tickets = await prisma.supportTicket.findMany({
       where: {
         storeId,
-        status: (status as any) || undefined,
+        status: (status as unknown) || undefined,
       },
       include: {
         customer: true,
@@ -88,11 +88,11 @@ export const SupportController = {
   },
 
   updateTicket: async (
-    req: FastifyRequest<{ Params: { id: string }; Body: any }>,
+    req: FastifyRequest<{ Params: { id: string }; Body: unknown }>,
     reply: FastifyReply,
   ) => {
     const { id } = req.params;
-    const updates = req.body as any;
+    const updates = req.body as unknown;
     const ticket = await prisma.supportTicket.update({
       where: { id },
       data: updates,
@@ -115,7 +115,7 @@ export const SupportController = {
         storeId: ticket.storeId,
         ticketId: id,
         message,
-        sender: (sender || "merchant") as any,
+        sender: (sender || "merchant") as unknown,
         senderId,
         attachments: attachments || [],
       },

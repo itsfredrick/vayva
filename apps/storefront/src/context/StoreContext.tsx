@@ -36,7 +36,7 @@ const StoreContext = createContext<StoreContextType>({
 
 export const useStore = () => useContext(StoreContext);
 
-export function StoreProvider({ children }: { children: any }) {
+export function StoreProvider({ children }: { children: unknown }) {
   const searchParams = useSearchParams();
   const [store, setStore] = useState<PublicStore | null>(null);
   const [isLoading, setIsLoading] = useState(true);
@@ -126,7 +126,7 @@ export function StoreProvider({ children }: { children: any }) {
   useEffect(() => {
     const handleMessage = (event: MessageEvent) => {
       if (event.data?.type === "VAYVA_PREVIEW_UPDATE") {
-        setStore((prev: any) => {
+        setStore((prev: unknown) => {
           if (!prev) return prev;
           return {
             ...prev,

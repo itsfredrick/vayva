@@ -21,7 +21,7 @@ export async function GET() {
     });
 
     // Transform to expected format
-    const formattedSettlements = settlements.map((settlement: any) => ({
+    const formattedSettlements = settlements.map((settlement: unknown) => ({
       id: settlement.id,
       amount: Number(settlement.amount), // Already in naira (Decimal)
       currency: settlement.currency,
@@ -34,7 +34,7 @@ export async function GET() {
     }));
 
     return NextResponse.json(formattedSettlements);
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error("Fetch Settlements Error:", error);
     return NextResponse.json({ error: error.message }, { status: 500 });
   }

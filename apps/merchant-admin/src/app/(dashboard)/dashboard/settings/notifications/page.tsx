@@ -141,7 +141,7 @@ export default function NotificationsPage() {
     );
 }
 
-function Toggle({ label, icon: Icon, checked, onChange, disabled }: any) {
+function Toggle({ label, icon: Icon, checked, onChange, disabled }: unknown) {
     return (
         <label className={`flex items-center gap-2 cursor-pointer ${disabled ? 'opacity-50 cursor-not-allowed' : ''}`}>
             <div className={`w-10 h-6 rounded-full p-1 transition-colors ${checked ? 'bg-indigo-600' : 'bg-slate-200'}`}>
@@ -156,7 +156,7 @@ function Toggle({ label, icon: Icon, checked, onChange, disabled }: any) {
     );
 }
 
-function ShieldAlert(props: any) {
+function ShieldAlert(props: unknown) {
     return (
         <svg
             {...props}

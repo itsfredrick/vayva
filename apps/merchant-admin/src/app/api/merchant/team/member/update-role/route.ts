@@ -36,7 +36,7 @@ export const POST = withVayvaAPI(
       await prisma.membership.update({
         where: { userId_storeId: { userId: targetUserId, storeId } },
         data: {
-          role_enum: isCustomRole ? "STAFF" : role.toUpperCase() as any,
+          role_enum: isCustomRole ? "STAFF" : role.toUpperCase() as unknown,
           roleId: isCustomRole ? role : null
         },
       });

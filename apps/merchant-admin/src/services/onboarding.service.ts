@@ -38,7 +38,7 @@ export class OnboardingService {
             const { step, data, isComplete } = payload;
 
             // 1. Prepare Onboarding Update
-            const updateData: any = {
+            const updateData: unknown = {
                 updatedAt: new Date(),
             };
 
@@ -80,7 +80,7 @@ export class OnboardingService {
 
                 // Let's rely on the fact that if data.finance and data.kyc are present, we are good.
                 const hasFinance = data?.finance?.accountNumber || (await tx.bankBeneficiary.findFirst({ where: { storeId } }));
-                const hasKyc = (data as any)?.identity?.nin || (data as any)?.kyc?.nin || (await tx.kycRecord.findFirst({ where: { storeId } }));
+                const hasKyc = (data as unknown)?.identity?.nin || (data as unknown)?.kyc?.nin || (await tx.kycRecord.findFirst({ where: { storeId } }));
 
                 if (!hasFinance || !hasKyc) {
                     throw new Error("Cannot complete onboarding: Missing Finance or KYC data");
@@ -96,7 +96,7 @@ export class OnboardingService {
             });
 
             // 2. Sync Store Fields
-            const storeUpdate: any = {};
+            const storeUpdate: unknown = {};
             if (step) storeUpdate.onboardingLastStep = step;
             if (isComplete) {
                 storeUpdate.onboardingCompleted = true;
@@ -118,7 +118,7 @@ export class OnboardingService {
             // 3. Sync KYC Data
             const kycData = data?.kyc || data?.identity;
             if (kycData) {
-                const kycUpdate: any = {};
+                const kycUpdate: unknown = {};
                 if (kycData.nin) {
                     kycUpdate.ninLast4 = kycData.nin.slice(-4);
                     kycUpdate.fullNinEncrypted = `ENCRYPTED_${kycData.nin}`; // START MOCK ENCRYPTION

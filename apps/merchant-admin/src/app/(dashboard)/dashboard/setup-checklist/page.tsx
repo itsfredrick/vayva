@@ -4,7 +4,7 @@ import React, { useEffect, useState } from "react";
 import { Icon } from "@vayva/ui";
 
 export default function SetupChecklistPage() {
-  const [readiness, setReadiness] = useState<any>(null);
+  const [readiness, setReadiness] = useState<unknown>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -43,7 +43,7 @@ export default function SetupChecklistPage() {
       {isReady ? (
         <div className="bg-green-50 border border-green-100 rounded-xl p-8 text-center">
           <div className="w-16 h-16 bg-green-100 text-green-600 rounded-full flex items-center justify-center mx-auto mb-4">
-            <Icon name={"Check" as any} size={32} />
+            <Icon name={"Check" as unknown} size={32} />
           </div>
           <h2 className="text-xl font-bold text-green-800">
             You are ready to go live!
@@ -54,7 +54,7 @@ export default function SetupChecklistPage() {
         </div>
       ) : (
         <div className="space-y-4">
-          {issues.map((issue: any) => (
+          {issues.map((issue: unknown) => (
             <div
               key={issue.code}
               className={`p-6 rounded-xl border flex gap-4 ${
@@ -70,7 +70,7 @@ export default function SetupChecklistPage() {
                   name={
                     (issue.severity === "blocker"
                       ? "AlertOctagon"
-                      : "AlertTriangle") as any
+                      : "AlertTriangle") as unknown
                   }
                   size={24}
                 />

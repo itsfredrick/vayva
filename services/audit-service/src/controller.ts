@@ -9,7 +9,7 @@ const auditSchema = z.object({
   userId: z.string().optional(),
   storeId: z.string().optional(),
   opsUserId: z.string().optional(),
-  metadata: z.record(z.any()).optional(),
+  metadata: z.record(z.unknown()).optional(),
 });
 
 export const emitAuditHandler = async (

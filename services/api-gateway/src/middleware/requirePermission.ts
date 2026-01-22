@@ -11,7 +11,7 @@ const ROLE_HIERARCHY: Record<string, number> = {
 
 export const requirePermission = (requiredPermissionOrRole: string) => {
   return async (req: FastifyRequest, reply: FastifyReply) => {
-    const user = req.user as any;
+    const user = req.user as { sub: string; email?: string };
     if (!user) {
       return reply.status(401).send({ error: "Unauthorized" });
     }
@@ -19,7 +19,7 @@ export const requirePermission = (requiredPermissionOrRole: string) => {
     // Logic for Merchant Roles
     if (user.aud === "merchant") {
       const storeId =
-        (req.headers["x-store-id"] as string) || (req.params as any).storeId;
+        (req.headers["x-store-id"] as string) || (req.params as Record<string, string>).storeId;
 
       if (!storeId) {
         return reply.status(400).send({ error: "Store ID header required" });
@@ -52,8 +52,8 @@ export const requirePermission = (requiredPermissionOrRole: string) => {
       }
 
       // 1. Check fine-grained permissions if Role is assigned
-      if (membership.role && (membership.role as any).rolePermissions) {
-        const permissions = (membership.role as any).rolePermissions.map((rp: any) => rp.permission.key);
+      if (membership.role && (membership.role as unknown).rolePermissions) {
+        const permissions = (membership.role as unknown).rolePermissions.map((rp: unknown) => rp.permission.key);
         if (permissions.includes(requiredPermissionOrRole)) {
           return; // Authorized via specific permission
         }

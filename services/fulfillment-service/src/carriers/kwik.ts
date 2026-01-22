@@ -33,7 +33,7 @@ export class KwikProvider implements ICarrierProvider {
         trackingUrl: response.data.data.tracking_url,
         trackingCode: response.data.data.unique_delivery_code
       };
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error("KWIK: Create Job Failed", error.response?.data || error.message);
       // Fallback or rethrow - strict mode means we fail if calls fail in Prod
       throw new Error(`Kwik Create Job Failed: ${error.message}`);

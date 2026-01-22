@@ -48,12 +48,12 @@ export class IdempotencyService {
         data: {
           status: "COMPLETED",
           responseHash,
-          responseJson: result as any,
+          responseJson: result as unknown,
         },
       });
 
       return result;
-    } catch (error: any) {
+    } catch (error: unknown) {
       // Mark as FAILED
       await prisma.idempotencyKey.update({
         where: { storeId_scope_key: { storeId: storeId || "", scope, key } },

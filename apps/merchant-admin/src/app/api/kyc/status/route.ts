@@ -39,7 +39,7 @@ export async function GET() {
         : [],
       canWithdraw: kycRecord?.status === "VERIFIED",
     });
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error("KYC status fetch error:", error);
 
     if (error.message === "Unauthorized") {

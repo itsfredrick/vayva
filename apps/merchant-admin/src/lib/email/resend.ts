@@ -58,7 +58,7 @@ export class ResendEmailService {
       }
 
       return { success: true, messageId: data?.id };
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error("[Resend] OTP Error:", error);
       throw error;
     }
@@ -89,7 +89,7 @@ export class ResendEmailService {
       }
 
       return { success: true, messageId: data?.id };
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error("[Resend] Welcome Error:", error);
       throw error;
     }
@@ -115,7 +115,7 @@ export class ResendEmailService {
       }
 
       return { success: true, messageId: data?.id };
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error("[Resend] Password Change Error:", error);
       throw error;
     }
@@ -147,7 +147,7 @@ export class ResendEmailService {
       }
 
       return { success: true, messageId: data?.id };
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error("[Resend] Receipt Error:", error);
       throw error;
     }
@@ -188,7 +188,7 @@ export class ResendEmailService {
       }
 
       return { success: true, messageId: data?.id };
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error("[Resend] Subscription Expiry Error:", error);
       throw error;
     }
@@ -220,7 +220,7 @@ export class ResendEmailService {
       }
 
       return { success: true, messageId: data?.id };
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error("[Resend] Shipped Error:", error);
       throw error;
     }

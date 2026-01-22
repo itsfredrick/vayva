@@ -7,14 +7,14 @@ export const listApprovalsHandler = async (
 ) => {
   const { storeId, status } = req.query as { storeId: string; status?: string };
   if (!storeId) {
-    (req.log as any).error("storeId required for listApprovalsHandler");
+    (req.log as unknown).error("storeId required for listApprovalsHandler");
     return reply.status(400).send({ error: "storeId required" });
   }
 
   const approvals = await prisma.approval.findMany({
     where: {
       storeId,
-      status: (status as any) || undefined,
+      status: (status as unknown) || undefined,
     },
     orderBy: { createdAt: "desc" },
   });

@@ -109,7 +109,7 @@ export class OpsAuthService {
       select: { metadata: true },
     });
 
-    const count = failures.filter((f) => (f.metadata as any)?.ip === ip).length;
+    const count = failures.filter((f) => (f.metadata as unknown)?.ip === ip).length;
     return count >= MAX_ATTEMPTS;
   }
 
@@ -153,7 +153,7 @@ export class OpsAuthService {
    * Require specific role or throw
    * Role hierarchy: OPS_OWNER > SUPERVISOR > OPERATOR > SUPPORT
    */
-  static requireRole(user: any, requiredRole: string) {
+  static requireRole(user: unknown, requiredRole: string) {
     const roleHierarchy: Record<string, number> = {
       OPS_OWNER: 4,
       SUPERVISOR: 3,
@@ -185,7 +185,7 @@ export class OpsAuthService {
   static async logEvent(
     userId: string | null,
     eventType: string,
-    metadata: any = {},
+    metadata: unknown = {},
   ) {
     await prisma.opsAuditEvent.create({
       data: {

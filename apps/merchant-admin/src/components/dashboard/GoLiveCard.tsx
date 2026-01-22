@@ -8,7 +8,7 @@ import { useToast } from "@/components/ui/use-toast";
 export function GoLiveCard() {
   const router = useRouter();
   const { toast } = useToast();
-  const [status, setStatus] = useState<any>(null);
+  const [status, setStatus] = useState<unknown>(null);
   const [loading, setLoading] = useState(true);
   const [processing, setProcessing] = useState(false);
 
@@ -88,7 +88,7 @@ export function GoLiveCard() {
   const readiness = status?.readiness || {};
   const isReady = readiness.level === "ready";
   const blockers =
-    readiness.issues?.filter((i: any) => i.severity === "blocker") || [];
+    readiness.issues?.filter((i: unknown) => i.severity === "blocker") || [];
 
   return (
     <div className="bg-white rounded-xl border border-gray-200 shadow-sm p-6">
@@ -108,7 +108,7 @@ export function GoLiveCard() {
       {isLive ? (
         <div className="space-y-4">
           <div className="p-4 bg-green-50 rounded-lg flex items-center gap-3">
-            <Icon name={"Globe" as any} className="text-green-600" />
+            <Icon name={"Globe" as unknown} className="text-green-600" />
             <div className="flex-1">
               <div className="text-xs text-green-700 font-bold uppercase">
                 Public URL
@@ -134,11 +134,11 @@ export function GoLiveCard() {
           {!isReady && (
             <div className="bg-orange-50 p-4 rounded-lg border border-orange-100">
               <div className="flex items-center gap-2 mb-2 text-orange-800 font-bold text-sm">
-                <Icon name={"AlertTriangle" as any} size={16} />
+                <Icon name={"AlertTriangle" as unknown} size={16} />
                 {blockers.length} Issues preventing Go Live
               </div>
               <div className="space-y-1">
-                {blockers.map((b: any) => (
+                {blockers.map((b: unknown) => (
                   <div
                     key={b.code}
                     className="text-xs text-orange-700 flex justify-between"
@@ -167,7 +167,7 @@ export function GoLiveCard() {
               }`}
           >
             {processing ? "Publishing..." : "Go Live Now"}
-            <Icon name={"ArrowRight" as any} size={16} />
+            <Icon name={"ArrowRight" as unknown} size={16} />
           </Button>
         </div>
       )}

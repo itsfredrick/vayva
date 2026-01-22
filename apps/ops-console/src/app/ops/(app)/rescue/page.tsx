@@ -20,20 +20,36 @@ import Link from "next/link";
 import { toast } from "sonner";
 import { Button } from "@vayva/ui";
 
+interface RescueIncident {
+    id: string;
+    severity: "CRITICAL" | "HIGH" | "MEDIUM" | "LOW";
+    surface: string;
+    createdAt: string;
+    errorType: string;
+    errorMessage: string;
+}
+
+interface RescueFix {
+    id: string;
+    actionType: string;
+    incidentId: string;
+    Incident?: { errorType: string };
+    actionStatus: "SUCCESS" | "FAILED";
+    summary: string;
+    performedBy: string;
+    createdAt: string;
+}
+
 type Tab = "incidents" | "history" | "runbook" | "settings";
 
 export default function RescueConsolePage() {
     const [activeTab, setActiveTab] = useState<Tab>("incidents");
-    const [incidents, setIncidents] = useState<any[]>([]);
-    const [fixes, setFixes] = useState<any[]>([]);
+    const [incidents, setIncidents] = useState<RescueIncident[]>([]);
+    const [fixes, setFixes] = useState<RescueFix[]>([]);
     const [loading, setLoading] = useState(true);
     const [runningRunbook, setRunningRunbook] = useState<string | null>(null);
 
-    useEffect(() => {
-        fetchData();
-    }, [activeTab]);
-
-    const fetchData = async () => {
+    const fetchData = React.useCallback(async () => {
         setLoading(true);
         try {
             if (activeTab === "incidents") {
@@ -48,7 +64,11 @@ export default function RescueConsolePage() {
         } finally {
             setLoading(false);
         }
-    };
+    }, [activeTab]);
+
+    useEffect(() => {
+        fetchData();
+    }, [fetchData]);
 
     const runRunbook = async (id: string, title: string) => {
         if (!confirm(`Run runbook: ${title}? This will execute automated recovery steps.`)) return;
@@ -71,7 +91,7 @@ export default function RescueConsolePage() {
 
         try {
             await promise;
-        } catch (e) {
+        } catch {
             // Toast handles it
         } finally {
             setRunningRunbook(null);

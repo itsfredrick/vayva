@@ -13,7 +13,7 @@ import Link from "next/link";
  */
 export function ProductFormFactory({ productId }: { productId?: string }) {
     const { merchant } = useAuth();
-    const industrySlug = (merchant as any)?.industrySlug as IndustrySlug || "retail";
+    const industrySlug = (merchant as unknown)?.industrySlug as IndustrySlug || "retail";
     const config = INDUSTRY_CONFIG[industrySlug];
     const mode = productId ? "edit" : "create";
 

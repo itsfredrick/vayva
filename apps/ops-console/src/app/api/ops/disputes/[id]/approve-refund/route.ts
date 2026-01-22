@@ -15,7 +15,7 @@ export async function POST(
         }
         try {
             OpsAuthService.requireRole(sessionData.user, "OPS_ADMIN");
-        } catch (e: any) {
+        } catch (e: unknown) {
             return NextResponse.json({ error: e.message }, { status: 403 });
         }
         const { user } = sessionData;
@@ -98,7 +98,7 @@ export async function POST(
             dispute: updatedDispute,
             message: "Refund approved successfully",
         });
-    } catch (error: any) {
+    } catch (error: unknown) {
         logger.error("Approve refund error", error);
         return NextResponse.json(
             { error: "Failed to approve refund" },

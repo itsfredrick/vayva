@@ -5,8 +5,7 @@ import { toast } from "sonner";
 import { Shield, Ban, Clock, AlertTriangle } from "lucide-react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
-import { Button, Input } from "@vayva/ui";
-import { Switch } from "@/components/ui/switch";
+import { Button, Input, Switch } from "@vayva/ui";
 import {
   Select,
   SelectContent,
@@ -26,7 +25,7 @@ interface SafetyFiltersProps {
         aiSensitivity?: number;
         autoEscalationThreshold?: number;
     };
-    onUpdate: (data: any) => Promise<void>;
+    onUpdate: (data: unknown) => Promise<void>;
 }
 
 export function SafetyFilters({ settings, onUpdate }: SafetyFiltersProps) {
@@ -103,7 +102,7 @@ export function SafetyFilters({ settings, onUpdate }: SafetyFiltersProps) {
                                 min="1"
                                 max="1000"
                                 value={formData.rateLimitPerHour}
-                                onChange={(e: any) =>
+                                onChange={(e: unknown) =>
                                     setFormData({ ...formData, rateLimitPerHour: e.target.value })
                                 }
                             />
@@ -153,7 +152,7 @@ export function SafetyFilters({ settings, onUpdate }: SafetyFiltersProps) {
                                     min="0"
                                     max="100"
                                     value={formData.aiSensitivity}
-                                    onChange={(e: any) => setFormData({ ...formData, aiSensitivity: parseInt(e.target.value) })}
+                                    onChange={(e: unknown) => setFormData({ ...formData, aiSensitivity: parseInt(e.target.value) })}
                                     className="h-1.5"
                                 />
                                 <p className="text-xs text-muted-foreground">
@@ -202,7 +201,7 @@ export function SafetyFilters({ settings, onUpdate }: SafetyFiltersProps) {
                             id="blockedNumbers"
                             placeholder="+2348012345678&#10;+2347012345678"
                             value={formData.blockedNumbers}
-                            onChange={(e: any) =>
+                            onChange={(e: unknown) =>
                                 setFormData({ ...formData, blockedNumbers: e.target.value })
                             }
                             rows={4}
@@ -217,7 +216,7 @@ export function SafetyFilters({ settings, onUpdate }: SafetyFiltersProps) {
                             id="blockedKeywords"
                             placeholder="spam, scam, fraud"
                             value={formData.blockedKeywords}
-                            onChange={(e: any) =>
+                            onChange={(e: unknown) =>
                                 setFormData({ ...formData, blockedKeywords: e.target.value })
                             }
                             rows={3}

@@ -34,7 +34,7 @@ const StatWidget = ({
     <div className="flex justify-between items-start mb-3">
       <div className="text-xs font-bold text-gray-400 uppercase tracking-wider">{title}</div>
       <div className="p-2 bg-studio-gray rounded-lg group-hover:bg-vayva-green transition-colors">
-        <Icon name={(icon as any) || "Activity"} size={16} className="text-gray-400 group-hover:text-white" />
+        <Icon name={(icon as unknown) || "Activity"} size={16} className="text-gray-400 group-hover:text-white" />
       </div>
     </div>
     <div className="text-3xl font-black text-black">
@@ -69,12 +69,12 @@ export default function DashboardPage() {
 
   // Redirect if no industry set — send to onboarding entry to resolve the correct step dynamically
   // Redirect if no industry set
-  if (!(merchant as any).industrySlug) {
+  if (!(merchant as unknown).industrySlug) {
     // Fallback or send to settings
     return <div className="p-8">Please complete your store profile in Settings.</div>;
   }
 
-  const industrySlug = (store?.industrySlug as IndustrySlug) || (merchant as any).industrySlug;
+  const industrySlug = (store?.industrySlug as IndustrySlug) || (merchant as unknown).industrySlug;
   const config = INDUSTRY_CONFIG[industrySlug];
 
   if (!config) {
@@ -169,7 +169,7 @@ export default function DashboardPage() {
         })}
 
         {/* Extension Widgets (P2) */}
-        {extensionRegistry.getActiveForStore(industrySlug, (merchant as any).enabledExtensionIds || []).map(ext =>
+        {extensionRegistry.getActiveForStore(industrySlug, (merchant as unknown).enabledExtensionIds || []).map(ext =>
           ext.dashboardWidgets?.map(widget => (
             <div key={widget.id} className={`md:col-span-${widget.gridCols || 1}`}>
               <StatWidget

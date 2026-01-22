@@ -5,11 +5,11 @@ import { prisma } from "@/lib/prisma";
 
 export async function POST(req: NextRequest) {
   const session = await getServerSession(authOptions);
-  if (!(session?.user as any)?.storeId) {
+  if (!(session?.user)?.storeId) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
-  const storeId = (session!.user as any).storeId;
+  const storeId = (session!.user as unknown).storeId;
   const body = await req.json();
 
   const { type, category, title, message, actionUrl, channels } = body;
@@ -30,7 +30,7 @@ export async function POST(req: NextRequest) {
   const notification = await prisma.notification.create({
     data: {
       store: { connect: { id: storeId } }, // Connect to store relation
-      userId: (session!.user as any).id,
+      userId: (session!.user as unknown).id,
       type: "manual_alert", // DB 'type' column
       severity: severity, // DB 'severity' column -> Maps to NotificationType
       category: category || "system",

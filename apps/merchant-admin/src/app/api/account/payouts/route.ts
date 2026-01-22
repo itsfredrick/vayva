@@ -23,7 +23,7 @@ export async function GET() {
     }));
 
     return NextResponse.json({ accounts: maskedAccounts });
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error("Payouts fetch error:", error);
     return NextResponse.json(
       { error: "Failed to fetch payout details" },
@@ -54,7 +54,7 @@ export async function PUT(request: Request) {
     // Implementation would mirror POST in bank route but with update
     // For simplicity, we create a new one and set as default if it's a "Change Account" action
 
-    const beneficiary = await prisma.$transaction(async (tx: any) => {
+    const beneficiary = await prisma.$transaction(async (tx: unknown) => {
       await tx.bankBeneficiary.updateMany({
         where: { storeId, isDefault: true },
         data: { isDefault: false },
@@ -83,7 +83,7 @@ export async function PUT(request: Request) {
     );
 
     return NextResponse.json({ success: true, beneficiary });
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error("Payouts update error:", error);
     return NextResponse.json(
       { error: "Failed to update payout details" },

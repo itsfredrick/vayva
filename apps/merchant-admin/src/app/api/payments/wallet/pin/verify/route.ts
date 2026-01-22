@@ -41,7 +41,7 @@ export async function POST(request: NextRequest) {
 
         if (!isValid) {
             const attempts = wallet.failedPinAttempts + 1;
-            let updateData: any = { failedPinAttempts: attempts };
+            let updateData: unknown = { failedPinAttempts: attempts };
 
             if (attempts >= 5) {
                 updateData.isLocked = true;

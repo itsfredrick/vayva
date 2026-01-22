@@ -13,10 +13,36 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import Image from "next/image";
 import { ExtensionsGallery } from "@/components/control-center/ExtensionsGallery";
 
+interface Template {
+    id: string;
+    name: string;
+    description: string;
+    category?: string;
+    thumbnailUrl?: string;
+    previewUrl?: string;
+    previewImageUrl?: string;
+    version?: string;
+    isPremium?: boolean;
+    isLocked?: boolean;
+}
+
+interface DeploymentVersion {
+    id: string;
+    version: string;
+    publishedAt: string | Date;
+    author: string;
+    status: "active" | "archived" | "draft";
+    description?: string;
+    template?: {
+        name: string;
+    };
+    publishedBy?: string;
+}
+
 export default function TemplatesPage() {
     const router = useRouter();
-    const [templates, setTemplates] = useState<any[]>([]);
-    const [history, setHistory] = useState<any[]>([]);
+    const [templates, setTemplates] = useState<Template[]>([]);
+    const [history, setHistory] = useState<DeploymentVersion[]>([]);
     const [isLoading, setIsLoading] = useState(true);
     const [applyingId, setApplyingId] = useState<string | null>(null);
     const [isPublishing, setIsPublishing] = useState(false);
@@ -117,7 +143,7 @@ export default function TemplatesPage() {
 
             toast.success("Upgrade Successful! Template Unlocked.");
             loadTemplates();
-        } catch (error: any) {
+        } catch (error: unknown) {
             toast.error(error.message);
         } finally {
             toast.dismiss(loadingToast);

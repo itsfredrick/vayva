@@ -7,7 +7,7 @@ import { Button, Input } from "@vayva/ui";
 // Mocking "product" prop for simplicity in this file
 import { CheckoutModal } from "@/templates/one-product/components/CheckoutModal"; // Cross-template import
 
-export function BookingWidget({ productId, price, store }: { productId: string, price: number, store: any }) {
+export function BookingWidget({ productId, price, store }: { productId: string, price: number, store: unknown }) {
     const [startDate, setStartDate] = useState("");
     const [endDate, setEndDate] = useState("");
     const [guests, setGuests] = useState(2);
@@ -108,7 +108,7 @@ export function BookingWidget({ productId, price, store }: { productId: string, 
                         storeId: store.id,
                         variants: [], // Required by type
                         isDigital: true
-                    } as any}
+                    } as unknown}
                 />
             </div>
         </div>

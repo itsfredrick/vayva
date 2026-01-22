@@ -55,7 +55,7 @@ export const StorefrontService = {
    * Create Order
    */
   createOrder: async (
-    orderData: any,
+    orderData: unknown,
   ): Promise<{
     success: boolean;
     orderId?: string;
@@ -78,7 +78,7 @@ export const StorefrontService = {
       }
 
       return await response.json();
-    } catch (e) {
+    } catch {
       return { success: false, error: "Network error. Please try again." };
     }
   },
@@ -90,7 +90,7 @@ export const StorefrontService = {
     orderId: string;
     email: string;
     callbackUrl: string;
-  }): Promise<any> => {
+  }): Promise<unknown> => {
     try {
       const response = await fetch(`${API_BASE}/orders/payment`, {
         method: "POST",
@@ -126,7 +126,7 @@ export const StorefrontService = {
       );
       if (response.ok) return await response.json();
       return null;
-    } catch (e) {
+    } catch {
       return null;
     }
   },
@@ -134,7 +134,7 @@ export const StorefrontService = {
   /**
    * Get Active Flash Sale
    */
-  getActiveFlashSale: async (storeId: string): Promise<any | null> => {
+  getActiveFlashSale: async (storeId: string): Promise<unknown | null> => {
     try {
       const response = await fetch(
         `${API_BASE}/marketing/flash-sale?storeId=${storeId}`,
@@ -147,7 +147,7 @@ export const StorefrontService = {
         return data.id ? data : null;
       }
       return null;
-    } catch (e) {
+    } catch {
       return null;
     }
   },

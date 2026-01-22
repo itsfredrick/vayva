@@ -19,7 +19,7 @@ import { useParams } from "next/navigation";
 interface AuditEvent {
     id: string;
     eventType: string;
-    metadata: any;
+    metadata: unknown;
     createdAt: string;
 }
 

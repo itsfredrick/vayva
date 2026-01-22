@@ -14,7 +14,7 @@ export async function POST(req: Request) {
     // 1. Rate Limiting (Security Guard)
     try {
       await checkRateLimit(userId, "password_change", 5, 3600, storeId);
-    } catch (error: any) {
+    } catch (error: unknown) {
       return NextResponse.json(
         { error: "Too many attempts. Please try again later." },
         { status: 429 },
@@ -90,7 +90,7 @@ export async function POST(req: Request) {
     await ResendEmailService.sendPasswordChangedEmail(user.email);
 
     return NextResponse.json({ message: "Password updated successfully" });
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error("Password change error:", error);
 
     if (error.message === "Unauthorized") {

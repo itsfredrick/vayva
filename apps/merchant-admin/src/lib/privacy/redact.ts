@@ -16,9 +16,9 @@ export function hashIdentifier(value: string): string {
 }
 
 export function sanitizeObject(
-  obj: any,
+  obj: unknown,
   piiFields: string[] = ["password", "token", "secret", "key"],
-): any {
+): unknown {
   if (!obj) return obj;
   const clean = { ...obj };
   for (const key of Object.keys(clean)) {

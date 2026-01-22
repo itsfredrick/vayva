@@ -30,7 +30,7 @@ async function start() {
   new Worker(
     QUEUES.WHATSAPP_INBOUND,
     async (job) => {
-      const { storeId, payload } = job.data as { storeId: string; payload: any };
+      const { storeId, payload } = job.data as { storeId: string; payload: unknown };
       const messageData = payload.messages?.[0];
       const contactData = payload.contacts?.[0];
 
@@ -100,7 +100,7 @@ async function start() {
             storeId,
             conversationId: conversation.id,
             direction: Direction.INBOUND,
-            type: (messageData.type?.toUpperCase() as any) || MessageType.TEXT,
+            type: (messageData.type?.toUpperCase() as unknown) || MessageType.TEXT,
             providerMessageId: messageId,
             textBody: messageData.text?.body || "",
             status: MessageStatus.DELIVERED,
@@ -328,16 +328,16 @@ async function start() {
       try {
         const result = await kwikProvider.createJob({
           pickup: {
-            name: (order as any).store?.deliverySettings?.pickupName || (order as any).store?.name || "Vayva Store",
-            phone: (order as any).store?.deliverySettings?.pickupPhone || "08000000000",
-            address: (order as any).store?.deliverySettings?.pickupAddressLine1 || "Lagos, Nigeria",
+            name: (order as unknown).store?.deliverySettings?.pickupName || (order as unknown).store?.name || "Vayva Store",
+            phone: (order as unknown).store?.deliverySettings?.pickupPhone || "08000000000",
+            address: (order as unknown).store?.deliverySettings?.pickupAddressLine1 || "Lagos, Nigeria",
           },
           dropoff: {
             name: address.name,
             phone: address.phone,
             address: address.address,
           },
-          items: order.items.map((i: any) => ({
+          items: order.items.map((i: unknown) => ({
             description: i.title,
             quantity: i.quantity,
           })),
@@ -412,7 +412,7 @@ async function start() {
           }
 
           if (purchaseType === "subscription") {
-            await (prisma as any).subscription.update({
+            await (prisma as unknown).subscription.update({
               where: { storeId },
               data: {
                 status: "ACTIVE",
@@ -426,7 +426,7 @@ async function start() {
             const templateId = metadata?.templateId;
             const store = await prisma.store.findUnique({ where: { id: storeId } });
             if (store) {
-              const settings = (store.settings as any) || {};
+              const settings = (store.settings as unknown) || {};
               const purchased = settings.purchasedTemplates || [];
               if (!purchased.includes(templateId)) {
                 purchased.push(templateId);
@@ -449,7 +449,7 @@ async function start() {
                   where: { id: orderId },
                   data: {
                     status: OrderStatus.PAID,
-                    paymentStatus: "SUCCESS" as any,
+                    paymentStatus: "SUCCESS" as unknown,
                   },
                 }),
 
@@ -462,7 +462,7 @@ async function start() {
                     provider: "PAYSTACK",
                     amount: amountNet,
                     currency: data.currency || "NGN",
-                    status: "SUCCESS" as any,
+                    status: "SUCCESS" as unknown,
                     type: "CHARGE",
                   },
                 }),
@@ -508,10 +508,10 @@ async function start() {
 
           if (purchaseType === "subscription") {
             const gracePeriodEndsAt = new Date(Date.now() + 5 * 24 * 60 * 60 * 1000);
-            await (prisma as any).subscription.update({
+            await (prisma as unknown).subscription.update({
               where: { storeId },
               data: {
-                status: "GRACE_PERIOD" as any,
+                status: "GRACE_PERIOD" as unknown,
                 gracePeriodEndsAt,
                 updatedAt: new Date(),
               },
@@ -531,7 +531,7 @@ async function start() {
               }
             });
 
-            const ownerPhone = (store as any)?.memberships?.[0]?.user?.phone;
+            const ownerPhone = (store as unknown)?.memberships?.[0]?.user?.phone;
             if (ownerPhone) {
               await whatsappOutboundQueue.add("send", {
                 to: ownerPhone,

@@ -56,7 +56,7 @@ export const BookingService = {
         let endsAt = data.endsAt;
 
         if (!endsAt) {
-            const meta = service.metadata as any;
+            const meta = service.metadata as unknown;
             const duration = meta?.durationMinutes || 60;
             endsAt = addMinutes(new Date(data.startsAt), duration);
         }

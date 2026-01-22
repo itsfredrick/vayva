@@ -34,7 +34,7 @@ export async function GET(
         const endOfDay = new Date(`${dateStr}T23:59:59.999Z`);
 
         // Note: We use 'any' cast for prisma.booking if types aren't generated yet
-        const bookingDelegate = (prisma as any).booking;
+        const bookingDelegate = (prisma as unknown).booking;
 
         let bookedTimes: string[] = [];
 
@@ -54,7 +54,7 @@ export async function GET(
                 },
             });
 
-            bookedTimes = bookings.map((b: any) => {
+            bookedTimes = bookings.map((b: unknown) => {
                 const d = new Date(b.startsAt);
                 // Convert to HH:mm. Note: This assumes UTC or consistent timezone handling.
                 //Ideally we handle timezones better, but for MVP/V1 audit fix this is sufficient.

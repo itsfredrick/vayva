@@ -66,7 +66,7 @@ export const WithdrawModal = ({ isOpen, onClose }: WithdrawModalProps) => {
     // I'll take a safer approach: I'll fetch the onboarding state when the modal opens to check KYC specifically.
 
     setError(null);
-    setStep((prev) => (prev + 1) as any);
+    setStep((prev) => (prev + 1) as unknown);
   };
 
   const handleConfirm = async () => {
@@ -80,7 +80,7 @@ export const WithdrawModal = ({ isOpen, onClose }: WithdrawModalProps) => {
       );
       setWithdrawalId(wId);
       setStep(3);
-    } catch (err: any) {
+    } catch (err: unknown) {
       const msg = err.response?.data?.error || "Failed to initiate withdrawal";
       // If error suggests KYC needed
       if (
@@ -114,7 +114,7 @@ export const WithdrawModal = ({ isOpen, onClose }: WithdrawModalProps) => {
         title: "Withdrawal Successful",
         description: "Funds will be settled shortly.",
       });
-    } catch (err: any) {
+    } catch (err: unknown) {
       toast({
         title: "Withdrawal Failed",
         description: err.response?.data?.error || "Invalid OTP",

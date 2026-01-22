@@ -12,7 +12,7 @@ export async function PATCH(req: Request) {
         }
 
         const body = await req.json();
-        const { items } = body as { items: { id: string; data: any }[] };
+        const { items } = body as { items: { id: string; data: unknown }[] };
 
         if (!Array.isArray(items) || items.length === 0) {
             return new NextResponse("No items to update", { status: 400 });

@@ -1,7 +1,7 @@
 import { prisma } from "@vayva/db";
 
 export class DisputeService {
-  static async handleWebhookEvent(event: any) {
+  static async handleWebhookEvent(event: unknown) {
     const { event: eventType, data } = event;
 
     const providerDisputeId = data.id.toString();
@@ -47,7 +47,7 @@ export class DisputeService {
       await prisma.dispute.update({
         where: { id: existingDispute.id },
         data: {
-          status: status as any,
+          status: status as unknown,
           evidenceDueAt: data.due_at ? new Date(data.due_at) : undefined,
         },
       });
@@ -58,7 +58,7 @@ export class DisputeService {
           storeId: storeId,
           provider: "PAYSTACK",
           providerDisputeId,
-          status: status as any,
+          status: status as unknown,
           amount: amountNgn,
           currency: "NGN",
           reasonCode: data.reason || "General Dispute",
@@ -68,7 +68,7 @@ export class DisputeService {
     }
   }
 
-  static async addEvidence(disputeId: string, userId: string, fileData: any) {
+  static async addEvidence(disputeId: string, userId: string, fileData: unknown) {
     return prisma.disputeEvidence.create({
       data: {
         disputeId,
@@ -90,7 +90,7 @@ export class DisputeService {
     note?: string,
   ) {
     // Reject submission if not configured, using structure API can parse
-    const error: any = new Error("Dispute submission is not configured");
+    const error: unknown = new Error("Dispute submission is not configured");
     error.code = "feature_not_configured";
     error.feature = "DISPUTES_ENABLED";
     throw error;

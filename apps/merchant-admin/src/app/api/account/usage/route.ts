@@ -33,7 +33,7 @@ export async function GET() {
     const plan = store?.plan || "STARTER";
 
     // Define limits based on plan
-    const limits: any = {
+    const limits: unknown = {
       STARTER: {
         ordersPerMonth: 100,
         whatsappMessages: 1000,
@@ -71,7 +71,7 @@ export async function GET() {
         unlocked: limits[plan].templates,
       },
     });
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error("Usage fetch error:", error);
 
     if (error.message === "Unauthorized") {

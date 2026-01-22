@@ -69,7 +69,7 @@ export async function PATCH(
     }
 
     return NextResponse.json({ error: "Invalid action" }, { status: 400 });
-  } catch (e: any) {
+  } catch (e: unknown) {
     return NextResponse.json({ error: e.message }, { status: 400 });
   }
 }

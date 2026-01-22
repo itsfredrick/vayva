@@ -103,7 +103,7 @@ export default async function DropshippingPage({ params }: Props) {
                         ].map((feature, i) => (
                             <div key={i} className="p-8 border border-gray-100 rounded-3xl hover:shadow-xl transition-all group">
                                 <div className="w-12 h-12 bg-orange-50 rounded-xl flex items-center justify-center text-orange-600 mb-6 group-hover:scale-110 transition-transform">
-                                    <Icon name={feature.icon as any} size={24} />
+                                    <Icon name={feature.icon as unknown} size={24} />
                                 </div>
                                 <h3 className="text-xl font-bold mb-3">{feature.title}</h3>
                                 <p className="text-gray-500 text-sm leading-relaxed">{feature.desc}</p>

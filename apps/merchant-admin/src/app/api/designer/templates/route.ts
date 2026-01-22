@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { DesignerTemplate } from "@/types/designer";
 
-const DEMO_DESIGNER_TEMPLATES: any[] = [
+const DEMO_DESIGNER_TEMPLATES: unknown[] = [
   {
     id: "tpl_urban_v2",
     submissionId: "sub_123",

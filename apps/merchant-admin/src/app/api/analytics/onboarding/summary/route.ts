@@ -49,12 +49,12 @@ export async function GET() {
     });
 
     const byTemplate = templateStarts
-      .map((s: any) => {
+      .map((s: unknown) => {
         const slug = s.templateSlug || "unknown";
         const started = s._count._all;
         const comp =
           templateCompletes.find(
-            (c: any) => (c.templateSlug || "unknown") === slug,
+            (c: unknown) => (c.templateSlug || "unknown") === slug,
           )?._count._all || 0;
         return {
           slug,
@@ -83,7 +83,7 @@ export async function GET() {
       _count: { _all: true },
     });
 
-    const byPlan = planStarts.map((s: any) => {
+    const byPlan = planStarts.map((s: unknown) => {
       const plan = s.plan || "unknown";
       const started = s._count._all;
       const comp =
@@ -110,7 +110,7 @@ export async function GET() {
 
     // Normalize step names if necessary or return raw
     const byStep = stepViews
-      .map((s: any) => ({
+      .map((s: unknown) => ({
         step: s.step || "unknown",
         views: s._count._all,
       }))

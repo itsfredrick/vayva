@@ -20,7 +20,7 @@ import { useToast } from "@/components/ui/use-toast";
 
 export default function IncidentDetailPage({ params }: { params: { id: string } }) {
     const { toast } = useToast();
-    const [incident, setIncident] = useState<any>(null);
+    const [incident, setIncident] = useState<unknown>(null);
     const [loading, setLoading] = useState(true);
     const [actionLoading, setActionLoading] = useState<string | null>(null);
 
@@ -168,7 +168,7 @@ export default function IncidentDetailPage({ params }: { params: { id: string } 
                     <div className="bg-white p-8 rounded-3xl border border-gray-200">
                         <h3 className="text-xl font-bold text-gray-900 mb-8">Incident Timeline</h3>
                         <div className="space-y-8 relative before:absolute before:left-[17px] before:top-2 before:bottom-2 before:w-0.5 before:bg-gray-100">
-                            {incident.FixActions.map((fix: any) => (
+                            {incident.FixActions.map((fix: unknown) => (
                                 <div key={fix.id} className="relative pl-12">
                                     <div className={`absolute left-0 w-9 h-9 rounded-full flex items-center justify-center border-4 border-white shadow-sm ${fix.actionStatus === 'SUCCESS' ? 'bg-green-500' : 'bg-red-500'
                                         }`}>

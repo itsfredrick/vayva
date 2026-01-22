@@ -10,7 +10,7 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
-    const storeId = (session.user as any).storeId;
+    const storeId = (session.user as unknown).storeId;
     if (!storeId) {
       return NextResponse.json({ error: "No store context" }, { status: 400 });
     }

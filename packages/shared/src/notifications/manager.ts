@@ -8,7 +8,7 @@ export class NotificationManager {
   static async trigger(
     storeId: string,
     type: NotificationType,
-    variables: Record<string, any> = {},
+    variables: Record<string, unknown> = {},
   ) {
     const metadata = NOTIFICATION_REGISTRY[type];
     if (!metadata) {
@@ -18,7 +18,7 @@ export class NotificationManager {
 
     // 1. Deduplication (24h window)
     const dayAgo = new Date(Date.now() - 24 * 60 * 60 * 1000);
-    const recentLog = await (prisma as any).notificationLog.findFirst({
+    const recentLog = await (prisma as unknown).notificationLog.findFirst({
       where: {
         storeId,
         type,
@@ -38,20 +38,20 @@ export class NotificationManager {
       where: { storeId },
     });
 
-    if ((prefs as any)?.isMuted) {
+    if ((prefs as unknown)?.isMuted) {
       console.log(
         `[NotificationManager] Notifications muted for store ${storeId}`,
       );
       return;
     }
 
-    const activeChannels = (prefs?.channels as any) || {
+    const activeChannels = (prefs?.channels as unknown) || {
       email: true,
       banner: true,
       in_app: true,
       whatsapp: false,
     };
-    const activeCategories = (prefs?.categories as any) || {
+    const activeCategories = (prefs?.categories as unknown) || {
       orders: true,
       system: true,
       account: true,
@@ -78,7 +78,7 @@ export class NotificationManager {
 
     // 4. Create In-App Notification (Always if enabled)
     if (activeChannels.in_app !== false) {
-      await (prisma as any).notification.create({
+      await (prisma as unknown).notification.create({
         data: {
           storeId,
           type,
@@ -102,7 +102,7 @@ export class NotificationManager {
       const recipient = await this.getRecipientInfo(storeId, channel);
       if (!recipient) continue;
 
-      const outbox = await (prisma as any).notificationOutbox.create({
+      const outbox = await (prisma as unknown).notificationOutbox.create({
         data: {
           storeId,
           type,
@@ -119,7 +119,7 @@ export class NotificationManager {
       });
 
       // Log the attempt
-      await (prisma as any).notificationLog.create({
+      await (prisma as unknown).notificationLog.create({
         data: {
           storeId,
           type,

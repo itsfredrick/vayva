@@ -21,7 +21,7 @@ export const GET = withVayvaAPI(
                 take: 30
             });
 
-            const formatted = conversations.map((c: any) => ({
+            const formatted = conversations.map((c: unknown) => ({
                 id: c.id,
                 contactName: c.contact?.displayName || c.contact?.phoneE164 || "Unknown Contact",
                 subtitle: c.contact?.phoneE164 || c.contact?.externalId,

@@ -120,7 +120,7 @@ function applyIndustryProfile(state: OnboardingState): OnboardingState {
           ? "nonprofit"
           : segment;
 
-  const profile = (INDUSTRY_CONFIG as any)[industrySlug];
+  const profile = (INDUSTRY_CONFIG as unknown)[industrySlug];
   if (!profile) {
     return { ...state, industrySlug };
   }

@@ -12,7 +12,7 @@ export const GET = withVayvaAPI(
 
             const data = await AnalyticsService.getOverview(storeId, range);
             return NextResponse.json(data);
-        } catch (error: any) {
+        } catch (error: unknown) {
             return NextResponse.json({ error: error.message || "Failed to fetch analytics" }, { status: 500 });
         }
     }

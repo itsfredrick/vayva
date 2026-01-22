@@ -24,7 +24,7 @@ export function BulkProductTable({ initialProducts }: BulkProductTableProps) {
     const [edits, setEdits] = useState<Record<string, Partial<Product>>>({});
     const [isSaving, setIsSaving] = useState(false);
 
-    const handleChange = (id: string, field: keyof Product, value: any) => {
+    const handleChange = (id: string, field: keyof Product, value: unknown) => {
         setEdits((prev) => ({
             ...prev,
             [id]: {

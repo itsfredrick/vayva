@@ -15,7 +15,7 @@ export async function GET() {
     if (!store)
       return NextResponse.json({ error: "Store not found" }, { status: 404 });
 
-    const settings = (store.settings as any) || {};
+    const settings = (store.settings as unknown) || {};
     const branding = settings.branding || {};
 
     return NextResponse.json({
@@ -23,7 +23,7 @@ export async function GET() {
       primaryColor: branding.primaryColor || "#22C55E",
       accentColor: branding.accentColor || "#16A34A",
     });
-  } catch (error: any) {
+  } catch (error: unknown) {
     return NextResponse.json(
       { error: "Failed to fetch branding" },
       { status: 500 },
@@ -44,7 +44,7 @@ export async function PUT(req: Request) {
       select: { settings: true, logoUrl: true },
     });
 
-    const currentSettings = (store?.settings as any) || {};
+    const currentSettings = (store?.settings as unknown) || {};
     const currentBranding = currentSettings.branding || {};
 
     // Merge logic
@@ -82,7 +82,7 @@ export async function PUT(req: Request) {
       success: true,
       branding: updatedSettings.branding,
     });
-  } catch (error: any) {
+  } catch (error: unknown) {
     return NextResponse.json(
       { error: "Failed to save branding" },
       { status: 500 },

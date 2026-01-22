@@ -7,7 +7,7 @@ import { cookies } from "next/headers";
 
 export async function POST(req: NextRequest) {
   const session = await getServerSession(authOptions);
-  if (!(session?.user as any)?.id)
+  if (!(session?.user)?.id)
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 
   // Infer Store ID from header/cookie (Middleware usually sets this)
@@ -30,7 +30,7 @@ export async function POST(req: NextRequest) {
       });
       const entitlement = {
         planKey: (sub?.planKey || "growth") as "growth" | "pro",
-        status: (sub?.status || "trial") as any,
+        status: (sub?.status || "trial") as unknown,
       };
 
       // If Growth, block premium
@@ -51,10 +51,10 @@ export async function POST(req: NextRequest) {
     await TemplateService.applyTemplate(
       storeId,
       templateId,
-      (session!.user as any).id,
+      (session!.user as unknown).id,
     );
     return NextResponse.json({ success: true });
-  } catch (e: any) {
+  } catch (e: unknown) {
     return new NextResponse(e.message, { status: 500 });
   }
 }

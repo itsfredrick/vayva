@@ -5,7 +5,7 @@ export interface SendMessageOptions {
   mediaUrl?: string;
   templateName?: string;
   language?: string;
-  components?: any[];
+  components?: unknown[];
 }
 
 export interface WhatsAppProvider {

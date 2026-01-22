@@ -74,7 +74,7 @@ export class ConversationStore {
       });
 
       return { ...message, providerMessageId, status: MessageStatus.SENT };
-    } catch (e: any) {
+    } catch (e: unknown) {
       await prisma.message.update({
         where: { id: message.id },
         data: {

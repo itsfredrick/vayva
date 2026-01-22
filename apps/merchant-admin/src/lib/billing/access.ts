@@ -44,7 +44,7 @@ export async function checkFeatureAccess(storeId: string, feature: Feature) {
             const storeWithCount = await prisma.store.findUnique({
                 where: { id: storeId },
                 include: { _count: { select: { notificationTemplates: true } } }
-            }) as any;
+            }) as unknown;
             if ((storeWithCount?._count?.notificationTemplates || 0) >= 2) {
                 return {
                     allowed: false,
@@ -89,7 +89,7 @@ export async function checkFeatureAccess(storeId: string, feature: Feature) {
             const storeWithCount = await prisma.store.findUnique({
                 where: { id: storeId },
                 include: { _count: { select: { notificationTemplates: true } } }
-            }) as any;
+            }) as unknown;
             if ((storeWithCount?._count?.notificationTemplates || 0) >= 5) {
                 return {
                     allowed: false,

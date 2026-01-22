@@ -47,7 +47,7 @@ export default function TeamPage() {
             setIsInviting(false);
             setInviteForm({ email: "", role: "STAFF" });
             mutate("/api/settings/team");
-        } catch (err: any) {
+        } catch (err: unknown) {
             toast.error(err.message);
         } finally {
             setSending(false);
@@ -154,7 +154,7 @@ export default function TeamPage() {
                             </TableRow>
                         </TableHeader>
                         <TableBody>
-                            {members.map((m: any) => (
+                            {members.map((m: unknown) => (
                                 <TableRow key={m.id}>
                                     <TableCell className="flex items-center gap-3">
                                         <Avatar className="h-9 w-9">
@@ -204,7 +204,7 @@ export default function TeamPage() {
                                 </TableRow>
                             </TableHeader>
                             <TableBody>
-                                {invites.map((inv: any) => (
+                                {invites.map((inv: unknown) => (
                                     <TableRow key={inv.email}>
                                         <TableCell>
                                             <div className="flex items-center gap-2">

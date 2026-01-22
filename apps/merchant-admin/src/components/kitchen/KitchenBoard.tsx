@@ -9,7 +9,7 @@ export function KitchenBoard() {
     const [orders, setOrders] = useState<any[]>([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
-    const pollerRef = useRef<any>(null);
+    const pollerRef = useRef<unknown>(null);
 
     const fetchOrders = async () => {
         try {
@@ -20,7 +20,7 @@ export function KitchenBoard() {
             // Current MenuService returns array. KitchenTicket expects Order object.
             setOrders(Array.isArray(data) ? data : data.orders || []);
             setError(null);
-        } catch (error: any) {
+        } catch (error: unknown) {
             console.error(error);
             setError(error.message);
         } finally {

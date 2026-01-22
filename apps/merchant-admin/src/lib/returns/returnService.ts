@@ -6,7 +6,7 @@ export class ReturnService {
     orderId: string,
     customerPhone: string,
     payload: {
-      items: any[];
+      items: unknown[];
       reason: string;
       notes?: string;
       preferredMethod?: string;
@@ -34,7 +34,7 @@ export class ReturnService {
         // items and logistics removed as they do not exist in schema
         /*
                 items: {
-                    create: payload.items.map((i: any) => ({
+                    create: payload.items.map((i: unknown) => ({
                         qty: i.quantity || 1,
                     }))
                 },
@@ -64,17 +64,17 @@ export class ReturnService {
     actorId: string,
     data?: {
       decisionReason?: string;
-      pickupAddress?: any;
-      dropoffAddress?: any;
+      pickupAddress?: unknown;
+      dropoffAddress?: unknown;
       inspectionOutcome?: string;
     },
   ) {
     // Logic for specific status transitions
-    await prisma.$transaction(async (tx: any) => {
+    await prisma.$transaction(async (tx: unknown) => {
       await tx.returnRequest.update({
         where: { id: requestId },
         data: {
-          status: status as any,
+          status: status as unknown,
           approvedAt: status === "APPROVED" ? new Date() : undefined,
           completedAt: status === "COMPLETED" ? new Date() : undefined,
         },

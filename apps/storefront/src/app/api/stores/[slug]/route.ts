@@ -21,7 +21,7 @@ export async function GET(
     const isPreview = searchParams.get("preview") === "true";
 
     // Fetch published version or draft
-    let activeConfig: any = null;
+    let activeConfig: unknown = null;
 
     if (isPreview) {
       const draft = await prisma.storefrontDraft.findUnique({
@@ -43,7 +43,7 @@ export async function GET(
         activeConfig = {
           theme: published.themeConfig,
           sections: published.sectionConfig,
-          order: (published as any).sectionOrder || [],
+          order: (published as unknown).sectionOrder || [],
           templateId: published.activeTemplateId,
         };
       }
@@ -55,7 +55,7 @@ export async function GET(
       name: store.name,
       slug: store.slug,
       logo: store.logoUrl,
-      theme: activeConfig || (store.settings as any)?.theme || { templateId: "vayva-standard" },
+      theme: activeConfig || (store.settings as unknown)?.theme || { templateId: "vayva-standard" },
       plan: store.plan,
       isLive: store.isLive,
     };

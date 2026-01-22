@@ -82,7 +82,7 @@ export default function DLQPage() {
                         ) : !entries?.length ? (
                             <tr><td colSpan={5} className="p-12 text-center text-gray-400">Queue is empty.</td></tr>
                         ) : (
-                            entries.map((e: any) => (
+                            entries.map((e: unknown) => (
                                 <tr key={e.id} className="hover:bg-gray-50">
                                     <td className="px-6 py-4">
                                         <div className="font-medium text-gray-900">{e.jobType}</div>

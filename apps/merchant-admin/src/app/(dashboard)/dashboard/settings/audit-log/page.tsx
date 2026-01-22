@@ -13,8 +13,8 @@ interface AuditLog {
   entityType: string;
   entityId: string;
   correlationId: string;
-  beforeState?: any;
-  afterState?: any;
+  beforeState?: unknown;
+  afterState?: unknown;
 }
 
 export default function AuditLogPage() {
@@ -77,7 +77,7 @@ export default function AuditLogPage() {
             type="text"
             placeholder="Search action or user..."
             value={searchTerm}
-            onChange={(e: any) => setSearchTerm(e.target.value)}
+            onChange={(e: unknown) => setSearchTerm(e.target.value)}
             className="pl-9 pr-4 py-2 border border-gray-200 rounded-lg text-sm bg-white/50 focus:bg-white focus:ring-2 focus:ring-indigo-500 outline-none w-64"
           />
         </div>
@@ -111,7 +111,7 @@ export default function AuditLogPage() {
                   </td>
                 </tr>
               ) : (
-                filteredLogs.map((log: any) => (
+                filteredLogs.map((log: unknown) => (
                   <tr
                     key={log.id}
                     className="hover:bg-gray-50/50 transition-colors"

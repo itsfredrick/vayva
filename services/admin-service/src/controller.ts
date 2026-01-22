@@ -3,7 +3,7 @@ import { prisma } from "@vayva/db";
 const logAdminAction = async (
   actorUserId: string,
   action: string,
-  data: any,
+  data: unknown,
 ) => {
   await prisma.adminAuditLog.create({
     data: {
@@ -162,7 +162,7 @@ export const AdminController = {
   },
 
   // --- Support Cases ---
-  createSupportCase: async (data: any, actorUserId: string) => {
+  createSupportCase: async (data: unknown, actorUserId: string) => {
     return await prisma.supportCase.create({
       data: {
         storeId: data.storeId,
@@ -177,7 +177,7 @@ export const AdminController = {
 
   listSupportCases: async (status?: string) => {
     return await prisma.supportCase.findMany({
-      where: status ? { status: status as any } : undefined,
+      where: status ? { status: status as unknown} : undefined,
       // include: { store: true }, // No relation
       orderBy: { createdAt: "desc" },
       take: 100,

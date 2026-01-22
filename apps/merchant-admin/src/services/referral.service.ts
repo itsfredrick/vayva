@@ -14,7 +14,7 @@ export class ReferralService {
       select: { settings: true }
     });
 
-    const settings = (store?.settings as Record<string, any>) || {};
+    const settings = (store?.settings as Record<string, unknown>) || {};
     if (settings.referralCode) return settings.referralCode as string;
 
     const code = nanoid(8).toUpperCase();
@@ -38,7 +38,7 @@ export class ReferralService {
       where: { id: storeId },
       select: { settings: true }
     });
-    const referralCode = (store?.settings as Record<string, any>)?.referralCode as string | undefined;
+    const referralCode = (store?.settings as Record<string, unknown>)?.referralCode as string | undefined;
 
     const [referrals, credits] = await Promise.all([
       prisma.referralAttribution.findMany({
@@ -87,7 +87,7 @@ export class ReferralService {
           path: ["referralCode"],
           equals: referralCode,
         },
-      } as any,
+      } as unknown,
     });
 
     if (!referrer) return { success: false, error: "Invalid referral code" };
@@ -121,7 +121,7 @@ export class ReferralService {
       data: { firstPaymentAt: new Date() },
     });
 
-    const referrerStoreId = (attribution.metadata as any)?.referrerStoreId;
+    const referrerStoreId = (attribution.metadata as unknown)?.referrerStoreId;
     if (!referrerStoreId) return;
 
     await prisma.ledgerEntry.create({

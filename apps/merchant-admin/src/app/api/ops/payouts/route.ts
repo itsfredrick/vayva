@@ -17,7 +17,7 @@ export async function GET(request: Request) {
       take: 100,
     });
 
-    const formatted = merchants.map((m: any) => {
+    const formatted = merchants.map((m: unknown) => {
       const kycStatus = m.kycRecord?.status || "NOT_STARTED";
       const bankExists = m.bankBeneficiaries.length > 0;
       const reasons = [];

@@ -13,7 +13,7 @@ export async function POST(
     const body = await req.json();
     const { storeId } = body;
 
-    const log = await (prisma as any).notificationLog.findUnique({
+    const log = await (prisma as unknown).notificationLog.findUnique({
       where: { id: logId },
     });
 
@@ -27,7 +27,7 @@ export async function POST(
     // Trigger resend
     await NotificationManager.trigger(
       storeId,
-      log.type as any,
+      log.type as unknown,
       log.metadata?.variables || {},
     );
 
@@ -45,7 +45,7 @@ export async function POST(
     });
 
     return NextResponse.json({ success: true });
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error("Notification resend error:", error);
     return NextResponse.json(
       { error: "Failed to resend notification" },

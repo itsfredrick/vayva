@@ -10,14 +10,14 @@ export const verifyWebhook = async (
   req: FastifyRequest,
   reply: FastifyReply,
 ) => {
-  const query = req.query as any;
+  const query = req.query as unknown;
   const mode = query["hub.mode"];
   const token = query["hub.verify_token"];
   const challenge = query["hub.challenge"];
 
   const VERIFY_TOKEN = process.env.WHATSAPP_VERIFY_TOKEN;
   if (!VERIFY_TOKEN) {
-    (req.log as any).error("WHATSAPP_VERIFY_TOKEN not set");
+    (req.log as unknown).error("WHATSAPP_VERIFY_TOKEN not set");
     return reply.status(500).send("Internal Server Configuration Error");
   }
 
@@ -40,15 +40,15 @@ export const webhookHandler = async (
 
   if (appSecret) {
     if (!signature) {
-      (req.log as any).warn("Missing x-hub-signature-256 header");
+      (req.log as unknown).warn("Missing x-hub-signature-256 header");
       if (process.env.NODE_ENV === "production") return reply.status(403).send("Forbidden");
     } else {
       const crypto = await import("crypto");
       const hmac = crypto.createHmac("sha256", appSecret);
-      const rawBody = (req as any).rawBody;
+      const rawBody = (req as unknown).rawBody;
 
       if (!rawBody) {
-        (req.log as any).error("Raw body missing for signature verification. Ensure content-type parser is set.");
+        (req.log as unknown).error("Raw body missing for signature verification. Ensure content-type parser is set.");
         // If missing, we can't verify. Fail safe.
         return reply.status(500).send({ error: "Internal Error" });
       }
@@ -59,17 +59,17 @@ export const webhookHandler = async (
       const expectedSignature = `sha256=${digest}`;
 
       if (signature !== expectedSignature) {
-        (req.log as any).warn(`Invalid WhatsApp Signature. Expected ${expectedSignature}, got ${signature}`);
+        (req.log as unknown).warn(`Invalid WhatsApp Signature. Expected ${expectedSignature}, got ${signature}`);
         if (process.env.NODE_ENV === "production" || process.env.VERIFY_WEBHOOKS === "true") {
           return reply.status(403).send("Forbidden");
         }
       }
     }
   } else {
-    (req.log as any).warn("WHATSAPP_APP_SECRET not set. Skipping signature verification.");
+    (req.log as unknown).warn("WHATSAPP_APP_SECRET not set. Skipping signature verification.");
   }
 
-  const body = req.body as any;
+  const body = req.body as unknown;
   if (!body.entry) return reply.send({ status: "ignored" });
 
   for (const entry of body.entry) {
@@ -83,7 +83,7 @@ export const webhookHandler = async (
       });
 
       if (!channel) {
-        (req.log as any).error(`No channel found for phone_number_id ${metadata?.phone_number_id}`);
+        (req.log as unknown).error(`No channel found for phone_number_id ${metadata?.phone_number_id}`);
         continue;
       }
       const storeId = channel.storeId;
@@ -109,7 +109,7 @@ export const sendMessage = async (req: FastifyRequest, reply: FastifyReply) => {
   const storeId = req.headers["x-store-id"] as string;
   if (!storeId) return reply.status(400).send({ error: "Missing x-store-id header" });
 
-  const { conversationId, body, templateName } = req.body as any;
+  const { conversationId, body, templateName } = req.body as unknown;
 
   try {
     const message = await ConversationStore.sendMessage(
@@ -118,7 +118,7 @@ export const sendMessage = async (req: FastifyRequest, reply: FastifyReply) => {
       { body, templateName },
     );
     return reply.send(message);
-  } catch (e: any) {
+  } catch (e: unknown) {
     return reply.status(500).send({ error: e.message });
   }
 };
@@ -172,11 +172,11 @@ export const syncAgentContext = async (req: FastifyRequest, reply: FastifyReply)
       select: { settings: true }
     });
 
-    const aiSettings = (store?.settings as any)?.aiAgent;
-    (req.log as any).info(`Refreshing AI Agent context for store ${storeId}. Enabled: ${aiSettings?.enabled}`);
+    const aiSettings = (store?.settings as unknown)?.aiAgent;
+    (req.log as unknown).info(`Refreshing AI Agent context for store ${storeId}. Enabled: ${aiSettings?.enabled}`);
 
     return reply.send({ success: true, syncedAt: new Date().toISOString() });
-  } catch (e: any) {
+  } catch (e: unknown) {
     return reply.status(500).send({ error: e.message });
   }
 };

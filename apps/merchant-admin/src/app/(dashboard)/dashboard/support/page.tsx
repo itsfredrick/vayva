@@ -174,8 +174,8 @@ export default function SupportPage() {
 }
 
 function SettingsView() {
-  const [settings, setSettings] = useState<any>(null);
-  const [profile, setProfile] = useState<any>(null);
+  const [settings, setSettings] = useState<unknown>(null);
+  const [profile, setProfile] = useState<unknown>(null);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [newClaim, setNewClaim] = useState("");

@@ -25,7 +25,7 @@ export const triggerSuccessConfetti = () => {
         origin: { y: 0.7 },
     };
 
-    function fire(particleRatio: number, opts: any) {
+    function fire(particleRatio: number, opts: unknown) {
         confetti({
             ...defaults,
             ...opts,

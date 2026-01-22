@@ -36,7 +36,7 @@ export const GET = withVayvaAPI(
                     id: `ord_${o.id}`,
                     type: "order" as const,
                     status: o.status.toLowerCase(),
-                    amount: (o.total as any).toNumber ? (o.total as any).toNumber() : Number(o.total),
+                    amount: (o.total as unknown).toNumber ? (o.total as unknown).toNumber() : Number(o.total),
                     date: o.createdAt.toISOString(),
                     description: `Order #${o.orderNumber}`,
                     metadata: { orderId: o.id }

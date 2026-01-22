@@ -20,7 +20,7 @@ interface ResponsiveTableProps<T> {
     emptyMessage?: string;
 }
 
-export function ResponsiveTable<T extends Record<string, any>>({
+export function ResponsiveTable<T extends Record<string, unknown>>({
     data,
     columns,
     keyExtractor,

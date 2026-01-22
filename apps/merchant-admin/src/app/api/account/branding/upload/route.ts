@@ -88,7 +88,7 @@ export async function POST(request: NextRequest) {
       logoUrl,
       message: "Logo uploaded successfully",
     });
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error("Logo upload error:", error);
 
     if (error.message === "Unauthorized") {

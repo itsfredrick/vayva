@@ -2,18 +2,18 @@ import { NextRequest, NextResponse } from "next/server";
 import { getSessionUser } from "@/lib/session";
 import { prisma } from "@/lib/prisma";
 
-type Handler = (req: NextRequest, context: any) => Promise<NextResponse>;
+type Handler = (req: NextRequest, context: unknown) => Promise<NextResponse>;
 
 export function withPermission(permission: string) {
     return function (handler: Handler): Handler {
-        return async (req: NextRequest, context: any): Promise<NextResponse> => {
+        return async (req: NextRequest, context: unknown): Promise<NextResponse> => {
             const session = await getSessionUser();
             if (!session) {
                 return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
             }
 
             // Implement actual permission check using session.storeId/userId
-            const membership = await (prisma as any).membership.findUnique({
+            const membership = await (prisma as unknown).membership.findUnique({
                 where: {
                     userId_storeId: {
                         userId: session.id,
@@ -34,7 +34,7 @@ export function withPermission(permission: string) {
             }
 
             const hasPermission = membership.role?.permissions.some(
-                (p: any) => p.code === permission
+                (p: unknown) => p.code === permission
             );
 
             if (!hasPermission && membership.role_enum !== "OWNER") {

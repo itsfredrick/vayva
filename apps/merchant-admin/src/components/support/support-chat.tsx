@@ -209,9 +209,9 @@ export const SupportChat: React.FC = () => {
                   </div>
 
                   {/* Action Chips */}
-                  {msg.role === "bot" && (msg as any).actions && (
+                  {msg.role === "bot" && (msg as unknown).actions && (
                     <div className="mt-2 flex flex-wrap gap-2">
-                      {(msg as any).actions.map((action: string, i: number) => (
+                      {(msg as unknown).actions.map((action: string, i: number) => (
                         <Button
                           key={i}
                           onClick={() =>

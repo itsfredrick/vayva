@@ -63,10 +63,10 @@ export async function POST(request: NextRequest) {
     }
 
     const ctx = {
-      userId: (session.user as any).id,
-      merchantId: (session.user as any).id, // Using user ID as merchant ID context for now
-      storeId: (session.user as any).storeId,
-      roles: [(session.user as any).role || "owner"],
+      userId: session.user?.id,
+      merchantId: session.user?.id, // Using user ID as merchant ID context for now
+      storeId: (session.user as unknown).storeId,
+      roles: [(session.user as unknown).role || "owner"],
     };
 
     const url = await StorageService.upload(ctx, file.name, file);
@@ -78,7 +78,7 @@ export async function POST(request: NextRequest) {
       size: file.size,
       type: file.type,
     });
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error("File upload error:", error);
     return NextResponse.json(
       { error: error.message || "Upload failed" },

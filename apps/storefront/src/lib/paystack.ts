@@ -5,7 +5,7 @@ export interface InitializePaymentPayload {
   amount: number; // in kobo
   reference?: string;
   callback_url?: string;
-  metadata?: any;
+  metadata?: unknown;
   currency?: string;
   channels?: string[];
 }
@@ -58,7 +58,7 @@ export const PaystackService = {
       }
 
       return await response.json();
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error("[Paystack] Init Error:", error.message);
       throw error;
     }

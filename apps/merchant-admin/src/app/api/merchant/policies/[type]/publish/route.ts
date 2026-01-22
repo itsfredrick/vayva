@@ -16,8 +16,8 @@ export async function POST(
     const policy = await prisma.merchantPolicy.update({
       where: {
         storeId_type: {
-          storeId: (session!.user as any).storeId,
-          type: type.toUpperCase().replace("-", "_") as any,
+          storeId: (session!.user as unknown).storeId,
+          type: type.toUpperCase().replace("-", "_") as unknown,
         },
       },
       data: {

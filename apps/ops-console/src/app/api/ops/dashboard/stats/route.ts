@@ -1,15 +1,9 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@vayva/db";
-import { OpsAuthService } from "@/lib/ops-auth";
+import { withOpsAuth } from "@/lib/withOpsAuth";
 
-export async function GET(req: NextRequest) {
+export const GET = withOpsAuth(async (req, { user }) => {
     try {
-        // Authenticate ops user
-        const session = await OpsAuthService.getSession();
-        if (!session) {
-            return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-        }
-
         // Aggregate platform-wide stats for ops dashboard
         const [merchantCount, recentActivity] = await Promise.all([
             prisma.store.count({
@@ -70,4 +64,4 @@ export async function GET(req: NextRequest) {
             { status: 500 }
         );
     }
-}
+});

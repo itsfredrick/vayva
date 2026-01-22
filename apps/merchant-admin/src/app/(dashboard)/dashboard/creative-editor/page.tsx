@@ -124,7 +124,7 @@ export default function CreativeEditorPage() {
     );
 }
 
-function ToolbarButton({ icon, active }: { icon: any, active?: boolean }) {
+function ToolbarButton({ icon, active }: { icon: unknown, active?: boolean }) {
     return (
         <Button 
           title={`Tool: ${icon}`}

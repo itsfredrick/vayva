@@ -31,7 +31,7 @@ export const POST = withVayvaAPI(
             });
 
             return NextResponse.json({ success: true, data: flashSale });
-        } catch (error: any) {
+        } catch (error: unknown) {
             console.error("Failed to create flash sale:", error);
             return NextResponse.json(
                 { error: error.message || "Internal Server Error" },

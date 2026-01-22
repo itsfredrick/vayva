@@ -7,9 +7,18 @@ import React, { useEffect, useState } from "react";
 import { useToast } from "@/components/ui/use-toast";
 import { Button } from "@vayva/ui";
 
+interface Seller {
+    id: string;
+    name: string;
+    tier: string;
+    verificationLevel: string;
+    slaScore: number;
+    StoreProfile?: { city?: string };
+}
+
 export default function MarketOpsPage() {
     const { toast } = useToast();
-    const [sellers, setSellers] = useState<any[]>([]);
+    const [sellers, setSellers] = useState<Seller[]>([]);
     const [loading, setLoading] = useState(true);
 
     const fetchSellers = () => {
@@ -25,7 +34,7 @@ export default function MarketOpsPage() {
         fetchSellers();
     }, []);
 
-    const handleUpdate = async (storeId: string, updates: any) => {
+    const handleUpdate = async (storeId: string, updates: Partial<Seller>) => {
         if (!confirm("Confirm update?")) return;
 
         try {

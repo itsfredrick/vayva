@@ -14,7 +14,7 @@ export const GET = withVayvaAPI(
       const limit = Math.min(parseInt(searchParams.get("limit") || "50"), 100);
       const cursor = searchParams.get("cursor");
 
-      const where: any = { storeId };
+      const where: unknown = { storeId };
 
       if (status === "unread") {
         where.isRead = false;
@@ -49,7 +49,7 @@ export const GET = withVayvaAPI(
       });
 
       return NextResponse.json({
-        items: notifications.map((n: any) => ({
+        items: notifications.map((n: unknown) => ({
           ...n,
           type: n.severity,
           message: n.body,

@@ -1,6 +1,6 @@
 import React from "react";
 import NextLink from "next/link";
-const Link = NextLink as any;
+const Link = NextLink as unknown;
 import { Button, Icon } from "@vayva/ui";
 
 export default function NotFoundPage() {

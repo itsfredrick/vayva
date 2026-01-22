@@ -6,7 +6,7 @@ import { useParams } from "next/navigation";
 import { ChevronDown, Mail, Phone, Plus } from "lucide-react";
 import { LocaleKey, LOCALES } from "@/data/locales";
 
-export default function HelpPage({ params }: any) {
+export default function HelpPage({ params }: unknown) {
   const { lang: rawLang } = useParams() as { lang: string };
   const lang = (rawLang === "tr" ? "tr" : "en") as LocaleKey;
   const t = LOCALES[lang].account.help;

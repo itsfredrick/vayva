@@ -61,7 +61,7 @@ export async function POST(request: Request) {
     );
 
     return NextResponse.json({ exportId: job.id, expiresAt });
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error("Export Create Error:", error);
     if (error.message === "Sudo mode required") {
       return NextResponse.json(

@@ -59,7 +59,7 @@ export async function POST(req: NextRequest) {
         }
 
         return NextResponse.json({ error: "Invalid action" }, { status: 400 });
-    } catch (error: any) {
+    } catch (error: unknown) {
         if (error.message === "Unauthorized") return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
         if (error.message?.includes("permissions")) return NextResponse.json({ error: error.message }, { status: 403 });
 

@@ -10,7 +10,7 @@ function parseIcal(icalData: string) {
     const lines = icalData.split(/\r\n|\n|\r/);
 
     let inEvent = false;
-    let currentEvent: any = {};
+    let currentEvent: unknown = {};
 
     for (const line of lines) {
         if (line.startsWith("BEGIN:VEVENT")) {
@@ -51,7 +51,7 @@ export const calendarSyncWorker = new Worker(
         /*
         try {
             // Fetch active syncs
-            const syncs = await (prisma as any).bookingCalendarSync.findMany({
+            const syncs = await (prisma as unknown).bookingCalendarSync.findMany({
                 where: {
                     // In real app, check frequency or lastSyncedAt
                 }
@@ -104,7 +104,7 @@ export const calendarSyncWorker = new Worker(
                         }
                     }
 
-                    await (prisma as any).bookingCalendarSync.update({
+                    await (prisma as unknown).bookingCalendarSync.update({
                         where: { id: sync.id },
                         data: {
                             lastSyncedAt: new Date(),
@@ -114,7 +114,7 @@ export const calendarSyncWorker = new Worker(
                     });
                     logger.info(`Imported ${createdCount} new bookings for ${sync.name}`);
 
-                } catch (err: any) {
+                } catch (err: unknown) {
                     logger.error(`Failed to sync calendar ${sync.id}`, err);
                 }
             }

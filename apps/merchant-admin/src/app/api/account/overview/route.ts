@@ -55,18 +55,18 @@ export async function GET() {
     }
 
     const lastAudit = recentLogs[0];
-    const storeSettings = (store.settings as any) || {};
+    const storeSettings = (store.settings as unknown) || {};
 
     const data = {
       profile: {
         name: store.name || "Unset",
         category: store.category || "General",
-        plan: (store as any).plan || "GROWTH",
+        plan: (store as unknown).plan || "GROWTH",
         isLive: store.isLive || false,
         onboardingCompleted: store.onboardingCompleted || false,
       },
       subscription: {
-        plan: (store as any).plan || "GROWTH",
+        plan: (store as unknown).plan || "GROWTH",
         status: "ACTIVE",
         renewalDate: null,
         canUpgrade: true,
@@ -106,7 +106,7 @@ export async function GET() {
       },
       security: {
         mfaEnabled: security?.mfaRequired || false,
-        recentLogins: recentLogs.filter((l: any) =>
+        recentLogins: recentLogs.filter((l: unknown) =>
           l.action.toLowerCase().includes("login"),
         ).length,
         apiKeyStatus: storeSettings.api?.active ? "ACTIVE" : "INACTIVE",
@@ -115,7 +115,7 @@ export async function GET() {
     };
 
     return NextResponse.json(data);
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error("Account overview fetch error:", error);
     return NextResponse.json(
       { error: "Failed to fetch account overview" },
@@ -124,7 +124,7 @@ export async function GET() {
   }
 }
 
-function buildAlerts(store: any, bankAccount: any, kyc: any) {
+function buildAlerts(store: unknown, bankAccount: unknown, kyc: unknown) {
   const alerts = [];
 
   if (!store.onboardingCompleted) {

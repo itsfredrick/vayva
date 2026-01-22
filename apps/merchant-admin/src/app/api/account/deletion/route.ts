@@ -18,7 +18,7 @@ export async function POST(req: NextRequest) {
     return new NextResponse("Unauthorized", { status: 401 });
 
   // Verify Owner Role
-  const userRole = (session.user as any).role;
+  const userRole = (session.user as unknown).role;
   if (userRole !== "OWNER") {
     return new NextResponse("Forbidden - Only Owner can request deletion", {
       status: 403,
@@ -46,7 +46,7 @@ export async function POST(req: NextRequest) {
       success: true,
       scheduledFor: result.scheduledFor,
     });
-  } catch (e: any) {
+  } catch (e: unknown) {
     return NextResponse.json({ error: e.message }, { status: 500 });
   }
 }
@@ -67,7 +67,7 @@ export async function DELETE(req: NextRequest) {
     }
 
     return NextResponse.json({ success: true });
-  } catch (e: any) {
+  } catch (e: unknown) {
     return NextResponse.json({ error: e.message }, { status: 500 });
   }
 }

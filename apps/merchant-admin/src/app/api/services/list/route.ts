@@ -21,7 +21,7 @@ export const GET = withVayvaAPI(
                 name: s.title,
                 price: s.price
             })));
-        } catch (error: any) {
+        } catch (error: unknown) {
             return NextResponse.json({ error: error.message }, { status: 500 });
         }
     }

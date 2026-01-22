@@ -13,15 +13,15 @@ import {
   MapPin as MapPinIcon,
   Phone as PhoneIcon,
 } from "lucide-react";
-const CheckCircle = CheckCircleIcon as any;
-const Clock = ClockIcon as any;
-const XCircle = XCircleIcon as any;
-const ChevronRight = ChevronRightIcon as any;
-const Package = PackageIcon as any;
-const MapPin = MapPinIcon as any;
-const Phone = PhoneIcon as any;
+const CheckCircle = CheckCircleIcon as unknown;
+const Clock = ClockIcon as unknown;
+const XCircle = XCircleIcon as unknown;
+const ChevronRight = ChevronRightIcon as unknown;
+const Package = PackageIcon as unknown;
+const MapPin = MapPinIcon as unknown;
+const Phone = PhoneIcon as unknown;
 import NextLink from "next/link";
-const Link = NextLink as any;
+const Link = NextLink as unknown;
 
 function OrderConfirmationContent() {
   const searchParams = useSearchParams();
@@ -29,7 +29,7 @@ function OrderConfirmationContent() {
   const orderId = searchParams.get("orderId"); // We might have orderId or reference
   const storeSlug = searchParams.get("store");
 
-  const [order, setOrder] = useState<any>(null);
+  const [order, setOrder] = useState<unknown>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -147,7 +147,7 @@ function OrderConfirmationContent() {
                 Order Details
               </h2>
               <div className="space-y-4">
-                {order.items?.map((item: any, idx: number) => (
+                {order.items?.map((item: unknown, idx: number) => (
                   <div key={idx} className="flex justify-between text-sm">
                     <span className="text-gray-600">
                       {item.title} x {item.quantity}

@@ -39,7 +39,7 @@ export async function POST(request: Request) {
       paymentUrl: payment.authorization_url,
       reference: payment.reference,
     });
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error("Template payment initiation error:", error);
     return NextResponse.json(
       { error: "Failed to initiate payment" },

@@ -2,7 +2,7 @@ import { FEATURES } from "@/lib/env-validation";
 
 export interface WaSettings {
   enabled: boolean;
-  businessHours: any;
+  businessHours: unknown;
   autoReplyOutsideHours: boolean;
   outsideHoursMessage: string;
   catalogMode: string;
@@ -97,7 +97,7 @@ export const WaAgentService = {
   },
 
   // 2. Inbox
-  getConversations: async (): Promise<any[]> => {
+  getConversations: async (): Promise<unknown[]> => {
     if (!FEATURES.WHATSAPP_ENABLED) {
       // Return empty instead of error to prevent UI crash
       return [];
@@ -136,7 +136,7 @@ export const WaAgentService = {
       if (!res.ok) return [];
       const json = await res.json();
       return json.data || [];
-    } catch (e) {
+    } catch (_error) {
       return [];
     }
   },
@@ -159,7 +159,7 @@ export const WaAgentService = {
       if (!res.ok) return null;
       const json = await res.json();
       return json.data;
-    } catch (e) {
+    } catch (_error) {
       return null;
     }
   },
@@ -173,15 +173,19 @@ export const WaAgentService = {
       const entries = json.data || [];
 
       // Map knowledge base entries to UI interface
-      return entries.map((e: any) => ({
-        id: e.id,
-        question: e.sourceType === "FILE" ? "Document Upload" : "Manual Entry",
-        answer: e.content.length > 100 ? e.content.substring(0, 100) + "..." : e.content,
-        fullContent: e.content,
-        tags: [e.sourceType],
-        category: "General",
-        status: "ACTIVE"
-      }));
+      // Map knowledge base entries to UI interface
+      return entries.map((eStr: unknown) => {
+        const e = eStr as Record<string, unknown>;
+        return {
+          id: e.id as string,
+          question: (e.sourceType as string) === "FILE" ? "Document Upload" : "Manual Entry",
+          answer: (e.content as string).length > 100 ? (e.content as string).substring(0, 100) + "..." : (e.content as string),
+          fullContent: e.content as string,
+          tags: [e.sourceType as string],
+          category: "General",
+          status: "ACTIVE"
+        };
+      });
     } catch (e) {
       console.error("Failed to load KB", e);
       return [];
@@ -210,7 +214,7 @@ export interface WaThread {
   lastMessageTime: string;
   status: string;
   unreadCount: number;
-  messages: any[]; // Mandatory array
+  messages: unknown[]; // Mandatory array
   aiSuggestions?: {
     reply?: string;
     action?: {

@@ -10,7 +10,7 @@ import { FEATURES } from "@/lib/env-validation";
 import { z } from "zod";
 
 // Helper to bypass stale client types if models/fields are missing in generated client
-const db = prisma as any;
+const db = prisma as unknown;
 
 // Zod Schema
 const DispatchSchema = z.object({
@@ -148,7 +148,7 @@ export const POST = withVayvaAPI(
       let provider;
       try {
         provider = getDeliveryProvider(settings.provider);
-      } catch (e: any) {
+      } catch (e: unknown) {
         return NextResponse.json(
           { error: `Invalid delivery provider configured: ${settings.provider}` },
           { status: 400 }
@@ -210,7 +210,7 @@ export const POST = withVayvaAPI(
       }
 
       return NextResponse.json({ success: true, shipment });
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error("Dispatch error:", error);
       return NextResponse.json({ error: error.message }, { status: 500 });
     }

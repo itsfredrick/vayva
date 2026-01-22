@@ -31,7 +31,7 @@ class AuthClient {
   private async request<T>(
     endpoint: string,
     method: string,
-    body: any,
+    body: unknown,
   ): Promise<T> {
     const headers: HeadersInit = {
       "Content-Type": "application/json",
@@ -59,7 +59,7 @@ class AuthClient {
       }
 
       return data as T;
-    } catch (error: any) {
+    } catch (error: unknown) {
       throw error;
     }
   }
@@ -104,7 +104,7 @@ class AuthClient {
     }
   }
 
-  private setSession(token: string, user: any) {
+  private setSession(token: string, user: unknown) {
     if (typeof window !== "undefined") {
       localStorage.setItem("vayva_token", token);
       localStorage.setItem("vayva_user", JSON.stringify(user));

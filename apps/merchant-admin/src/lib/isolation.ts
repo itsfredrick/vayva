@@ -9,9 +9,9 @@ import { requireAuth } from "@/lib/session";
  * @param handler API handler receiving the authenticated session
  */
 export function withTenantIsolation(
-    handler: (session: any, ...args: any[]) => Promise<NextResponse> | NextResponse
+    handler: (session: unknown, ...args: unknown[]) => Promise<NextResponse> | NextResponse
 ) {
-    return async (request: Request, ...args: any[]) => {
+    return async (request: Request, ...args: unknown[]) => {
         try {
             const session = await requireAuth();
 
@@ -53,7 +53,7 @@ export function withTenantIsolation(
             }
 
             return await handler(session, request, ...args);
-        } catch (error: any) {
+        } catch (error: unknown) {
             if (error.message === "Unauthorized") {
                 return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
             }

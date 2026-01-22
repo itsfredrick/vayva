@@ -5,7 +5,7 @@ interface SendNotificationParams {
   channel?: string; // Optional, will infer from preferences if missing
   to: string; // Phone or Email
   templateKey: string;
-  variables: Record<string, any>;
+  variables: Record<string, unknown>;
   customerId?: string;
   orderId?: string;
 }

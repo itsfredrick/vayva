@@ -109,7 +109,7 @@ export default function AiDashboardPage() {
                                         </td>
                                     </tr>
                                 )}
-                                {topConsumers?.map((merchant: any) => (
+                                {topConsumers?.map((merchant: unknown) => (
                                     <tr key={merchant.storeId} className="hover:bg-gray-50 transition-colors">
                                         <td className="px-6 py-4">
                                             <div className="flex items-center gap-3">
@@ -171,7 +171,7 @@ export default function AiDashboardPage() {
     );
 }
 
-function StatCard({ label, value, icon: Icon, color }: any) {
+function StatCard({ label, value, icon: Icon, color }: unknown) {
     return (
         <div className="bg-white p-6 rounded-xl border border-gray-100 shadow-sm flex items-start gap-4">
             <div className={`p-3 rounded-lg ${color}`}>

@@ -9,8 +9,8 @@ export const AuditEventSchema = z.object({
   resourceId: z.string().uuid().optional(),
   resourceType: z.string().optional(),
 
-  before: z.record(z.any()).optional(), // JSON snapshot
-  after: z.record(z.any()).optional(), // JSON snapshot
+  before: z.record(z.unknown()).optional(), // JSON snapshot
+  after: z.record(z.unknown()).optional(), // JSON snapshot
 
   ipAddress: z.string().ip().optional(),
   userAgent: z.string().optional(),

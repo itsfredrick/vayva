@@ -47,7 +47,7 @@ export async function GET(
             messages
         });
 
-    } catch (error: any) {
+    } catch (error: unknown) {
         if (error.message === "Unauthorized") {
             return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
         }
@@ -109,7 +109,7 @@ export async function POST(
 
         return NextResponse.json({ success: true, message });
 
-    } catch (error: any) {
+    } catch (error: unknown) {
         if (error.message === "Unauthorized") {
             return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
         }

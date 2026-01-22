@@ -28,7 +28,7 @@ export async function POST(req: Request) {
     const { PERMISSIONS } = await import("@/lib/team/permissions");
     const session = await checkPermission(PERMISSIONS.TEMPLATES_MANAGE);
 
-    const user = session.user as any;
+    const user = session.user as unknown;
     const userId = user.id;
     const storeId = user.storeId;
 
@@ -123,7 +123,7 @@ export async function POST(req: Request) {
     }
 
     // 4. Verification Passed - Idempotent Apply
-    const currentSettings = (store.settings as any) || {};
+    const currentSettings = (store.settings as unknown) || {};
     const activeTemplate = currentSettings.templateId;
 
     if (activeTemplate === templateId) {
@@ -144,7 +144,7 @@ export async function POST(req: Request) {
     });
 
     return NextResponse.json({ success: true, templateId });
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error("Template apply error:", error);
 
     if (error.message === "Unauthorized") {

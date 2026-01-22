@@ -19,9 +19,9 @@ export const Icon = ({ name, size = 24, ...props }: IconProps) => {
   }, [name]);
 
   const LucideIcon = useMemo(() => {
-    const dynamicIcon = (dynamicIconImports as any)[kebabName];
+    const dynamicIcon = (dynamicIconImports as Record<string, () => Promise<{ default: React.ComponentType<LucideProps> }>>)[kebabName];
     if (!dynamicIcon) return null;
-    return dynamic(dynamicIcon) as any;
+    return dynamic(dynamicIcon);
   }, [kebabName]);
 
   if (!LucideIcon) {

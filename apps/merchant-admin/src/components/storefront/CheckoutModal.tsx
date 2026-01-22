@@ -16,9 +16,9 @@ interface CheckoutModalProps {
   cart: CartItem[];
   total: number;
   storeSlug: string;
-  onSuccess: (customerData?: any) => void;
+  onSuccess: (customerData?: unknown) => void;
   requireAddress?: boolean;
-  submitFn?: (data: any) => Promise<any>;
+  submitFn?: (data: unknown) => Promise<unknown>;
 }
 
 export function CheckoutModal({
@@ -80,7 +80,7 @@ export function CheckoutModal({
           onClose();
         }
       }
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error(error);
       toast.error(error.message || "Failed to process order");
     } finally {

@@ -14,7 +14,7 @@ export async function GET() {
       },
     });
 
-    const settings = (store?.settings as any) || {};
+    const settings = (store?.settings as unknown) || {};
     const notificationSettings = settings.notifications || {};
 
     return NextResponse.json({
@@ -37,7 +37,7 @@ export async function GET() {
         errors: notificationSettings.system?.errors ?? true,
       },
     });
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error("Notification settings fetch error:", error);
 
     if (error.message === "Unauthorized") {
@@ -64,7 +64,7 @@ export async function PUT(request: Request) {
       select: { settings: true },
     });
 
-    const currentSettings = (store?.settings as any) || {};
+    const currentSettings = (store?.settings as unknown) || {};
 
     await prisma.store.update({
       where: { id: storeId },
@@ -84,7 +84,7 @@ export async function PUT(request: Request) {
       success: true,
       message: "Notification settings updated",
     });
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error("Notification settings update error:", error);
 
     if (error.message === "Unauthorized") {

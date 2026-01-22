@@ -71,7 +71,7 @@ export function PublishMarketplaceDialog({ isOpen, onClose, productId, productPr
             toast.success("Product published to Marketplace!");
             onSuccess();
             onClose();
-        } catch (err: any) {
+        } catch (err: unknown) {
             toast.error(err.message);
         } finally {
             setLoading(false);
@@ -131,7 +131,7 @@ export function PublishMarketplaceDialog({ isOpen, onClose, productId, productPr
                                     <option value="">Select a category...</option>
                                     {categories.map((cat) => (
                                         <optgroup key={cat.id} label={cat.name}>
-                                            {cat.children?.map((child: any) => (
+                                            {cat.children?.map((child: unknown) => (
                                                 <option key={child.id} value={child.id}>
                                                     {child.name}
                                                 </option>

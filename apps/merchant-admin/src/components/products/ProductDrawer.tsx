@@ -46,7 +46,7 @@ const ImageUploader = ({
         const data = await res.json();
         onChange([...images, data.url]);
         toast.success("Image uploaded successfully");
-      } catch (error: any) {
+      } catch (error: unknown) {
         toast.error("Upload failed", {
           description: error.message,
         });
@@ -61,7 +61,7 @@ const ImageUploader = ({
   };
 
   const handleRemoveBackground = async (index: number) => {
-    const plan = (session?.user as any)?.plan || "FREE";
+    const plan = (session?.user)?.plan || "FREE";
 
     if (plan !== "PRO") {
       toast.info("Pro Feature", {
@@ -189,7 +189,7 @@ export const ProductDrawer: React.FC<ProductDrawerProps> = ({
     reset,
     formState: { errors, isSubmitting },
   } = useForm<ProductFormValues>({
-    resolver: zodResolver(productSchema) as any,
+    resolver: zodResolver(productSchema) as unknown,
     defaultValues: {
       type: ProductServiceType.RETAIL,
       status: ProductServiceStatus.ACTIVE,

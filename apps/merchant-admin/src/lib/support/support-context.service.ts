@@ -24,14 +24,14 @@ export class SupportContextService {
         name: storeData.name,
         category: storeData.category,
         verificationStatus: storeData.isLive ? "LIVE" : "DRAFT",
-        domain: (storeData as any).customDomain || "vayva.shop",
+        domain: (storeData as unknown).customDomain || "vayva.shop",
       },
       plan: {
         name: storeData.plan || "FREE",
-        status: (storeData as any).aiSubscription?.status || "TRIAL",
-        expiresAt: (storeData as any).aiSubscription?.trialEndsAt,
-        daysRemaining: (storeData as any).aiSubscription?.trialEndsAt
-          ? Math.max(0, Math.ceil((new Date((storeData as any).aiSubscription.trialEndsAt).getTime() - new Date().getTime()) / (1000 * 60 * 60 * 24)))
+        status: (storeData as unknown).aiSubscription?.status || "TRIAL",
+        expiresAt: (storeData as unknown).aiSubscription?.trialEndsAt,
+        daysRemaining: (storeData as unknown).aiSubscription?.trialEndsAt
+          ? Math.max(0, Math.ceil((new Date((storeData as unknown).aiSubscription.trialEndsAt).getTime() - new Date().getTime()) / (1000 * 60 * 60 * 24)))
           : null,
       },
       stats: {
@@ -40,7 +40,7 @@ export class SupportContextService {
         totalLeads: await prisma.customer.count({ where: { storeId } }),
       },
       whatsapp: {
-        connected: !!(storeData as any).agent,
+        connected: !!(storeData as unknown).agent,
         status: "ACTIVE",
         aiActive: true,
       },

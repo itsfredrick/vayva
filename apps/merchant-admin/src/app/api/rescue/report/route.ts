@@ -4,7 +4,7 @@ import { authOptions } from "@/lib/auth";
 import { MerchantRescueService } from "@/lib/rescue/merchant-rescue-service";
 
 export async function POST(req: NextRequest) {
-    const session = await getServerSession(authOptions) as any;
+    const session = await getServerSession(authOptions) as unknown;
 
     if (!session?.user) {
         // We allow anonymous reporting for critical UI crashes where session might be lost/unavailable
@@ -34,7 +34,7 @@ export async function POST(req: NextRequest) {
             message: "Rescue initiated"
         });
 
-    } catch (error: any) {
+    } catch (error: unknown) {
         console.error("Rescue Report API Error:", error);
         return NextResponse.json({ error: "Failed to report" }, { status: 500 });
     }

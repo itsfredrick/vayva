@@ -39,7 +39,7 @@ export default fp(async (fastify: FastifyInstance) => {
         }
 
         // Verify manually if it's from cookie or if jwtVerify fails on req
-        const decoded = fastify.jwt.verify<any>(token);
+        const decoded = fastify.jwt.verify<unknown>(token);
         request.user = decoded;
       } catch (err) {
         reply.status(401).send({ error: "UNAUTHENTICATED", details: err });

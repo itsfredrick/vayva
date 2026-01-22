@@ -18,7 +18,7 @@ const INDUSTRY_GROUPS = {
 export default function IndustrySettingsPage() {
     const router = useRouter();
     const { merchant } = useAuth();
-    const [selectedSlug, setSelectedSlug] = useState<IndustrySlug | null>((merchant as any)?.industrySlug || "retail");
+    const [selectedSlug, setSelectedSlug] = useState<IndustrySlug | null>((merchant as unknown)?.industrySlug || "retail");
     const [isLoading, setIsLoading] = useState(false);
 
     const handleSave = async () => {
@@ -96,9 +96,9 @@ export default function IndustrySettingsPage() {
 
                                     {/* Feature Tags Pilled - Simplified */}
                                     <div className="flex flex-wrap gap-2">
-                                        {(config as any).features?.bookings && <span className="text-[10px] bg-blue-50 text-blue-700 px-2 py-1 rounded">Bookings</span>}
-                                        {(config as any).features?.delivery && <span className="text-[10px] bg-green-50 text-green-700 px-2 py-1 rounded">Delivery</span>}
-                                        {(config as any).features?.content && <span className="text-[10px] bg-pink-50 text-pink-700 px-2 py-1 rounded">Content</span>}
+                                        {(config as unknown).features?.bookings && <span className="text-[10px] bg-blue-50 text-blue-700 px-2 py-1 rounded">Bookings</span>}
+                                        {(config as unknown).features?.delivery && <span className="text-[10px] bg-green-50 text-green-700 px-2 py-1 rounded">Delivery</span>}
+                                        {(config as unknown).features?.content && <span className="text-[10px] bg-pink-50 text-pink-700 px-2 py-1 rounded">Content</span>}
                                     </div>
                                 </div>
                             );

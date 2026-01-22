@@ -21,7 +21,7 @@ const formatCurrency = (amount: number) => {
 
 export function CartItemRow({ item }: CartItemProps) {
     const { updateItem, removeItem, isLoading } = useCart();
-    const variant = item.variant as any;
+    const variant = item.variant as unknown;
     const product = variant.product;
     const image = product.productImages?.[0] || variant.productImage;
 

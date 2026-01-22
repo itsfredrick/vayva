@@ -18,10 +18,10 @@ const getProvider = (type: string, apiKey: string = "") => {
 export const FulfillmentController = {
   // 1. Delivery Profiles & Zones
   createProfile: async (
-    req: FastifyRequest<{ Body: any }>,
+    req: FastifyRequest<{ Body: unknown }>,
     reply: FastifyReply,
   ) => {
-    const { storeId, name, isDefault } = req.body as any;
+    const { storeId, name, isDefault } = req.body as unknown;
     // Logic to unset other defaults if this is set to default
     if (isDefault) {
       await prisma.deliveryProfile.updateMany({
@@ -36,7 +36,7 @@ export const FulfillmentController = {
   },
 
   createZone: async (
-    req: FastifyRequest<{ Body: any }>,
+    req: FastifyRequest<{ Body: unknown }>,
     reply: FastifyReply,
   ) => {
     const {
@@ -48,7 +48,7 @@ export const FulfillmentController = {
       feeType,
       feeAmount,
       freeOverAmount,
-    } = req.body as any;
+    } = req.body as unknown;
     const zone = await prisma.deliveryZone.create({
       data: {
         storeId,
@@ -68,7 +68,7 @@ export const FulfillmentController = {
     req: FastifyRequest<{ Querystring: { storeId: string } }>,
     reply: FastifyReply,
   ) => {
-    const { storeId } = req.query as any;
+    const { storeId } = req.query as unknown;
     return prisma.deliveryProfile.findMany({
       where: { storeId },
       include: { deliveryZones: true, deliveryOptions: true },
@@ -77,11 +77,11 @@ export const FulfillmentController = {
 
   // 2. Dispatch / Fulfillment
   createShipment: async (
-    req: FastifyRequest<{ Body: any }>,
+    req: FastifyRequest<{ Body: unknown }>,
     reply: FastifyReply,
   ) => {
     const { storeId, orderId, deliveryOptionType, address, deliveryFee } =
-      req.body as any;
+      req.body as unknown;
 
     // 1. Create Shipment Record
     const shipment = await prisma.shipment.create({
@@ -109,10 +109,10 @@ export const FulfillmentController = {
   },
 
   dispatchShipment: async (
-    req: FastifyRequest<{ Body: any }>,
+    req: FastifyRequest<{ Body: unknown }>,
     reply: FastifyReply,
   ) => {
-    const { storeId, shipmentId, carrier, carrierParams } = req.body as any;
+    const { storeId, shipmentId, carrier, carrierParams } = req.body as unknown;
 
     const shipment = await prisma.shipment.findUniqueOrThrow({
       where: { id: shipmentId },

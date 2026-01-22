@@ -19,7 +19,7 @@ export const PushService = {
     const registration = await navigator.serviceWorker.ready;
     const subscription = await registration.pushManager.subscribe({
       userVisibleOnly: true,
-      applicationServerKey: this.urlBase64ToUint8Array(VAPID_PUBLIC_KEY) as any,
+      applicationServerKey: this.urlBase64ToUint8Array(VAPID_PUBLIC_KEY) as unknown,
     });
 
     // Register with backend

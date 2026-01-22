@@ -51,7 +51,7 @@ export const AICoachWidget = () => {
           </p>
           {latestMessage.actions && (
             <div className="flex gap-2 mt-3">
-              {latestMessage.actions.map((action: any, idx: number) => (
+              {latestMessage.actions.map((action: unknown, idx: number) => (
                 <Button
                   key={idx}
                   onClick={() => action.link && router.push(action.link)}

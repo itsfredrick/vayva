@@ -12,11 +12,13 @@ export const metadata: Metadata = {
 
 import { ClientLayout } from "@/components/ClientLayout";
 
+interface RootLayoutProps {
+  children: React.ReactNode;
+}
+
 export default function RootLayout({
   children,
-}: {
-  children: React.ReactNode;
-}) {
+}: RootLayoutProps) {
   return (
     <html lang="en">
       <body className="font-sans">

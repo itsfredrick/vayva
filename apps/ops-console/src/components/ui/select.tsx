@@ -49,66 +49,74 @@ export const Select: React.FC<SelectProps> = ({
   );
 };
 
-export const SelectPrimitive = {
-  Root: Select,
-  Trigger: React.forwardRef<HTMLButtonElement, any>(
-    ({ children, className, ...props }, ref) => (
-      <div
-        className={cn(
-          "flex h-10 w-full items-center justify-between rounded-md border border-input bg-background px-3 py-2 text-sm",
-          className,
-        )}
-      >
-        {children}
-      </div>
-    ),
-  ),
-  Value: ({ placeholder, children }: any) => (
-    <span className="text-sm">{children || placeholder}</span>
-  ),
-  Content: ({ children, className }: any) => (
+const SelectTrigger = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>(
+  ({ children, className, ...props }, _ref) => (
     <div
       className={cn(
-        "absolute top-full left-0 w-full border bg-background z-50 mt-1 shadow-md rounded-md",
+        "flex h-10 w-full items-center justify-between rounded-md border border-input bg-background px-3 py-2 text-sm",
         className,
       )}
+      {...props}
     >
       {children}
     </div>
   ),
-  Item: React.forwardRef<HTMLDivElement, any>(
-    ({ children, className, value, ...props }, ref) => {
-      const { onValueChange } = React.useContext(SelectContext);
-      return (
-        <div
-          ref={ref}
-          onClick={() => onValueChange?.(value)}
-          className={cn(
-            "cursor-pointer px-3 py-2 text-sm hover:bg-accent hover:text-accent-foreground",
-            className,
-          )}
-          {...props}
-        >
-          {children}
-        </div>
-      );
-    },
-  ),
+);
+SelectTrigger.displayName = "SelectTrigger";
+
+const SelectItem = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement> & { value: string }>(
+  ({ children, className, value, ...props }, ref) => {
+    const { onValueChange } = React.useContext(SelectContext);
+    return (
+      <div
+        ref={ref}
+        onClick={() => onValueChange?.(value)}
+        className={cn(
+          "cursor-pointer px-3 py-2 text-sm hover:bg-accent hover:text-accent-foreground",
+          className,
+        )}
+        {...props}
+      >
+        {children}
+      </div>
+    );
+  },
+);
+SelectItem.displayName = "SelectItem";
+
+const SelectValue: React.FC<{ placeholder?: string; children?: React.ReactNode }> = ({ placeholder, children }) => (
+  <span className="text-sm">{children || placeholder}</span>
+);
+
+const SelectContent: React.FC<{ children?: React.ReactNode; className?: string }> = ({ children, className }) => (
+  <div
+    className={cn(
+      "absolute top-full left-0 w-full border bg-background z-50 mt-1 shadow-md rounded-md",
+      className,
+    )}
+  >
+    {children}
+  </div>
+);
+
+export const SelectPrimitive = {
+  Root: Select,
+  Trigger: SelectTrigger,
+  Value: SelectValue,
+  Content: SelectContent,
+  Item: SelectItem,
 } as const;
 
 // Exports matching shadcn pattern
-export const SelectGroup = ({ children }: any) => <div>{children}</div>;
-export const SelectValue = SelectPrimitive.Value;
+export const SelectGroup = ({ children }: { children: React.ReactNode }) => <div>{children}</div>;
+export { SelectValue, SelectTrigger, SelectContent, SelectItem };
 
-export const SelectTrigger = SelectPrimitive.Trigger;
-export const SelectContent = SelectPrimitive.Content;
-
-export const SelectLabel = ({ children, className }: any) => (
+export const SelectLabel = ({ children, className }: { children: React.ReactNode; className?: string }) => (
   <div className={cn("px-2 py-1.5 text-sm font-semibold", className)}>
     {children}
   </div>
 );
-export const SelectItem = SelectPrimitive.Item;
-export const SelectSeparator = ({ className }: any) => (
+
+export const SelectSeparator = ({ className }: { className?: string }) => (
   <div className={cn("-mx-1 my-1 h-px bg-muted", className)} />
 );

@@ -1,7 +1,7 @@
 
 import React from "react";
 import NextLink from "next/link";
-const Link = NextLink as any;
+const Link = NextLink as unknown;
 import { PublicProduct } from "@/types/storefront";
 import { Clock, Calendar } from "lucide-react";
 
@@ -11,7 +11,7 @@ interface ServiceCardProps {
 }
 
 export function ServiceCard({ product, storeSlug }: ServiceCardProps) {
-    const metadata = product.metadata as any;
+    const metadata = product.metadata as unknown;
 
     return (
         <div className="border border-gray-200 rounded-xl p-6 hover:shadow-md transition-shadow">

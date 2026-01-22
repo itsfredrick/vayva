@@ -4,7 +4,7 @@ export class WorkerRescueService {
     /**
      * Report a worker-level incident
      */
-    static async reportJobFailure(queueName: string, jobId: string, error: any) {
+    static async reportJobFailure(queueName: string, jobId: string, error: unknown) {
         const errorMsg = error instanceof Error ? error.message : String(error);
         const fingerprint = this.generateFingerprint(queueName, errorMsg);
 

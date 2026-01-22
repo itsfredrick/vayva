@@ -82,7 +82,7 @@ export const HotelBookingTemplate: React.FC<TemplateProps> = ({
                             <div key={item.id} className="group rounded-2xl overflow-hidden border border-gray-100 hover:shadow-xl transition-all bg-white">
                                 <div className="aspect-[4/3] overflow-hidden relative">
                                     <img
-                                        src={item.image || (item as any).images?.[0] || ""}
+                                        src={item.image || (item as unknown).images?.[0] || ""}
                                         alt={item.name}
                                         className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                                     />

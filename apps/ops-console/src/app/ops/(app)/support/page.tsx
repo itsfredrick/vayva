@@ -101,7 +101,7 @@ export default function SupportPage() {
                         ) : !tickets?.length ? (
                             <tr><td colSpan={5} className="p-12 text-center text-gray-400">No tickets found.</td></tr>
                         ) : (
-                            tickets.map((t: any) => (
+                            tickets.map((t: unknown) => (
                                 <tr
                                     key={t.id}
                                     onClick={() => router.push(`/ops/support/${t.id}`)}

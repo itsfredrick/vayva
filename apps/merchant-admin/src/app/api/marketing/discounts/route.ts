@@ -37,7 +37,7 @@ export const POST = withVayvaAPI(
 
             const result = await DiscountService.createDiscount(storeId, payload);
         return NextResponse.json({ success: true, result });
-        } catch (error: any) {
+        } catch (error: unknown) {
             console.error("Create Discount Error", error);
             return NextResponse.json({ error: error.message || "Internal Error" }, { status: 400 });
         }

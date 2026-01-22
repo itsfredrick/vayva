@@ -40,7 +40,7 @@ export const POST = withVayvaAPI(
       });
 
       return NextResponse.json(job);
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error("Import Init Error:", error);
       return NextResponse.json({ error: error.message || "Internal Error" }, { status: 500 });
     }

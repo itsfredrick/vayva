@@ -5,7 +5,7 @@ interface BenefitsProps {
   benefits: { icon: string; title: string; description: string }[];
 }
 
-const IconMap: Record<string, any> = {
+const IconMap: Record<string, unknown> = {
   battery: Battery,
   zap: Zap,
   "volume-x": VolumeX,

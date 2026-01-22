@@ -164,7 +164,7 @@ const FoodProductModal = ({
         {/* Image Header */}
         <div className="relative h-48 sm:h-56 bg-gray-100 shrink-0">
           <div className="absolute inset-0 flex items-center justify-center opacity-20">
-            <Icon name={currentProduct.image as any} size={64} />
+            <Icon name={currentProduct.image as unknown} size={64} />
           </div>
           <Button
             variant="ghost"
@@ -329,7 +329,7 @@ const FoodHome = ({ config }: { config: StorefrontConfig }) => {
       {/* Categories Sticky Nav */}
       <div className="sticky top-[93px] z-30 py-3 bg-white/95 backdrop-blur border-b">
         <div className="max-w-2xl mx-auto px-4 flex gap-2 overflow-x-auto no-scrollbar scroll-pl-4">
-          {categories.map((c: any, i) => (
+          {categories.map((c: unknown, i) => (
             <Button
               key={c}
               variant="ghost"
@@ -349,13 +349,13 @@ const FoodHome = ({ config }: { config: StorefrontConfig }) => {
 
       {/* Menu List */}
       <div className="max-w-2xl mx-auto px-4 py-6 space-y-10">
-        {categories.map((cat: any) => {
-          const items = menu.filter((m: any) => m.cat === cat);
+        {categories.map((cat: unknown) => {
+          const items = menu.filter((m: unknown) => m.cat === cat);
           return (
             <div key={cat} id={`cat-${cat}`} className="scroll-mt-40">
               <h3 className="font-extrabold text-xl mb-4">{cat}</h3>
               <div className="grid gap-4">
-                {items.map((item: any) => (
+                {items.map((item: unknown) => (
                   <div
                     key={item.id}
                     className="bg-white p-3 rounded-2xl border border-gray-100 shadow-sm flex gap-4 cursor-pointer hover:border-amber-200 transition-colors group"

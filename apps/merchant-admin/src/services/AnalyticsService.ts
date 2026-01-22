@@ -60,7 +60,7 @@ export class AnalyticsService {
     /**
      * Group orders by day and return array for Recharts
      */
-    private static groupByDay(orders: any[], days: number) {
+    private static groupByDay(orders: { createdAt: Date | string; total: string | number | { toString(): string } }[], days: number) {
         const map = new Map<string, { date: string, sales: number, orders: number }>();
         const now = new Date();
 

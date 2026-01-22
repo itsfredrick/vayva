@@ -15,7 +15,7 @@ export interface DispatchResponse {
   success: boolean;
   providerJobId?: string;
   trackingUrl?: string | null;
-  rawResponse?: any;
+  rawResponse?: unknown;
   error?: string;
   provider?: "MANUAL" | "KWIK" | "CUSTOM";
   deliveryStatus?: "NOT_TRACKED" | "MANUAL_CONFIRMED" | "TRACKING_AVAILABLE";
@@ -23,7 +23,7 @@ export interface DispatchResponse {
 
 export interface CancelResponse {
   success: boolean;
-  rawResponse?: any;
+  rawResponse?: unknown;
   error?: string;
 }
 
@@ -143,7 +143,7 @@ export class KwikProvider implements DeliveryProvider {
         provider: "KWIK",
         deliveryStatus: "TRACKING_AVAILABLE",
       };
-    } catch (error: any) {
+    } catch (error: unknown) {
       return { success: false, error: error.message };
     }
   }
@@ -164,7 +164,7 @@ export class KwikProvider implements DeliveryProvider {
       }
 
       return { success: true, rawResponse: await response.json() };
-    } catch (error: any) {
+    } catch (error: unknown) {
       return { success: false, error: error.message };
     }
   }

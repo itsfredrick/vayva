@@ -6,30 +6,41 @@ import { Activity, Database, Server, CheckCircle2, AlertTriangle, RefreshCw } fr
 import { useState } from "react";
 import { Button } from "@vayva/ui";
 
+const StatusBadge = ({ status }: { status: string }) => {
+    const isHealthy = status === "healthy";
+    return (
+        <span className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium border ${isHealthy
+            ? "bg-green-50 text-green-700 border-green-200"
+            : "bg-red-50 text-red-700 border-red-200"
+            }`}>
+            {isHealthy ? <CheckCircle2 size={12} /> : <AlertTriangle size={12} />}
+            {status?.toUpperCase() || "UNKNOWN"}
+        </span>
+    );
+};
+
+interface HealthData {
+    status: string;
+    timestamp: string;
+    uptime: number;
+    checks: {
+        database: { status: string; latency: string };
+        external_apis: { status: string };
+    };
+}
+
 export default function HealthPage() {
-    const { data, isLoading: loading, error, refetch: refresh } = useOpsQuery(
+    const { data: rawData, isLoading: loading, error: _error, refetch: refresh } = useOpsQuery(
         ["system-health"],
         () => fetch("/api/ops/tools/health").then(res => res.json())
     );
+    const data = rawData as HealthData | undefined;
     const [refreshing, setRefreshing] = useState(false);
 
     const handleRefresh = async () => {
         setRefreshing(true);
         await refresh();
         setTimeout(() => setRefreshing(false), 500);
-    };
-
-    const StatusBadge = ({ status }: { status: string }) => {
-        const isHealthy = status === "healthy";
-        return (
-            <span className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium border ${isHealthy
-                ? "bg-green-50 text-green-700 border-green-200"
-                : "bg-red-50 text-red-700 border-red-200"
-                }`}>
-                {isHealthy ? <CheckCircle2 size={12} /> : <AlertTriangle size={12} />}
-                {status?.toUpperCase() || "UNKNOWN"}
-            </span>
-        );
     };
 
     return (

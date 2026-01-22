@@ -21,7 +21,7 @@ const resetPasswordRoute: FastifyPluginAsync = async (fastify) => {
     // This is circular: we need user to get secret, we need secret to verify token to get user?
     // Use `jwt.decode` to get payload { id }, find user, generate secret, verify.
 
-    const decoded = jwt.decode(body.token) as any;
+    const decoded = jwt.decode(body.token) as unknown;
     if (!decoded || !decoded.id) {
       return reply.status(400).send({ error: "Invalid token" });
     }

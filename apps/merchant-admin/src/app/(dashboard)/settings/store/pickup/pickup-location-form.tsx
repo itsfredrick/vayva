@@ -4,10 +4,9 @@
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
-import { Button } from "@vayva/ui";
+import { Button, Switch } from "@vayva/ui";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { Switch } from "@/components/ui/switch";
 import { Loader2 } from "lucide-react";
 import { useEffect } from "react";
 
@@ -23,7 +22,7 @@ const formSchema = z.object({
 type FormValues = z.infer<typeof formSchema>;
 
 interface PickupLocationFormProps {
-    initialData?: any;
+    initialData?: unknown;
     onSubmit: (data: FormValues) => Promise<void>;
     isSubmitting: boolean;
 }

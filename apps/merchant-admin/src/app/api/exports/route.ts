@@ -12,9 +12,9 @@ export async function GET() {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
-    const storeId = (session.user as any).storeId;
+    const storeId = (session.user as unknown).storeId;
 
-    const jobs = await (prisma as any).exportJob.findMany({
+    const jobs = await (prisma as unknown).exportJob.findMany({
       where: { storeId },
       orderBy: { createdAt: "desc" },
       take: 10,
@@ -37,7 +37,7 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
-    const storeId = (session.user as any).storeId;
+    const storeId = (session.user as unknown).storeId;
     const userId = session.user.id;
 
     // Rate Limit: 3 per hour
@@ -53,7 +53,7 @@ export async function POST(req: Request) {
       );
     }
 
-    const job = await (prisma as any).exportJob.create({
+    const job = await (prisma as unknown).exportJob.create({
       data: {
         storeId,
         type,

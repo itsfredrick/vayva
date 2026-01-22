@@ -12,10 +12,10 @@ server.get("/health", async () => ({ status: "ok" }));
 // Register Custom Parser for Webhook Signature Verification
 server.addContentTypeParser("application/json", { parseAs: "buffer" }, (req, body, done) => {
   try {
-    (req as any).rawBody = body; // Store buffer for HMAC verification
+    (req as unknown).rawBody = body; // Store buffer for HMAC verification
     const json = JSON.parse(body.toString());
     done(null, json);
-  } catch (err: any) {
+  } catch (err: unknown) {
     err.statusCode = 400;
     done(err, undefined);
   }
@@ -29,7 +29,7 @@ const start = async () => {
     await server.listen({ port: 3005, host: "0.0.0.0" });
     console.log("WhatsApp Service running on port 3005");
   } catch (err) {
-    (server.log as any).error(err);
+    (server.log as unknown).error(err);
     process.exit(1);
   }
 };

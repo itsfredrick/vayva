@@ -10,7 +10,7 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
-    const storeId = (session.user as any).storeId;
+    const storeId = (session.user as unknown).storeId;
     if (!storeId) {
       return NextResponse.json({ error: "No store context" }, { status: 400 });
     }
@@ -58,7 +58,7 @@ export async function POST(req: Request) {
 
       // Reset specific section config
       const currentSectionConfig =
-        (draft.sectionConfig as Record<string, any>) || {};
+        (draft.sectionConfig as Record<string, unknown>) || {};
       const newSectionConfig = { ...currentSectionConfig };
       delete newSectionConfig[sectionId]; // Removing it reverts to default
 

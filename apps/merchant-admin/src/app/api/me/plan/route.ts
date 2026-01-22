@@ -17,7 +17,7 @@ export async function GET(req: Request) {
       });
     }
 
-    const user = session.user as any;
+    const user = session.user as unknown;
     const storeId = user.storeId;
 
     if (!storeId) {

@@ -17,7 +17,7 @@ export const GET = withVayvaAPI(
       const action = searchParams.get("action");
       const actorId = searchParams.get("actor_id");
 
-      const where: any = { storeId };
+      const where: unknown = { storeId };
 
       if (entityType) where.entityType = entityType;
       if (entityId) where.entityId = entityId;

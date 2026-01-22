@@ -19,7 +19,7 @@ export async function GET() {
     });
 
     return NextResponse.json({
-      invoices: invoices.map((inv: any) => ({
+      invoices: invoices.map((inv: unknown) => ({
         id: inv.id,
         invoiceNumber: inv.invoiceNumber,
         date: inv.createdAt,
@@ -29,7 +29,7 @@ export async function GET() {
         pdfUrl: `/api/billing/invoices/${inv.id}/pdf`,
       })),
     });
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error("Invoices fetch error:", error);
 
     if (error.message === "Unauthorized") {

@@ -83,7 +83,7 @@ export default function FlashSalesPage() {
             setIsOpen(false);
             setFormData({ name: "", discount: "20", durationHours: "24" }); // Reset
             fetchSales();
-        } catch (error: any) {
+        } catch (error: unknown) {
             toast.error(error.message);
         } finally {
             setIsSubmitting(false);
@@ -158,7 +158,7 @@ export default function FlashSalesPage() {
             setEditingSale(null);
             setFormData({ name: "", discount: "20", durationHours: "24" });
             fetchSales();
-        } catch (error: any) {
+        } catch (error: unknown) {
             toast.error(error.message);
         } finally {
             setIsSubmitting(false);
@@ -314,7 +314,7 @@ export default function FlashSalesPage() {
                             <Input
                                 id="name"
                                 value={formData.name}
-                                onChange={(e: any) => setFormData({ ...formData, name: e.target.value })}
+                                onChange={(e: unknown) => setFormData({ ...formData, name: e.target.value })}
                                 placeholder="e.g. Midnight Madness"
                             />
                         </div>
@@ -327,7 +327,7 @@ export default function FlashSalesPage() {
                                     min="1"
                                     max="100"
                                     value={formData.discount}
-                                    onChange={(e: any) => setFormData({ ...formData, discount: e.target.value })}
+                                    onChange={(e: unknown) => setFormData({ ...formData, discount: e.target.value })}
                                 />
                             </div>
                             <div className="grid gap-2">
@@ -337,7 +337,7 @@ export default function FlashSalesPage() {
                                     type="number"
                                     min="1"
                                     value={formData.durationHours}
-                                    onChange={(e: any) => setFormData({ ...formData, durationHours: e.target.value })}
+                                    onChange={(e: unknown) => setFormData({ ...formData, durationHours: e.target.value })}
                                 />
                             </div>
                         </div>

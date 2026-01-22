@@ -13,7 +13,7 @@ export async function GET(req: Request) {
       return NextResponse.json({});
     }
 
-    const user = session.user as any;
+    const user = session.user as unknown;
     const storeId = user.storeId;
 
     if (!storeId) {
@@ -31,16 +31,16 @@ export async function GET(req: Request) {
     // Resolve Onboarding Data
     // Checking common locations for industry category
     const industryCategory =
-      (store as any).industryCategory ||
-      (store as any).category ||
-      (store.settings as any)?.industryCategory ||
+      (store as unknown).industryCategory ||
+      (store as unknown).category ||
+      (store.settings as unknown)?.industryCategory ||
       null;
 
     // Check onboarding completion status
     // can be explicit flag or derived
     const onboardingCompleted =
       store.onboardingCompleted ||
-      (store.onboardingStatus as any) === "COMPLETED" ||
+      (store.onboardingStatus as unknown) === "COMPLETED" ||
       !!industryCategory;
 
     return NextResponse.json({

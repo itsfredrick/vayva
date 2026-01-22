@@ -3,17 +3,17 @@ import { AdminController } from "./controller";
 
 export async function adminRoutes(server: FastifyInstance) {
   // --- Merchant Management ---
-  server.get("/merchants/search", async (req: any, reply) => {
+  server.get("/merchants/search", async (req: unknown, reply) => {
     const { q } = req.query;
     return await AdminController.searchMerchants(q);
   });
 
-  server.get("/merchants/:id", async (req: any, reply) => {
+  server.get("/merchants/:id", async (req: unknown, reply) => {
     const { id } = req.params;
     return await AdminController.getMerchantDetail(id);
   });
 
-  server.post("/merchants/:id/suspend", async (req: any, reply) => {
+  server.post("/merchants/:id/suspend", async (req: unknown, reply) => {
     const { id } = req.params;
     const { reason } = req.body;
     const actorUserId = req.headers["x-admin-user-id"];
@@ -27,11 +27,11 @@ export async function adminRoutes(server: FastifyInstance) {
   });
 
   // --- Kill Switches ---
-  server.get("/killswitches", async (req: any, reply) => {
+  server.get("/killswitches", async (req: unknown, reply) => {
     return await AdminController.listKillSwitches();
   });
 
-  server.post("/killswitches/:key/toggle", async (req: any, reply) => {
+  server.post("/killswitches/:key/toggle", async (req: unknown, reply) => {
     const { key } = req.params;
     const { enabled, reason } = req.body;
     const actorUserId = req.headers["x-admin-user-id"];
@@ -44,11 +44,11 @@ export async function adminRoutes(server: FastifyInstance) {
   });
 
   // --- Moderation ---
-  server.get("/moderation/reviews", async (req: any, reply) => {
+  server.get("/moderation/reviews", async (req: unknown, reply) => {
     return await AdminController.listPendingReviews();
   });
 
-  server.post("/moderation/reviews/:id", async (req: any, reply) => {
+  server.post("/moderation/reviews/:id", async (req: unknown, reply) => {
     const { id } = req.params;
     const { action, reason } = req.body;
     const actorUserId = req.headers["x-admin-user-id"];
@@ -61,18 +61,18 @@ export async function adminRoutes(server: FastifyInstance) {
   });
 
   // --- Support Cases ---
-  server.get("/support/cases", async (req: any, reply) => {
+  server.get("/support/cases", async (req: unknown, reply) => {
     const { status } = req.query;
     return await AdminController.listSupportCases(status);
   });
 
-  server.post("/support/cases", async (req: any, reply) => {
+  server.post("/support/cases", async (req: unknown, reply) => {
     const actorUserId = req.headers["x-admin-user-id"];
     return await AdminController.createSupportCase(req.body, actorUserId);
   });
 
   // --- System Health ---
-  server.get("/health/system", async (req: any, reply) => {
+  server.get("/health/system", async (req: unknown, reply) => {
     return await AdminController.getSystemHealth();
   });
 }

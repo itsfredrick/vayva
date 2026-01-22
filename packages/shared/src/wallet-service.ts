@@ -37,7 +37,7 @@ export class WalletService {
             const account = await tx.ledgerAccount.upsert({
                 where: {
                     ownerId_type_currency: {
-                        ownerId: ownerId as any, // Cast to avoid TS null check strictness
+                        ownerId: ownerId as unknown, // Cast to avoid TS null check strictness
                         type: accountType,
                         currency: "NGN",
                     }
@@ -116,7 +116,7 @@ export class WalletService {
         const account = await prisma.ledgerAccount.findUnique({
             where: {
                 ownerId_type_currency: {
-                    ownerId: null as any, // Cast to avoid TS null check strictness
+                    ownerId: null as unknown, // Cast to avoid TS null check strictness
                     type,
                     currency: "NGN"
                 }

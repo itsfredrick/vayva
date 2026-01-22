@@ -18,7 +18,7 @@ export async function POST(
         const result = await RescueService.performAction(id, actionType, user.id);
 
         return NextResponse.json(result);
-    } catch (error: any) {
+    } catch (error: unknown) {
         return NextResponse.json({ error: error.message }, { status: 500 });
     }
 }

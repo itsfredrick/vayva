@@ -1,7 +1,6 @@
 import React from "react";
 import { SalesChannel } from "@vayva/shared";
-import { Icon, cn } from "@vayva/ui";
-import { Switch } from "@/components/ui/switch";
+import { Icon, Switch, cn } from "@vayva/ui";
 
 interface SalesChannelsProps {
   channels: SalesChannel[];

@@ -88,7 +88,7 @@ export const ProductList: React.FC<ProductListProps> = ({
               ? "default"
               : item.type === ProductServiceType.FOOD
                 ? "warning"
-                : "secondary") as any
+                : "secondary") as unknown
           }
           className="uppercase text-[10px] tracking-wider"
         >

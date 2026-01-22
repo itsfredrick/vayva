@@ -35,7 +35,7 @@ export class JobWrapper {
           duration: completedAt.getTime() - startedAt.getTime(),
         },
       });
-    } catch (error: any) {
+    } catch (error: unknown) {
       const errorType = JobWrapper.classifyError(error);
       const completedAt = new Date();
 
@@ -67,7 +67,7 @@ export class JobWrapper {
     }
   }
 
-  static classifyError(error: any): "transient" | "permanent" {
+  static classifyError(error: unknown): "transient" | "permanent" {
     // Network timeouts, 429, 5xx = transient
     if (error.code === "ETIMEDOUT" || error.code === "ECONNRESET")
       return "transient";

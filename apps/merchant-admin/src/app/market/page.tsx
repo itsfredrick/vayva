@@ -110,7 +110,7 @@ export default function MarketHomePage() {
               >
                 <div className="group bg-white/5 rounded-xl p-4 border border-white/5 hover:border-primary/50 hover:bg-white/10 transition-all text-center h-full flex flex-col items-center justify-center gap-3">
                   <Icon
-                    name={cat.icon as any}
+                    name={cat.icon as unknown}
                     size={32}
                     className="text-text-secondary group-hover:text-primary transition-colors"
                   />
@@ -207,7 +207,7 @@ export default function MarketHomePage() {
           ].map((item, i) => (
             <div key={i} className="flex items-center gap-4">
               <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center text-primary">
-                <Icon name={item.icon as any} size={24} />
+                <Icon name={item.icon as unknown} size={24} />
               </div>
               <div>
                 <h3 className="font-bold text-white">{item.title}</h3>

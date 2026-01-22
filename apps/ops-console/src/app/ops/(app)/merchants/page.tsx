@@ -11,14 +11,12 @@ import {
     XCircle,
     TrendingUp,
     MoreHorizontal,
-    Loader2,
-    CheckCircle
+    Loader2
 } from "lucide-react";
 import { Button } from "@vayva/ui";
 import { OpsPagination } from "@/components/shared/OpsPagination";
 import { useRouter, useSearchParams } from "next/navigation";
 import { toast } from "sonner";
-import { useOpsQuery } from "@/hooks/useOpsQuery";
 
 interface Merchant {
     id: string;
@@ -65,12 +63,7 @@ export default function MerchantsListPage() {
     const [selectedIds, setSelectedIds] = useState<Set<string>>(new Set());
     const [processingAction, setProcessingAction] = useState<string | null>(null);
 
-    useEffect(() => {
-        fetchMerchants();
-        setSelectedIds(new Set()); // Reset selection on fetch/filter change
-    }, [page, search, plan, kyc, risk]);
-
-    const fetchMerchants = async () => {
+    const fetchMerchants = React.useCallback(async () => {
         setLoading(true);
         try {
             const query = new URLSearchParams({
@@ -97,7 +90,12 @@ export default function MerchantsListPage() {
         } finally {
             setLoading(false);
         }
-    };
+    }, [page, search, plan, kyc, risk]);
+
+    useEffect(() => {
+        fetchMerchants();
+        setSelectedIds(new Set()); // Reset selection on fetch/filter change
+    }, [page, search, plan, kyc, risk, fetchMerchants]);
 
     const handleSearch = (e: React.FormEvent) => {
         e.preventDefault();
@@ -157,8 +155,9 @@ export default function MerchantsListPage() {
             toast.success(`Action Complete: ${json.count} updated`);
             setSelectedIds(new Set());
             fetchMerchants(); // Refresh data
-        } catch (e: any) {
-            toast.error(e.message);
+        } catch (e: unknown) {
+            const error = e as Error;
+            toast.error(error.message);
         } finally {
             setProcessingAction(null);
         }

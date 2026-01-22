@@ -12,7 +12,7 @@ export function useOpsQuery<T>(
         queryFn: async () => {
             try {
                 return await fetcher();
-            } catch (error: any) {
+            } catch (error: unknown) {
                 toast.error("Data Fetch Error", {
                     description: error.message || "Something went wrong while fetching data.",
                 });

@@ -19,7 +19,7 @@
  * ```
  */
 
-import * as Sentry from "@sentry/nextjs";
+import { ApiResponse } from "@vayva/shared";
 import { v4 as uuidv4 } from "uuid";
 
 interface RequestConfig extends RequestInit {
@@ -32,7 +32,7 @@ interface RequestConfig extends RequestInit {
 interface ApiError extends Error {
   status?: number;
   code?: string;
-  details?: any;
+  details?: unknown;
   correlationId?: string;
 }
 
@@ -66,18 +66,18 @@ class ApiClient {
   /**
    * Make a GET request
    */
-  async get<T = any>(url: string, config?: RequestConfig): Promise<T> {
+  async get<T = unknown>(url: string, config?: RequestConfig): Promise<ApiResponse<T>> {
     return this.request<T>(url, { ...config, method: "GET" });
   }
 
   /**
    * Make a POST request
    */
-  async post<T = any>(
+  async post<T = unknown>(
     url: string,
-    data?: any,
+    data?: unknown,
     config?: RequestConfig,
-  ): Promise<T> {
+  ): Promise<ApiResponse<T>> {
     return this.request<T>(url, {
       ...config,
       method: "POST",
@@ -88,11 +88,11 @@ class ApiClient {
   /**
    * Make a PUT request
    */
-  async put<T = any>(
+  async put<T = unknown>(
     url: string,
-    data?: any,
+    data?: unknown,
     config?: RequestConfig,
-  ): Promise<T> {
+  ): Promise<ApiResponse<T>> {
     return this.request<T>(url, {
       ...config,
       method: "PUT",
@@ -101,9 +101,24 @@ class ApiClient {
   }
 
   /**
+   * Make a PATCH request
+   */
+  async patch<T = unknown>(
+    url: string,
+    data?: unknown,
+    config?: RequestConfig,
+  ): Promise<ApiResponse<T>> {
+    return this.request<T>(url, {
+      ...config,
+      method: "PATCH",
+      body: data ? JSON.stringify(data) : undefined,
+    });
+  }
+
+  /**
    * Make a DELETE request
    */
-  async delete<T = any>(url: string, config?: RequestConfig): Promise<T> {
+  async delete<T = unknown>(url: string, config?: RequestConfig): Promise<ApiResponse<T>> {
     return this.request<T>(url, { ...config, method: "DELETE" });
   }
 
@@ -113,32 +128,31 @@ class ApiClient {
   private async request<T>(
     url: string,
     config: RequestConfig = {},
-  ): Promise<T> {
-    let {
+  ): Promise<ApiResponse<T>> {
+    const {
       retry = this.defaultRetries,
       retryDelay = this.defaultRetryDelay,
       timeout = this.defaultTimeout,
       ...fetchConfig
     } = config;
+    let finalFetchConfig = fetchConfig;
 
     // Apply Request Interceptors
     for (const interceptor of this.requestInterceptors) {
-      fetchConfig = await interceptor(fetchConfig);
+      finalFetchConfig = await interceptor(finalFetchConfig);
     }
 
     const fullURL = this.baseURL + url;
-    let lastError: ApiError | null = null;
+    let lastError: ApiResponse<T> | null = null;
 
     // Retry loop
     for (let attempt = 0; attempt <= retry; attempt++) {
       try {
-        // Create abort controller for timeout
         const controller = new AbortController();
         const timeoutId = setTimeout(() => controller.abort(), timeout);
 
-        // Make request
         let response = await fetch(fullURL, {
-          ...fetchConfig,
+          ...finalFetchConfig,
           signal: controller.signal,
         });
 
@@ -149,109 +163,84 @@ class ApiClient {
           response = await interceptor(response);
         }
 
-        // Handle non-OK responses
+        // Handle non-OK responses explicitly as ApiResponse objects
         if (!response.ok) {
-          const error = await this.handleErrorResponse(response);
+          const errorResponse = await this.handleErrorResponse<T>(response);
 
-          // Don't retry client errors (4xx) unless strict idempotency is handled elsewhere (usually safe not to retry 4xx)
-          // 429 Too Many Requests could be an exception, but usually better handled by caller or specific logic
-          if (response.status >= 400 && response.status < 500) {
-            throw error;
-          }
-
-          // Retry server errors (5xx)
-          lastError = error;
-          if (attempt < retry) {
-            await this.delay(retryDelay * Math.pow(2, attempt)); // Exponential backoff
+          // Retry on server errors (5xx)
+          if (response.status >= 500 && attempt < retry) {
+            await this.delay(retryDelay * Math.pow(2, attempt));
+            lastError = errorResponse;
             continue;
           }
-          throw error;
+
+          return errorResponse;
         }
 
-        // Parse response
-        const data = await this.parseResponse<T>(response);
-        return data;
-      } catch (error: any) {
-        // Handle abort/timeout
-        if (error.name === "AbortError") {
-          const timeoutError: ApiError = new Error("Request timeout");
-          timeoutError.status = 408;
-          timeoutError.code = "TIMEOUT";
-          lastError = timeoutError;
-        } else {
-          lastError = error;
-        }
+        return await this.parseResponse<T>(response);
+      } catch (err: unknown) {
+        const error = err as Error;
+        const apiError: ApiResponse<T> = {
+          success: false,
+          error: {
+            code: error.name === "AbortError" ? "TIMEOUT" : "NETWORK_ERROR",
+            message: error.message || "Request failed"
+          }
+        };
 
-        // Retry on network errors
         if (attempt < retry) {
           await this.delay(retryDelay * Math.pow(2, attempt));
+          lastError = apiError;
           continue;
         }
+        return apiError;
       }
     }
 
-    // All retries failed
-    throw lastError || new Error("Request failed");
+    return lastError || {
+      success: false,
+      error: { code: "UNKNOWN", message: "Request failed after retries" }
+    };
   }
 
   /**
-   * Parse response based on content type
+   * Parse response
    */
-  private async parseResponse<T>(response: Response): Promise<T> {
+  private async parseResponse<T>(response: Response): Promise<ApiResponse<T>> {
     const contentType = response.headers.get("content-type");
 
-    if (contentType?.includes("application/json")) {
-      return response.json();
-    }
+    try {
+      if (contentType?.includes("application/json")) {
+        const data = await response.json();
+        return data as ApiResponse<T>;
+      }
 
-    if (contentType?.includes("text/")) {
-      return response.text() as any;
+      const text = await response.text();
+      return { success: true, data: text as unknown as T };
+    } catch {
+      return {
+        success: false,
+        error: { code: "PARSE_ERROR", message: "Failed to parse response" }
+      };
     }
-
-    return response.blob() as any;
   }
 
   /**
    * Handle error responses
    */
-  private async handleErrorResponse(response: Response): Promise<ApiError> {
-    let errorData: any = {};
-
+  private async handleErrorResponse<T>(response: Response): Promise<ApiResponse<T>> {
     try {
-      errorData = await response.json();
+      const errorData = await response.json();
+      return errorData as ApiResponse<T>;
     } catch {
-      // Response is not JSON
-      errorData = { error: response.statusText };
+      return {
+        success: false,
+        error: {
+          code: "HTTP_" + response.status,
+          message: response.statusText || "Request failed"
+        }
+      };
     }
-
-    const error: ApiError = new Error(errorData.error || "Request failed");
-    error.status = response.status;
-    error.code = errorData.code;
-    error.details = errorData.details;
-    error.correlationId = response.headers.get("x-correlation-id") || undefined;
-
-    // Log error to console in development
-    if (process.env.NODE_ENV === "development") {
-      console.error("API Error:", {
-        url: response.url,
-        status: response.status,
-        error: errorData,
-        correlationId: error.correlationId
-      });
-    }
-
-    // Capture to Sentry
-    Sentry.captureException(error, {
-      extra: {
-        url: response.url,
-        status: response.status,
-        method: "API_CALL", // Contextualize
-        correlationId: error.correlationId,
-        details: errorData
-      }
-    });
-
-    return error;
   }
 
   /**

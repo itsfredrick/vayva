@@ -6,7 +6,7 @@ declare module "fastify" {
     jwt: JWT;
   }
   interface FastifyInstance {
-    authenticate: any;
+    authenticate: unknown;
   }
 }
 

@@ -5,7 +5,7 @@ export async function logAdminAction(data: {
   userId: string; // Admin ID
   action: string; // VERIFY_SELLER, UPDATE_IMPORT
   resourceId: string; // Store ID / Import ID
-  details: any; // JSON Diff
+  details: unknown; // JSON Diff
 }) {
   try {
     await prisma.auditLog.create({
@@ -36,8 +36,7 @@ export async function logAuditEvent(
   storeId: string,
   userId: string,
   eventType: string,
-  details: any
-) {
+  details: unknown) {
   try {
     await prisma.auditLog.create({
       data: {

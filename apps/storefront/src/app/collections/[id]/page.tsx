@@ -8,9 +8,9 @@ import { StorefrontService } from "@/services/storefront.service";
 import { PublicProduct } from "@/types/storefront";
 import { useParams } from "next/navigation";
 import NextLink from "next/link";
-const Link = NextLink as any;
+const Link = NextLink as unknown;
 
-export default function CollectionPage(props: any) {
+export default function CollectionPage(props: unknown) {
   const { store } = useStore();
   const { id } = useParams() as { id: string };
   const [products, setProducts] = useState<PublicProduct[]>([]);

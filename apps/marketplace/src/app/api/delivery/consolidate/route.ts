@@ -43,7 +43,7 @@ export async function POST(request: NextRequest) {
             select: { customerId: true }
         });
 
-        if (!parentOrder || parentOrder.customerId !== (session.user as any).id) {
+        if (!parentOrder || parentOrder.customerId !== session.user?.id) {
             return NextResponse.json({ error: "Forbidden - You do not own this order" }, { status: 403 });
         }
 
@@ -76,7 +76,7 @@ export async function POST(request: NextRequest) {
             breakdown,
             message: "Delivery fee consolidated successfully",
         });
-    } catch (error: any) {
+    } catch (error: unknown) {
         console.error("Delivery consolidation error:", error);
         return NextResponse.json(
             { error: error.message || "Failed to consolidate delivery fee" },
@@ -111,7 +111,7 @@ export async function GET(request: NextRequest) {
         );
 
         return NextResponse.json({ success: true, breakdown });
-    } catch (error: any) {
+    } catch (error: unknown) {
         console.error("Get delivery breakdown error:", error);
         return NextResponse.json(
             { error: error.message || "Failed to get delivery breakdown" },

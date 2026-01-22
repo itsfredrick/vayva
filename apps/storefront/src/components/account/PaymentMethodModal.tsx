@@ -9,7 +9,7 @@ interface PaymentMethodModalProps {
   lang: LocaleKey;
   isOpen: boolean;
   onClose: () => void;
-  onSave: (payment: any) => void;
+  onSave: (payment: unknown) => void;
 }
 
 export function PaymentMethodModal({

@@ -1,8 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Button, Icon, Input } from "@vayva/ui";
-import { Switch } from "@/components/ui/switch";
+import { Button, Icon, Input, Switch } from "@vayva/ui";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
@@ -78,7 +77,7 @@ export default function WhatsappSettingsPage() {
 
         // Simulate API call
         setTimeout(() => {
-            const responses: any = {
+            const responses: unknown = {
                 friendly: `Hey there! 🌟 I'm ${persona.name}. Thanks for reaching out! How can I help you today?`,
                 professional: `Hello. This is ${persona.name}. How may I assist you with your inquiry?`,
                 urgent: `${persona.name} here. State your request.`,

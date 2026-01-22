@@ -5,11 +5,19 @@ import { prisma } from "@vayva/db";
  * Data Quality Audit API for Ops Console.
  * Scans for orphaned records, negative totals, and stale drafts.
  */
-export async function GET(req: NextRequest) {
+export async function GET(_req: NextRequest) {
     // Note: Ops Middleware handles session verification
 
     try {
-        const results: any = {
+        interface QualityResults {
+            orphanedOrders: number;
+            negativeWallets: { storeId: string; storeName: string; balance: number }[];
+            staleDrafts: number;
+            orphanedItems: number;
+            discrepancies: unknown[];
+        }
+
+        const results: QualityResults = {
             orphanedOrders: 0,
             negativeWallets: [],
             staleDrafts: 0,
@@ -58,7 +66,7 @@ export async function GET(req: NextRequest) {
         // 4. Scan for Products without a Store (Items with null storeId if applicable)
         const orphanedItems = await prisma.product.count({
             where: {
-                storeId: null as any // Type safety may vary
+                storeId: null as unknown as string // Scan for orphans even if schema says non-nullable
             }
         });
         results.orphanedItems = orphanedItems;
@@ -69,7 +77,7 @@ export async function GET(req: NextRequest) {
             data: results
         });
 
-    } catch (error: any) {
+    } catch (error: unknown) {
         console.error("[DataQuality Job] Failed:", error);
         return NextResponse.json({
             success: false,
@@ -81,7 +89,7 @@ export async function GET(req: NextRequest) {
 /**
  * Trigger remediation for a specific issue
  */
-export async function POST(req: NextRequest) {
+export async function POST(_req: NextRequest) {
     try {
         const body = await req.json();
         const { type, action } = body;
@@ -102,7 +110,8 @@ export async function POST(req: NextRequest) {
 
         return NextResponse.json({ error: "Unsupported remediation action" }, { status: 400 });
 
-    } catch (error: any) {
-        return NextResponse.json({ error: error.message }, { status: 500 });
+    } catch (error: unknown) {
+        const err = error as Error;
+        return NextResponse.json({ error: err.message || "Internal server error" }, { status: 500 });
     }
 }

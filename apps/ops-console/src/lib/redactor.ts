@@ -1,7 +1,7 @@
 
 const SENSITIVE_PATTERNS = [
     // Bearer Tokens
-    /(Bearer\s+)[a-zA-Z0-9\._\-]{20,}/gi,
+    /(Bearer\s+)[a-zA-Z0-9._-]{20,}/gi,
     // API Keys (General)
     /(key-|api-key-|sk-)[a-zA-Z0-9]{20,}/gi,
     // Paystack Secret Keys

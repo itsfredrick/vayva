@@ -8,7 +8,7 @@ export async function GET(req: Request) {
     const status = searchParams.get("status");
 
     const kycRecords = await prisma.kycRecord.findMany({
-      where: status ? { status: status as any } : undefined,
+      where: status ? { status: status as unknown} : undefined,
       include: {
         store: {
           select: {
@@ -22,7 +22,7 @@ export async function GET(req: Request) {
       take: 100, // Limit for performance
     });
 
-    const formattedRecords = kycRecords.map((record: any) => ({
+    const formattedRecords = kycRecords.map((record: unknown) => ({
       id: record.id,
       storeId: record.storeId,
       businessName: record.store.name,

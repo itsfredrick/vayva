@@ -41,7 +41,7 @@ export const POST = withVayvaAPI(
             const product = await ProductCoreService.createProduct(storeId, payload);
 
             return NextResponse.json({ success: true, id: product.id });
-        } catch (error: any) {
+        } catch (error: unknown) {
             console.error("[RESOURCE_CREATE]", error);
             const status = error.message.includes("limit") ? 403 : 400;
             return NextResponse.json(

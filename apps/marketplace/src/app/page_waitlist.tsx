@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 import NextLink from "next/link";
-const Link = NextLink as any;
+const Link = NextLink as unknown;
 import {
   ShoppingBag as ShoppingBagIcon,
   ArrowRight as ArrowRightIcon,
@@ -12,11 +12,11 @@ import {
 } from "lucide-react";
 import { Button } from "@vayva/ui";
 
-const ShoppingBag = ShoppingBagIcon as any;
-const ArrowRight = ArrowRightIcon as any;
-const Zap = ZapIcon as any;
-const Loader2 = Loader2Icon as any;
-const CheckCircle = CheckCircleIcon as any;
+const ShoppingBag = ShoppingBagIcon as unknown;
+const ArrowRight = ArrowRightIcon as unknown;
+const Zap = ZapIcon as unknown;
+const Loader2 = Loader2Icon as unknown;
+const CheckCircle = CheckCircleIcon as unknown;
 
 export default function MarketplaceHome() {
   const [email, setEmail] = useState("");

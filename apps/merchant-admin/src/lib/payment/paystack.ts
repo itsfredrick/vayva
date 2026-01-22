@@ -2,7 +2,7 @@ interface PaystackInitializeParams {
   email: string;
   amount: number; // in kobo
   reference: string;
-  metadata?: Record<string, any>;
+  metadata?: Record<string, unknown>;
   callback_url?: string;
 }
 
@@ -27,7 +27,7 @@ interface PaystackVerifyResponse {
     customer: {
       email: string;
     };
-    metadata: Record<string, any>;
+    metadata: Record<string, unknown>;
   };
 }
 
@@ -167,7 +167,7 @@ export class PaystackService {
     };
   }
   static async getBanks(): Promise<{ name: string; code: string; active: boolean }[]> {
-    const response = await this.request<{ data: any[] }>("/bank", {
+    const response = await this.request<{ data: unknown[] }>("/bank", {
       method: "GET",
     });
     return response.data;
@@ -177,7 +177,7 @@ export class PaystackService {
     accountNumber: string,
     bankCode: string
   ): Promise<{ account_number: string; account_name: string; bank_id: number }> {
-    const response = await this.request<{ data: any }>(
+    const response = await this.request<{ data: unknown }>(
       `/bank/resolve?account_number=${accountNumber}&bank_code=${bankCode}`,
       {
         method: "GET",

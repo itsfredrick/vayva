@@ -39,7 +39,7 @@ export interface WebhookResult {
   event?: {
     providerEventId: string;
     type: string; // STATUS_UPDATE
-    data: any;
+    data: unknown;
   };
   error?: string;
 }
@@ -50,7 +50,7 @@ export interface ICarrierProvider {
   // Optional
   getJob?(providerJobId: string): Promise<JobResult>;
   verifyWebhookSignature?(
-    payload: any,
+    payload: unknown,
     signature: string,
   ): Promise<WebhookResult>;
 }

@@ -1,6 +1,7 @@
 import { prisma } from "@vayva/db";
 import { assertFeatureEnabled } from "@/lib/env-validation";
 import { YouverifyService } from "@/lib/kyc/youverify";
+import { NotificationManager } from "@vayva/shared/server";
 
 export type KycMethod = "BVN" | "NIN" | "VNIN";
 
@@ -21,7 +22,7 @@ export interface KycVerificationResult {
   providerReference?: string;
   matchScore: number;
   status: "VERIFIED" | "FAILED" | "PENDING";
-  rawResponse?: any;
+  rawResponse?: unknown;
   error?: string;
 }
 
@@ -103,12 +104,12 @@ class YouverifyProvider implements IKycProvider {
             ? "Identity not found"
             : undefined),
       };
-    } catch (error: any) {
+    } catch (error: unknown) {
       return {
         success: false,
         matchScore: 0,
         status: "FAILED",
-        error: error.message,
+        error: error instanceof Error ? error.message : "Unknown error",
       };
     }
   }
@@ -144,7 +145,7 @@ export class KycService {
         storeId,
         ninLast4: request.method === "NIN" ? request.idNumber.slice(-4) : "",
         bvnLast4: request.method === "BVN" ? request.idNumber.slice(-4) : "",
-        status: result.status as any,
+        status: result.status === "FAILED" ? "REJECTED" : result.status,
         audit: [
           {
             timestamp: new Date().toISOString(),
@@ -160,7 +161,7 @@ export class KycService {
         ],
       },
       update: {
-        status: result.status as any,
+        status: result.status === "FAILED" ? "REJECTED" : result.status,
         ninLast4:
           request.method === "NIN" ? request.idNumber.slice(-4) : undefined,
         bvnLast4:
@@ -183,7 +184,6 @@ export class KycService {
 
     // Trigger Automated Notifications
     try {
-      const { NotificationManager } = require("@vayva/shared/server");
       if (result.status === "VERIFIED") {
         await NotificationManager.trigger(storeId, "KYC_VERIFIED");
       } else if (result.status === "FAILED") {

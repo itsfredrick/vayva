@@ -36,7 +36,7 @@ export const GET = withVayvaAPI(
                 return NextResponse.json({ error: "Not found" }, { status: 404 });
             }
 
-            const metadata = (resource.metadata as Record<string, any>) || {};
+            const metadata = (resource.metadata as Record<string, unknown>) || {};
             const responseData = {
                 ...metadata,
                 id: resource.id,
@@ -79,7 +79,7 @@ export const PATCH = withVayvaAPI(
             const { name, title, description, price, ...otherFields } = body;
 
             // Merge metadata
-            const currentMetadata = (existing.metadata as Record<string, any>) || {};
+            const currentMetadata = (existing.metadata as Record<string, unknown>) || {};
             const newMetadata = { ...currentMetadata, ...otherFields };
 
             const updated = await prisma.product.update({

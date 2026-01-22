@@ -19,7 +19,7 @@ export async function GET(req: NextRequest) {
 
         const skip = (page - 1) * limit;
 
-        const where: any = {};
+        const where: unknown = {};
         if (type) where.eventType = type;
         if (userId) where.opsUserId = userId;
 

@@ -63,7 +63,7 @@ export class AIService {
         confidence: 0.85,
         suggestedActions: this.getSuggestedActions(intent),
       };
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error("AI Service Error:", error);
       return {
         message:

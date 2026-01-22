@@ -9,7 +9,7 @@ const CreateTemplateSchema = z.object({
     language: z.string().default("en"),
     category: z.string().default("UTILITY"), // MARKETING, UTILITY, AUTHENTICATION
     status: z.string().default("APPROVED"), // Mocking approval for internal templates
-    components: z.array(z.any()).optional(),
+    components: z.array(z.unknown()).optional(),
 });
 
 export async function POST(req: NextRequest) {
@@ -28,7 +28,7 @@ export async function POST(req: NextRequest) {
             return NextResponse.json({ error: "Invalid input", details: validation.error }, { status: 400 });
         }
 
-        const template = await WhatsAppAgentService.createTemplate(storeId, validation.data as any);
+        const template = await WhatsAppAgentService.createTemplate(storeId, validation.data as unknown);
         return NextResponse.json(template);
     } catch (error) {
         console.error("Create Template Error:", error);

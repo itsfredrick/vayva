@@ -17,7 +17,7 @@ const start = async () => {
     await server.listen({ port: 3019, host: "0.0.0.0" });
     console.log("Marketplace Service running on port 3019");
   } catch (err) {
-    (server.log as any).error(err);
+    (server.log as unknown).error(err);
     process.exit(1);
   }
 };

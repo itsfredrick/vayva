@@ -28,7 +28,7 @@ export const GET = withVayvaAPI(
 
       // Map DB nested JSON back to UI flat keys
       // Assuming db.categories structure: { orders: { email: boolean, push: boolean }, ... }
-      const cats = prefs.categories as any;
+      const cats = prefs.categories as unknown;
 
       const response = {
         orders_email: cats.orders?.email ?? defaultState.orders_email,

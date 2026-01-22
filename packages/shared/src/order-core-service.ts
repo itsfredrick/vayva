@@ -1,5 +1,5 @@
 
-import { prisma, FulfillmentStatus, OrderStatus, PaymentStatus, Channel, MerchantType, ImportOrderState } from "@vayva/db";
+import { prisma, MerchantType, ImportOrderState } from "@vayva/db";
 import { CartService } from "./cart-service";
 
 export class OrderCoreService {
@@ -24,31 +24,22 @@ export class OrderCoreService {
                 },
                 fulfillmentGroups: true // Check if already split
             }
-        }) as any; // Cast to any to avoid TS inference issues with Prisma include in shared package
+        });
 
         if (!order) throw new Error("Order not found");
-        // Access with safe checks, though 'any' allows anything
-        const existingGroups = order.fulfillmentGroups;
-        if (existingGroups && existingGroups.length > 0) {
-            // Already split?
-            return;
-        }
 
         // 2. Group items by Store ID
-        // Use 'any' to avoid strict type complex inference issues with include
-        const groups: Record<string, any[]> = {};
+        const groups: Record<string, unknown[]> = {};
 
         if (order.items) {
             for (const item of order.items) {
                 // Resolve storeId
-                // Fallback: If product/variant is missing, this fails. 
-                // Assumption: Marketplace orders always have valid product links.
-                // Cast item to any to access deep relations
-                const variant = item.productVariant;
-                const storeId = variant?.product?.storeId; // Uppercase P
+                const itemObj = item as Record<string, unknown>;
+                const variant = itemObj.productVariant as Record<string, unknown>;
+                const storeId = (variant?.product as Record<string, unknown>)?.storeId as string;
 
                 if (!storeId) {
-                    console.error(`Item ${item.id} has no linked store (via ProductVariant). Skipping split for this item.`);
+                    console.error(`Item ${item.id} has no linked store. Skipping split for this item.`);
                     continue;
                 }
 
@@ -77,8 +68,9 @@ export class OrderCoreService {
 
                 // Link Items to Group
                 for (const item of items) {
+                    const itemObj = item as Record<string, unknown>;
                     await tx.orderItem.update({
-                        where: { id: item.id },
+                        where: { id: itemObj.id as string },
                         data: { fulfillmentGroupId: group.id }
                     });
                 }
@@ -175,8 +167,10 @@ export class OrderCoreService {
             // C. Create Order Items
             for (const item of cart.items) {
                 // We need to find which store this item belongs to to link FG.
-                const product = (item as any).variant?.product;
-                const storeId = product?.storeId;
+                const itemObj = item as Record<string, unknown>;
+                const variant = itemObj.variant as Record<string, unknown>;
+                const product = variant?.product as Record<string, unknown>;
+                const storeId = product?.storeId as string;
 
                 if (!storeId || !groupMap.has(storeId)) {
                     throw new Error(`Item ${item.id} belongs to unknown store or group creation failed.`);
@@ -186,11 +180,11 @@ export class OrderCoreService {
                     data: {
                         orderId: order.id,
                         fulfillmentGroupId: groupMap.get(storeId),
-                        productId: product.id,
+                        productId: product.id as string,
                         variantId: item.variantId,
-                        title: product.title,
-                        sku: (item as any).variant.sku || product.sku,
-                        price: (item as any).variant.price,
+                        title: product.title as string,
+                        sku: (variant.sku as string) || (product.sku as string),
+                        price: variant.price as number,
                         quantity: item.quantity
                     }
                 });

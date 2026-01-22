@@ -57,8 +57,8 @@ export async function GET(
     let filename = "export.csv";
 
     if (job.type === "withdrawals") {
-      const filters = (job.filters as any) || {};
-      const where: any = { storeId: user.storeId };
+      const filters = (job.filters as unknown) || {};
+      const where: unknown = { storeId: user.storeId };
 
       if (filters.status && filters.status !== "ALL")
         where.status = filters.status;
@@ -79,7 +79,7 @@ export async function GET(
         "Fee (NGN)",
         "Net (NGN)",
       ];
-      const rows = withdrawals.map((w: any) => [
+      const rows = withdrawals.map((w: unknown) => [
         new Date(w.createdAt).toISOString(),
         w.referenceCode,
         w.status,
@@ -90,16 +90,16 @@ export async function GET(
 
       csvContent = [
         header.join(","),
-        ...rows.map((row: any) =>
+        ...rows.map((row: unknown) =>
           row
-            .map((field: any) => `"${String(field).replace(/"/g, '""')}"`)
+            .map((field: unknown) => `"${String(field).replace(/"/g, '""')}"`)
             .join(","),
         ),
       ].join("\n");
       filename = `withdrawals_${new Date().toISOString().split("T")[0]}.csv`;
     } else if (job.type === "orders") {
-      const filters = (job.filters as any) || {};
-      const where: any = { storeId: user.storeId };
+      const filters = (job.filters as unknown) || {};
+      const where: unknown = { storeId: user.storeId };
       // simplified filter reconstruction from job
       if (filters.status && filters.status !== "ALL")
         where.status = filters.status;
@@ -119,7 +119,7 @@ export async function GET(
         "Payment",
         "Customer",
       ];
-      const rows = orders.map((o: any) => [
+      const rows = orders.map((o: unknown) => [
         o.refCode || o.id,
         new Date(o.createdAt).toISOString(),
         o.status,
@@ -129,16 +129,16 @@ export async function GET(
       ]);
       csvContent = [
         header.join(","),
-        ...rows.map((row: any) =>
+        ...rows.map((row: unknown) =>
           row
-            .map((field: any) => `"${String(field).replace(/"/g, '""')}"`)
+            .map((field: unknown) => `"${String(field).replace(/"/g, '""')}"`)
             .join(","),
         ),
       ].join("\n");
       filename = `orders_export_${new Date().toISOString().split("T")[0]}.csv`;
     } else if (job.type === "compliance_withdrawals") {
-      const filters = (job.filters as any) || {};
-      const where: any = { storeId: user.storeId };
+      const filters = (job.filters as unknown) || {};
+      const where: unknown = { storeId: user.storeId };
 
       if (filters.dateFrom) {
         where.createdAt = {
@@ -164,7 +164,7 @@ export async function GET(
         "Net (NGN)",
         "Status",
       ];
-      const rows = withdrawals.map((w: any) => [
+      const rows = withdrawals.map((w: unknown) => [
         new Date(w.createdAt).toISOString(),
         w.referenceCode,
         (Number(w.amountKobo) / 100).toFixed(2),
@@ -175,9 +175,9 @@ export async function GET(
 
       csvContent = [
         header.join(","),
-        ...rows.map((row: any) =>
+        ...rows.map((row: unknown) =>
           row
-            .map((field: any) => `"${String(field).replace(/"/g, '""')}"`)
+            .map((field: unknown) => `"${String(field).replace(/"/g, '""')}"`)
             .join(","),
         ),
       ].join("\n");
@@ -195,8 +195,8 @@ export async function GET(
         }
       );
     } else if (job.type === "compliance_activity") {
-      const filters = (job.filters as any) || {};
-      const where: any = { storeId: user.storeId };
+      const filters = (job.filters as unknown) || {};
+      const where: unknown = { storeId: user.storeId };
 
       if (filters.dateFrom) {
         where.createdAt = {
@@ -222,8 +222,8 @@ export async function GET(
       });
 
       const header = ["Date", "Action", "Actor Role", "Reference", "Summary"];
-      const rows = events.map((e: any) => {
-        const metadata = (e.afterState as any) || {};
+      const rows = events.map((e: unknown) => {
+        const metadata = (e.afterState as unknown) || {};
         return [
           new Date(e.createdAt).toISOString(),
           e.action,
@@ -235,9 +235,9 @@ export async function GET(
 
       csvContent = [
         header.join(","),
-        ...rows.map((row: any) =>
+        ...rows.map((row: unknown) =>
           row
-            .map((field: any) => `"${String(field).replace(/"/g, '""')}"`)
+            .map((field: unknown) => `"${String(field).replace(/"/g, '""')}"`)
             .join(","),
         ),
       ].join("\n");

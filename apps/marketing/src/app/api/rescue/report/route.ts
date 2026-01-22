@@ -23,7 +23,7 @@ export async function POST(req: NextRequest) {
             message: "Rescue initiated"
         });
 
-    } catch (error: any) {
+    } catch (error: unknown) {
         console.error("Rescue Report API Error:", error);
         return NextResponse.json({ error: "Failed to report" }, { status: 500 });
     }

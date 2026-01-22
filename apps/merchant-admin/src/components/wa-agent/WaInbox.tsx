@@ -132,7 +132,7 @@ export const ChatWindow = ({ thread }: { thread?: WaThread | null }) => {
               timestamp: thread.lastMessageTime,
             },
           ]
-        ).map((msg: any) => (
+        ).map((msg: unknown) => (
           <div
             key={msg.id}
             className={cn(

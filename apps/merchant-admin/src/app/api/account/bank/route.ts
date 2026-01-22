@@ -27,7 +27,7 @@ export async function GET() {
     }));
 
     return NextResponse.json({ accounts: maskedAccounts });
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error("Bank fetch error:", error);
     return NextResponse.json(
       { error: "Failed to fetch bank accounts" },
@@ -73,7 +73,7 @@ export async function POST(request: Request) {
     }
 
     // Create or update beneficiary
-    const beneficiary = await prisma.$transaction(async (tx: any) => {
+    const beneficiary = await prisma.$transaction(async (tx: unknown) => {
       // If setting as default, unset others first
       if (isDefault) {
         await tx.bankBeneficiary.updateMany({
@@ -105,7 +105,7 @@ export async function POST(request: Request) {
     );
 
     return NextResponse.json({ success: true, beneficiary });
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error("Bank update error:", error);
     return NextResponse.json(
       { error: error.message || "Failed to update bank account" },

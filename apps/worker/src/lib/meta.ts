@@ -6,7 +6,7 @@ export interface SendMessageOptions {
     body?: string; // For text messages
     templateName?: string; // For templates
     language?: string;
-    components?: any[];
+    components?: unknown[];
 }
 
 export class MetaProvider {
@@ -28,7 +28,7 @@ export class MetaProvider {
 
         const url = `https://graph.facebook.com/${this.version}/${this.phoneNumberId}/messages`;
 
-        let payload: any = {
+        let payload: unknown = {
             messaging_product: "whatsapp",
             recipient_type: "individual",
             to: options.recipient,
@@ -55,7 +55,7 @@ export class MetaProvider {
             return {
                 providerMessageId: response.data.messages[0].id,
             };
-        } catch (error: any) {
+        } catch (error: unknown) {
             console.error(
                 "[MetaProvider] Send failed:",
                 error.response?.data || error.message,

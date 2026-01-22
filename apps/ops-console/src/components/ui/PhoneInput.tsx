@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React from "react";
 import { cn } from "@/lib/utils";
 
 interface PhoneInputProps extends Omit<
@@ -23,7 +23,6 @@ export const PhoneInput: React.FC<PhoneInputProps> = ({
   className,
   ...props
 }) => {
-  const [focused, setFocused] = useState(false);
 
   const formatPhoneNumber = (input: string) => {
     // Remove all non-digits
@@ -62,8 +61,6 @@ export const PhoneInput: React.FC<PhoneInputProps> = ({
           type="tel"
           value={displayValue}
           onChange={handleChange}
-          onFocus={() => setFocused(true)}
-          onBlur={() => setFocused(false)}
           placeholder="+234 8012345678"
           className={cn(
             "flex h-11 w-full rounded-lg border border-border bg-background px-4 py-2.5 text-sm text-text-primary placeholder:text-text-tertiary transition-all",

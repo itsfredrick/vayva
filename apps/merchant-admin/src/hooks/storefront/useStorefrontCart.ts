@@ -53,7 +53,7 @@ export function useStorefrontCart(storeSlug: string) {
     }
   }, [storeSlug]);
 
-  const addToCart = (product: any, quantity = 1) => {
+  const addToCart = (product: unknown, quantity = 1) => {
     setCart((prev) => {
       const existing = prev.find((item) => item.id === product.id);
       if (existing) {

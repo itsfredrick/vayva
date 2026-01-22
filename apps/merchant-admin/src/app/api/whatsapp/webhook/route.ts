@@ -93,7 +93,7 @@ export async function POST(req: NextRequest) {
                 phone: "MERCHANT_PHONE",
                 storeName: "Store",
                 storeId: storeId
-            } as any); // Using lead_hot as generic alert for now, ideally new event "handoff_alert"
+            } as unknown); // Using lead_hot as generic alert for now, ideally new event "handoff_alert"
 
             return NextResponse.json({ status: "handed_off" });
         }

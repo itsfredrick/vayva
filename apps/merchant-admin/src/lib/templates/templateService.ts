@@ -18,16 +18,16 @@ export class TemplateService {
     });
 
     // 3. Transactional Update
-    await prisma.$transaction(async (tx: any) => {
+    await prisma.$transaction(async (tx: unknown) => {
       await tx.storeTemplateSelection.upsert({
         where: { storeId },
         update: {
           templateId,
           version: template.version,
-          config: (template.configSchema as any) || {}, // Default config
+          config: (template.configSchema as unknown) || {}, // Default config
           previousTemplateId: current?.templateId,
           previousVersion: current?.version,
-          previousConfig: current?.config as any,
+          previousConfig: current?.config as unknown,
           appliedAt: new Date(),
           appliedBy: userId,
         },
@@ -35,7 +35,7 @@ export class TemplateService {
           storeId,
           templateId,
           version: template.version,
-          config: (template.configSchema as any) || {},
+          config: (template.configSchema as unknown) || {},
           appliedAt: new Date(),
           appliedBy: userId,
         },
@@ -50,7 +50,7 @@ export class TemplateService {
           actorLabel: "Merchant User",
           storeId: storeId,
           correlationId: crypto.randomUUID(),
-          afterState: { templateId, version: template.version } as any,
+          afterState: { templateId, version: template.version } as unknown,
         },
       });
     });
@@ -68,20 +68,20 @@ export class TemplateService {
     }
 
     // Apply Previous
-    await prisma.$transaction(async (tx: any) => {
+    await prisma.$transaction(async (tx: unknown) => {
       await tx.storeTemplateSelection.update({
         where: { storeId },
         data: {
           templateId: current.previousTemplateId!,
           version: current.previousVersion!,
-          config: (current.previousConfig as any)!,
+          config: (current.previousConfig as unknown)!,
           // Shift current to previous? Or just clear previous?
           // Let's just swap them to allow toggle back and forth potentially,
           // or usually rollback clears the "Redo" stack.
           // For simplicity: Set previous to NULL to prevent infinite rollback loop or simple toggle.
           previousTemplateId: current.templateId,
           previousVersion: current.version,
-          previousConfig: current.config as any,
+          previousConfig: current.config as unknown,
           appliedAt: new Date(),
           appliedBy: userId,
         },
@@ -98,7 +98,7 @@ export class TemplateService {
           afterState: {
             from: current.templateId,
             to: current.previousTemplateId,
-          } as any,
+          } as unknown,
         },
       });
     });

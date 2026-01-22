@@ -36,14 +36,14 @@ export const POST = withVayvaAPI(
         },
         ctx: {
           actorId: user.id,
-          actorType: "user" as any,
+          actorType: "user" as unknown,
           actorLabel: approval.requestedByLabel || "Unknown User",
           correlationId,
         },
       });
 
       return NextResponse.json({ ok: true, id: approval.id });
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error("Approval Request Error", error);
       return NextResponse.json({ error: error.message || "Internal Error" }, { status: 500 });
     }
@@ -58,7 +58,7 @@ export const GET = withVayvaAPI(
       const status = searchParams.get("status");
       const limit = parseInt(searchParams.get("limit") || "20");
 
-      const where: any = { merchantId: storeId };
+      const where: unknown = { merchantId: storeId };
       if (status && status !== "all") where.status = status;
 
       const items = await prisma.approval.findMany({

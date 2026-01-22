@@ -122,13 +122,13 @@ export class TemplateSyncService {
 
             result.imported++;
           }
-        } catch (err: any) {
+        } catch (err: unknown) {
           console.error(`Failed to sync pack ${pack.name}:`, err);
           result.rejected++;
           result.errors.push(`${pack.name}: ${err.message}`);
         }
       }
-    } catch (error: any) {
+    } catch (error: unknown) {
       result.errors.push(`Fatal: ${error.message}`);
     }
 
@@ -220,7 +220,7 @@ export class TemplateSyncService {
         });
         result.imported++;
       }
-    } catch (e: any) {
+    } catch (e: unknown) {
       result.errors.push(e.message);
     }
 

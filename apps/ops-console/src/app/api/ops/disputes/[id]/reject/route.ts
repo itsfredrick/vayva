@@ -15,7 +15,7 @@ export async function POST(
         }
         try {
             OpsAuthService.requireRole(sessionData.user, "OPS_ADMIN");
-        } catch (e: any) {
+        } catch (e: unknown) {
             return NextResponse.json({ error: e.message }, { status: 403 });
         }
         const { user } = sessionData;
@@ -72,7 +72,7 @@ export async function POST(
             dispute: updatedDispute,
             message: "Dispute rejected successfully",
         });
-    } catch (error: any) {
+    } catch (error: unknown) {
         logger.error("Reject dispute error", error);
         return NextResponse.json(
             { error: "Failed to reject dispute" },

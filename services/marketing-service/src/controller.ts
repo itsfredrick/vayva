@@ -2,7 +2,7 @@ import { prisma, AutomationAction, AutomationTrigger } from "@vayva/db";
 
 export const MarketingController = {
   // --- Discounts ---
-  createDiscountRule: async (storeId: string, data: any) => {
+  createDiscountRule: async (storeId: string, data: unknown) => {
     return await prisma.discountRule.create({
       data: {
         storeId,
@@ -32,7 +32,7 @@ export const MarketingController = {
   },
 
   // --- Coupons ---
-  createCoupon: async (storeId: string, data: any) => {
+  createCoupon: async (storeId: string, data: unknown) => {
     return await prisma.coupon.create({
       data: {
         storeId,
@@ -51,7 +51,7 @@ export const MarketingController = {
     });
   },
 
-  createSegment: async (storeId: string, data: any) => {
+  createSegment: async (storeId: string, data: unknown) => {
     return await prisma.segment.create({
       data: {
         storeId,
@@ -69,7 +69,7 @@ export const MarketingController = {
     });
   },
 
-  createCampaign: async (storeId: string, data: any) => {
+  createCampaign: async (storeId: string, data: unknown) => {
     return await prisma.campaign.create({
       data: {
         storeId,
@@ -86,7 +86,7 @@ export const MarketingController = {
   },
 
   // --- Automations ---
-  upsertAutomationRule: async (storeId: string, key: string, data: any) => {
+  upsertAutomationRule: async (storeId: string, key: string, data: unknown) => {
     const triggerType = data.triggerType as AutomationTrigger | undefined;
     const actionType = data.actionType as AutomationAction | undefined;
 

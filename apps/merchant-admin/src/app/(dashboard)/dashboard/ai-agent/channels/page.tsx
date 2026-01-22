@@ -2,9 +2,8 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Button } from "@vayva/ui";
+import { Button, Switch } from "@vayva/ui";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { toast } from "sonner";
@@ -85,7 +84,7 @@ export default function AgentChannelsPage() {
         }
     };
 
-    const updateChannel = (channel: keyof AgentChannels, key: keyof ChannelConfig, value: any) => {
+    const updateChannel = (channel: keyof AgentChannels, key: keyof ChannelConfig, value: unknown) => {
         setChannels(prev => ({
             ...prev,
             [channel]: {

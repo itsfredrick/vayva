@@ -27,7 +27,7 @@ export async function POST(req: NextRequest) {
 
         // --- Runbook Logic Switch ---
         switch (runbookId) {
-            case "webhook-recovery":
+            case "webhook-recovery": {
                 // Logic: Find failed webhooks from specific provider in last 24h & retry them
                 // For MVP, we will just count them and pretend to retry or retry one
                 const failedHooks = await prisma.webhookEvent.findMany({
@@ -43,7 +43,7 @@ export async function POST(req: NextRequest) {
 
                 // Simulate processing
                 let processed = 0;
-                for (const hook of failedHooks) {
+                for (const _hook of failedHooks) {
                     // In real world: verify signature, then re-process
                     // await processWebhook(hook);
                     processed++;
@@ -51,6 +51,7 @@ export async function POST(req: NextRequest) {
                 log(`Successfully replayed ${processed} webhooks.`);
                 result = { processed, status: "completed" };
                 break;
+            }
 
             case "job-stuck-mitigation":
                 log("Checking BullMQ queues status...");
@@ -61,7 +62,7 @@ export async function POST(req: NextRequest) {
                 result = { status: "cleared_stalled_jobs", count: 2 };
                 break;
 
-            case "auth-sync-repair":
+            case "auth-sync-repair": {
                 log("Scanning active sessions...");
                 // Mock session check
                 const activeSessions = await prisma.opsSession.count({
@@ -70,6 +71,7 @@ export async function POST(req: NextRequest) {
                 log(`Verified ${activeSessions} active sessions consistency.`);
                 result = { activeSessions, status: "verified" };
                 break;
+            }
 
             default:
                 throw new Error("Unknown runbook ID");
@@ -90,10 +92,10 @@ export async function POST(req: NextRequest) {
             logs
         });
 
-    } catch (error: any) {
+    } catch (error: unknown) {
         return NextResponse.json({
             success: false,
-            error: error.message || "Runbook execution failed"
+            error: (error as Error).message || "Runbook execution failed"
         }, { status: 500 });
     }
 }

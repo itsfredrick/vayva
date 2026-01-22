@@ -13,7 +13,7 @@ export async function POST(
 
         try {
             OpsAuthService.requireRole(user, "OPS_ADMIN");
-        } catch (e: any) {
+        } catch (e: unknown) {
             return NextResponse.json({ error: e.message }, { status: 403 });
         }
 
@@ -60,7 +60,7 @@ export async function POST(
             dispute: updatedDispute,
             message: "Dispute escalated for senior review",
         });
-    } catch (error: any) {
+    } catch (error: unknown) {
         logger.error("Escalate dispute error", error);
         return NextResponse.json(
             { error: "Failed to escalate dispute" },

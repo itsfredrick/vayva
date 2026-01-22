@@ -11,7 +11,7 @@ export const GET = withVayvaAPI(
             const statusFilter = searchParams.get("status");
             const isIssue = searchParams.get("issue") === "true";
 
-            const where: any = { storeId };
+            const where: unknown = { storeId };
 
             if (isIssue) {
                 where.status = { in: ["FAILED", "EXCEPTION", "RETURNED", "RETURN_REQUESTED"] };
@@ -30,7 +30,7 @@ export const GET = withVayvaAPI(
                 take: 50
             });
 
-            const formatted = shipments.map((shipment: any) => ({
+            const formatted = shipments.map((shipment: unknown) => ({
                 id: shipment.id,
                 orderId: shipment.orderId,
                 orderNumber: shipment.order?.orderNumber || "Unknown",

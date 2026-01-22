@@ -4,6 +4,7 @@ import { OpsSidebar } from "./OpsSidebar";
 import { CommandMenu } from "./CommandMenu";
 import { Search, Bell } from "lucide-react";
 import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 import { Button } from "@vayva/ui";
 
 interface OpsUser {
@@ -13,19 +14,23 @@ interface OpsUser {
 }
 
 export function OpsShell({ children }: { children: React.ReactNode }) {
-  const [isCollapsed, setIsCollapsed] = useState(false);
-  const [density, setDensity] = useState<"relaxed" | "compact">("relaxed");
+  const router = useRouter();
+  const [isCollapsed, setIsCollapsed] = useState(() => {
+    if (typeof window !== "undefined") {
+      return localStorage.getItem("ops-sidebar-collapsed") === "true";
+    }
+    return false;
+  });
+  const [density, setDensity] = useState<"relaxed" | "compact">(() => {
+    if (typeof window !== "undefined") {
+      return (localStorage.getItem("ops-table-density") as "relaxed" | "compact") || "relaxed";
+    }
+    return "relaxed";
+  });
   const [user, setUser] = useState<OpsUser | null>(null);
 
-  // Load from localStorage
+  // Fetch current user identity in background
   useEffect(() => {
-    const saved = localStorage.getItem("ops-sidebar-collapsed");
-    if (saved === "true") setIsCollapsed(true);
-
-    const savedDensity = localStorage.getItem("ops-table-density");
-    if (savedDensity === "compact") setDensity("compact");
-
-    // Fetch current user identity
     fetch("/api/ops/auth/me")
       .then((res) => res.json())
       .then((data) => {
@@ -76,11 +81,11 @@ export function OpsShell({ children }: { children: React.ReactNode }) {
 
               // Simple heuristic routing
               if (q.startsWith("ord_") || q.startsWith("#") || !isNaN(Number(q))) {
-                window.location.href = `/ops/orders?q=${encodeURIComponent(q)}`;
+                router.push(`/ops/orders?q=${encodeURIComponent(q)}`);
               } else if (q.includes("trk_") || q.startsWith("KWIK")) {
-                window.location.href = `/ops/deliveries?q=${encodeURIComponent(q)}`;
+                router.push(`/ops/deliveries?q=${encodeURIComponent(q)}`);
               } else {
-                window.location.href = `/ops/merchants?q=${encodeURIComponent(q)}`;
+                router.push(`/ops/merchants?q=${encodeURIComponent(q)}`);
               }
             }}
           >

@@ -100,7 +100,7 @@ export default function MarketplacePage() {
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                     {loadingTemplates && <p className="text-gray-400 p-8">Loading templates...</p>}
                     {!loadingTemplates && templates?.length === 0 && <p className="text-gray-400 p-8">No templates found.</p>}
-                    {templates?.map((t: any) => (
+                    {templates?.map((t: unknown) => (
                         <div key={t.id} className="bg-white border border-gray-200 rounded-xl p-5 shadow-sm space-y-4">
                             <div className="flex justify-between items-start">
                                 <h3 className="font-bold text-lg text-gray-900">{t.name}</h3>
@@ -166,7 +166,7 @@ export default function MarketplacePage() {
                             ) : !apps?.length ? (
                                 <tr><td colSpan={5} className="p-12 text-center text-gray-400">No apps registered in AppRegistry.</td></tr>
                             ) : (
-                                apps.map((app: any) => (
+                                apps.map((app: unknown) => (
                                     <tr key={app.id} className="hover:bg-gray-50">
                                         <td className="px-6 py-4 font-mono text-xs font-bold text-indigo-600">{app.extensionId}</td>
                                         <td className="px-6 py-4 text-gray-900">{app.developerId}</td>

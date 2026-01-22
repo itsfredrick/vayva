@@ -18,11 +18,11 @@ type Props = {
   templateName: string;
   slug: string;
 
-  LayoutComponent?: React.ComponentType<any> | null;
+  LayoutComponent?: React.ComponentType<unknown> | null;
 
   fallbackDesktopImage: string;
   fallbackMobileImage: string;
-  storeData?: any;
+  storeData?: unknown;
 };
 
 class PreviewErrorBoundary extends React.Component<
@@ -145,7 +145,7 @@ export function LivePreviewClient({
       <div>
         <div className="mx-auto max-w-6xl px-4 pt-6">
           <div className="flex flex-wrap gap-2">
-            {demo.categories.map((c: any) => (
+            {demo.categories.map((c: unknown) => (
               <Button
                 key={c}
                 variant="ghost"

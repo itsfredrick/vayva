@@ -1,6 +1,7 @@
 export * from "./zod";
 export * from "./constants";
 export * from "./types";
+export * from "./api/types";
 export * from "./queues";
 // Redis moved to @vayva/redis package (server-only)
 export { NOTIFICATION_REGISTRY } from "./notifications/registry";

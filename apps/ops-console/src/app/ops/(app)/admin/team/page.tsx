@@ -177,7 +177,7 @@ export default function TeamPage() {
                         ) : !team?.length ? (
                             <tr><td colSpan={4} className="p-12 text-center text-gray-400">No team members found.</td></tr>
                         ) : (
-                            team.map((u: any) => (
+                            team.map((u: unknown) => (
                                 <tr key={u.id} className="hover:bg-gray-50">
                                     <td className="px-6 py-4">
                                         <div className="font-medium text-gray-900">{u.name}</div>

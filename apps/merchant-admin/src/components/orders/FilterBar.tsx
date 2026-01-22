@@ -3,7 +3,7 @@ import { Search, Filter, CreditCard, RefreshCw, Calendar } from "lucide-react";
 import { Button, Icon } from "@vayva/ui";
 
 interface FilterBarProps {
-  onFilterChange: (filters: any) => void;
+  onFilterChange: (filters: unknown) => void;
   onSearch: (query: string) => void;
   onRefresh: () => void;
 }

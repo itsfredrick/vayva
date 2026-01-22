@@ -120,7 +120,7 @@ export function ViewingRequestCard({ request, onUpdate }: ViewingRequestCardProp
     );
 }
 
-function ClockIcon(props: any) {
+function ClockIcon(props: unknown) {
     return (
         <svg
             {...props}

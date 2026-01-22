@@ -8,13 +8,13 @@ export const createReturnHandler = async (
       merchantId: string;
       orderId: string;
       customerId?: string;
-      reasonCode: any;
+      reasonCode: unknown;
       reasonText?: string;
-      resolutionType: any;
-      items: any;
+      resolutionType: unknown;
+      items: unknown;
       logistics: {
-        method: any;
-        pickupAddress?: any;
+        method: unknown;
+        pickupAddress?: unknown;
         dropoffInstructions?: string;
       };
     };
@@ -25,7 +25,7 @@ export const createReturnHandler = async (
     const returnReq = await returnService.createReturnRequest(request.body);
     return reply.code(201).send(returnReq);
   } catch (error) {
-    (request.log as any).error(error);
+    (request.log as unknown).error(error);
     return reply.code(500).send({ error: "Failed to create return request" });
   }
 };
@@ -33,7 +33,7 @@ export const createReturnHandler = async (
 export const updateReturnStatusHandler = async (
   request: FastifyRequest<{
     Params: { id: string };
-    Body: { status: any };
+    Body: { status: unknown };
   }>,
   reply: FastifyReply,
 ) => {
@@ -44,7 +44,7 @@ export const updateReturnStatusHandler = async (
     );
     return reply.send(updated);
   } catch (error) {
-    (request.log as any).error(error);
+    (request.log as unknown).error(error);
     return reply.code(500).send({ error: "Failed to update return status" });
   }
 };
@@ -64,7 +64,7 @@ export const listReturnsHandler = async (
     );
     return reply.send(returns);
   } catch (error) {
-    (request.log as any).error(error);
+    (request.log as unknown).error(error);
     return reply.code(500).send({ error: "Failed to list returns" });
   }
 };

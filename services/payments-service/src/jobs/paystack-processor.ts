@@ -11,7 +11,7 @@ export const processPaystackEvent = async (job: Job) => {
     }
 };
 
-async function handleChargeSuccess(data: any, metadata: any) {
+async function handleChargeSuccess(data: unknown, metadata: unknown) {
     const reference = data.reference;
     const existingCharge = await prisma.charge.findFirst({
         where: {

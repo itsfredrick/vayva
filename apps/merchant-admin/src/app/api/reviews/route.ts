@@ -14,7 +14,7 @@ export const GET = withVayvaAPI(
 
             // Fetch basic product info manually since relation might not be established in schema
             const productIds = reviews
-                .map((r: any) => r.productId)
+                .map((r: unknown) => r.productId)
                 .filter((id: string | null): id is string => id !== null);
 
             const products = await prisma.product.findMany({
@@ -22,9 +22,9 @@ export const GET = withVayvaAPI(
                 select: { id: true, title: true, handle: true },
             });
 
-            const productMap = new Map(products.map((p: any) => [p.id, p]));
+            const productMap = new Map(products.map((p: unknown) => [p.id, p]));
 
-            const formatted = reviews.map((review: any) => ({
+            const formatted = reviews.map((review: unknown) => ({
                 id: review.id,
                 rating: review.rating,
                 title: review.title,

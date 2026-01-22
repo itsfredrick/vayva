@@ -27,7 +27,7 @@ export async function GET(req: Request) {
                     lte: endOfWindow
                 },
                 store: {
-                    plan: "FREE" as any
+                    plan: "FREE" as unknown
                 }
             },
             include: {
@@ -87,7 +87,7 @@ export async function GET(req: Request) {
             results
         });
 
-    } catch (error: any) {
+    } catch (error: unknown) {
         console.error("Trial reminder job error:", error);
         return NextResponse.json({ error: error.message }, { status: 500 });
     }

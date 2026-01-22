@@ -8,7 +8,7 @@ import { articleSchema } from "./article";
 import { faqSchema } from "./faq";
 import { webPageSchema } from "./webpage";
 
-export function buildJsonLdFor(path: string, ctx?: Record<string, any>) {
+export function buildJsonLdFor(path: string, ctx?: Record<string, unknown>) {
   const pt = pageTypeFor(path);
   switch (pt) {
     case "home":

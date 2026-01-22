@@ -19,7 +19,7 @@ export const GET = withVayvaAPI(
 
       const where: {
         storeId: string;
-        OR?: Array<Record<string, any>>;
+        OR?: Array<Record<string, unknown>>;
       } = { storeId };
 
       if (search) {

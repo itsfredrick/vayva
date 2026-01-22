@@ -32,7 +32,7 @@ export async function POST(req: NextRequest) {
       data: {
         storeId,
         requestedBy: userId,
-        scopes: scopes as any,
+        scopes: scopes as unknown,
         status: "PENDING",
         format: format || "CSV",
       },
@@ -54,7 +54,7 @@ export async function POST(req: NextRequest) {
       jobId: exportRequest.id,
       message: `Export for ${type} has been queued. You will be notified when it is ready for download.`,
     });
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error("Audit Export Error:", error);
     return NextResponse.json(
       { error: "Failed to initiate export" },

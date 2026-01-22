@@ -27,7 +27,7 @@ export async function POST(request: Request) {
     if (!status) return NextResponse.json({ error: "Invalid status" }, { status: 400 });
 
     let successCount = 0;
-    const errors: any[] = [];
+    const errors: unknown[] = [];
 
     // Process each order individually to ensure state rules & notifications trigger
     await Promise.all(
@@ -35,7 +35,7 @@ export async function POST(request: Request) {
         try {
           await OrderStateService.transition(id, status, user.id, user.storeId);
           successCount++;
-        } catch (error: any) {
+        } catch (error: unknown) {
           console.error(`Failed to update order ${id}`, error);
           errors.push({ id, error: error.message });
         }

@@ -49,7 +49,7 @@ function LoginContent() {
 
       router.push(destination);
       router.refresh(); // Refresh to update server components/middleware state
-    } catch (err: any) {
+    } catch (err: unknown) {
       setError(err.message);
       setLoading(false);
     }

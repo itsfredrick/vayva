@@ -64,7 +64,7 @@ function MetricCard({
     trend,
     trendUp,
     color = "bg-white"
-}: any) {
+}: unknown) {
     return (
         <div className={`${color} p-6 rounded-2xl border border-gray-100 shadow-sm`}>
             <div className="flex items-start justify-between mb-4">
@@ -158,7 +158,7 @@ export default function OpsDashboardPage() {
 
                     <div className="space-y-6">
                         {data?.recentActivity?.length > 0 ? (
-                            data.recentActivity.map((activity: any, i: number) => (
+                            data.recentActivity.map((activity: unknown, i: number) => (
                                 <div key={i} className="flex gap-4 items-start">
                                     <div className="h-2 w-2 mt-2 rounded-full bg-indigo-400 shrink-0"></div>
                                     <div>

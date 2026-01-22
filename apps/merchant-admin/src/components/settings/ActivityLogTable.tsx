@@ -27,8 +27,8 @@ interface LogEntry {
     targetType: string;
     targetId: string;
     reason: string | null;
-    before: any;
-    after: any;
+    before: unknown;
+    after: unknown;
 }
 
 interface ActivityLogTableProps {

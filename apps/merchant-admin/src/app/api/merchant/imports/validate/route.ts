@@ -65,7 +65,7 @@ export async function POST(req: NextRequest) {
       const result = validateRow(row);
       if (result.valid) {
         valid++;
-        if (preview.length < 5) preview.push(result.row as any);
+        if (preview.length < 5) preview.push(result.row as unknown);
       } else {
         invalid++;
         if (errors.length < 10)
@@ -80,12 +80,12 @@ export async function POST(req: NextRequest) {
         validRows: valid,
         invalidRows: invalid,
         totalRows: lines.length - 1,
-        summary: { preview, errors } as any,
+        summary: { preview, errors } as unknown,
       },
     });
 
     return NextResponse.json(updated);
-  } catch (e: any) {
+  } catch (e: unknown) {
     await prisma.importJob.update({
       where: { id: jobId },
       data: { status: "failed", summary: { error: e.message } },

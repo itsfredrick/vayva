@@ -55,7 +55,7 @@ export interface TemplateDefinition {
   };
   routes: string[];
   layoutComponent: string; // The import path key or component name
-  componentProps?: Record<string, any>; // Optional props to pass to the component
+  componentProps?: Record<string, unknown>; // Optional props to pass to the component
   onboardingProfile?: OnboardingProfile;
 }
 
@@ -999,13 +999,13 @@ export type NormalizedTemplate = {
   status: "active" | "inactive" | "deprecated" | string;
 
   layoutComponent?: string | null;
-  componentProps?: Record<string, any>; // Pass through props
-  registry: any;
+  componentProps?: Record<string, unknown>; // Pass through props
+  registry: unknown;
 };
 
 export function getNormalizedTemplates(): NormalizedTemplate[] {
   return Object.values(TEMPLATE_REGISTRY)
-    .map((t: any) => {
+    .map((t: unknown) => {
       const slug = t.slug || t.templateId;
 
       // Normalize desktop image (fallback used if null)
@@ -1061,61 +1061,61 @@ export interface CategoryConfig {
 
 export const TEMPLATE_CATEGORIES: CategoryConfig[] = [
   {
-    slug: TemplateCategory.RETAIL as any,
+    slug: TemplateCategory.RETAIL as unknown,
     displayName: "Retail",
     recommendedTemplates: ["vayva-standard", "vayva-aa-fashion"],
     isActive: true,
   },
   {
-    slug: TemplateCategory.SERVICE as any,
+    slug: TemplateCategory.SERVICE as unknown,
     displayName: "Services & Appointments",
     recommendedTemplates: ["vayva-bookly-pro"],
     isActive: true,
   },
   {
-    slug: TemplateCategory.FOOD as any,
+    slug: TemplateCategory.FOOD as unknown,
     displayName: "Food & Dining",
     recommendedTemplates: ["vayva-chopnow", "slice-life-pizza"],
     isActive: true,
   },
   {
-    slug: TemplateCategory.DIGITAL as any,
+    slug: TemplateCategory.DIGITAL as unknown,
     displayName: "Digital Products",
     recommendedTemplates: ["vayva-file-vault"],
     isActive: true,
   },
   {
-    slug: TemplateCategory.EVENTS as any,
+    slug: TemplateCategory.EVENTS as unknown,
     displayName: "Events & Ticketing",
     recommendedTemplates: ["vayva-ticketly"],
     isActive: true,
   },
   {
-    slug: TemplateCategory.EDUCATION as any,
+    slug: TemplateCategory.EDUCATION as unknown,
     displayName: "Education & Courses",
     recommendedTemplates: ["vayva-eduflow"],
     isActive: true,
   },
   {
-    slug: TemplateCategory.B2B as any,
+    slug: TemplateCategory.B2B as unknown,
     displayName: "Wholesale B2B",
     recommendedTemplates: ["vayva-bulktrade"],
     isActive: true,
   },
   {
-    slug: TemplateCategory.MARKETPLACE as any,
+    slug: TemplateCategory.MARKETPLACE as unknown,
     displayName: "Marketplace",
     recommendedTemplates: ["vayva-markethub"],
     isActive: true,
   },
   {
-    slug: TemplateCategory.NONPROFIT as any,
+    slug: TemplateCategory.NONPROFIT as unknown,
     displayName: "Donations & Fundraising",
     recommendedTemplates: ["vayva-giveflow"],
     isActive: true,
   },
   {
-    slug: TemplateCategory.REAL_ESTATE as any,
+    slug: TemplateCategory.REAL_ESTATE as unknown,
     displayName: "Real Estate",
     recommendedTemplates: ["vayva-homelist"],
     isActive: true,

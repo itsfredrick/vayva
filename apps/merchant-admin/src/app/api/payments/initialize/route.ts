@@ -50,7 +50,7 @@ export async function POST(request: Request) {
 
 
     return NextResponse.json(initResponse);
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error("Payment Init Error:", error);
     return NextResponse.json({ error: error.message }, { status: 500 });
   }

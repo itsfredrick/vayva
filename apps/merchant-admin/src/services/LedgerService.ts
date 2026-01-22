@@ -10,7 +10,7 @@ interface TransactionRequest {
   referenceId: string;
   referenceType: "order" | "payout" | "refund" | "adjustment";
   description?: string;
-  metadata?: Record<string, any>;
+  metadata?: Record<string, unknown>;
 }
 
 export class LedgerService {
@@ -19,7 +19,7 @@ export class LedgerService {
    * Guaranteed atomic update of LedgerEntries and Wallet Balance.
    */
   static async recordTransaction(req: TransactionRequest) {
-    return await prisma.$transaction(async (tx: any) => {
+    return await prisma.$transaction(async (tx: unknown) => {
       // 1. Determine accounts and direction based on transaction type
       const entries = this.determineEntries(req);
 

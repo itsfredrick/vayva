@@ -11,7 +11,7 @@ const ManifestSchema = z.object({
   previewImageUrl: z.string().url(),
   tags: z.array(z.string()),
   supportedPages: z.record(z.string(), z.boolean()),
-  configSchema: z.record(z.string(), z.any()).optional(),
+  configSchema: z.record(z.string(), z.unknown()).optional(),
 });
 
 // Test Remote Sources (In real life, these would be fetch calls to raw.githubusercontent.com)
@@ -65,8 +65,8 @@ export class TemplateSyncService {
             version: manifest.version,
             previewImageUrl: manifest.previewImageUrl,
             tags: manifest.tags,
-            supportedPages: manifest.supportedPages as any,
-            configSchema: (manifest.configSchema as any) || {},
+            supportedPages: manifest.supportedPages as unknown,
+            configSchema: (manifest.configSchema as unknown) || {},
             source: "oss_sync",
             updatedAt: new Date(),
           },
@@ -78,13 +78,13 @@ export class TemplateSyncService {
             author: manifest.author,
             previewImageUrl: manifest.previewImageUrl,
             tags: manifest.tags,
-            supportedPages: manifest.supportedPages as any,
-            configSchema: (manifest.configSchema as any) || {},
+            supportedPages: manifest.supportedPages as unknown,
+            configSchema: (manifest.configSchema as unknown) || {},
             source: "oss_sync",
           },
         });
         synced++;
-      } catch (e: any) {
+      } catch (e: unknown) {
         console.error(`Failed to sync template ${source.id}`, e);
         errors++;
       }

@@ -19,18 +19,18 @@ export const POST = withVayvaAPI(
                         name: data.title,
                         description: data.description,
                         price: data.price,
-                        type: "ACCOMMODATION" as any, // Or SERVICES depending on enum
+                        type: "ACCOMMODATION" as unknown, // Or SERVICES depending on enum
                         status: "ACTIVE",
                         currency: "NGN", // Defaulting
                         images: data.images || [],
-                    } as any
+                    } as unknown
                 });
 
                 // 2. Create Accommodation Detail
                 await tx.accommodationProduct.create({
                     data: {
                         productId: product.id,
-                        type: (data.type || "ROOM") as any,
+                        type: (data.type || "ROOM") as unknown,
                         maxGuests: Number(data.maxGuests) || 1,
                         bedCount: Number(data.bedCount) || 1,
                         bathrooms: Number(data.bathrooms) || 1,
@@ -43,7 +43,7 @@ export const POST = withVayvaAPI(
             });
 
             return NextResponse.json(result);
-        } catch (error: any) {
+        } catch (error: unknown) {
             console.error("Property Create Error:", error);
             return NextResponse.json({ error: error.message }, { status: 400 });
         }

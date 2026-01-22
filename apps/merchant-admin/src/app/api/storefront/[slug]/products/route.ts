@@ -26,7 +26,7 @@ export async function GET(
     }
 
     // Build the query
-    const where: any = {
+    const where: unknown = {
       storeId: store.id,
       status: "ACTIVE",
     };
@@ -68,7 +68,7 @@ export async function GET(
     });
 
     // Transform formatting to match what templates expect
-    const formattedProducts = products.map((p: any) => ({
+    const formattedProducts = products.map((p: unknown) => ({
       id: p.id,
       name: p.title,
       description: p.description,

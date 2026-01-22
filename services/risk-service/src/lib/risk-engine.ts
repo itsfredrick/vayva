@@ -8,7 +8,7 @@ export class RiskEngine {
     scopeId?: string;
     key: string;
     severity: RiskSeverity;
-    metadata?: any;
+    metadata?: unknown;
   }) {
     const scoreDelta = this.getScoreDelta(data.severity);
 
@@ -70,12 +70,12 @@ export class RiskEngine {
     // Simple threshold check for Status
     if (
       profile.merchantRiskScore > 100 &&
-      profile.status !== ("RESTRICTED" as any) &&
-      profile.status !== ("SUSPENDED" as any)
+      profile.status !== ("RESTRICTED" as unknown) &&
+      profile.status !== ("SUSPENDED" as unknown)
     ) {
       await prisma.riskProfile.update({
         where: { merchantId },
-        data: { status: "RESTRICTED" as any },
+        data: { status: "RESTRICTED" as unknown},
       });
       // Auto-enforce
       await this.createEnforcement(
@@ -103,7 +103,7 @@ export class RiskEngine {
   private async createEnforcement(
     merchantId: string,
     action: EnforcementActionType,
-    scope: any,
+    scope: unknown,
     scopeId: string | null,
     reason: string,
   ) {

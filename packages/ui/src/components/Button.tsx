@@ -58,6 +58,7 @@ const BaseButton = React.forwardRef<HTMLButtonElement, ButtonProps>(
     },
     ref,
   ) => {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const MotionButton = motion.button as any;
 
     return (

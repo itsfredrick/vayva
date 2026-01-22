@@ -7,17 +7,17 @@ export class ReturnService {
     orderId: string;
     customerId?: string;
     customerPhone?: string;
-    reasonCode: any;
+    reasonCode: unknown;
     reasonText?: string;
-    resolutionType: any;
-    items: any;
+    resolutionType: unknown;
+    items: unknown;
     logistics: {
-      method: any;
-      pickupAddress?: any;
+      method: unknown;
+      pickupAddress?: unknown;
       dropoffInstructions?: string;
     };
   }) {
-    return (prisma as any).returnRequestV2.create({
+    return (prisma as unknown).returnRequestV2.create({
       data: {
         merchantId: data.merchantId,
         storeId: data.merchantId, // Using merchantId as storeId for V1
@@ -34,8 +34,8 @@ export class ReturnService {
     });
   }
 
-  async updateStatus(returnId: string, status: any) {
-    return (prisma as any).returnRequestV2.update({
+  async updateStatus(returnId: string, status: unknown) {
+    return (prisma as unknown).returnRequestV2.update({
       where: { id: returnId },
       data: {
         status,
@@ -45,7 +45,7 @@ export class ReturnService {
   }
 
   async getReturnRequests(merchantId: string) {
-    return (prisma as any).returnRequestV2.findMany({
+    return (prisma as unknown).returnRequestV2.findMany({
       where: { merchantId },
       orderBy: { createdAt: "desc" },
     });

@@ -11,7 +11,7 @@ export function ServiceProductForm({ productId }: { productId?: string }) {
     const [isSubmitting, setIsSubmitting] = useState(false);
     const { register, handleSubmit } = useForm();
 
-    const onSubmit = async (data: any) => {
+    const onSubmit = async (data: unknown) => {
         setIsSubmitting(true);
         const payload = {
             title: data.serviceName,

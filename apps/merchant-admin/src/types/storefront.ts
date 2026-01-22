@@ -61,8 +61,8 @@ export interface StorefrontContent {
   ctaPrimary: string;
   ctaSecondary?: string;
   products?: StorefrontProduct[];
-  menu?: any[]; // Keeping generic for now
-  services?: any[]; // Keeping generic for now
+  menu?: unknown[]; // Keeping generic for now
+  services?: unknown[]; // Keeping generic for now
 }
 
 export interface StorefrontConfig {

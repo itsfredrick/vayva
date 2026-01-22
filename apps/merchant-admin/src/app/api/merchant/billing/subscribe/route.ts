@@ -47,7 +47,7 @@ export const POST = withVayvaAPI(
       });
 
       return NextResponse.json({ ok: true, checkout_url: payment.authorization_url });
-    } catch (e: any) {
+    } catch (e: unknown) {
       return new NextResponse(e.message, { status: 500 });
     }
   }

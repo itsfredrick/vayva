@@ -19,7 +19,7 @@ const inter = Inter({
 });
 
 export async function generateMetadata(
-  { params, searchParams }: any,
+  { params, searchParams }: unknown,
   parent: ResolvingMetadata
 ): Promise<Metadata> {
   const headersList = await headers();
@@ -92,7 +92,7 @@ export async function generateMetadata(
   };
 }
 
-export default function RootLayout({ children }: { children: any }) {
+export default function RootLayout({ children }: { children: unknown }) {
   return (
     <html lang="en" suppressHydrationWarning>
       <head>

@@ -56,7 +56,7 @@ export function StandardServiceHome({
         }
     };
 
-    const handleCheckoutSuccess = async (customerData?: any) => {
+    const handleCheckoutSuccess = async (customerData?: unknown) => {
         if (!storeSlug || !selectedDate || !selectedTime) {
             clearCart();
             return;
@@ -82,7 +82,7 @@ export function StandardServiceHome({
         setSelectedTime(null);
     };
 
-    const handleBookingSubmit = async (formData: any) => {
+    const handleBookingSubmit = async (formData: unknown) => {
         const dateStr = selectedDate?.toLocaleDateString('en-CA');
 
         // Create a booking for each service in the cart

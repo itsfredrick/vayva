@@ -21,7 +21,7 @@ export const GET = withVayvaAPI(
         }
       });
 
-      const transformed = customers.map((c: any) => ({
+      const transformed = customers.map((c: unknown) => ({
         id: c.id,
         merchantId: c.storeId,
         name: `${c.firstName || ""} ${c.lastName || ""}`.trim() || "Unknown",

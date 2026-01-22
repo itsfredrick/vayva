@@ -33,7 +33,7 @@ export default function WelcomeStep() {
                 {onboardingSteps.map((step) => (
                     <div key={step.id} className="flex items-center gap-4 p-4 bg-white rounded-2xl border border-gray-100 shadow-sm hover:shadow-md transition-all group">
                         <div className="w-10 h-10 rounded-xl bg-gray-50 flex items-center justify-center group-hover:bg-primary/10 transition-colors">
-                            <Icon name={step.icon as any} size={20} className="text-gray-400 group-hover:text-primary" />
+                            <Icon name={step.icon as unknown} size={20} className="text-gray-400 group-hover:text-primary" />
                         </div>
                         <div className="flex-1">
                             <h4 className="font-bold text-sm text-gray-900">{step.title}</h4>

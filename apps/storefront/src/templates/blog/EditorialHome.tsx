@@ -1,7 +1,7 @@
 
 import { Button } from "@vayva/ui"; // Assuming generic UI
 
-export default function EditorialHome({ store }: { store: any }) {
+export default function EditorialHome({ store }: { store: unknown }) {
     // Mock Data
     const posts = [
         { id: 1, title: "The Future of Minimalist Design", excerpt: "Less is more. Discover how 2024 is shaping up to be the year of reduction.", image: "/images/blog-1.jpg" },

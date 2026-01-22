@@ -5,7 +5,7 @@ import { logger } from "@/lib/logger";
 const SENSITIVE_REGEX = {
     EMAIL: /[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}/g,
     PHONE: /(\+\d{1,3}[-.]?)?\(?\d{3}\)?[-.]?\d{3}[-.]?\d{4}/g,
-    BEARER: /Bearer [a-zA-Z0-9\-\._~\+\/]+=*/g,
+    BEARER: /Bearer [a-zA-Z0-9.\-_~+/]+=*/g,
     API_KEY: /(sk-|pk-|rk_)[a-zA-Z0-9]{20,}/g,
     CARD: /\b(?:\d[ -]*?){15,16}\b/g,
     SSH_KEY: /-----BEGIN [A-Z ]+ PRIVATE KEY-----[\s\S]+?-----END [A-Z ]+ PRIVATE KEY-----/g,

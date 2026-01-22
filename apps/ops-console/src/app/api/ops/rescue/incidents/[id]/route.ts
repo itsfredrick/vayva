@@ -21,7 +21,7 @@ export async function GET(
         if (!incident) return NextResponse.json({ error: "Not found" }, { status: 404 });
 
         return NextResponse.json(incident);
-    } catch (error: any) {
+    } catch (error: unknown) {
         return NextResponse.json({ error: error.message }, { status: 401 });
     }
 }

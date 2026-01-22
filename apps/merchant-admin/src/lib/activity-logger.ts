@@ -1,4 +1,15 @@
-import { prisma } from "@vayva/db";
+import { prisma, Prisma } from "@vayva/db";
+
+export interface ActivityLogEntry {
+    userId: string;
+    storeId: string;
+    action: string;
+    target: string;
+    targetId: string;
+    before?: Record<string, unknown> | null;
+    after?: Record<string, unknown> | null;
+    timestamp: Date;
+}
 
 interface LogActivityParams {
     storeId: string;
@@ -6,10 +17,12 @@ interface LogActivityParams {
     action: string;
     targetType: string;
     targetId: string;
-    before?: Record<string, any> | null;
-    after?: Record<string, any> | null;
+    before?: Record<string, unknown> | null;
+    after?: Record<string, unknown> | null;
     reason?: string;
 }
+
+type DiffData = Record<string, unknown>;
 
 export async function logActivity({
     storeId,
@@ -23,12 +36,12 @@ export async function logActivity({
 }: LogActivityParams) {
     try {
         // Calculate minimal diff if both states provided
-        let diffBefore = null;
-        let diffAfter = null;
+        let diffBefore: DiffData | null = null;
+        let diffAfter: DiffData | null = null;
 
         if (before && after) {
-            diffBefore = {} as Record<string, any>;
-            diffAfter = {} as Record<string, any>;
+            const tempBefore: DiffData = {};
+            const tempAfter: DiffData = {};
 
             const allKeys = new Set([...Object.keys(before), ...Object.keys(after)]);
 
@@ -38,20 +51,23 @@ export async function logActivity({
 
                 // Simple equality check (works for primitives, need recursion for deep objects if robust diff needed)
                 if (valBefore !== valAfter) {
-                    diffBefore![key] = valBefore;
-                    diffAfter![key] = valAfter;
+                    tempBefore[key] = valBefore;
+                    tempAfter[key] = valAfter;
                 }
             });
 
             // If no changes, maybe don't log? Or log action without diff.
-            if (Object.keys(diffBefore).length === 0) {
+            if (Object.keys(tempBefore).length === 0) {
                 // No functional change
                 return;
             }
+
+            diffBefore = tempBefore;
+            diffAfter = tempAfter;
         } else {
             // One-sided log (Creation or Deletion)
-            diffBefore = before;
-            diffAfter = after;
+            diffBefore = before || null;
+            diffAfter = after || null;
         }
 
         await prisma.adminAuditLog.create({
@@ -62,8 +78,8 @@ export async function logActivity({
                 targetType,
                 targetId,
                 reason,
-                before: diffBefore ? diffBefore as any : undefined,
-                after: diffAfter ? diffAfter as any : undefined,
+                before: (diffBefore as Prisma.InputJsonValue) ?? Prisma.JsonNull,
+                after: (diffAfter as Prisma.InputJsonValue) ?? Prisma.JsonNull,
             }
         });
 

@@ -36,7 +36,7 @@ export async function GET(
   });
 
   if (!conversation) return new NextResponse("Not Found", { status: 404 });
-  if (conversation.storeId !== (session!.user as any).storeId)
+  if (conversation.storeId !== (session!.user as unknown).storeId)
     return new NextResponse("Forbidden", { status: 403 });
 
   // Mark as Read? Usually separated endpoint or side-effect.

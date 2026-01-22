@@ -180,7 +180,7 @@ export const PerfumeLuxuryTemplate: React.FC<TemplateProps> = ({
                     {item.name}
                   </h3>
                   <p className="text-xs text-amber-50/40 tracking-wider uppercase mt-1">
-                    {(item as any).notes}
+                    {(item as unknown).notes}
                   </p>
                 </div>
 

@@ -10,11 +10,11 @@ export async function GET(req: Request) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
-    const storeId = (session.user as any).storeId;
+    const storeId = (session.user as unknown).storeId;
     const { searchParams } = new URL(req.url);
     const query = searchParams.get("q") || "";
 
-    const where: any = { storeId };
+    const where: unknown = { storeId };
     if (query) {
       where.OR = [
         { jobName: { contains: query, mode: "insensitive" } },

@@ -59,12 +59,12 @@ export const AdminShell = ({
 
   // Initial logic for "FD" avatar
   // Cast to any as the session types might be generic
-  const initials = user ? `${(user as any).firstName?.[0] || ""}${(user as any).lastName?.[0] || ""}` : "FD";
+  const initials = user ? `${(user as unknown).firstName?.[0] || ""}${(user as unknown).lastName?.[0] || ""}` : "FD";
 
   // Fallback Merchant Details
   const merchantName =
-    (merchant as any)?.firstName || (user as any)?.firstName || "Merchant";
-  const storeName = (merchant as any)?.businessName || "My Store";
+    (merchant as unknown)?.firstName || (user as unknown)?.firstName || "Merchant";
+  const storeName = (merchant as unknown)?.businessName || "My Store";
 
   // Store URL logic
   const [storeLink, setStoreLink] = useState<string>("");
@@ -110,7 +110,7 @@ export const AdminShell = ({
         }
 
         if (merchantData.externalManifests) {
-          merchantData.externalManifests.forEach((manifest: any) => {
+          merchantData.externalManifests.forEach((manifest: unknown) => {
             extensionRegistry.register(manifest);
           });
         }
@@ -339,7 +339,7 @@ export const AdminShell = ({
               variant="ghost"
               size="icon"
               className="text-gray-400 hover:text-gray-900"
-              onClick={() => (window as any).triggerCommandPalette?.()}
+              onClick={() => (window as unknown).triggerCommandPalette?.()}
             >
               <Icon name="Search" size={20} />
             </Button>
@@ -403,7 +403,7 @@ export const AdminShell = ({
                             onClick={() => setShowUserMenu(false)}
                             className="w-full justify-start items-center gap-2 px-3 py-2 text-sm text-gray-500 hover:text-black hover:bg-studio-gray rounded-lg transition-colors text-left font-bold h-auto"
                           >
-                            <Icon name={item.icon as any} size={16} />
+                            <Icon name={item.icon as unknown} size={16} />
                             {item.name}
                           </Button>
                         </Link>
@@ -462,7 +462,7 @@ export const AdminShell = ({
                       : "text-gray-400 hover:text-gray-600",
                   )}
                 >
-                  <Icon name={item.icon as any} size={22} />
+                  <Icon name={item.icon as unknown} size={22} />
                 </div>
                 <span
                   className={cn(

@@ -8,7 +8,7 @@ export async function GET(req: Request) {
 
     // Use storeId from session or header (depending on auth strategy)
     // Assuming session.user.storeId exists based on project patterns
-    const storeId = (session?.user as any)?.storeId;
+    const storeId = (session?.user)?.storeId;
 
     if (!storeId) {
         return new NextResponse("Unauthorized", { status: 401 });

@@ -18,11 +18,11 @@ export async function checkPermission(action: string) {
 }
 
 export function withRBAC(action: string, handler: Function) {
-  return async (...args: any[]) => {
+  return async (...args: unknown[]) => {
     try {
       const session = await checkPermission(action);
       return await handler(session, ...args);
-    } catch (error: any) {
+    } catch (error: unknown) {
       if (error.message.includes("Unauthorized")) {
         return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
       }

@@ -45,7 +45,7 @@ export function captureUrlParams(
   utmKeys.forEach((key) => {
     const val = searchParams.get(key);
     if (val) {
-      (data as any)[key] = val;
+      (data as unknown)[key] = val;
       hasData = true;
     }
   });

@@ -8,7 +8,7 @@ import NextLink from "next/link";
 import { CheckCircle, ShoppingBag, ArrowRight } from "lucide-react";
 import { motion } from "framer-motion";
 
-const Link = NextLink as any;
+const Link = NextLink as unknown;
 
 export default function OrderSuccessPage() {
   const { store } = useStore();

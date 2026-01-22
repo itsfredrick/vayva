@@ -8,7 +8,7 @@ export interface IncidentReport {
     errorSnippet: string;
     stackTrace?: string;
     sentryEventId?: string;
-    context?: any;
+    context?: unknown;
 }
 
 

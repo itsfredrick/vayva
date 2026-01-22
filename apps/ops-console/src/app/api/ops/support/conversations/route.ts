@@ -18,7 +18,7 @@ export async function GET(request: Request) {
         const limit = parseInt(searchParams.get("limit") || "20");
         const skip = (page - 1) * limit;
 
-        const where: any = {
+        const where: unknown = {
             status,
             // Fetch conversations tagged with SUPPORT or any conversation for support staff
             // In a real system, we might filter by a specific tag
@@ -56,7 +56,7 @@ export async function GET(request: Request) {
             }
         });
 
-    } catch (error: any) {
+    } catch (error: unknown) {
         if (error.message === "Unauthorized") {
             return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
         }

@@ -59,8 +59,8 @@ export const FoodCateringTemplate: React.FC<TemplateProps> = ({
       .map((p) => ({
         ...p,
         desc: p.description,
-        time: (p as any).prepTimeMinutes
-          ? `${(p as any).prepTimeMinutes}m`
+        time: (p as unknown).prepTimeMinutes
+          ? `${(p as unknown).prepTimeMinutes}m`
           : "15m",
       }));
 

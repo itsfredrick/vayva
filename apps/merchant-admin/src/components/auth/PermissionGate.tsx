@@ -23,17 +23,21 @@ interface PermissionGateProps {
  *    <Button>Refund Order</Button>
  * </PermissionGate>
  */
+interface ActiveUser extends Record<string, unknown> {
+    role: string;
+}
+
 export const PermissionGate = ({
     permission,
     all,
     any,
     fallback = null,
     children
-}: PermissionGateProps) => {
+}: PermissionGateProps): React.ReactElement | null => {
     const { merchant, user } = useAuth(); // Context might provide 'user' which is the session
 
     // Normalize user context for the engine
-    const activeUser = (user || merchant) as any;
+    const activeUser = (user || merchant) as ActiveUser | null;
     if (!activeUser) return <>{fallback}</>;
 
     const userCtx = {

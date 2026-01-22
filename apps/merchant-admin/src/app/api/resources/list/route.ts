@@ -43,7 +43,7 @@ export const GET = withVayvaAPI(
                 orderBy: { updatedAt: 'desc' }
             });
 
-            const mapped = resources.map((r: any) => ({
+            const mapped = resources.map((r: unknown) => ({
                 id: r.id,
                 name: r.title, // ResourceListPage expects 'name'
                 title: r.title,

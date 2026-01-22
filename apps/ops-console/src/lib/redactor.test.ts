@@ -15,13 +15,12 @@ describe("redactSensitiveData", () => {
     });
 
     test("redacts passwords in JSON", () => {
-        const input = '{"email": "ops@vayva.com", "password": "super-secret-password-123"}';
-        const expected = '{"email": "ops@vayva.com", "password":********}'; // Note: our regex captures quotes
-        // Re-checking implementation: /("password"\s*:\s*")[^"]+(")/gi -> $1********$2
+        const input = '{"email": "ops@vayva.com", "password": "super-secret-password-124"}';
+        const expected = '{"email": "ops@vayva.com", "password":********}';
+        expect(redactSensitiveData(input)).toBe(expected);
+
         const inputReal = '{"password":"mypass"}';
-        // Implementation: redacted = redacted.replace(pattern, (match, p1, p2) => p1 + "********" + p2);
-        // Result: '{"password":' + "********" + '"'
-        // Let's verify our specific implementation logic
+        expect(redactSensitiveData(inputReal)).toBe('{"password":********}');
     });
 
     test("does not over-redact non-sensitive data", () => {

@@ -15,7 +15,7 @@ export async function GET(
     });
 
     return NextResponse.json(prefs || { storeId: id, isMuted: false });
-  } catch (error: any) {
+  } catch (error: unknown) {
     return NextResponse.json(
       { error: "Failed to fetch preferences" },
       { status: 500 },
@@ -49,13 +49,13 @@ export async function POST(
         actorId: session.user.id,
         actorLabel: session.user.email || "Ops User",
         action: "NOTIFICATION_PREFS_UPDATED",
-        afterState: body as any,
+        afterState: body as unknown,
         correlationId: `prefs-${Date.now()}`,
       },
     });
 
     return NextResponse.json(prefs);
-  } catch (error: any) {
+  } catch (error: unknown) {
     return NextResponse.json(
       { error: "Failed to update preferences" },
       { status: 500 },

@@ -38,7 +38,7 @@ export async function GET(request: Request) {
       take: 100,
     });
 
-    const mappedMessages: WhatsAppMessage[] = messages.map((m: any) => ({
+    const mappedMessages: WhatsAppMessage[] = messages.map((m: unknown) => ({
       id: m.id,
       conversationId: m.conversationId,
       sender:

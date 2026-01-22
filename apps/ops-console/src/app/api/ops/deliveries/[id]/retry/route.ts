@@ -46,7 +46,7 @@ export async function POST(
 
         return NextResponse.json({ success: true, message: "Dispatch retry initiated" });
 
-    } catch (error: any) {
+    } catch (error: unknown) {
         if (error.message === "Unauthorized") {
             return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
         }

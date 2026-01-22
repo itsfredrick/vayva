@@ -17,7 +17,7 @@ interface Props {
  */
 export function ErrorBoundary({ children, fallback, name, onError }: Props) {
   const handleError = (error: Error, errorInfo: React.ErrorInfo) => {
-    Sentry.captureException(error, { extra: errorInfo as any });
+    Sentry.captureException(error, { extra: errorInfo as unknown});
     onError?.(error, errorInfo);
   };
 

@@ -21,7 +21,7 @@ import { Button } from "@vayva/ui";
 interface AuditEvent {
     id: string;
     eventType: string;
-    metadata: any;
+    metadata: unknown;
     createdAt: string;
     actor: {
         name: string;
@@ -113,7 +113,7 @@ export default function AuditLogsPage() {
     };
 
     // Helper to extract target info from metadata
-    const getTargetInfo = (metadata: any) => {
+    const getTargetInfo = (metadata: unknown) => {
         if (!metadata) return "—";
 
         // Common patterns

@@ -15,7 +15,7 @@ import {
   CheckCircle,
 } from "lucide-react";
 
-export default function PaymentsPage({ params }: any) {
+export default function PaymentsPage({ params }: unknown) {
   const { lang: rawLang } = useParams() as { lang: string };
   const lang = (rawLang === "tr" ? "tr" : "en") as LocaleKey;
   const t = LOCALES[lang].account.payments;

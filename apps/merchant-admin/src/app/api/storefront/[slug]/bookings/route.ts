@@ -50,7 +50,7 @@ export async function POST(
         const endsAt = new Date(startsAt.getTime() + 60 * 60 * 1000); // Default 1 hour duration
 
         // Create Booking
-        const bookingDelegate = (prisma as any).booking;
+        const bookingDelegate = (prisma as unknown).booking;
         if (!bookingDelegate) {
             return NextResponse.json({ error: "Booking system not initialized" }, { status: 503 });
         }

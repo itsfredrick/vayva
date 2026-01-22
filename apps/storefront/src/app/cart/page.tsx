@@ -5,7 +5,7 @@ import { Button } from "@vayva/ui";
 import { StoreShell } from "@/components/StoreShell";
 import { useStore } from "@/context/StoreContext";
 import NextLink from "next/link";
-const Link = NextLink as any;
+const Link = NextLink as unknown;
 
 export default function CartPage() {
   const { store, cart, removeFromCart } = useStore();

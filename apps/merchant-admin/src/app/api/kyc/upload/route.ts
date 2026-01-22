@@ -77,7 +77,7 @@ export async function POST(request: Request) {
 
     if (existingKYC) {
       // Update existing record
-      const updateData: any = {
+      const updateData: unknown = {
         status: "PENDING",
       };
 
@@ -95,7 +95,7 @@ export async function POST(request: Request) {
       });
     } else {
       // Create new record
-      const createData: any = {
+      const createData: unknown = {
         storeId,
         status: "PENDING",
         businessType: "INDIVIDUAL", // Default, can be updated
@@ -120,7 +120,7 @@ export async function POST(request: Request) {
       documentUrl,
       message: "Document uploaded successfully",
     });
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error("KYC upload error:", error);
 
     if (error.message === "Unauthorized") {

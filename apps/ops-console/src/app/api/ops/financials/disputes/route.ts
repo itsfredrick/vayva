@@ -16,7 +16,7 @@ export async function GET(req: NextRequest) {
 
         const search = searchParams.get("q") || "";
 
-        const where: any = {};
+        const where: unknown = {};
         if (status) {
             where.status = status;
         }
@@ -95,7 +95,7 @@ export async function PATCH(req: NextRequest) {
         const dispute = await prisma.dispute.findUnique({ where: { id: disputeId } });
         if (!dispute) return NextResponse.json({ error: "Dispute not found" }, { status: 404 });
 
-        let updateData: any = {};
+        let updateData: unknown = {};
         let logAction = "";
 
         switch (action) {

@@ -23,7 +23,7 @@ export async function POST(
             return NextResponse.json({ error: "Store not found" }, { status: 404 });
         }
 
-        const raffleDelegate = (prisma as any).raffleEntry;
+        const raffleDelegate = (prisma as unknown).raffleEntry;
         if (!raffleDelegate) {
             return NextResponse.json({ error: "Raffle system not initialized" }, { status: 503 });
         }

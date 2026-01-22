@@ -79,7 +79,7 @@ export async function sendTeamInvite({
     }
 
     return { success: true, data };
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error("Email send error:", error);
     throw error;
   }

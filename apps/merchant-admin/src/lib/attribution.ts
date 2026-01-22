@@ -22,7 +22,7 @@ export function saveAttribution(data: Partial<AttributionData>) {
 
     // Also log to console for debugging/telemetry verification
     
-  } catch (e: any) {
+  } catch (e: unknown) {
     console.error("Failed to save attribution", e);
   }
 }
@@ -32,7 +32,7 @@ export function getAttribution(): AttributionData {
   try {
     const raw = localStorage.getItem(STORAGE_KEY);
     return raw ? JSON.parse(raw) : {};
-  } catch (e: any) {
+  } catch (e: unknown) {
     return {};
   }
 }
@@ -48,7 +48,7 @@ export function captureUrlParams(
   utmKeys.forEach((key) => {
     const val = searchParams.get(key);
     if (val) {
-      (data as any)[key] = val;
+      (data as unknown)[key] = val;
       hasData = true;
     }
   });

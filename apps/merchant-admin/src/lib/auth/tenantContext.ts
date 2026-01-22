@@ -16,9 +16,9 @@ export async function getTenantContext(
   if (token && token.sub) {
     return {
       userId: token.sub,
-      merchantId: (token as any).storeId || token.sub, // Mapping storeId as merchantId for now, or userId if independent
-      storeId: (token as any).storeId,
-      roles: [(token as any).role || "viewer"],
+      merchantId: (token as unknown).storeId || token.sub, // Mapping storeId as merchantId for now, or userId if independent
+      storeId: (token as unknown).storeId,
+      roles: [(token as unknown).role || "viewer"],
     };
   }
 

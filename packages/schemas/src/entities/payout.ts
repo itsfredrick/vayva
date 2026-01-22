@@ -12,7 +12,7 @@ export const PayoutSchema = z.object({
     accountName: z.string(),
   }),
   reference: z.string().optional(), // Internal or provider ref
-  metadata: z.record(z.any()).optional(),
+  metadata: z.record(z.unknown()).optional(),
   processedAt: z.date().optional(),
   createdAt: z.date(),
   updatedAt: z.date(),

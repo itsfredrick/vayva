@@ -39,7 +39,7 @@ export function PrepTimeCard({ orderId, currentPrepTime, onUpdate }: PrepTimeCar
             toast.success("Preparation time updated");
             setIsEditing(false);
             onUpdate();
-        } catch (error: any) {
+        } catch (error: unknown) {
             toast.error(error.message);
         } finally {
             setSaving(false);
@@ -76,7 +76,7 @@ export function PrepTimeCard({ orderId, currentPrepTime, onUpdate }: PrepTimeCar
                         <Input
                             type="number"
                             value={prepTime}
-                            onChange={(e: any) => setPrepTime(e.target.value)}
+                            onChange={(e: unknown) => setPrepTime(e.target.value)}
                             min={5}
                             max={480}
                             className="w-24 text-center"

@@ -41,7 +41,7 @@ export const createProductHandler = async (
   const storeId = req.headers["x-store-id"] as string;
   if (!storeId) return reply.status(400).send({ error: "Store ID required" });
 
-  const { name, description, price, sku, stock } = req.body as any;
+  const { name, description, price, sku, stock } = req.body as unknown;
   const title = name;
   const handle = name
     .toLowerCase()
@@ -70,7 +70,7 @@ export const createProductHandler = async (
   // Log Inventory Event
   await prisma.inventoryEvent.create({
     data: {
-      variantId: (product as any).productVariants[0].id,
+      variantId: (product as unknown).productVariants[0].id,
       quantity: parseInt(stock || "0"),
       action: "ADJUSTMENT",
       reason: "Initial stock",
@@ -99,7 +99,7 @@ export const updateProductHandler = async (
   reply: FastifyReply,
 ) => {
   const { id } = req.params as { id: string };
-  const { name, description, price, stock } = req.body as any;
+  const { name, description, price, stock } = req.body as unknown;
 
   // Simple V1 Update: Update Product and Default Variant Price/Stock
   // Real world needs robust variant handling.
@@ -116,7 +116,7 @@ export const updateProductHandler = async (
   // Update default variant price/stock if provided
   if (product.productVariants.length > 0) {
     await prisma.productVariant.update({
-      where: { id: (product as any).productVariants[0].id },
+      where: { id: (product as unknown).productVariants[0].id },
       data: {
         price: price ? parseFloat(price) : undefined,
         // inventory removed as it's not on variant model

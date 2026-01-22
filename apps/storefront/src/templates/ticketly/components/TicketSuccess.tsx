@@ -6,7 +6,7 @@ import { PublicProduct } from "@/types/storefront";
 interface TicketSuccessProps {
   event: PublicProduct;
   attendee: { name: string; email: string };
-  bankDetails?: any;
+  bankDetails?: unknown;
   storeName?: string;
   orderNumber?: string;
   onClose: () => void;

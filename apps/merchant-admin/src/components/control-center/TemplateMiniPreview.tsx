@@ -8,7 +8,7 @@ interface TemplateMiniPreviewProps {
     layoutComponent: string; // Kept as string for now, but really is LayoutKey
     templateName: string;
     className?: string;
-    componentProps?: Record<string, any>;
+    componentProps?: Record<string, unknown>;
 }
 
 export const TemplateMiniPreview = React.memo(({

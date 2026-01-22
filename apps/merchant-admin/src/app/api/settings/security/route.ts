@@ -42,7 +42,7 @@ export async function GET() {
       sessions,
       auditLogs: recentAuditLogs,
     });
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error("Security settings fetch error:", error);
     return NextResponse.json(
       { error: "Failed to fetch security settings" },
@@ -84,7 +84,7 @@ export async function PATCH(req: Request) {
     });
 
     return NextResponse.json({ success: true });
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error("Security settings update error:", error);
     return NextResponse.json(
       { error: "Failed to update security settings" },

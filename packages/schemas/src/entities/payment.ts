@@ -10,7 +10,7 @@ export const PaymentTransactionSchema = z.object({
   amount: z.number().int().nonnegative(),
   currency: z.string().default("NGN"),
   status: z.enum(["SUCCESS", "FAILED", "PENDING"]),
-  metadata: z.record(z.any()).optional(),
+  metadata: z.record(z.unknown()).optional(),
   createdAt: z.date(),
 });
 

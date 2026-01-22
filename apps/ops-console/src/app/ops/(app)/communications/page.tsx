@@ -70,10 +70,10 @@ export default function CommunicationsPage() {
                         ) : !logs?.length ? (
                             <tr><td colSpan={5} className="p-12 text-center text-gray-400">No logs found.</td></tr>
                         ) : (
-                            logs.map((log: any) => (
+                            logs.map((log: unknown) => (
                                 <tr key={log.id} className="hover:bg-gray-50">
                                     <td className="px-6 py-4 font-mono text-xs text-gray-600">
-                                        {(log.metadata as any)?.to || (log.metadata as any)?.email || "N/A"}
+                                        {(log.metadata as unknown)?.to || (log.metadata as unknown)?.email || "N/A"}
                                     </td>
                                     <td className="px-6 py-4 flex items-center gap-2">
                                         {getChannelIcon(log.channel)}

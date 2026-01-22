@@ -56,11 +56,11 @@ export async function GET(
             where: { storeId: id }
         });
 
-        const ownerMember = store.tenant?.tenantMemberships.find((m: any) => m.role === "OWNER");
+        const ownerMember = store.tenant?.tenantMemberships.find((m: unknown) => m.role === "OWNER");
         const ownerEmail = ownerMember?.user.email;
 
         // Parse settings for notes
-        const settings = (store.settings as any) || {};
+        const settings = (store.settings as unknown) || {};
         const notes = settings.internalNotes || [];
 
         return NextResponse.json({
@@ -80,7 +80,7 @@ export async function GET(
                 gmv: gmvAggregate._sum.total || 0,
                 walletBalance: wallet ? Number(wallet.availableKobo) / 100 : 0,
             },
-            users: store.tenant?.tenantMemberships.map((m: any) => ({
+            users: store.tenant?.tenantMemberships.map((m: unknown) => ({
                 id: m.user.id,
                 name: `${m.user.firstName || ""} ${m.user.lastName || ""}`.trim() || "Unknown",
                 email: m.user.email,
@@ -90,7 +90,7 @@ export async function GET(
             compliance: complianceReport
         });
 
-    } catch (error: any) {
+    } catch (error: unknown) {
         console.error("Fetch Merchant Detail Error:", error);
         return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
     }
@@ -126,7 +126,7 @@ export async function PATCH(
             return NextResponse.json({ error: "Store not found" }, { status: 404 });
         }
 
-        const currentSettings = (store.settings as any) || {};
+        const currentSettings = (store.settings as unknown) || {};
         const currentNotes = Array.isArray(currentSettings.internalNotes) ? currentSettings.internalNotes : [];
 
         // 2. Append new note

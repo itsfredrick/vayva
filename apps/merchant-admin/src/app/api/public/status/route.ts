@@ -16,7 +16,7 @@ export async function GET() {
         },
       },
     );
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error("Public Status fetch error:", error);
     return NextResponse.json(
       { error: "Status engine unavailable" },

@@ -43,7 +43,7 @@ export async function POST(request: NextRequest) {
         // - Update Withdrawal Status
         // - Create Ledger Entry
 
-        await prisma.$transaction(async (tx: any) => {
+        await prisma.$transaction(async (tx: unknown) => {
             // Re-fetch wallet with lock in production, simpler here
             const w = await tx.wallet.findUniqueOrThrow({ where: { storeId: user.storeId } });
 
@@ -89,7 +89,7 @@ export async function POST(request: NextRequest) {
             message: "Withdrawal processing"
         });
 
-    } catch (error: any) {
+    } catch (error: unknown) {
         console.error("Withdraw Confirm Error:", error);
         return NextResponse.json(
             { error: error.message || "Failed to confirm withdrawal" },

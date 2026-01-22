@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 
 export function useUserPlan() {
-  const [data, setData] = useState<{ plan: any } | null>(null);
+  const [data, setData] = useState<{ plan: unknown } | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<Error | null>(null);
 
@@ -14,7 +14,7 @@ export function useUserPlan() {
         if (!res.ok) throw new Error("Failed to fetch plan");
         const json = await res.json();
         setData(json);
-      } catch (err: any) {
+      } catch (err: unknown) {
         setError(err);
       } finally {
         setLoading(false);

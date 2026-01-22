@@ -7,7 +7,7 @@ import { Button, GlassPanel, Icon, Input } from "@vayva/ui";
 import { CalendarSyncSettings } from "./products/calendar-sync-settings";
 
 interface ProductFormProps {
-  initialData?: any;
+  initialData?: unknown;
   isEdit?: boolean;
 }
 
@@ -63,7 +63,7 @@ export const ProductForm = ({
     setVariants(newVariants);
   };
 
-  const updateVariant = (idx: number, field: string, value: any) => {
+  const updateVariant = (idx: number, field: string, value: unknown) => {
     const updated = [...variants];
     updated[idx] = { ...updated[idx], [field]: value };
     setVariants(updated);

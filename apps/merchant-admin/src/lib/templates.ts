@@ -29,7 +29,7 @@ export interface Template {
   };
 }
 
-export const TEMPLATES: Template[] = Object.values(TEMPLATE_REGISTRY).map((t: any) => ({
+export const TEMPLATES: Template[] = Object.values(TEMPLATE_REGISTRY).map((t: unknown) => ({
   id: t.templateId,
   name: t.displayName,
   slug: t.slug,

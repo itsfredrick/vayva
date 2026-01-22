@@ -37,7 +37,7 @@ export const POST = withVayvaAPI(
         payload: { approvalId: id, reason },
         ctx: {
           actorId: user.id,
-          actorType: "user" as any,
+          actorType: "user" as unknown,
           actorLabel: `${user.firstName || ""} ${user.lastName || ""}`.trim() || user.email,
           correlationId: request.correlationId || `req_${id}`,
         },

@@ -11,7 +11,7 @@ export const getOnboardingStateHandler = async (
   req: FastifyRequest,
   reply: FastifyReply,
 ) => {
-  const user = req.user as any;
+  const user = req.user as { sub: string; email?: string };
 
   const membership = await prisma.membership.findFirst({
     where: { userId: user.sub },
@@ -35,7 +35,7 @@ export const updateOnboardingStateHandler = async (
   req: FastifyRequest,
   reply: FastifyReply,
 ) => {
-  const user = req.user as any;
+  const user = req.user as { sub: string; email?: string };
   const { step, status } = updateOnboardingSchema.parse(req.body);
 
   const membership = await prisma.membership.findFirst({

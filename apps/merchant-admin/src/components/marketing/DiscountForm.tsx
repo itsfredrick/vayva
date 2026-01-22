@@ -84,7 +84,7 @@ export function DiscountForm({ id }: { id?: string }) {
             toast.success(`Discount ${id ? "updated" : "created"} successfully`);
             router.push("/dashboard/marketing/discounts");
 
-        } catch (err: any) {
+        } catch (err: unknown) {
             toast.error(err.message);
         } finally {
             setLoading(false);
@@ -164,7 +164,7 @@ export function DiscountForm({ id }: { id?: string }) {
                     <div className="grid grid-cols-2 gap-4">
                         <div>
                             <Label>Type</Label>
-                            <Select value={type} onValueChange={(v: any) => setType(v)}>
+                            <Select value={type} onValueChange={(v: unknown) => setType(v)}>
                                 <SelectTrigger>
                                     <SelectValue />
                                 </SelectTrigger>

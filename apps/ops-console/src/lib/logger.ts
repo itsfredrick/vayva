@@ -5,9 +5,9 @@ type LogLevel = "info" | "warn" | "error";
 interface LogPayload {
   route?: string;
   message: string;
-  error?: any;
+  error?: unknown;
   requestId?: string;
-  context?: any;
+  context?: unknown;
   code?: string;
 }
 
@@ -49,16 +49,16 @@ export const logger = {
     }
   },
 
-  error: (message: string, error?: any, context?: any) => {
+  error: (message: string, error?: unknown, context?: unknown) => {
     logger.log("error", { message, error, context });
     captureException(error || new Error(message), { ...context, message });
   },
 
-  warn: (message: string, context?: any) => {
+  warn: (message: string, context?: unknown) => {
     logger.log("warn", { message, context });
   },
 
-  info: (message: string, context?: any) => {
+  info: (message: string, context?: unknown) => {
     logger.log("info", { message, context });
   },
 };

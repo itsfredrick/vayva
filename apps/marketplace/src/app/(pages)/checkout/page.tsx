@@ -55,7 +55,7 @@ export default function CheckoutPage() {
             router.push(`/orders/${data.orderId}`);
             router.refresh();
 
-        } catch (error: any) {
+        } catch (error: unknown) {
             console.error("Order placement failed", error);
             alert(error.message || "Something went wrong. Please try again.");
         } finally {

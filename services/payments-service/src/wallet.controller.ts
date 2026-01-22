@@ -81,7 +81,7 @@ export const setPinHandler = async (
   reply: FastifyReply,
 ) => {
   const storeId = req.headers["x-store-id"] as string;
-  const { pin } = setPinSchema.parse(req.body as any);
+  const { pin } = setPinSchema.parse(req.body as unknown);
 
   const hashedPin = await bcrypt.hash(pin, 10);
 
@@ -105,7 +105,7 @@ export const verifyPinHandler = async (
   reply: FastifyReply,
 ) => {
   const storeId = req.headers["x-store-id"] as string;
-  const { pin } = verifyPinSchema.parse(req.body as any);
+  const { pin } = verifyPinSchema.parse(req.body as unknown);
 
   const wallet = await prisma.wallet.findUnique({ where: { storeId } });
   if (!wallet || !wallet.pinHash)
@@ -141,7 +141,7 @@ export const verifyPinHandler = async (
         message: "Wallet lock status updated",
       });
     } catch (error) {
-      (req.log as any).error(error);
+      (req.log as unknown).error(error);
       return reply
         .status(500)
         .send({ error: "Failed to update wallet lock status" });
@@ -177,12 +177,12 @@ export const createVirtualAccountHandler = async (
 
   const wallet = await prisma.wallet.findUnique({ where: { storeId } });
   if (!wallet) return reply.status(404).send({ error: "Wallet not found" });
-  if ((wallet.vaStatus as any) === "CREATED")
+  if ((wallet.vaStatus as unknown) === "CREATED")
     return reply.send({ status: "CREATED", data: wallet });
 
   if (IS_TEST_MODE) {
     const testVA = {
-      vaStatus: "CREATED" as any,
+      vaStatus: "CREATED" as unknown,
       vaBankName: "Test Bank",
       vaAccountNumber: Math.floor(
         Math.random() * 9000000000 + 1000000000,
@@ -221,7 +221,7 @@ export const createVirtualAccountHandler = async (
     const updated = await prisma.wallet.update({
       where: { storeId },
       data: {
-        vaStatus: "CREATED" as any,
+        vaStatus: "CREATED" as unknown,
         vaBankName: va.bank.name,
         vaAccountNumber: va.account_number,
         vaAccountName: va.account_name,
@@ -230,7 +230,7 @@ export const createVirtualAccountHandler = async (
     });
 
     return reply.send(updated);
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error("Paystack DVA Error:", error.response?.data || error.message);
     return reply
       .status(500)
@@ -266,7 +266,7 @@ export const addBankHandler = async (
   reply: FastifyReply,
 ) => {
   const storeId = req.headers["x-store-id"] as string;
-  const body = addBankSchema.parse(req.body as any);
+  const body = addBankSchema.parse(req.body as unknown);
 
   if (body.isDefault) {
     await prisma.bankBeneficiary.updateMany({
@@ -305,7 +305,7 @@ export const initiateWithdrawalHandler = async (
   reply: FastifyReply,
 ) => {
   const storeId = req.headers["x-store-id"] as string;
-  const body = withdrawInitiateSchema.parse(req.body as any);
+  const body = withdrawInitiateSchema.parse(req.body as unknown);
 
   const wallet = await prisma.wallet.findUnique({ where: { storeId } });
   if (!wallet || !wallet.pinHash)
@@ -366,7 +366,7 @@ export const confirmWithdrawalHandler = async (
 ) => {
   const storeId = req.headers["x-store-id"] as string;
   const { withdrawalId, otpCode } = withdrawConfirmSchema.parse(
-    req.body as any,
+    req.body as unknown,
   );
 
   const withdrawal = await prisma.withdrawal.findUnique({
@@ -418,7 +418,7 @@ export const confirmWithdrawalHandler = async (
           referenceId: "WDR-" + Date.now(),
           direction: "DEBIT",
           account: "payouts",
-          amount: (Number(withdrawal.amountKobo) / 100) as any,
+          amount: (Number(withdrawal.amountKobo) / 100) as unknown,
           currency: "NGN",
           description: "Withdrawal to Bank",
           metadata: { status: "SUCCESS" },
@@ -446,7 +446,7 @@ export const submitKycHandler = async (
   reply: FastifyReply,
 ) => {
   const storeId = req.headers["x-store-id"] as string;
-  const { nin, bvn } = kycSubmitSchema.parse(req.body as any);
+  const { nin, bvn } = kycSubmitSchema.parse(req.body as unknown);
 
   // 1. Masking
   const ninLast4 = nin.slice(-4);

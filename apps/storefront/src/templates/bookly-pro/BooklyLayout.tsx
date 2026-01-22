@@ -4,7 +4,7 @@ import { BooklyHeader } from "./components/BooklyHeader";
 import { ServiceHero } from "./components/ServiceHero";
 import { ServiceList } from "./components/ServiceList";
 import { BookingWizard } from "./components/BookingWizard";
-import { BookingConfirmation } from "./components/BookingConfirmation";
+import { BookingConfirmation, BookingDetails } from "./components/BookingConfirmation";
 
 interface BooklyLayoutProps {
   store: PublicStore;
@@ -15,14 +15,14 @@ export const BooklyLayout = ({ store, products }: BooklyLayoutProps) => {
   const [selectedService, setSelectedService] = useState<PublicProduct | null>(
     null,
   );
-  const [bookingSuccess, setBookingSuccess] = useState<any | null>(null);
+  const [bookingSuccess, setBookingSuccess] = useState<BookingDetails | null>(null);
 
   const handleBook = (service: PublicProduct) => {
     setSelectedService(service);
   };
 
-  const handleBookingComplete = (details: any) => {
-    setBookingSuccess(details);
+  const handleBookingComplete = (details: unknown) => {
+    setBookingSuccess(details as BookingDetails);
     setSelectedService(null);
   };
 

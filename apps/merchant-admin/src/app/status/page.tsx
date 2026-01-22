@@ -16,7 +16,7 @@ import { Button } from "@vayva/ui";
 import Link from "next/link";
 
 export default function PublicStatusPage() {
-  const [health, setHealth] = useState<any>(null);
+  const [health, setHealth] = useState<unknown>(null);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {

@@ -10,7 +10,7 @@ export async function GET() {
       select: { settings: true },
     });
 
-    const settings: any = store?.settings || {};
+    const settings: unknown = store?.settings || {};
     const policies = settings.policies || {
       refundPolicy: "",
       shippingPolicy: "",
@@ -39,7 +39,7 @@ export async function PATCH(request: Request) {
       select: { settings: true },
     });
 
-    const currentSettings: any = store?.settings || {};
+    const currentSettings: unknown = store?.settings || {};
     const updatedPolicies = { ...(currentSettings.policies || {}), ...body };
 
     const updatedSettings = {

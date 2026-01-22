@@ -49,7 +49,7 @@ export default function BillingPage() {
                         ) : !subs?.length ? (
                             <tr><td colSpan={5} className="p-12 text-center text-gray-400">No active subscriptions.</td></tr>
                         ) : (
-                            subs.map((s: any) => (
+                            subs.map((s: unknown) => (
                                 <tr key={s.id} className="hover:bg-gray-50">
                                     <td className="px-6 py-4 font-medium text-gray-900">{s.store?.name || "Unknown Store"}</td>
                                     <td className="px-6 py-4 font-mono text-xs text-purple-600 font-bold">{s.planKey}</td>

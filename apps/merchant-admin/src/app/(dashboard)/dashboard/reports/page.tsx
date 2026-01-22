@@ -227,7 +227,7 @@ export default function ReportsPage() {
     );
 }
 
-function MetricCard({ title, value, trend, icon: Icon, loading }: { title: string, value: string | number, trend: string, icon: any, loading: boolean }) {
+function MetricCard({ title, value, trend, icon: Icon, loading }: { title: string, value: string | number, trend: string, icon: unknown, loading: boolean }) {
     return (
         <Card className="rounded-3xl border border-gray-100 shadow-sm overflow-hidden p-6 hover:shadow-md transition-shadow">
             <div className="flex items-center justify-between mb-4">

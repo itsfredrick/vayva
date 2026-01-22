@@ -18,7 +18,7 @@ interface StoreContextType {
   isLoading: boolean;
   products: ProductServiceItem[];
   merchant: StoreMerchant | null;
-  store: any; // Full store object including template settings
+  store: unknown; // Full store object including template settings
   currency: string;
 
   // Cart (Directly exposed from hook)
@@ -52,7 +52,7 @@ export const StoreProvider = ({
 }: StoreProviderProps) => {
   const [products, setProducts] = useState<ProductServiceItem[]>([]);
   const [merchant, setMerchant] = useState<StoreMerchant | null>(null);
-  const [store, setStore] = useState<any>(null);
+  const [store, setStore] = useState<unknown>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [isCartOpen, setIsCartOpen] = useState(false);
 

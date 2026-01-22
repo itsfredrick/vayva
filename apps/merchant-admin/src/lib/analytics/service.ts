@@ -23,7 +23,7 @@ export class AnalyticsService {
         _all: true,
       },
     });
-    return events.map((e: any) => ({
+    return events.map((e: unknown) => ({
       category: e.category,
       action: e.action,
       count: e._count._all,
@@ -87,7 +87,7 @@ export class AnalyticsService {
       },
     });
 
-    const actions = new Set(events.map((e: any) => e.action));
+    const actions = new Set(events.map((e: unknown) => e.action));
 
     return {
       categorySelected: actions.has(ACTIVATION_EVENTS.SELECT_CATEGORY),
@@ -107,7 +107,7 @@ export class AnalyticsService {
     const orders = await prisma.order.findMany({
       where: {
         storeId,
-        paymentStatus: "PAID" as any,
+        paymentStatus: "PAID" as unknown,
         createdAt: { gte: range.from, lte: range.to },
       },
       select: {
@@ -129,7 +129,7 @@ export class AnalyticsService {
 
     orders.forEach(o => {
       const dateStr = o.createdAt.toISOString().split('T')[0];
-      const amount = (o.total as any).toNumber ? (o.total as any).toNumber() : Number(o.total);
+      const amount = (o.total as unknown).toNumber ? (o.total as unknown).toNumber() : Number(o.total);
       dailyMap.set(dateStr, (dailyMap.get(dateStr) || 0) + amount);
     });
 

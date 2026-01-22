@@ -52,9 +52,9 @@ export function AAFashionHome({
   const mainHeadline = heroText || "DARK\nMATTER";
   const subHeadline = heroSubtext || "Season 04 / 24";
 
-  const [raffleItem, setRaffleItem] = useState<any>(null);
+  const [raffleItem, setRaffleItem] = useState<unknown>(null);
 
-  const handleRaffleEntry = async (data: any) => {
+  const handleRaffleEntry = async (data: unknown) => {
     // Data contains { customer: { ... } }
     await fetch(`/api/storefront/${storeSlug}/raffles/enter`, {
       method: "POST",

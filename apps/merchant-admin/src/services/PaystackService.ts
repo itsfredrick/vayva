@@ -8,7 +8,7 @@ export const PaystackService = {
         amount: number, // in kobo
         reference: string,
         callbackUrl: string,
-        metadata: any = {}
+        metadata: unknown = {}
     ) {
         if (!PAYSTACK_SECRET_KEY) {
             throw new Error("PAYSTACK_SECRET_KEY is not configured");

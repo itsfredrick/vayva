@@ -5,7 +5,7 @@ import { FlagService } from "../flags/flagService";
 export class WebhookService {
   static signPayload(
     secret: string,
-    payload: any,
+    payload: unknown,
     eventId: string,
     timestamp: number,
   ): string {
@@ -19,7 +19,7 @@ export class WebhookService {
   static async triggerEvent(
     merchantId: string,
     eventName: string,
-    payload: any,
+    payload: unknown,
   ) {
     // KILL SWITCH CHECK
     const enabled = await FlagService.isEnabled("webhooks.outbound.enabled", {
@@ -61,9 +61,9 @@ export class WebhookService {
 
   // Testing the worker process
   private static async processDelivery(
-    sub: any,
+    sub: unknown,
     eventId: string,
-    payload: any,
+    payload: unknown,
     deliveryId: string,
   ) {
     const timestamp = Date.now();

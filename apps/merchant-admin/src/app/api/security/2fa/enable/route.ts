@@ -39,7 +39,7 @@ export async function POST(request: Request) {
       secret: secret.base32,
       backupCodes,
     });
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error("2FA enable error:", error);
 
     if (error.message === "Unauthorized") {

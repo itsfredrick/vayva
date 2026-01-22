@@ -56,7 +56,7 @@ export async function POST(req: Request) {
     }
 
     return NextResponse.json(result);
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error("KYC verification error:", error);
 
     if (error.message === "Unauthorized") {

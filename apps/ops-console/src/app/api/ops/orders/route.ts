@@ -19,10 +19,10 @@ export async function GET(req: NextRequest) {
 
         const skip = (page - 1) * limit;
 
-        const where: any = {
+        const where: unknown = {
             AND: [
-                status ? { status: status as any } : {},
-                paymentStatus ? { paymentStatus: paymentStatus as any } : {},
+                status ? { status: status as unknown} : {},
+                paymentStatus ? { paymentStatus: paymentStatus as unknown} : {},
                 storeId ? { storeId } : {},
                 search
                     ? {
@@ -52,7 +52,7 @@ export async function GET(req: NextRequest) {
             prisma.order.count({ where }),
         ]);
 
-        const data = orders.map((o: any) => ({
+        const data = orders.map((o: unknown) => ({
             id: o.id,
             orderNumber: o.orderNumber,
             status: o.status,

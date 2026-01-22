@@ -34,7 +34,7 @@ const ResetPasswordContent = () => {
     try {
       await AuthService.resetPassword({ token, password });
       router.push("/signin?reset=success");
-    } catch (err: any) {
+    } catch (err: unknown) {
       console.error(err);
       setError(err.response?.data?.error || "Failed to reset password");
     } finally {
@@ -52,7 +52,7 @@ const ResetPasswordContent = () => {
         <div className="text-center">
           <div className="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-6">
             <Icon
-              name={"AlertCircle" as any}
+              name={"AlertCircle" as unknown}
               className="w-8 h-8 text-red-600"
             />
           </div>
@@ -77,7 +77,7 @@ const ResetPasswordContent = () => {
     >
       <div className="flex justify-center mb-6">
         <div className="w-16 h-16 bg-black/5 rounded-full flex items-center justify-center">
-          <Icon name={"Lock" as any} className="w-8 h-8 text-black" />
+          <Icon name={"Lock" as unknown} className="w-8 h-8 text-black" />
         </div>
       </div>
 
@@ -106,7 +106,7 @@ const ResetPasswordContent = () => {
               className="absolute right-3 top-[38px] text-gray-400 hover:text-black h-8 w-8"
             >
               <Icon
-                name={(showPassword ? "EyeOff" : "Eye") as any}
+                name={(showPassword ? "EyeOff" : "Eye") as unknown}
                 className="w-5 h-5"
               />
             </Button>
@@ -131,7 +131,7 @@ const ResetPasswordContent = () => {
             className="absolute right-3 top-[38px] text-gray-400 hover:text-black h-8 w-8"
           >
             <Icon
-              name={(showConfirmPassword ? "EyeOff" : "Eye") as any}
+              name={(showConfirmPassword ? "EyeOff" : "Eye") as unknown}
               className="w-5 h-5"
             />
           </Button>
@@ -149,7 +149,7 @@ const ResetPasswordContent = () => {
         >
           {loading ? (
             <>
-              <Icon name={"Loader2" as any} className="w-5 h-5 animate-spin" />
+              <Icon name={"Loader2" as unknown} className="w-5 h-5 animate-spin" />
               Resetting password...
             </>
           ) : (
@@ -163,7 +163,7 @@ const ResetPasswordContent = () => {
           href="/signin"
           className="text-sm text-[#0D1D1E] hover:text-black font-medium transition-colors inline-flex items-center gap-1"
         >
-          <Icon name={"ArrowLeft" as any} className="w-4 h-4" />
+          <Icon name={"ArrowLeft" as unknown} className="w-4 h-4" />
           Back to sign in
         </Link>
       </div>

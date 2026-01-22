@@ -36,12 +36,12 @@ export const GET = withVayvaAPI(
         status: product.status === "ACTIVE" ? "active" : "draft",
         price: Number(product.price),
         inventory: product.productVariants.reduce(
-          (acc: number, v: any) => acc + (v.inventoryItems[0]?.available || 0),
+          (acc: number, v: unknown) => acc + (v.inventoryItems[0]?.available || 0),
           0,
         ),
         category: product.productType,
         images: [],
-        variants: product.productVariants.map((v: any) => ({
+        variants: product.productVariants.map((v: unknown) => ({
           id: v.id,
           name: v.title,
           price: Number(v.price),

@@ -2,7 +2,7 @@
 // AI Service Placeholder for Merchant Assistance
 
 export class AiService {
-    static async generateResponse(userMessage: string, productSchema: any): Promise<string> {
+    static async generateResponse(userMessage: string, productSchema: unknown): Promise<string> {
         // In real impl, checking OpenAI/Gemini with system prompt
 
         // Simple keyword mock

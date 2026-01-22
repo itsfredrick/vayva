@@ -10,9 +10,9 @@ import { NextResponse } from "next/server";
  */
 export function withOpsRBAC(
     requiredRole: "OPS_OWNER" | "SUPERVISOR" | "OPERATOR" | "OPS_SUPPORT" | "OPS_ADMIN",
-    handler: (session: any, request: Request, ...args: any[]) => Promise<NextResponse> | NextResponse
+    handler: (session: unknown, request: Request, ...args: unknown[]) => Promise<NextResponse> | NextResponse
 ) {
-    return async (request: Request, ...args: any[]) => {
+    return async (request: Request, ...args: unknown[]) => {
         try {
             const session = await OpsAuthService.requireSession();
 
@@ -20,7 +20,7 @@ export function withOpsRBAC(
             OpsAuthService.requireRole(session.user, requiredRole);
 
             return await handler(session, request, ...args);
-        } catch (error: any) {
+        } catch (error: unknown) {
             console.error("[OpsRBAC Error]:", error.message);
 
             if (error.message.includes("Unauthorized")) {

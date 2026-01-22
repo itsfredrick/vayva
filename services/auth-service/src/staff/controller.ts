@@ -1,8 +1,9 @@
 import { FastifyRequest, FastifyReply } from "fastify";
-import { prisma } from "@vayva/db";
+import { prisma, AppRole } from "@vayva/db";
 import { z } from "zod";
 import * as crypto from "crypto";
-import { UserRole, SubscriptionPlan } from "@vayva/shared";
+import bcrypt from "bcryptjs";
+import { UserRole } from "@vayva/shared";
 
 const inviteSchema = z.object({
   email: z.string().email(),
@@ -20,7 +21,7 @@ export const inviteStaffHandler = async (
   req: FastifyRequest,
   reply: FastifyReply,
 ) => {
-  const user = req.user as any;
+  const user = req.user as { sub: string };
   const { email, role } = inviteSchema.parse(req.body) as {
     email: string;
     role: UserRole;
@@ -69,7 +70,7 @@ export const inviteStaffHandler = async (
     data: {
       storeId: store.id,
       email,
-      role: role as any,
+      role,
       token,
       createdBy: user.sub || "admin",
       expiresAt: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000), // 7 days
@@ -89,7 +90,7 @@ export const getInvitesHandler = async (
   req: FastifyRequest,
   reply: FastifyReply,
 ) => {
-  const user = req.user as any;
+  const user = req.user as { sub: string };
   const membership = await prisma.membership.findFirst({
     where: { userId: user.sub },
   });
@@ -125,10 +126,7 @@ export const acceptInviteHandler = async (
 
   if (!user) {
     // Create user
-    const bcrypt = require("bcryptjs");
-    const hashedPassword = await (bcrypt.hash
-      ? bcrypt.hash(password, 10)
-      : require("bcryptjs").hash(password, 10));
+    const hashedPassword = await bcrypt.hash(password, 10);
     user = await prisma.user.create({
       data: {
         email: invite.email,
@@ -145,7 +143,7 @@ export const acceptInviteHandler = async (
     data: {
       userId: user.id,
       storeId: invite.storeId,
-      role_enum: invite.role as any,
+      role_enum: invite.role as AppRole,
     },
   });
 
@@ -162,7 +160,7 @@ export const getStaffHandler = async (
   req: FastifyRequest,
   reply: FastifyReply,
 ) => {
-  const user = req.user as any;
+  const user = req.user as { sub: string };
   const membership = await prisma.membership.findFirst({
     where: { userId: user.sub },
   });
@@ -191,8 +189,8 @@ export const removeStaffHandler = async (
   req: FastifyRequest,
   reply: FastifyReply,
 ) => {
-  const user = req.user as any;
-  const { id } = (req.params as any) || {};
+  const user = req.user as { sub: string };
+  const { id } = req.params as { id: string };
 
   const actingMember = await prisma.membership.findFirst({
     where: { userId: user.sub },

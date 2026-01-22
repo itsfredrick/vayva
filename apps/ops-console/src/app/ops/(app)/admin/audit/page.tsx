@@ -48,7 +48,7 @@ export default function AuditPage() {
                         ) : !logs?.length ? (
                             <tr><td colSpan={4} className="p-12 text-center text-gray-400">No activity recorded.</td></tr>
                         ) : (
-                            logs.map((log: any) => (
+                            logs.map((log: unknown) => (
                                 <tr key={log.id} className="hover:bg-gray-50">
                                     <td className="px-6 py-4 font-mono text-xs text-indigo-700 font-bold">{log.eventType}</td>
                                     <td className="px-6 py-4 flex items-center gap-2">

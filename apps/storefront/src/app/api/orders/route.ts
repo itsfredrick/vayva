@@ -15,7 +15,7 @@ export async function POST(req: NextRequest) {
       items: z.array(z.object({
         id: z.string().uuid(),
         quantity: z.number().int().positive(),
-        metadata: z.record(z.any()).optional()
+        metadata: z.record(z.unknown()).optional()
       })).min(1),
       customer: z.object({
         email: z.string().email(),
@@ -118,7 +118,7 @@ export async function POST(req: NextRequest) {
           refCode,
           orderNumber,
           status: "DRAFT",
-          paymentStatus: initialPaymentStatus as any,
+          paymentStatus: initialPaymentStatus as unknown,
           fulfillmentStatus: "UNFULFILLED",
           total: finalTotal,
           subtotal: calculatedSubtotal,
@@ -177,7 +177,7 @@ export async function POST(req: NextRequest) {
       } : null
     });
 
-  } catch (error: any) {
+  } catch (error: unknown) {
     reportError(error, { route: "POST /api/orders", storeId: storeId });
     return NextResponse.json(
       {

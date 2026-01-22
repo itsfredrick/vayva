@@ -65,4 +65,4 @@ if (!_env.success) {
   }
 }
 
-export const env = _env.success ? _env.data : (process.env as any);
+export const env = _env.success ? _env.data : (process.env as unknown);
