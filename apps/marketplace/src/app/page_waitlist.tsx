@@ -9,6 +9,7 @@ import {
   Loader2,
   CheckCircle,
 } from "lucide-react";
+import { Button } from "@vayva/ui";
 
 export default function MarketplaceHome() {
   const [email, setEmail] = useState("");

@@ -12,9 +12,7 @@ import {
   Zap,
   ShieldCheck,
   Wifi,
-  ArrowRight
 } from "lucide-react";
-import { Button } from "@vayva/ui";
 import { LandingHero } from "@/components/marketing/LandingHero";
 import { PremiumButton } from "@/components/marketing/PremiumButton";
 import { APP_URL } from "@/lib/constants";

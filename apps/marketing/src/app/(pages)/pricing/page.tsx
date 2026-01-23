@@ -85,6 +85,7 @@ export default function PricingPage() {
               let label = plan.ctaLabel;
 
               if (loading) {
+                console.log("Pricing: Loading user plan...");
               } else if (isAuthenticated) {
                 if (isCurrentPlan) {
                   href = `${APP_URL}/settings/billing`;

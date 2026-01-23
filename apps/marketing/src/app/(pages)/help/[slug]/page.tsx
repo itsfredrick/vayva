@@ -1,14 +1,13 @@
 "use client";
 
 import React from "react";
-import { useParams, useRouter } from "next/navigation";
+import { useParams } from "next/navigation";
 import Link from "next/link";
 import { getArticleBySlug } from "@/lib/help";
 import { Button } from "@vayva/ui";
 
 export default function HelpArticlePage() {
   const params = useParams();
-  const router = useRouter();
   const slug = params?.slug as string;
   const article = getArticleBySlug(slug);
 
@@ -70,7 +69,7 @@ export default function HelpArticlePage() {
                   <li key={i} className="ml-4 mb-2">
                     {line
                       .trim()
-                      .replace(/^[0-9\.-]+/, "")
+                      .replace(/^[0-9.-]+/, "")
                       .trim()}
                   </li>
                 );

@@ -20,7 +20,7 @@ interface Store {
 interface Product {
     id: string;
     title: string;
-    price: any; // Decimal type from Prisma
+    price: number | string | { toString(): string }; // Accommodate Prisma Decimal
     productImages: Array<{ url: string }>;
     store?: {
         name: string;
@@ -33,11 +33,11 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
     const title = slug.charAt(0).toUpperCase() + slug.slice(1);
 
     // Dynamic Data Fetching
-    let items: any[] = [];
+    let items: Store[] | Product[] = [];
 
     if (isFood) {
         // Fetch Restaurants
-        items = await prisma.store.findMany({
+        const stores = await prisma.store.findMany({
             where: {
                 OR: [
                     { category: 'food' },
@@ -47,10 +47,11 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
                 isLive: true
             },
             take: 20
-        }) as Store[];
+        });
+        items = stores as unknown as Store[];
     } else {
         // Fetch Products
-        items = await prisma.product.findMany({
+        const products = await prisma.product.findMany({
             where: {
                 productType: { contains: slug, mode: 'insensitive' }, // Simple keyword match
                 status: 'PUBLISHED'
@@ -60,7 +61,8 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
                 store: true
             },
             take: 20
-        }) as Product[];
+        });
+        items = products as unknown as Product[];
     }
 
     return (

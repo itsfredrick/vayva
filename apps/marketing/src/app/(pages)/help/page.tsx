@@ -12,13 +12,6 @@ export default function HelpCenterPage() {
   const [searchQuery, setSearchQuery] = useState("");
   const [isAiOpen, setIsAiOpen] = useState(false);
 
-  const filteredArticles = HELP_ARTICLES.filter(
-    (a: HelpArticle) =>
-      a.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      a.summary.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      a.category.toLowerCase().includes(searchQuery.toLowerCase()),
-  );
-
   const categories = Array.from(new Set(HELP_ARTICLES.map((a: HelpArticle) => a.category)));
 
   return (

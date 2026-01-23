@@ -55,9 +55,10 @@ export default function CheckoutPage() {
             router.push(`/orders/${data.orderId}`);
             router.refresh();
 
-        } catch (error: any) {
-            console.error("Order placement failed", error);
-            alert(error.message || "Something went wrong. Please try again.");
+        } catch (error: unknown) {
+            const err = error as Error;
+            console.error("Order placement failed", err);
+            alert(err.message || "Something went wrong. Please try again.");
         } finally {
             setIsPlacingOrder(false);
         }

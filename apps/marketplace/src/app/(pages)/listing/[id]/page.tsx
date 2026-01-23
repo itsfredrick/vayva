@@ -16,20 +16,26 @@ interface ProductImage {
 interface ProductVariant {
     id: string;
     title: string;
-    price: any;
+    price: number | string;
     productImage?: ProductImage | null;
+}
+
+interface ProductPricingTier {
+    id: string;
+    minQty: number;
+    unitPrice: number | string;
 }
 
 interface Product {
     id: string;
     title: string;
     description?: string | null;
-    price: any;
+    price: number | string;
     productType?: string | null;
     condition?: string | null;
     moq: number;
     depositRequired?: boolean;
-    depositPercentage?: any;
+    depositPercentage?: number | string;
     shippingEstimate?: string | null;
     store?: {
         name: string;
@@ -37,11 +43,7 @@ interface Product {
     } | null;
     productImages: ProductImage[];
     productVariants: ProductVariant[];
-    pricingTiers?: Array<{
-        id: string;
-        minQty: number;
-        unitPrice: any;
-    }>;
+    pricingTiers?: ProductPricingTier[];
 }
 
 export default function ListingDetailPage() {
@@ -212,7 +214,7 @@ export default function ListingDetailPage() {
                         <div className="bg-gray-100 rounded-lg p-4">
                             <h4 className="text-sm font-bold mb-2">Wholesale Pricing</h4>
                             <div className="grid grid-cols-2 gap-2">
-                                {product.pricingTiers.map((tier: any) => (
+                                {product.pricingTiers.map((tier: ProductPricingTier) => (
                                     <div key={tier.id} className="bg-white p-2 rounded border text-xs">
                                         <p className="font-bold">{tier.minQty}+ units</p>
                                         <p className="text-gray-500">₦{Number(tier.unitPrice).toLocaleString()}/unit</p>

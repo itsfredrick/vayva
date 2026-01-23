@@ -38,7 +38,7 @@ export default function ManageCookiesPage() {
           setMarketingEnabled(!!data.marketing);
           if (data.updatedAt) setUpdatedAt(data.updatedAt);
         }
-      } catch (error) {
+      } catch (_error) {
         // Silent fail on load, default strict
       } finally {
         setIsLoading(false);
@@ -72,7 +72,7 @@ export default function ManageCookiesPage() {
         setStatus("error");
         setErrorMsg(err.message || "Failed to save preferences");
       }
-    } catch (error) {
+    } catch (_error) {
       setStatus("error");
       setErrorMsg("Network error occurred");
     }
@@ -101,11 +101,10 @@ export default function ManageCookiesPage() {
                   <li key={doc.href}>
                     <Link
                       href={doc.href}
-                      className={`block px-3 py-2 text-sm rounded ${
-                        doc.active
+                      className={`block px-3 py-2 text-sm rounded ${doc.active
                           ? "bg-gray-100 text-gray-900 font-medium"
                           : "text-gray-600 hover:bg-gray-50 hover:text-gray-900"
-                      }`}
+                        }`}
                     >
                       {doc.title}
                     </Link>
@@ -256,11 +255,10 @@ export default function ManageCookiesPage() {
               <Button
                 onClick={handleSave}
                 disabled={status === "saving"}
-                className={`px-6 py-3 font-semibold rounded transition-colors ${
-                  status === "saving"
+                className={`px-6 py-3 font-semibold rounded transition-colors ${status === "saving"
                     ? "bg-gray-300 text-gray-500 cursor-not-allowed"
                     : "bg-[#22C55E] hover:bg-[#16A34A] text-white"
-                }`}
+                  }`}
               >
                 {status === "saving" ? "Saving..." : "Save Preferences"}
               </Button>
