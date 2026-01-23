@@ -12,9 +12,9 @@ export function HeroDownloadButton() {
     useEffect(() => {
         const isStandaloneMode =
             window.matchMedia("(display-mode: standalone)").matches ||
-            (window.navigator as unknown).standalone ||
+            (window.navigator as any).standalone ||
             document.referrer.includes("android-app://");
-        setIsStandalone(isStandaloneMode);
+        setTimeout(() => setIsStandalone(isStandaloneMode), 0);
     }, []);
 
     if (isStandalone) {

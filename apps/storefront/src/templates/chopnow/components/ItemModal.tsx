@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import { X, Minus, Plus, ShoppingBag } from "lucide-react";
 import { Button } from "@vayva/ui";
 import { PublicProduct } from "@/types/storefront";
@@ -15,10 +15,8 @@ export const ItemModal = ({ item, onClose, onAddToCart }: ItemModalProps) => {
     Record<string, unknown>
   >({});
 
-  // Calculate total
-  const [total, setTotal] = useState(item.price);
-
-  useEffect(() => {
+  // Calculate total reactive to modifiers and qty
+  const total = useMemo(() => {
     let modTotal = 0;
     Object.values(selectedModifiers).forEach((val: unknown) => {
       if (typeof val === "number") modTotal += val; // Direct price
@@ -27,14 +25,14 @@ export const ItemModal = ({ item, onClose, onAddToCart }: ItemModalProps) => {
         val.forEach((v) => (modTotal += v.price));
       }
     });
-    setTotal((item.price + modTotal) * qty);
+    return (item.price + modTotal) * qty;
   }, [qty, selectedModifiers, item.price]);
 
   const handleChoice = (modId: string, price: number) => {
     setSelectedModifiers((prev) => ({ ...prev, [modId]: price }));
   };
 
-  const handleToggle = (modId: string, option: unknown) => {
+  const handleToggle = (modId: string, option: any) => {
     // Simple logic for single select radio for now to keep it fast
     // For addons (checkboxes), we'd need array logic.
     // Testing 'addon' as single select for simplicity in this demo unless specified.

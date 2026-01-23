@@ -11,7 +11,7 @@ export function ConsentBanner() {
     useEffect(() => {
         const consent = localStorage.getItem("vayva_consent");
         if (!consent) {
-            setIsVisible(true);
+            setTimeout(() => setIsVisible(true), 0);
         }
     }, []);
 

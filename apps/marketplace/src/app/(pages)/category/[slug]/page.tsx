@@ -4,6 +4,7 @@ import { MobileCategoryHeader } from "@/components/mobile/MobileCategoryHeader";
 import { Star, Clock, MapPin } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
+import { MarketProduct } from "@vayva/shared";
 
 interface CategoryPageProps {
     params: { slug: string };
@@ -17,15 +18,6 @@ interface Store {
     bio?: string | null;
 }
 
-interface Product {
-    id: string;
-    title: string;
-    price: number | string | { toString(): string }; // Accommodate Prisma Decimal
-    productImages: Array<{ url: string }>;
-    store?: {
-        name: string;
-    } | null;
-}
 
 export default async function CategoryPage({ params }: CategoryPageProps) {
     const slug = params.slug;
@@ -33,7 +25,7 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
     const title = slug.charAt(0).toUpperCase() + slug.slice(1);
 
     // Dynamic Data Fetching
-    let items: Store[] | Product[] = [];
+    let items: Store[] | MarketProduct[] = [];
 
     if (isFood) {
         // Fetch Restaurants
@@ -62,7 +54,7 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
             },
             take: 20
         });
-        items = products as unknown as Product[];
+        items = products as unknown as MarketProduct[];
     }
 
     return (
@@ -125,7 +117,7 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
                                 No products found in {title}.
                             </div>
                         ) : (
-                            (items as Product[]).map((product) => (
+                            (items as MarketProduct[]).map((product) => (
                                 <Link href={`/listing/${product.id}`} key={product.id} className="bg-white border border-gray-100 rounded-xl overflow-hidden block">
                                     <div className="aspect-square bg-gray-50 relative">
                                         {product.productImages?.[0] ? (

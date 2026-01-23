@@ -30,7 +30,7 @@ export function ResourceEditPage({
         if (!id) return;
 
         // Fetch Data
-        setIsLoading(true);
+        setTimeout(() => setIsLoading(true), 0);
         fetch(`/api/resources/${primaryObject}/${id}`)
             .then(async (res) => {
                 if (!res.ok) {

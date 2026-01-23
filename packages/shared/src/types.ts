@@ -634,3 +634,43 @@ export interface AccountOverview {
     actionUrl: string;
   }[];
 }
+
+// Marketplace & Product Discovery Types
+
+export interface MarketProductImage {
+  id: string;
+  url: string;
+}
+
+export interface MarketProductVariant {
+  id: string;
+  title: string;
+  price: number | string;
+  productImage?: MarketProductImage | null;
+}
+
+export interface MarketProductPricingTier {
+  id: string;
+  minQty: number;
+  unitPrice: number | string;
+}
+
+export interface MarketProduct {
+  id: string;
+  title: string;
+  description?: string | null;
+  price: number | string;
+  productType?: string | null;
+  condition?: string | null;
+  moq: number;
+  depositRequired?: boolean;
+  depositPercentage?: number | string;
+  shippingEstimate?: string | null;
+  store?: {
+    name: string;
+    type: string;
+  } | null;
+  productImages: MarketProductImage[];
+  productVariants: MarketProductVariant[];
+  pricingTiers?: MarketProductPricingTier[];
+}

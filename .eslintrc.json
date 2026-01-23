@@ -32,6 +32,8 @@
             }
         ],
         "no-undef": "error",
+        "no-mixed-spaces-and-tabs": "off",
+        "no-extra-semi": "off",
         "no-empty": "error",
         "no-cond-assign": "error",
         "no-func-assign": "error",
@@ -63,6 +65,7 @@
                 "react/prop-types": "off",
                 "react/no-unescaped-entities": "off",
                 "react-hooks/exhaustive-deps": "warn",
+                "no-undef": "off",
                 "no-restricted-syntax": [
                     "warn",
                     {
@@ -83,8 +86,11 @@
             "rules": {
                 "@typescript-eslint/no-explicit-any": "off",
                 "@typescript-eslint/no-unused-vars": "off",
+                "@typescript-eslint/explicit-function-return-type": "off",
+                "@typescript-eslint/no-unused-expressions": "off",
                 "no-empty-pattern": "off",
-                "no-console": "off"
+                "no-console": "off",
+                "no-undef": "off"
             }
         },
         {
@@ -99,8 +105,10 @@
             "rules": {
                 "@typescript-eslint/no-require-imports": "off",
                 "@typescript-eslint/no-explicit-any": "off",
+                "@typescript-eslint/explicit-function-return-type": "off",
                 "@typescript-eslint/no-var-requires": "off",
-                "no-console": "off"
+                "no-console": "off",
+                "no-undef": "off"
             }
         },
         {

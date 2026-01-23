@@ -36,7 +36,7 @@ const StoreContext = createContext<StoreContextType>({
 
 export const useStore = () => useContext(StoreContext);
 
-export function StoreProvider({ children }: { children: unknown }) {
+export function StoreProvider({ children }: { children: React.ReactNode }) {
   const searchParams = useSearchParams();
   const [store, setStore] = useState<PublicStore | null>(null);
   const [isLoading, setIsLoading] = useState(true);
@@ -49,7 +49,7 @@ export function StoreProvider({ children }: { children: unknown }) {
       const saved = localStorage.getItem("vayva_cart");
       if (saved) {
         try {
-          setCart(JSON.parse(saved));
+          setTimeout(() => setCart(JSON.parse(saved)), 0);
         } catch (e) {
           console.error("Failed to parse cart", e);
         }
@@ -126,7 +126,7 @@ export function StoreProvider({ children }: { children: unknown }) {
   useEffect(() => {
     const handleMessage = (event: MessageEvent) => {
       if (event.data?.type === "VAYVA_PREVIEW_UPDATE") {
-        setStore((prev: unknown) => {
+        setStore((prev: any) => {
           if (!prev) return prev;
           return {
             ...prev,

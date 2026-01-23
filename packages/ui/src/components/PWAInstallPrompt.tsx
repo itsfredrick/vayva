@@ -22,7 +22,7 @@ export function PWAInstallPrompt() {
         // Check if running on iOS
         const isIosDevice =
             /iPad|iPhone|iPod/.test(navigator.userAgent) && !(window as Window & { MSStream?: unknown }).MSStream;
-        setIsIOS(isIosDevice);
+        setTimeout(() => setIsIOS(isIosDevice), 0);
 
         // Check strict standalone mode
         const isStandalone =

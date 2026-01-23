@@ -1,5 +1,18 @@
 import { MerchantContext } from "@vayva/shared";
 
+export type PrimaryObject =
+    | "product"
+    | "service"
+    | "event"
+    | "course"
+    | "post"
+    | "project"
+    | "campaign"
+    | "listing"
+    | "menu_item"
+    | "digital_asset"
+    | string;
+
 export type IndustrySlug =
     | "retail"
     | "fashion"
@@ -38,7 +51,7 @@ export interface Store {
     themeConfig?: any;
 }
 
-export interface ExtendedMerchant extends MerchantContext {
+export interface ExtendedMerchant extends Omit<MerchantContext, "industrySlug"> {
     industrySlug?: IndustrySlug;
     enabledExtensionIds?: string[];
 }

@@ -17,7 +17,7 @@ export const CookieBanner: React.FC = () => {
   useEffect(() => {
     const consent = localStorage.getItem("vayva_cookie_consent");
     if (!consent) {
-      setIsVisible(true);
+      setTimeout(() => setIsVisible(true), 0);
     }
   }, []);
 

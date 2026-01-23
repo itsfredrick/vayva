@@ -11,6 +11,7 @@ export default function SignupPage() {
   const router = useRouter();
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
+  const [businessName, setBusinessName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
@@ -34,7 +35,7 @@ export default function SignupPage() {
     setLoading(true);
     setError(null);
     try {
-      await AuthService.register({ email, password, firstName, lastName });
+      await AuthService.register({ email, password, firstName, lastName, businessName });
       router.push(`/verify?email=${encodeURIComponent(email)}`);
     } catch (err) {
       console.error(err);
@@ -79,6 +80,17 @@ export default function SignupPage() {
               required
             />
           </div>
+        </div>
+
+        <div className="space-y-2">
+          <Label htmlFor="businessName">Business name</Label>
+          <Input
+            id="businessName"
+            placeholder="e.g. Acme Retail"
+            value={businessName}
+            onChange={(e) => setBusinessName(e.target.value)}
+            required
+          />
         </div>
 
         <div className="space-y-2">

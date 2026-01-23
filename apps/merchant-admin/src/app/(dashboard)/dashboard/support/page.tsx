@@ -24,7 +24,7 @@ export default function SupportPage() {
   // Fetch Tickets
   useEffect(() => {
     if (activeTab === "tickets") {
-      setLoading(true);
+      setTimeout(() => setLoading(true), 0);
       fetch("/api/merchant/support/tickets")
         .then((res) => res.json())
         .then((data) => {
@@ -38,7 +38,7 @@ export default function SupportPage() {
   // Fetch WhatsApp
   useEffect(() => {
     if (activeTab === "whatsapp") {
-      setWaLoading(true);
+      setTimeout(() => setWaLoading(true), 0);
       WaAgentService.getConversations()
         .then((data) => {
           setConversations(data);
@@ -173,9 +173,19 @@ export default function SupportPage() {
   );
 }
 
+interface WhatsAppSettings {
+  enabled: boolean;
+  humanHandoffEnabled: boolean;
+  autoReplyOutsideHours: boolean;
+}
+
+interface WhatsAppProfile {
+  prohibitedClaims: string[];
+}
+
 function SettingsView() {
-  const [settings, setSettings] = useState<unknown>(null);
-  const [profile, setProfile] = useState<unknown>(null);
+  const [settings, setSettings] = useState<WhatsAppSettings | null>(null);
+  const [profile, setProfile] = useState<WhatsAppProfile | null>(null);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [newClaim, setNewClaim] = useState("");
@@ -192,7 +202,7 @@ function SettingsView() {
       } catch (e) {
         console.error("Failed to load settings", e);
       } finally {
-        setLoading(false);
+        setTimeout(() => setLoading(false), 0);
       }
     }
     load();
@@ -214,7 +224,7 @@ function SettingsView() {
     }
   }
 
-  function toggleSetting(key: string) {
+  function toggleSetting(key: keyof WhatsAppSettings) {
     if (!settings) return;
     setSettings({ ...settings, [key]: !settings[key] });
   }

@@ -6,53 +6,22 @@ import { useParams, useRouter } from "next/navigation";
 import { ArrowLeft, MapPin, Share2, Heart, ShieldCheck, MessageCircle, ShoppingCart, Truck } from "lucide-react";
 import { useCart } from "@/context/CartContext";
 import { Button, cn } from "@vayva/ui";
+import {
+    MarketProduct,
+    MarketProductImage,
+    MarketProductVariant,
+    MarketProductPricingTier
+} from "@vayva/shared";
 
 
-interface ProductImage {
-    id: string;
-    url: string;
-}
-
-interface ProductVariant {
-    id: string;
-    title: string;
-    price: number | string;
-    productImage?: ProductImage | null;
-}
-
-interface ProductPricingTier {
-    id: string;
-    minQty: number;
-    unitPrice: number | string;
-}
-
-interface Product {
-    id: string;
-    title: string;
-    description?: string | null;
-    price: number | string;
-    productType?: string | null;
-    condition?: string | null;
-    moq: number;
-    depositRequired?: boolean;
-    depositPercentage?: number | string;
-    shippingEstimate?: string | null;
-    store?: {
-        name: string;
-        type: string;
-    } | null;
-    productImages: ProductImage[];
-    productVariants: ProductVariant[];
-    pricingTiers?: ProductPricingTier[];
-}
 
 export default function ListingDetailPage() {
     const { id } = useParams();
     const router = useRouter();
     const { addItem } = useCart();
-    const [product, setProduct] = useState<Product | null>(null);
+    const [product, setProduct] = useState<MarketProduct | null>(null);
     const [loading, setLoading] = useState(true);
-    const [selectedVariant, setSelectedVariant] = useState<ProductVariant | null>(null);
+    const [selectedVariant, setSelectedVariant] = useState<MarketProductVariant | null>(null);
     const [chatLoading, setChatLoading] = React.useState(false);
     const [isAddingToCart, setIsAddingToCart] = useState(false);
 
@@ -61,7 +30,7 @@ export default function ListingDetailPage() {
             try {
                 const res = await fetch(`/api/products/${id}`);
                 if (res.ok) {
-                    const data = await res.json() as Product;
+                    const data = await res.json() as MarketProduct;
                     setProduct(data);
                     if (data.productVariants?.length > 0) {
                         setSelectedVariant(data.productVariants[0]);
@@ -171,7 +140,7 @@ export default function ListingDetailPage() {
                     </div>
 
                     <div className="flex gap-2 overflow-x-auto pb-2 hide-scrollbar">
-                        {product.productImages?.map((img: ProductImage, i: number) => (
+                        {product.productImages?.map((img: MarketProductImage, i: number) => (
                             <div key={img.id} className="w-20 h-20 flex-shrink-0 bg-gray-100 rounded-lg overflow-hidden border border-transparent hover:border-black transition-colors cursor-pointer">
                                 <img src={img.url} alt="" className="w-full h-full object-cover" />
                             </div>
@@ -214,7 +183,7 @@ export default function ListingDetailPage() {
                         <div className="bg-gray-100 rounded-lg p-4">
                             <h4 className="text-sm font-bold mb-2">Wholesale Pricing</h4>
                             <div className="grid grid-cols-2 gap-2">
-                                {product.pricingTiers.map((tier: ProductPricingTier) => (
+                                {product.pricingTiers.map((tier: MarketProductPricingTier) => (
                                     <div key={tier.id} className="bg-white p-2 rounded border text-xs">
                                         <p className="font-bold">{tier.minQty}+ units</p>
                                         <p className="text-gray-500">₦{Number(tier.unitPrice).toLocaleString()}/unit</p>
@@ -229,7 +198,7 @@ export default function ListingDetailPage() {
                         <div>
                             <h3 className="font-bold text-sm mb-2">Select Variant</h3>
                             <div className="flex flex-wrap gap-2">
-                                {product.productVariants.map((v: ProductVariant) => (
+                                {product.productVariants.map((v: MarketProductVariant) => (
                                     <Button
                                         key={v.id}
                                         onClick={() => setSelectedVariant(v)}

@@ -4,6 +4,7 @@ import React, { useState } from "react";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/context/AuthContext";
 import { INDUSTRY_CONFIG } from "@/config/industry";
+import { useIndustry } from "@/hooks/useIndustry";
 import { FIELD_REGISTRY } from "@/config/fields";
 type FieldType = "text" | "number" | "textarea" | "date" | "select" | "image" | "file" | "tags" | "boolean";
 
@@ -35,12 +36,7 @@ export const DynamicResourceForm = ({
 }: ValidatedFormProps) => {
     const router = useRouter();
     const { merchant } = useAuth();
-    const { store } = useStore();
-    const industrySlug = (store?.industrySlug || merchant?.industrySlug || "retail") as IndustrySlug;
-
-    const config = INDUSTRY_CONFIG[industrySlug];
-    // Fallback to retail if config missing to prevent crash
-    const effectiveConfig = config || INDUSTRY_CONFIG['retail'];
+    const { industrySlug, config: effectiveConfig } = useIndustry();
     const formConfig = effectiveConfig.forms[primaryObject];
 
     const [formData, setFormData] = useState<any>(initialData || {});

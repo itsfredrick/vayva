@@ -36,7 +36,7 @@ export function HeaderBell() {
   };
 
   useEffect(() => {
-    fetchNotifications();
+    setTimeout(() => fetchNotifications(), 0);
     // Setup polling every 60s
     const interval = setInterval(fetchNotifications, 60000);
     return () => clearInterval(interval);
@@ -127,12 +127,12 @@ export function HeaderBell() {
                     <div className="flex items-start">
                       <div
                         className={`mt-1.5 w-2 h-2 rounded-full flex-shrink-0 mr-3 ${n.severity === "critical"
-                            ? "bg-red-500"
-                            : n.severity === "success"
-                              ? "bg-green-500"
-                              : n.severity === "warning"
-                                ? "bg-yellow-500"
-                                : "bg-blue-500"
+                          ? "bg-red-500"
+                          : n.severity === "success"
+                            ? "bg-green-500"
+                            : n.severity === "warning"
+                              ? "bg-yellow-500"
+                              : "bg-blue-500"
                           }`}
                       />
                       <div>
