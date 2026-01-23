@@ -28,11 +28,20 @@ packages/api-client/src/generated/**
 **/*.bundle.min.js
 **/*.map
 
-# Project Specific Files
+# Build Artifacts (Environment specific)
+.next/
+dist/
+build/
+out/
+.turbo/
+.vercel/
+
+# Logs and system files
 *.log
 .DS_Store
 lint_report.txt
 lint_results.json
+typecheck_results.txt
 
 # Tooling specific (sometimes generates JS in src)
 **/src/**/*.js

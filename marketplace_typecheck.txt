@@ -1,0 +1,53 @@
+
+> vayva@ typecheck /Users/fredrick/Documents/GitHub/vayva
+> turbo run typecheck --filter\=marketplace
+
+• turbo 2.7.5
+• Packages in scope: marketplace
+• Running typecheck in 1 packages
+• Remote caching disabled
+marketplace:typecheck: cache miss, executing 316d2b692cee9ded
+marketplace:typecheck: 
+marketplace:typecheck: > marketplace@0.0.0 typecheck /Users/fredrick/Documents/GitHub/vayva/apps/marketplace
+marketplace:typecheck: > tsc --noEmit
+marketplace:typecheck: 
+marketplace:typecheck: src/app/api/checkout/route.ts(40,22): error TS18046: 'error' is of type 'unknown'.
+marketplace:typecheck: src/app/api/conversations/route.ts(146,64): error TS18046: 'c' is of type 'unknown'.
+marketplace:typecheck: src/app/api/conversations/route.ts(147,17): error TS18046: 'conv' is of type 'unknown'.
+marketplace:typecheck: src/app/api/conversations/route.ts(148,24): error TS18046: 'conv' is of type 'unknown'.
+marketplace:typecheck: src/app/api/conversations/route.ts(149,24): error TS18046: 'conv' is of type 'unknown'.
+marketplace:typecheck: src/app/api/conversations/route.ts(150,26): error TS18046: 'conv' is of type 'unknown'.
+marketplace:typecheck: src/app/api/conversations/route.ts(151,28): error TS18046: 'conv' is of type 'unknown'.
+marketplace:typecheck: src/app/api/conversations/route.ts(153,56): error TS18046: 'b' is of type 'unknown'.
+marketplace:typecheck: src/app/api/conversations/route.ts(153,94): error TS18046: 'a' is of type 'unknown'.
+marketplace:typecheck: src/app/api/delivery/consolidate/route.ts(82,22): error TS18046: 'error' is of type 'unknown'.
+marketplace:typecheck: src/app/api/delivery/consolidate/route.ts(117,22): error TS18046: 'error' is of type 'unknown'.
+marketplace:typecheck: src/app/page_waitlist.tsx(119,18): error TS2304: Cannot find name 'Button'.
+marketplace:typecheck: src/app/page_waitlist.tsx(121,19): error TS2304: Cannot find name 'Button'.
+marketplace:typecheck: src/app/page_waitlist.tsx(175,16): error TS2304: Cannot find name 'Button'.
+marketplace:typecheck: src/app/page_waitlist.tsx(182,17): error TS2304: Cannot find name 'Button'.
+marketplace:typecheck: src/components/cart/CartItem.tsx(25,21): error TS18046: 'variant' is of type 'unknown'.
+marketplace:typecheck: src/components/cart/CartItem.tsx(26,49): error TS18046: 'variant' is of type 'unknown'.
+marketplace:typecheck: src/components/cart/CartItem.tsx(52,26): error TS18046: 'variant' is of type 'unknown'.
+marketplace:typecheck: src/components/cart/CartItem.tsx(52,65): error TS18046: 'variant' is of type 'unknown'.
+marketplace:typecheck: src/components/cart/CartItem.tsx(55,48): error TS18046: 'variant' is of type 'unknown'.
+marketplace:typecheck: src/services/DeliveryConsolidationService.ts(74,25): error TS2698: Spread types may only be created from object types.
+marketplace:typecheck: src/services/DeliveryConsolidationService.ts(92,21): error TS2698: Spread types may only be created from object types.
+marketplace:typecheck: src/services/DeliveryConsolidationService.ts(137,15): error TS2339: Property 'deliveryConsolidation' does not exist on type '{}'.
+marketplace:typecheck: src/services/DeliveryConsolidationService.ts(146,58): error TS2339: Property 'deliveryFeeAllocation' does not exist on type '{}'.
+marketplace:typecheck: ../../packages/shared/src/extensions/manifest-fetcher.ts(7,39): error TS2769: No overload matches this call.
+marketplace:typecheck:   Overload 1 of 2, '(input: string | Request | URL, init?: RequestInit | undefined): Promise<Response>', gave the following error.
+marketplace:typecheck:     Argument of type 'unknown' is not assignable to parameter of type 'RequestInit | undefined'.
+marketplace:typecheck:   Overload 2 of 2, '(input: URL | RequestInfo, init?: RequestInit | undefined): Promise<Response>', gave the following error.
+marketplace:typecheck:     Argument of type 'unknown' is not assignable to parameter of type 'RequestInit | undefined'.
+marketplace:typecheck:  ELIFECYCLE  Command failed with exit code 2.
+marketplace:typecheck: ERROR: command finished with error: command (/Users/fredrick/Documents/GitHub/vayva/apps/marketplace) /Users/fredrick/Library/pnpm/.tools/pnpm/10.2.0/bin/pnpm run typecheck exited (2)
+marketplace#typecheck: command (/Users/fredrick/Documents/GitHub/vayva/apps/marketplace) /Users/fredrick/Library/pnpm/.tools/pnpm/10.2.0/bin/pnpm run typecheck exited (2)
+
+ Tasks:    0 successful, 1 total
+Cached:    0 cached, 1 total
+  Time:    4.202s 
+Failed:    marketplace#typecheck
+
+ ERROR  run failed: command  exited (2)
+ ELIFECYCLE  Command failed with exit code 2.

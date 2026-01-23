@@ -1,0 +1,480 @@
+
+> vayva@ typecheck /Users/fredrick/Documents/GitHub/vayva
+> turbo run typecheck --filter\=storefront
+
+• turbo 2.7.5
+• Packages in scope: storefront
+• Running typecheck in 1 packages
+• Remote caching disabled
+storefront:typecheck: cache miss, executing 263ba9bd1bd917f4
+storefront:typecheck: 
+storefront:typecheck: > storefront@0.0.0 typecheck /Users/fredrick/Documents/GitHub/vayva/apps/storefront
+storefront:typecheck: > tsc --noEmit
+storefront:typecheck: 
+storefront:typecheck: src/app/[lang]/account/addresses/page.tsx(11,41): error TS2339: Property 'params' does not exist on type 'unknown'.
+storefront:typecheck: src/app/[lang]/account/addresses/page.tsx(94,9): error TS2322: Type '(address: Omit<Address, "id">) => void' is not assignable to type '(address: unknown) => void'.
+storefront:typecheck:   Types of parameters 'address' and 'address' are incompatible.
+storefront:typecheck:     Type 'unknown' is not assignable to type 'Omit<Address, "id">'.
+storefront:typecheck: src/app/[lang]/account/help/page.tsx(9,36): error TS2339: Property 'params' does not exist on type 'unknown'.
+storefront:typecheck: src/app/[lang]/account/login/page.tsx(48,16): error TS18046: 'e' is of type 'unknown'.
+storefront:typecheck: src/app/[lang]/account/page.tsx(50,38): error TS2339: Property 'name' does not exist on type '{}'.
+storefront:typecheck: src/app/[lang]/account/page.tsx(52,67): error TS2339: Property 'email' does not exist on type '{}'.
+storefront:typecheck: src/app/[lang]/account/payments/page.tsx(18,40): error TS2339: Property 'params' does not exist on type 'unknown'.
+storefront:typecheck: src/app/[lang]/account/payments/page.tsx(105,9): error TS2322: Type '(method: Omit<PaymentMethod, "id">) => void' is not assignable to type '(payment: unknown) => void'.
+storefront:typecheck:   Types of parameters 'method' and 'payment' are incompatible.
+storefront:typecheck:     Type 'unknown' is not assignable to type 'Omit<PaymentMethod, "id">'.
+storefront:typecheck: src/app/[lang]/account/register/page.tsx(71,16): error TS18046: 'e' is of type 'unknown'.
+storefront:typecheck: src/app/[lang]/favorites/page.tsx(23,41): error TS2339: Property 'params' does not exist on type 'unknown'.
+storefront:typecheck: src/app/[lang]/menu/page.tsx(23,36): error TS2339: Property 'params' does not exist on type 'unknown'.
+storefront:typecheck: src/app/[lang]/past-deliveries/page.tsx(34,46): error TS2339: Property 'params' does not exist on type 'unknown'.
+storefront:typecheck: src/app/api/auth/login/route.ts(27,32): error TS2339: Property 'passwordHash' does not exist on type '{}'.
+storefront:typecheck: src/app/api/auth/login/route.ts(35,54): error TS2339: Property 'passwordHash' does not exist on type '{}'.
+storefront:typecheck: src/app/api/auth/login/route.ts(48,22): error TS2339: Property 'id' does not exist on type '{}'.
+storefront:typecheck: src/app/api/auth/login/route.ts(49,25): error TS2339: Property 'email' does not exist on type '{}'.
+storefront:typecheck: src/app/api/auth/login/route.ts(50,27): error TS2339: Property 'firstName' does not exist on type '{}'.
+storefront:typecheck: src/app/api/auth/login/route.ts(50,49): error TS2339: Property 'lastName' does not exist on type '{}'.
+storefront:typecheck: src/app/api/menu/route.ts(47,31): error TS18046: 'c' is of type 'unknown'.
+storefront:typecheck: src/app/api/menu/route.ts(49,26): error TS18046: 'c' is of type 'unknown'.
+storefront:typecheck: src/app/api/menu/route.ts(55,15): error TS18046: 'c' is of type 'unknown'.
+storefront:typecheck: src/app/api/menu/route.ts(56,24): error TS18046: 'c' is of type 'unknown'.
+storefront:typecheck: src/app/api/menu/route.ts(56,37): error TS18046: 'c' is of type 'unknown'.
+storefront:typecheck: src/app/api/menu/route.ts(67,7): error TS18046: 'p' is of type 'unknown'.
+storefront:typecheck: src/app/api/menu/route.ts(70,11): error TS18046: 'tagsObj' is of type 'unknown'.
+storefront:typecheck: src/app/api/menu/route.ts(73,13): error TS18046: 'tagsObj' is of type 'unknown'.
+storefront:typecheck: src/app/api/menu/route.ts(79,12): error TS18046: 'tagsObj' is of type 'unknown'.
+storefront:typecheck: src/app/api/menu/route.ts(79,30): error TS18046: 'tagsObj' is of type 'unknown'.
+storefront:typecheck: src/app/api/menu/route.ts(82,13): error TS18046: 'p' is of type 'unknown'.
+storefront:typecheck: src/app/api/menu/route.ts(83,18): error TS18046: 'p' is of type 'unknown'.
+storefront:typecheck: src/app/api/menu/route.ts(84,15): error TS18046: 'p' is of type 'unknown'.
+storefront:typecheck: src/app/api/menu/route.ts(85,22): error TS18046: 'p' is of type 'unknown'.
+storefront:typecheck: src/app/api/menu/route.ts(86,23): error TS18046: 'p' is of type 'unknown'.
+storefront:typecheck: src/app/api/menu/route.ts(87,17): error TS18046: 'p' is of type 'unknown'.
+storefront:typecheck: src/app/api/menu/route.ts(87,56): error TS18046: 'img' is of type 'unknown'.
+storefront:typecheck: src/app/api/menu/route.ts(90,19): error TS18046: 'tagsObj' is of type 'unknown'.
+storefront:typecheck: src/app/api/menu/route.ts(93,17): error TS18046: 'p' is of type 'unknown'.
+storefront:typecheck: src/app/api/orders/payment/route.ts(63,16): error TS18046: 'error' is of type 'unknown'.
+storefront:typecheck: src/app/api/orders/route.ts(121,11): error TS2322: Type 'unknown' is not assignable to type 'PaymentStatus | undefined'.
+storefront:typecheck: src/app/api/products/[id]/route.ts(26,92): error TS18046: 'item' is of type 'unknown'.
+storefront:typecheck: src/app/api/products/[id]/route.ts(37,37): error TS18046: 'a' is of type 'unknown'.
+storefront:typecheck: src/app/api/products/[id]/route.ts(37,50): error TS18046: 'b' is of type 'unknown'.
+storefront:typecheck: src/app/api/products/[id]/route.ts(38,31): error TS18046: 'img' is of type 'unknown'.
+storefront:typecheck: src/app/api/products/route.ts(26,11): error TS18046: 'p' is of type 'unknown'.
+storefront:typecheck: src/app/api/products/route.ts(27,16): error TS18046: 'p' is of type 'unknown'.
+storefront:typecheck: src/app/api/products/route.ts(28,13): error TS18046: 'p' is of type 'unknown'.
+storefront:typecheck: src/app/api/products/route.ts(29,20): error TS18046: 'p' is of type 'unknown'.
+storefront:typecheck: src/app/api/products/route.ts(30,21): error TS18046: 'p' is of type 'unknown'.
+storefront:typecheck: src/app/api/products/route.ts(31,23): error TS18046: 'p' is of type 'unknown'.
+storefront:typecheck: src/app/api/products/route.ts(31,49): error TS18046: 'p' is of type 'unknown'.
+storefront:typecheck: src/app/api/products/route.ts(34,9): error TS18046: 'p' is of type 'unknown'.
+storefront:typecheck: src/app/api/products/route.ts(34,59): error TS18046: 'a' is of type 'unknown'.
+storefront:typecheck: src/app/api/products/route.ts(34,72): error TS18046: 'b' is of type 'unknown'.
+storefront:typecheck: src/app/api/products/route.ts(35,29): error TS18046: 'img' is of type 'unknown'.
+storefront:typecheck: src/app/api/products/route.ts(39,15): error TS18046: 'p' is of type 'unknown'.
+storefront:typecheck: src/app/api/stores/[slug]/route.ts(46,18): error TS2571: Object is of type 'unknown'.
+storefront:typecheck: src/app/api/stores/[slug]/route.ts(58,59): error TS2339: Property 'theme' does not exist on type '{}'.
+storefront:typecheck: src/app/cart/page.tsx(28,14): error TS2604: JSX element type 'Link' does not have any construct or call signatures.
+storefront:typecheck: src/app/cart/page.tsx(28,14): error TS2786: 'Link' cannot be used as a JSX component.
+storefront:typecheck:   Its type 'unknown' is not a valid JSX element type.
+storefront:typecheck: src/app/cart/page.tsx(77,16): error TS2604: JSX element type 'Link' does not have any construct or call signatures.
+storefront:typecheck: src/app/cart/page.tsx(77,16): error TS2786: 'Link' cannot be used as a JSX component.
+storefront:typecheck:   Its type 'unknown' is not a valid JSX element type.
+storefront:typecheck: src/app/checkout/page.tsx(92,11): error TS18046: 'payment' is of type 'unknown'.
+storefront:typecheck: src/app/checkout/page.tsx(93,32): error TS18046: 'payment' is of type 'unknown'.
+storefront:typecheck: src/app/checkout/page.tsx(100,9): error TS18046: 'err' is of type 'unknown'.
+storefront:typecheck: src/app/checkout/page.tsx(112,14): error TS2604: JSX element type 'Link' does not have any construct or call signatures.
+storefront:typecheck: src/app/checkout/page.tsx(112,14): error TS2786: 'Link' cannot be used as a JSX component.
+storefront:typecheck:   Its type 'unknown' is not a valid JSX element type.
+storefront:typecheck: src/app/checkout/page.tsx(119,16): error TS2604: JSX element type 'Link' does not have any construct or call signatures.
+storefront:typecheck: src/app/checkout/page.tsx(119,16): error TS2786: 'Link' cannot be used as a JSX component.
+storefront:typecheck:   Its type 'unknown' is not a valid JSX element type.
+storefront:typecheck: src/app/checkout/page.tsx(120,16): error TS2604: JSX element type 'ChevronRight' does not have any construct or call signatures.
+storefront:typecheck: src/app/checkout/page.tsx(120,16): error TS2786: 'ChevronRight' cannot be used as a JSX component.
+storefront:typecheck:   Its type 'unknown' is not a valid JSX element type.
+storefront:typecheck: src/app/checkout/page.tsx(122,16): error TS2604: JSX element type 'ChevronRight' does not have any construct or call signatures.
+storefront:typecheck: src/app/checkout/page.tsx(122,16): error TS2786: 'ChevronRight' cannot be used as a JSX component.
+storefront:typecheck:   Its type 'unknown' is not a valid JSX element type.
+storefront:typecheck: src/app/checkout/page.tsx(129,16): error TS2604: JSX element type 'AlertCircle' does not have any construct or call signatures.
+storefront:typecheck: src/app/checkout/page.tsx(129,16): error TS2786: 'AlertCircle' cannot be used as a JSX component.
+storefront:typecheck:   Its type 'unknown' is not a valid JSX element type.
+storefront:typecheck: src/app/checkout/page.tsx(267,35): error TS2604: JSX element type 'Link' does not have any construct or call signatures.
+storefront:typecheck: src/app/checkout/page.tsx(267,35): error TS2786: 'Link' cannot be used as a JSX component.
+storefront:typecheck:   Its type 'unknown' is not a valid JSX element type.
+storefront:typecheck: src/app/checkout/page.tsx(267,171): error TS2604: JSX element type 'Link' does not have any construct or call signatures.
+storefront:typecheck: src/app/checkout/page.tsx(267,171): error TS2786: 'Link' cannot be used as a JSX component.
+storefront:typecheck:   Its type 'unknown' is not a valid JSX element type.
+storefront:typecheck: src/app/checkout/page.tsx(272,18): error TS2604: JSX element type 'Link' does not have any construct or call signatures.
+storefront:typecheck: src/app/checkout/page.tsx(272,18): error TS2786: 'Link' cannot be used as a JSX component.
+storefront:typecheck:   Its type 'unknown' is not a valid JSX element type.
+storefront:typecheck: src/app/collections/[id]/page.tsx(74,14): error TS2604: JSX element type 'Link' does not have any construct or call signatures.
+storefront:typecheck: src/app/collections/[id]/page.tsx(74,14): error TS2786: 'Link' cannot be used as a JSX component.
+storefront:typecheck:   Its type 'unknown' is not a valid JSX element type.
+storefront:typecheck: src/app/layout.tsx(22,5): error TS2339: Property 'params' does not exist on type 'unknown'.
+storefront:typecheck: src/app/layout.tsx(22,13): error TS2339: Property 'searchParams' does not exist on type 'unknown'.
+storefront:typecheck: src/app/not-found.tsx(36,12): error TS2604: JSX element type 'Link' does not have any construct or call signatures.
+storefront:typecheck: src/app/not-found.tsx(36,12): error TS2786: 'Link' cannot be used as a JSX component.
+storefront:typecheck:   Its type 'unknown' is not a valid JSX element type.
+storefront:typecheck: src/app/not-found.tsx(41,12): error TS2604: JSX element type 'Link' does not have any construct or call signatures.
+storefront:typecheck: src/app/not-found.tsx(41,12): error TS2786: 'Link' cannot be used as a JSX component.
+storefront:typecheck:   Its type 'unknown' is not a valid JSX element type.
+storefront:typecheck: src/app/not-found.tsx(52,12): error TS2604: JSX element type 'Link' does not have any construct or call signatures.
+storefront:typecheck: src/app/not-found.tsx(52,12): error TS2786: 'Link' cannot be used as a JSX component.
+storefront:typecheck:   Its type 'unknown' is not a valid JSX element type.
+storefront:typecheck: src/app/not-found.tsx(58,12): error TS2604: JSX element type 'Link' does not have any construct or call signatures.
+storefront:typecheck: src/app/not-found.tsx(58,12): error TS2786: 'Link' cannot be used as a JSX component.
+storefront:typecheck:   Its type 'unknown' is not a valid JSX element type.
+storefront:typecheck: src/app/order/confirmation/page.tsx(83,12): error TS2604: JSX element type 'XCircle' does not have any construct or call signatures.
+storefront:typecheck: src/app/order/confirmation/page.tsx(83,12): error TS2786: 'XCircle' cannot be used as a JSX component.
+storefront:typecheck:   Its type 'unknown' is not a valid JSX element type.
+storefront:typecheck: src/app/order/confirmation/page.tsx(89,12): error TS2604: JSX element type 'Link' does not have any construct or call signatures.
+storefront:typecheck: src/app/order/confirmation/page.tsx(89,12): error TS2786: 'Link' cannot be used as a JSX component.
+storefront:typecheck:   Its type 'unknown' is not a valid JSX element type.
+storefront:typecheck: src/app/order/confirmation/page.tsx(100,24): error TS2339: Property 'paymentStatus' does not exist on type '{}'.
+storefront:typecheck: src/app/order/confirmation/page.tsx(100,61): error TS2339: Property 'status' does not exist on type '{}'.
+storefront:typecheck: src/app/order/confirmation/page.tsx(108,32): error TS2604: JSX element type 'ChevronRight' does not have any construct or call signatures.
+storefront:typecheck: src/app/order/confirmation/page.tsx(108,32): error TS2786: 'ChevronRight' cannot be used as a JSX component.
+storefront:typecheck:   Its type 'unknown' is not a valid JSX element type.
+storefront:typecheck: src/app/order/confirmation/page.tsx(109,39): error TS2604: JSX element type 'ChevronRight' does not have any construct or call signatures.
+storefront:typecheck: src/app/order/confirmation/page.tsx(109,39): error TS2786: 'ChevronRight' cannot be used as a JSX component.
+storefront:typecheck:   Its type 'unknown' is not a valid JSX element type.
+storefront:typecheck: src/app/order/confirmation/page.tsx(116,18): error TS2604: JSX element type 'CheckCircle' does not have any construct or call signatures.
+storefront:typecheck: src/app/order/confirmation/page.tsx(116,18): error TS2786: 'CheckCircle' cannot be used as a JSX component.
+storefront:typecheck:   Its type 'unknown' is not a valid JSX element type.
+storefront:typecheck: src/app/order/confirmation/page.tsx(120,18): error TS2604: JSX element type 'Clock' does not have any construct or call signatures.
+storefront:typecheck: src/app/order/confirmation/page.tsx(120,18): error TS2786: 'Clock' cannot be used as a JSX component.
+storefront:typecheck:   Its type 'unknown' is not a valid JSX element type.
+storefront:typecheck: src/app/order/confirmation/page.tsx(125,30): error TS2339: Property 'refCode' does not exist on type '{}'.
+storefront:typecheck: src/app/order/confirmation/page.tsx(134,87): error TS2339: Property 'customer' does not exist on type '{}'.
+storefront:typecheck: src/app/order/confirmation/page.tsx(146,18): error TS2604: JSX element type 'Package' does not have any construct or call signatures.
+storefront:typecheck: src/app/order/confirmation/page.tsx(146,18): error TS2786: 'Package' cannot be used as a JSX component.
+storefront:typecheck:   Its type 'unknown' is not a valid JSX element type.
+storefront:typecheck: src/app/order/confirmation/page.tsx(150,24): error TS2339: Property 'items' does not exist on type '{}'.
+storefront:typecheck: src/app/order/confirmation/page.tsx(153,24): error TS18046: 'item' is of type 'unknown'.
+storefront:typecheck: src/app/order/confirmation/page.tsx(153,39): error TS18046: 'item' is of type 'unknown'.
+storefront:typecheck: src/app/order/confirmation/page.tsx(156,32): error TS18046: 'item' is of type 'unknown'.
+storefront:typecheck: src/app/order/confirmation/page.tsx(163,42): error TS2339: Property 'subtotal' does not exist on type '{}'.
+storefront:typecheck: src/app/order/confirmation/page.tsx(167,42): error TS2339: Property 'shippingTotal' does not exist on type '{}'.
+storefront:typecheck: src/app/order/confirmation/page.tsx(171,42): error TS2339: Property 'total' does not exist on type '{}'.
+storefront:typecheck: src/app/order/confirmation/page.tsx(179,18): error TS2604: JSX element type 'MapPin' does not have any construct or call signatures.
+storefront:typecheck: src/app/order/confirmation/page.tsx(179,18): error TS2786: 'MapPin' cannot be used as a JSX component.
+storefront:typecheck:   Its type 'unknown' is not a valid JSX element type.
+storefront:typecheck: src/app/order/confirmation/page.tsx(180,24): error TS2339: Property 'customer' does not exist on type '{}'.
+storefront:typecheck: src/app/order/confirmation/page.tsx(185,24): error TS2339: Property 'customer' does not exist on type '{}'.
+storefront:typecheck: src/app/order/confirmation/page.tsx(187,24): error TS2339: Property 'customer' does not exist on type '{}'.
+storefront:typecheck: src/app/order/confirmation/page.tsx(189,27): error TS2339: Property 'timeline' does not exist on type '{}'.
+storefront:typecheck: src/app/order/confirmation/page.tsx(214,28): error TS2339: Property 'customer' does not exist on type '{}'.
+storefront:typecheck: src/app/order/confirmation/page.tsx(222,18): error TS2604: JSX element type 'Link' does not have any construct or call signatures.
+storefront:typecheck: src/app/order/confirmation/page.tsx(222,18): error TS2786: 'Link' cannot be used as a JSX component.
+storefront:typecheck:   Its type 'unknown' is not a valid JSX element type.
+storefront:typecheck: src/app/order/confirmation/page.tsx(223,52): error TS2339: Property 'refCode' does not exist on type '{}'.
+storefront:typecheck: src/app/order/confirmation/page.tsx(223,75): error TS2339: Property 'customer' does not exist on type '{}'.
+storefront:typecheck: src/app/order/confirmation/page.tsx(233,18): error TS2604: JSX element type 'Phone' does not have any construct or call signatures.
+storefront:typecheck: src/app/order/confirmation/page.tsx(233,18): error TS2786: 'Phone' cannot be used as a JSX component.
+storefront:typecheck:   Its type 'unknown' is not a valid JSX element type.
+storefront:typecheck: src/app/order/confirmation/page.tsx(241,102): error TS2339: Property 'refCode' does not exist on type '{}'.
+storefront:typecheck: src/app/order/status/page.tsx(71,17): error TS2604: JSX element type 'CheckCircle' does not have any construct or call signatures.
+storefront:typecheck: src/app/order/status/page.tsx(71,17): error TS2786: 'CheckCircle' cannot be used as a JSX component.
+storefront:typecheck:   Its type 'unknown' is not a valid JSX element type.
+storefront:typecheck: src/app/order/status/page.tsx(73,17): error TS2604: JSX element type 'Clock' does not have any construct or call signatures.
+storefront:typecheck: src/app/order/status/page.tsx(73,17): error TS2786: 'Clock' cannot be used as a JSX component.
+storefront:typecheck:   Its type 'unknown' is not a valid JSX element type.
+storefront:typecheck: src/app/order/status/page.tsx(75,17): error TS2604: JSX element type 'Truck' does not have any construct or call signatures.
+storefront:typecheck: src/app/order/status/page.tsx(75,17): error TS2786: 'Truck' cannot be used as a JSX component.
+storefront:typecheck:   Its type 'unknown' is not a valid JSX element type.
+storefront:typecheck: src/app/order/status/page.tsx(77,17): error TS2604: JSX element type 'Package' does not have any construct or call signatures.
+storefront:typecheck: src/app/order/status/page.tsx(77,17): error TS2786: 'Package' cannot be used as a JSX component.
+storefront:typecheck:   Its type 'unknown' is not a valid JSX element type.
+storefront:typecheck: src/app/order/status/page.tsx(133,20): error TS2604: JSX element type 'Search' does not have any construct or call signatures.
+storefront:typecheck: src/app/order/status/page.tsx(133,20): error TS2786: 'Search' cannot be used as a JSX component.
+storefront:typecheck:   Its type 'unknown' is not a valid JSX element type.
+storefront:typecheck: src/app/order/status/page.tsx(141,16): error TS2604: JSX element type 'AlertCircle' does not have any construct or call signatures.
+storefront:typecheck: src/app/order/status/page.tsx(141,16): error TS2786: 'AlertCircle' cannot be used as a JSX component.
+storefront:typecheck:   Its type 'unknown' is not a valid JSX element type.
+storefront:typecheck: src/app/order/status/page.tsx(147,9): error TS2322: Type 'unknown' is not assignable to type 'ReactNode'.
+storefront:typecheck: src/app/order/status/page.tsx(151,18): error TS2604: JSX element type 'Package' does not have any construct or call signatures.
+storefront:typecheck: src/app/order/status/page.tsx(151,18): error TS2786: 'Package' cannot be used as a JSX component.
+storefront:typecheck:   Its type 'unknown' is not a valid JSX element type.
+storefront:typecheck: src/app/order/status/page.tsx(160,30): error TS2339: Property 'status' does not exist on type '{}'.
+storefront:typecheck: src/app/order/status/page.tsx(167,63): error TS2339: Property 'refCode' does not exist on type '{}'.
+storefront:typecheck: src/app/order/status/page.tsx(171,20): error TS2604: JSX element type 'CheckCircle' does not have any construct or call signatures.
+storefront:typecheck: src/app/order/status/page.tsx(171,20): error TS2786: 'CheckCircle' cannot be used as a JSX component.
+storefront:typecheck:   Its type 'unknown' is not a valid JSX element type.
+storefront:typecheck: src/app/order/status/page.tsx(174,29): error TS2339: Property 'paymentStatus' does not exist on type '{}'.
+storefront:typecheck: src/app/order/status/page.tsx(179,40): error TS2339: Property 'paymentStatus' does not exist on type '{}'.
+storefront:typecheck: src/app/order/status/page.tsx(187,24): error TS2339: Property 'timeline' does not exist on type '{}'.
+storefront:typecheck: src/app/order/status/page.tsx(192,38): error TS18046: 'event' is of type 'unknown'.
+storefront:typecheck: src/app/order/status/page.tsx(198,26): error TS18046: 'event' is of type 'unknown'.
+storefront:typecheck: src/app/order/status/page.tsx(201,35): error TS18046: 'event' is of type 'unknown'.
+storefront:typecheck: src/app/order/status/page.tsx(212,20): error TS2604: JSX element type 'Phone' does not have any construct or call signatures.
+storefront:typecheck: src/app/order/status/page.tsx(212,20): error TS2786: 'Phone' cannot be used as a JSX component.
+storefront:typecheck:   Its type 'unknown' is not a valid JSX element type.
+storefront:typecheck: src/app/order/status/page.tsx(222,87): error TS2339: Property 'refCode' does not exist on type '{}'.
+storefront:typecheck: src/app/order/success/page.tsx(74,12): error TS2604: JSX element type 'Link' does not have any construct or call signatures.
+storefront:typecheck: src/app/order/success/page.tsx(74,12): error TS2786: 'Link' cannot be used as a JSX component.
+storefront:typecheck:   Its type 'unknown' is not a valid JSX element type.
+storefront:typecheck: src/app/order/success/page.tsx(80,12): error TS2604: JSX element type 'Link' does not have any construct or call signatures.
+storefront:typecheck: src/app/order/success/page.tsx(80,12): error TS2786: 'Link' cannot be used as a JSX component.
+storefront:typecheck:   Its type 'unknown' is not a valid JSX element type.
+storefront:typecheck: src/app/page.tsx(73,3): error TS2322: Type 'ComponentType<AAFashionHomeProps>' is not assignable to type 'ComponentType<unknown>'.
+storefront:typecheck:   Type 'ComponentClass<AAFashionHomeProps, any>' is not assignable to type 'ComponentType<unknown>'.
+storefront:typecheck:     Type 'ComponentClass<AAFashionHomeProps, any>' is not assignable to type 'ComponentClass<unknown, any>'.
+storefront:typecheck:       Types of property 'getDerivedStateFromProps' are incompatible.
+storefront:typecheck:         Type 'GetDerivedStateFromProps<AAFashionHomeProps, any> | undefined' is not assignable to type 'GetDerivedStateFromProps<unknown, any> | undefined'.
+storefront:typecheck:           Type 'GetDerivedStateFromProps<AAFashionHomeProps, any>' is not assignable to type 'GetDerivedStateFromProps<unknown, any>'.
+storefront:typecheck:             Types of parameters 'nextProps' and 'nextProps' are incompatible.
+storefront:typecheck:               Type 'Readonly<unknown>' is missing the following properties from type 'Readonly<AAFashionHomeProps>': store, products
+storefront:typecheck: src/app/page.tsx(74,3): error TS2322: Type 'ComponentType<GizmoTechHomeProps>' is not assignable to type 'ComponentType<unknown>'.
+storefront:typecheck:   Type 'ComponentClass<GizmoTechHomeProps, any>' is not assignable to type 'ComponentType<unknown>'.
+storefront:typecheck:     Type 'ComponentClass<GizmoTechHomeProps, any>' is not assignable to type 'ComponentClass<unknown, any>'.
+storefront:typecheck:       Types of property 'getDerivedStateFromProps' are incompatible.
+storefront:typecheck:         Type 'GetDerivedStateFromProps<GizmoTechHomeProps, any> | undefined' is not assignable to type 'GetDerivedStateFromProps<unknown, any> | undefined'.
+storefront:typecheck:           Type 'GetDerivedStateFromProps<GizmoTechHomeProps, any>' is not assignable to type 'GetDerivedStateFromProps<unknown, any>'.
+storefront:typecheck:             Types of parameters 'nextProps' and 'nextProps' are incompatible.
+storefront:typecheck:               Type 'Readonly<unknown>' is missing the following properties from type 'Readonly<GizmoTechHomeProps>': store, products
+storefront:typecheck: src/app/page.tsx(75,3): error TS2322: Type 'ComponentType<BloomeHomeLayoutProps>' is not assignable to type 'ComponentType<unknown>'.
+storefront:typecheck:   Type 'ComponentClass<BloomeHomeLayoutProps, any>' is not assignable to type 'ComponentType<unknown>'.
+storefront:typecheck:     Type 'ComponentClass<BloomeHomeLayoutProps, any>' is not assignable to type 'ComponentClass<unknown, any>'.
+storefront:typecheck:       Types of property 'getDerivedStateFromProps' are incompatible.
+storefront:typecheck:         Type 'GetDerivedStateFromProps<BloomeHomeLayoutProps, any> | undefined' is not assignable to type 'GetDerivedStateFromProps<unknown, any> | undefined'.
+storefront:typecheck:           Type 'GetDerivedStateFromProps<BloomeHomeLayoutProps, any>' is not assignable to type 'GetDerivedStateFromProps<unknown, any>'.
+storefront:typecheck:             Types of parameters 'nextProps' and 'nextProps' are incompatible.
+storefront:typecheck:               Type 'Readonly<unknown>' is missing the following properties from type 'Readonly<BloomeHomeLayoutProps>': store, products
+storefront:typecheck: src/app/page.tsx(76,3): error TS2322: Type 'ComponentType<BooklyLayoutProps>' is not assignable to type 'ComponentType<unknown>'.
+storefront:typecheck:   Type 'ComponentClass<BooklyLayoutProps, any>' is not assignable to type 'ComponentType<unknown>'.
+storefront:typecheck:     Type 'ComponentClass<BooklyLayoutProps, any>' is not assignable to type 'ComponentClass<unknown, any>'.
+storefront:typecheck:       Types of property 'getDerivedStateFromProps' are incompatible.
+storefront:typecheck:         Type 'GetDerivedStateFromProps<BooklyLayoutProps, any> | undefined' is not assignable to type 'GetDerivedStateFromProps<unknown, any> | undefined'.
+storefront:typecheck:           Type 'GetDerivedStateFromProps<BooklyLayoutProps, any>' is not assignable to type 'GetDerivedStateFromProps<unknown, any>'.
+storefront:typecheck:             Types of parameters 'nextProps' and 'nextProps' are incompatible.
+storefront:typecheck:               Type 'Readonly<unknown>' is missing the following properties from type 'Readonly<BooklyLayoutProps>': store, products
+storefront:typecheck: src/app/page.tsx(77,3): error TS2322: Type 'ComponentType<ChopnowLayoutProps>' is not assignable to type 'ComponentType<unknown>'.
+storefront:typecheck:   Type 'ComponentClass<ChopnowLayoutProps, any>' is not assignable to type 'ComponentType<unknown>'.
+storefront:typecheck:     Type 'ComponentClass<ChopnowLayoutProps, any>' is not assignable to type 'ComponentClass<unknown, any>'.
+storefront:typecheck:       Types of property 'getDerivedStateFromProps' are incompatible.
+storefront:typecheck:         Type 'GetDerivedStateFromProps<ChopnowLayoutProps, any> | undefined' is not assignable to type 'GetDerivedStateFromProps<unknown, any> | undefined'.
+storefront:typecheck:           Type 'GetDerivedStateFromProps<ChopnowLayoutProps, any>' is not assignable to type 'GetDerivedStateFromProps<unknown, any>'.
+storefront:typecheck:             Types of parameters 'nextProps' and 'nextProps' are incompatible.
+storefront:typecheck:               Type 'Readonly<unknown>' is missing the following properties from type 'Readonly<ChopnowLayoutProps>': store, products
+storefront:typecheck: src/app/page.tsx(78,3): error TS2322: Type 'ComponentType<FileVaultLayoutProps>' is not assignable to type 'ComponentType<unknown>'.
+storefront:typecheck:   Type 'ComponentClass<FileVaultLayoutProps, any>' is not assignable to type 'ComponentType<unknown>'.
+storefront:typecheck:     Type 'ComponentClass<FileVaultLayoutProps, any>' is not assignable to type 'ComponentClass<unknown, any>'.
+storefront:typecheck:       Types of property 'getDerivedStateFromProps' are incompatible.
+storefront:typecheck:         Type 'GetDerivedStateFromProps<FileVaultLayoutProps, any> | undefined' is not assignable to type 'GetDerivedStateFromProps<unknown, any> | undefined'.
+storefront:typecheck:           Type 'GetDerivedStateFromProps<FileVaultLayoutProps, any>' is not assignable to type 'GetDerivedStateFromProps<unknown, any>'.
+storefront:typecheck:             Types of parameters 'nextProps' and 'nextProps' are incompatible.
+storefront:typecheck:               Type 'Readonly<unknown>' is missing the following properties from type 'Readonly<FileVaultLayoutProps>': store, products
+storefront:typecheck: src/app/page.tsx(79,3): error TS2322: Type 'ComponentType<TicketlyLayoutProps>' is not assignable to type 'ComponentType<unknown>'.
+storefront:typecheck:   Type 'ComponentClass<TicketlyLayoutProps, any>' is not assignable to type 'ComponentType<unknown>'.
+storefront:typecheck:     Type 'ComponentClass<TicketlyLayoutProps, any>' is not assignable to type 'ComponentClass<unknown, any>'.
+storefront:typecheck:       Types of property 'getDerivedStateFromProps' are incompatible.
+storefront:typecheck:         Type 'GetDerivedStateFromProps<TicketlyLayoutProps, any> | undefined' is not assignable to type 'GetDerivedStateFromProps<unknown, any> | undefined'.
+storefront:typecheck:           Type 'GetDerivedStateFromProps<TicketlyLayoutProps, any>' is not assignable to type 'GetDerivedStateFromProps<unknown, any>'.
+storefront:typecheck:             Types of parameters 'nextProps' and 'nextProps' are incompatible.
+storefront:typecheck:               Type 'Readonly<unknown>' is missing the following properties from type 'Readonly<TicketlyLayoutProps>': store, products
+storefront:typecheck: src/app/page.tsx(80,3): error TS2322: Type 'ComponentType<EduflowLayoutProps>' is not assignable to type 'ComponentType<unknown>'.
+storefront:typecheck:   Type 'ComponentClass<EduflowLayoutProps, any>' is not assignable to type 'ComponentType<unknown>'.
+storefront:typecheck:     Type 'ComponentClass<EduflowLayoutProps, any>' is not assignable to type 'ComponentClass<unknown, any>'.
+storefront:typecheck:       Types of property 'getDerivedStateFromProps' are incompatible.
+storefront:typecheck:         Type 'GetDerivedStateFromProps<EduflowLayoutProps, any> | undefined' is not assignable to type 'GetDerivedStateFromProps<unknown, any> | undefined'.
+storefront:typecheck:           Type 'GetDerivedStateFromProps<EduflowLayoutProps, any>' is not assignable to type 'GetDerivedStateFromProps<unknown, any>'.
+storefront:typecheck:             Types of parameters 'nextProps' and 'nextProps' are incompatible.
+storefront:typecheck:               Type 'Readonly<unknown>' is missing the following properties from type 'Readonly<EduflowLayoutProps>': store, products
+storefront:typecheck: src/app/page.tsx(81,3): error TS2322: Type 'ComponentType<BulkTradeLayoutProps>' is not assignable to type 'ComponentType<unknown>'.
+storefront:typecheck:   Type 'ComponentClass<BulkTradeLayoutProps, any>' is not assignable to type 'ComponentType<unknown>'.
+storefront:typecheck:     Type 'ComponentClass<BulkTradeLayoutProps, any>' is not assignable to type 'ComponentClass<unknown, any>'.
+storefront:typecheck:       Types of property 'getDerivedStateFromProps' are incompatible.
+storefront:typecheck:         Type 'GetDerivedStateFromProps<BulkTradeLayoutProps, any> | undefined' is not assignable to type 'GetDerivedStateFromProps<unknown, any> | undefined'.
+storefront:typecheck:           Type 'GetDerivedStateFromProps<BulkTradeLayoutProps, any>' is not assignable to type 'GetDerivedStateFromProps<unknown, any>'.
+storefront:typecheck:             Types of parameters 'nextProps' and 'nextProps' are incompatible.
+storefront:typecheck:               Type 'Readonly<unknown>' is missing the following properties from type 'Readonly<BulkTradeLayoutProps>': store, products
+storefront:typecheck: src/app/page.tsx(82,3): error TS2322: Type 'ComponentType<MarketHubLayoutProps>' is not assignable to type 'ComponentType<unknown>'.
+storefront:typecheck:   Type 'ComponentClass<MarketHubLayoutProps, any>' is not assignable to type 'ComponentType<unknown>'.
+storefront:typecheck:     Type 'ComponentClass<MarketHubLayoutProps, any>' is not assignable to type 'ComponentClass<unknown, any>'.
+storefront:typecheck:       Types of property 'getDerivedStateFromProps' are incompatible.
+storefront:typecheck:         Type 'GetDerivedStateFromProps<MarketHubLayoutProps, any> | undefined' is not assignable to type 'GetDerivedStateFromProps<unknown, any> | undefined'.
+storefront:typecheck:           Type 'GetDerivedStateFromProps<MarketHubLayoutProps, any>' is not assignable to type 'GetDerivedStateFromProps<unknown, any>'.
+storefront:typecheck:             Types of parameters 'nextProps' and 'nextProps' are incompatible.
+storefront:typecheck:               Type 'Readonly<unknown>' is missing the following properties from type 'Readonly<MarketHubLayoutProps>': store, products
+storefront:typecheck: src/app/page.tsx(83,3): error TS2322: Type 'ComponentType<GiveFlowLayoutProps>' is not assignable to type 'ComponentType<unknown>'.
+storefront:typecheck:   Type 'ComponentClass<GiveFlowLayoutProps, any>' is not assignable to type 'ComponentType<unknown>'.
+storefront:typecheck:     Type 'ComponentClass<GiveFlowLayoutProps, any>' is not assignable to type 'ComponentClass<unknown, any>'.
+storefront:typecheck:       Types of property 'getDerivedStateFromProps' are incompatible.
+storefront:typecheck:         Type 'GetDerivedStateFromProps<GiveFlowLayoutProps, any> | undefined' is not assignable to type 'GetDerivedStateFromProps<unknown, any> | undefined'.
+storefront:typecheck:           Type 'GetDerivedStateFromProps<GiveFlowLayoutProps, any>' is not assignable to type 'GetDerivedStateFromProps<unknown, any>'.
+storefront:typecheck:             Types of parameters 'nextProps' and 'nextProps' are incompatible.
+storefront:typecheck:               Type 'Readonly<unknown>' is missing the following properties from type 'Readonly<GiveFlowLayoutProps>': store, products
+storefront:typecheck: src/app/page.tsx(84,3): error TS2322: Type 'ComponentType<HomeListLayoutProps>' is not assignable to type 'ComponentType<unknown>'.
+storefront:typecheck:   Type 'ComponentClass<HomeListLayoutProps, any>' is not assignable to type 'ComponentType<unknown>'.
+storefront:typecheck:     Type 'ComponentClass<HomeListLayoutProps, any>' is not assignable to type 'ComponentClass<unknown, any>'.
+storefront:typecheck:       Types of property 'getDerivedStateFromProps' are incompatible.
+storefront:typecheck:         Type 'GetDerivedStateFromProps<HomeListLayoutProps, any> | undefined' is not assignable to type 'GetDerivedStateFromProps<unknown, any> | undefined'.
+storefront:typecheck:           Type 'GetDerivedStateFromProps<HomeListLayoutProps, any>' is not assignable to type 'GetDerivedStateFromProps<unknown, any>'.
+storefront:typecheck:             Types of parameters 'nextProps' and 'nextProps' are incompatible.
+storefront:typecheck:               Type 'Readonly<unknown>' is missing the following properties from type 'Readonly<HomeListLayoutProps>': store, products
+storefront:typecheck: src/app/page.tsx(85,3): error TS2322: Type 'ComponentType<OneProductLayoutProps>' is not assignable to type 'ComponentType<unknown>'.
+storefront:typecheck:   Type 'ComponentClass<OneProductLayoutProps, any>' is not assignable to type 'ComponentType<unknown>'.
+storefront:typecheck:     Type 'ComponentClass<OneProductLayoutProps, any>' is not assignable to type 'ComponentClass<unknown, any>'.
+storefront:typecheck:       Types of property 'getDerivedStateFromProps' are incompatible.
+storefront:typecheck:         Type 'GetDerivedStateFromProps<OneProductLayoutProps, any> | undefined' is not assignable to type 'GetDerivedStateFromProps<unknown, any> | undefined'.
+storefront:typecheck:           Type 'GetDerivedStateFromProps<OneProductLayoutProps, any>' is not assignable to type 'GetDerivedStateFromProps<unknown, any>'.
+storefront:typecheck:             Types of parameters 'nextProps' and 'nextProps' are incompatible.
+storefront:typecheck:               Type 'Readonly<unknown>' is missing the following properties from type 'Readonly<OneProductLayoutProps>': store, products
+storefront:typecheck: src/app/page.tsx(86,3): error TS2322: Type '({ children }: { children: ReactNode; }) => Element' is not assignable to type 'ComponentType<unknown>'.
+storefront:typecheck:   Type '({ children }: { children: ReactNode; }) => Element' is not assignable to type 'FunctionComponent<unknown>'.
+storefront:typecheck:     Types of parameters '__0' and 'props' are incompatible.
+storefront:typecheck:       Type 'unknown' is not assignable to type '{ children: ReactNode; }'.
+storefront:typecheck: src/app/page.tsx(109,26): error TS2571: Object is of type 'unknown'.
+storefront:typecheck: src/app/page.tsx(144,26): error TS2769: No overload matches this call.
+storefront:typecheck:   Overload 1 of 2, '(props: unknown, context?: any): string | number | bigint | boolean | ReactElement<unknown, string | JSXElementConstructor<any>> | Iterable<ReactNode> | Promise<...> | Component<...> | null | undefined', gave the following error.
+storefront:typecheck:     Type '{ store: PublicStore; products: PublicProduct[]; }' is not assignable to type 'IntrinsicAttributes'.
+storefront:typecheck:       Property 'store' does not exist on type 'IntrinsicAttributes'.
+storefront:typecheck:   Overload 2 of 2, '(props: unknown): string | number | bigint | boolean | ReactElement<unknown, string | JSXElementConstructor<any>> | Iterable<ReactNode> | Promise<...> | Component<...> | null | undefined', gave the following error.
+storefront:typecheck:     Type '{ store: PublicStore; products: PublicProduct[]; }' is not assignable to type 'IntrinsicAttributes'.
+storefront:typecheck:       Property 'store' does not exist on type 'IntrinsicAttributes'.
+storefront:typecheck: src/app/page.tsx(161,12): error TS2604: JSX element type 'Link' does not have any construct or call signatures.
+storefront:typecheck: src/app/page.tsx(161,12): error TS2786: 'Link' cannot be used as a JSX component.
+storefront:typecheck:   Its type 'unknown' is not a valid JSX element type.
+storefront:typecheck: src/app/page.tsx(173,12): error TS2604: JSX element type 'Link' does not have any construct or call signatures.
+storefront:typecheck: src/app/page.tsx(173,12): error TS2786: 'Link' cannot be used as a JSX component.
+storefront:typecheck:   Its type 'unknown' is not a valid JSX element type.
+storefront:typecheck: src/app/page.tsx(177,23): error TS2604: JSX element type 'ArrowRight' does not have any construct or call signatures.
+storefront:typecheck: src/app/page.tsx(177,23): error TS2786: 'ArrowRight' cannot be used as a JSX component.
+storefront:typecheck:   Its type 'unknown' is not a valid JSX element type.
+storefront:typecheck: src/app/pages/[slug]/page.tsx(8,38): error TS2339: Property 'params' does not exist on type 'unknown'.
+storefront:typecheck: src/app/policies/[slug]/page.tsx(11,44): error TS2339: Property 'params' does not exist on type 'unknown'.
+storefront:typecheck: src/app/policies/[slug]/page.tsx(40,70): error TS2339: Property 'title' does not exist on type '{}'.
+storefront:typecheck: src/app/policies/[slug]/page.tsx(48,51): error TS2339: Property 'content' does not exist on type '{}'.
+storefront:typecheck: src/app/policies/[slug]/page.tsx(51,40): error TS2339: Property 'updatedAt' does not exist on type '{}'.
+storefront:typecheck: src/app/products/[id]/page.tsx(86,12): error TS2604: JSX element type 'Link' does not have any construct or call signatures.
+storefront:typecheck: src/app/products/[id]/page.tsx(86,12): error TS2786: 'Link' cannot be used as a JSX component.
+storefront:typecheck:   Its type 'unknown' is not a valid JSX element type.
+storefront:typecheck: src/app/stores/page.tsx(16,42): error TS2345: Argument of type 'unknown' is not assignable to parameter of type 'string | URLSearchParams | Record<string, string> | string[][] | undefined'.
+storefront:typecheck: src/components/FlashSaleBanner.tsx(23,33): error TS2339: Property 'endTime' does not exist on type '{}'.
+storefront:typecheck: src/components/FlashSaleBanner.tsx(57,19): error TS2339: Property 'name' does not exist on type '{}'.
+storefront:typecheck: src/components/FlashSaleBanner.tsx(60,19): error TS2339: Property 'discount' does not exist on type '{}'.
+storefront:typecheck: src/components/FlashSaleBanner.tsx(71,50): error TS2339: Property 'storeId' does not exist on type '{}'.
+storefront:typecheck: src/components/FoodProductCard.tsx(20,14): error TS2604: JSX element type 'Link' does not have any construct or call signatures.
+storefront:typecheck: src/components/FoodProductCard.tsx(20,14): error TS2786: 'Link' cannot be used as a JSX component.
+storefront:typecheck:   Its type 'unknown' is not a valid JSX element type.
+storefront:typecheck: src/components/FoodProductCard.tsx(39,26): error TS2604: JSX element type 'Link' does not have any construct or call signatures.
+storefront:typecheck: src/components/FoodProductCard.tsx(39,26): error TS2786: 'Link' cannot be used as a JSX component.
+storefront:typecheck:   Its type 'unknown' is not a valid JSX element type.
+storefront:typecheck: src/components/FoodProductCard.tsx(50,32): error TS2339: Property 'prepTimeMinutes' does not exist on type '{}'.
+storefront:typecheck: src/components/FoodProductCard.tsx(53,45): error TS2339: Property 'prepTimeMinutes' does not exist on type '{}'.
+storefront:typecheck: src/components/FoodProductCard.tsx(56,32): error TS2339: Property 'spiceLevel' does not exist on type '{}'.
+storefront:typecheck: src/components/FoodProductCard.tsx(56,55): error TS2339: Property 'spiceLevel' does not exist on type '{}'.
+storefront:typecheck: src/components/FoodProductCard.tsx(59,45): error TS2339: Property 'spiceLevel' does not exist on type '{}'.
+storefront:typecheck: src/components/FoodProductCard.tsx(62,32): error TS2339: Property 'isVegetarian' does not exist on type '{}'.
+storefront:typecheck: src/components/pdp/FoodPDP.tsx(56,32): error TS2339: Property 'prepTimeMinutes' does not exist on type '{}'.
+storefront:typecheck: src/components/pdp/FoodPDP.tsx(59,45): error TS2339: Property 'prepTimeMinutes' does not exist on type '{}'.
+storefront:typecheck: src/components/pdp/FoodPDP.tsx(62,32): error TS2339: Property 'spiceLevel' does not exist on type '{}'.
+storefront:typecheck: src/components/pdp/FoodPDP.tsx(62,55): error TS2339: Property 'spiceLevel' does not exist on type '{}'.
+storefront:typecheck: src/components/pdp/FoodPDP.tsx(65,45): error TS2339: Property 'spiceLevel' does not exist on type '{}'.
+storefront:typecheck: src/components/pdp/FoodPDP.tsx(68,32): error TS2339: Property 'isVegetarian' does not exist on type '{}'.
+storefront:typecheck: src/components/pdp/ServicePDP.tsx(32,36): error TS2339: Property 'durationMinutes' does not exist on type '{}'.
+storefront:typecheck: src/components/pdp/ServicePDP.tsx(34,73): error TS2339: Property 'durationMinutes' does not exist on type '{}'.
+storefront:typecheck: src/components/pdp/ServicePDP.tsx(37,36): error TS2339: Property 'location' does not exist on type '{}'.
+storefront:typecheck: src/components/pdp/ServicePDP.tsx(39,74): error TS2339: Property 'location' does not exist on type '{}'.
+storefront:typecheck: src/components/ProductCard.tsx(30,6): error TS2604: JSX element type 'Link' does not have any construct or call signatures.
+storefront:typecheck: src/components/ProductCard.tsx(30,6): error TS2786: 'Link' cannot be used as a JSX component.
+storefront:typecheck:   Its type 'unknown' is not a valid JSX element type.
+storefront:typecheck: src/components/ServiceCard.tsx(21,32): error TS2339: Property 'durationMinutes' does not exist on type '{}'.
+storefront:typecheck: src/components/ServiceCard.tsx(24,45): error TS2339: Property 'durationMinutes' does not exist on type '{}'.
+storefront:typecheck: src/components/ServiceCard.tsx(33,14): error TS2604: JSX element type 'Link' does not have any construct or call signatures.
+storefront:typecheck: src/components/ServiceCard.tsx(33,14): error TS2786: 'Link' cannot be used as a JSX component.
+storefront:typecheck:   Its type 'unknown' is not a valid JSX element type.
+storefront:typecheck: src/components/StoreShell.tsx(77,16): error TS2604: JSX element type 'Menu' does not have any construct or call signatures.
+storefront:typecheck: src/components/StoreShell.tsx(77,16): error TS2786: 'Menu' cannot be used as a JSX component.
+storefront:typecheck:   Its type 'unknown' is not a valid JSX element type.
+storefront:typecheck: src/components/StoreShell.tsx(80,14): error TS2604: JSX element type 'Link' does not have any construct or call signatures.
+storefront:typecheck: src/components/StoreShell.tsx(80,14): error TS2786: 'Link' cannot be used as a JSX component.
+storefront:typecheck:   Its type 'unknown' is not a valid JSX element type.
+storefront:typecheck: src/components/StoreShell.tsx(96,14): error TS2604: JSX element type 'Link' does not have any construct or call signatures.
+storefront:typecheck: src/components/StoreShell.tsx(96,14): error TS2786: 'Link' cannot be used as a JSX component.
+storefront:typecheck:   Its type 'unknown' is not a valid JSX element type.
+storefront:typecheck: src/components/StoreShell.tsx(102,14): error TS2604: JSX element type 'Link' does not have any construct or call signatures.
+storefront:typecheck: src/components/StoreShell.tsx(102,14): error TS2786: 'Link' cannot be used as a JSX component.
+storefront:typecheck:   Its type 'unknown' is not a valid JSX element type.
+storefront:typecheck: src/components/StoreShell.tsx(108,14): error TS2604: JSX element type 'Link' does not have any construct or call signatures.
+storefront:typecheck: src/components/StoreShell.tsx(108,14): error TS2786: 'Link' cannot be used as a JSX component.
+storefront:typecheck:   Its type 'unknown' is not a valid JSX element type.
+storefront:typecheck: src/components/StoreShell.tsx(114,14): error TS2604: JSX element type 'Link' does not have any construct or call signatures.
+storefront:typecheck: src/components/StoreShell.tsx(114,14): error TS2786: 'Link' cannot be used as a JSX component.
+storefront:typecheck:   Its type 'unknown' is not a valid JSX element type.
+storefront:typecheck: src/components/StoreShell.tsx(130,16): error TS2604: JSX element type 'Search' does not have any construct or call signatures.
+storefront:typecheck: src/components/StoreShell.tsx(130,16): error TS2786: 'Search' cannot be used as a JSX component.
+storefront:typecheck:   Its type 'unknown' is not a valid JSX element type.
+storefront:typecheck: src/components/StoreShell.tsx(132,14): error TS2604: JSX element type 'Link' does not have any construct or call signatures.
+storefront:typecheck: src/components/StoreShell.tsx(132,14): error TS2786: 'Link' cannot be used as a JSX component.
+storefront:typecheck:   Its type 'unknown' is not a valid JSX element type.
+storefront:typecheck: src/components/StoreShell.tsx(139,18): error TS2604: JSX element type 'User' does not have any construct or call signatures.
+storefront:typecheck: src/components/StoreShell.tsx(139,18): error TS2786: 'User' cannot be used as a JSX component.
+storefront:typecheck:   Its type 'unknown' is not a valid JSX element type.
+storefront:typecheck: src/components/StoreShell.tsx(142,14): error TS2604: JSX element type 'Link' does not have any construct or call signatures.
+storefront:typecheck: src/components/StoreShell.tsx(142,14): error TS2786: 'Link' cannot be used as a JSX component.
+storefront:typecheck:   Its type 'unknown' is not a valid JSX element type.
+storefront:typecheck: src/components/StoreShell.tsx(149,18): error TS2604: JSX element type 'ShoppingBag' does not have any construct or call signatures.
+storefront:typecheck: src/components/StoreShell.tsx(149,18): error TS2786: 'ShoppingBag' cannot be used as a JSX component.
+storefront:typecheck:   Its type 'unknown' is not a valid JSX element type.
+storefront:typecheck: src/components/StoreShell.tsx(181,20): error TS2604: JSX element type 'Link' does not have any construct or call signatures.
+storefront:typecheck: src/components/StoreShell.tsx(181,20): error TS2786: 'Link' cannot be used as a JSX component.
+storefront:typecheck:   Its type 'unknown' is not a valid JSX element type.
+storefront:typecheck: src/components/StoreShell.tsx(189,20): error TS2604: JSX element type 'Link' does not have any construct or call signatures.
+storefront:typecheck: src/components/StoreShell.tsx(189,20): error TS2786: 'Link' cannot be used as a JSX component.
+storefront:typecheck:   Its type 'unknown' is not a valid JSX element type.
+storefront:typecheck: src/components/StoreShell.tsx(197,20): error TS2604: JSX element type 'Link' does not have any construct or call signatures.
+storefront:typecheck: src/components/StoreShell.tsx(197,20): error TS2786: 'Link' cannot be used as a JSX component.
+storefront:typecheck:   Its type 'unknown' is not a valid JSX element type.
+storefront:typecheck: src/components/StoreShell.tsx(211,20): error TS2604: JSX element type 'Link' does not have any construct or call signatures.
+storefront:typecheck: src/components/StoreShell.tsx(211,20): error TS2786: 'Link' cannot be used as a JSX component.
+storefront:typecheck:   Its type 'unknown' is not a valid JSX element type.
+storefront:typecheck: src/components/StoreShell.tsx(219,20): error TS2604: JSX element type 'Link' does not have any construct or call signatures.
+storefront:typecheck: src/components/StoreShell.tsx(219,20): error TS2786: 'Link' cannot be used as a JSX component.
+storefront:typecheck:   Its type 'unknown' is not a valid JSX element type.
+storefront:typecheck: src/components/StoreShell.tsx(227,20): error TS2604: JSX element type 'Link' does not have any construct or call signatures.
+storefront:typecheck: src/components/StoreShell.tsx(227,20): error TS2786: 'Link' cannot be used as a JSX component.
+storefront:typecheck:   Its type 'unknown' is not a valid JSX element type.
+storefront:typecheck: src/components/StoreShell.tsx(235,20): error TS2604: JSX element type 'Link' does not have any construct or call signatures.
+storefront:typecheck: src/components/StoreShell.tsx(235,20): error TS2786: 'Link' cannot be used as a JSX component.
+storefront:typecheck:   Its type 'unknown' is not a valid JSX element type.
+storefront:typecheck: src/components/StoreShell.tsx(243,20): error TS2604: JSX element type 'Link' does not have any construct or call signatures.
+storefront:typecheck: src/components/StoreShell.tsx(243,20): error TS2786: 'Link' cannot be used as a JSX component.
+storefront:typecheck:   Its type 'unknown' is not a valid JSX element type.
+storefront:typecheck: src/components/travel/BookingWidget.tsx(102,21): error TS2322: Type 'unknown' is not assignable to type 'PublicProduct'.
+storefront:typecheck: src/components/travel/BookingWidget.tsx(108,34): error TS18046: 'store' is of type 'unknown'.
+storefront:typecheck: src/context/StoreContext.tsx(129,18): error TS2345: Argument of type '(prev: unknown) => unknown' is not assignable to parameter of type 'SetStateAction<PublicStore | null>'.
+storefront:typecheck:   Type '(prev: unknown) => unknown' is not assignable to type '(prevState: PublicStore | null) => PublicStore | null'.
+storefront:typecheck:     Type 'unknown' is not assignable to type 'PublicStore | null'.
+storefront:typecheck: src/context/StoreContext.tsx(134,23): error TS2339: Property 'theme' does not exist on type '{}'.
+storefront:typecheck: src/context/StoreContext.tsx(160,7): error TS2322: Type 'unknown' is not assignable to type 'ReactNode'.
+storefront:typecheck: src/lib/paystack.ts(62,47): error TS18046: 'error' is of type 'unknown'.
+storefront:typecheck: src/lib/plans/get-user-plan.ts(32,22): error TS2339: Property 'plan' does not exist on type '{}'.
+storefront:typecheck: src/lib/plans/get-user-plan.ts(35,63): error TS2339: Property 'plan' does not exist on type '{}'.
+storefront:typecheck: src/templates/blog/EditorialHome.tsx(16,80): error TS18046: 'store' is of type 'unknown'.
+storefront:typecheck: src/templates/chopnow/ChopnowLayout.tsx(27,18): error TS18046: 'item' is of type 'unknown'.
+storefront:typecheck: src/templates/chopnow/ChopnowLayout.tsx(29,20): error TS18046: 'item' is of type 'unknown'.
+storefront:typecheck: src/templates/chopnow/ChopnowLayout.tsx(30,22): error TS18046: 'item' is of type 'unknown'.
+storefront:typecheck: src/templates/chopnow/ChopnowLayout.tsx(31,17): error TS18046: 'item' is of type 'unknown'.
+storefront:typecheck: src/templates/chopnow/ChopnowLayout.tsx(32,14): error TS18046: 'item' is of type 'unknown'.
+storefront:typecheck: src/templates/chopnow/components/ItemModal.tsx(48,57): error TS18046: 'option' is of type 'unknown'.
+storefront:typecheck: src/templates/markethub/MarketHubLayout.tsx(68,32): error TS18046: 'v' is of type 'unknown'.
+storefront:typecheck: src/templates/markethub/MarketHubLayout.tsx(68,38): error TS2322: Type 'unknown' is not assignable to type 'VendorDetails'.
+storefront:typecheck: src/templates/one-product/components/BenefitsSection.tsx(38,20): error TS2604: JSX element type 'Icon' does not have any construct or call signatures.
+storefront:typecheck: src/templates/one-product/components/BenefitsSection.tsx(38,20): error TS2786: 'Icon' cannot be used as a JSX component.
+storefront:typecheck:   Its type '{}' is not a valid JSX element type.
+storefront:typecheck: src/templates/one-product/OneProductLayout.tsx(22,18): error TS2571: Object is of type 'unknown'.
+storefront:typecheck: src/templates/ticketly/components/TicketSuccess.tsx(53,11): error TS2322: Type 'unknown' is not assignable to type 'ReactNode'.
+storefront:typecheck: src/templates/ticketly/components/TicketSuccess.tsx(57,119): error TS2339: Property 'bankName' does not exist on type '{}'.
+storefront:typecheck: src/templates/ticketly/components/TicketSuccess.tsx(58,130): error TS2339: Property 'accountNumber' does not exist on type '{}'.
+storefront:typecheck: src/templates/ticketly/components/TicketSuccess.tsx(59,119): error TS2339: Property 'accountName' does not exist on type '{}'.
+storefront:typecheck: src/templates/ticketly/TicketlyLayout.tsx(46,20): error TS2345: Argument of type 'unknown' is not assignable to parameter of type 'SetStateAction<{ attendee: { name: string; email: string; }; bankDetails?: unknown; storeName?: string | undefined; orderNumber?: string | undefined; } | null>'.
+storefront:typecheck:  ELIFECYCLE  Command failed with exit code 2.
+storefront:typecheck: ERROR: command finished with error: command (/Users/fredrick/Documents/GitHub/vayva/apps/storefront) /Users/fredrick/Library/pnpm/.tools/pnpm/10.2.0/bin/pnpm run typecheck exited (2)
+storefront#typecheck: command (/Users/fredrick/Documents/GitHub/vayva/apps/storefront) /Users/fredrick/Library/pnpm/.tools/pnpm/10.2.0/bin/pnpm run typecheck exited (2)
+
+ Tasks:    0 successful, 1 total
+Cached:    0 cached, 1 total
+  Time:    5.924s 
+Failed:    storefront#typecheck
+
+ ERROR  run failed: command  exited (2)
+ ELIFECYCLE  Command failed with exit code 2.

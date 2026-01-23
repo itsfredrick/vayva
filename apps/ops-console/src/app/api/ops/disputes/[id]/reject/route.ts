@@ -9,14 +9,12 @@ export async function POST(
 ) {
     const params = await props.params;
     try {
-        const sessionData = await OpsAuthService.getSession();
-        if (!sessionData) {
-            return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-        }
+        const sessionData = await OpsAuthService.requireSession();
         try {
             OpsAuthService.requireRole(sessionData.user, "OPS_ADMIN");
         } catch (e: unknown) {
-            return NextResponse.json({ error: e.message }, { status: 403 });
+            const err = e as Error;
+            return NextResponse.json({ error: err.message }, { status: 403 });
         }
         const { user } = sessionData;
 

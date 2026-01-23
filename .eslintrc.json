@@ -22,15 +22,31 @@
             }
         ],
         "@typescript-eslint/no-explicit-any": "error",
-        "@typescript-eslint/no-unused-expressions": "off",
+        "@typescript-eslint/no-unused-expressions": "error",
         "@typescript-eslint/no-require-imports": "error",
-        "no-undef": "off",
-        "no-empty": "warn",
-        "no-cond-assign": "warn",
-        "no-func-assign": "warn",
-        "no-useless-escape": "warn",
-        "no-constant-condition": "warn",
-        "prefer-const": "warn"
+        "@typescript-eslint/explicit-function-return-type": [
+            "warn",
+            {
+                "allowExpressions": true,
+                "allowTypedFunctionExpressions": true
+            }
+        ],
+        "no-undef": "error",
+        "no-empty": "error",
+        "no-cond-assign": "error",
+        "no-func-assign": "error",
+        "no-useless-escape": "error",
+        "no-constant-condition": "error",
+        "prefer-const": "error",
+        "no-console": [
+            "warn",
+            {
+                "allow": [
+                    "warn",
+                    "error"
+                ]
+            }
+        ]
     },
     "overrides": [
         {

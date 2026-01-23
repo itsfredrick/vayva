@@ -1,10 +1,10 @@
 import { NextResponse } from "next/server";
-import { cookies } from "next/headers";
+import { OpsAuthService } from "@/lib/ops-auth";
 
 export async function GET() {
-    const cookieStore = await cookies();
-    cookieStore.delete("ops_token"); // Assuming standard name, or check ops-auth.ts
+    await OpsAuthService.logout();
 
     // Redirect to Ops Login
-    return NextResponse.redirect(new URL("/login", process.env.NEXT_PUBLIC_OPS_URL || "http://localhost:3002"));
+    const loginUrl = new URL("/login", process.env.NEXT_PUBLIC_OPS_URL || "http://localhost:3002");
+    return NextResponse.redirect(loginUrl);
 }

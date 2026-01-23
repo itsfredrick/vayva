@@ -1,10 +1,10 @@
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import { prisma, Prisma } from "@vayva/db";
-import { withOpsRBAC } from "@/lib/rbac";
+import { withOpsAuth } from "@/lib/withOpsAuth";
 
 export const dynamic = "force-dynamic";
 
-export const GET = withOpsRBAC("OPS_SUPPORT", async (session, request: Request) => {
+export const GET = withOpsAuth(async (request: NextRequest) => {
   const { searchParams } = new URL(request.url);
   const page = parseInt(searchParams.get("page") || "1");
   const limit = parseInt(searchParams.get("limit") || "20");
@@ -90,15 +90,15 @@ export const GET = withOpsRBAC("OPS_SUPPORT", async (session, request: Request) 
     prisma.store.count({ where }),
   ]);
 
-  const data = stores.map((store: unknown) => {
+  const data = stores.map((store: any) => {
     // Find owner
     const members = store.tenant?.tenantMemberships || [];
-    const ownerMember = members.find((m: unknown) => m.role === "OWNER") || members[0];
+    const ownerMember = members.find((m: any) => m.role === "OWNER") || members[0];
     const owner = ownerMember?.user;
     const ownerName = owner ? `${owner.firstName || ""} ${owner.lastName || ""}`.trim() : "Unknown";
 
     // Calculate GMV
-    const gmv30d = store.orders.reduce((sum: number, o: unknown) => sum + Number(o.total), 0);
+    const gmv30d = store.orders.reduce((sum: number, o: any) => sum + Number(o.total), 0);
 
     // Determine Risk
     const riskFlags = [];
@@ -133,4 +133,4 @@ export const GET = withOpsRBAC("OPS_SUPPORT", async (session, request: Request) 
       totalPages: Math.ceil(total / limit),
     },
   });
-});
+}, { requiredRole: "OPS_SUPPORT" });

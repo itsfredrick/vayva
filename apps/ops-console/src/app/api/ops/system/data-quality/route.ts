@@ -1,13 +1,12 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@vayva/db";
+import { withOpsAuth } from "@/lib/withOpsAuth";
 
 /**
  * Data Quality Audit API for Ops Console.
  * Scans for orphaned records, negative totals, and stale drafts.
  */
-export async function GET(_req: NextRequest) {
-    // Note: Ops Middleware handles session verification
-
+export const GET = withOpsAuth(async (_req: NextRequest) => {
     try {
         interface QualityResults {
             orphanedOrders: number;
@@ -25,7 +24,7 @@ export async function GET(_req: NextRequest) {
             discrepancies: []
         };
 
-        // 1. Scan for Orders without Customers (if customerId is non-nullable in business logic but nullable in DB)
+        // 1. Scan for Orders without Customers
         const orphanedOrders = await prisma.order.count({
             where: {
                 customerId: null,
@@ -63,10 +62,10 @@ export async function GET(_req: NextRequest) {
         });
         results.staleDrafts = staleDrafts;
 
-        // 4. Scan for Products without a Store (Items with null storeId if applicable)
+        // 4. Scan for Products without a Store
         const orphanedItems = await prisma.product.count({
             where: {
-                storeId: null as unknown as string // Scan for orphans even if schema says non-nullable
+                storeId: null as unknown as string
             }
         });
         results.orphanedItems = orphanedItems;
@@ -84,12 +83,12 @@ export async function GET(_req: NextRequest) {
             error: "Failed to perform data quality scan"
         }, { status: 500 });
     }
-}
+}, { requiredRole: "OPS_OWNER" });
 
 /**
  * Trigger remediation for a specific issue
  */
-export async function POST(_req: NextRequest) {
+export const POST = withOpsAuth(async (req: NextRequest) => {
     try {
         const body = await req.json();
         const { type, action } = body;
@@ -114,4 +113,4 @@ export async function POST(_req: NextRequest) {
         const err = error as Error;
         return NextResponse.json({ error: err.message || "Internal server error" }, { status: 500 });
     }
-}
+}, { requiredRole: "OPS_OWNER" });

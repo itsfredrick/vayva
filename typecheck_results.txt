@@ -1,0 +1,137 @@
+
+> vayva@ typecheck /Users/fredrick/Documents/GitHub/vayva
+> turbo run typecheck
+
+• turbo 2.7.5
+• Packages in scope: @vayva/analytics, @vayva/api-client, @vayva/compliance, @vayva/content, @vayva/db, @vayva/education, @vayva/extensions, @vayva/load-test, @vayva/policies, @vayva/redis, @vayva/reliability, @vayva/schemas, @vayva/shared, @vayva/template-service, @vayva/theme, @vayva/ui, admin-service, ai-orchestrator, analytics-service, api-gateway, approvals-service, audit-service, auth-service, billing-service, catalog-service, compliance-service, fulfillment-service, marketing, marketing-service, marketplace, marketplace-service, merchant-admin, mobile, notifications-service, onboarding-service, ops-console, orders-service, payments-service, products-service, risk-service, storefront, support-service, theme-service, webhook-service, whatsapp-service, worker
+• Running typecheck in 46 packages
+• Remote caching disabled
+@vayva/content:typecheck: cache miss, executing c06367ff7f57d5fd
+merchant-admin:typecheck: cache miss, executing df1adca6c1887f21
+storefront:typecheck: cache miss, executing 263ba9bd1bd917f4
+marketing:typecheck: cache miss, executing e73ccf03b95c4e4c
+marketplace:typecheck: cache miss, executing 5aa896ecdf11bd1c
+ops-console:typecheck: cache miss, executing 3acaadef4900471e
+@vayva/redis:typecheck: cache miss, executing b46c48e2f06dc267
+@vayva/content:typecheck: 
+@vayva/content:typecheck: > @vayva/content@0.0.0 typecheck /Users/fredrick/Documents/GitHub/vayva/packages/content
+@vayva/content:typecheck: > tsc --noEmit
+@vayva/content:typecheck: 
+storefront:typecheck: 
+storefront:typecheck: > storefront@0.0.0 typecheck /Users/fredrick/Documents/GitHub/vayva/apps/storefront
+storefront:typecheck: > tsc --noEmit
+storefront:typecheck: 
+merchant-admin:typecheck: 
+merchant-admin:typecheck: > merchant-admin@0.0.0 typecheck /Users/fredrick/Documents/GitHub/vayva/apps/merchant-admin
+merchant-admin:typecheck: > tsc --noEmit
+merchant-admin:typecheck: 
+marketplace:typecheck: 
+marketplace:typecheck: > marketplace@0.0.0 typecheck /Users/fredrick/Documents/GitHub/vayva/apps/marketplace
+marketplace:typecheck: > tsc --noEmit
+marketplace:typecheck: 
+marketing:typecheck: 
+marketing:typecheck: > marketing@0.0.0 typecheck /Users/fredrick/Documents/GitHub/vayva/apps/marketing
+marketing:typecheck: > tsc --noEmit
+marketing:typecheck: 
+ops-console:typecheck: 
+ops-console:typecheck: > ops-console@0.0.0 typecheck /Users/fredrick/Documents/GitHub/vayva/apps/ops-console
+ops-console:typecheck: > tsc --noEmit
+ops-console:typecheck: 
+@vayva/redis:typecheck: 
+@vayva/redis:typecheck: > @vayva/redis@0.0.0 typecheck /Users/fredrick/Documents/GitHub/vayva/packages/redis
+@vayva/redis:typecheck: > tsc --noEmit
+@vayva/redis:typecheck: 
+marketplace:typecheck: src/app/(pages)/category/[slug]/page.tsx(64,55): error TS18046: 'store' is of type 'unknown'.
+marketplace:typecheck: src/app/(pages)/category/[slug]/page.tsx(64,74): error TS18046: 'store' is of type 'unknown'.
+marketplace:typecheck: src/app/(pages)/category/[slug]/page.tsx(66,42): error TS18046: 'store' is of type 'unknown'.
+marketplace:typecheck: src/app/(pages)/category/[slug]/page.tsx(68,54): error TS18046: 'store' is of type 'unknown'.
+marketplace:typecheck: src/app/(pages)/category/[slug]/page.tsx(69,54): error TS18046: 'store' is of type 'unknown'.
+marketplace:typecheck: src/app/(pages)/category/[slug]/page.tsx(75,98): error TS18046: 'store' is of type 'unknown'.
+marketplace:typecheck: src/app/(pages)/category/[slug]/page.tsx(86,86): error TS18046: 'store' is of type 'unknown'.
+marketplace:typecheck: src/app/(pages)/category/[slug]/page.tsx(88,50): error TS18046: 'store' is of type 'unknown'.
+marketplace:typecheck: src/app/(pages)/category/[slug]/page.tsx(109,57): error TS18046: 'product' is of type 'unknown'.
+marketplace:typecheck: src/app/(pages)/category/[slug]/page.tsx(109,76): error TS18046: 'product' is of type 'unknown'.
+marketplace:typecheck: src/app/(pages)/category/[slug]/page.tsx(111,42): error TS18046: 'product' is of type 'unknown'.
+marketplace:typecheck: src/app/(pages)/category/[slug]/page.tsx(113,54): error TS18046: 'product' is of type 'unknown'.
+marketplace:typecheck: src/app/(pages)/category/[slug]/page.tsx(114,54): error TS18046: 'product' is of type 'unknown'.
+marketplace:typecheck: src/app/(pages)/category/[slug]/page.tsx(121,112): error TS18046: 'product' is of type 'unknown'.
+marketplace:typecheck: src/app/(pages)/category/[slug]/page.tsx(122,110): error TS18046: 'product' is of type 'unknown'.
+marketplace:typecheck: src/app/(pages)/category/[slug]/page.tsx(123,82): error TS18046: 'product' is of type 'unknown'.
+marketplace:typecheck: src/app/(pages)/checkout/page.tsx(60,19): error TS18046: 'error' is of type 'unknown'.
+marketplace:typecheck: src/app/(pages)/listing/[id]/page.tsx(45,43): error TS2339: Property 'id' does not exist on type '{}'.
+marketplace:typecheck: src/app/(pages)/listing/[id]/page.tsx(45,47): error TS18046: 'product' is of type 'unknown'.
+marketplace:typecheck: src/app/(pages)/listing/[id]/page.tsx(57,43): error TS2339: Property 'id' does not exist on type '{}'.
+marketplace:typecheck: src/app/(pages)/listing/[id]/page.tsx(57,47): error TS18046: 'product' is of type 'unknown'.
+marketplace:typecheck: src/app/(pages)/listing/[id]/page.tsx(73,32): error TS18046: 'product' is of type 'unknown'.
+marketplace:typecheck: src/app/(pages)/listing/[id]/page.tsx(96,33): error TS2339: Property 'store' does not exist on type '{}'.
+marketplace:typecheck: src/app/(pages)/listing/[id]/page.tsx(97,31): error TS2339: Property 'productImages' does not exist on type '{}'.
+marketplace:typecheck: src/app/(pages)/listing/[id]/page.tsx(97,75): error TS2339: Property 'productImage' does not exist on type '{}'.
+marketplace:typecheck: src/app/(pages)/listing/[id]/page.tsx(126,59): error TS2339: Property 'title' does not exist on type '{}'.
+marketplace:typecheck: src/app/(pages)/listing/[id]/page.tsx(134,34): error TS2339: Property 'productImages' does not exist on type '{}'.
+marketplace:typecheck: src/app/(pages)/listing/[id]/page.tsx(135,39): error TS18046: 'img' is of type 'unknown'.
+marketplace:typecheck: src/app/(pages)/listing/[id]/page.tsx(136,43): error TS18046: 'img' is of type 'unknown'.
+marketplace:typecheck: src/app/(pages)/listing/[id]/page.tsx(148,44): error TS2339: Property 'productType' does not exist on type '{}'.
+marketplace:typecheck: src/app/(pages)/listing/[id]/page.tsx(148,94): error TS2339: Property 'condition' does not exist on type '{}'.
+marketplace:typecheck: src/app/(pages)/listing/[id]/page.tsx(151,38): error TS2339: Property 'title' does not exist on type '{}'.
+marketplace:typecheck: src/app/(pages)/listing/[id]/page.tsx(154,55): error TS2339: Property 'price' does not exist on type '{}'.
+marketplace:typecheck: src/app/(pages)/listing/[id]/page.tsx(154,72): error TS2339: Property 'price' does not exist on type '{}'.
+marketplace:typecheck: src/app/(pages)/listing/[id]/page.tsx(159,38): error TS2339: Property 'moq' does not exist on type '{}'.
+marketplace:typecheck: src/app/(pages)/listing/[id]/page.tsx(161,57): error TS2339: Property 'moq' does not exist on type '{}'.
+marketplace:typecheck: src/app/(pages)/listing/[id]/page.tsx(164,38): error TS2339: Property 'depositRequired' does not exist on type '{}'.
+marketplace:typecheck: src/app/(pages)/listing/[id]/page.tsx(166,57): error TS2339: Property 'depositPercentage' does not exist on type '{}'.
+marketplace:typecheck: src/app/(pages)/listing/[id]/page.tsx(173,30): error TS2339: Property 'pricingTiers' does not exist on type '{}'.
+marketplace:typecheck: src/app/(pages)/listing/[id]/page.tsx(177,42): error TS2339: Property 'pricingTiers' does not exist on type '{}'.
+marketplace:typecheck: src/app/(pages)/listing/[id]/page.tsx(178,47): error TS18046: 'tier' is of type 'unknown'.
+marketplace:typecheck: src/app/(pages)/listing/[id]/page.tsx(179,67): error TS18046: 'tier' is of type 'unknown'.
+marketplace:typecheck: src/app/(pages)/listing/[id]/page.tsx(180,79): error TS18046: 'tier' is of type 'unknown'.
+marketplace:typecheck: src/app/(pages)/listing/[id]/page.tsx(188,30): error TS2339: Property 'productVariants' does not exist on type '{}'.
+marketplace:typecheck: src/app/(pages)/listing/[id]/page.tsx(192,42): error TS2339: Property 'productVariants' does not exist on type '{}'.
+marketplace:typecheck: src/app/(pages)/listing/[id]/page.tsx(194,46): error TS18046: 'v' is of type 'unknown'.
+marketplace:typecheck: src/app/(pages)/listing/[id]/page.tsx(196,67): error TS2339: Property 'id' does not exist on type '{}'.
+marketplace:typecheck: src/app/(pages)/listing/[id]/page.tsx(196,74): error TS18046: 'v' is of type 'unknown'.
+marketplace:typecheck: src/app/(pages)/listing/[id]/page.tsx(200,42): error TS18046: 'v' is of type 'unknown'.
+marketplace:typecheck: src/app/(pages)/listing/[id]/page.tsx(220,42): error TS2339: Property 'store' does not exist on type '{}'.
+marketplace:typecheck: src/app/(pages)/listing/[id]/page.tsx(224,94): error TS2339: Property 'store' does not exist on type '{}'.
+marketplace:typecheck: src/app/(pages)/listing/[id]/page.tsx(239,38): error TS2339: Property 'description' does not exist on type '{}'.
+marketplace:typecheck: src/app/(pages)/listing/[id]/page.tsx(251,60): error TS2339: Property 'shippingEstimate' does not exist on type '{}'.
+marketplace:typecheck: src/app/(pages)/listing/[id]/page.tsx(274,70): error TS2339: Property 'depositRequired' does not exist on type '{}'.
+marketplace:typecheck: src/app/api/checkout/route.ts(40,22): error TS18046: 'error' is of type 'unknown'.
+marketplace:typecheck: src/app/api/conversations/route.ts(146,64): error TS18046: 'c' is of type 'unknown'.
+marketplace:typecheck: src/app/api/conversations/route.ts(147,17): error TS18046: 'conv' is of type 'unknown'.
+marketplace:typecheck: src/app/api/conversations/route.ts(148,24): error TS18046: 'conv' is of type 'unknown'.
+marketplace:typecheck: src/app/api/conversations/route.ts(149,24): error TS18046: 'conv' is of type 'unknown'.
+marketplace:typecheck: src/app/api/conversations/route.ts(150,26): error TS18046: 'conv' is of type 'unknown'.
+marketplace:typecheck: src/app/api/conversations/route.ts(151,28): error TS18046: 'conv' is of type 'unknown'.
+marketplace:typecheck: src/app/api/conversations/route.ts(153,56): error TS18046: 'b' is of type 'unknown'.
+marketplace:typecheck: src/app/api/conversations/route.ts(153,94): error TS18046: 'a' is of type 'unknown'.
+marketplace:typecheck: src/app/api/delivery/consolidate/route.ts(82,22): error TS18046: 'error' is of type 'unknown'.
+marketplace:typecheck: src/app/api/delivery/consolidate/route.ts(117,22): error TS18046: 'error' is of type 'unknown'.
+marketplace:typecheck: src/app/page_waitlist.tsx(119,18): error TS2304: Cannot find name 'Button'.
+marketplace:typecheck: src/app/page_waitlist.tsx(121,19): error TS2304: Cannot find name 'Button'.
+marketplace:typecheck: src/app/page_waitlist.tsx(175,16): error TS2304: Cannot find name 'Button'.
+marketplace:typecheck: src/app/page_waitlist.tsx(182,17): error TS2304: Cannot find name 'Button'.
+marketplace:typecheck: src/components/cart/CartItem.tsx(25,21): error TS18046: 'variant' is of type 'unknown'.
+marketplace:typecheck: src/components/cart/CartItem.tsx(26,49): error TS18046: 'variant' is of type 'unknown'.
+marketplace:typecheck: src/components/cart/CartItem.tsx(52,26): error TS18046: 'variant' is of type 'unknown'.
+marketplace:typecheck: src/components/cart/CartItem.tsx(52,65): error TS18046: 'variant' is of type 'unknown'.
+marketplace:typecheck: src/components/cart/CartItem.tsx(55,48): error TS18046: 'variant' is of type 'unknown'.
+marketplace:typecheck: src/services/DeliveryConsolidationService.ts(74,25): error TS2698: Spread types may only be created from object types.
+marketplace:typecheck: src/services/DeliveryConsolidationService.ts(92,21): error TS2698: Spread types may only be created from object types.
+marketplace:typecheck: src/services/DeliveryConsolidationService.ts(137,15): error TS2339: Property 'deliveryConsolidation' does not exist on type '{}'.
+marketplace:typecheck: src/services/DeliveryConsolidationService.ts(146,58): error TS2339: Property 'deliveryFeeAllocation' does not exist on type '{}'.
+marketplace:typecheck: ../../packages/shared/src/extensions/manifest-fetcher.ts(7,39): error TS2769: No overload matches this call.
+marketplace:typecheck:   Overload 1 of 2, '(input: string | Request | URL, init?: RequestInit | undefined): Promise<Response>', gave the following error.
+marketplace:typecheck:     Argument of type 'unknown' is not assignable to parameter of type 'RequestInit | undefined'.
+marketplace:typecheck:   Overload 2 of 2, '(input: URL | RequestInfo, init?: RequestInit | undefined): Promise<Response>', gave the following error.
+marketplace:typecheck:     Argument of type 'unknown' is not assignable to parameter of type 'RequestInit | undefined'.
+marketplace:typecheck:  ELIFECYCLE  Command failed with exit code 2.
+marketplace:typecheck: ERROR: command finished with error: command (/Users/fredrick/Documents/GitHub/vayva/apps/marketplace) /Users/fredrick/Library/pnpm/.tools/pnpm/10.2.0/bin/pnpm run typecheck exited (2)
+marketplace#typecheck: command (/Users/fredrick/Documents/GitHub/vayva/apps/marketplace) /Users/fredrick/Library/pnpm/.tools/pnpm/10.2.0/bin/pnpm run typecheck exited (2)
+
+ Tasks:    2 successful, 7 total
+Cached:    0 cached, 7 total
+  Time:    7.491s 
+Failed:    marketplace#typecheck
+
+ ERROR  run failed: command  exited (2)
+ ELIFECYCLE  Command failed with exit code 2.
