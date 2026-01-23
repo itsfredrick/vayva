@@ -17,7 +17,7 @@ export function FashionProductForm({ productId }: { productId?: string }) {
     const [isSubmitting, setIsSubmitting] = useState(false);
     const { register, handleSubmit, formState: { errors } } = useForm();
 
-    const onSubmit = async (data: unknown) => {
+    const onSubmit = async (data: any) => {
         setIsSubmitting(true);
         // Transform flat data into structured metadata
         const payload = {
@@ -88,7 +88,7 @@ export function FashionProductForm({ productId }: { productId?: string }) {
                 <div className="space-y-4 mb-6">
                     <Label>Product Gallery (Minimum 4 images recommended)</Label>
                     <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                        {[1, 2, 3, 4].map((i) => (
+                        {[1, 2, 3, 4].map((i: any) => (
                             <div key={i} className="aspect-square rounded-lg border-2 border-dashed border-gray-300 flex flex-col items-center justify-center bg-white hover:bg-gray-50 transition-colors cursor-pointer">
                                 <span className="text-2xl text-gray-300">+</span>
                                 <span className="text-xs text-gray-400 mt-1">Image {i}</span>

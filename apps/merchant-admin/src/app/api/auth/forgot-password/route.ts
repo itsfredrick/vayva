@@ -1,39 +1,31 @@
-
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import jwt from "jsonwebtoken";
 import { Resend } from "resend";
-
 const resend = new Resend(process.env.RESEND_API_KEY);
-
 export async function POST(req: NextRequest) {
     try {
-        const { email } = await req.json();
-
+        const body = await req.json() as Record<string, string>;
+        const { email } = body;
         if (!email) {
             return NextResponse.json({ error: "Email is required" }, { status: 400 });
         }
-
         // 1. Check if user exists
         const user = await prisma.user.findUnique({
             where: { email },
         });
-
         // 2. Security: Always return OK even if user doesn't exist to prevent enumeration
         if (!user) {
             return NextResponse.json({ message: "If an account exists, a reset link has been sent." });
         }
-
         // 3. Generate stateless JWT token
         // Use user's password hash as part of secret to invalidate token if password changes naturally
         const secret = process.env.NEXTAUTH_SECRET + user.password;
         const token = jwt.sign({ id: user.id, email: user.email, type: "password_reset" }, secret, {
             expiresIn: "1h",
         });
-
         // 4. Construct Link
         const resetLink = `${process.env.NEXT_PUBLIC_APP_URL}/auth/reset-password?token=${token}&id=${user.id}`;
-
         // 5. Send Email
         await resend.emails.send({
             from: "Vayva Security <security@vayva.ng>",
@@ -49,10 +41,9 @@ export async function POST(req: NextRequest) {
                 </div>
             `,
         });
-
         return NextResponse.json({ message: "If an account exists, a reset link has been sent." });
-
-    } catch (error) {
+    }
+    catch (error: any) {
         console.error("[FORGOT_PASSWORD_ERROR]", error);
         return NextResponse.json({ error: "Internal Error" }, { status: 500 });
     }

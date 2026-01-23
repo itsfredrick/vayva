@@ -25,10 +25,10 @@ interface SafetyFiltersProps {
         aiSensitivity?: number;
         autoEscalationThreshold?: number;
     };
-    onUpdate: (data: unknown) => Promise<void>;
+    onUpdate: (data: any) => Promise<void>;
 }
 
-export function SafetyFilters({ settings, onUpdate }: SafetyFiltersProps) {
+export function SafetyFilters({ settings: any, onUpdate }: SafetyFiltersProps) {
     const [saving, setSaving] = useState(false);
     const [formData, setFormData] = useState({
         rateLimitEnabled: settings?.rateLimitEnabled ?? false,
@@ -49,11 +49,11 @@ export function SafetyFilters({ settings, onUpdate }: SafetyFiltersProps) {
                 spamDetectionEnabled: formData.spamDetectionEnabled,
                 blockedNumbers: formData.blockedNumbers
                     .split("\n")
-                    .map((n) => n.trim())
+                    .map((n: any) => n.trim())
                     .filter(Boolean),
                 blockedKeywords: formData.blockedKeywords
                     .split(",")
-                    .map((k) => k.trim())
+                    .map((k: any) => k.trim())
                     .filter(Boolean),
                 aiSensitivity: Number(formData.aiSensitivity),
                 autoEscalationThreshold: Number(formData.autoEscalationThreshold),
@@ -88,7 +88,7 @@ export function SafetyFilters({ settings, onUpdate }: SafetyFiltersProps) {
                         </div>
                         <Switch
                             checked={formData.rateLimitEnabled}
-                            onCheckedChange={(checked) =>
+                            onCheckedChange={(checked: any) =>
                                 setFormData({ ...formData, rateLimitEnabled: checked })
                             }
                         />
@@ -102,7 +102,7 @@ export function SafetyFilters({ settings, onUpdate }: SafetyFiltersProps) {
                                 min="1"
                                 max="1000"
                                 value={formData.rateLimitPerHour}
-                                onChange={(e: unknown) =>
+                                onChange={(e: any) =>
                                     setFormData({ ...formData, rateLimitPerHour: e.target.value })
                                 }
                             />
@@ -134,7 +134,7 @@ export function SafetyFilters({ settings, onUpdate }: SafetyFiltersProps) {
                         </div>
                         <Switch
                             checked={formData.spamDetectionEnabled}
-                            onCheckedChange={(checked) =>
+                            onCheckedChange={(checked: any) =>
                                 setFormData({ ...formData, spamDetectionEnabled: checked })
                             }
                         />
@@ -152,7 +152,7 @@ export function SafetyFilters({ settings, onUpdate }: SafetyFiltersProps) {
                                     min="0"
                                     max="100"
                                     value={formData.aiSensitivity}
-                                    onChange={(e: unknown) => setFormData({ ...formData, aiSensitivity: parseInt(e.target.value) })}
+                                    onChange={(e: any) => setFormData({ ...formData, aiSensitivity: parseInt(e.target.value) })}
                                     className="h-1.5"
                                 />
                                 <p className="text-xs text-muted-foreground">
@@ -164,7 +164,7 @@ export function SafetyFilters({ settings, onUpdate }: SafetyFiltersProps) {
                                 <Label>Self-Escalation Threshold</Label>
                                 <Select 
                                     value={formData.autoEscalationThreshold.toString()} 
-                                    onValueChange={(v) => setFormData({ ...formData, autoEscalationThreshold: parseInt(v) })}
+                                    onValueChange={(v: any) => setFormData({ ...formData, autoEscalationThreshold: parseInt(v) })}
                                 >
                                     <SelectTrigger>
                                         <SelectValue />
@@ -201,7 +201,7 @@ export function SafetyFilters({ settings, onUpdate }: SafetyFiltersProps) {
                             id="blockedNumbers"
                             placeholder="+2348012345678&#10;+2347012345678"
                             value={formData.blockedNumbers}
-                            onChange={(e: unknown) =>
+                            onChange={(e: any) =>
                                 setFormData({ ...formData, blockedNumbers: e.target.value })
                             }
                             rows={4}
@@ -216,7 +216,7 @@ export function SafetyFilters({ settings, onUpdate }: SafetyFiltersProps) {
                             id="blockedKeywords"
                             placeholder="spam, scam, fraud"
                             value={formData.blockedKeywords}
-                            onChange={(e: unknown) =>
+                            onChange={(e: any) =>
                                 setFormData({ ...formData, blockedKeywords: e.target.value })
                             }
                             rows={3}

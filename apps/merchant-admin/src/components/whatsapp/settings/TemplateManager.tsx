@@ -20,11 +20,11 @@ import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
 interface TemplateManagerProps {
-    templates: unknown[];
+    templates: any[];
     onRefresh: () => void;
 }
 
-export function TemplateManager({ templates, onRefresh }: TemplateManagerProps) {
+export function TemplateManager({ templates: any, onRefresh }: TemplateManagerProps) {
     const [isOpen, setIsOpen] = useState(false);
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [newTemplate, setNewTemplate] = useState({
@@ -130,7 +130,7 @@ export function TemplateManager({ templates, onRefresh }: TemplateManagerProps) 
                                     <Label>Category</Label>
                                     <Select
                                         value={newTemplate.category}
-                                        onValueChange={(val) => setNewTemplate({ ...newTemplate, category: val })}
+                                        onValueChange={(val: any) => setNewTemplate({ ...newTemplate, category: val })}
                                     >
                                         <SelectTrigger>
                                             <SelectValue />
@@ -146,7 +146,7 @@ export function TemplateManager({ templates, onRefresh }: TemplateManagerProps) 
                                     <Label>Language</Label>
                                     <Select
                                         value={newTemplate.language}
-                                        onValueChange={(val) => setNewTemplate({ ...newTemplate, language: val })}
+                                        onValueChange={(val: any) => setNewTemplate({ ...newTemplate, language: val })}
                                     >
                                         <SelectTrigger>
                                             <SelectValue />
@@ -196,7 +196,7 @@ export function TemplateManager({ templates, onRefresh }: TemplateManagerProps) 
                         </TableRow>
                     </TableHeader>
                     <TableBody>
-                        {templates?.map((t) => (
+                        {templates?.map((t: any) => (
                             <TableRow key={t.id}>
                                 <TableCell className="font-medium font-mono text-xs">{t.name}</TableCell>
                                 <TableCell>{t.category}</TableCell>

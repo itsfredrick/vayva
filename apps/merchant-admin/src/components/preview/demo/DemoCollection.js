@@ -1,6 +1,0 @@
-import { jsx as _jsx, jsxs as _jsxs } from "react/jsx-runtime";
-import { Button } from "@vayva/ui";
-export function DemoCollection({ demo, activeCategory, }) {
-    const items = demo.products.filter((p) => p.category === activeCategory);
-    return (_jsx("div", { className: "mx-auto max-w-6xl px-4 py-10", children: _jsxs("div", { className: "rounded-2xl border bg-white p-6 shadow-sm", children: [_jsx("div", { className: "text-xl font-semibold text-gray-900", children: activeCategory }), _jsxs("div", { className: "mt-2 text-sm text-gray-500", children: [items.length, " items (demo)"] }), _jsx("div", { className: "mt-6 grid gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3", children: items.map((p) => (_jsxs("div", { className: "rounded-xl border p-4 bg-white", children: [_jsx("div", { className: "overflow-hidden rounded-lg border bg-gray-50", children: _jsx("img", { src: p.image, alt: p.name, className: "h-36 w-full object-cover" }) }), _jsx("div", { className: "mt-3 text-sm font-medium text-gray-900", children: p.name }), _jsxs("div", { className: "mt-1 text-xs text-gray-500", children: ["\u20A6", p.price.toLocaleString()] }), _jsx(Button, { type: "button", className: "mt-3 w-full rounded-lg bg-black px-3 py-2 text-sm text-white hover:opacity-90 h-auto", children: "View (preview)" })] }, p.id))) })] }) }));
-}

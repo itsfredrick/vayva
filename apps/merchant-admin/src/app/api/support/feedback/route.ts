@@ -1,47 +1,41 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
-
-export async function GET(request: Request) {
-  const { searchParams } = new URL(request.url);
-  const ticketId = searchParams.get("ticketId");
-  const rating = searchParams.get("rating");
-
-  if (!ticketId || !rating) {
-    return NextResponse.json({ error: "Missing parameters" }, { status: 400 });
-  }
-
-  try {
-    // 1. Create feedback record
-    await prisma.supportTicketFeedback.upsert({
-      where: { ticketId },
-      create: {
-        ticketId,
-        rating,
-      },
-      update: {
-        rating,
-        createdAt: new Date()
-      }
-    });
-
-    // 2. Handle Closed-Loop Feature: If Raiting is BAD, re-open and escalate
-    if (rating === "BAD") {
-      await prisma.supportTicket.update({
-        where: { id: ticketId },
-        data: {
-          status: "open",
-          priority: "urgent",
-          metadata: {
-            reopenedReason: "NEGATIVE_FEEDBACK",
-            reopenedAt: new Date().toISOString()
-          }
-        }
-      });
+export async function GET(request: any) {
+    const { searchParams } = new URL(request.url);
+    const ticketId = searchParams.get("ticketId");
+    const rating = searchParams.get("rating");
+    if (!ticketId || !rating) {
+        return NextResponse.json({ error: "Missing parameters" }, { status: 400 });
     }
-
-    // 3. Return a nice HTML response or redirect to a thank you page
-    return new NextResponse(
-      `
+    try {
+        // 1. Create feedback record
+        await prisma.supportTicketFeedback.upsert({
+            where: { ticketId },
+            create: {
+                ticketId,
+                rating,
+            },
+            update: {
+                rating,
+                createdAt: new Date()
+            }
+        });
+        // 2. Handle Closed-Loop Feature: If Raiting is BAD, re-open and escalate
+        if (rating === "BAD") {
+            await prisma.supportTicket.update({
+                where: { id: ticketId },
+                data: {
+                    status: "open",
+                    priority: "urgent",
+                    metadata: {
+                        reopenedReason: "NEGATIVE_FEEDBACK",
+                        reopenedAt: new Date().toISOString()
+                    }
+                }
+            });
+        }
+        // 3. Return a nice HTML response or redirect to a thank you page
+        return new NextResponse(`
             <html>
                 <head>
                     <title>Thank You - Vayva Support</title>
@@ -60,18 +54,16 @@ export async function GET(request: Request) {
                         <h1>Thank you for your feedback!</h1>
                         <p>
                             ${rating === 'BAD'
-        ? "We're sorry we didn't meet your expectations. We've re-opened your ticket and a manager will review it shortly."
-        : "Your feedback helps us improve our service for everyone. We're glad we could help!"}
+            ? "We're sorry we didn't meet your expectations. We've re-opened your ticket and a manager will review it shortly."
+            : "Your feedback helps us improve our service for everyone. We're glad we could help!"}
                         </p>
                     </div>
                 </body>
             </html>
-            `,
-      { headers: { "Content-Type": "text/html" } }
-    );
-
-  } catch (error) {
-    console.error("Feedback error:", error);
-    return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
-  }
+            `, { headers: { "Content-Type": "text/html" } });
+    }
+    catch (error) {
+        console.error("Feedback error:", error);
+        return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
+    }
 }

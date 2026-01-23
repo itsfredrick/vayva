@@ -27,9 +27,11 @@ export default function SigninPage() {
     try {
       const data = await AuthService.login({ email, password, rememberMe });
       login(data.token, data.user);
-    } catch (err: unknown) {
+    } catch (err) {
       console.error(err);
-      setError(err.response?.data?.error || "Incorrect email or password");
+      const data = (err as any).response?.data;
+      const message = data?.error || data?.message || (err as any).message || "Incorrect email or password";
+      setError(message);
     } finally {
       setLoading(false);
     }

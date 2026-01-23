@@ -63,11 +63,11 @@ export function StorefrontProvider({ children }: { children: ReactNode }) {
     variants: Record<string, string>,
     modifiers: Record<string, string[]> = {},
   ) => {
-    setCart((prev) => {
+    setCart((prev: any) => {
       // Check if item exists with exact same variants & modifiers
       // Simple JSON stringify comparison for MVP
       const existingIndex = prev.findIndex(
-        (item) =>
+        (item: any) =>
           item.product.id === product.id &&
           JSON.stringify(item.selectedVariants) === JSON.stringify(variants) &&
           JSON.stringify(item.selectedModifiers || {}) ===
@@ -93,16 +93,16 @@ export function StorefrontProvider({ children }: { children: ReactNode }) {
   };
 
   const removeFromCart = (index: number) => {
-    setCart((prev) => prev.filter((_, i) => i !== index));
+    setCart((prev: any) => prev.filter((_: any, i: any) => i !== index));
   };
 
   const updateQuantity = (index: number, delta: number) => {
-    setCart((prev) => {
+    setCart((prev: any) => {
       const newCart = [...prev];
       const item = newCart[index];
       const newQty = item.quantity + delta;
 
-      if (newQty <= 0) return prev.filter((_, i) => i !== index);
+      if (newQty <= 0) return prev.filter((_: any, i: any) => i !== index);
 
       item.quantity = newQty;
       return newCart;
@@ -111,7 +111,7 @@ export function StorefrontProvider({ children }: { children: ReactNode }) {
 
   const clearCart = () => setCart([]);
 
-  const cartTotal = cart.reduce((sum, item) => {
+  const cartTotal = cart.reduce((sum: any, item: any) => {
     let itemPrice = item.product.price;
 
     // Add modifier prices
@@ -119,11 +119,11 @@ export function StorefrontProvider({ children }: { children: ReactNode }) {
       Object.entries(item.selectedModifiers).forEach(
         ([modName, selectedOptions]) => {
           const modDef = item.product.modifiers?.find(
-            (m) => m.name === modName,
+            (m: any) => m.name === modName,
           );
           if (modDef) {
-            selectedOptions.forEach((optLabel) => {
-              const optDef = modDef.options.find((o) => o.label === optLabel);
+            selectedOptions.forEach((optLabel: any) => {
+              const optDef = modDef.options.find((o: any) => o.label === optLabel);
               if (optDef) itemPrice += optDef.price;
             });
           }
@@ -133,7 +133,7 @@ export function StorefrontProvider({ children }: { children: ReactNode }) {
 
     return sum + itemPrice * item.quantity;
   }, 0);
-  const cartCount = cart.reduce((sum, item) => sum + item.quantity, 0);
+  const cartCount = cart.reduce((sum: any, item: any) => sum + item.quantity, 0);
 
   return (
     <StorefrontContext.Provider

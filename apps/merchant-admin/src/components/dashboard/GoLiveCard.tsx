@@ -88,7 +88,7 @@ export function GoLiveCard() {
   const readiness = status?.readiness || {};
   const isReady = readiness.level === "ready";
   const blockers =
-    readiness.issues?.filter((i: unknown) => i.severity === "blocker") || [];
+    readiness.issues?.filter((i: any) => i.severity === "blocker") || [];
 
   return (
     <div className="bg-white rounded-xl border border-gray-200 shadow-sm p-6">
@@ -138,7 +138,7 @@ export function GoLiveCard() {
                 {blockers.length} Issues preventing Go Live
               </div>
               <div className="space-y-1">
-                {blockers.map((b: unknown) => (
+                {blockers.map((b: any) => (
                   <div
                     key={b.code}
                     className="text-xs text-orange-700 flex justify-between"

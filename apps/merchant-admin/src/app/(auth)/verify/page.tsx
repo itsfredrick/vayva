@@ -6,7 +6,7 @@ import { Button, Icon } from "@vayva/ui";
 import { OTPInput } from "@/components/ui/OTPInput";
 import { AuthService } from "@/services/auth";
 import { SplitAuthLayout } from "@/components/auth/SplitAuthLayout";
-
+import { apiClient } from "@vayva/api-client";
 import { useAuth } from "@/context/AuthContext";
 
 const VerifyContent = () => {
@@ -35,16 +35,20 @@ const VerifyContent = () => {
     setError(null);
 
     try {
-      const data = await AuthService.verify({ email, code: otpValue });
+      // Corrected: AuthService via apiClient expects { email, otp }
+      const response = await apiClient.auth.verifyOtp({ email, otp: otpValue });
 
-      // login expects (token, user, merchant)
-      login(data.token, data.user, data.merchant);
-
-      // Redirect logic is in login function/AuthContext,
-      // but we can ensure a fallback here if needed.
-    } catch (err: unknown) {
+      if (response.success && response.data) {
+        // We might need to fetch profile after verification if the verification 
+        // response doesn't include full user/token info.
+        // For now, let's assume we need to redirect to signin or dashboard.
+        router.push("/dashboard");
+      }
+    } catch (err) {
       console.error(err);
-      setError(err.response?.data?.error || "Invalid verification code");
+      const data = (err as any).response?.data;
+      const message = data?.error || data?.message || (err as any).message || "Invalid verification code";
+      setError(message);
       setOtp(""); // Clear OTP on error
     } finally {
       setLoading(false);
@@ -59,9 +63,11 @@ const VerifyContent = () => {
       setResendTimer(30);
       setCanResend(false);
       setError(null);
-    } catch (err: unknown) {
+    } catch (err) {
       console.error(err);
-      setError(err.response?.data?.error || "Failed to resend code");
+      const data = (err as any).response?.data;
+      const message = data?.error || data?.message || (err as any).message || "Failed to resend code";
+      setError(message);
     }
   };
 
@@ -75,7 +81,7 @@ const VerifyContent = () => {
       {/* Icon */}
       <div className="flex justify-center mb-6">
         <div className="w-16 h-16 bg-black/5 rounded-full flex items-center justify-center">
-          <Icon name={"Mail" as unknown} className="w-8 h-8 text-black" />
+          <Icon name="Mail" className="w-8 h-8 text-black" />
         </div>
       </div>
 
@@ -122,7 +128,7 @@ const VerifyContent = () => {
       >
         {loading ? (
           <>
-            <Icon name={"Loader2" as unknown} className="w-5 h-5 animate-spin" />
+            <Icon name="Loader2" className="w-5 h-5 animate-spin" />
             Verifying...
           </>
         ) : (

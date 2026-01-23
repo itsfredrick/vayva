@@ -60,7 +60,7 @@ export function DiscountList() {
                     </TableRow>
                 </TableHeader>
                 <TableBody>
-                    {discounts.map((d: unknown) => {
+                    {discounts.map((d: any) => {
                         const status = (!d.endsAt || new Date(d.endsAt) > new Date()) ? "Active" : "Expired";
                         return (
                             <TableRow key={d.id}>

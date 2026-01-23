@@ -1,8 +1,0 @@
-"use client";
-import { jsx as _jsx, jsxs as _jsxs } from "react/jsx-runtime";
-import { Button, Icon } from "@vayva/ui";
-export const UpsellModal = ({ isOpen, onClose, onUpgrade, templateName, requiredTier, }) => {
-    if (!isOpen)
-        return null;
-    return (_jsx("div", { className: "fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm animate-in fade-in duration-200", children: _jsxs("div", { className: "bg-white rounded-3xl w-full max-w-lg shadow-2xl animate-in zoom-in-95 duration-200 relative p-8", children: [_jsx(Button, { onClick: onClose, className: "absolute top-4 right-4 p-2 hover:bg-gray-100", children: _jsx(Icon, { name: "X", size: 20 }) }), _jsxs("div", { className: "text-center", children: [_jsx("div", { className: "w-16 h-16 bg-primary-100 text-primary-600 rounded-2xl flex items-center justify-center mx-auto mb-6", children: _jsx(Icon, { name: "Lock", size: 32 }) }), _jsxs("h2", { className: "text-2xl font-bold text-gray-900 mb-2", children: ["Unlock ", templateName] }), _jsxs("p", { className: "text-gray-500 mb-8 leading-relaxed", children: ["This premium template is exclusive to our", " ", _jsx("strong", { children: requiredTier }), " plan. Upgrade today to unlock this and many other pro features."] }), _jsxs("div", { className: "space-y-3", children: [_jsxs(Button, { onClick: onUpgrade, className: "w-full bg-black text-white py-6 rounded-2xl text-lg font-bold shadow-xl hover:scale-[1.02] active:scale-[0.98] transition-all", children: ["Upgrade to ", requiredTier] }), _jsx(Button, { variant: "ghost", onClick: onClose, className: "w-full text-gray-400 hover:text-gray-600", children: "Maybe Later" })] })] })] }) }));
-};

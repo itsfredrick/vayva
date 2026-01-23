@@ -13,16 +13,16 @@ export const UsageAndSystem = ({
 }: UsageAndSystemProps) => {
   const renderProgressBar = (metric: unknown) => {
     const percentage =
-      metric.limit === "unlimited" ? 0 : (metric.used / metric.limit) * 100;
-    const isNearLimit = typeof metric.limit === "number" && percentage > 80;
+      (metric as any).limit === "unlimited" ? 0 : ((metric as any).used / (metric as any).limit) * 100;
+    const isNearLimit = typeof (metric as any).limit === "number" && percentage > 80;
 
     return (
       <div className="mb-4 last:mb-0">
         <div className="flex justify-between text-sm mb-1.5">
-          <span className="font-medium text-gray-700">{metric.label}</span>
+          <span className="font-medium text-gray-700">{(metric as any).label}</span>
           <span className="text-gray-500">
-            <strong className="text-gray-900">{metric.used}</strong> /{" "}
-            {metric.limit === "unlimited" ? "∞" : metric.limit}
+            <strong className="text-gray-900">{(metric as any).used}</strong> /{" "}
+            {(metric as any).limit === "unlimited" ? "∞" : (metric as any).limit}
           </span>
         </div>
         <div className="h-2 w-full bg-gray-100 rounded-full overflow-hidden">

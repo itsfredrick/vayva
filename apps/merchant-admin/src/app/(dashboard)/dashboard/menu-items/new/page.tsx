@@ -51,8 +51,8 @@ export default function NewMenuItemPage() {
 
             toast.success("Menu item created!");
             router.push("/dashboard/menu-items");
-        } catch (error: unknown) {
-            toast.error(error.message);
+        } catch (error: any) {
+            toast.error(error.message || "Failed to create menu item");
         } finally {
             setLoading(false);
         }
@@ -140,7 +140,7 @@ export default function NewMenuItemPage() {
                                 <Label>Spice Level</Label>
                                 <Select
                                     value={metadata.spiceLevel}
-                                    onValueChange={(val: unknown) => setMetadata({ ...metadata, spiceLevel: val })}
+                                    onValueChange={(val: string) => setMetadata({ ...metadata, spiceLevel: val })}
                                 >
                                     <SelectTrigger>
                                         <SelectValue placeholder="Select level" />

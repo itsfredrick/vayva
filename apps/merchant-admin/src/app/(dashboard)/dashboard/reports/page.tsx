@@ -49,14 +49,14 @@ export default function ReportsPage() {
             }
         };
 
-        if (plan?.slug && PLANS[plan.slug]?.features.reports) {
+        if (plan?.slug && (PLANS as any)[plan.slug]?.features.reports) {
             fetchReport();
         }
     }, [plan, range]);
 
     if (planLoading) return <div className="p-12 text-center text-gray-500 flex items-center justify-center gap-2"><Loader2 className="animate-spin h-5 w-5" /> Loading...</div>;
 
-    const currentPlan = PLANS[plan?.slug || "free"];
+    const currentPlan = (PLANS as any)[plan?.slug || "free"];
     const canViewReports = currentPlan?.features.reports;
 
     if (!canViewReports) {
@@ -227,7 +227,7 @@ export default function ReportsPage() {
     );
 }
 
-function MetricCard({ title, value, trend, icon: Icon, loading }: { title: string, value: string | number, trend: string, icon: unknown, loading: boolean }) {
+function MetricCard({ title, value, trend, icon: Icon, loading }: { title: string, value: string | number, trend: string, icon: any, loading: boolean }) {
     return (
         <Card className="rounded-3xl border border-gray-100 shadow-sm overflow-hidden p-6 hover:shadow-md transition-shadow">
             <div className="flex items-center justify-between mb-4">

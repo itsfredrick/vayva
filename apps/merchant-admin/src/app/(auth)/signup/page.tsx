@@ -36,9 +36,10 @@ export default function SignupPage() {
     try {
       await AuthService.register({ email, password, firstName, lastName });
       router.push(`/verify?email=${encodeURIComponent(email)}`);
-    } catch (err: unknown) {
+    } catch (err) {
       console.error(err);
-      setError(err.message || "Failed to create account");
+      const message = err instanceof Error ? err.message : "Failed to create account";
+      setError(message);
     } finally {
       setLoading(false);
     }

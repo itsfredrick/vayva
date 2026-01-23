@@ -1,6 +1,0 @@
-"use client";
-import { jsx as _jsx, jsxs as _jsxs } from "react/jsx-runtime";
-import Link from "next/link";
-export const AuthRightPanel = ({ children, stepIndicator, title, subtitle, }) => {
-    return (_jsxs("div", { className: "flex-1 lg:w-[55%] bg-white flex flex-col", children: [_jsx("div", { className: "h-16 px-6 lg:px-12 flex items-center justify-end border-b border-gray-100", children: _jsx(Link, { href: "/help", className: "text-sm text-gray-600 hover:text-black font-medium transition-colors", children: "Having trouble? Get help" }) }), _jsx("div", { className: "flex-1 flex items-center justify-center p-6 lg:p-12", children: _jsxs("div", { className: "w-full max-w-[480px]", children: [_jsx("h1", { className: "text-3xl font-bold text-gray-900 mb-2 leading-tight", children: title }), subtitle && (_jsx("p", { className: "text-base text-gray-600 mb-8", children: subtitle })), _jsx("div", { children: children }), _jsxs("div", { className: "mt-8 flex items-center justify-center gap-4 text-sm text-gray-500", children: [_jsx(Link, { href: "/legal/terms", className: "hover:text-gray-900 transition-colors", children: "Terms of Service" }), _jsx("span", { children: "\u2022" }), _jsx(Link, { href: "/legal/privacy", className: "hover:text-gray-900 transition-colors", children: "Privacy Policy" })] })] }) })] }));
-};

@@ -5,8 +5,24 @@ import { Badge, Button, Card } from "@vayva/ui";
 import { Users, TrendingUp, AlertCircle, Sparkles, Mail } from "lucide-react";
 import { logger, ErrorCategory } from "@/lib/logger";
 
+interface InsightStats {
+  totalRevenue: number;
+  totalOrders: number;
+  averageOrderValue: number;
+}
+
+interface SegmentData {
+  count: number;
+  revenue: number;
+}
+
+interface InsightsData {
+  stats: InsightStats;
+  segments: Record<string, SegmentData>;
+}
+
 export default function InsightsPage() {
-  const [data, setData] = useState<unknown>(null);
+  const [data, setData] = useState<InsightsData | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -16,7 +32,7 @@ export default function InsightsPage() {
         const json = await res.json();
         if (json.stats) setData(json);
       } catch (e) {
-        logger.error("Failed to load customer insights", ErrorCategory.API, e as Error);
+        logger.error("Failed to load customer insights", ErrorCategory.API, e as Error, {});
       } finally {
         setLoading(false);
       }

@@ -37,11 +37,11 @@ export default function ShipmentsPage() {
             const url = activeTab === "ALL" ? "/api/fulfillment/shipments" : `/api/fulfillment/shipments?status=${activeTab}`;
             const res = await fetch(url);
             if (!res.ok) throw new Error("Failed to load shipments");
-            const result = await res.json();
+            const result = await res.json() as { data: Shipment[] };
             setShipments(result.data || []);
-        } catch (error) {
+        } catch (error: any) {
             console.error(error);
-            toast.error("Could not load shipments");
+            toast.error(error.message || "Could not load shipments");
         } finally {
             setLoading(false);
         }
@@ -60,8 +60,8 @@ export default function ShipmentsPage() {
                         key={tab}
                         onClick={() => setActiveTab(tab)}
                         className={`pb-3 px-1 text-sm font-medium border-b-2 transition-colors flex items-center gap-2 ${activeTab === tab
-                                ? "border-indigo-600 text-indigo-600"
-                                : "border-transparent text-slate-500 hover:text-slate-700 hover:border-slate-300"
+                            ? "border-indigo-600 text-indigo-600"
+                            : "border-transparent text-slate-500 hover:text-slate-700 hover:border-slate-300"
                             }`}
                     >
                         {tab.replace("_", " ")}
@@ -119,9 +119,9 @@ export default function ShipmentsPage() {
                                         </td>
                                         <td className="px-6 py-4">
                                             <span className={`inline-flex items-center px-2 py-1 rounded-full text-xs font-medium ${shipment.status === 'DELIVERED' ? 'bg-emerald-100 text-emerald-700' :
-                                                    shipment.status === 'IN_TRANSIT' ? 'bg-blue-100 text-blue-700' :
-                                                        shipment.status === 'FAILED' ? 'bg-red-100 text-red-700' :
-                                                            'bg-slate-100 text-slate-600'
+                                                shipment.status === 'IN_TRANSIT' ? 'bg-blue-100 text-blue-700' :
+                                                    shipment.status === 'FAILED' ? 'bg-red-100 text-red-700' :
+                                                        'bg-slate-100 text-slate-600'
                                                 }`}>
                                                 {shipment.status.replace("_", " ")}
                                             </span>

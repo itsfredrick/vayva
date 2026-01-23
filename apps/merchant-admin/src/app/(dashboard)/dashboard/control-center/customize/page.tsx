@@ -9,10 +9,20 @@ import { ThemeCustomizer } from "@/components/control-center/ThemeCustomizer";
 import { toast } from "sonner";
 import { Loader2, Monitor, Smartphone, Globe, ArrowLeft } from "lucide-react";
 
+interface StorefrontDraft {
+    store: {
+        slug: string;
+    } | null;
+    template: {
+        displayName: string;
+    } | null;
+    themeConfig: any;
+}
+
 export default function StorefrontCustomizePage() {
     const { merchant } = useAuth();
     const router = useRouter();
-    const [draft, setDraft] = useState<unknown>(null);
+    const [draft, setDraft] = useState<StorefrontDraft | null>(null);
     const [loading, setLoading] = useState(true);
     const [viewMode, setViewMode] = useState<"desktop" | "mobile">("desktop");
     const [isSaving, setIsSaving] = useState(false);
@@ -35,9 +45,11 @@ export default function StorefrontCustomizePage() {
         }
     };
 
-    const handleUpdate = async (newConfig: unknown) => {
+    const handleUpdate = async (newConfig: any) => {
         // 1. Sync local status
-        setDraft({ ...draft, themeConfig: newConfig });
+        if (draft) {
+            setDraft({ ...draft, themeConfig: newConfig });
+        }
 
         // 2. Send message to iframe for instant preview
         if (iframeRef.current?.contentWindow) {

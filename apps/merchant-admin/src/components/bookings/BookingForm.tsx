@@ -12,7 +12,7 @@ interface BookingFormProps {
     onSuccess: () => void;
     services: { id: string; name: string }[];
     customers: { id: string; name: string }[];
-    initialData?: unknown;
+    initialData?: any;
 }
 
 interface BookingFormValues {
@@ -23,7 +23,7 @@ interface BookingFormValues {
     notes?: string;
 }
 
-export function BookingForm({ services, customers, onSuccess, initialData }: BookingFormProps) { // Updated props
+export function BookingForm({ services: any, customers: any, onSuccess: any, initialData }: BookingFormProps) { // Updated props
     const router = useRouter();
     const [isLoading, setIsLoading] = useState(false); // Changed isSubmitting to isLoading
     const { register, handleSubmit, watch, formState: { errors } } = useForm<BookingFormValues>({ // Changed BookingFormValues to BookingFormData
@@ -66,7 +66,7 @@ export function BookingForm({ services, customers, onSuccess, initialData }: Boo
             toast.success(initialData ? "Booking updated" : "Booking created successfully"); // Updated toast message
             router.refresh(); // Refresh server data
             onSuccess();
-        } catch (error: unknown) { // Updated error handling
+        } catch (error: any) { // Updated error handling
             console.error(error);
             toast.error(error.message);
         } finally {

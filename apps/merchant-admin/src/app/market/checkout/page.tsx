@@ -119,7 +119,7 @@ export default function CheckoutPage() {
               <Input
                 placeholder="Enter full address (Lagos only for Beta)"
                 value={address}
-                onChange={(e) => setAddress(e.target.value)}
+                onChange={(e: any) => setAddress(e.target.value)}
                 className="bg-transparent border-white/20 text-white"
               />
               <Button onClick={handleGetQuote} disabled={loading} variant="secondary">

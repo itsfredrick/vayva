@@ -3,25 +3,46 @@ import { getSessionUser } from "@/lib/session";
 import { prisma } from "@/lib/prisma";
 import { encrypt } from "@/lib/security/encryption";
 
+interface OnboardingState {
+    intent?: {
+        segment?: string;
+        hasDelivery?: boolean;
+    };
+    industrySlug?: string;
+    setupPath?: string;
+    identity?: {
+        nin?: string;
+        bvn?: string;
+        cacNumber?: string;
+    };
+    kyc?: {
+        nin?: string;
+        bvn?: string;
+        cacNumber?: string;
+    };
+    finance?: {
+        accountNumber?: string;
+        bankName?: string;
+        bankCode?: string;
+        accountName?: string;
+    };
+}
+
 // POST /api/onboarding/save-progress
 export async function POST(request: NextRequest) {
     try {
         const sessionUser = await getSessionUser();
-
         if (!sessionUser) {
             return NextResponse.json({ error: "Not authenticated" }, { status: 401 });
         }
-
         const body = await request.json();
-        const { currentStep, data, completedSteps } = body;
-
+        const { currentStep, data, completedSteps } = body as { currentStep: string; data: OnboardingState; completedSteps: string[] };
         // Extract specific fields for columns if present in data
         // data is the OnboardingState object from frontend
         const industryCategory = data?.intent?.segment;
         const industrySlug = data?.industrySlug || industryCategory;
         const isGuided = data?.setupPath === "guided"; // 'guided' | 'blank'
         const hasDelivery = data?.intent?.hasDelivery;
-
         // Scrub sensitive PII from stored JSON
         const scrubbedData = data ? JSON.parse(JSON.stringify(data)) : undefined;
         if (scrubbedData?.identity) {
@@ -34,41 +55,36 @@ export async function POST(request: NextRequest) {
             delete scrubbedData.kyc.bvn;
             delete scrubbedData.kyc.cacNumber;
         }
-
         // Prepare upsert data
-        const updateData: unknown = {
+        const updateData: any = {
             currentStepKey: currentStep || undefined,
             data: scrubbedData || undefined,
             completedSteps: completedSteps || undefined,
             updatedAt: new Date(),
         };
-
         if (data?.setupPath) {
             updateData.setupPath = data.setupPath;
         }
         if (typeof hasDelivery !== 'undefined') {
             updateData.hasDelivery = hasDelivery;
         }
-
-        const createData: unknown = {
+        const createData = {
             storeId: sessionUser.storeId,
-            status: "IN_PROGRESS",
+            status: "IN_PROGRESS" as any,
             currentStepKey: currentStep || "welcome",
             data: scrubbedData || {},
             completedSteps: completedSteps || [],
             setupPath: data?.setupPath || "guided",
             hasDelivery: hasDelivery ?? true,
         };
-
         // 1. Upsert MerchantOnboarding
         const onboarding = await prisma.merchantOnboarding.upsert({
             where: { storeId: sessionUser.storeId },
             update: updateData,
             create: createData,
         });
-
         // 2. Update Store level fields (Resume Step, Category)
-        const storeUpdateData: unknown = {};
+        const storeUpdateData: any = {};
         if (currentStep) {
             storeUpdateData.onboardingLastStep = currentStep;
         }
@@ -78,19 +94,16 @@ export async function POST(request: NextRequest) {
         if (industrySlug) {
             storeUpdateData.industrySlug = industrySlug;
         }
-
         if (Object.keys(storeUpdateData).length > 0) {
             await prisma.store.update({
                 where: { id: sessionUser.storeId },
                 data: storeUpdateData,
             });
         }
-
         // 3. Handle KYC Data (identity/kyc) with simple encryption mocks
         const kycData = data?.kyc || data?.identity;
         if (kycData) {
-            const kycUpdate: unknown = {};
-
+            const kycUpdate: any = {};
             if (kycData.nin) {
                 kycUpdate.ninLast4 = kycData.nin.slice(-4);
                 kycUpdate.fullNinEncrypted = encrypt(kycData.nin);
@@ -103,7 +116,6 @@ export async function POST(request: NextRequest) {
                 kycUpdate.cacNumberEncrypted = encrypt(kycData.cacNumber);
             }
             kycUpdate.status = "PENDING";
-
             if (Object.keys(kycUpdate).length > 0) {
                 await prisma.kycRecord.upsert({
                     where: { storeId: sessionUser.storeId },
@@ -117,7 +129,6 @@ export async function POST(request: NextRequest) {
                 });
             }
         }
-
         // 4. Handle Financial Data Persistence (Audit Fix: Sector 1)
         // If we are on the finance step or data.finance is updated, sync to BankBeneficiary
         if (data?.finance) {
@@ -125,11 +136,9 @@ export async function POST(request: NextRequest) {
             if (finance.accountNumber && finance.bankName) {
                 // Use provided bankCode or default to generic code
                 const bankCode = finance.bankCode || "000";
-
                 const existingBeneficiary = await prisma.bankBeneficiary.findFirst({
                     where: { storeId: sessionUser.storeId, isDefault: true }
                 });
-
                 await prisma.bankBeneficiary.upsert({
                     where: {
                         id: existingBeneficiary?.id || "new-record"
@@ -152,13 +161,12 @@ export async function POST(request: NextRequest) {
                 });
             }
         }
-
         return NextResponse.json({
             message: "Progress saved",
             step: onboarding.currentStepKey
         });
-
-    } catch (error) {
+    }
+    catch (error) {
         console.error("Save progress error:", error);
         return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
     }

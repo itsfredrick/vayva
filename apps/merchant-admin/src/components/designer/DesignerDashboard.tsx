@@ -12,12 +12,12 @@ export const DesignerDashboard = () => {
 
   useEffect(() => {
     fetch("/api/designer/templates")
-      .then((res) => res.json())
-      .then((data) => {
+      .then((res: any) => res.json())
+      .then((data: any) => {
         setTemplates(data);
         setLoading(false);
       })
-      .catch((err) => {
+      .catch((err: any) => {
         console.error(err);
         setLoading(false);
       });
@@ -112,7 +112,7 @@ export const DesignerDashboard = () => {
         </div>
       ) : (
         <div className="space-y-4">
-          {templates.map((tpl) => (
+          {templates.map((tpl: any) => (
             <div
               key={tpl.id}
               className="bg-white border border-gray-200 rounded-xl p-6 flex flex-col md:flex-row items-start md:items-center justify-between gap-6 hover:shadow-md transition-shadow"
@@ -154,7 +154,7 @@ export const DesignerDashboard = () => {
                     <div className="bg-red-50 text-red-700 text-xs p-3 rounded-lg max-w-md">
                       <strong>AI Feedback:</strong>
                       <ul className="list-disc list-inside mt-1">
-                        {tpl.aiReviewResult.issues.map((issue, idx) => (
+                        {tpl.aiReviewResult.issues.map((issue: any, idx: any) => (
                           <li key={idx}>{issue}</li>
                         ))}
                       </ul>

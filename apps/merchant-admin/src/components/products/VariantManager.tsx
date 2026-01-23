@@ -23,7 +23,7 @@ interface VariantManagerProps {
 export function VariantManager({ productId, variantLabel = "Variants" }: VariantManagerProps) {
     const { data: variants, mutate, error } = useSWR(`/api/products/${productId}/variants`, fetcher);
     const [isDialogOpen, setIsDialogOpen] = useState(false);
-    const [editingVariant, setEditingVariant] = useState<unknown>(null); // If null, create mode
+    const [editingVariant, setEditingVariant] = useState<any>(null); // If null, create mode
 
     const [formData, setFormData] = useState({
         name: "", // Option value e.g. "Small" (will be title)
@@ -32,7 +32,7 @@ export function VariantManager({ productId, variantLabel = "Variants" }: Variant
         stock: "0"
     });
 
-    const handleOpen = (variant?: unknown) => {
+    const handleOpen = (variant?: any) => {
         if (variant) {
             setEditingVariant(variant);
             setFormData({
@@ -119,7 +119,7 @@ export function VariantManager({ productId, variantLabel = "Variants" }: Variant
                                 </TableCell>
                             </TableRow>
                         )}
-                        {variants?.map((v: unknown) => (
+                        {variants?.map((v: any) => (
                             <TableRow key={v.id} className="hover:bg-gray-50">
                                 <TableCell className="p-3 font-medium">{v.title}</TableCell>
                                 <TableCell className="p-3">{v.price}</TableCell>

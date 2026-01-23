@@ -212,7 +212,7 @@ export default function InboxPage() {
             {/* Messages Area */}
             <div className="flex-1 min-h-0">
               <ChatWindow
-                conversation={conversations.find(c => c.id === selectedId) as unknown}
+                conversation={conversations.find(c => c.id === selectedId) as any}
                 messages={messages}
                 isLoadingMessages={loadingMessages}
                 onSendMessage={handleSend}

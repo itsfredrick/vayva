@@ -10,10 +10,26 @@ import { format } from "date-fns";
 
 
 
+
+interface PortfolioImage {
+    id: string;
+    url: string;
+    caption: string;
+}
+
+interface PortfolioProject {
+    id: string;
+    title: string;
+    description?: string | null;
+    clientMode: boolean;
+    password?: string | null;
+    images: PortfolioImage[];
+}
+
 export default function ProjectEditorPage() {
     const params = useParams();
     const router = useRouter();
-    const [project, setProject] = useState<unknown>(null);
+    const [project, setProject] = useState<PortfolioProject | null>(null);
     const [isLoading, setIsLoading] = useState(true);
     const [isSaving, setIsSaving] = useState(false);
 
@@ -23,8 +39,8 @@ export default function ProjectEditorPage() {
     const [clientMode, setClientMode] = useState(false);
     const [password, setPassword] = useState("");
 
-    // Image State (Mocked uploads for now as backend storage is abstract)
-    const [images, setImages] = useState<any[]>([]);
+    // Image State
+    const [images, setImages] = useState<PortfolioImage[]>([]);
 
     useEffect(() => {
         const fetchProject = async () => {
@@ -32,12 +48,13 @@ export default function ProjectEditorPage() {
                 const res = await fetch(`/api/portfolio/${params.id}`);
                 const data = await res.json();
                 if (data.project) {
-                    setProject(data.project);
-                    setTitle(data.project.title);
-                    setDescription(data.project.description || "");
-                    setClientMode(data.project.clientMode);
-                    setPassword(data.project.password || "");
-                    setImages(Array.isArray(data.project.images) ? data.project.images : []);
+                    const p = data.project as PortfolioProject;
+                    setProject(p);
+                    setTitle(p.title);
+                    setDescription(p.description || "");
+                    setClientMode(p.clientMode);
+                    setPassword(p.password || "");
+                    setImages(Array.isArray(p.images) ? p.images : []);
                 }
             } catch (e) {
                 toast.error("Failed to load project");
@@ -77,8 +94,6 @@ export default function ProjectEditorPage() {
 
     const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
         if (e.target.files) {
-            // Mock Upload: Read as Data URL for immediate preview (Not production ready for large files, but good for demo)
-            // Ideally we upload to blob here.
             Array.from(e.target.files).forEach(file => {
                 const reader = new FileReader();
                 reader.onloadend = () => {
@@ -147,7 +162,7 @@ export default function ProjectEditorPage() {
                         {images.length > 0 && (
                             <div className="columns-2 md:columns-3 gap-4 space-y-4">
                                 {images.map((img, idx) => (
-                                    <div key={idx} className="break-inside-avoid relative group rounded-lg overflow-hidden bg-white shadow-sm hover:shadow-md transition-all">
+                                    <div key={img.id || idx} className="break-inside-avoid relative group rounded-lg overflow-hidden bg-white shadow-sm hover:shadow-md transition-all">
                                         <img src={img.url} alt={img.caption} className="w-full h-auto block" />
                                         <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-2">
                                             <Button variant="ghost" size="icon" className="text-white hover:bg-white/20" onClick={() => {
@@ -217,6 +232,6 @@ export default function ProjectEditorPage() {
     );
 }
 
-function Loader2(props: unknown) {
+function Loader2(props: any) {
     return <svg {...props} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 12a9 9 0 1 1-6.219-8.56" /></svg>;
 }

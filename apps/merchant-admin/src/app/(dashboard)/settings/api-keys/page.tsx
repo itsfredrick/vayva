@@ -71,8 +71,8 @@ export default function ApiKeysPage() {
             toast.success("API Key created");
             mutate("/api/settings/api-keys");
             // Don't close dialog yet, user needs to copy key
-        } catch (err: unknown) {
-            toast.error(err.message);
+        } catch (err) {
+            toast.error((err as any).message || "Failed to create key");
         }
     };
 
@@ -83,8 +83,8 @@ export default function ApiKeysPage() {
             if (!res.ok) throw new Error("Failed to revoke");
             toast.success("Key revoked");
             mutate("/api/settings/api-keys");
-        } catch (err: unknown) {
-            toast.error(err.message);
+        } catch (err) {
+            toast.error((err as any).message || "Failed to revoke");
         }
     };
 
@@ -101,8 +101,8 @@ export default function ApiKeysPage() {
             prompt("Key Rotated! Copy your NEW key now. The old one is dead.", data.apiKey.key);
 
             mutate("/api/settings/api-keys");
-        } catch (err: unknown) {
-            toast.error(err.message);
+        } catch (err) {
+            toast.error((err as any).message || "Failed to rotate key");
         }
     };
 
@@ -221,7 +221,7 @@ export default function ApiKeysPage() {
                             </TableRow>
                         </TableHeader>
                         <TableBody>
-                            {keys?.map((key: unknown) => (
+                            {keys?.map((key: any) => (
                                 <TableRow key={key.id}>
                                     <TableCell className="font-medium">
                                         <div className="flex flex-col">

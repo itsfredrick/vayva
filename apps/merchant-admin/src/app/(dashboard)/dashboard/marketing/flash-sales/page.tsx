@@ -83,8 +83,8 @@ export default function FlashSalesPage() {
             setIsOpen(false);
             setFormData({ name: "", discount: "20", durationHours: "24" }); // Reset
             fetchSales();
-        } catch (error: unknown) {
-            toast.error(error.message);
+        } catch (error: any) {
+            toast.error(error.message || "Failed to create flash sale");
         } finally {
             setIsSubmitting(false);
         }
@@ -158,8 +158,8 @@ export default function FlashSalesPage() {
             setEditingSale(null);
             setFormData({ name: "", discount: "20", durationHours: "24" });
             fetchSales();
-        } catch (error: unknown) {
-            toast.error(error.message);
+        } catch (error: any) {
+            toast.error(error.message || "Failed to update flash sale");
         } finally {
             setIsSubmitting(false);
         }
@@ -314,7 +314,7 @@ export default function FlashSalesPage() {
                             <Input
                                 id="name"
                                 value={formData.name}
-                                onChange={(e: unknown) => setFormData({ ...formData, name: e.target.value })}
+                                onChange={(e: React.ChangeEvent<HTMLInputElement>) => setFormData({ ...formData, name: e.target.value })}
                                 placeholder="e.g. Midnight Madness"
                             />
                         </div>
@@ -327,7 +327,7 @@ export default function FlashSalesPage() {
                                     min="1"
                                     max="100"
                                     value={formData.discount}
-                                    onChange={(e: unknown) => setFormData({ ...formData, discount: e.target.value })}
+                                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => setFormData({ ...formData, discount: e.target.value })}
                                 />
                             </div>
                             <div className="grid gap-2">
@@ -337,7 +337,7 @@ export default function FlashSalesPage() {
                                     type="number"
                                     min="1"
                                     value={formData.durationHours}
-                                    onChange={(e: unknown) => setFormData({ ...formData, durationHours: e.target.value })}
+                                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => setFormData({ ...formData, durationHours: e.target.value })}
                                 />
                             </div>
                         </div>

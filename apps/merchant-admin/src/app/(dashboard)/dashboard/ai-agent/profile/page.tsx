@@ -11,11 +11,32 @@ import { Loader2, Save, Send } from "lucide-react";
 import { AgentPreview } from "@/components/ai-agent/AgentPreview";
 import { TestMessageDialog } from "@/components/ai-agent/TestMessageDialog";
 
+interface AgentConfig {
+    name: string;
+    avatarUrl: string;
+    tone: string;
+    signature: string;
+}
+
+interface AgentProfile {
+    id: string;
+    name: string;
+    tone: string;
+    signature: string;
+    avatarUrl: string;
+    config?: AgentConfig;
+}
+
 export default function AgentProfilePage() {
     const [isLoading, setIsLoading] = useState(true);
     const [isSaving, setIsSaving] = useState(false);
-    const [agent, setAgent] = useState<unknown>(null);
-    const [draft, setDraft] = useState<unknown>(null);
+    const [agent, setAgent] = useState<AgentProfile | null>(null);
+    const [draft, setDraft] = useState<AgentConfig>({
+        name: "",
+        avatarUrl: "",
+        tone: "professional",
+        signature: ""
+    });
     const [isTestOpen, setIsTestOpen] = useState(false);
 
     useEffect(() => {
@@ -25,14 +46,19 @@ export default function AgentProfilePage() {
     const loadProfile = async () => {
         try {
             const res = await fetch("/api/ai-agent/profile");
-            const data = await res.json();
+            const data: AgentProfile = await res.json();
             setAgent(data);
             // Initialize draft with config or current values
-            const initialDraft = data.config && Object.keys(data.config).length > 0
+            const initialDraft: AgentConfig = data.config && Object.keys(data.config).length > 0
                 ? data.config
-                : { name: data.name, tone: data.tone, signature: data.signature, avatarUrl: data.avatarUrl };
+                : {
+                    name: data.name || "",
+                    tone: data.tone || "professional",
+                    signature: data.signature || "",
+                    avatarUrl: data.avatarUrl || ""
+                };
             setDraft(initialDraft);
-        } catch (error) {
+        } catch (error: any) {
             toast.error("Failed to load agent profile");
         } finally {
             setIsLoading(false);
@@ -49,8 +75,10 @@ export default function AgentProfilePage() {
             });
             if (!res.ok) throw new Error("Failed to save draft");
             toast.success("Draft saved successfully");
-            setAgent({ ...agent, config: draft }); // Update local state
-        } catch (error) {
+            if (agent) {
+                setAgent({ ...agent, config: draft }); // Update local state
+            }
+        } catch (error: any) {
             toast.error("Failed to save draft");
         } finally {
             setIsSaving(false);
@@ -65,7 +93,7 @@ export default function AgentProfilePage() {
             if (!res.ok) throw new Error("Failed to publish");
             toast.success("Agent profile published!");
             loadProfile(); // Reload to sync
-        } catch (error) {
+        } catch (error: any) {
             toast.error("Failed to publish changes");
         } finally {
             setIsSaving(false);
@@ -114,7 +142,7 @@ export default function AgentProfilePage() {
                         <Label>Tone</Label>
                         <Select
                             value={draft.tone || "professional"}
-                            onValueChange={(val) => setDraft({ ...draft, tone: val })}
+                            onValueChange={(val: string) => setDraft({ ...draft, tone: val })}
                         >
                             <SelectTrigger>
                                 <SelectValue />

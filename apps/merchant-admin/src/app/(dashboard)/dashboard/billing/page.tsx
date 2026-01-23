@@ -5,8 +5,21 @@ import { Icon, Button } from "@vayva/ui";
 import { formatMoneyNGN } from "@/lib/billing/formatters";
 import { PLANS } from "@/lib/billing/plans";
 
+interface BillingInvoice {
+  id: string;
+  issuedAt: string;
+  amountNgn: number;
+  status: string;
+}
+
+interface BillingStatus {
+  planKey: string;
+  status: string;
+  invoices: BillingInvoice[];
+}
+
 export default function BillingPage() {
-  const [status, setStatus] = useState<unknown>(null);
+  const [status, setStatus] = useState<BillingStatus | null>(null);
   const [loading, setLoading] = useState(true);
   const [processing, setProcessing] = useState<string | null>(null); // plan slug
 
@@ -30,8 +43,8 @@ export default function BillingPage() {
       if (data.checkout_url) {
         window.location.href = data.checkout_url; // Redirect to payment
       }
-    } catch (e) {
-      alert("Error");
+    } catch (e: any) {
+      alert("Error: " + (e.message || "Unknown error"));
       setProcessing(null);
     }
   };
@@ -47,7 +60,7 @@ export default function BillingPage() {
 
       {isPastDue && (
         <div className="bg-red-50 border border-red-100 p-4 rounded-xl mb-8 flex items-center gap-4">
-          <Icon name={"AlertOctagon" as unknown} className="text-red-500" />
+          <Icon name="AlertOctagon" className="text-red-500" />
           <div className="flex-1">
             <h3 className="font-bold text-red-900">Payment Failed</h3>
             <p className="text-sm text-red-700">
@@ -59,7 +72,7 @@ export default function BillingPage() {
 
       <div className="bg-gray-50 border border-gray-100 rounded-2xl p-6 mb-12 flex items-start gap-4">
         <div className="w-10 h-10 rounded-full bg-white flex items-center justify-center shadow-sm text-gray-400">
-          <Icon name={"Info" as unknown} size={20} />
+          <Icon name="Info" size={20} />
         </div>
         <div>
           <h4 className="font-bold text-gray-900">Transaction Disclosure</h4>
@@ -71,7 +84,7 @@ export default function BillingPage() {
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
-        {([PLANS.starter, PLANS.pro] as any[]).map((plan) => {
+        {[PLANS.STARTER, PLANS.PRO].map((plan) => {
           const isCurrent = currentPlan === plan.slug;
           return (
             <div
@@ -98,15 +111,15 @@ export default function BillingPage() {
 
               <ul className="space-y-3 mb-8 text-sm text-gray-600">
                 <li className="flex gap-2">
-                  <Icon name={"Check" as unknown} size={16} />{" "}
+                  <Icon name="Check" size={16} />{" "}
                   {plan.limits.teamSeats} Team Seat(s)
                 </li>
                 <li className="flex gap-2">
-                  <Icon name={"Check" as unknown} size={16} /> Campaign Limit:{" "}
+                  <Icon name="Check" size={16} /> Campaign Limit:{" "}
                   {plan.limits.monthlyCampaignSends}
                 </li>
                 <li className="flex gap-2">
-                  <Icon name={"Check" as unknown} size={16} />{" "}
+                  <Icon name="Check" size={16} />{" "}
                   {plan.features.approvals
                     ? "Approvals Included"
                     : "Basic Tools"}
@@ -144,8 +157,8 @@ export default function BillingPage() {
             </tr>
           </thead>
           <tbody className="divide-y">
-            {status?.invoices?.length > 0 ? (
-              status.invoices.map((inv: unknown) => (
+            {status?.invoices && status.invoices.length > 0 ? (
+              status.invoices.map((inv) => (
                 <tr key={inv.id}>
                   <td className="px-6 py-4">
                     {new Date(inv.issuedAt).toLocaleDateString()}

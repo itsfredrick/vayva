@@ -1,4 +1,4 @@
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import { requireAuth } from "@/lib/auth/session";
 import { prisma } from "@/lib/prisma";
 
@@ -27,7 +27,7 @@ const PLAN_LIMITS = {
   },
 };
 
-export async function GET() {
+export async function GET(req: NextRequest) {
   try {
     const session = await requireAuth();
     const storeId = session.user.storeId;
@@ -86,7 +86,7 @@ export async function GET() {
         ...limits,
       })),
     });
-  } catch (error: unknown) {
+  } catch (error: any) {
     console.error("Subscription fetch error:", error);
 
     if (error.message === "Unauthorized") {
@@ -103,7 +103,7 @@ export async function GET() {
   }
 }
 
-export async function POST(request: Request) {
+export async function POST(request: NextRequest) {
   try {
     const session = await requireAuth();
     const storeId = session.user.storeId;
@@ -170,7 +170,7 @@ export async function POST(request: Request) {
       paymentUrl: payment.authorization_url,
       reference: payment.reference,
     });
-  } catch (error: unknown) {
+  } catch (error: any) {
     console.error("Plan change error:", error);
 
     if (error.message === "Unauthorized") {

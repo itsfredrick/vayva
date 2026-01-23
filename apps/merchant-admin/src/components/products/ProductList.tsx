@@ -88,7 +88,7 @@ export const ProductList: React.FC<ProductListProps> = ({
               ? "default"
               : item.type === ProductServiceType.FOOD
                 ? "warning"
-                : "secondary") as unknown
+                : "secondary") as any
           }
           className="uppercase text-[10px] tracking-wider"
         >
@@ -179,10 +179,10 @@ export const ProductList: React.FC<ProductListProps> = ({
 
   return (
     <ResponsiveTable
-      data={items}
-      columns={columns}
-      keyExtractor={(item) => item.id}
-      onRowClick={onEdit}
+      data={items as any}
+      columns={columns as any}
+      keyExtractor={(item: any) => item.id}
+      onRowClick={onEdit as any}
       loading={isLoading}
       emptyMessage="No products found"
     />

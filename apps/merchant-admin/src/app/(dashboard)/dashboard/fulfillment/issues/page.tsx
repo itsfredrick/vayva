@@ -90,7 +90,7 @@ export default function DeliveryIssuesPage() {
             if (!res.ok) throw new Error("Failed to create ticket");
 
             toast.success("Support call request submitted", { id: toastId });
-        } catch (error: unknown) {
+        } catch (error: any) {
             console.error(error);
             toast.error(error.message || `Failed to initiate ${action}`, { id: toastId });
         }
@@ -143,9 +143,9 @@ export default function DeliveryIssuesPage() {
 
             toast.success("Evidence submitted successfully", { id: toastId });
             setIsEvidenceOpen(false);
-        } catch (error) {
+        } catch (error: any) {
             console.error(error);
-            toast.error("Failed to submit evidence", { id: toastId });
+            toast.error(error.message || "Failed to submit evidence", { id: toastId });
         } finally {
             setIsSubmitting(false);
         }

@@ -28,7 +28,7 @@ export default function ProductsPage() {
     const [meta, setMeta] = useState<{ total: number, limit: number, offset: number } | null>(null);
     const [loading, setLoading] = useState(true);
     const [isBulkMode, setIsBulkMode] = useState(false);
-    const [filters, setFilters] = useState<unknown>({ status: "ALL", category: "ALL" });
+    const [filters, setFilters] = useState<any>({ status: "ALL", category: "ALL" });
     const router = useRouter();
     const searchParams = useSearchParams();
 
@@ -52,7 +52,7 @@ export default function ProductsPage() {
                     ...(debouncedSearch && { search: debouncedSearch }),
                     ...(filters.status !== "ALL" && { status: filters.status }),
                     ...(filters.category !== "ALL" && { category: filters.category })
-                });
+                } as any);
 
                 const res = await fetch(`/api/products/items?${query.toString()}`);
                 const data = await res.json();
@@ -66,7 +66,7 @@ export default function ProductsPage() {
                     setProducts(data);
                 }
             } catch (e) {
-                logger.error("Failed to load products", ErrorCategory.API, e as Error);
+                logger.error("Failed to load products", ErrorCategory.API, e as Error, {});
             } finally {
                 setLoading(false);
             }

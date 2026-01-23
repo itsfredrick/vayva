@@ -28,7 +28,7 @@ export default function OrdersPage() {
     const { store } = useStore();
     const router = useRouter();
 
-    const [filters, setFilters] = useState<unknown>({});
+    const [filters, setFilters] = useState<any>({});
     const [search, setSearch] = useState("");
     const debouncedSearch = useDebounce(search, 500);
     const [selectedOrder, setSelectedOrder] = useState<UnifiedOrder | null>(null);
@@ -44,7 +44,7 @@ export default function OrdersPage() {
         fetcher
     );
 
-    const industrySlug = (store?.industrySlug as unknown) || (merchant as unknown).industrySlug || "retail";
+    const industrySlug = (store?.industrySlug as any) || (merchant as any)?.industrySlug || "retail";
     const orders: UnifiedOrder[] = response?.data || [];
 
     const isFiltered = !!(filters.status && filters.status !== "ALL") || !!search;

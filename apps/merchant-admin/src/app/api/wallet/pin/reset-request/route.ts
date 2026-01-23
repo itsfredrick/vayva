@@ -1,27 +1,18 @@
-import { NextRequest, NextResponse } from "next/server";
+import { NextResponse } from "next/server";
 import { getSessionUser } from "@/lib/session";
 import { prisma } from "@/lib/prisma";
 import { Resend } from "resend";
 import jwt from "jsonwebtoken";
-
-
 const JWT_SECRET = process.env.JWT_SECRET || "fallback-secret";
-
 // POST /api/wallet/pin/reset-request
-export async function POST(request: NextRequest) {
+export async function POST(request: any) {
     try {
         const user = await getSessionUser();
         if (!user) {
             return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
         }
-
         // 1. Generate Reset Token (Valid for 15 mins)
-        const token = jwt.sign(
-            { userId: user.id, storeId: user.storeId, type: "pin_reset" },
-            JWT_SECRET,
-            { expiresIn: "15m" }
-        );
-
+        const token = jwt.sign({ userId: user.id, storeId: user.storeId, type: "pin_reset" }, JWT_SECRET, { expiresIn: "15m" });
         // 2. Construct Reset URL
         // Assuming there is a page /dashboard/account/reset-pin?token=...
         // Or we can just let them click to go to settings and we verify token there?
@@ -29,7 +20,6 @@ export async function POST(request: NextRequest) {
         // Use standard app url
         const appUrl = process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000";
         const resetUrl = `${appUrl}/dashboard/account/reset-pin?token=${token}`;
-
         // 3. Send Email
         // 3. Send Email
         if (process.env.RESEND_API_KEY) {
@@ -50,11 +40,11 @@ export async function POST(request: NextRequest) {
                     </div>
                 `
                 });
-            } catch (emailError) {
+            }
+            catch (emailError) {
                 console.error("Failed to send PIN reset email:", emailError);
             }
         }
-
         // 4. Log/Persist if needed (Audit Log)
         await prisma.adminAuditLog.create({
             data: {
@@ -64,10 +54,9 @@ export async function POST(request: NextRequest) {
                 createdAt: new Date()
             }
         });
-
         return NextResponse.json({ success: true, message: "Reset link sent to your email." });
-
-    } catch (error) {
+    }
+    catch (error) {
         console.error("PIN Reset Request Error:", error);
         return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
     }

@@ -44,9 +44,9 @@ export default function BundlesPage() {
         try {
             const res = await fetch("/api/marketing/discounts");
             if (!res.ok) throw new Error("Failed to load bundles");
-            const data = await res.json();
+            const data = await res.json() as DiscountRule[];
             // Client-side filter: Treat discounts applied to specific products/collections as "Bundles"
-            const bundleItems = data.filter((d: unknown) =>
+            const bundleItems = data.filter((d) =>
                 (d.appliesTo === "PRODUCTS" || d.appliesTo === "COLLECTIONS")
             );
             setBundles(bundleItems);
@@ -88,8 +88,8 @@ export default function BundlesPage() {
             setIsOpen(false);
             setFormData({ id: "", name: "", discount: "10", productIds: [], startsAt: "", endsAt: "" });
             fetchBundles();
-        } catch (error: unknown) {
-            toast.error(error.message);
+        } catch (error: any) {
+            toast.error(error.message || "Failed to save bundle");
         } finally {
             setIsSubmitting(false);
         }
@@ -238,7 +238,7 @@ export default function BundlesPage() {
                             <Input
                                 id="name"
                                 value={formData.name}
-                                onChange={(e: unknown) => setFormData({ ...formData, name: e.target.value })}
+                                onChange={(e: React.ChangeEvent<HTMLInputElement>) => setFormData({ ...formData, name: e.target.value })}
                                 placeholder="e.g. Summer Essentials"
                             />
                         </div>
@@ -250,7 +250,7 @@ export default function BundlesPage() {
                                 min="1"
                                 max="100"
                                 value={formData.discount}
-                                onChange={(e: unknown) => setFormData({ ...formData, discount: e.target.value })}
+                                onChange={(e: React.ChangeEvent<HTMLInputElement>) => setFormData({ ...formData, discount: e.target.value })}
                             />
                         </div>
                         <div className="grid grid-cols-2 gap-4">
@@ -260,7 +260,7 @@ export default function BundlesPage() {
                                     id="startsAt"
                                     type="datetime-local"
                                     value={formData.startsAt}
-                                    onChange={(e: unknown) => setFormData({ ...formData, startsAt: e.target.value })}
+                                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => setFormData({ ...formData, startsAt: e.target.value })}
                                 />
                             </div>
                             <div className="grid gap-2">
@@ -269,7 +269,7 @@ export default function BundlesPage() {
                                     id="endsAt"
                                     type="datetime-local"
                                     value={formData.endsAt || ""}
-                                    onChange={(e: unknown) => setFormData({ ...formData, endsAt: e.target.value })}
+                                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => setFormData({ ...formData, endsAt: e.target.value })}
                                 />
                             </div>
                         </div>

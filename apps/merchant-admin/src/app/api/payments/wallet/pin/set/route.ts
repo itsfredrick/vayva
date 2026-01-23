@@ -1,27 +1,19 @@
-import { NextRequest, NextResponse } from "next/server";
+import { NextResponse } from "next/server";
 import { getSessionUser } from "@/lib/session";
 import { prisma } from "@/lib/prisma";
 import bcrypt from "bcryptjs";
-
-export async function POST(request: NextRequest) {
+export async function POST(request: any) {
     try {
         const user = await getSessionUser();
         if (!user) {
             return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
         }
-
         const { pin } = await request.json();
-
         if (!pin || pin.length !== 4 || !/^\d+$/.test(pin)) {
-            return NextResponse.json(
-                { error: "PIN must be 4 digits" },
-                { status: 400 },
-            );
+            return NextResponse.json({ error: "PIN must be 4 digits" }, { status: 400 });
         }
-
         const salt = await bcrypt.genSalt(10);
         const pinHash = await bcrypt.hash(pin, salt);
-
         // Upsert wallet for the store
         await prisma.wallet.upsert({
             where: { storeId: user.storeId },
@@ -39,13 +31,10 @@ export async function POST(request: NextRequest) {
                 isLocked: false,
             },
         });
-
         return NextResponse.json({ success: true, message: "PIN set successfully" });
-    } catch (error) {
+    }
+    catch (error) {
         console.error("Set PIN error:", error);
-        return NextResponse.json(
-            { error: "Failed to set PIN" },
-            { status: 500 },
-        );
+        return NextResponse.json({ error: "Failed to set PIN" }, { status: 500 });
     }
 }

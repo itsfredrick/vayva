@@ -1,18 +1,15 @@
-import { NextRequest, NextResponse } from "next/server";
+import { NextResponse } from "next/server";
 import { getSessionUser } from "@/lib/session";
 import { prisma } from "@/lib/prisma";
-
-export async function GET(request: NextRequest) {
+export async function GET(request: any) {
     try {
         const user = await getSessionUser();
         if (!user) {
             return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
         }
-
         let wallet = await prisma.wallet.findUnique({
             where: { storeId: user.storeId },
         });
-
         if (!wallet) {
             // Create empty wallet if getting summary for first time
             wallet = await prisma.wallet.create({
@@ -21,7 +18,6 @@ export async function GET(request: NextRequest) {
                 },
             });
         }
-
         return NextResponse.json({
             data: {
                 merchantId: user.id, // Using user ID as merchant ID context here
@@ -41,11 +37,9 @@ export async function GET(request: NextRequest) {
                 },
             },
         });
-    } catch (error) {
+    }
+    catch (error) {
         console.error("Wallet Summary error:", error);
-        return NextResponse.json(
-            { error: "Failed to fetch wallet summary" },
-            { status: 500 },
-        );
+        return NextResponse.json({ error: "Failed to fetch wallet summary" }, { status: 500 });
     }
 }

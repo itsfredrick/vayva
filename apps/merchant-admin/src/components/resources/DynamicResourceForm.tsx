@@ -4,9 +4,13 @@ import React, { useState } from "react";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/context/AuthContext";
 import { INDUSTRY_CONFIG } from "@/config/industry";
-import { FIELD_REGISTRY, FieldType } from "@/config/fields";
+import { FIELD_REGISTRY } from "@/config/fields";
+type FieldType = "text" | "number" | "textarea" | "date" | "select" | "image" | "file" | "tags" | "boolean";
+
 import { validateResource } from "@/lib/validation/resource-validator";
-import { IndustrySlug, PrimaryObject, FieldKey } from "@/lib/templates/types";
+import { IndustrySlug } from "@/lib/templates/types";
+type PrimaryObject = string;
+type FieldKey = string;
 import { Button, Card, Input, Label, Textarea, Icon, Select } from "@vayva/ui"; // Assuming Select exists or using standard
 import { toast } from "sonner";
 import { useStore } from "@/context/StoreContext";
@@ -17,7 +21,7 @@ import { FileUpload } from "@/components/ui/FileUpload";
 interface ValidatedFormProps {
     primaryObject: PrimaryObject;
     mode: "create" | "edit";
-    initialData?: unknown;
+    initialData?: any;
     resourceId?: string;
     onSuccessPath?: string;
 }
@@ -32,14 +36,14 @@ export const DynamicResourceForm = ({
     const router = useRouter();
     const { merchant } = useAuth();
     const { store } = useStore();
-    const industrySlug = ((store as unknown)?.industrySlug || (merchant as unknown)?.industrySlug || "retail") as IndustrySlug;
+    const industrySlug = ((store as any)?.industrySlug || (merchant as any)?.industrySlug || "retail") as IndustrySlug;
 
     const config = INDUSTRY_CONFIG[industrySlug];
     // Fallback to retail if config missing to prevent crash
     const effectiveConfig = config || INDUSTRY_CONFIG['retail'];
     const formConfig = effectiveConfig.forms[primaryObject];
 
-    const [formData, setFormData] = useState<unknown>(initialData || {});
+    const [formData, setFormData] = useState<any>(initialData || {});
     const [errors, setErrors] = useState<Record<string, string>>({});
     const [loading, setLoading] = useState(false);
 
@@ -55,11 +59,11 @@ export const DynamicResourceForm = ({
 
     const { requiredFields, optionalFields, variantLabel } = formConfig;
 
-    const handleChange = (field: string, val: unknown) => {
-        setFormData((prev: unknown) => ({ ...prev, [field]: val }));
+    const handleChange = (field: string, val: any) => {
+        setFormData((prev: any) => ({ ...prev, [field]: val }));
         // Clear error on type
         if (errors[field]) {
-            setErrors((prev: unknown) => {
+            setErrors((prev: any) => {
                 const next = { ...prev };
                 delete next[field];
                 return next;
@@ -120,8 +124,8 @@ export const DynamicResourceForm = ({
                 router.push(`/dashboard/${sub}`);
             }
 
-        } catch (err: unknown) {
-            toast.error(err.message);
+        } catch (err: any) {
+            toast.error(err.message || "Failed to save");
         } finally {
             setLoading(false);
         }
@@ -129,7 +133,7 @@ export const DynamicResourceForm = ({
 
     // --- FIELD RENDERER ---
     const renderInput = (key: string, required: boolean) => {
-        const def = (FIELD_REGISTRY as unknown)[key] || { label: key, type: "text" };
+        const def = (FIELD_REGISTRY as any)[key] || { label: key, type: "text" };
         const err = errors[key];
 
         const commonProps = {
@@ -155,7 +159,7 @@ export const DynamicResourceForm = ({
                         onChange={(e: React.ChangeEvent<HTMLSelectElement>) => handleChange(key, e.target.value)}
                     >
                         <option value="">Select {def.label}</option>
-                        {def.options?.map((opt: unknown) => (
+                        {def.options?.map((opt: any) => (
                             <option key={opt.value} value={opt.value}>{opt.label}</option>
                         ))}
                     </select>
@@ -166,7 +170,7 @@ export const DynamicResourceForm = ({
                 return (
                     <FileUpload
                         value={formData[key] || ""}
-                        onChange={(url) => handleChange(key, url)}
+                        onChange={(url: any) => handleChange(key, url)}
                         label={def.label || "Upload File"}
                         accept={accept}
                     />
@@ -179,7 +183,7 @@ export const DynamicResourceForm = ({
     }
 
     const renderFieldBlock = (key: string, required: boolean) => {
-        const def = (FIELD_REGISTRY as unknown)[key] || { label: key, type: "text" };
+        const def = (FIELD_REGISTRY as any)[key] || { label: key, type: "text" };
         const isWide = def.type === 'textarea' || def.type === 'image' || def.type === 'file';
 
         return (
@@ -216,7 +220,7 @@ export const DynamicResourceForm = ({
                         </div>
                     )}
 
-                    {requiredFields.map(field => (
+                    {requiredFields.map((field: string) => (
                         <React.Fragment key={field}>{renderFieldBlock(field, true)}</React.Fragment>
                     ))}
 
@@ -225,7 +229,7 @@ export const DynamicResourceForm = ({
                             <div className="col-span-2 pt-4 pb-2 border-b border-gray-100">
                                 <h3 className="text-sm font-bold text-gray-500 uppercase tracking-wider">Optional Details</h3>
                             </div>
-                            {optionalFields.map(field => (
+                            {optionalFields.map((field: string) => (
                                 <React.Fragment key={field}>{renderFieldBlock(field, false)}</React.Fragment>
                             ))}
                         </>

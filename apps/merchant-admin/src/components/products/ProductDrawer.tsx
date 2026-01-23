@@ -46,7 +46,7 @@ const ImageUploader = ({
         const data = await res.json();
         onChange([...images, data.url]);
         toast.success("Image uploaded successfully");
-      } catch (error: unknown) {
+      } catch (error: any) {
         toast.error("Upload failed", {
           description: error.message,
         });
@@ -57,7 +57,7 @@ const ImageUploader = ({
   };
 
   const removeImage = (index: number) => {
-    onChange(images.filter((_, i) => i !== index));
+    onChange(images.filter((_: any, i: any) => i !== index));
   };
 
   const handleRemoveBackground = async (index: number) => {
@@ -91,7 +91,7 @@ const ImageUploader = ({
     <div className="space-y-3">
       <Label className="text-xs font-bold text-gray-700 uppercase tracking-wide">Product Images</Label>
       <div className="flex flex-wrap gap-3">
-        {images.map((url, i) => (
+        {images.map((url: any, i: any) => (
           <div
             key={i}
             className="relative w-24 h-24 rounded-lg border border-gray-200 overflow-hidden group bg-gray-50"
@@ -285,7 +285,7 @@ export const ProductDrawer: React.FC<ProductDrawerProps> = ({
             <div className="col-span-2">
               <ImageUploader
                 images={currentImages}
-                onChange={(imgs) =>
+                onChange={(imgs: any) =>
                   setValue("images", imgs, { shouldValidate: true })
                 }
               />

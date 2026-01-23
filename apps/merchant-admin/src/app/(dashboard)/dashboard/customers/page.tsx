@@ -13,20 +13,20 @@ export default async function CustomersPage() {
         include: {
             orders: {
                 select: {
-                    total: true, 
+                    total: true,
                     createdAt: true,
                 }
             }
         },
         orderBy: { createdAt: 'desc' },
-        take: 100 
+        take: 100
     });
 
     // Map to Unified Customer Interface
     const customers: Customer[] = dbCustomers.map(c => {
         const totalOrders = c.orders.length;
         const totalSpend = c.orders.reduce((acc, o) => {
-            const val = (o.total as unknown).toNumber ? (o.total as unknown).toNumber() : Number(o.total);
+            const val = Number(o.total as any);
             return acc + val;
         }, 0);
 

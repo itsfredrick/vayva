@@ -53,7 +53,7 @@ export function FileUpload({
             onChange(data.url);
             toast.success("File uploaded successfully");
         } catch (err: unknown) {
-            toast.error(err.message);
+            toast.error(err instanceof Error ? err.message : "Upload failed");
         } finally {
             setUploading(false);
             // Reset input

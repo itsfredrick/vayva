@@ -1,50 +1,44 @@
-import { NextRequest, NextResponse } from "next/server";
+import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
-import { withVayvaAPI, HandlerContext } from "@/lib/api-handler";
+import { withVayvaAPI } from "@/lib/api-handler";
 import { PERMISSIONS } from "@/lib/team/permissions";
-
-export const GET = withVayvaAPI(
-  PERMISSIONS.SETTINGS_VIEW,
-  async (req: NextRequest, { user: sessionUser }: HandlerContext) => {
+export const GET = withVayvaAPI(PERMISSIONS.SETTINGS_VIEW, async (req, { user: sessionUser }) => {
     try {
-      const user = await prisma.user.findUnique({
-        where: { id: sessionUser.id },
-        include: {
-          memberships: {
+        const user = await prisma.user.findUnique({
+            where: { id: sessionUser.id },
             include: {
-              store: true,
+                memberships: {
+                    include: {
+                        store: true,
+                    },
+                },
             },
-          },
-        },
-      });
-
-      if (!user) {
-        return NextResponse.json({ error: "User not found" }, { status: 404 });
-      }
-
-      const exportData = {
-        generatedAt: new Date().toISOString(),
-        user: {
-          id: user.id,
-          email: user.email,
-          name: (user as unknown).name || `${(user as unknown).firstName || ""} ${(user as unknown).lastName || ""}`.trim(),
-          createdAt: user.createdAt,
-          memberships: user.memberships.map((m: unknown) => ({
-            role: m.role,
-            store: {
-              id: m.store.id,
-              name: m.store.name,
-              slug: m.store.slug,
-              createdAt: m.store.createdAt,
+        });
+        if (!user) {
+            return NextResponse.json({ error: "User not found" }, { status: 404 });
+        }
+        const exportData = {
+            generatedAt: new Date().toISOString(),
+            user: {
+                id: user.id,
+                email: user.email,
+                name: user.name || `${user.firstName || ""} ${user.lastName || ""}`.trim(),
+                createdAt: user.createdAt,
+                memberships: user.memberships.map((m) => ({
+                    role: m.role,
+                    store: {
+                        id: m.store.id,
+                        name: m.store.name,
+                        slug: m.store.slug,
+                        createdAt: m.store.createdAt,
+                    },
+                })),
             },
-          })),
-        },
-      };
-
-      return NextResponse.json(exportData);
-    } catch (error) {
-      console.error("Export failed:", error);
-      return NextResponse.json({ error: "Export failed" }, { status: 500 });
+        };
+        return NextResponse.json(exportData);
     }
-  }
-);
+    catch (error) {
+        console.error("Export failed:", error);
+        return NextResponse.json({ error: "Export failed" }, { status: 500 });
+    }
+});

@@ -6,7 +6,7 @@ import { Truck, MapPin } from "lucide-react";
 import { useToast } from "@/components/ui/use-toast";
 
 interface FulfillmentDrawerProps {
-  order: unknown;
+  order: any;
   isOpen: boolean;
   onClose: () => void;
   onUpdate: () => void;
@@ -48,11 +48,14 @@ export function FulfillmentDrawer({
           onUpdate?.();
         }, 3000);
       }
-    } catch (err) {
+    } catch (err: unknown) {
       console.error(err);
       toast({
         title: "Error",
-        description: "Failed to dispatch delivery. Please try again.",
+        description:
+          err instanceof Error
+            ? err.message
+            : "Failed to dispatch delivery. Please try again.",
         variant: "destructive",
       });
     } finally {
@@ -91,11 +94,11 @@ export function FulfillmentDrawer({
           setIsSuccess(false);
         }, 3000);
       }
-    } catch (err) {
+    } catch (err: unknown) {
       console.error(err);
       toast({
         title: "Error",
-        description: "Failed to update status.",
+        description: err instanceof Error ? err.message : "Failed to update status.",
         variant: "destructive",
       });
     } finally {

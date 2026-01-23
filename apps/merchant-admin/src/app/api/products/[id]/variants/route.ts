@@ -1,22 +1,15 @@
-
 import { NextResponse } from "next/server";
 import { getServerSession } from "next-auth";
 import { prisma } from "@/lib/prisma"; // Adjust path if necessary
 import { InventoryService } from "@/services/inventory.service";
 import { authOptions } from "@/lib/auth"; // Adjust if authOptions is elsewhere
-
-export async function GET(
-    req: Request,
-    { params }: { params: Promise<{ id: string }> }
-) {
+export async function GET(req: any, { params }: any) {
     // 1. Auth check
     const session = await getServerSession(authOptions);
     if (!session?.user?.storeId) {
         return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
-
     const { id: productId } = await params;
-
     try {
         const variants = await prisma.productVariant.findMany({
             where: {
@@ -31,7 +24,6 @@ export async function GET(
                 position: 'asc'
             }
         });
-
         // Normalize data for frontend
         const normalized = variants.map(v => ({
             id: v.id,
@@ -39,39 +31,31 @@ export async function GET(
             sku: v.sku,
             price: v.price?.toString(),
             options: v.options, // Ensure JSON is handled
-            inventory: v.inventoryItems.reduce((acc, item) => acc + item.onHand, 0), // Sum across locations?
+            inventory: v.inventoryItems.reduce((acc: any, item: any) => acc + item.onHand, 0), // Sum across locations?
             imageId: v.imageId,
-            imageUrl: (v as unknown).productImages?.url
+            imageUrl: v.productImages?.url
         }));
-
         return NextResponse.json(normalized);
-    } catch (error) {
+    }
+    catch (error) {
         console.error("Fetch Variants Error", error);
         return NextResponse.json({ error: "Internal Error" }, { status: 500 });
     }
 }
-
-export async function POST(
-    req: Request,
-    { params }: { params: Promise<{ id: string }> }
-) {
+export async function POST(req: any, { params }: any) {
     const session = await getServerSession(authOptions);
     if (!session?.user?.storeId) {
         return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
-
     const { id: productId } = await params;
     const storeId = session.user.storeId;
-
     try {
         const body = await req.json();
         const { title, options, price, sku, stock, imageId } = body;
-
         // Validation
         if (!title || !options) {
             return NextResponse.json({ error: "Missing required fields" }, { status: 400 });
         }
-
         // Create Variant
         const variant = await prisma.productVariant.create({
             data: {
@@ -86,25 +70,16 @@ export async function POST(
                 productImage: true // Return image data
             }
         });
-
         // Initialize Inventory if stock provided
         if (stock !== undefined && stock !== null) {
             const qty = parseInt(stock);
             if (!isNaN(qty)) {
-                await InventoryService.adjustStock(
-                    storeId,
-                    variant.id,
-                    productId,
-                    qty,
-                    "Initial Stock",
-                    session.user.id
-                );
+                await InventoryService.adjustStock(storeId, variant.id, productId, qty, "Initial Stock", session.user.id);
             }
         }
-
         return NextResponse.json({ success: true, variant });
-
-    } catch (error) {
+    }
+    catch (error) {
         console.error("Create Variant Error", error);
         return NextResponse.json({ error: "Internal Error" }, { status: 500 });
     }

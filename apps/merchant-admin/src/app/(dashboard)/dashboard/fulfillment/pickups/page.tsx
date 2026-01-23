@@ -38,13 +38,21 @@ export default function PickupsPage() {
     );
 }
 
-function Tab({ label, active, onClick, count }: unknown) {
+interface TabProps {
+    label: string;
+    active: boolean;
+    onClick: () => void;
+    count?: number;
+}
+
+function Tab({ label, active, onClick, count }: TabProps) {
     return (
         <Button
             onClick={onClick}
-            className={`pb-3 px-1 text-sm font-medium border-b-2 transition-colors flex items-center gap-2 ${active
-                    ? "border-indigo-600 text-indigo-600"
-                    : "border-transparent text-slate-500 hover:text-slate-700 hover:border-slate-300"
+            variant="ghost"
+            className={`pb-3 px-1 text-sm font-medium border-b-2 transition-colors flex items-center gap-2 rounded-none h-auto hover:bg-transparent ${active
+                ? "border-indigo-600 text-indigo-600"
+                : "border-transparent text-slate-500 hover:text-slate-700 hover:border-slate-300"
                 }`}
         >
             {label}

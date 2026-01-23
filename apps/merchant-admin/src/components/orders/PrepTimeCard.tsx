@@ -11,7 +11,7 @@ interface PrepTimeCardProps {
     onUpdate: () => void;
 }
 
-export function PrepTimeCard({ orderId, currentPrepTime, onUpdate }: PrepTimeCardProps) {
+export function PrepTimeCard({ orderId: any, currentPrepTime: any, onUpdate }: PrepTimeCardProps) {
     const [isEditing, setIsEditing] = useState(false);
     const [prepTime, setPrepTime] = useState(currentPrepTime?.toString() || "30");
     const [saving, setSaving] = useState(false);
@@ -39,7 +39,7 @@ export function PrepTimeCard({ orderId, currentPrepTime, onUpdate }: PrepTimeCar
             toast.success("Preparation time updated");
             setIsEditing(false);
             onUpdate();
-        } catch (error: unknown) {
+        } catch (error: any) {
             toast.error(error.message);
         } finally {
             setSaving(false);
@@ -76,7 +76,7 @@ export function PrepTimeCard({ orderId, currentPrepTime, onUpdate }: PrepTimeCar
                         <Input
                             type="number"
                             value={prepTime}
-                            onChange={(e: unknown) => setPrepTime(e.target.value)}
+                            onChange={(e: any) => setPrepTime(e.target.value)}
                             min={5}
                             max={480}
                             className="w-24 text-center"

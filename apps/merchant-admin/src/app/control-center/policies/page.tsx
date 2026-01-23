@@ -10,7 +10,7 @@ const fetchPolicies = async () => {
   return res.json();
 };
 
-const savePolicies = async (data: unknown) => {
+const savePolicies = async (data: any) => {
   await fetch("/api/store/policies", {
     method: "PATCH",
     body: JSON.stringify(data),
@@ -24,7 +24,7 @@ function PoliciesContent() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetchPolicies().then((data) => {
+    fetchPolicies().then((data: any) => {
       setStoreData(data);
       setLoading(false);
     });

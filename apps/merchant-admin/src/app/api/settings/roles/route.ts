@@ -1,15 +1,14 @@
-import { NextRequest, NextResponse } from "next/server";
+import { NextResponse } from "next/server";
 import { getSessionUser } from "@/lib/session";
 import { prisma } from "@/lib/prisma";
-
 /**
  * GET /api/settings/roles
  * List custom roles for the current store.
  */
-export async function GET(req: NextRequest) {
+export async function GET(req: any) {
     const session = await getSessionUser();
-    if (!session) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-
+    if (!session)
+        return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     const roles = await prisma.role.findMany({
         where: { storeId: session.storeId },
         include: {
@@ -23,24 +22,21 @@ export async function GET(req: NextRequest) {
             }
         }
     });
-
     return NextResponse.json(roles);
 }
-
 /**
  * POST /api/settings/roles
  * Create or update a custom role.
  */
-export async function POST(req: NextRequest) {
+export async function POST(req: any) {
     const session = await getSessionUser();
-    if (!session) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-
+    if (!session)
+        return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     try {
         const { id, name, description, permissionIds } = await req.json();
-
-        if (!name) return NextResponse.json({ error: "Name is required" }, { status: 400 });
-
-        const role = await prisma.$transaction(async (tx) => {
+        if (!name)
+            return NextResponse.json({ error: "Name is required" }, { status: 400 });
+        const role = await prisma.$transaction(async (tx: any) => {
             // 1. Create/Update the role
             const r = await tx.role.upsert({
                 where: { id: id || "new-role" },
@@ -51,12 +47,10 @@ export async function POST(req: NextRequest) {
                     description
                 }
             });
-
             // 2. Sync permissions
             if (permissionIds && Array.isArray(permissionIds)) {
                 // Delete old
                 await tx.rolePermission.deleteMany({ where: { roleId: r.id } });
-
                 // Map permission strings to Permission table IDs (or create them)
                 // Note: Our permission strings are stored in Permission.name
                 for (const permName of permissionIds) {
@@ -72,13 +66,11 @@ export async function POST(req: NextRequest) {
                     });
                 }
             }
-
             return r;
         });
-
         return NextResponse.json(role);
-
-    } catch (error: unknown) {
+    }
+    catch (error) {
         return NextResponse.json({ error: error.message }, { status: 500 });
     }
 }

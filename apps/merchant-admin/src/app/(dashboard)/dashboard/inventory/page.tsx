@@ -82,7 +82,7 @@ export default function InventoryPage() {
         const fetchProducts = async () => {
             try {
                 const res = await fetch("/api/products/items");
-                const response = await res.json();
+                const response = await res.json() as any;
 
                 // Handle new API response structure { data: [...], meta: {...} }
                 if (response.data && Array.isArray(response.data)) {
@@ -91,7 +91,7 @@ export default function InventoryPage() {
                     // Fallback for backward compatibility
                     setProducts(response);
                 }
-            } catch (e) {
+            } catch (e: any) {
                 console.error("Failed to load inventory", e);
             } finally {
                 setLoading(false);

@@ -143,7 +143,7 @@ export default function TemplatesPage() {
 
             toast.success("Upgrade Successful! Template Unlocked.");
             loadTemplates();
-        } catch (error: unknown) {
+        } catch (error: any) {
             toast.error(error.message);
         } finally {
             toast.dismiss(loadingToast);

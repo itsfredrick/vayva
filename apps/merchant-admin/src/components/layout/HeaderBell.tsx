@@ -30,8 +30,8 @@ export function HeaderBell() {
         setNotifications(data.items);
         setUnreadCount(data.unread_count);
       }
-    } catch (e) {
-      console.error("Failed to fetch notifications", e);
+    } catch (e: unknown) {
+      console.error("Failed to fetch notifications", e instanceof Error ? e.message : e);
     }
   };
 
@@ -126,15 +126,14 @@ export function HeaderBell() {
                   >
                     <div className="flex items-start">
                       <div
-                        className={`mt-1.5 w-2 h-2 rounded-full flex-shrink-0 mr-3 ${
-                          n.severity === "critical"
+                        className={`mt-1.5 w-2 h-2 rounded-full flex-shrink-0 mr-3 ${n.severity === "critical"
                             ? "bg-red-500"
                             : n.severity === "success"
                               ? "bg-green-500"
                               : n.severity === "warning"
                                 ? "bg-yellow-500"
                                 : "bg-blue-500"
-                        }`}
+                          }`}
                       />
                       <div>
                         <p

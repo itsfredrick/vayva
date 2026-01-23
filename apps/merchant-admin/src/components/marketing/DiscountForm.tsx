@@ -33,7 +33,7 @@ export function DiscountForm({ id }: { id?: string }) {
         if (id) {
             fetch(`/api/marketing/discounts/${id}`)
                 .then(res => res.json())
-                .then(data => {
+                .then((data: any) => {
                     setFormData({
                         title: data.name || "",
                         code: data.code || "",
@@ -84,8 +84,8 @@ export function DiscountForm({ id }: { id?: string }) {
             toast.success(`Discount ${id ? "updated" : "created"} successfully`);
             router.push("/dashboard/marketing/discounts");
 
-        } catch (err: unknown) {
-            toast.error(err.message);
+        } catch (err: any) {
+            toast.error(err.message || `Failed to ${id ? "update" : "create"} discount`);
         } finally {
             setLoading(false);
         }
@@ -164,7 +164,7 @@ export function DiscountForm({ id }: { id?: string }) {
                     <div className="grid grid-cols-2 gap-4">
                         <div>
                             <Label>Type</Label>
-                            <Select value={type} onValueChange={(v: unknown) => setType(v)}>
+                            <Select value={type} onValueChange={(v: any) => setType(v)}>
                                 <SelectTrigger>
                                     <SelectValue />
                                 </SelectTrigger>

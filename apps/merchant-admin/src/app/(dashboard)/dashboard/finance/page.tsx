@@ -140,8 +140,8 @@ export default function FinancePage() {
             setPassword("");
             setStep("DETAILS");
             fetchData();
-        } catch (error: unknown) {
-            toast.error(error.message);
+        } catch (error: any) {
+            toast.error(error.message || "Withdrawal failed");
         } finally {
             setIsWithdrawing(false);
         }

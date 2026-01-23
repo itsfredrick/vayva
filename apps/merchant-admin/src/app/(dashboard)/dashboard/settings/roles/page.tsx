@@ -9,7 +9,7 @@ export default function RolesSettingsPage() {
     const [roles, setRoles] = useState<any[]>([]);
     const [isLoading, setIsLoading] = useState(true);
     const [isEditing, setIsEditing] = useState(false);
-    const [currentRole, setCurrentRole] = useState<unknown>({
+    const [currentRole, setCurrentRole] = useState<any>({
         name: "",
         description: "",
         permissionIds: []
@@ -187,7 +187,7 @@ export default function RolesSettingsPage() {
                                             id: role.id,
                                             name: role.name,
                                             description: role.description,
-                                            permissionIds: role.RolePermission.map((rp: unknown) => rp.Permission.name)
+                                            permissionIds: role.RolePermission.map((rp: any) => rp.Permission.name)
                                         });
                                         setIsEditing(true);
                                     }}>Edit</Button>

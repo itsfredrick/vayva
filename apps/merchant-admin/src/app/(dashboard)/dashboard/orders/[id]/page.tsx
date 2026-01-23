@@ -13,7 +13,7 @@ interface OrderItem {
     productName: string;
     quantity: number;
     price: number;
-    productVariant?: unknown;
+    productVariant?: any;
 }
 
 interface Order {
@@ -40,7 +40,7 @@ interface Order {
         city: string;
         state: string;
     };
-    metadata?: unknown;
+    metadata?: any;
     shipment?: {
         status: string;
         trackingCode?: string;
@@ -85,8 +85,8 @@ export default function OrderDetailPage() {
             if (!res.ok) throw new Error(data.error || "Shipping failed");
             toast.success("Order marked as shipped!");
             fetchOrder();
-        } catch (err: unknown) {
-            toast.error(err.message);
+        } catch (err: any) {
+            toast.error(err.message || "Shipping failed");
         } finally {
             setShipping(false);
         }

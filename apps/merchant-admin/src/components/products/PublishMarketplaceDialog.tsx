@@ -71,8 +71,8 @@ export function PublishMarketplaceDialog({ isOpen, onClose, productId, productPr
             toast.success("Product published to Marketplace!");
             onSuccess();
             onClose();
-        } catch (err: unknown) {
-            toast.error(err.message);
+        } catch (err) {
+            toast.error((err as any).message || "Publish failed");
         } finally {
             setLoading(false);
         }
@@ -126,12 +126,12 @@ export function PublishMarketplaceDialog({ isOpen, onClose, productId, productPr
                                     className="w-full h-10 px-3 rounded-md border border-gray-200 bg-white text-sm focus:outline-none focus:ring-2 focus:ring-black"
                                     value={form.categoryId}
                                     aria-label="Category"
-                                    onChange={(e) => setForm({ ...form, categoryId: e.target.value })}
+                                    onChange={(e: any) => setForm({ ...form, categoryId: e.target.value })}
                                 >
                                     <option value="">Select a category...</option>
-                                    {categories.map((cat) => (
+                                    {categories.map((cat: any) => (
                                         <optgroup key={cat.id} label={cat.name}>
-                                            {cat.children?.map((child: unknown) => (
+                                            {cat.children?.map((child: any) => (
                                                 <option key={child.id} value={child.id}>
                                                     {child.name}
                                                 </option>
@@ -146,7 +146,7 @@ export function PublishMarketplaceDialog({ isOpen, onClose, productId, productPr
                                 <Input
                                     type="number"
                                     value={form.price}
-                                    onChange={(e) => setForm({ ...form, price: e.target.value })}
+                                    onChange={(e: any) => setForm({ ...form, price: e.target.value })}
                                 />
                                 <p className="text-xs text-gray-500">You can set a different price for the marketplace.</p>
                             </div>

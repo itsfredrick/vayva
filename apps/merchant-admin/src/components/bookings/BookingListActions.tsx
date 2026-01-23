@@ -8,12 +8,12 @@ import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 
 interface BookingListActionsProps {
-    booking: unknown; // Using any for speed, ideally Booking & { service: Product, customer: Customer }
+    booking: any; // Using any for speed, ideally Booking & { service: Product, customer: Customer }
     services: { id: string; name: string }[];
     customers: { id: string; name: string }[];
 }
 
-export function BookingListActions({ booking, services, customers }: BookingListActionsProps) {
+export function BookingListActions({ booking: any, services: any, customers }: BookingListActionsProps) {
     const [isEditOpen, setIsEditOpen] = useState(false);
     const [isDeleteOpen, setIsDeleteOpen] = useState(false);
     const [isDeleting, setIsDeleting] = useState(false);
@@ -31,7 +31,7 @@ export function BookingListActions({ booking, services, customers }: BookingList
             toast.success("Booking deleted");
             router.refresh();
             setIsDeleteOpen(false);
-        } catch (error: unknown) {
+        } catch (error: any) {
             toast.error(error.message);
         } finally {
             setIsDeleting(false);

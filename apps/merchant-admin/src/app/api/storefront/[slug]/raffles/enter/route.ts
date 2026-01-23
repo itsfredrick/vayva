@@ -1,33 +1,24 @@
-import { NextRequest, NextResponse } from "next/server";
+import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
-
-export async function POST(
-    req: NextRequest,
-    { params }: { params: Promise<{ slug: string }> },
-) {
+export async function POST(req: any, { params }: any) {
     try {
         const { slug } = await params;
         const body = await req.json();
         const { raffleId, email, userId } = body;
-
         if (!raffleId || !email) {
             return NextResponse.json({ error: "Missing required fields" }, { status: 400 });
         }
-
         const store = await prisma.store.findUnique({
             where: { slug },
             select: { id: true },
         });
-
         if (!store) {
             return NextResponse.json({ error: "Store not found" }, { status: 404 });
         }
-
-        const raffleDelegate = (prisma as unknown).raffleEntry;
+        const raffleDelegate = prisma.raffleEntry;
         if (!raffleDelegate) {
             return NextResponse.json({ error: "Raffle system not initialized" }, { status: 503 });
         }
-
         // Check existing entry
         const existing = await raffleDelegate.findUnique({
             where: {
@@ -37,11 +28,9 @@ export async function POST(
                 }
             }
         });
-
         if (existing) {
             return NextResponse.json({ error: "Already entered" }, { status: 409 });
         }
-
         const entry = await raffleDelegate.create({
             data: {
                 storeId: store.id,
@@ -51,10 +40,9 @@ export async function POST(
                 status: "PENDING"
             }
         });
-
         return NextResponse.json({ success: true, entryId: entry.id });
-
-    } catch (error) {
+    }
+    catch (error) {
         console.error("Raffle entry error:", error);
         return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
     }

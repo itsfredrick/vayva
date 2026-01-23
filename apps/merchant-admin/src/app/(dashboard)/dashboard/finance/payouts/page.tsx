@@ -159,16 +159,16 @@ function StatusBadge({ status }: { status: string }) {
         FAILED: "bg-red-100 text-red-700 border-red-200",
     };
 
-    const icons: Record<string, unknown> = {
+    const icons: Record<string, React.ElementType> = {
         SUCCESS: CheckCircle2,
         FAILED: AlertCircle,
     };
 
-    const Icon = icons[status];
+    const StatusIcon = icons[status];
 
     return (
         <span className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium border ${styles[status] || "bg-slate-100 text-slate-700 border-slate-200"}`}>
-            {Icon && <Icon className="h-3 w-3" />}
+            {StatusIcon && <StatusIcon className="h-3 w-3" />}
             {status}
         </span>
     );
@@ -192,7 +192,14 @@ function WithdrawalModal({
     const [pin, setPin] = useState("");
     const [accountId, setAccountId] = useState("");
     const [showStepUp, setShowStepUp] = useState(false);
-    const [pendingWithdrawal, setPendingWithdrawal] = useState<unknown>(null);
+
+    interface PendingWithdrawal {
+        amount: number;
+        bankAccountId: string;
+        pin: string;
+    }
+
+    const [pendingWithdrawal, setPendingWithdrawal] = useState<PendingWithdrawal | null>(null);
 
     useEffect(() => {
         if (!accountId && accounts.length > 0) {
@@ -239,8 +246,8 @@ function WithdrawalModal({
             }
 
             onSuccess();
-        } catch (error: unknown) {
-            toast.error(error.message);
+        } catch (error: any) {
+            toast.error(error.message || "Withdrawal failed");
         } finally {
             setLoading(false);
         }
@@ -398,7 +405,7 @@ function StepUpDialog({
         try {
             await onVerify(password);
             toast.success("Withdrawal verified successfully");
-        } catch (error: unknown) {
+        } catch (error: any) {
             toast.error(error.message || "Verification failed");
         } finally {
             setLoading(false);

@@ -4,12 +4,18 @@ import React, { useState } from "react";
 import { Button, Icon, cn } from "@vayva/ui";
 import { motion, AnimatePresence } from "framer-motion";
 import { useWallet } from "@/context/WalletContext";
-import { WalletService, BankAccount } from "@/services/wallet";
+import { WalletService } from "@/services/wallet";
 import { useToast } from "@/components/ui/use-toast";
 
 interface WithdrawModalProps {
   isOpen: boolean;
   onClose: () => void;
+}
+interface BankAccount {
+  id: string;
+  bankName: string;
+  accountNumber: string;
+  accountName: string;
 }
 
 import { useAuth } from "@/context/AuthContext";
@@ -66,7 +72,7 @@ export const WithdrawModal = ({ isOpen, onClose }: WithdrawModalProps) => {
     // I'll take a safer approach: I'll fetch the onboarding state when the modal opens to check KYC specifically.
 
     setError(null);
-    setStep((prev) => (prev + 1) as unknown);
+    setStep((prev) => (prev + 1) as 1 | 2 | 3);
   };
 
   const handleConfirm = async () => {
@@ -80,8 +86,8 @@ export const WithdrawModal = ({ isOpen, onClose }: WithdrawModalProps) => {
       );
       setWithdrawalId(wId);
       setStep(3);
-    } catch (err: unknown) {
-      const msg = err.response?.data?.error || "Failed to initiate withdrawal";
+    } catch (err) {
+      const msg = (err as any).response?.data?.error || (err as any).message || "Failed to initiate withdrawal";
       // If error suggests KYC needed
       if (
         msg.toLowerCase().includes("kyc") ||
@@ -114,13 +120,14 @@ export const WithdrawModal = ({ isOpen, onClose }: WithdrawModalProps) => {
         title: "Withdrawal Successful",
         description: "Funds will be settled shortly.",
       });
-    } catch (err: unknown) {
+    } catch (err) {
+      const msg = (err as any).response?.data?.error || (err as any).message || "Invalid OTP";
       toast({
         title: "Withdrawal Failed",
-        description: err.response?.data?.error || "Invalid OTP",
+        description: msg,
         variant: "destructive",
       });
-      setError(err.response?.data?.error || "Invalid OTP");
+      setError(msg);
     } finally {
       setLoading(false);
     }
@@ -181,7 +188,7 @@ export const WithdrawModal = ({ isOpen, onClose }: WithdrawModalProps) => {
                     placeholder="0.00"
                     className="h-10 px-3 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-black/5"
                     value={amount}
-                    onChange={(e) => setAmount(e.target.value)}
+                    onChange={(e: any) => setAmount(e.target.value)}
                     autoFocus
                   />
                 </div>
@@ -195,10 +202,10 @@ export const WithdrawModal = ({ isOpen, onClose }: WithdrawModalProps) => {
                     aria-label="Select Destination Bank"
                     className="h-10 px-3 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-black/5 bg-white"
                     value={bankId}
-                    onChange={(e) => setBankId(e.target.value)}
+                    onChange={(e: any) => setBankId(e.target.value)}
                   >
                     <option value="">Select a bank account</option>
-                    {banks.map((b) => (
+                    {banks.map((b: any) => (
                       <option key={b.id} value={b.id}>
                         {b.bankName} - {b.accountNumber} ({b.accountName})
                       </option>
@@ -272,7 +279,7 @@ export const WithdrawModal = ({ isOpen, onClose }: WithdrawModalProps) => {
                     placeholder="••••"
                     className="h-10 px-3 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-black/5 text-center tracking-[0.5em] font-bold"
                     value={pin}
-                    onChange={(e) => setPin(e.target.value)}
+                    onChange={(e: any) => setPin(e.target.value)}
                     autoFocus
                   />
                 </div>
@@ -316,7 +323,7 @@ export const WithdrawModal = ({ isOpen, onClose }: WithdrawModalProps) => {
                   placeholder="000000"
                   className="h-12 text-center text-xl tracking-[0.5em] font-bold border-b-2 border-gray-200 focus:outline-none focus:border-black bg-transparent w-full"
                   value={otp}
-                  onChange={(e) => setOtp(e.target.value)}
+                  onChange={(e: any) => setOtp(e.target.value)}
                   autoFocus
                 />
 

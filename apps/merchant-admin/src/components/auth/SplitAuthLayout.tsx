@@ -16,11 +16,11 @@ interface SplitAuthLayoutProps {
 
 export const SplitAuthLayout = ({
   children,
-  stepIndicator,
+  stepIndicator = "",
   title,
   subtitle,
-  showSignInLink,
-  showSignUpLink,
+  showSignInLink = false,
+  showSignUpLink = false,
 }: SplitAuthLayoutProps) => {
   return (
     <div className="min-h-screen flex flex-col lg:flex-row">
@@ -37,7 +37,7 @@ export const SplitAuthLayout = ({
 
       {/* Right Panel - Form area */}
       <AuthRightPanel
-        stepIndicator={stepIndicator}
+        stepIndicator={stepIndicator || ""}
         title={title}
         subtitle={subtitle}
       >

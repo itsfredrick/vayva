@@ -13,8 +13,7 @@ import { Calendar, Clock, MapPin, Check, ShoppingBag, X, Plus, Minus, Loader2 } 
 import { toast } from "sonner"
 
 export function StandardServiceHome({
-    storeName: initialStoreName,
-    storeSlug
+    storeName: initialStoreName, storeSlug
 }: {
     storeName?: string;
     storeSlug?: string
@@ -56,7 +55,7 @@ export function StandardServiceHome({
         }
     };
 
-    const handleCheckoutSuccess = async (customerData?: unknown) => {
+    const handleCheckoutSuccess = async (customerData?: any) => {
         if (!storeSlug || !selectedDate || !selectedTime) {
             clearCart();
             return;
@@ -82,7 +81,7 @@ export function StandardServiceHome({
         setSelectedTime(null);
     };
 
-    const handleBookingSubmit = async (formData: unknown) => {
+    const handleBookingSubmit = async (formData: any) => {
         const dateStr = selectedDate?.toLocaleDateString('en-CA');
 
         // Create a booking for each service in the cart

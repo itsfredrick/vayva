@@ -51,22 +51,24 @@ export const Select: React.FC<SelectProps> = ({
 
 export const SelectPrimitive = {
   Root: Select,
-  Trigger: React.forwardRef<HTMLButtonElement, unknown>(
+  Trigger: React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>(
     ({ children, className, ...props }, ref) => (
       <div
+        ref={ref}
         className={cn(
           "flex h-10 w-full items-center justify-between rounded-md border border-input bg-background px-3 py-2 text-sm",
           className,
         )}
+        {...props}
       >
         {children}
       </div>
     ),
   ),
-  Value: ({ placeholder, children }: unknown) => (
+  Value: ({ placeholder, children }: { placeholder?: string; children?: React.ReactNode }) => (
     <span className="text-sm">{children || placeholder}</span>
   ),
-  Content: ({ children, className }: unknown) => (
+  Content: ({ children, className }: { children?: React.ReactNode; className?: string }) => (
     <div
       className={cn(
         "absolute top-full left-0 w-full border bg-background z-50 mt-1 shadow-md rounded-md",
@@ -76,7 +78,7 @@ export const SelectPrimitive = {
       {children}
     </div>
   ),
-  Item: React.forwardRef<HTMLDivElement, unknown>(
+  Item: React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement> & { value: string }>(
     ({ children, className, value, ...props }, ref) => {
       const { onValueChange } = React.useContext(SelectContext);
       return (
@@ -97,18 +99,18 @@ export const SelectPrimitive = {
 } as const;
 
 // Exports matching shadcn pattern
-export const SelectGroup = ({ children }: unknown) => <div>{children}</div>;
+export const SelectGroup = ({ children }: { children?: React.ReactNode }) => <div>{children}</div>;
 export const SelectValue = SelectPrimitive.Value;
 
 export const SelectTrigger = SelectPrimitive.Trigger;
 export const SelectContent = SelectPrimitive.Content;
 
-export const SelectLabel = ({ children, className }: unknown) => (
+export const SelectLabel = ({ children, className }: { children?: React.ReactNode; className?: string }) => (
   <div className={cn("px-2 py-1.5 text-sm font-semibold", className)}>
     {children}
   </div>
 );
 export const SelectItem = SelectPrimitive.Item;
-export const SelectSeparator = ({ className }: unknown) => (
+export const SelectSeparator = ({ className }: { className?: string }) => (
   <div className={cn("-mx-1 my-1 h-px bg-muted", className)} />
 );

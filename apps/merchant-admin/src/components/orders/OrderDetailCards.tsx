@@ -1,7 +1,8 @@
 "use client";
 
 import React from "react";
-import { Order, OrderTimelineEvent } from "@/services/orders";
+// import { Order, OrderTimelineEvent } from "@/services/orders";
+import { UnifiedOrder as Order, UnifiedOrderStatus as OrderTimelineEvent } from "@vayva/shared";
 import { Button, Icon, cn } from "@vayva/ui";
 
 // 1. Items Card
@@ -15,19 +16,19 @@ export const ItemsCard = ({ order }: { order: Order }) => (
           className="flex gap-4 border-b border-gray-50 pb-4 last:border-0 last:pb-0"
         >
           <div className="w-16 h-16 bg-gray-100 rounded-lg shrink-0 overflow-hidden">
-            {item.image && (
+            {(item as any).image && (
               <img
-                src={item.image}
+                src={(item as any).image}
                 className="w-full h-full object-cover"
-                alt={item.title}
+                alt={(item as any).title || (item as any).name}
               />
             )}
           </div>
           <div className="flex-1 flex flex-col justify-center">
-            <h4 className="text-sm font-bold text-black">{item.title}</h4>
-            {item.variantId && (
+            <h4 className="text-sm font-bold text-black">{(item as any).title || (item as any).name}</h4>
+            {(item as any).variantId && (
               <p className="text-xs text-[#525252]">
-                Variant: {item.variantId.split("-").pop()}
+                Variant: {(item as any).variantId.split("-").pop()}
               </p>
             )}
           </div>
@@ -46,25 +47,25 @@ export const ItemsCard = ({ order }: { order: Order }) => (
       <div className="flex justify-between">
         <span className="text-[#525252]">Subtotal</span>
         <span className="font-medium">
-          ₦ {Number(order.subtotal).toLocaleString()}
+          ₦ {Number((order as any).subtotal || (order as any).totalAmount).toLocaleString()}
         </span>
       </div>
       <div className="flex justify-between">
         <span className="text-[#525252]">Shipping</span>
         <span className="font-medium">
-          ₦ {Number(order.shippingTotal).toLocaleString()}
+          ₦ {Number((order as any).shippingTotal || 0).toLocaleString()}
         </span>
       </div>
       <div className="flex justify-between font-black text-lg text-black pt-2 border-t border-gray-200 mt-2">
         <span>Total</span>
-        <span>₦ {Number(order.total).toLocaleString()}</span>
+        <span>₦ {Number((order as any).total || order.totalAmount).toLocaleString()}</span>
       </div>
     </div>
   </div>
 );
 
 // 2. Timeline Card
-export const TimelineCard = ({ events }: { events: OrderTimelineEvent[] }) => (
+export const TimelineCard = ({ events }: { events: any[] }) => (
   <div className="bg-white rounded-xl border border-gray-100 shadow-sm overflow-hidden p-6 flex flex-col gap-6">
     <h3 className="font-bold text-black">Timeline</h3>
     <div className="relative pl-4 border-l-2 border-gray-100 flex flex-col gap-8">
@@ -105,10 +106,10 @@ export const CustomerCard = ({ customer }: { customer: Order["customer"] }) => (
       </div>
       <div className="pt-2 border-t border-gray-50 flex flex-col gap-2">
         <a
-          href={`mailto:${customer.email}`}
+          href={`mailto:${(customer as any).email || ""}`}
           className="flex items-center gap-2 text-[#525252] hover:text-black"
         >
-          <Icon name="Mail" size={14} /> {customer.email}
+          <Icon name="Mail" size={14} /> {(customer as any).email || "N/A"}
         </a>
         <a
           href={`tel:${customer.phone}`}
@@ -136,12 +137,12 @@ export const DeliveryCard = ({
       <p className="font-bold text-black mb-1">Details</p>
       <p>
         Method:{" "}
-        {order.timeline?.[0]?.metadata?.deliveryMethod || "Not specified"}
+        {(order as any).timeline?.[0]?.metadata?.deliveryMethod || "Not specified"}
       </p>
-      <p>Address: {order.timeline?.[0]?.metadata?.address || "N/A"}</p>
+      <p>Address: {(order as any).timeline?.[0]?.metadata?.address || "N/A"}</p>
     </div>
 
-    {order.deliveryTask ? (
+    {(order as any).deliveryTask ? (
       <div className="bg-gray-50 p-3 rounded-lg border border-gray-100">
         <p className="text-xs font-bold text-[#525252] mb-1">
           Delivery Task Status
@@ -149,12 +150,12 @@ export const DeliveryCard = ({
         <div className="flex items-center gap-2">
           <span className="w-2 h-2 rounded-full bg-yellow-400"></span>
           <span className="text-sm font-medium capitalize">
-            {order.deliveryTask.status.replace("_", " ")}
+            {(order as any).deliveryTask.status.replace("_", " ")}
           </span>
         </div>
-        {order.deliveryTask.trackingUrl && (
+        {(order as any).deliveryTask.trackingUrl && (
           <a
-            href={order.deliveryTask.trackingUrl}
+            href={(order as any).deliveryTask.trackingUrl}
             target="_blank"
             className="text-xs text-blue-600 hover:underline mt-1 block"
           >

@@ -5,7 +5,7 @@ import { Button, Input, Label, Icon } from "@vayva/ui";
 import { useRouter } from "next/navigation";
 
 interface CustomerFormProps {
-    initialData?: unknown;
+    initialData?: any;
     onSuccess: () => void;
 }
 
@@ -33,8 +33,8 @@ export function CustomerForm({ initialData, onSuccess }: CustomerFormProps) {
         };
 
         try {
-            const url = initialData 
-                ? `/api/customers/${initialData.id}` 
+            const url = initialData
+                ? `/api/customers/${initialData.id}`
                 : "/api/customers";
             const method = initialData ? "PUT" : "POST";
 
@@ -52,7 +52,7 @@ export function CustomerForm({ initialData, onSuccess }: CustomerFormProps) {
             router.refresh();
             onSuccess();
         } catch (err: unknown) {
-            setError(err.message);
+            setError(err instanceof Error ? err.message : "Something went wrong");
         } finally {
             setIsLoading(false);
         }

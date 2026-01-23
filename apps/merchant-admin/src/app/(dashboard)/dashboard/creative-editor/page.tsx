@@ -51,7 +51,7 @@ export default function CreativeEditorPage() {
 
                 {/* Main Canvas Area */}
                 <main className="flex-1 bg-gray-100/50 relative flex items-center justify-center p-12 overflow-auto">
-                    <motion.div 
+                    <motion.div
                         layoutId="canvas"
                         className="bg-white shadow-2xl rounded-lg overflow-hidden w-full max-w-2xl aspect-video relative group"
                         style={{ boxShadow: "0 25px 50px -12px rgba(0, 0, 0, 0.15)" }}
@@ -67,8 +67,8 @@ export default function CreativeEditorPage() {
 
                         {/* Top Bar for Selection */}
                         <div className="absolute top-0 left-0 right-0 h-10 bg-black/5 opacity-0 group-hover:opacity-100 transition-opacity flex items-center px-4 gap-2">
-                             <div className="w-2 h-2 rounded-full bg-blue-500" />
-                             <span className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">Main Canvas layer</span>
+                            <div className="w-2 h-2 rounded-full bg-blue-500" />
+                            <span className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">Main Canvas layer</span>
                         </div>
                     </motion.div>
                 </main>
@@ -80,7 +80,7 @@ export default function CreativeEditorPage() {
                             <TabsTrigger value="properties" className="flex-1">Properties</TabsTrigger>
                             <TabsTrigger value="layers" className="flex-1">Layers</TabsTrigger>
                         </TabsList>
-                        
+
                         <TabsContent value="properties" className="space-y-6">
                             <section>
                                 <h3 className="text-xs font-bold text-gray-400 uppercase tracking-widest mb-4">Canvas Settings</h3>
@@ -124,14 +124,16 @@ export default function CreativeEditorPage() {
     );
 }
 
-function ToolbarButton({ icon, active }: { icon: unknown, active?: boolean }) {
+import { IconName } from "@vayva/ui";
+
+function ToolbarButton({ icon, active }: { icon: IconName, active?: boolean }) {
     return (
-        <Button 
-          title={`Tool: ${icon}`}
-          className={cn(
-            "p-2.5 rounded-xl transition-all",
-            active ? "bg-indigo-600 text-white shadow-lg shadow-indigo-200" : "text-gray-400 hover:bg-gray-100"
-        )}>
+        <Button
+            title={`Tool: ${icon as string}`}
+            className={cn(
+                "p-2.5 rounded-xl transition-all",
+                active ? "bg-indigo-600 text-white shadow-lg shadow-indigo-200" : "text-gray-400 hover:bg-gray-100"
+            )}>
             <Icon name={icon} size={20} />
         </Button>
     );

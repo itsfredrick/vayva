@@ -9,13 +9,13 @@ interface SchemaField {
     id: string;
     label: string;
     type: "color" | "text" | "number" | "image" | "font";
-    default?: unknown;
+    default?: any;
     placeholder?: string;
 }
 
 interface ThemeCustomizerProps {
-    draft: unknown;
-    onUpdate: (data: unknown) => void;
+    draft: any;
+    onUpdate: (data: any) => void;
     onReset: () => void;
 }
 
@@ -36,7 +36,7 @@ export const ThemeCustomizer = ({ draft, onUpdate, onReset }: ThemeCustomizerPro
         { id: "announcementText", label: "Announcement Bar", type: "text", default: "" },
     ];
 
-    const handleChange = (id: string, value: unknown) => {
+    const handleChange = (id: string, value: any) => {
         const newConfig = { ...config, [id]: value };
         setConfig(newConfig);
         onUpdate(newConfig);
@@ -52,7 +52,7 @@ export const ThemeCustomizer = ({ draft, onUpdate, onReset }: ThemeCustomizerPro
             </div>
 
             <div className="p-6 space-y-8 flex-1">
-                {schema.map((field) => (
+                {schema.map((field: any) => (
                     <div key={field.id} className="space-y-2">
                         <label className="text-xs font-bold text-gray-700 block">{field.label}</label>
 
@@ -61,7 +61,7 @@ export const ThemeCustomizer = ({ draft, onUpdate, onReset }: ThemeCustomizerPro
                                 <input
                                     type="color"
                                     value={config[field.id] || field.default}
-                                    onChange={(e) => handleChange(field.id, e.target.value)}
+                                    onChange={(e: any) => handleChange(field.id, e.target.value)}
                                     className="w-10 h-10 rounded-lg cursor-pointer border-none p-0"
                                     title={field.label}
                                 />
@@ -74,7 +74,7 @@ export const ThemeCustomizer = ({ draft, onUpdate, onReset }: ThemeCustomizerPro
                                 type="text"
                                 value={config[field.id] || ""}
                                 placeholder={field.placeholder || "Enter text..."}
-                                onChange={(e) => handleChange(field.id, e.target.value)}
+                                onChange={(e: any) => handleChange(field.id, e.target.value)}
                                 className="w-full text-sm border border-gray-200 rounded-lg px-3 py-2 focus:ring-1 focus:ring-black outline-none"
                                 title={field.label}
                             />
@@ -84,7 +84,7 @@ export const ThemeCustomizer = ({ draft, onUpdate, onReset }: ThemeCustomizerPro
                             <input
                                 type="number"
                                 value={config[field.id] || ""}
-                                onChange={(e) => handleChange(field.id, e.target.value)}
+                                onChange={(e: any) => handleChange(field.id, e.target.value)}
                                 className="w-full text-sm border border-gray-200 rounded-lg px-3 py-2 focus:ring-1 focus:ring-black outline-none"
                                 title={field.label}
                                 placeholder="0"
@@ -94,7 +94,7 @@ export const ThemeCustomizer = ({ draft, onUpdate, onReset }: ThemeCustomizerPro
                         {field.type === "font" && (
                             <select
                                 value={config[field.id] || field.default}
-                                onChange={(e) => handleChange(field.id, e.target.value)}
+                                onChange={(e: any) => handleChange(field.id, e.target.value)}
                                 className="w-full text-sm border border-gray-200 rounded-lg px-3 py-2 focus:ring-1 focus:ring-black outline-none bg-white"
                                 title={field.label}
                             >

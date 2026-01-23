@@ -92,8 +92,8 @@ export default function CollectionsPage() {
             toast.success(mode === "CREATE" ? "Collection created" : "Collection updated");
             setIsOpen(false);
             fetchCollections();
-        } catch (error: unknown) {
-            toast.error(error.message);
+        } catch (error: any) {
+            toast.error(error.message || "Operation failed");
         } finally {
             setSubmitting(false);
         }
@@ -229,7 +229,7 @@ export default function CollectionsPage() {
                             <Input
                                 id="title"
                                 value={formData.title}
-                                onChange={(e: unknown) => generateHandle(e.target.value)}
+                                onChange={(e: React.ChangeEvent<HTMLInputElement>) => generateHandle(e.target.value)}
                                 placeholder="e.g. Summer Arrivals"
                             />
                         </div>
@@ -238,7 +238,7 @@ export default function CollectionsPage() {
                             <Input
                                 id="handle"
                                 value={formData.handle}
-                                onChange={(e: unknown) => setFormData({ ...formData, handle: e.target.value })}
+                                onChange={(e: React.ChangeEvent<HTMLInputElement>) => setFormData({ ...formData, handle: e.target.value })}
                                 placeholder="e.g. summer-arrivals"
                             />
                         </div>
@@ -247,7 +247,7 @@ export default function CollectionsPage() {
                             <Textarea
                                 id="desc"
                                 value={formData.description}
-                                onChange={(e: unknown) => setFormData({ ...formData, description: e.target.value })}
+                                onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => setFormData({ ...formData, description: e.target.value })}
                                 placeholder="Optional description for SEO..."
                             />
                         </div>

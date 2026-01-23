@@ -20,9 +20,10 @@ export default function ForgotPasswordPage() {
     try {
       await AuthService.forgotPassword({ email });
       setSuccess(true);
-    } catch (err: unknown) {
+    } catch (err) {
       console.error(err);
-      setError(err.message || "Failed to send reset instructions");
+      const message = err instanceof Error ? err.message : "Failed to send reset instructions";
+      setError(message);
     } finally {
       setLoading(false);
     }

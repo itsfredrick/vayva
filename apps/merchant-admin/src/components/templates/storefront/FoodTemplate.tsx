@@ -101,11 +101,11 @@ const FoodProductModal = ({
     if (currentProduct.modifiers) {
       Object.entries(modifiers).forEach(([modName, selectedOpts]) => {
         const modDef = currentProduct.modifiers?.find(
-          (m) => m.name === modName,
+          (m: any) => m.name === modName,
         );
         if (modDef) {
-          selectedOpts.forEach((optLabel) => {
-            const opt = modDef.options.find((o) => o.label === optLabel);
+          selectedOpts.forEach((optLabel: any) => {
+            const opt = modDef.options.find((o: any) => o.label === optLabel);
             if (opt) price += opt.price;
           });
         }
@@ -121,7 +121,7 @@ const FoodProductModal = ({
     optLabel: string,
     type: "single" | "multiple",
   ) => {
-    setModifiers((prev) => {
+    setModifiers((prev: any) => {
       const current = prev[modName] || [];
       if (type === "single") {
         // Radio behavior
@@ -129,7 +129,7 @@ const FoodProductModal = ({
       } else {
         // Checkbox behavior
         if (current.includes(optLabel)) {
-          return { ...prev, [modName]: current.filter((o) => o !== optLabel) };
+          return { ...prev, [modName]: current.filter((o: any) => o !== optLabel) };
         } else {
           return { ...prev, [modName]: [...current, optLabel] };
         }
@@ -185,7 +185,7 @@ const FoodProductModal = ({
 
           {/* Modifiers */}
           <div className="space-y-6">
-            {currentProduct.modifiers?.map((mod) => (
+            {currentProduct.modifiers?.map((mod: any) => (
               <div key={mod.name}>
                 <div className="flex justify-between items-center mb-3">
                   <h3 className="font-bold text-sm bg-gray-100 px-2 py-1 rounded-md">
@@ -196,7 +196,7 @@ const FoodProductModal = ({
                   </span>
                 </div>
                 <div className="space-y-2">
-                  {mod.options.map((opt) => {
+                  {mod.options.map((opt: any) => {
                     const isSelected = modifiers[mod.name]?.includes(opt.label);
                     return (
                       <div
@@ -293,7 +293,7 @@ const FoodHome = ({ config }: { config: StorefrontConfig }) => {
   const { content } = config;
   const { navigate } = useStorefront();
   const menu = (content.menu || []) as any[];
-  const categories = Array.from(new Set(menu.map((m) => m.cat)));
+  const categories = Array.from(new Set(menu.map((m: any) => m.cat)));
 
   const scrollToCat = (cat: string) => {
     const el = document.getElementById(`cat-${cat}`);
@@ -329,7 +329,7 @@ const FoodHome = ({ config }: { config: StorefrontConfig }) => {
       {/* Categories Sticky Nav */}
       <div className="sticky top-[93px] z-30 py-3 bg-white/95 backdrop-blur border-b">
         <div className="max-w-2xl mx-auto px-4 flex gap-2 overflow-x-auto no-scrollbar scroll-pl-4">
-          {categories.map((c: unknown, i) => (
+          {categories.map((c: any, i) => (
             <Button
               key={c}
               variant="ghost"
@@ -349,13 +349,13 @@ const FoodHome = ({ config }: { config: StorefrontConfig }) => {
 
       {/* Menu List */}
       <div className="max-w-2xl mx-auto px-4 py-6 space-y-10">
-        {categories.map((cat: unknown) => {
-          const items = menu.filter((m: unknown) => m.cat === cat);
+        {categories.map((cat: any) => {
+          const items = menu.filter((m: any) => m.cat === cat);
           return (
             <div key={cat} id={`cat-${cat}`} className="scroll-mt-40">
               <h3 className="font-extrabold text-xl mb-4">{cat}</h3>
               <div className="grid gap-4">
-                {items.map((item: unknown) => (
+                {items.map((item: any) => (
                   <div
                     key={item.id}
                     className="bg-white p-3 rounded-2xl border border-gray-100 shadow-sm flex gap-4 cursor-pointer hover:border-amber-200 transition-colors group"
@@ -421,7 +421,7 @@ const FoodCart = ({ config }: { config: StorefrontConfig }) => {
             </Button>
           </div>
         ) : (
-          cart.map((item, i) => (
+          cart.map((item: any, i: any) => (
             <div
               key={i}
               className="bg-white p-4 rounded-xl border border-gray-100 shadow-sm flex flex-col gap-3"
@@ -512,7 +512,7 @@ const FoodCheckout = ({
 
   const handlePlaceOrder = () => {
     // Map Cart to KitchenOrder format
-    const items = cart.map((item) => ({
+    const items = cart.map((item: any) => ({
       name: item.product.name,
       quantity: item.quantity,
       modifiers: [

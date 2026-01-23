@@ -50,8 +50,8 @@ export function KYCVerification({ onSuccess, onCancel }: KYCVerificationProps) {
 
       setStep("SUCCESS");
       if (onSuccess) onSuccess();
-    } catch (err: unknown) {
-      setError(err.message);
+    } catch (err) {
+      setError((err as any).message || "Verification failed");
     } finally {
       setLoading(false);
     }
@@ -61,7 +61,7 @@ export function KYCVerification({ onSuccess, onCancel }: KYCVerificationProps) {
     return (
       <div className="text-center py-12 space-y-6">
         <div className="w-20 h-20 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center mx-auto">
-          <Icon name={"CheckCircle" as unknown} size={40} />
+          <Icon name={"CheckCircle" as any} size={40} />
         </div>
         <div className="space-y-2">
           <h2 className="text-2xl font-bold text-white">
@@ -145,7 +145,7 @@ export function KYCVerification({ onSuccess, onCancel }: KYCVerificationProps) {
               label={`${method} Number`}
               placeholder={`Enter your ${method}`}
               value={formData.idNumber}
-              onChange={(e) =>
+              onChange={(e: any) =>
                 setFormData({ ...formData, idNumber: e.target.value })
               }
               required
@@ -155,7 +155,7 @@ export function KYCVerification({ onSuccess, onCancel }: KYCVerificationProps) {
                 label="First Name"
                 placeholder="As on ID"
                 value={formData.firstName}
-                onChange={(e) =>
+                onChange={(e: any) =>
                   setFormData({ ...formData, firstName: e.target.value })
                 }
                 required
@@ -164,7 +164,7 @@ export function KYCVerification({ onSuccess, onCancel }: KYCVerificationProps) {
                 label="Last Name"
                 placeholder="As on ID"
                 value={formData.lastName}
-                onChange={(e) =>
+                onChange={(e: any) =>
                   setFormData({ ...formData, lastName: e.target.value })
                 }
                 required
@@ -174,7 +174,7 @@ export function KYCVerification({ onSuccess, onCancel }: KYCVerificationProps) {
               label="Date of Birth"
               type="date"
               value={formData.dob}
-              onChange={(e) =>
+              onChange={(e: any) =>
                 setFormData({ ...formData, dob: e.target.value })
               }
               required
@@ -185,7 +185,7 @@ export function KYCVerification({ onSuccess, onCancel }: KYCVerificationProps) {
             <input
               type="checkbox"
               checked={consent}
-              onChange={(e) => setConsent(e.target.checked)}
+              onChange={(e: any) => setConsent(e.target.checked)}
               className="mt-1 accent-primary"
               id="consent-check"
             />
@@ -201,7 +201,7 @@ export function KYCVerification({ onSuccess, onCancel }: KYCVerificationProps) {
 
           {error && (
             <div className="p-3 bg-red-500/10 border border-red-500/20 rounded-xl flex items-center gap-2 text-red-500 text-sm">
-              <Icon name={"AlertCircle" as unknown} size={16} />
+              <Icon name={"AlertCircle" as any} size={16} />
               {error}
             </div>
           )}
