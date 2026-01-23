@@ -240,7 +240,7 @@ function OrderConfirmationContent() {
               <a
                 href={`https://wa.me/2348001234567?text=Hi, I have a question about my order ${order.refCode}`}
                 target="_blank"
-                className="text-sm font-bold text-green-600 underline"
+                className="text-sm font-bold text-green-600 underline" rel="noreferrer"
               >
                 Chat with us on WhatsApp
               </a>

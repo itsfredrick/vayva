@@ -43,7 +43,7 @@ export async function POST(req: any) {
         // Clean up old entries (Lazy cleanup)
         // await prismaCtx.otpCode.deleteMany({ where: { expiresAt: { lt: now }, type: "SUPPORT_RATE_LIMIT" } }); 
         // Find existing bucket
-        let limitEntry = await prismaRateLimit.otpCode.findFirst({
+        const limitEntry = await prismaRateLimit.otpCode.findFirst({
             where: { identifier: rateLimitKey, type: "SUPPORT_RATE_LIMIT", expiresAt: { gt: now } }
         });
         let currentCount = 0;

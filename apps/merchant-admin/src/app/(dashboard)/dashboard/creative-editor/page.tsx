@@ -2,7 +2,7 @@
 "use client";
 
 import { useState } from "react";
-import { Button, Icon, cn } from "@vayva/ui";
+import { Button, Icon, cn , IconName } from "@vayva/ui";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { toast } from "sonner";
@@ -124,7 +124,6 @@ export default function CreativeEditorPage() {
     );
 }
 
-import { IconName } from "@vayva/ui";
 
 function ToolbarButton({ icon, active }: { icon: IconName, active?: boolean }) {
     return (

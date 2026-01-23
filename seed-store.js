@@ -1,5 +1,5 @@
 
-const { PrismaClient } = require('@vayva/db');
+import { PrismaClient } from '@vayva/db';
 const prisma = new PrismaClient();
 
 async function main() {

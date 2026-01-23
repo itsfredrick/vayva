@@ -108,8 +108,8 @@ export async function POST(req: any) {
                 // Fetch Store if possible? Metadata should ideally have storeId
                 // For demo, we might need to lookup or pass minimal info.
                 // Assuming we have subdomain in metadata or we let the receipt API handle defaults.
-                let storeName = "Vayva Store";
-                let subdomain = "";
+                const storeName = "Vayva Store";
+                const subdomain = "";
                 // Optimization: If metadata has storeId, fetch name?
                 // Avoiding prisma Store fetch here to keep webhook fast? 
                 // Let's fire-and-forget the receipt call.

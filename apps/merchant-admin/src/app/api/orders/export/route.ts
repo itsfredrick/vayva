@@ -18,7 +18,7 @@ export async function GET(request: any) {
         const ids = searchParams.get("ids")?.split(",").filter(Boolean);
         const status = searchParams.get("status");
         const q = searchParams.get("q");
-        let where = {
+        const where = {
             storeId: user.storeId,
         };
         let auditScope = "filtered";

@@ -1,3 +1,5 @@
+/// <reference lib="dom" />
+
 /**
  * A wrapper around fetch with timeout support.
  */
@@ -18,7 +20,8 @@ export async function safeFetch(
     return response;
   } catch (error: unknown) {
     clearTimeout(id);
-    if (error.name === "AbortError") {
+    const err = error as Error;
+    if (err.name === "AbortError") {
       throw new Error(`Request timed out after ${timeoutMs}ms`);
     }
     throw error;

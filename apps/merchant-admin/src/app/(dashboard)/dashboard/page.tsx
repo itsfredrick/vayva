@@ -83,7 +83,7 @@ export default function DashboardPage() {
   }
 
   // Determine Main CTA
-  let ctaLabel = `Create ${config.primaryObject.replace(/_/g, " ")}`;
+  const ctaLabel = `Create ${config.primaryObject.replace(/_/g, " ")}`;
   let ctaLink = `/dashboard/products/new`; // Safe default
 
   // Smart Lookup for Create Route
@@ -140,7 +140,7 @@ export default function DashboardPage() {
           if (widget.id === "setup_checklist") return null;
           if (widget.type === "stat") {
             let icon = "Activity";
-            let title = widget.title;
+            const title = widget.title;
             let value: string | number = "—";
 
             if (widget.id === "sales_today") {

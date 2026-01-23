@@ -28,7 +28,7 @@ export async function POST(request: any) {
         const isValid = await bcrypt.compare(pin, wallet.pinHash);
         if (!isValid) {
             const attempts = wallet.failedPinAttempts + 1;
-            let updateData = { failedPinAttempts: attempts };
+            const updateData = { failedPinAttempts: attempts };
             if (attempts >= 5) {
                 updateData.isLocked = true;
                 updateData.lockedUntil = new Date(Date.now() + 30 * 60 * 1000); // 30 mins

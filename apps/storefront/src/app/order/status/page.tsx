@@ -221,7 +221,7 @@ function OrderStatusContent() {
               <a
                 href={`https://wa.me/2348001234567?text=Hi, status update for ${order.refCode}`}
                 target="_blank"
-                className="text-sm font-bold text-black border-b border-black"
+                className="text-sm font-bold text-black border-b border-black" rel="noreferrer"
               >
                 WhatsApp
               </a>

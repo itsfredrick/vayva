@@ -16,7 +16,7 @@ export const GET = withVayvaAPI(PERMISSIONS.COMMERCE_VIEW, async (request, { sto
         ]);
         // Test-to-Real Hybrid Logic (If no data, show a 'Setup' score)
         let score = 50;
-        let factors = [];
+        const factors = [];
         if (totalOrders > 0) {
             const successRate = (paidOrders / totalOrders) * 100;
             const refundRate = (refundedOrders / totalOrders) * 100;

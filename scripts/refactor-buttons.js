@@ -79,7 +79,7 @@ function refactorFile(filePath) {
             const size = inferSize(className);
             const cleanClassName = cleanupClassName(className, variant, size);
 
-            let props = [];
+            const props = [];
             if (variant) props.push(`variant="${variant}"`);
             if (size) props.push(`size="${size}"`);
             if (cleanClassName) props.push(`className="${cleanClassName}"`);
@@ -96,7 +96,7 @@ function refactorFile(filePath) {
             const size = inferSize(className);
             const cleanClassName = cleanupClassName(className, variant, size);
 
-            let props = [`onClick={${onClick}}`];
+            const props = [`onClick={${onClick}}`];
             if (variant) props.push(`variant="${variant}"`);
             if (size) props.push(`size="${size}"`);
             if (cleanClassName) props.push(`className="${cleanClassName}"`);

@@ -4,7 +4,7 @@ const rateLimit = new Map<string, { count: number; lastReset: number }>();
 
 export function proxy(request: NextRequest) {
   const url = request.nextUrl;
-  let hostname = request.headers.get("host") || "";
+  const hostname = request.headers.get("host") || "";
 
   // Handle localhost for development
   if (hostname.includes("localhost") && hostname.includes(":")) {

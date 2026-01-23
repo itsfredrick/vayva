@@ -157,7 +157,7 @@ export const DeliveryCard = ({
           <a
             href={(order as any).deliveryTask.trackingUrl}
             target="_blank"
-            className="text-xs text-blue-600 hover:underline mt-1 block"
+            className="text-xs text-blue-600 hover:underline mt-1 block" rel="noreferrer"
           >
             Track Delivery
           </a>

@@ -1,3 +1,5 @@
+/// <reference lib="dom" />
+
 import {
   AuthMeResponse,
   ApiResponse,
@@ -43,7 +45,7 @@ class ApiClient {
     return this.request<T>(path, { ...options, method: "GET" });
   }
 
-  async post<T>(path: string, data?: any, options: RequestInit = {}): Promise<ApiResponse<T>> {
+  async post<T>(path: string, data?: unknown, options: RequestInit = {}): Promise<ApiResponse<T>> {
     return this.request<T>(path, {
       ...options,
       method: "POST",
@@ -51,7 +53,7 @@ class ApiClient {
     });
   }
 
-  async put<T>(path: string, data?: any, options: RequestInit = {}): Promise<ApiResponse<T>> {
+  async put<T>(path: string, data?: unknown, options: RequestInit = {}): Promise<ApiResponse<T>> {
     return this.request<T>(path, {
       ...options,
       method: "PUT",
@@ -59,7 +61,7 @@ class ApiClient {
     });
   }
 
-  async patch<T>(path: string, data?: any, options: RequestInit = {}): Promise<ApiResponse<T>> {
+  async patch<T>(path: string, data?: unknown, options: RequestInit = {}): Promise<ApiResponse<T>> {
     return this.request<T>(path, {
       ...options,
       method: "PATCH",

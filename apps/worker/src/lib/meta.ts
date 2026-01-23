@@ -28,7 +28,7 @@ export class MetaProvider {
 
         const url = `https://graph.facebook.com/${this.version}/${this.phoneNumberId}/messages`;
 
-        let payload: unknown = {
+        const payload: unknown = {
             messaging_product: "whatsapp",
             recipient_type: "individual",
             to: options.recipient,

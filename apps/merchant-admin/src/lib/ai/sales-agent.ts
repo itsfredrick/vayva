@@ -134,7 +134,7 @@ export class SalesAgent {
                     content: typeof m.content === "string" ? m.content : null
                 }))
             ];
-            let response = await groqClient.chatCompletion(llmMessages, {
+            const response = await groqClient.chatCompletion(llmMessages, {
                 model: "llama-3.1-70b-versatile",
                 temperature: 0.1,
                 tools,
