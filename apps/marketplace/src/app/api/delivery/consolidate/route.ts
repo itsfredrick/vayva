@@ -77,9 +77,10 @@ export async function POST(request: NextRequest) {
             message: "Delivery fee consolidated successfully",
         });
     } catch (error: unknown) {
+        const err = error as Error;
         console.error("Delivery consolidation error:", error);
         return NextResponse.json(
-            { error: error.message || "Failed to consolidate delivery fee" },
+            { error: err.message || "Failed to consolidate delivery fee" },
             { status: 500 }
         );
     }
@@ -112,9 +113,10 @@ export async function GET(request: NextRequest) {
 
         return NextResponse.json({ success: true, breakdown });
     } catch (error: unknown) {
+        const err = error as Error;
         console.error("Get delivery breakdown error:", error);
         return NextResponse.json(
-            { error: error.message || "Failed to get delivery breakdown" },
+            { error: err.message || "Failed to get delivery breakdown" },
             { status: 500 }
         );
     }

@@ -35,9 +35,10 @@ export async function POST(req: Request) {
 
         return NextResponse.json({ success: true, orderId: order.id });
     } catch (error: unknown) {
+        const err = error as Error;
         reportError(error, { userId: (session?.user)?.id, cartId: body?.cartId });
         return NextResponse.json(
-            { error: error.message || "Failed to place order" },
+            { error: err.message || "Failed to place order" },
             { status: 500 }
         );
     }

@@ -10,9 +10,8 @@ export async function fetchAndValidateManifest(url: string): Promise<ExtensionMa
             'Accept': 'application/json',
             'User-Agent': 'Vayva-Platform-Sync/1.0'
         },
-        // Add cache: 'no-store' in nextjs if needed, but fetch is standard here
         cache: 'no-store'
-    } as unknown);
+    });
 
     if (!response.ok) {
         throw new Error(`Failed to fetch manifest from ${url}: ${response.statusText}`);

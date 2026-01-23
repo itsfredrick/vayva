@@ -143,14 +143,14 @@ export async function GET(req: Request) {
 
         // Flatten logic: A contact belongs to a store. A conversation belongs to a contact.
         // We want a list of Conversations.
-        const conversations = contacts.flatMap((c: unknown) => c.conversations.map((conv: unknown) => ({
+        const conversations = contacts.flatMap((c: any) => c.conversations.map((conv: any) => ({
             id: conv.id,
             storeName: conv.store.name,
             storeLogo: conv.store.logoUrl,
             lastMessage: conv.messages[0]?.textBody || "No messages yet",
             lastMessageAt: conv.lastMessageAt,
             unreadCount: 0 // Buyer side unread count logic would need 'lastReadAt', skipping for now
-        }))).sort((a: unknown, b: unknown) => new Date(b.lastMessageAt).getTime() - new Date(a.lastMessageAt).getTime());
+        }))).sort((a: any, b: any) => new Date(b.lastMessageAt).getTime() - new Date(a.lastMessageAt).getTime());
 
         return NextResponse.json({ conversations });
 

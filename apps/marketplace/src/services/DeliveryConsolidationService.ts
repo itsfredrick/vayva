@@ -71,7 +71,7 @@ export class DeliveryConsolidationService {
                 data: {
                     deliveryFee: Math.round(allocatedFee * 100) / 100,
                     metadata: {
-                        ...(await this.getOrderMetadata(child.id)),
+                        ...(await this.getOrderMetadata(child.id) as any),
                         deliveryFeeAllocation: {
                             consolidatedTotal: consolidatedFee,
                             allocatedAmount: allocatedFee,
@@ -89,7 +89,7 @@ export class DeliveryConsolidationService {
             data: {
                 deliveryFee: consolidatedFee,
                 metadata: {
-                    ...(await this.getOrderMetadata(parentOrderId)),
+                    ...(await this.getOrderMetadata(parentOrderId) as any),
                     deliveryConsolidation: {
                         enabled: true,
                         totalFee: consolidatedFee,
@@ -133,7 +133,7 @@ export class DeliveryConsolidationService {
             },
         });
 
-        const consolidationData = (parentOrder?.metadata as unknown)
+        const consolidationData = (parentOrder?.metadata as any)
             ?.deliveryConsolidation;
 
         return {
@@ -143,7 +143,7 @@ export class DeliveryConsolidationService {
                 orderId: child.id,
                 storeName: child.store!.name,
                 allocatedFee: Number(child.deliveryFee),
-                allocation: (child.metadata as unknown)?.deliveryFeeAllocation,
+                allocation: (child.metadata as any)?.deliveryFeeAllocation,
             })),
             savings: consolidationData?.enabled
                 ? childOrders.reduce((sum, o) => sum + Number(o.deliveryFee), 0) -
