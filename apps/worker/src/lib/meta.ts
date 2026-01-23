@@ -55,7 +55,7 @@ export class MetaProvider {
             return {
                 providerMessageId: response.data.messages[0].id,
             };
-        } catch (error: unknown) {
+        } catch (error) {
             console.error(
                 "[MetaProvider] Send failed:",
                 error.response?.data || error.message,

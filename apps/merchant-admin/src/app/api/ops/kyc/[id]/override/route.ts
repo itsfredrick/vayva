@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { OpsAuthService } from "@/lib/ops-auth";
 export const dynamic = "force-dynamic";
-export async function POST(request: any, { params }: any) {
+export async function POST(request: unknown, { params }: unknown) {
     const session = await OpsAuthService.getSession();
     if (!session) {
         return NextResponse.json({ error: "Unauthorized" }, { status: 401 });

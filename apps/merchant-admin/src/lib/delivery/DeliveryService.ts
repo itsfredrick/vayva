@@ -6,7 +6,7 @@ export class DeliveryService {
     /**
      * Checks if an order is ready for delivery dispatch based on settings and data.
      */
-    static checkReadiness(order: any, settings: any) {
+    static checkReadiness(order: unknown, settings: unknown) {
         const blockers = [];
         if (!settings.isEnabled) {
             return { status: "DISABLED", blockers: ["Delivery Disabled"] };
@@ -159,7 +159,9 @@ export class DeliveryService {
                     meta: { actor: { type: "SYSTEM", label: "AutoDispatch" } }
                 });
             }
-            catch (ignore) { }
+            catch (_error) {
+    // Intentionally empty
+  }
             return {
                 success: true,
                 status: "PENDING_CONFIRMATION",
@@ -248,7 +250,7 @@ export class DeliveryService {
             }
             return { success: true, status: "DISPATCHED", shipment };
         }
-        catch (error: any) {
+        catch (error) {
             return { success: false, status: "BLOCKED", reason: error.message };
         }
     }

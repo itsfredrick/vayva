@@ -3,7 +3,7 @@ import { getSessionUser } from "@/lib/session";
 import { authorizeAction, AppRole } from "@/lib/permissions";
 import { prisma } from "@/lib/prisma";
 import { logAuditEvent, AuditEventType } from "@/lib/audit";
-export async function POST(request: any) {
+export async function POST(request: unknown) {
     try {
         const user = await getSessionUser();
         // Admin/Owner only

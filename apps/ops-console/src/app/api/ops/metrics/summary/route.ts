@@ -78,7 +78,7 @@ export async function GET(req: NextRequest) {
             topMerchants,
             exceptions: []
         });
-    } catch (error: unknown) {
+    } catch (error) {
         console.error("Metrics/Summary API Error:", error);
         return NextResponse.json({ error: "Internal Error" }, { status: 500 });
     }

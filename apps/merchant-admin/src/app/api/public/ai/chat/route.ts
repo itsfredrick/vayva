@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { MarketingAIService } from "@/lib/ai/marketing-ai";
-export async function POST(request: any) {
+export async function POST(request: unknown) {
     try {
         const { messages } = await request.json();
         if (!messages || !Array.isArray(messages)) {

@@ -51,13 +51,13 @@ class ApiClient {
     /**
      * Make a GET request
      */
-    async get<T = any>(url: string, config?: any): Promise<T> {
+    async get<T = any>(url: string, config?: unknown): Promise<T> {
         return this.request<T>(url, { ...config, method: "GET" });
     }
     /**
      * Make a POST request
      */
-    async post<T = any>(url: string, data?: any, config?: any): Promise<T> {
+    async post<T = any>(url: string, data?: unknown, config?: unknown): Promise<T> {
         return this.request<T>(url, {
             ...config,
             method: "POST",
@@ -67,7 +67,7 @@ class ApiClient {
     /**
      * Make a PUT request
      */
-    async put<T = any>(url: string, data?: any, config?: any): Promise<T> {
+    async put<T = any>(url: string, data?: unknown, config?: unknown): Promise<T> {
         return this.request<T>(url, {
             ...config,
             method: "PUT",
@@ -77,7 +77,7 @@ class ApiClient {
     /**
      * Make a DELETE request
      */
-    async delete<T = any>(url: string, config?: any): Promise<T> {
+    async delete<T = any>(url: string, config?: unknown): Promise<T> {
         return this.request<T>(url, { ...config, method: "DELETE" });
     }
     /**
@@ -127,7 +127,7 @@ class ApiClient {
                 const data = await this.parseResponse(response);
                 return data;
             }
-            catch (error: any) {
+            catch (error) {
                 // Handle abort/timeout
                 if (error.name === "AbortError") {
                     const timeoutError = new Error("Request timeout") as any;
@@ -165,7 +165,7 @@ class ApiClient {
      * Handle error responses
      */
     private async handleErrorResponse(response: Response): Promise<Error> {
-        let errorData: any = {};
+        let errorData: unknown= {};
         try {
             errorData = await response.json();
         }

@@ -3,7 +3,7 @@ import { getSessionUser } from "@/lib/session";
 import { prisma } from "@/lib/prisma";
 import { authorizeAction, AppRole } from "@/lib/permissions";
 import { logAuditEvent, AuditEventType } from "@/lib/audit";
-export async function GET(request: any) {
+export async function GET(request: unknown) {
     try {
         const user = await getSessionUser();
         // Permission Check (Exports are sensitive, maybe Staff+)
@@ -36,7 +36,7 @@ export async function GET(request: any) {
                     { orderNumber: { equals: parseInt(q) ? parseInt(q) : undefined } },
                     { refCode: { contains: q, mode: "insensitive" } },
                     { customerEmail: { contains: q, mode: "insensitive" } },
-                ].filter((c: any) => Object.values(c)[0] !== undefined);
+                ].filter((c: unknown) => Object.values(c)[0] !== undefined);
             }
         }
         const orders = await prisma.order.findMany({
@@ -54,7 +54,7 @@ export async function GET(request: any) {
             "Payment",
             "Customer",
         ];
-        const rows = orders.map((o: any) => [
+        const rows = orders.map((o: unknown) => [
             o.refCode || o.id,
             new Date(o.createdAt).toISOString(),
             o.status,
@@ -64,8 +64,8 @@ export async function GET(request: any) {
         ]);
         const csvContent = [
             header.join(","),
-            ...rows.map((row: any) => row
-                .map((field: any) => `"${String(field).replace(/"/g, '""')}"`)
+            ...rows.map((row: unknown) => row
+                .map((field: unknown) => `"${String(field).replace(/"/g, '""')}"`)
                 .join(",")),
         ].join("\n");
         // Log Audit Event (Server-side only)

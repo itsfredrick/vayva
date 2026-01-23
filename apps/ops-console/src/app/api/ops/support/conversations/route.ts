@@ -56,7 +56,7 @@ export async function GET(request: Request) {
             }
         });
 
-    } catch (error: unknown) {
+    } catch (error) {
         if (error.message === "Unauthorized") {
             return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
         }

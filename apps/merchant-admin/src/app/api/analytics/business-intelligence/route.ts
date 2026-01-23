@@ -77,7 +77,7 @@ export async function GET() {
             insights: aiInsights,
         });
     }
-    catch (error: any) {
+    catch (error) {
         console.error("BI Analytics error:", error);
         return NextResponse.json({ error: "Failed to generate business intelligence" }, { status: 500 });
     }

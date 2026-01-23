@@ -20,7 +20,7 @@ export function withOpsRBAC(
             OpsAuthService.requireRole(session.user, requiredRole);
 
             return await handler(session, request, ...args);
-        } catch (error: unknown) {
+        } catch (error) {
             console.error("[OpsRBAC Error]:", error.message);
 
             if (error.message.includes("Unauthorized")) {

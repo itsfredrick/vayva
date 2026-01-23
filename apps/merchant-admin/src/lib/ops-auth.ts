@@ -86,7 +86,7 @@ export class OpsAuthService {
             },
             select: { metadata: true },
         });
-        const count = failures.filter((f: any) => f.metadata?.ip === ip).length;
+        const count = failures.filter((f: unknown) => f.metadata?.ip === ip).length;
         return count >= MAX_ATTEMPTS;
     }
     /**

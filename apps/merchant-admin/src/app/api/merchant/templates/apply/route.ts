@@ -4,7 +4,7 @@ import { authOptions } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { TemplateService } from "@/lib/templates/templateService";
 import { cookies } from "next/headers";
-export async function POST(req: any) {
+export async function POST(req: unknown) {
     const session = await getServerSession(authOptions);
     if (!session?.user?.id)
         return NextResponse.json({ error: "Unauthorized" }, { status: 401 });

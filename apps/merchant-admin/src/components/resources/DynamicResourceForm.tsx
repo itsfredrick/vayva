@@ -22,7 +22,7 @@ import { FileUpload } from "@/components/ui/FileUpload";
 interface ValidatedFormProps {
     primaryObject: PrimaryObject;
     mode: "create" | "edit";
-    initialData?: any;
+    initialData?: unknown;
     resourceId?: string;
     onSuccessPath?: string;
 }
@@ -55,11 +55,11 @@ export const DynamicResourceForm = ({
 
     const { requiredFields, optionalFields, variantLabel } = formConfig;
 
-    const handleChange = (field: string, val: any) => {
-        setFormData((prev: any) => ({ ...prev, [field]: val }));
+    const handleChange = (field: string, val: unknown) => {
+        setFormData((prev: unknown) => ({ ...prev, [field]: val }));
         // Clear error on type
         if (errors[field]) {
-            setErrors((prev: any) => {
+            setErrors((prev: unknown) => {
                 const next = { ...prev };
                 delete next[field];
                 return next;
@@ -155,7 +155,7 @@ export const DynamicResourceForm = ({
                         onChange={(e: React.ChangeEvent<HTMLSelectElement>) => handleChange(key, e.target.value)}
                     >
                         <option value="">Select {def.label}</option>
-                        {def.options?.map((opt: any) => (
+                        {def.options?.map((opt: unknown) => (
                             <option key={opt.value} value={opt.value}>{opt.label}</option>
                         ))}
                     </select>
@@ -166,7 +166,7 @@ export const DynamicResourceForm = ({
                 return (
                     <FileUpload
                         value={formData[key] || ""}
-                        onChange={(url: any) => handleChange(key, url)}
+                        onChange={(url: unknown) => handleChange(key, url)}
                         label={def.label || "Upload File"}
                         accept={accept}
                     />

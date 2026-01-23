@@ -120,7 +120,7 @@ export async function PATCH(req: NextRequest, { params }: { params: Promise<{ id
                 ...(body.images && {
                     productImages: {
                         deleteMany: {},
-                        create: body.images.map((img: any, idx: number) => ({
+                        create: body.images.map((img: unknown, idx: number) => ({
                             url: img.url,
                             altText: img.altText || img.alt,
                             position: idx,
@@ -131,7 +131,7 @@ export async function PATCH(req: NextRequest, { params }: { params: Promise<{ id
         });
         // Handle Variants: Delete removed, Update existing, Create new
         if (body.variants && Array.isArray(body.variants)) {
-            const incomingIds = body.variants.map((v: any) => v.id).filter(Boolean);
+            const incomingIds = body.variants.map((v: unknown) => v.id).filter(Boolean);
             await prisma.productVariant.deleteMany({
                 where: {
                     productId: id,

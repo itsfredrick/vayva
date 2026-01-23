@@ -19,7 +19,7 @@ export async function GET(req: NextRequest) {
         }));
         return NextResponse.json(formatted);
     }
-    catch (error: any) {
+    catch (error) {
         return NextResponse.json({ error: "Failed to fetch notifications" }, { status: 500 });
     }
 }

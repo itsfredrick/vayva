@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import { getSessionUser } from "@/lib/session";
 import { prisma } from "@/lib/prisma";
 // GET /api/portfolio/[id]
-export async function GET(request: any, { params }: any) {
+export async function GET(request: unknown, { params }: unknown) {
     try {
         const sessionUser = await getSessionUser();
         if (!sessionUser)
@@ -22,7 +22,7 @@ export async function GET(request: any, { params }: any) {
     }
 }
 // PATCH /api/portfolio/[id]
-export async function PATCH(request: any, { params }: any) {
+export async function PATCH(request: unknown, { params }: unknown) {
     try {
         const sessionUser = await getSessionUser();
         if (!sessionUser)

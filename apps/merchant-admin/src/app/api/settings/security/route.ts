@@ -43,7 +43,7 @@ export async function GET() {
         return NextResponse.json({ error: "Failed to fetch security settings" }, { status: 500 });
     }
 }
-export async function PATCH(req: any) {
+export async function PATCH(req: unknown) {
     try {
         const session = await requireAuth();
         const storeId = session.user.storeId;

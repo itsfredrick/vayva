@@ -5,7 +5,7 @@ export interface OnboardingState {
     storeId: string;
     status: OnboardingStatus | string;
     currentStepKey: string;
-    data: any;
+    data: unknown;
     completedAt?: Date | null;
     updatedAt: Date;
 }
@@ -13,6 +13,6 @@ export interface OnboardingState {
 export interface OnboardingUpdatePayload {
     step?: string;
     status?: OnboardingStatus | string;
-    data?: any;
+    data?: unknown;
     isComplete?: boolean;
 }

@@ -76,7 +76,7 @@ export async function POST(req: NextRequest) {
             success: true,
             message: `Transaction force updated to ${updateData.status}`,
         });
-    } catch (error: unknown) {
+    } catch (error) {
         if (error.message === "Unauthorized") return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
         if (error.message?.includes("permissions")) return NextResponse.json({ error: error.message }, { status: 403 });
 

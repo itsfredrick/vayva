@@ -16,13 +16,13 @@ interface CheckoutModalProps {
   cart: CartItem[];
   total: number;
   storeSlug: string;
-  onSuccess: (customerData?: any) => void;
+  onSuccess: (customerData?: unknown) => void;
   requireAddress?: boolean;
-  submitFn?: (data: any) => Promise<unknown>;
+  submitFn?: (data: unknown) => Promise<unknown>;
 }
 
 export function CheckoutModal({
-  isOpen: any, onClose: any, cart: any, total: any, storeSlug: any, onSuccess: any, requireAddress = true, submitFn: any, }: CheckoutModalProps) {
+  isOpen: unknown, onClose: unknown, cart: unknown, total: unknown, storeSlug: unknown, onSuccess: unknown, requireAddress = true, submitFn: unknown, }: CheckoutModalProps) {
   const [isLoading, setIsLoading] = useState(false);
   const [formData, setFormData] = useState({
     name: "",
@@ -72,7 +72,7 @@ export function CheckoutModal({
           onClose();
         }
       }
-    } catch (error: any) {
+    } catch (error) {
       console.error(error);
       toast.error(error.message || "Failed to process order");
     } finally {
@@ -96,7 +96,7 @@ export function CheckoutModal({
               placeholder="Full Name"
               className="w-full p-2 border rounded-md"
               value={formData.name}
-              onChange={(e: any) =>
+              onChange={(e: unknown) =>
                 setFormData({ ...formData, name: e.target.value })
               }
             />
@@ -107,7 +107,7 @@ export function CheckoutModal({
                 placeholder="Email"
                 className="w-full p-2 border rounded-md"
                 value={formData.email}
-                onChange={(e: any) =>
+                onChange={(e: unknown) =>
                   setFormData({ ...formData, email: e.target.value })
                 }
               />
@@ -117,7 +117,7 @@ export function CheckoutModal({
                 placeholder="Phone"
                 className="w-full p-2 border rounded-md"
                 value={formData.phone}
-                onChange={(e: any) =>
+                onChange={(e: unknown) =>
                   setFormData({ ...formData, phone: e.target.value })
                 }
               />
@@ -133,7 +133,7 @@ export function CheckoutModal({
                 placeholder="Address Line"
                 className="w-full p-2 border rounded-md"
                 value={formData.address}
-                onChange={(e: any) =>
+                onChange={(e: unknown) =>
                   setFormData({ ...formData, address: e.target.value })
                 }
               />
@@ -143,7 +143,7 @@ export function CheckoutModal({
                 placeholder="City"
                 className="w-full p-2 border rounded-md"
                 value={formData.city}
-                onChange={(e: any) =>
+                onChange={(e: unknown) =>
                   setFormData({ ...formData, city: e.target.value })
                 }
               />

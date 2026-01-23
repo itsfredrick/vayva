@@ -5,7 +5,7 @@ import { createSession } from "@/lib/session";
 import { logger } from "@/lib/logger";
 import { checkRateLimit } from "@/lib/rate-limit";
 export async function POST(request: NextRequest) {
-    let body: any;
+    let body: unknown;
     try {
         body = await request.json();
         const { email, password, rememberMe } = body as Record<string, any>;
@@ -56,7 +56,7 @@ export async function POST(request: NextRequest) {
             where: { storeId: membership.storeId },
         });
         // Create session
-        const sessionUser: any = {
+        const sessionUser: unknown= {
             id: user.id,
             email: user.email,
             firstName: user.firstName,
@@ -90,7 +90,7 @@ export async function POST(request: NextRequest) {
             },
         });
     }
-    catch (error: any) {
+    catch (error) {
         logger.error("Login failed", error, { email: body?.email }, {});
         return NextResponse.json({ error: "Login failed" }, { status: 500 });
     }

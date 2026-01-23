@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { ReturnTokenService } from "@/lib/returns/returnToken";
 import { ReturnService } from "@/lib/returns/returnService";
-export async function POST(req: any) {
+export async function POST(req: unknown) {
     try {
         const body = await req.json();
         const { token, items, reason, notes, preferredMethod } = body;

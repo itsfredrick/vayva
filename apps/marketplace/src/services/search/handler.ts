@@ -104,7 +104,7 @@ export async function handleSearch(
                 chinaBulkOnly,
             },
         });
-    } catch (error: unknown) {
+    } catch (error) {
         console.error("Search error:", error);
         return NextResponse.json(
             {

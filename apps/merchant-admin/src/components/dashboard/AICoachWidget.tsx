@@ -18,12 +18,12 @@ export const AICoachWidget = () => {
 
   useEffect(() => {
     fetch("/api/ai/coach/messages")
-      .then((res: any) => res.json())
-      .then((data: any) => {
+      .then((res: unknown) => res.json())
+      .then((data: unknown) => {
         setMessages(data);
         setLoading(false);
       })
-      .catch((err: any) => {
+      .catch((err: unknown) => {
         console.error(err);
         setLoading(false);
       });
@@ -51,7 +51,7 @@ export const AICoachWidget = () => {
           </p>
           {latestMessage.actions && (
             <div className="flex gap-2 mt-3">
-              {latestMessage.actions.map((action: any, idx: number) => (
+              {latestMessage.actions.map((action: unknown, idx: number) => (
                 <Button
                   key={idx}
                   onClick={() => action.link && router.push(action.link)}

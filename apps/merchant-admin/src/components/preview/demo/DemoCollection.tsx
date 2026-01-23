@@ -3,11 +3,11 @@ import type { DemoStore } from "@/lib/preview/demo-data";
 import { Button } from "@vayva/ui";
 
 export function DemoCollection({
-  demo: any, activeCategory: any, }: {
+  demo: unknown, activeCategory: unknown, }: {
   demo: DemoStore;
   activeCategory: string;
 }) {
-  const items = demo.products.filter((p: any) => p.category === activeCategory);
+  const items = demo.products.filter((p: unknown) => p.category === activeCategory);
 
   return (
     <div className="mx-auto max-w-6xl px-4 py-10">
@@ -20,7 +20,7 @@ export function DemoCollection({
         </div>
 
         <div className="mt-6 grid gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
-          {items.map((p: any) => (
+          {items.map((p: unknown) => (
             <div key={p.id} className="rounded-xl border p-4 bg-white">
               <div className="overflow-hidden rounded-lg border bg-gray-50">
                 <img

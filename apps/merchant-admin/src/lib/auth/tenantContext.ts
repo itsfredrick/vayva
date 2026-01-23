@@ -1,5 +1,5 @@
 import { getToken } from "next-auth/jwt";
-export async function getTenantContext(req: any) {
+export async function getTenantContext(req: unknown) {
     const token = await getToken({ req, secret: process.env.NEXTAUTH_SECRET });
     if (token && token.sub) {
         return {
@@ -22,12 +22,12 @@ export async function getTenantContext(req: any) {
     }
     throw new Error("Unauthorized: No active session found");
 }
-export function requireMerchant(ctx: any) {
+export function requireMerchant(ctx: unknown) {
     if (!ctx.merchantId)
         throw new Error("Merchant Context Required");
     return ctx.merchantId;
 }
-export function requireStore(ctx: any) {
+export function requireStore(ctx: unknown) {
     if (!ctx.storeId)
         throw new Error("Store Context Required");
     return ctx.storeId;

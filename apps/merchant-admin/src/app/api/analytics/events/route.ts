@@ -30,7 +30,7 @@ export const POST = withVayvaAPI(PERMISSIONS.COMMERCE_VIEW, async (req: NextRequ
         });
         return NextResponse.json({ success: true, id: event.id });
     }
-    catch (error: any) {
+    catch (error) {
         console.error("Analytics Ingestion Error:", error);
         return NextResponse.json({ error: "Failed to ingest event" }, { status: 500 });
     }

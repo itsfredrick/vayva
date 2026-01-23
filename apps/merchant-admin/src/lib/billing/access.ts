@@ -1,5 +1,5 @@
 import { prisma } from "@vayva/db";
-export async function checkFeatureAccess(storeId: any, feature: any) {
+export async function checkFeatureAccess(storeId: unknown, feature: unknown) {
     const store = await prisma.store.findUnique({
         where: { id: storeId },
         include: {
@@ -117,7 +117,7 @@ export async function checkFeatureAccess(storeId: any, feature: any) {
     }
     return { allowed: true };
 }
-async function getWhatsAppMessageCount(storeId: any) {
+async function getWhatsAppMessageCount(storeId: unknown) {
     return prisma.notification.count({
         where: {
             storeId,

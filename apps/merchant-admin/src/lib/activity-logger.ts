@@ -1,9 +1,9 @@
 import { prisma } from "@vayva/db";
-export async function logActivity({ storeId, actorUserId, action, targetType, targetId, before, after, reason }: { storeId: any; actorUserId: any; action: string; targetType: string; targetId: string; before?: any; after?: any; reason?: any }) {
+export async function logActivity({ storeId, actorUserId, action, targetType, targetId, before, after, reason }: { storeId: unknown; actorUserId: unknown; action: string; targetType: string; targetId: string; before?: unknown; after?: unknown; reason?: any }) {
     try {
         // Calculate minimal diff if both states provided
-        let diffBefore: any = null;
-        let diffAfter: any = null;
+        let diffBefore: unknown= null;
+        let diffAfter: unknown= null;
         if (before && after) {
             diffBefore = {};
             diffAfter = {};

@@ -7,7 +7,7 @@ const rateLimitStore = new Map();
 /**
  * Get client identifier from request
  */
-export function getClientIdentifier(request: any) {
+export function getClientIdentifier(request: unknown) {
     // Try to get IP from various headers
     const forwarded = request.headers.get('x-forwarded-for');
     const realIp = request.headers.get('x-real-ip');
@@ -21,7 +21,7 @@ export function getClientIdentifier(request: any) {
 /**
  * Check rate limit for a given key
  */
-export async function checkRateLimit(identifier: any, endpoint: any, maxAttempts: any, windowSeconds: any) {
+export async function checkRateLimit(identifier: unknown, endpoint: unknown, maxAttempts: unknown, windowSeconds: unknown) {
     const key = `ratelimit:${endpoint}:${identifier}`;
     const now = Date.now();
     const windowMs = windowSeconds * 1000;
@@ -65,7 +65,7 @@ function cleanupExpiredEntries() {
 /**
  * Rate limit middleware for API routes
  */
-export async function rateLimit(request: any, endpoint: any, config: any) {
+export async function rateLimit(request: unknown, endpoint: unknown, config: unknown) {
     const identifier = getClientIdentifier(request);
     return checkRateLimit(identifier, endpoint, config.maxAttempts, config.windowSeconds);
 }
@@ -101,7 +101,7 @@ export const RATE_LIMITS = {
  * Helper to apply rate limiting to an API route
  * Returns null if allowed, or NextResponse with error if rate limited
  */
-export async function applyRateLimit(request: any, endpoint: any, config: any) {
+export async function applyRateLimit(request: unknown, endpoint: unknown, config: unknown) {
     const result = await rateLimit(request, endpoint, config);
     if (!result.allowed) {
         return {

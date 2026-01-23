@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-export function useStorefrontStore(slug: any) {
+export function useStorefrontStore(slug: unknown) {
     const [store, setStore] = useState(null);
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState(null);
@@ -9,7 +9,7 @@ export function useStorefrontStore(slug: any) {
         let isMounted = true;
         setIsLoading(true);
         fetch(`/api/storefront/${slug}/store`)
-            .then((res: any) => {
+            .then((res: unknown) => {
             if (!res.ok) {
                 if (res.status === 404)
                     throw new Error("Store not found");
@@ -17,11 +17,11 @@ export function useStorefrontStore(slug: any) {
             }
             return res.json();
         })
-            .then((data: any) => {
+            .then((data: unknown) => {
             if (isMounted)
                 setStore(data);
         })
-            .catch((err: any) => {
+            .catch((err: unknown) => {
             if (isMounted)
                 setError(err);
             if (err.message !== "Store not found") {
@@ -38,7 +38,7 @@ export function useStorefrontStore(slug: any) {
     }, [slug]);
     return { store, isLoading, error };
 }
-export function useStorefrontProducts(slug: any, options: any) {
+export function useStorefrontProducts(slug: unknown, options: unknown) {
     const [products, setProducts] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState(null);
@@ -59,7 +59,7 @@ export function useStorefrontProducts(slug: any, options: any) {
         if (limit)
             query.append("limit", limit.toString());
         fetch(`/api/storefront/${slug}/products?${query.toString()}`)
-            .then((res: any) => {
+            .then((res: unknown) => {
             if (!res.ok) {
                 if (res.status === 404)
                     throw new Error("Store not found");
@@ -67,11 +67,11 @@ export function useStorefrontProducts(slug: any, options: any) {
             }
             return res.json();
         })
-            .then((data: any) => {
+            .then((data: unknown) => {
             if (isMounted)
                 setProducts(data);
         })
-            .catch((err: any) => {
+            .catch((err: unknown) => {
             if (isMounted)
                 setError(err);
             if (err.message !== "Store not found") {

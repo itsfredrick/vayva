@@ -7,7 +7,7 @@ import { requireAuth } from "@/lib/session";
  *
  * @param handler API handler receiving the authenticated session
  */
-export function withTenantIsolation(handler: any) {
+export function withTenantIsolation(handler: unknown) {
     return async (request, ...args) => {
         try {
             const session = await requireAuth();

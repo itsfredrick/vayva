@@ -7,8 +7,8 @@ import { Button, Icon } from "@vayva/ui";
 interface ProductsFilterBarProps {
     search: string;
     onSearch: (value: string) => void;
-    filters: any;
-    onFilterChange: (filters: any) => void;
+    filters: unknown;
+    onFilterChange: (filters: unknown) => void;
     onRefresh: () => void;
 }
 

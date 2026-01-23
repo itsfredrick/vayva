@@ -50,7 +50,7 @@ export default function IncidentDetailPage({ params }: { params: { id: string } 
                 toast({ title: "Success", description: "Action executed successfully!" });
                 fetchIncident();
             }
-        } catch (error) {
+        } catch (_error) {
             toast({ title: "Error", description: "Action failed.", variant: "destructive" });
         } finally {
             setActionLoading(null);

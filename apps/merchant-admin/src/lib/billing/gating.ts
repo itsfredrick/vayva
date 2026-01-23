@@ -1,6 +1,6 @@
 export const Gating = {
     allow: () => ({ ok: true }),
-    deny: (code: any, message: any, context: any) => {
+    deny: (code: unknown, message: unknown, context: unknown) => {
         return {
             ok: false,
             error: {
@@ -14,10 +14,10 @@ export const Gating = {
             },
         };
     },
-    requirePro: (currentPlan: any, featureName: any) => {
+    requirePro: (currentPlan: unknown, featureName: unknown) => {
         return Gating.deny("PLAN_REQUIRED", `${featureName} is only available on the Pro plan.`, { requiredPlan: "PRO", currentPlan });
     },
-    seatLimit: (currentPlan: any, limit: any) => {
+    seatLimit: (currentPlan: unknown, limit: unknown) => {
         return Gating.deny("SEAT_LIMIT", `You have reached the limit of ${limit} seats on your ${currentPlan} plan.`, { requiredPlan: "PRO", currentPlan, details: { limit } });
     },
 };

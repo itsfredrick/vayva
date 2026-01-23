@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { getServerSession } from "next-auth";
 import { prisma } from "@/lib/prisma";
-export async function POST(req: any) {
+export async function POST(req: unknown) {
     try {
         const session = await getServerSession();
         if (!session?.user?.storeId) {
@@ -27,7 +27,7 @@ export async function POST(req: any) {
             "SHIPPING_DELIVERY",
         ];
         const today = new Date().toISOString().split("T")[0]; // YYYY-MM-DD
-        await prisma.$transaction(policyTypes.map((type: any) => prisma.merchantPolicy.updateMany({
+        await prisma.$transaction(policyTypes.map((type: unknown) => prisma.merchantPolicy.updateMany({
             where: {
                 storeId: session.user.storeId,
                 type: type,

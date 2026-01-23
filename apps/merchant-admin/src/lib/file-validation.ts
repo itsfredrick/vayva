@@ -18,7 +18,7 @@ export const DEFAULT_ALLOWED_IMAGE_TYPES = [
 /**
  * Validate file size
  */
-export function validateFileSize(file: any, maxSizeBytes = DEFAULT_IMAGE_MAX_SIZE) {
+export function validateFileSize(file: unknown, maxSizeBytes = DEFAULT_IMAGE_MAX_SIZE) {
     if (file.size > maxSizeBytes) {
         const maxSizeMB = (maxSizeBytes / (1024 * 1024)).toFixed(1);
         return {
@@ -32,7 +32,7 @@ export function validateFileSize(file: any, maxSizeBytes = DEFAULT_IMAGE_MAX_SIZ
 /**
  * Validate MIME type
  */
-export function validateMimeType(file: any, allowedTypes = DEFAULT_ALLOWED_IMAGE_TYPES) {
+export function validateMimeType(file: unknown, allowedTypes = DEFAULT_ALLOWED_IMAGE_TYPES) {
     if (!allowedTypes.includes(file.type)) {
         return {
             valid: false,
@@ -45,8 +45,8 @@ export function validateMimeType(file: any, allowedTypes = DEFAULT_ALLOWED_IMAGE
 /**
  * Validate image dimensions
  */
-export async function validateImageDimensions(file: any, options: any) {
-    return new Promise((resolve: any) => {
+export async function validateImageDimensions(file: unknown, options: unknown) {
+    return new Promise((resolve: unknown) => {
         const img = new Image();
         const url = URL.createObjectURL(file);
         img.onload = () => {
@@ -101,7 +101,7 @@ export async function validateImageDimensions(file: any, options: any) {
  * Check for potentially malicious file content
  * Basic security check for common attack vectors
  */
-export async function checkMaliciousContent(file: any) {
+export async function checkMaliciousContent(file: unknown) {
     try {
         // Read first few bytes to check file signature
         const buffer = await file.slice(0, 512).arrayBuffer();
@@ -115,7 +115,7 @@ export async function checkMaliciousContent(file: any) {
         };
         let hasValidSignature = false;
         for (const [format, signature] of Object.entries(signatures)) {
-            if (signature.every((byte: any, index: any) => bytes[index] === byte)) {
+            if (signature.every((byte: unknown, index: unknown) => bytes[index] === byte)) {
                 hasValidSignature = true;
                 break;
             }
@@ -160,7 +160,7 @@ export async function checkMaliciousContent(file: any) {
  * Comprehensive file validation
  * Runs all validation checks
  */
-export async function validateFile(file: any, options = {}) {
+export async function validateFile(file: unknown, options = {}) {
     // Size validation
     const sizeResult = validateFileSize(file, options.maxSizeBytes);
     if (!sizeResult.valid)
@@ -185,7 +185,7 @@ export async function validateFile(file: any, options = {}) {
  * Server-side file validation for API routes
  * Validates FormData file uploads
  */
-export async function validateUploadedFile(formData: any, fieldName = 'file', options = {}) {
+export async function validateUploadedFile(formData: unknown, fieldName = 'file', options = {}) {
     const file = formData.get(fieldName);
     if (!file) {
         return {

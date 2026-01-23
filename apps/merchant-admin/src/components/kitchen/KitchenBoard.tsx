@@ -20,7 +20,7 @@ export function KitchenBoard() {
             // Current MenuService returns array. KitchenTicket expects Order object.
             setOrders(Array.isArray(data) ? data : data.orders || []);
             setError(null);
-        } catch (error: any) {
+        } catch (error) {
             console.error(error);
             setError(error.message);
         } finally {
@@ -78,7 +78,7 @@ export function KitchenBoard() {
 
     return (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-            {orders.map((order: any) => (
+            {orders.map((order: unknown) => (
                 <KitchenTicket
                     key={order.id}
                     order={order}

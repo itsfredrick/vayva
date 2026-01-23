@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { requireAuth } from "@/lib/auth/session";
-export async function POST(request: any) {
+export async function POST(request: unknown) {
     try {
         const session = await requireAuth();
         const userId = session.user.id;

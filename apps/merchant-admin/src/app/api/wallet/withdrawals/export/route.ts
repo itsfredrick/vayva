@@ -3,7 +3,7 @@ import { getSessionUser } from "@/lib/session";
 import { prisma } from "@/lib/prisma";
 import { authorizeAction, AppRole } from "@/lib/permissions";
 import { logAuditEvent, AuditEventType } from "@/lib/audit";
-export async function GET(request: any) {
+export async function GET(request: unknown) {
     try {
         const user = await getSessionUser();
         // Permission Check (Exports are sensitive, ADMIN only for Withdrawals)
@@ -41,7 +41,7 @@ export async function GET(request: any) {
             "Fee (NGN)",
             "Net (NGN)",
         ];
-        const rows = withdrawals.map((w: any) => [
+        const rows = withdrawals.map((w: unknown) => [
             new Date(w.createdAt).toISOString(),
             w.referenceCode,
             w.status,
@@ -51,7 +51,7 @@ export async function GET(request: any) {
         ]);
         const csvContent = [
             header.join(","),
-            ...rows.map((row: any) => row.map((field: any) => `"${String(field).replace(/"/g, '""')}"`).join(",")),
+            ...rows.map((row: unknown) => row.map((field: unknown) => `"${String(field).replace(/"/g, '""')}"`).join(",")),
         ].join("\n");
         // Audit Log (P8.1 Requirement)
         await logAuditEvent(user.storeId, user.id, AuditEventType.WITHDRAWAL_EXPORTED, {

@@ -70,7 +70,7 @@ export async function POST(
             dispute: updatedDispute,
             message: "Dispute rejected successfully",
         });
-    } catch (error: unknown) {
+    } catch (error) {
         logger.error("Reject dispute error", error);
         return NextResponse.json(
             { error: "Failed to reject dispute" },

@@ -5,7 +5,7 @@ import { requireAuth } from "@/lib/auth/session";
 import { checkPermission } from "@/lib/team/rbac";
 import { PERMISSIONS } from "@/lib/team/permissions";
 import { logAuditEvent as logAudit, AuditEventType } from "@/lib/audit";
-export async function POST(request: any) {
+export async function POST(request: unknown) {
     try {
         // 1. Require Session Auth & RBAC
         const session = await requireAuth();
@@ -41,7 +41,7 @@ export async function POST(request: any) {
         }
         const { newPlan } = verification;
         // 5. Update Store & Subscription in a transaction
-        await prisma.$transaction(async (tx: any) => {
+        await prisma.$transaction(async (tx: unknown) => {
             const store = await tx.store.findUnique({
                 where: { id: storeId },
                 select: { plan: true },

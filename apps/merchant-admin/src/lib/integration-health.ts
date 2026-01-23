@@ -2,7 +2,7 @@ import { prisma } from "@vayva/db";
 /**
  * P11.2: Log integration events for health monitoring
  */
-export async function logIntegrationEvent(storeId: any, integrationKey: any, eventType: any, status: any) {
+export async function logIntegrationEvent(storeId: unknown, integrationKey: unknown, eventType: unknown, status: unknown) {
     // Feature flag check
     const isEnabled = process.env.OPS_INTEGRATION_HEALTH_ENABLED === "true";
     if (!isEnabled)
@@ -25,7 +25,7 @@ export async function logIntegrationEvent(storeId: any, integrationKey: any, eve
 /**
  * Get integration health status for ops dashboard
  */
-export async function getIntegrationHealth(storeId: any) {
+export async function getIntegrationHealth(storeId: unknown) {
     const integrations = ["whatsapp", "paystack", "delivery"];
     const health = {};
     const now = Date.now();

@@ -10,7 +10,7 @@ const CreateTemplateSchema = z.object({
     status: z.string().default("APPROVED"), // Mocking approval for internal templates
     components: z.array(z.any()).optional(),
 });
-export async function POST(req: any) {
+export async function POST(req: unknown) {
     const session = await getServerSession(authOptions);
     if (!session?.user?.storeId) {
         return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
@@ -30,7 +30,7 @@ export async function POST(req: any) {
         return NextResponse.json({ error: "Failed to create template" }, { status: 500 });
     }
 }
-export async function DELETE(req: any) {
+export async function DELETE(req: unknown) {
     const session = await getServerSession(authOptions);
     if (!session?.user?.storeId) {
         return NextResponse.json({ error: "Unauthorized" }, { status: 401 });

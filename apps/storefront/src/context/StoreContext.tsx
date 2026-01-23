@@ -126,7 +126,7 @@ export function StoreProvider({ children }: { children: React.ReactNode }) {
   useEffect(() => {
     const handleMessage = (event: MessageEvent) => {
       if (event.data?.type === "VAYVA_PREVIEW_UPDATE") {
-        setStore((prev: any) => {
+        setStore((prev: unknown) => {
           if (!prev) return prev;
           return {
             ...prev,

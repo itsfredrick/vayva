@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth"; // Adjust path as per repo structure
 import { SupportContextService } from "@/lib/support/support-context.service";
-export async function GET(req: any) {
+export async function GET(req: unknown) {
     try {
         const session = await getServerSession(authOptions);
         if (!session?.user?.id) {

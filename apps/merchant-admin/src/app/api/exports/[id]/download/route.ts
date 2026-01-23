@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import { getSessionUser } from "@/lib/session";
 import { prisma } from "@/lib/prisma";
 import { logAuditEvent, AuditEventType } from "@/lib/audit";
-export async function GET(request: any, { params }: any) {
+export async function GET(request: unknown, { params }: unknown) {
     try {
         const { id } = await params;
         const user = await getSessionUser();
@@ -63,7 +63,7 @@ export async function GET(request: any, { params }: any) {
                 "Fee (NGN)",
                 "Net (NGN)",
             ];
-            const rows = withdrawals.map((w: any) => [
+            const rows = withdrawals.map((w: unknown) => [
                 new Date(w.createdAt).toISOString(),
                 w.referenceCode,
                 w.status,
@@ -73,8 +73,8 @@ export async function GET(request: any, { params }: any) {
             ]);
             csvContent = [
                 header.join(","),
-                ...rows.map((row: any) => row
-                    .map((field: any) => `"${String(field).replace(/"/g, '""')}"`)
+                ...rows.map((row: unknown) => row
+                    .map((field: unknown) => `"${String(field).replace(/"/g, '""')}"`)
                     .join(",")),
             ].join("\n");
             filename = `withdrawals_${new Date().toISOString().split("T")[0]}.csv`;
@@ -99,7 +99,7 @@ export async function GET(request: any, { params }: any) {
                 "Payment",
                 "Customer",
             ];
-            const rows = orders.map((o: any) => [
+            const rows = orders.map((o: unknown) => [
                 o.refCode || o.id,
                 new Date(o.createdAt).toISOString(),
                 o.status,
@@ -109,8 +109,8 @@ export async function GET(request: any, { params }: any) {
             ]);
             csvContent = [
                 header.join(","),
-                ...rows.map((row: any) => row
-                    .map((field: any) => `"${String(field).replace(/"/g, '""')}"`)
+                ...rows.map((row: unknown) => row
+                    .map((field: unknown) => `"${String(field).replace(/"/g, '""')}"`)
                     .join(",")),
             ].join("\n");
             filename = `orders_export_${new Date().toISOString().split("T")[0]}.csv`;
@@ -140,7 +140,7 @@ export async function GET(request: any, { params }: any) {
                 "Net (NGN)",
                 "Status",
             ];
-            const rows = withdrawals.map((w: any) => [
+            const rows = withdrawals.map((w: unknown) => [
                 new Date(w.createdAt).toISOString(),
                 w.referenceCode,
                 (Number(w.amountKobo) / 100).toFixed(2),
@@ -150,8 +150,8 @@ export async function GET(request: any, { params }: any) {
             ]);
             csvContent = [
                 header.join(","),
-                ...rows.map((row: any) => row
-                    .map((field: any) => `"${String(field).replace(/"/g, '""')}"`)
+                ...rows.map((row: unknown) => row
+                    .map((field: unknown) => `"${String(field).replace(/"/g, '""')}"`)
                     .join(",")),
             ].join("\n");
             filename = `compliance_withdrawals_${new Date().toISOString().split("T")[0]}.csv`;
@@ -187,7 +187,7 @@ export async function GET(request: any, { params }: any) {
                 },
             });
             const header = ["Date", "Action", "Actor Role", "Reference", "Summary"];
-            const rows = events.map((e: any) => {
+            const rows = events.map((e: unknown) => {
                 const metadata = e.afterState || {};
                 return [
                     new Date(e.createdAt).toISOString(),
@@ -199,8 +199,8 @@ export async function GET(request: any, { params }: any) {
             });
             csvContent = [
                 header.join(","),
-                ...rows.map((row: any) => row
-                    .map((field: any) => `"${String(field).replace(/"/g, '""')}"`)
+                ...rows.map((row: unknown) => row
+                    .map((field: unknown) => `"${String(field).replace(/"/g, '""')}"`)
                     .join(",")),
             ].join("\n");
             filename = `compliance_activity_${new Date().toISOString().split("T")[0]}.csv`;

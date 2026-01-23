@@ -92,7 +92,7 @@ export default function CollectionsPage() {
             toast.success(mode === "CREATE" ? "Collection created" : "Collection updated");
             setIsOpen(false);
             fetchCollections();
-        } catch (error: any) {
+        } catch (error) {
             toast.error(error.message || "Operation failed");
         } finally {
             setSubmitting(false);

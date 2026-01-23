@@ -6,7 +6,7 @@ import { getPaymentsQueue } from "@/lib/queue";
  * Paystack Webhook Handler (Asynchronous)
  * Purely responsible for verification, persistence, and hand-off to background worker.
  */
-export async function POST(req: any) {
+export async function POST(req: unknown) {
     const rawBody = await req.text();
     const signature = req.headers.get("x-paystack-signature") || "";
     const secret = process.env.PAYSTACK_SECRET_KEY;

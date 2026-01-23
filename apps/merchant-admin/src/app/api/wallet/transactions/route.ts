@@ -13,7 +13,7 @@ export async function GET(request: NextRequest) {
         const offset = parseInt(searchParams.get("offset") || "0");
         const type = searchParams.get("type"); // PAYMENT, PAYOUT, REFUND, etc.
         // Get real transactions from ledger
-        const where: any = {
+        const where: unknown= {
             storeId: user.storeId,
         };
         if (type) {
@@ -44,7 +44,7 @@ export async function GET(request: NextRequest) {
         });
         return NextResponse.json(formattedTransactions);
     }
-    catch (error: any) {
+    catch (error) {
         console.error("Fetch Wallet History Error:", error);
         return NextResponse.json({ error: "Failed to fetch wallet history" }, { status: 500 });
     }

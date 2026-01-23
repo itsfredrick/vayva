@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { TEMPLATE_REGISTRY } from "@/lib/templates-registry";
-export async function POST(req: any) {
+export async function POST(req: unknown) {
     try {
         const body = await req.json();
         const { storeId, templateId } = body;

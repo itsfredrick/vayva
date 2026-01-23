@@ -1,10 +1,10 @@
-export function formatCurrency(amount: any, currency = "NGN") {
+export function formatCurrency(amount: unknown, currency = "NGN") {
     return new Intl.NumberFormat("en-NG", {
         style: "currency",
         currency,
     }).format(amount);
 }
-export function formatDate(date: any) {
+export function formatDate(date: unknown) {
     return new Intl.DateTimeFormat("en-NG", {
         dateStyle: "medium",
         timeStyle: "short",

@@ -1,9 +1,9 @@
 import { NextRequest, NextResponse } from "next/server";
 
 export interface APIContext {
-    user: any;
+    user: unknown;
     storeId: string;
-    params: any;
+    params: unknown;
     correlationId: string;
 }
 import { requireAuth } from "./session";
@@ -17,7 +17,7 @@ import { prisma } from "@vayva/db";
  * Robust Higher-Order Function for Vayva API Hardening.
  * Implements: Auth, RBAC, Tenant Isolation, Rate Limiting, Idempotency, Step-up, and Structured Logging.
  */
-export function withVayvaAPI(permission: any, handler: (req: NextRequest, context: APIContext) => Promise<NextResponse>, options: any = {}) {
+export function withVayvaAPI(permission: unknown, handler: (req: NextRequest, context: APIContext) => Promise<NextResponse>, options: unknown= {}) {
     return async (req: NextRequest, ...args: any[]) => {
         const correlationId = uuidv4();
         const method = req.method;
@@ -105,7 +105,7 @@ export function withVayvaAPI(permission: any, handler: (req: NextRequest, contex
             response.headers.set("X-Correlation-ID", correlationId);
             return response;
         }
-        catch (error: any) {
+        catch (error) {
             const status = error.message === "Unauthorized" ? 401 : 500;
             const category = status === 401 ? ErrorCategory.AUTH : ErrorCategory.API;
             logger.error(error.message || "Internal Server Error", category, error, {

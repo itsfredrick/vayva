@@ -1,7 +1,7 @@
 import { db } from "@/lib/db";
 import { Prisma } from "@vayva/db";
 export const MenuService = {
-    async createMenuItem(storeId: any, data: any) {
+    async createMenuItem(storeId: unknown, data: unknown) {
         // 1. Create the base Product
         const product = await db.product.create({
             data: {
@@ -20,7 +20,7 @@ export const MenuService = {
         });
         return product;
     },
-    async getKitchenOrders(storeId: any) {
+    async getKitchenOrders(storeId: unknown) {
         return await db.order.findMany({
             where: {
                 storeId,
@@ -37,7 +37,7 @@ export const MenuService = {
             }
         });
     },
-    async updateOrderStatus(orderId: any, status: any) {
+    async updateOrderStatus(orderId: unknown, status: unknown) {
         // Map simplified kitchen status to Order schema status
         // READY -> READY_FOR_PICKUP
         const fulfillmentStatus = status === "READY" ? "READY_FOR_PICKUP" : "READY_FOR_PICKUP";

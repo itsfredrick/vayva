@@ -43,7 +43,7 @@ export default function BillingPage() {
       if (data.checkout_url) {
         window.location.href = data.checkout_url; // Redirect to payment
       }
-    } catch (e: any) {
+    } catch (e: unknown) {
       alert("Error: " + (e.message || "Unknown error"));
       setProcessing(null);
     }

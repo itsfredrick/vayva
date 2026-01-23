@@ -4,10 +4,10 @@ import { Recommendation } from "@/types/designer";
 import { TemplateMiniPreview } from "./TemplateMiniPreview";
 
 interface TemplateCardProps {
-  template: any; // Using any for compatibility with NormalizedTemplate
-  onPreview: (template: any) => void;
-  onUse: (template: any) => void;
-  onUnlock?: (template: any) => void;
+  template: unknown; // Using any for compatibility with NormalizedTemplate
+  onPreview: (template: unknown) => void;
+  onUse: (template: unknown) => void;
+  onUnlock?: (template: unknown) => void;
   userPlan: "free" | "growth" | "pro";
   recommendation?: Recommendation;
   compact?: boolean;

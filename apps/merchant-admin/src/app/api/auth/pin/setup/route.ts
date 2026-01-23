@@ -27,7 +27,7 @@ export async function POST(request: NextRequest) {
         // Audit log could go here
         return NextResponse.json({ success: true });
     }
-    catch (e: any) {
+    catch (e: unknown) {
         console.error("PIN Setup Error:", e);
         return NextResponse.json({ error: "Failed to setup PIN" }, { status: 500 });
     }

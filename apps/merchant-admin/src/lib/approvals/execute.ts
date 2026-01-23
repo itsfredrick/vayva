@@ -3,22 +3,22 @@ import { EventBus } from "@/lib/events/eventBus";
 // Pendingbing external services for V1
 const Services = {
     Refund: {
-        issue: async (payload: any) => {
+        issue: async (payload: unknown) => {
             return { refundId: "ref_test_123" };
         },
     },
     Campaign: {
-        send: async (payload: any) => {
+        send: async (payload: unknown) => {
             return { jobId: "job_camp_123" };
         },
     },
     Policies: {
-        publish: async (payload: any) => {
+        publish: async (payload: unknown) => {
             return { version: "v2" };
         },
     },
 };
-export async function executeApproval(requestId: any, actorId: any, correlationId: any) {
+export async function executeApproval(requestId: unknown, actorId: unknown, correlationId: unknown) {
     const request = await prisma.approval.findUnique({
         where: { id: requestId },
     });

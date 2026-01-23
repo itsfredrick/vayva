@@ -4,8 +4,8 @@ import { getSession } from "@/lib/session";
  * Authentication middleware for API routes
  * Validates JWT token and attaches user info to request
  */
-export async function withAuth(handler: any, options: any = {}) {
-    return async (req: any) => {
+export async function withAuth(handler: unknown, options: unknown= {}) {
+    return async (req: unknown) => {
         try {
             const session = await getSession();
             if (!session && !options.optional) {
@@ -27,7 +27,7 @@ export async function withAuth(handler: any, options: any = {}) {
 /**
  * Helper to extract user from authenticated request
  */
-export function getRequestUser(req: any) {
+export function getRequestUser(req: unknown) {
     if (!req.user) {
         throw new Error("User not authenticated");
     }

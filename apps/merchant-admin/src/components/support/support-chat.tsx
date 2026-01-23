@@ -81,7 +81,7 @@ export const SupportChat: React.FC = () => {
         messageId: data.messageId,
       };
       setMessages((prev) => [...prev, botMsg]);
-    } catch (error) {
+    } catch (_error) {
       setMessages((prev) => [
         ...prev,
         {

@@ -29,7 +29,7 @@ export const PATCH = withVayvaAPI(PERMISSIONS.SETTINGS_VIEW, async (req: NextReq
         });
         return NextResponse.json({ success: true });
     }
-    catch (error: any) {
+    catch (error) {
         console.error("Settings update error:", error);
         return NextResponse.json({ error: "Internal server error", correlationId }, { status: 500 });
     }

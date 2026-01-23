@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import { getSessionUser } from "@/lib/session";
 import { prisma } from "@/lib/prisma";
 import { Prisma } from "@vayva/db";
-export async function POST(request: any) {
+export async function POST(request: unknown) {
     try {
         const user = await getSessionUser();
         if (!user) {
@@ -34,7 +34,7 @@ export async function POST(request: any) {
         // - Deduct Balance
         // - Update Withdrawal Status
         // - Create Ledger Entry
-        await prisma.$transaction(async (tx: any) => {
+        await prisma.$transaction(async (tx: unknown) => {
             // Re-fetch wallet with lock in production, simpler here
             const w = await tx.wallet.findUniqueOrThrow({ where: { storeId: user.storeId } });
             if (w.availableKobo < withdrawal.amountKobo) {

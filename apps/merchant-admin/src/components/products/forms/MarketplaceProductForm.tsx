@@ -8,10 +8,10 @@ import { toast } from "sonner";
 
 interface MarketplaceProductFormProps {
     productId?: string;
-    initialData?: any;
+    initialData?: unknown;
 }
 
-export function MarketplaceProductForm({ productId: any, initialData }: MarketplaceProductFormProps) {
+export function MarketplaceProductForm({ productId: unknown, initialData }: MarketplaceProductFormProps) {
     const router = useRouter();
     const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -30,7 +30,7 @@ export function MarketplaceProductForm({ productId: any, initialData }: Marketpl
         defaultValues
     });
 
-    const onSubmit = async (data: any) => {
+    const onSubmit = async (data: unknown) => {
         setIsSubmitting(true);
         try {
             const payload = {

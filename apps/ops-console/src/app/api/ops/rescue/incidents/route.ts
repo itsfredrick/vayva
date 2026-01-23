@@ -22,7 +22,7 @@ export async function GET(req: NextRequest) {
         });
 
         return NextResponse.json(incidents);
-    } catch (error: unknown) {
+    } catch (error) {
         return NextResponse.json({ error: error.message }, { status: 401 });
     }
 }

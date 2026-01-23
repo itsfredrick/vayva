@@ -1,4 +1,4 @@
-export function formatMoney(amount: any, currency = "NGN", locale = "en-NG") {
+export function formatMoney(amount: unknown, currency = "NGN", locale = "en-NG") {
     return new Intl.NumberFormat(locale, {
         style: "currency",
         currency: currency,

@@ -268,7 +268,7 @@ export default function ShippingSettingsPage() {
                             <Label>Zone Name</Label>
                             <Input
                                 value={zoneFormData.name}
-                                onChange={(e: any) => setZoneFormData({ ...zoneFormData, name: e.target.value })}
+                                onChange={(e: unknown) => setZoneFormData({ ...zoneFormData, name: e.target.value })}
                                 placeholder="e.g. Lagos Island"
                             />
                         </div>
@@ -276,7 +276,7 @@ export default function ShippingSettingsPage() {
                             <Label>Regions (comma separated)</Label>
                             <Input
                                 value={zoneFormData.regions.join(", ")}
-                                onChange={(e: any) => setZoneFormData({ ...zoneFormData, regions: e.target.value.split(",").map((s: any) => s.trim()) })}
+                                onChange={(e: unknown) => setZoneFormData({ ...zoneFormData, regions: e.target.value.split(",").map((s: unknown) => s.trim()) })}
                                 placeholder="e.g. Lekki, VI, Ikoyi"
                             />
                         </div>
@@ -317,19 +317,19 @@ function AddRateDialog({ open, onOpenChange, onAdd }: { open: boolean, onOpenCha
                 <form onSubmit={handleSubmit} className="grid gap-4 py-4">
                     <div className="grid grid-cols-4 items-center gap-4">
                         <Label htmlFor="name" className="text-right">Name</Label>
-                        <Input id="name" value={name} onChange={(e: any) => setName(e.target.value)} placeholder="Standard Shipping" className="col-span-3" required />
+                        <Input id="name" value={name} onChange={(e: unknown) => setName(e.target.value)} placeholder="Standard Shipping" className="col-span-3" required />
                     </div>
                     <div className="grid grid-cols-4 items-center gap-4">
                         <Label htmlFor="amount" className="text-right">Price (NGN)</Label>
-                        <Input id="amount" type="number" value={amount} onChange={(e: any) => setAmount(e.target.value)} className="col-span-3" required />
+                        <Input id="amount" type="number" value={amount} onChange={(e: unknown) => setAmount(e.target.value)} className="col-span-3" required />
                     </div>
                     <div className="grid grid-cols-4 items-center gap-4">
                         <Label htmlFor="minDays" className="text-right">Min Days</Label>
-                        <Input id="minDays" type="number" value={minDays} onChange={(e: any) => setMinDays(e.target.value)} className="col-span-3" required />
+                        <Input id="minDays" type="number" value={minDays} onChange={(e: unknown) => setMinDays(e.target.value)} className="col-span-3" required />
                     </div>
                     <div className="grid grid-cols-4 items-center gap-4">
                         <Label htmlFor="maxDays" className="text-right">Max Days</Label>
-                        <Input id="maxDays" type="number" value={maxDays} onChange={(e: any) => setMaxDays(e.target.value)} className="col-span-3" required />
+                        <Input id="maxDays" type="number" value={maxDays} onChange={(e: unknown) => setMaxDays(e.target.value)} className="col-span-3" required />
                     </div>
                     <DialogFooter>
                         <Button type="submit">Add Rate</Button>

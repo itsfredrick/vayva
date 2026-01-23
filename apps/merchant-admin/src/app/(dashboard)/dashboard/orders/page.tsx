@@ -44,7 +44,7 @@ export default function OrdersPage() {
         fetcher
     );
 
-    const industrySlug = (store?.industrySlug as any) || (merchant as any)?.industrySlug || "retail";
+    const industrySlug = (store?.industrySlug as string) || (merchant?.industrySlug as string) || "retail";
     const orders: UnifiedOrder[] = response?.data || [];
 
     const isFiltered = !!(filters.status && filters.status !== "ALL") || !!search;

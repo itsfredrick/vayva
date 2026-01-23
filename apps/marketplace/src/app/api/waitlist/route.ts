@@ -10,7 +10,7 @@ export async function POST(request: Request) {
       success: true,
       message: "Joined waitlist successfully",
     });
-  } catch (error) {
+  } catch (_error) {
     return NextResponse.json(
       { success: false, message: "Invalid request" },
       { status: 400 },

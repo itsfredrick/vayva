@@ -7,7 +7,7 @@ export const POST = withVayvaAPI(PERMISSIONS.PRODUCTS_MANAGE, async (request, { 
     try {
         const data = await request.json();
         // Transaction approach: Create Product, then AccommodationProduct
-        const result = await prisma.$transaction(async (tx: any) => {
+        const result = await prisma.$transaction(async (tx: unknown) => {
             // 1. Create Base Product
             const product = await tx.product.create({
                 data: {

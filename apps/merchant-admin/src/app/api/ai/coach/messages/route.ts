@@ -13,7 +13,7 @@ export async function GET() {
         // to prevent "Fake" messages from appearing in production.
         return NextResponse.json([]);
     }
-    catch (error) {
+    catch (_error) {
         return NextResponse.json([]);
     }
 }

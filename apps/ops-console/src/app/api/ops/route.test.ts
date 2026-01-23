@@ -16,14 +16,14 @@ vi.mock('@/lib/ops-auth', () => ({
 vi.mock('next/server', () => {
     return {
         NextResponse: class {
-            constructor(body: any, init?: any) {
+            constructor(body: unknown, init?: unknown) {
                 return {
                     json: async () => typeof body === 'string' ? JSON.parse(body) : body,
                     status: init?.status || 200,
                     body
                 } as any;
             }
-            static json(body: any, init?: any) {
+            static json(body: unknown, init?: unknown) {
                 return {
                     json: async () => body,
                     status: init?.status || 200,

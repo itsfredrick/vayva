@@ -91,7 +91,7 @@ export async function GET() {
             },
             security: {
                 mfaEnabled: security?.mfaRequired || false,
-                recentLogins: recentLogs.filter((l: any) => l.action.toLowerCase().includes("login")).length,
+                recentLogins: recentLogs.filter((l: unknown) => l.action.toLowerCase().includes("login")).length,
                 apiKeyStatus: storeSettings.api?.active ? "ACTIVE" : "INACTIVE",
             },
             alerts: buildAlerts(store, bankAccount, kyc),
@@ -103,7 +103,7 @@ export async function GET() {
         return NextResponse.json({ error: "Failed to fetch account overview" }, { status: 500 });
     }
 }
-function buildAlerts(store: any, bankAccount: any, kyc: any) {
+function buildAlerts(store: unknown, bankAccount: unknown, kyc: unknown) {
     const alerts = [];
     if (!store.onboardingCompleted) {
         alerts.push({

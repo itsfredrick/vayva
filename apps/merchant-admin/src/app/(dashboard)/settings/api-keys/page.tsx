@@ -221,7 +221,7 @@ export default function ApiKeysPage() {
                             </TableRow>
                         </TableHeader>
                         <TableBody>
-                            {keys?.map((key: any) => (
+                            {keys?.map((key: unknown) => (
                                 <TableRow key={key.id}>
                                     <TableCell className="font-medium">
                                         <div className="flex flex-col">

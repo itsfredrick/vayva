@@ -36,7 +36,7 @@ export async function GET() {
             }
         });
 
-    } catch (error: unknown) {
+    } catch (error) {
         return NextResponse.json(
             { status: "UNHEALTHY", error: error.message },
             { status: 500 }

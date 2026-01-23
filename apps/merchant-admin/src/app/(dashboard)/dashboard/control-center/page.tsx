@@ -71,7 +71,9 @@ export default function TemplatesPage() {
             const res = await fetch("/api/control-center/history");
             const data = await res.json();
             if (Array.isArray(data)) setHistory(data);
-        } catch (e) { }
+        } catch (_error) {
+    // Intentionally empty
+  }
     };
 
     const handleApply = async (templateId: string) => {
@@ -143,7 +145,7 @@ export default function TemplatesPage() {
 
             toast.success("Upgrade Successful! Template Unlocked.");
             loadTemplates();
-        } catch (error: any) {
+        } catch (error) {
             toast.error(error.message);
         } finally {
             toast.dismiss(loadingToast);

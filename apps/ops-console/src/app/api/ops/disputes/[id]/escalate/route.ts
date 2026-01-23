@@ -60,7 +60,7 @@ export async function POST(
             dispute: updatedDispute,
             message: "Dispute escalated for senior review",
         });
-    } catch (error: unknown) {
+    } catch (error) {
         logger.error("Escalate dispute error", error);
         return NextResponse.json(
             { error: "Failed to escalate dispute" },

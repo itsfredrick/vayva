@@ -48,7 +48,7 @@ export const AddBankModal = ({
   return (
     <div
       className="fixed inset-0 z-[60] flex items-center justify-center bg-black/50 backdrop-blur-sm"
-      onClick={(e: any) => e.target === e.currentTarget && onClose()}
+      onClick={(e: unknown) => e.target === e.currentTarget && onClose()}
     >
       <motion.div
         initial={{ opacity: 0, scale: 0.95 }}
@@ -76,7 +76,7 @@ export const AddBankModal = ({
               required
               className="h-10 px-3 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-black/5"
               value={bankName}
-              onChange={(e: any) => setBankName(e.target.value)}
+              onChange={(e: unknown) => setBankName(e.target.value)}
               placeholder="e.g. GTBank"
             />
           </div>
@@ -89,7 +89,7 @@ export const AddBankModal = ({
               maxLength={10}
               className="h-10 px-3 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-black/5"
               value={accountNumber}
-              onChange={(e: any) =>
+              onChange={(e: unknown) =>
                 setAccountNumber(e.target.value.replace(/\D/g, ""))
               }
               placeholder="0123456789"
@@ -103,7 +103,7 @@ export const AddBankModal = ({
               required
               className="h-10 px-3 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-black/5"
               value={accountName}
-              onChange={(e: any) => setAccountName(e.target.value)}
+              onChange={(e: unknown) => setAccountName(e.target.value)}
               placeholder="John Doe"
             />
           </div>

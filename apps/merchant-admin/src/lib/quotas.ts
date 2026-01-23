@@ -16,7 +16,7 @@ const QUOTA_DEFAULTS = {
  * Checks if a store has exceeded their quota for a specific action.
  * Returns { allowed: boolean, remaining: number, resetAt: Date }
  */
-export async function checkQuota(storeId: any, type: any) {
+export async function checkQuota(storeId: unknown, type: unknown) {
     if (!redis) {
         console.warn("Redis not available for quota check. allowing.");
         return { allowed: true, remaining: 999, limit: 999, resetInSeconds: 0 };
@@ -40,7 +40,7 @@ export async function checkQuota(storeId: any, type: any) {
 /**
  * Increments the quota usage for a store.
  */
-export async function incrementQuota(storeId: any, type: any) {
+export async function incrementQuota(storeId: unknown, type: unknown) {
     if (!redis)
         return;
     const dateKey = new Date().toISOString().split("T")[0];

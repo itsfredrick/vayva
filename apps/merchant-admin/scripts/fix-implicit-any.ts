@@ -19,31 +19,31 @@ const fixes: Fix[] = [
     // Fix 1: Implicit any parameters in arrow functions
     {
         pattern: /\(([a-zA-Z_$][a-zA-Z0-9_$]*)\)\s*=>/g,
-        replacement: '($1: any) =>',
+        replacement: '($1: unknown) =>',
         description: 'Add any type to single arrow function parameters'
     },
     // Fix 2: Implicit any in function parameters
     {
         pattern: /function\s+([a-zA-Z_$][a-zA-Z0-9_$]*)\s*\(([a-zA-Z_$][a-zA-Z0-9_$]*)\)/g,
-        replacement: 'function $1($2: any)',
+        replacement: 'function $1($2: unknown)',
         description: 'Add any type to function parameters'
     },
     // Fix 3: Event handlers with unknown
     {
         pattern: /\(e:\s*unknown\)\s*=>/g,
-        replacement: '(e: any) =>',
+        replacement: '(e: unknown) =>',
         description: 'Change unknown to any in event handlers'
     },
     // Fix 4: Map/forEach with unknown
     {
         pattern: /\.map\(\(([a-zA-Z_$][a-zA-Z0-9_$]*):\s*unknown\)/g,
-        replacement: '.map(($1: any)',
+        replacement: '.map(($1: unknown)',
         description: 'Change unknown to any in map callbacks'
     },
     // Fix 5: Object.entries implicit any
     {
         pattern: /Object\.entries\(([^)]+)\)\.forEach\(\(\[([a-zA-Z_$][a-zA-Z0-9_$]*),\s*([a-zA-Z_$][a-zA-Z0-9_$]*)\]\)/g,
-        replacement: 'Object.entries($1).forEach(([$2, $3]: any)',
+        replacement: 'Object.entries($1).forEach(([$2, $3]: unknown)',
         description: 'Add any type to Object.entries destructuring'
     },
 ];

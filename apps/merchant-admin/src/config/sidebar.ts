@@ -49,7 +49,7 @@ export const SIDEBAR_GROUPS = [
     }
 ];
 import { extensionRegistry } from "@/lib/extensions/registry";
-export function getSidebar(industrySlug: any, enabledIds: any) {
+export function getSidebar(industrySlug: unknown, enabledIds: unknown) {
     // 1. Get Base Industry Config
     const config = INDUSTRY_CONFIG[industrySlug];
     if (!config)
@@ -70,8 +70,8 @@ export function getSidebar(industrySlug: any, enabledIds: any) {
             ]
         },
     ];
-    activeExtensions.forEach((ext: any) => {
-        ext.sidebarItems?.forEach((item: any) => {
+    activeExtensions.forEach((ext: unknown) => {
+        ext.sidebarItems?.forEach((item: unknown) => {
             let groupId = 1; // Default to Sales
             if (item.parentGroup === "ops")
                 groupId = 2;

@@ -105,7 +105,7 @@ export const initializeTransactionHandler = async (
     );
 
     return reply.send(response.data);
-  } catch (error: unknown) {
+  } catch (error) {
     const errorMessage = error instanceof Error ? error.message : "Unknown error";
     console.error(
       "Paystack Initialize Error:",
@@ -142,7 +142,7 @@ export const verifyPaymentHandler = async (
         },
       );
       paystackData = response.data.data;
-    } catch (error: unknown) {
+    } catch (error) {
       const errorMessage = error instanceof Error ? error.message : "Unknown error";
       console.error(
         "Paystack Verify Error:",

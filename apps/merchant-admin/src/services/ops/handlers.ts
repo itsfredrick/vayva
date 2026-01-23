@@ -361,7 +361,7 @@ export async function handleOpsLogin(
             }
             throw error;
         }
-    } catch (err: unknown) {
+    } catch (err: any) {
         console.error(err);
         return NextResponse.json(
             {

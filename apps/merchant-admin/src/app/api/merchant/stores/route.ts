@@ -8,7 +8,7 @@ export const GET = withVayvaAPI(PERMISSIONS.COMMERCE_VIEW, async (req, { user })
             where: { userId: user.id },
             include: { store: true },
         });
-        const stores = memberships.map((m: any) => m.store);
+        const stores = memberships.map((m: unknown) => m.store);
         return NextResponse.json({ stores });
     }
     catch (error) {

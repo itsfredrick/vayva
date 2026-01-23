@@ -76,7 +76,7 @@ export async function POST(request: NextRequest) {
             breakdown,
             message: "Delivery fee consolidated successfully",
         });
-    } catch (error: unknown) {
+    } catch (error) {
         const err = error as Error;
         console.error("Delivery consolidation error:", error);
         return NextResponse.json(
@@ -112,7 +112,7 @@ export async function GET(request: NextRequest) {
         );
 
         return NextResponse.json({ success: true, breakdown });
-    } catch (error: unknown) {
+    } catch (error) {
         const err = error as Error;
         console.error("Get delivery breakdown error:", error);
         return NextResponse.json(

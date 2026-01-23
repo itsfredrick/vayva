@@ -37,7 +37,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
                 setMerchant(null);
             }
         }
-        catch (error) {
+        catch (_error) {
             setUser(null);
             setMerchant(null);
         }

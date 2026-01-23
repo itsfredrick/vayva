@@ -156,7 +156,7 @@ export function validateProductionRequirements() {
  * {isFeatureEnabled('WHATSAPP') && <WhatsAppButton />}
  * ```
  */
-export function isFeatureEnabled(feature: any) {
+export function isFeatureEnabled(feature: unknown) {
     return FEATURES[feature];
 }
 /**
@@ -164,7 +164,7 @@ export function isFeatureEnabled(feature: any) {
  *
  * Returns user-friendly message for disabled features.
  */
-export function getDisabledFeatureMessage(feature: any) {
+export function getDisabledFeatureMessage(feature: unknown) {
     const messages = {
         PAYMENTS_ENABLED: "Payment processing is currently unavailable. Please contact support.",
         EMAIL_ENABLED: "Email notifications are currently unavailable.",
@@ -190,7 +190,7 @@ export function getDisabledFeatureMessage(feature: any) {
  * // Proceeds only if payments are enabled
  * ```
  */
-export function assertFeatureEnabled(feature: any) {
+export function assertFeatureEnabled(feature: unknown) {
     if (!FEATURES[feature]) {
         throw new Error(`Feature ${feature} is disabled. ${getDisabledFeatureMessage(feature)}`);
     }
@@ -207,7 +207,7 @@ export function validateEnvironment() {
     const validation = validateProductionRequirements();
     if (!validation.valid) {
         console.error("❌ PRODUCTION VALIDATION FAILED:");
-        validation.errors.forEach((error: any) => console.error(`  - ${error}`));
+        validation.errors.forEach((error: unknown) => console.error(`  - ${error}`));
         if (ENV.NODE_ENV === "production") {
             console.error("");
             console.error("🚨 CRITICAL: Cannot start in production with missing required configuration.");

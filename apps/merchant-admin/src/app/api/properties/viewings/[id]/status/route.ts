@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import { getSessionUser } from "@/lib/session";
 import { prisma } from "@/lib/prisma";
 // PATCH /api/properties/viewings/[id]/status
-export async function PATCH(request: any, { params }: any) {
+export async function PATCH(request: unknown, { params }: unknown) {
     try {
         const sessionUser = await getSessionUser();
         if (!sessionUser)

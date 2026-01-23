@@ -1,9 +1,9 @@
 // src/lib/seo/schema/faq.ts
-export function faqSchema(path: any, ctx: any) {
+export function faqSchema(path: unknown, ctx: unknown) {
     return {
         "@context": "https://schema.org",
         "@type": "FAQPage",
-        mainEntity: (ctx?.faqs ?? []).map((faq: any) => ({
+        mainEntity: (ctx?.faqs ?? []).map((faq: unknown) => ({
             "@type": "Question",
             name: faq.question,
             acceptedAnswer: {

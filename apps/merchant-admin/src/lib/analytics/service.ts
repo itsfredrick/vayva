@@ -13,7 +13,7 @@ export class AnalyticsService {
                 _all: true,
             },
         });
-        return events.map((e: any) => ({
+        return events.map((e: unknown) => ({
             category: e.category,
             action: e.action,
             count: e._count._all,
@@ -72,7 +72,7 @@ export class AnalyticsService {
                 category: "ACTIVATION",
             },
         });
-        const actions = new Set(events.map((e: any) => e.action));
+        const actions = new Set(events.map((e: unknown) => e.action));
         return {
             categorySelected: actions.has(ACTIVATION_EVENTS.SELECT_CATEGORY),
             templateSelected: actions.has(ACTIVATION_EVENTS.SELECT_TEMPLATE),
@@ -106,7 +106,7 @@ export class AnalyticsService {
             const dateStr = new Date(d).toISOString().split('T')[0];
             dailyMap.set(dateStr, 0);
         }
-        orders.forEach((o: any) => {
+        orders.forEach((o: unknown) => {
             const dateStr = o.createdAt.toISOString().split('T')[0];
             const amount = o.total.toNumber ? o.total.toNumber() : Number(o.total);
             dailyMap.set(dateStr, (dailyMap.get(dateStr) || 0) + amount);

@@ -22,7 +22,7 @@ export async function GET() {
         return NextResponse.json({ error: "Failed to fetch policies" }, { status: 500 });
     }
 }
-export async function PATCH(request: any) {
+export async function PATCH(request: unknown) {
     try {
         const session = await requireAuth();
         const body = await request.json();

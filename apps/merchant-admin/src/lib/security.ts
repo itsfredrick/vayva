@@ -2,7 +2,7 @@ import { prisma } from "@vayva/db";
 import { cookies } from "next/headers";
 import { COOKIE_NAME } from "@/lib/session";
 import { logAuditEvent, AuditEventType } from "@/lib/audit";
-export async function checkSudoMode(userId: any, storeId: any) {
+export async function checkSudoMode(userId: unknown, storeId: unknown) {
     const cookieStore = await cookies();
     const token = cookieStore.get(COOKIE_NAME)?.value;
     if (!token)
@@ -17,7 +17,7 @@ export async function checkSudoMode(userId: any, storeId: any) {
     }
     return true;
 }
-export async function requireSudoMode(userId: any, storeId: any) {
+export async function requireSudoMode(userId: unknown, storeId: unknown) {
     const isSudo = await checkSudoMode(userId);
     if (!isSudo) {
         await logAuditEvent(storeId, userId, AuditEventType.SECURITY_STEP_UP_REQUIRED, {});

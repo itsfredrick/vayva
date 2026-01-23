@@ -35,7 +35,7 @@ export const OrderDetailsDrawer = ({
       });
       // Ideally trigger a refresh of the parent list here
       onClose();
-    } catch (e: any) {
+    } catch (e: unknown) {
       console.error(e);
     } finally {
       setIsLoading(false);
@@ -50,7 +50,7 @@ export const OrderDetailsDrawer = ({
         body: JSON.stringify({ reason: actionNote || "Merchant cancelled" }),
       });
       onClose();
-    } catch (e: any) {
+    } catch (e: unknown) {
       console.error(e);
     } finally {
       setIsLoading(false);
@@ -68,7 +68,7 @@ export const OrderDetailsDrawer = ({
         }),
       });
       onClose();
-    } catch (e: any) {
+    } catch (e: unknown) {
       console.error(e);
     } finally {
       setIsLoading(false);

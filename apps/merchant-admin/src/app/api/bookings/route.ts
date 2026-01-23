@@ -13,7 +13,7 @@ export const GET = withVayvaAPI(PERMISSIONS.ORDERS_VIEW, async (request, { store
         const bookings = await BookingService.getBookings(storeId, start, end);
         return NextResponse.json(bookings);
     }
-    catch (error: any) {
+    catch (error) {
         return NextResponse.json({ error: error.message }, { status: 500 });
     }
 });
@@ -28,7 +28,7 @@ export const POST = withVayvaAPI(PERMISSIONS.ORDERS_MANAGE, async (request, { st
         });
         return NextResponse.json(booking);
     }
-    catch (error: any) {
+    catch (error) {
         return NextResponse.json({ error: error.message }, { status: 400 });
     }
 });

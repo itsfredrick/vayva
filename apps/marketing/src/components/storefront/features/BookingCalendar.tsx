@@ -53,10 +53,6 @@ export function BookingCalendar({ storeSlug, onSelectDate, onSelectTime, classNa
     // Fetch availability when selectedDate changes
     useEffect(() => {
         if (!selectedDate || !storeSlug) {
-            // If no storeSlug provided (e.g. preview mode), use mock data
-            if (!storeSlug && selectedDate) {
-                setAvailableSlots(["09:00", "10:00", "11:30", "14:00", "15:30"]);
-            }
             return;
         }
 
@@ -142,31 +138,39 @@ export function BookingCalendar({ storeSlug, onSelectDate, onSelectTime, classNa
                         {isLoadingSlots && <Loader2 className="w-3 h-3 animate-spin" />}
                     </h4>
 
-                    {!isLoadingSlots && availableSlots.length === 0 ? (
-                        <div className="text-center py-4 text-gray-400 text-sm italic">
-                            No slots available for this date.
-                        </div>
-                    ) : (
-                        <div className="grid grid-cols-3 gap-2 max-h-48 overflow-y-auto custom-scrollbar">
-                            {availableSlots.map((time) => (
-                                <Button
-                                    key={time}
-                                    variant="outline"
-                                    onClick={() => handleTimeClick(time)}
-                                    className={`
-                                        px-3 py-2 text-sm border rounded-lg transition-colors flex items-center justify-center gap-2 h-auto
-                                        ${selectedTime === time
-                                            ? "bg-black text-white border-black hover:bg-black hover:text-white"
-                                            : "border-gray-200 hover:border-black hover:bg-gray-50 text-gray-700"}
-                                    `}
-                                    aria-label={`Select time ${time}`}
-                                >
-                                    <Clock className="w-3 h-3" />
-                                    {time}
-                                </Button>
-                            ))}
-                        </div>
-                    )}
+                    {(() => {
+                        const slots = !storeSlug && selectedDate ? ["09:00", "10:00", "11:30", "14:00", "15:30"] : availableSlots;
+
+                        if (!isLoadingSlots && slots.length === 0) {
+                            return (
+                                <div className="text-center py-4 text-gray-400 text-sm italic">
+                                    No slots available for this date.
+                                </div>
+                            );
+                        }
+
+                        return (
+                            <div className="grid grid-cols-3 gap-2 max-h-48 overflow-y-auto custom-scrollbar">
+                                {slots.map((time) => (
+                                    <Button
+                                        key={time}
+                                        variant="outline"
+                                        onClick={() => handleTimeClick(time)}
+                                        className={`
+                                            px-3 py-2 text-sm border rounded-lg transition-colors flex items-center justify-center gap-2 h-auto
+                                            ${selectedTime === time
+                                                ? "bg-black text-white border-black hover:bg-black hover:text-white"
+                                                : "border-gray-200 hover:border-black hover:bg-gray-50 text-gray-700"}
+                                        `}
+                                        aria-label={`Select time ${time}`}
+                                    >
+                                        <Clock className="w-3 h-3" />
+                                        {time}
+                                    </Button>
+                                ))}
+                            </div>
+                        );
+                    })()}
                 </div>
             )}
         </div>

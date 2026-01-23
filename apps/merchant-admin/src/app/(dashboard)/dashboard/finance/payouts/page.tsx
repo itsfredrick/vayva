@@ -246,7 +246,7 @@ function WithdrawalModal({
             }
 
             onSuccess();
-        } catch (error: any) {
+        } catch (error) {
             toast.error(error.message || "Withdrawal failed");
         } finally {
             setLoading(false);
@@ -373,7 +373,7 @@ function WithdrawalModal({
                                 setShowStepUp(false);
                                 setPendingWithdrawal(null);
                                 onSuccess();
-                            } catch (error: unknown) {
+                            } catch (error) {
                                 throw error; // Let StepUpDialog handle the error
                             }
                         }}
@@ -405,7 +405,7 @@ function StepUpDialog({
         try {
             await onVerify(password);
             toast.success("Withdrawal verified successfully");
-        } catch (error: any) {
+        } catch (error) {
             toast.error(error.message || "Verification failed");
         } finally {
             setLoading(false);

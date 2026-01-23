@@ -23,7 +23,7 @@ interface RealEstateFormValues {
     amenities: string; // Comma separated for MVP
 }
 
-export function RealEstateForm({ onSuccess: any, initialData }: RealEstateFormProps & { initialData?: any }) {
+export function RealEstateForm({ onSuccess: unknown, initialData }: RealEstateFormProps & { initialData?: any }) {
     const router = useRouter();
     const [isSubmitting, setIsSubmitting] = useState(false);
     const { register, handleSubmit, setValue, formState: { errors } } = useForm<RealEstateFormValues>({
@@ -70,7 +70,7 @@ export function RealEstateForm({ onSuccess: any, initialData }: RealEstateFormPr
             toast.success(initialData ? "Property updated" : "Property listed successfully");
             router.refresh();
             onSuccess();
-        } catch (error: any) {
+        } catch (error) {
             console.error(error);
             toast.error(error.message);
         } finally {

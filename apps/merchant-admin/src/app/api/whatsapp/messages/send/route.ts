@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-export async function POST(request: any) {
+export async function POST(request: unknown) {
     const { conversation_id, message, mode } = await request.json();
     if (!message)
         return NextResponse.json({ error: "Message empty" }, { status: 400 });

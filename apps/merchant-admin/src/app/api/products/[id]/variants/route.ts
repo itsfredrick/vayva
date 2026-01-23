@@ -3,7 +3,7 @@ import { getServerSession } from "next-auth";
 import { prisma } from "@/lib/prisma"; // Adjust path if necessary
 import { InventoryService } from "@/services/inventory.service";
 import { authOptions } from "@/lib/auth"; // Adjust if authOptions is elsewhere
-export async function GET(req: any, { params }: any) {
+export async function GET(req: unknown, { params }: unknown) {
     // 1. Auth check
     const session = await getServerSession(authOptions);
     if (!session?.user?.storeId) {
@@ -31,7 +31,7 @@ export async function GET(req: any, { params }: any) {
             sku: v.sku,
             price: v.price?.toString(),
             options: v.options, // Ensure JSON is handled
-            inventory: v.inventoryItems.reduce((acc: any, item: any) => acc + item.onHand, 0), // Sum across locations?
+            inventory: v.inventoryItems.reduce((acc: unknown, item: unknown) => acc + item.onHand, 0), // Sum across locations?
             imageId: v.imageId,
             imageUrl: v.productImages?.url
         }));
@@ -42,7 +42,7 @@ export async function GET(req: any, { params }: any) {
         return NextResponse.json({ error: "Internal Error" }, { status: 500 });
     }
 }
-export async function POST(req: any, { params }: any) {
+export async function POST(req: unknown, { params }: unknown) {
     const session = await getServerSession(authOptions);
     if (!session?.user?.storeId) {
         return NextResponse.json({ error: "Unauthorized" }, { status: 401 });

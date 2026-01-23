@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
-export async function GET(req: any) {
+export async function GET(req: unknown) {
     try {
         const session = await getServerSession(authOptions);
         if (!session?.user?.id)
@@ -46,7 +46,7 @@ export async function GET(req: any) {
             select: { payload: true },
         });
         const triggerCounts = {};
-        rawEscalations.forEach((e: any) => {
+        rawEscalations.forEach((e: unknown) => {
             const t = e.payload?.trigger || "UNKNOWN";
             triggerCounts[t] = (triggerCounts[t] || 0) + 1;
         });
@@ -58,7 +58,7 @@ export async function GET(req: any) {
         const feedback = await prisma.supportBotFeedback.findMany({
             where: dateFilter,
         });
-        const thumbsUp = feedback.filter((f: any) => f.rating === "SOLVED").length;
+        const thumbsUp = feedback.filter((f: unknown) => f.rating === "SOLVED").length;
         const totalFeedback = feedback.length;
         const thumbsUpRate = totalFeedback > 0 ? thumbsUp / totalFeedback : 0;
         // Deflection Rate Proxy

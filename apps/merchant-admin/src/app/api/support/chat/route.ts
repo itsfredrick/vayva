@@ -3,7 +3,7 @@ import { SupportBotService } from "@/lib/support/support-bot.service";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 const rateLimitMap = new Map();
-export async function POST(req: any) {
+export async function POST(req: unknown) {
     try {
         const session = await getServerSession(authOptions);
         if (!session?.user?.id) {

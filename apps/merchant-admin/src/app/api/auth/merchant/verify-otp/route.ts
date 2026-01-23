@@ -80,7 +80,7 @@ export async function POST(request: NextRequest) {
             return NextResponse.json({ error: "No store membership found" }, { status: 500 });
         }
         // Create session
-        const sessionUser: any = {
+        const sessionUser: unknown= {
             id: user.id,
             email: user.email,
             firstName: user.firstName,
@@ -101,7 +101,7 @@ export async function POST(request: NextRequest) {
             },
         });
     }
-    catch (error: any) {
+    catch (error) {
         console.error("Verification error:", error);
         return NextResponse.json({ error: "Verification failed" }, { status: 500 });
     }

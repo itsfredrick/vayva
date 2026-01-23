@@ -5,7 +5,7 @@ import { prisma } from "@/lib/prisma";
  * GET /api/settings/roles
  * List custom roles for the current store.
  */
-export async function GET(req: any) {
+export async function GET(req: unknown) {
     const session = await getSessionUser();
     if (!session)
         return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
@@ -28,7 +28,7 @@ export async function GET(req: any) {
  * POST /api/settings/roles
  * Create or update a custom role.
  */
-export async function POST(req: any) {
+export async function POST(req: unknown) {
     const session = await getSessionUser();
     if (!session)
         return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
@@ -36,7 +36,7 @@ export async function POST(req: any) {
         const { id, name, description, permissionIds } = await req.json();
         if (!name)
             return NextResponse.json({ error: "Name is required" }, { status: 400 });
-        const role = await prisma.$transaction(async (tx: any) => {
+        const role = await prisma.$transaction(async (tx: unknown) => {
             // 1. Create/Update the role
             const r = await tx.role.upsert({
                 where: { id: id || "new-role" },

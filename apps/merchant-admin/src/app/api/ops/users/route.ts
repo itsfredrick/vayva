@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { OpsAuthService } from "@/lib/ops-auth";
 import { z } from "zod";
-export async function GET(req: any) {
+export async function GET(req: unknown) {
     const session = await OpsAuthService.getSession();
     if (!session || !["OPS_OWNER", "OPS_ADMIN"].includes(session.user.role)) {
         const ip = req.headers.get("x-forwarded-for")?.split(",")[0] || "unknown";
@@ -33,7 +33,7 @@ const createSchema = z.object({
     name: z.string().min(1),
     role: z.enum(["OPS_ADMIN", "OPS_AGENT", "OPS_READONLY"]),
 });
-export async function POST(req: any) {
+export async function POST(req: unknown) {
     const session = await OpsAuthService.getSession();
     if (!session || session.user.role !== "OPS_OWNER") {
         const ip = req.headers.get("x-forwarded-for")?.split(",")[0] || "unknown";

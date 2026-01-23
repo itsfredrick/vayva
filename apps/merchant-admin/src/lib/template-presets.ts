@@ -425,7 +425,7 @@ export const MICRO_TEMPLATES = {
         },
     },
 };
-export const getDefaultConfig = (templateId: any) => {
+export const getDefaultConfig = (templateId: unknown) => {
     let microId = "retail_fashion";
     if (templateId === "food")
         microId = "food_restaurant";

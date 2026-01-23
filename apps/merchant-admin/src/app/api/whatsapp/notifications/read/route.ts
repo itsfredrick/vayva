@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-export async function POST(request: any) {
+export async function POST(request: unknown) {
     const { ids } = await request.json();
     return NextResponse.json({
         success: true,

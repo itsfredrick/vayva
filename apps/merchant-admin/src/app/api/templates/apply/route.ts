@@ -8,14 +8,14 @@ const PLAN_HIERARCHY = {
     growth: 1,
     pro: 2,
 };
-function canUseTemplate(userPlan: any, requiredPlan: any) {
+function canUseTemplate(userPlan: unknown, requiredPlan: unknown) {
     const u = PLAN_HIERARCHY[userPlan] || 0;
     const r = PLAN_HIERARCHY[requiredPlan] || 0;
     return u >= r;
 }
 // Hardcoded map removed in favor of TEMPLATE_REGISTRY
 // to ensure single source of truth
-export async function POST(req: any) {
+export async function POST(req: unknown) {
     try {
         // 1. Auth & Permission Check
         const { checkPermission } = await import("@/lib/team/rbac");

@@ -8,7 +8,7 @@ const PIN_COOKIE_NAME = "vayva_pin_session";
  * Checks if the current merchant has access to a specific feature.
  * Enforces KYC, Subscription, and PIN requirements server-side.
  */
-export async function checkFeatureAccess(feature: any) {
+export async function checkFeatureAccess(feature: unknown) {
     const session = await requireAuth();
     const storeId = session.user.storeId;
     const store = await prisma.store.findUnique({
@@ -102,7 +102,7 @@ export async function checkFeatureAccess(feature: any) {
  * Creates a secure PIN session cookie valid for 30 minutes.
  * Includes pinVersion to allow invalidation on PIN change.
  */
-export async function createPinSession(storeId: any, pinVersion: any) {
+export async function createPinSession(storeId: unknown, pinVersion: unknown) {
     const token = sign({ storeId, pinVersion }, PIN_SESSION_SECRET, {
         expiresIn: "30m",
     });

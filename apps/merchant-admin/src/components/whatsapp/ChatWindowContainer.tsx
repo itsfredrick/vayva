@@ -6,12 +6,12 @@ interface ChatWindowContainerProps {
   conversations: any[]; // Using any[] to match usage, ideally strict type
 }
 
-export function ChatWindowContainer({ conversationId: any, conversations }: ChatWindowContainerProps) {
+export function ChatWindowContainer({ conversationId: unknown, conversations }: ChatWindowContainerProps) {
   const [messages, setMessages] = React.useState<any[]>([]);
   const [loading, setLoading] = React.useState(true);
 
   // Find the conversation
-  const conversation = conversations.find((c: any) => c.id === conversationId);
+  const conversation = conversations.find((c: unknown) => c.id === conversationId);
 
   // Fetch messages
   React.useEffect(() => {
@@ -19,13 +19,13 @@ export function ChatWindowContainer({ conversationId: any, conversations }: Chat
 
     setLoading(true);
     fetch(`/api/whatsapp/messages?conversationId=${conversationId}`)
-      .then((res: any) => res.json())
-      .then((data: any) => {
+      .then((res: unknown) => res.json())
+      .then((data: unknown) => {
         if (Array.isArray(data)) {
           setMessages(data);
         }
       })
-      .catch((err: any) => console.error("Failed to load messages", err))
+      .catch((err: unknown) => console.error("Failed to load messages", err))
       .finally(() => setLoading(false));
   }, [conversationId]);
 
@@ -40,7 +40,7 @@ export function ChatWindowContainer({ conversationId: any, conversations }: Chat
       timestamp: new Date().toISOString(),
       isAutomated: false,
     };
-    setMessages((prev: any) => [...prev, optimisticMsg]);
+    setMessages((prev: unknown) => [...prev, optimisticMsg]);
 
     try {
       const res = await fetch("/api/whatsapp/messages", {
@@ -53,7 +53,7 @@ export function ChatWindowContainer({ conversationId: any, conversations }: Chat
 
       const savedMsg = await res.json();
       // Replace temp message
-      setMessages((prev: any) => prev.map((m: any) => (m.id === tempId ? savedMsg : m)));
+      setMessages((prev: unknown) => prev.map((m: unknown) => (m.id === tempId ? savedMsg : m)));
     } catch (error) {
       console.error("Send message error", error);
       // Rollback or show error state

@@ -1,6 +1,6 @@
 import { wrapEmail, Hero, Button, Text, KeyValue, Badge } from "../components";
 // --- TCP-01: OTP Verification ---
-export function authOtpVerification(data: any) {
+export function authOtpVerification(data: unknown) {
     return wrapEmail(`
         ${Hero("lock")}
         ${Text(data.first_name ? `Hi ${data.first_name},` : "Hello,", "h1")}
@@ -14,7 +14,7 @@ export function authOtpVerification(data: any) {
         `, "Verify your account");
 }
 // --- TCP-10: Welcome Email ---
-export function onboardingWelcome(data: any) {
+export function onboardingWelcome(data: unknown) {
     return wrapEmail(`
         ${Hero("welcome")}
         ${Text("Welcome to Vayva! 🎉", "h1")}
@@ -34,7 +34,7 @@ export function onboardingWelcome(data: any) {
         `, "Welcome to Vayva");
 }
 // --- TCP-04: Password Reset ---
-export function authPasswordReset(data: any) {
+export function authPasswordReset(data: unknown) {
     return wrapEmail(`
         ${Hero("lock")}
         ${Text("Reset your password", "h1")}
@@ -47,7 +47,7 @@ export function authPasswordReset(data: any) {
         `, "Reset Password");
 }
 // --- TCP-21: Payment Receipt ---
-export function billingReceipt(data: any) {
+export function billingReceipt(data: unknown) {
     return wrapEmail(`
         ${Hero("receipt")}
         ${Text("Payment Receipt", "h1", "center")}
@@ -69,7 +69,7 @@ export function billingReceipt(data: any) {
         `, `Receipt ${data.invoice_number}`);
 }
 // --- TCP-14: Team Invitation ---
-export function teamInvite(data: any) {
+export function teamInvite(data: unknown) {
     return wrapEmail(`
         ${Hero("invite")}
         ${Text("You've been invited!", "h1")}
@@ -86,7 +86,7 @@ export function teamInvite(data: any) {
         `, "Team Invitation");
 }
 // --- TCP-05: Account Locked ---
-export function authAccountLocked(data: any) {
+export function authAccountLocked(data: unknown) {
     return wrapEmail(`
         ${Hero("hero_alert")}
         ${Text("Account Locked", "h1", "center")}
@@ -98,7 +98,7 @@ export function authAccountLocked(data: any) {
         `, "Account Locked");
 }
 // --- TCP-02: New Login ---
-export function authNewLogin(data: any) {
+export function authNewLogin(data: unknown) {
     return wrapEmail(`
         ${Hero("hero_lock")}
         ${Text("New Login Detected", "h1")}
@@ -114,7 +114,7 @@ export function authNewLogin(data: any) {
         `, "New Login Alert");
 }
 // --- TCP-03: Verify Email Link ---
-export function authVerifyEmailLink(data: any) {
+export function authVerifyEmailLink(data: unknown) {
     return wrapEmail(`
         ${Hero("hero_lock")}
         ${Text("Verify your email", "h1")}
@@ -123,7 +123,7 @@ export function authVerifyEmailLink(data: any) {
         `, "Verify your email");
 }
 // --- TCP-06: Password Changed ---
-export function authPasswordChanged(data: any) {
+export function authPasswordChanged(data: unknown) {
     return wrapEmail(`
         ${Hero("hero_lock")}
         ${Text("Password Changed", "h1")}
@@ -133,7 +133,7 @@ export function authPasswordChanged(data: any) {
         `, "Security Alert");
 }
 // --- TCP-11: Onboarding Incomplete ---
-export function onboardingIncomplete(data: any) {
+export function onboardingIncomplete(data: unknown) {
     return wrapEmail(`
         ${Hero("hero_welcome")}
         ${Text("Complete your setup", "h1")}
@@ -143,7 +143,7 @@ export function onboardingIncomplete(data: any) {
         `, "Complete your setup");
 }
 // --- TCP-22: Invoice Available ---
-export function billingInvoiceAvailable(data: any) {
+export function billingInvoiceAvailable(data: unknown) {
     return wrapEmail(`
         ${Hero("hero_billing_invoice")}
         ${Text("New Invoice", "h1")}
@@ -156,7 +156,7 @@ export function billingInvoiceAvailable(data: any) {
         `, `Invoice ${data.invoice_number}`);
 }
 // --- TCP-23: Payment Failed ---
-export function billingPaymentFailed(data: any) {
+export function billingPaymentFailed(data: unknown) {
     return wrapEmail(`
         ${Hero("hero_billing_failed")}
         ${Text("Payment Failed", "h1")}
@@ -166,7 +166,7 @@ export function billingPaymentFailed(data: any) {
         `, "Payment Failed");
 }
 // --- TCP-24: Subscription Started ---
-export function billingSubscriptionStarted(data: any) {
+export function billingSubscriptionStarted(data: unknown) {
     return wrapEmail(`
         ${Hero("hero_subscription")}
         ${Text("Subscription Active", "h1")}
@@ -179,7 +179,7 @@ export function billingSubscriptionStarted(data: any) {
         `, "Subscription Activated");
 }
 // --- TCP-25: Subscription Cancelled ---
-export function billingSubscriptionCancelled(data: any) {
+export function billingSubscriptionCancelled(data: unknown) {
     return wrapEmail(`
         ${Hero("hero_subscription")} 
         ${Text("Subscription Cancelled", "h1")}
@@ -188,7 +188,7 @@ export function billingSubscriptionCancelled(data: any) {
         `, "Subscription Cancelled");
 }
 // --- TCP-30: Order Confirmation (Customer) ---
-export function orderConfirmationCustomer(data: any) {
+export function orderConfirmationCustomer(data: unknown) {
     return wrapEmail(`
         ${Hero("hero_order_confirm")}
         ${Text("Order Confirmed", "h1", "center")}
@@ -203,7 +203,7 @@ export function orderConfirmationCustomer(data: any) {
         `, `Order #${data.order_id}`);
 }
 // --- TCP-31: Order Shipped (Customer) ---
-export function orderShippedCustomer(data: any) {
+export function orderShippedCustomer(data: unknown) {
     return wrapEmail(`
         ${Hero("hero_shipping")}
         ${Text("Your order has shipped!", "h1")}
@@ -218,7 +218,7 @@ export function orderShippedCustomer(data: any) {
         `, `Order #${data.order_id} Shipped`);
 }
 // --- TCP-32: Order Delivered (Customer) ---
-export function orderDeliveredCustomer(data: any) {
+export function orderDeliveredCustomer(data: unknown) {
     return wrapEmail(`
         ${Hero("hero_shipping")}
         ${Text("Delivered", "h1")}
@@ -227,7 +227,7 @@ export function orderDeliveredCustomer(data: any) {
         `, `Order #${data.order_id} Delivered`);
 }
 // --- TCP-33: New Order (Merchant) ---
-export function merchantNewOrder(data: any) {
+export function merchantNewOrder(data: unknown) {
     return wrapEmail(`
         ${Hero("hero_receipt")}
         ${Text("New Order Received", "h1")}
@@ -240,7 +240,7 @@ export function merchantNewOrder(data: any) {
         `, `New Order #${data.order_id}`);
 }
 // --- TCP-26: Payout Processed ---
-export function merchantPayoutProcessed(data: any) {
+export function merchantPayoutProcessed(data: unknown) {
     return wrapEmail(`
         ${Hero("hero_receipt")}
         ${Text("Payout Processed", "h1")}
@@ -249,7 +249,7 @@ export function merchantPayoutProcessed(data: any) {
         `, "Payout Processed");
 }
 // --- TCP-27: Subscription Expiry Reminder (3 Days) ---
-export function billingSubscriptionExpiryReminder(data: any) {
+export function billingSubscriptionExpiryReminder(data: unknown) {
     return wrapEmail(`
         ${Hero("hero_billing_invoice")}
         ${Text("Your subscription expires in 3 days!", "h1")}
@@ -265,7 +265,7 @@ export function billingSubscriptionExpiryReminder(data: any) {
         `, "Action Required: Subscription Expiry");
 }
 // --- TCP-40: System Maintenance ---
-export function systemMaintenance(data: any) {
+export function systemMaintenance(data: unknown) {
     return wrapEmail(`
         ${Hero("hero_maintenance")}
         ${Text("Scheduled Maintenance", "h1")}

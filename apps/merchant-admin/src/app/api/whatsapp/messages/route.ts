@@ -3,7 +3,7 @@ import { WhatsAppMessageSender, WhatsAppLinkedEntityType, } from "@vayva/shared"
 import { prisma } from "@/lib/prisma";
 import { MessageType, Direction, MessageStatus } from "@vayva/db";
 import { getSessionUser } from "@/lib/session";
-export async function GET(request: any) {
+export async function GET(request: unknown) {
     const { searchParams } = new URL(request.url);
     const conversationId = searchParams.get("conversationId");
     if (!conversationId) {
@@ -26,7 +26,7 @@ export async function GET(request: any) {
             orderBy: { createdAt: "asc" },
             take: 100,
         });
-        const mappedMessages = messages.map((m: any) => ({
+        const mappedMessages = messages.map((m: unknown) => ({
             id: m.id,
             conversationId: m.conversationId,
             sender: m.direction === Direction.OUTBOUND
@@ -44,7 +44,7 @@ export async function GET(request: any) {
         return NextResponse.json({ error: "Failed to fetch messages" }, { status: 500 });
     }
 }
-export async function POST(request: any) {
+export async function POST(request: unknown) {
     const body = await request.json();
     // Validate body briefly
     if (!body.conversationId || !body.content) {

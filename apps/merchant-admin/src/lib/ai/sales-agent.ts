@@ -78,7 +78,7 @@ export class SalesAgent {
             }
             // 3. Construct System Prompt (Enhanced with Persuasion Strategy & Store Meta)
             const contextString = context
-                .map((c: any) => `[${c.sourceType}]: ${c.content}`)
+                .map((c: unknown) => `[${c.sourceType}]: ${c.content}`)
                 .join("\n");
             const persuasionAdvice = strategy !== "NONE"
                 ? `STRATEGY: Use ${strategy}. Focus on benefits and trust. No pressure.`
@@ -206,8 +206,8 @@ export class SalesAgent {
                     conversationId: conversationId,
                     requestId: options?.requestId,
                     model: "llama-3.1-70b-versatile",
-                    toolsUsed: choice.tool_calls?.map((t: any) => t.function.name) || [],
-                    retrievedDocs: context.map((c: any) => c.sourceId),
+                    toolsUsed: choice.tool_calls?.map((t: unknown) => t.function.name) || [],
+                    retrievedDocs: context.map((c: unknown) => c.sourceId),
                     inputSummary: lastMessage,
                     outputSummary: choice.content || "",
                     guardrailFlags: [],

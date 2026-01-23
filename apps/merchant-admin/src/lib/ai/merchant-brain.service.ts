@@ -15,7 +15,7 @@ export class MerchantBrainService {
                 },
                 take: limit,
             });
-            return embeddings.map((e: any) => ({
+            return embeddings.map((e: unknown) => ({
                 content: e.content,
                 sourceType: e.sourceType,
                 sourceId: e.sourceId,
@@ -74,9 +74,9 @@ export class MerchantBrainService {
             const zones = await prisma.deliveryZone.findMany({
                 where: { storeId },
             });
-            const matchedZone = zones.find((z: any) => z.name.toLowerCase().includes(location.toLowerCase()) ||
-                z.states.some((s: any) => location.toLowerCase().includes(s.toLowerCase())) ||
-                z.cities.some((c: any) => location.toLowerCase().includes(c.toLowerCase())));
+            const matchedZone = zones.find((z: unknown) => z.name.toLowerCase().includes(location.toLowerCase()) ||
+                z.states.some((s: unknown) => location.toLowerCase().includes(s.toLowerCase())) ||
+                z.cities.some((c: unknown) => location.toLowerCase().includes(c.toLowerCase())));
             if (matchedZone) {
                 return {
                     location,
@@ -116,7 +116,7 @@ export class MerchantBrainService {
                 },
                 take: 5
             });
-            return promos.map((p: any) => ({
+            return promos.map((p: unknown) => ({
                 id: p.id,
                 name: p.name,
                 type: p.type,

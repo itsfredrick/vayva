@@ -15,7 +15,7 @@ export const MarketplaceGrid = ({
           <Icon name="ShoppingBag" size={20} /> Template Marketplace
         </h3>
         <div className="flex gap-2 text-sm overflow-x-auto pb-2 sm:pb-0 no-scrollbar w-full sm:w-auto">
-          {["All", "Retail", "Food", "Services", "Free"].map((filter: any) => (
+          {["All", "Retail", "Food", "Services", "Free"].map((filter: unknown) => (
             <Button
               key={filter}
               variant="outline"
@@ -30,7 +30,7 @@ export const MarketplaceGrid = ({
 
       {/* Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {templates.map((tpl: any) => (
+        {templates.map((tpl: unknown) => (
           <div
             key={tpl.id}
             className="group bg-white border border-gray-200 rounded-2xl overflow-hidden hover:shadow-lg transition-all duration-300"
@@ -43,7 +43,7 @@ export const MarketplaceGrid = ({
               </div>
 
               <div className="absolute top-3 left-3 flex flex-col gap-1">
-                {tpl.badges.map((badge: any) => (
+                {tpl.badges.map((badge: unknown) => (
                   <span
                     key={badge}
                     className="bg-black/80 backdrop-blur-sm text-white text-[10px] font-bold px-2 py-0.5 rounded-md uppercase tracking-wide"
@@ -94,7 +94,7 @@ export const MarketplaceGrid = ({
               </div>
 
               <div className="flex flex-wrap gap-1 mb-4">
-                {tpl.best_for.map((tag: any) => (
+                {tpl.best_for.map((tag: unknown) => (
                   <span
                     key={tag}
                     className="text-[10px] bg-gray-50 text-gray-500 px-1.5 py-0.5 rounded border border-gray-100"

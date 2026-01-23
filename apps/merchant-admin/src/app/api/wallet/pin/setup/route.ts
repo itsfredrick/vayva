@@ -4,7 +4,7 @@ import { prisma } from "@/lib/prisma";
 import bcrypt from "bcryptjs";
 import { Resend } from "resend";
 // POST /api/wallet/pin/setup
-export async function POST(request: any) {
+export async function POST(request: unknown) {
     try {
         const user = await getSessionUser();
         if (!user) {

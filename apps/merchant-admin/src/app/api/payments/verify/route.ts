@@ -99,7 +99,7 @@ export async function GET(request: NextRequest) {
             order: updatedOrder,
         });
     }
-    catch (error: any) {
+    catch (error) {
         console.error("Payment Verify Error:", error);
         return NextResponse.json({ error: error.message }, { status: 500 });
     }
@@ -196,7 +196,7 @@ export async function POST(request: NextRequest) {
 
         return NextResponse.json({ message: "Webhook processed successfully" });
     }
-    catch (error: any) {
+    catch (error) {
         console.error("Webhook Processing Error:", error);
         return NextResponse.json({ error: error.message }, { status: 500 });
     }

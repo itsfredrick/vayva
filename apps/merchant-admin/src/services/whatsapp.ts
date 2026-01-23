@@ -2,7 +2,7 @@
 const EVOLUTION_API_URL = process.env.EVOLUTION_API_URL || "http://localhost:8080";
 const EVOLUTION_API_KEY = process.env.EVOLUTION_API_KEY || "global-api-key";
 export class WhatsappManager {
-    static async createInstance(instanceName: any) {
+    static async createInstance(instanceName: unknown) {
         try {
             const res = await fetch(`${EVOLUTION_API_URL}/instance/create`, {
                 method: "POST",
@@ -23,7 +23,7 @@ export class WhatsappManager {
             throw error;
         }
     }
-    static async connectInstance(instanceName: any) {
+    static async connectInstance(instanceName: unknown) {
         try {
             // In Evolution API, connect usually fetches QR
             const res = await fetch(`${EVOLUTION_API_URL}/instance/connect/${instanceName}`, {
@@ -39,7 +39,7 @@ export class WhatsappManager {
             throw error;
         }
     }
-    static async sendMessage(instanceName: any, phone: any, text: any) {
+    static async sendMessage(instanceName: unknown, phone: unknown, text: unknown) {
         try {
             // Standardize phone (remove +, ensure 234)
             const cleanPhone = phone.replace(/\D/g, "");

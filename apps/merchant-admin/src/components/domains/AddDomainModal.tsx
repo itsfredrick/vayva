@@ -74,7 +74,7 @@ export const AddDomainModal = ({
               placeholder="e.g. mystore.com"
               className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-black focus:ring-0 outline-none transition-colors"
               value={domain}
-              onChange={(e: any) => setDomain(e.target.value.toLowerCase())}
+              onChange={(e: unknown) => setDomain(e.target.value.toLowerCase())}
             />
             {error && <p className="text-red-500 text-sm mt-1">{error}</p>}
           </div>

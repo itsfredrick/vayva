@@ -34,7 +34,7 @@ export async function POST(req: Request) {
         const order = await OrderCoreService.createOrdersFromCart(cartId, userId);
 
         return NextResponse.json({ success: true, orderId: order.id });
-    } catch (error: unknown) {
+    } catch (error) {
         const err = error as Error;
         reportError(error, { userId: (session?.user)?.id, cartId: body?.cartId });
         return NextResponse.json(

@@ -1,6 +1,6 @@
 import crypto from "crypto";
 const PARTNER_SECRET = process.env.PARTNER_SECRET || "dev-partner-secret-DoNotUseInProd";
-export function signReferralToken(partnerId: any, code: any, expiresInHours = 24 * 30) {
+export function signReferralToken(partnerId: unknown, code: unknown, expiresInHours = 24 * 30) {
     const exp = Date.now() + expiresInHours * 60 * 60 * 1000;
     const payload = { partnerId, code, exp };
     const data = Buffer.from(JSON.stringify(payload)).toString("base64");
@@ -10,7 +10,7 @@ export function signReferralToken(partnerId: any, code: any, expiresInHours = 24
         .digest("hex");
     return `${data}.${signature}`;
 }
-export function verifyReferralToken(token: any) {
+export function verifyReferralToken(token: unknown) {
     if (!token)
         return null;
     const [data, signature] = token.split(".");

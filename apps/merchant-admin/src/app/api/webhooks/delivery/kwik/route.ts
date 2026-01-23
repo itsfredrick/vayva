@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
-export async function POST(req: any) {
+export async function POST(req: unknown) {
     const secret = process.env.KWIK_WEBHOOK_SECRET;
     const signature = req.headers.get("x-kwik-signature");
     // 1. Security Guard
@@ -75,6 +75,8 @@ export async function POST(req: any) {
         await prisma.auditLog.create(...)
         */
     }
-    catch (e) { }
+    catch (_error) {
+    // Intentionally empty
+  }
     return new NextResponse("Updated", { status: 200 });
 }

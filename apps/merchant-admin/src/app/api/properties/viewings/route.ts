@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import { getSessionUser } from "@/lib/session";
 import { prisma } from "@/lib/prisma";
 // GET /api/properties/viewings
-export async function GET(request: any) {
+export async function GET(request: unknown) {
     try {
         const sessionUser = await getSessionUser();
         if (!sessionUser)
@@ -38,7 +38,7 @@ export async function GET(request: any) {
     }
 }
 // POST /api/properties/viewings (For testing/manual creation)
-export async function POST(request: any) {
+export async function POST(request: unknown) {
     try {
         const sessionUser = await getSessionUser();
         if (!sessionUser)

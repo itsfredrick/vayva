@@ -4,14 +4,14 @@ import { getRedis, isBuildTime } from "@vayva/shared/redis";
  * LAZY QUEUE FACTORY
  * Prevents BullMQ from connecting during Next.js build.
  */
-function createQueue(name: any, options = {}) {
+function createQueue(name: unknown, options = {}) {
     // If we are in build time, return a minimal stub/proxy to prevent BullMQ internal connection logic
     // This is intentional to separate build/runtime environments and prevent hangs.
     // Build-time Stub: Prevents redis connection hangs
     if (isBuildTime()) {
         console.warn(`[Queue:Stub] Returning build-time proxy for ${name}`);
         return new Proxy({}, {
-            get: (_target: any, prop: any) => {
+            get: (_target: unknown, prop: unknown) => {
                 if (prop === "add")
                     return async () => { return null; };
                 if (prop === "close" || prop === "on" || prop === "obliterate")

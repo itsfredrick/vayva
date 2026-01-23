@@ -166,7 +166,7 @@ export class RescueService {
             });
 
             return { success: true, summary: resultSummary };
-        } catch (error: unknown) {
+        } catch (_error) {
             await prisma.rescueFixAction.update({
                 where: { id: fixAction.id },
                 data: {

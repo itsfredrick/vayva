@@ -11,7 +11,7 @@ const UpdateSchema = z.object({
 /**
  * Recursively sanitize string values in an object
  */
-function sanitizePayload(obj: any) {
+function sanitizePayload(obj: unknown) {
     if (typeof obj === "string")
         return sanitizeHTML(obj);
     if (Array.isArray(obj))

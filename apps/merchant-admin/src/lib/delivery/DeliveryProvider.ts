@@ -100,7 +100,7 @@ export class KwikProvider {
     }
 }
 // --- Factory ---
-export function getDeliveryProvider(providerName: any) {
+export function getDeliveryProvider(providerName: unknown) {
     if (providerName === "KWIK") {
         if (!FEATURES.DELIVERY_ENABLED) {
             throw new Error("Kwik delivery is not configured");

@@ -76,7 +76,7 @@ export async function POST(request: NextRequest) {
         });
         return NextResponse.json({ success: true, beneficiary });
     }
-    catch (error: any) {
+    catch (error) {
         console.error("Bank update error:", error);
         return NextResponse.json({ error: error.message || "Failed to update bank account" }, { status: 500 });
     }

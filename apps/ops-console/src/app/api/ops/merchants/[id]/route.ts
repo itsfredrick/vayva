@@ -90,7 +90,7 @@ export async function GET(
             compliance: complianceReport
         });
 
-    } catch (error: unknown) {
+    } catch (error) {
         console.error("Fetch Merchant Detail Error:", error);
         return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
     }

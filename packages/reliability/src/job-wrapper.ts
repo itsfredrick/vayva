@@ -35,7 +35,7 @@ export class JobWrapper {
           duration: completedAt.getTime() - startedAt.getTime(),
         },
       });
-    } catch (error: unknown) {
+    } catch (error) {
       const errorType = JobWrapper.classifyError(error);
       const completedAt = new Date();
 

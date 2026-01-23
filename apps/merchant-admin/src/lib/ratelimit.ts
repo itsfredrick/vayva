@@ -9,7 +9,7 @@ const LIMITS = {
     "api_read": { limit: 300, window: 60 }, // 300 requests per minute
     "default": { limit: 200, window: 60 }
 };
-export async function checkRateLimit(identifier: any, type: any) {
+export async function checkRateLimit(identifier: unknown, type: unknown) {
     const config = LIMITS[type];
     const key = `ratelimit:${type}:${identifier}`;
     const currentUsage = await redis.incr(key);

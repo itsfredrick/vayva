@@ -74,7 +74,7 @@ export async function POST(
         });
 
         return NextResponse.json({ success: true, data: newMessage });
-    } catch (error: unknown) {
+    } catch (error) {
         if (error.message === "Unauthorized") return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
         if (error.message?.includes("permissions")) return NextResponse.json({ error: error.message }, { status: 403 });
 

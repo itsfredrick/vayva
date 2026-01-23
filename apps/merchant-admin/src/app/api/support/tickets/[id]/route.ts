@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
-export async function GET(req: any, { params }: any) {
+export async function GET(req: unknown, { params }: unknown) {
     const { id } = await params;
     try {
         const ticket = await prisma.supportTicket.findUnique({

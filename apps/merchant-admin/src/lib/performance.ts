@@ -6,7 +6,7 @@ const MAX_SLOW_PATHS = 100;
 /**
  * Track API route performance
  */
-export async function trackPerformance(route: any, method: any, startTime: any, success: any, storeId: any, userId: any) {
+export async function trackPerformance(route: unknown, method: unknown, startTime: unknown, success: unknown, storeId: unknown, userId: unknown) {
     const durationMs = Date.now() - startTime;
     if (durationMs > SLOW_THRESHOLD_MS) {
         // Store in memory
@@ -45,7 +45,7 @@ export function getRecentSlowPaths(limit = 50) {
 /**
  * Wrapper for timing async operations
  */
-export async function withTiming(operation: any, context: any) {
+export async function withTiming(operation: unknown, context: unknown) {
     const startTime = Date.now();
     let success = true;
     try {

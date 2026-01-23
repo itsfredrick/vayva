@@ -18,13 +18,13 @@ export function generateApiKey() {
  * Hashes an API key for storage or verification.
  * Uses SHA-256 which is fast and secure for high-entropy keys.
  */
-export function hashApiKey(key: any) {
+export function hashApiKey(key: unknown) {
     return createHash("sha256").update(key).digest("hex");
 }
 /**
  * Mask a key for display (e.g. sk_live_...a1b2)
  */
-export function maskApiKey(keyHash: any) {
+export function maskApiKey(keyHash: unknown) {
     // We can't recover the key from hash, but if we had the last 4 chars stored...
     // Wait, storing last 4 chars is good practice. The schema doesn't have it.
     // We'll trust the 'name' or just show "••••••••" for now.

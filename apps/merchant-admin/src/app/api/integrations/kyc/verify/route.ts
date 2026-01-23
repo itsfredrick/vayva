@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { getSessionUser } from "@/lib/session";
 // POST /api/integrations/kyc/verify
-export async function POST(request: any) {
+export async function POST(request: unknown) {
     try {
         const user = await getSessionUser();
         if (!user)

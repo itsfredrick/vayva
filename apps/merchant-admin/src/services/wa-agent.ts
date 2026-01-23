@@ -19,7 +19,7 @@ export const WaAgentService = {
             humanHandoffEnabled: true,
         });
     },
-    updateSettings: async (settings: any) => {
+    updateSettings: async (settings: unknown) => {
         if (!FEATURES.WHATSAPP_ENABLED) {
             throw new Error("WhatsApp integration is not configured");
         }
@@ -47,7 +47,7 @@ export const WaAgentService = {
             prohibitedClaims: [],
         });
     },
-    updateProfile: async (profile: any) => {
+    updateProfile: async (profile: unknown) => {
         if (!FEATURES.WHATSAPP_ENABLED) {
             throw new Error("WhatsApp integration is not configured");
         }
@@ -77,7 +77,7 @@ export const WaAgentService = {
         }
     },
     // 3. Test Message
-    sendTestMessage: async (text: any) => {
+    sendTestMessage: async (text: unknown) => {
         if (!FEATURES.WHATSAPP_ENABLED) {
             throw new Error("WhatsApp integration is not configured");
         }
@@ -103,7 +103,7 @@ export const WaAgentService = {
             return [];
         }
     },
-    actionApproval: async (id: any, action: any) => {
+    actionApproval: async (id: unknown, action: unknown) => {
         if (!FEATURES.WHATSAPP_ENABLED)
             throw new Error("Not configured");
         const res = await fetch(`/api/support/approvals/${id}/action`, {
@@ -114,7 +114,7 @@ export const WaAgentService = {
         return res.ok;
     },
     // 5. Inbox Pendings
-    getThread: async (threadId: any) => {
+    getThread: async (threadId: unknown) => {
         if (!FEATURES.WHATSAPP_ENABLED)
             return null;
         try {
@@ -138,7 +138,7 @@ export const WaAgentService = {
             const json = await res.json();
             const entries = json.data || [];
             // Map knowledge base entries to UI interface
-            return entries.map((e: any) => ({
+            return entries.map((e: unknown) => ({
                 id: e.id,
                 question: e.sourceType === "FILE" ? "Document Upload" : "Manual Entry",
                 answer: e.content.length > 100 ? e.content.substring(0, 100) + "..." : e.content,

@@ -1,5 +1,5 @@
 import { prisma } from "@vayva/db";
-export async function syncOnboardingData(storeId: any, state: any) {
+export async function syncOnboardingData(storeId: unknown, state: unknown) {
     if (!storeId || !state)
         return;
     // Schema Version Guardrail
@@ -8,7 +8,7 @@ export async function syncOnboardingData(storeId: any, state: any) {
         console.warn(`[Sync][Drift Alarm] Schema version mismatch! Expected ${EXPECTED_SCHEMA_VERSION}, got ${state.schemaVersion}. Sync logic may be outdated.`);
     }
     try {
-        await prisma.$transaction(async (tx: any) => {
+        await prisma.$transaction(async (tx: unknown) => {
             // 1. Update Core Store Details
             await tx.store.update({
                 where: { id: storeId },

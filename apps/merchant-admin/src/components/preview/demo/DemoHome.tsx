@@ -17,7 +17,7 @@ export function DemoHome({ demo }: { demo: DemoStore }) {
         </div>
 
         <div className="mt-8 grid gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
-          {featured.map((p: any) => (
+          {featured.map((p: unknown) => (
             <div key={p.id} className="rounded-xl border p-4 bg-white">
               <div className="overflow-hidden rounded-lg border bg-gray-50">
                 <img

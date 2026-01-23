@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { OpsAuthService } from "@/lib/ops-auth";
-export async function GET(req: any, { params }: any) {
+export async function GET(req: unknown, { params }: unknown) {
     try {
         await OpsAuthService.requireSession();
         const { id } = await params;

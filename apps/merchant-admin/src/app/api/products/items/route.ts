@@ -12,7 +12,7 @@ export const GET = withVayvaAPI(PERMISSIONS.COMMERCE_VIEW, async (request: NextR
         const limit = parseInt(searchParams.get("limit") || "50");
         const offset = parseInt(searchParams.get("offset") || "0");
         // Build where clause with proper typing
-        const where: any = { storeId };
+        const where: unknown= { storeId };
         if (status && status !== 'ALL') {
             where.status = status;
         }
@@ -28,8 +28,8 @@ export const GET = withVayvaAPI(PERMISSIONS.COMMERCE_VIEW, async (request: NextR
             }),
             prisma.product.count({ where })
         ]);
-        const formattedProducts = products.map((product: any) => {
-            const totalQuantity = product.inventoryItems?.reduce((sum: number, item: any) => sum + item.available, 0) || 0;
+        const formattedProducts = products.map((product: unknown) => {
+            const totalQuantity = product.inventoryItems?.reduce((sum: number, item: unknown) => sum + item.available, 0) || 0;
             return {
                 id: product.id,
                 merchantId: product.storeId,
@@ -56,7 +56,7 @@ export const GET = withVayvaAPI(PERMISSIONS.COMMERCE_VIEW, async (request: NextR
             }
         });
     }
-    catch (error: any) {
+    catch (error) {
         console.error("Fetch Products Error:", error);
         return NextResponse.json({ error: "Failed to fetch products" }, { status: 500 });
     }
@@ -75,10 +75,10 @@ export const POST = withVayvaAPI(PERMISSIONS.COMMERCE_MANAGE, async (request: Ne
             return NextResponse.json({ error: "Product title and price are required" }, { status: 400 });
         }
         // Sanitize images if provided
-        const sanitizedImages = (body.metadata as any)?.images?.map((img: any) => ({
+        const sanitizedImages = (body.metadata as any)?.images?.map((img: unknown) => ({
             url: sanitizeUrl(img.url) || "",
             position: sanitizeNumber(img.position, { min: 0, max: 100 }) || 0
-        })).filter((img: any) => img.url) || [];
+        })).filter((img: unknown) => img.url) || [];
         const product = await prisma.product.create({
             data: {
                 storeId,
@@ -112,7 +112,7 @@ export const POST = withVayvaAPI(PERMISSIONS.COMMERCE_MANAGE, async (request: Ne
         });
         return NextResponse.json(product);
     }
-    catch (error: any) {
+    catch (error) {
         console.error("Create Product Error:", error);
         return NextResponse.json({ error: "Failed to create product" }, { status: 500 });
     }

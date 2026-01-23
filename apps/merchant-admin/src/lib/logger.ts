@@ -34,7 +34,7 @@ class Logger {
     /**
      * Log an error with structured data
      */
-    error(message: string, categoryOrError: any, errorOrContext?: any, context?: any) {
+    error(message: string, categoryOrError: unknown, errorOrContext?: unknown, context?: unknown) {
         let category = ErrorCategory.UNKNOWN;
         let error;
         let finalContext;
@@ -66,7 +66,7 @@ class Logger {
     /**
      * Log a warning
      */
-    warn(message: string, category: any = ErrorCategory.UNKNOWN, context?: any) {
+    warn(message: string, category: unknown= ErrorCategory.UNKNOWN, context?: unknown) {
         const entry = this.createLogEntry(LogLevel.WARN, category, message, undefined, context);
         if (this.isDevelopment) {
             console.warn(`[${category.toUpperCase()}] ${message}`, context);
@@ -76,7 +76,7 @@ class Logger {
     /**
      * Log informational message
      */
-    info(message: string, context?: any) {
+    info(message: string, context?: unknown) {
         const entry = this.createLogEntry(LogLevel.INFO, ErrorCategory.UNKNOWN, message, undefined, context);
         if (this.isDevelopment) {
             console.info(message, context);
@@ -86,7 +86,7 @@ class Logger {
     /**
      * Log debug message (development only)
      */
-    debug(message: string, context?: any) {
+    debug(message: string, context?: unknown) {
         if (!this.isDevelopment)
             return;
         const entry = this.createLogEntry(LogLevel.DEBUG, ErrorCategory.UNKNOWN, message, undefined, context);
@@ -96,7 +96,7 @@ class Logger {
     /**
      * Log fatal error (critical system failure)
      */
-    fatal(message: string, category: any, error?: any, context?: any) {
+    fatal(message: string, category: unknown, error?: unknown, context?: unknown) {
         const entry = this.createLogEntry(LogLevel.FATAL, category, message, error, context);
         console.error(`[FATAL] [${category.toUpperCase()}] ${message}`, {
             error,
@@ -110,7 +110,7 @@ class Logger {
     /**
      * Create structured log entry
      */
-    private createLogEntry(level: LogLevel, category: ErrorCategory, message: string, error?: any, context?: any) {
+    private createLogEntry(level: LogLevel, category: ErrorCategory, message: string, error?: unknown, context?: unknown) {
         return {
             level,
             category,
@@ -124,7 +124,7 @@ class Logger {
     /**
      * Write to application logs
      */
-    private writeToLog(entry: any) {
+    private writeToLog(entry: unknown) {
         // Redact PII before logging/stringifying
         const safeEntry = this.redactPII(entry);
         // In production, enforce JSON for Datadog/CloudWatch
@@ -132,7 +132,7 @@ class Logger {
             console.log(JSON.stringify(safeEntry));
         }
     }
-    private redactPII(data: any): any {
+    private redactPII(data: unknown): any {
         if (!data)
             return data;
         if (typeof data === "string")
@@ -141,7 +141,7 @@ class Logger {
             return data.map(item => this.redactPII(item));
         if (typeof data === "object") {
             const sensitiveKeys = ["password", "token", "secret", "authorization", "cookie", "key", "pin", "cvv", "creditCard"];
-            const redacted: any = {};
+            const redacted: unknown= {};
             for (const key of Object.keys(data)) {
                 if (sensitiveKeys.some(s => key.toLowerCase().includes(s))) {
                     redacted[key] = "[REDACTED]";
@@ -160,7 +160,7 @@ class Logger {
     /**
      * Send to error tracking service (e.g., Sentry)
      */
-    private sendToErrorTracking(entry: any) {
+    private sendToErrorTracking(entry: unknown) {
         if (process.env.SENTRY_DSN) {
             try {
                 // Dynamic require to avoid build issues if Sentry is not fully configured in all environments
@@ -183,30 +183,30 @@ class Logger {
 // Export singleton instance
 export const logger = new Logger();
 // Convenience functions for common error categories
-export const logAuthError = (message: string, error?: any, context?: any) => {
+export const logAuthError = (message: string, error?: unknown, context?: unknown) => {
     logger.error(message, ErrorCategory.AUTH, error, context);
 };
-export const logDatabaseError = (message: string, error?: any, context?: any) => {
+export const logDatabaseError = (message: string, error?: unknown, context?: unknown) => {
     logger.error(message, ErrorCategory.DATABASE, error, context);
 };
-export const logApiError = (message: string, error?: any, context?: any) => {
+export const logApiError = (message: string, error?: unknown, context?: unknown) => {
     logger.error(message, ErrorCategory.API, error, context);
 };
-export const logValidationError = (message: string, error?: any, context?: any) => {
+export const logValidationError = (message: string, error?: unknown, context?: unknown) => {
     logger.error(message, ErrorCategory.VALIDATION, error, context);
 };
-export const logPaymentError = (message: string, error?: any, context?: any) => {
+export const logPaymentError = (message: string, error?: unknown, context?: unknown) => {
     logger.error(message, ErrorCategory.PAYMENT, error, context);
 };
-export const logWebhookError = (message: string, error?: any, context?: any) => {
+export const logWebhookError = (message: string, error?: unknown, context?: unknown) => {
     logger.error(message, ErrorCategory.WEBHOOK, error, context);
 };
-export const logFileUploadError = (message: string, error?: any, context?: any) => {
+export const logFileUploadError = (message: string, error?: unknown, context?: unknown) => {
     logger.error(message, ErrorCategory.FILE_UPLOAD, error, context);
 };
-export const logSecurityEvent = (message: string, context?: any) => {
+export const logSecurityEvent = (message: string, context?: unknown) => {
     logger.info(`[SECURITY] ${message}`, context);
 };
-export const logNetworkError = (message: string, error?: any, context?: any) => {
+export const logNetworkError = (message: string, error?: unknown, context?: unknown) => {
     logger.error(message, ErrorCategory.NETWORK, error, context);
 };

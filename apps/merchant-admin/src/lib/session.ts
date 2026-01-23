@@ -9,7 +9,7 @@ export const COOKIE_NAME = "vayva_session";
 /**
  * Generate JWT token for user session
  */
-export function generateToken(payload: any) {
+export function generateToken(payload: unknown) {
     return jwt.sign({ ...payload }, JWT_SECRET, {
         expiresIn: JWT_EXPIRES_IN,
     });
@@ -17,7 +17,7 @@ export function generateToken(payload: any) {
 /**
  * Verify and decode JWT token
  */
-export function verifyToken(token: any) {
+export function verifyToken(token: unknown) {
     try {
         const decoded = jwt.verify(token, JWT_SECRET);
         return decoded;
@@ -30,7 +30,7 @@ export function verifyToken(token: any) {
 /**
  * Create session in database and set cookie
  */
-export async function createSession(user: any, device: any, ipAddress: any, rememberMe = false) {
+export async function createSession(user: unknown, device: unknown, ipAddress: unknown, rememberMe = false) {
     const payload = {
         userId: user.id,
         email: user.email,

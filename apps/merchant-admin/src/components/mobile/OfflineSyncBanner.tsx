@@ -18,14 +18,14 @@ export function OfflineSyncBanner() {
 
   useEffect(() => {
     const updateOnlineStatus = () => {
-      setStatus((s: any) => ({ ...s, isOnline: navigator.onLine }));
+      setStatus((s: unknown) => ({ ...s, isOnline: navigator.onLine }));
     };
 
     const checkPending = async () => {
       try {
         await offlineStorage.init();
         const pending = await offlineStorage.getPendingActions();
-        setStatus((s: any) => ({ ...s, pendingCount: pending.length }));
+        setStatus((s: unknown) => ({ ...s, pendingCount: pending.length }));
       } catch {}
     };
 

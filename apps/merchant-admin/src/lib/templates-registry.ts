@@ -811,7 +811,7 @@ export const TEMPLATE_REGISTRY = {
     },
 };
 export function getNormalizedTemplates() {
-    return Object.values(TEMPLATE_REGISTRY).filter((t: any) => t.status !== "deprecated");
+    return Object.values(TEMPLATE_REGISTRY).filter((t: unknown) => t.status !== "deprecated");
 }
 export const TEMPLATE_CATEGORIES = [
     { slug: "fashion-clothing", displayName: "Fashion", isActive: true },
@@ -833,6 +833,6 @@ export const TEMPLATE_CATEGORIES = [
         .filter(t => t.industry === c.slug)
         .map(t => t.templateId)
 }));
-export function getTemplatesByCategory(categorySlug: any) {
+export function getTemplatesByCategory(categorySlug: unknown) {
     return Object.values(TEMPLATE_REGISTRY).filter(t => t.industry === categorySlug);
 }

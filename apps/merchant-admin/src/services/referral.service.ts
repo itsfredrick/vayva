@@ -7,7 +7,7 @@ export class ReferralService {
     /**
      * Retrieves or generates a unique referral code for a store.
      */
-    static async getOrCreateCode(storeId: any) {
+    static async getOrCreateCode(storeId: unknown) {
         const store = await prisma.store.findUnique({
             where: { id: storeId },
             select: { settings: true }
@@ -30,7 +30,7 @@ export class ReferralService {
     /**
      * Fetches affiliate stats for a store.
      */
-    static async getStats(storeId: any) {
+    static async getStats(storeId: unknown) {
         const store = await prisma.store.findUnique({
             where: { id: storeId },
             select: { settings: true }
@@ -54,7 +54,7 @@ export class ReferralService {
                 orderBy: { createdAt: "desc" }
             })
         ]);
-        const totalEarned = credits.reduce((sum: any, c: any) => sum + Number(c.amount), 0);
+        const totalEarned = credits.reduce((sum: unknown, c: unknown) => sum + Number(c.amount), 0);
         return {
             referralCode,
             stats: {
@@ -73,7 +73,7 @@ export class ReferralService {
     /**
      * Records a new referral during onboarding.
      */
-    static async trackReferral(refereeStoreId: any, referralCode: any) {
+    static async trackReferral(refereeStoreId: unknown, referralCode: unknown) {
         const referrer = await prisma.store.findFirst({
             where: {
                 settings: {
@@ -99,7 +99,7 @@ export class ReferralService {
     /**
      * Triggers the reward logic when a referee makes their first payment.
      */
-    static async processRefereePayment(refereeStoreId: any) {
+    static async processRefereePayment(refereeStoreId: unknown) {
         const attribution = await prisma.referralAttribution.findUnique({
             where: { merchantId: refereeStoreId },
         });
@@ -126,10 +126,10 @@ export class ReferralService {
             },
         });
     }
-    static async generateCode(storeId: any) {
+    static async generateCode(storeId: unknown) {
         return this.getOrCreateCode(storeId);
     }
-    static async getMonthlyDiscount(storeId: any) {
+    static async getMonthlyDiscount(storeId: unknown) {
         // Stub implementation
         return 0;
     }

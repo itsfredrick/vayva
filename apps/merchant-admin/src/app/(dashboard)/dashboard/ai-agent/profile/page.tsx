@@ -58,7 +58,7 @@ export default function AgentProfilePage() {
                     avatarUrl: data.avatarUrl || ""
                 };
             setDraft(initialDraft);
-        } catch (error: any) {
+        } catch (error) {
             toast.error("Failed to load agent profile");
         } finally {
             setIsLoading(false);
@@ -78,7 +78,7 @@ export default function AgentProfilePage() {
             if (agent) {
                 setAgent({ ...agent, config: draft }); // Update local state
             }
-        } catch (error: any) {
+        } catch (error) {
             toast.error("Failed to save draft");
         } finally {
             setIsSaving(false);
@@ -93,7 +93,7 @@ export default function AgentProfilePage() {
             if (!res.ok) throw new Error("Failed to publish");
             toast.success("Agent profile published!");
             loadProfile(); // Reload to sync
-        } catch (error: any) {
+        } catch (error) {
             toast.error("Failed to publish changes");
         } finally {
             setIsSaving(false);

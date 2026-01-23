@@ -5,7 +5,7 @@ export const ProductsService = {
         return apiClient.get("/api/products/limits");
     },
     // 2. Get Products
-    getProducts: async ({ search, status }: any = {}) => {
+    getProducts: async ({ search, status }: unknown= {}) => {
         const query = new URLSearchParams();
         if (search)
             query.set("q", search);
@@ -14,7 +14,7 @@ export const ProductsService = {
         return apiClient.get(`/api/products/items?${query.toString()}`);
     },
     // 3. Get Single Product
-    getProduct: async (id: any) => {
+    getProduct: async (id: unknown) => {
         try {
             return await apiClient.get(`/api/products/items/${id}`);
         }
@@ -23,17 +23,17 @@ export const ProductsService = {
         }
     },
     // 4. Create Product
-    createProduct: async (data: any) => {
+    createProduct: async (data: unknown) => {
         try {
             const product = await apiClient.post("/api/products/items", data);
             return { success: true, product };
         }
-        catch (e: any) {
+        catch (e: unknown) {
             return { success: false, error: e.message || "Failed to create product" };
         }
     },
     // 5. Update Product
-    updateProduct: async (id: any, data: any) => {
+    updateProduct: async (id: unknown, data: unknown) => {
         try {
             return await apiClient.put(`/api/products/items/${id}`, data);
         }
@@ -42,7 +42,7 @@ export const ProductsService = {
         }
     },
     // 6. Delete/Archive
-    deleteProduct: async (id: any) => {
+    deleteProduct: async (id: unknown) => {
         try {
             await apiClient.delete(`/api/products/items/${id}`);
             return true;

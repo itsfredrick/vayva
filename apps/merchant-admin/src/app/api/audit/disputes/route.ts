@@ -26,7 +26,7 @@ export async function GET(req: NextRequest) {
         }));
         return NextResponse.json({ disputes: formattedDisputes });
     }
-    catch (error: any) {
+    catch (error) {
         console.error("Audit Disputes Error:", error);
         return NextResponse.json({ error: "Failed to fetch disputes" }, { status: 500 });
     }

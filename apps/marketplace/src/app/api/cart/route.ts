@@ -24,7 +24,8 @@ export async function GET(req: Request) {
 export async function POST(req: Request) {
     try {
         const body = await req.json();
-        let { cartId, variantId, quantity } = body;
+        const { variantId, quantity } = body;
+        let { cartId } = body;
         const session = await getServerSession(authOptions);
 
         if (!cartId) {

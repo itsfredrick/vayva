@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { toast } from "sonner";
-export function useStorefrontCart(storeSlug: any) {
+export function useStorefrontCart(storeSlug: unknown) {
     const [cart, setCart] = useState([]);
     const [isOpen, setIsOpen] = useState(false);
     // Load cart from local storage on mount
@@ -42,10 +42,10 @@ export function useStorefrontCart(storeSlug: any) {
         }
     }, [storeSlug]);
     const addToCart = (product, quantity = 1) => {
-        setCart((prev: any) => {
-            const existing = prev.find((item: any) => item.id === product.id);
+        setCart((prev: unknown) => {
+            const existing = prev.find((item: unknown) => item.id === product.id);
             if (existing) {
-                return prev.map((item: any) => item.id === product.id
+                return prev.map((item: unknown) => item.id === product.id
                     ? { ...item, quantity: item.quantity + quantity }
                     : item);
             }
@@ -62,25 +62,25 @@ export function useStorefrontCart(storeSlug: any) {
         });
         setIsOpen(true); // Open cart sidebar/modal
     };
-    const removeFromCart = (productId: any) => {
-        setCart((prev: any) => prev.filter((item: any) => item.id !== productId));
+    const removeFromCart = (productId: unknown) => {
+        setCart((prev: unknown) => prev.filter((item: unknown) => item.id !== productId));
     };
-    const updateQuantity = (productId: any, delta: any) => {
-        setCart((prev: any) => prev
-            .map((item: any) => {
+    const updateQuantity = (productId: unknown, delta: unknown) => {
+        setCart((prev: unknown) => prev
+            .map((item: unknown) => {
             if (item.id === productId) {
                 const newQty = Math.max(0, item.quantity + delta);
                 return { ...item, quantity: newQty };
             }
             return item;
         })
-            .filter((item: any) => item.quantity > 0));
+            .filter((item: unknown) => item.quantity > 0));
     };
     const clearCart = () => {
         setCart([]);
         localStorage.removeItem(`vayva_cart_${storeSlug}`);
     };
-    const total = cart.reduce((sum: any, item: any) => sum + item.price * item.quantity, 0);
+    const total = cart.reduce((sum: unknown, item: unknown) => sum + item.price * item.quantity, 0);
     return {
         cart,
         addToCart,

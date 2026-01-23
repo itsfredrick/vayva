@@ -56,7 +56,7 @@ export async function POST(request: NextRequest) {
             delete scrubbedData.kyc.cacNumber;
         }
         // Prepare upsert data
-        const updateData: any = {
+        const updateData: unknown= {
             currentStepKey: currentStep || undefined,
             data: scrubbedData || undefined,
             completedSteps: completedSteps || undefined,
@@ -84,7 +84,7 @@ export async function POST(request: NextRequest) {
             create: createData,
         });
         // 2. Update Store level fields (Resume Step, Category)
-        const storeUpdateData: any = {};
+        const storeUpdateData: unknown= {};
         if (currentStep) {
             storeUpdateData.onboardingLastStep = currentStep;
         }
@@ -103,7 +103,7 @@ export async function POST(request: NextRequest) {
         // 3. Handle KYC Data (identity/kyc) with simple encryption mocks
         const kycData = data?.kyc || data?.identity;
         if (kycData) {
-            const kycUpdate: any = {};
+            const kycUpdate: unknown= {};
             if (kycData.nin) {
                 kycUpdate.ninLast4 = kycData.nin.slice(-4);
                 kycUpdate.fullNinEncrypted = encrypt(kycData.nin);

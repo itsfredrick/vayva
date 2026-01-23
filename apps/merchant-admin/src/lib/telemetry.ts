@@ -1,5 +1,5 @@
 export const telemetry = {
-    track: async (eventName: any, properties: any) => {
+    track: async (eventName: unknown, properties: unknown) => {
         try {
             await fetch("/api/telemetry/event", {
                 method: "POST",

@@ -69,7 +69,7 @@ Guidelines:
         // Add product catalog if available
         if (context?.products && context.products.length > 0) {
             prompt += `\nAvailable Products:\n`;
-            context.products.forEach((p: any) => {
+            context.products.forEach((p: unknown) => {
                 prompt += `- ${p.name}: ₦${p.price.toLocaleString()} ${p.available ? "(In Stock)" : "(Out of Stock)"}\n`;
             });
         }
@@ -137,7 +137,7 @@ Guidelines:
      */
     static generateOrderConfirmation(orderDetails) {
         const itemsList = orderDetails.items
-            .map((item: any) => `- ${item.quantity}x ${item.name} @ ₦${item.price.toLocaleString()}`)
+            .map((item: unknown) => `- ${item.quantity}x ${item.name} @ ₦${item.price.toLocaleString()}`)
             .join("\n");
         return `✅ Order Confirmed!
 

@@ -18,7 +18,7 @@ export async function safeFetch(
     });
     clearTimeout(id);
     return response;
-  } catch (error: unknown) {
+  } catch (error) {
     clearTimeout(id);
     const err = error as Error;
     if (err.name === "AbortError") {

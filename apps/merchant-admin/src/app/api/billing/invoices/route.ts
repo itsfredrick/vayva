@@ -16,7 +16,7 @@ export async function GET() {
             take: 50,
         });
         return NextResponse.json({
-            invoices: invoices.map((inv: any) => ({
+            invoices: invoices.map((inv: unknown) => ({
                 id: inv.id,
                 invoiceNumber: inv.invoiceNumber,
                 date: inv.createdAt,

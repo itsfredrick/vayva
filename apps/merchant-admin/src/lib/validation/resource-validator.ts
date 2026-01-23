@@ -1,6 +1,6 @@
 import { INDUSTRY_CONFIG } from "@/config/industry";
-export function validateResource(industrySlug: any, primaryObject: any, data: any) {
-    const errors: any = {};
+export function validateResource(industrySlug: unknown, primaryObject: unknown, data: unknown) {
+    const errors: unknown= {};
     const config = INDUSTRY_CONFIG[industrySlug];
     if (!config)
         return { valid: false, errors: { form: "Config error" } };
@@ -9,7 +9,7 @@ export function validateResource(industrySlug: any, primaryObject: any, data: an
         return { valid: true, errors: {} }; // Flexible fallback
     const { requiredFields, validation } = formConfig;
     // 1. Check Required Fields
-    requiredFields.forEach((field: any) => {
+    requiredFields.forEach((field: unknown) => {
         const val = data[field];
         if (val === undefined || val === null || val === "" || (Array.isArray(val) && val.length === 0)) {
             errors[field] = "Required";

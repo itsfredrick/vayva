@@ -5,7 +5,7 @@ import { Resend } from "resend";
 import jwt from "jsonwebtoken";
 const JWT_SECRET = process.env.JWT_SECRET || "fallback-secret";
 // POST /api/wallet/pin/reset-request
-export async function POST(request: any) {
+export async function POST(request: unknown) {
     try {
         const user = await getSessionUser();
         if (!user) {

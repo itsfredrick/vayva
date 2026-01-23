@@ -21,7 +21,7 @@ export class ReturnService {
                 // items and logistics removed as they do not exist in schema
                 /*
                         items: {
-                            create: payload.items.map((i: any) => ({
+                            create: payload.items.map((i: unknown) => ({
                                 qty: i.quantity || 1,
                             }))
                         },
@@ -44,7 +44,7 @@ export class ReturnService {
     }
     static async updateStatus(requestId, status, actorId, data) {
         // Logic for specific status transitions
-        await prisma.$transaction(async (tx: any) => {
+        await prisma.$transaction(async (tx: unknown) => {
             await tx.returnRequest.update({
                 where: { id: requestId },
                 data: {

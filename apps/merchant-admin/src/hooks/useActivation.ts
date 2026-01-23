@@ -1,7 +1,7 @@
 "use client";
 import { useState, useEffect } from "react";
 const ActivationManager = {
-    checkActivation: async (userId: any) => {
+    checkActivation: async (userId: unknown) => {
         try {
             const res = await fetch("/api/analytics/activation");
             if (res.ok) {
@@ -20,7 +20,7 @@ const ActivationManager = {
         };
     },
 };
-export function useActivation(userId: any) {
+export function useActivation(userId: unknown) {
     const [status, setStatus] = useState({
         isActivated: false,
         firstOrderCreated: false,

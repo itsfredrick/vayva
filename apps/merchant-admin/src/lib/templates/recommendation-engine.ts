@@ -1,5 +1,5 @@
 import { TEMPLATE_REGISTRY } from "@/lib/templates-registry";
-export function recommendTemplate(state: any) {
+export function recommendTemplate(state: unknown) {
     if (!state.business)
         return null;
     // 1. Direct Category Match (if industry mapping exists)
@@ -51,7 +51,7 @@ export function recommendTemplate(state: any) {
         return null;
     }
     // Verify it exists in enum
-    // (c: any) => c === matchedCategorySlug,
+    // (c: unknown) => c === matchedCategorySlug,
     // );
     // Temporary fix: If we can't look up config, just return null or basic result
     if (!matchedCategorySlug)

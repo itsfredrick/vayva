@@ -122,7 +122,7 @@ const RetailHome = ({ config }: { config: StorefrontConfig }) => {
           </Button>
         </div>
         <div className="grid grid-cols-2 lg:grid-cols-3 gap-x-4 gap-y-10">
-          {products.map((p: any) => (
+          {products.map((p: unknown) => (
             <div
               key={p.id}
               className="group cursor-pointer flex flex-col"
@@ -194,7 +194,7 @@ const RetailProduct = ({
   useEffect(() => {
     if (currentProduct?.variants) {
       const defaults: Record<string, string> = {};
-      currentProduct.variants.forEach((v: any) => (defaults[v.name] = v.options[0]));
+      currentProduct.variants.forEach((v: unknown) => (defaults[v.name] = v.options[0]));
       setSelectedVariants(defaults);
     }
   }, [currentProduct]);
@@ -252,18 +252,18 @@ const RetailProduct = ({
             </p>
           </div>
 
-          {currentProduct.variants?.map((v: any) => (
+          {currentProduct.variants?.map((v: unknown) => (
             <div key={v.name} className="space-y-3">
               <label className="text-xs font-bold uppercase opacity-50 tracking-wider">
                 {v.name}
               </label>
               <div className="flex flex-wrap gap-3">
-                {v.options.map((opt: any) => (
+                {v.options.map((opt: unknown) => (
                   <Button
                     key={opt}
                     variant="outline"
                     onClick={() =>
-                      setSelectedVariants((prev: any) => ({
+                      setSelectedVariants((prev: unknown) => ({
                         ...prev,
                         [v.name]: opt,
                       }))
@@ -290,7 +290,7 @@ const RetailProduct = ({
               <Button
                 variant="ghost"
                 size="icon"
-                onClick={() => setQty((q: any) => Math.max(1, q - 1))}
+                onClick={() => setQty((q: unknown) => Math.max(1, q - 1))}
                 className="w-8 h-8 flex items-center justify-center bg-white rounded-lg shadow-sm font-bold hover:bg-gray-100 p-0"
               >
                 -
@@ -299,7 +299,7 @@ const RetailProduct = ({
               <Button
                 variant="ghost"
                 size="icon"
-                onClick={() => setQty((q: any) => q + 1)}
+                onClick={() => setQty((q: unknown) => q + 1)}
                 className="w-8 h-8 flex items-center justify-center bg-white rounded-lg shadow-sm font-bold hover:bg-gray-100 p-0"
               >
                 +
@@ -376,7 +376,7 @@ const RetailCart = ({ config }: { config: StorefrontConfig }) => {
             </Button>
           </div>
         ) : (
-          cart.map((item: any, i: any) => (
+          cart.map((item: unknown, i: unknown) => (
             <div
               key={i}
               className="bg-white p-4 rounded-xl border border-gray-100 flex gap-4 shadow-sm"

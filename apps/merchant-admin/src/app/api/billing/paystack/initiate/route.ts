@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { requireAuth } from "@/lib/auth/session";
 import { PaystackService } from "@/lib/payment/paystack";
-export async function POST(request: any) {
+export async function POST(request: unknown) {
     try {
         const { checkFeatureAccess } = await import("@/lib/auth/gating");
         const access = await checkFeatureAccess("template_upgrade");

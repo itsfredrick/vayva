@@ -9,10 +9,10 @@ import { Trash2, Plus, Upload } from "lucide-react";
 
 interface WholesaleProductFormProps {
     productId?: string;
-    initialData?: any;
+    initialData?: unknown;
 }
 
-export function WholesaleProductForm({ productId: any, initialData }: WholesaleProductFormProps) {
+export function WholesaleProductForm({ productId: unknown, initialData }: WholesaleProductFormProps) {
     const router = useRouter();
     const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -35,7 +35,7 @@ export function WholesaleProductForm({ productId: any, initialData }: WholesaleP
         name: "pricingTiers"
     });
 
-    const onSubmit = async (data: any) => {
+    const onSubmit = async (data: unknown) => {
         setIsSubmitting(true);
         try {
             // Base price is the price for the first tier (assumed highest price)
@@ -50,7 +50,7 @@ export function WholesaleProductForm({ productId: any, initialData }: WholesaleP
                     type: "wholesale",
                     moq: Number(data.moq),
                     unitOfMeasure: data.unitOfMeasure,
-                    pricingTiers: data.pricingTiers.map((t: any) => ({
+                    pricingTiers: data.pricingTiers.map((t: unknown) => ({
                         minQty: Number(t.minQty),
                         maxQty: Number(t.maxQty) || null, // null means unlimited
                         price: Number(t.price)
@@ -138,7 +138,7 @@ export function WholesaleProductForm({ productId: any, initialData }: WholesaleP
                 <p className="text-sm text-gray-500">Define price breaks based on quantity ordered.</p>
 
                 <div className="space-y-4">
-                    {fields.map((field: any, index: any) => (
+                    {fields.map((field: unknown, index: unknown) => (
                         <div key={field.id} className="flex gap-4 items-end bg-gray-50 p-4 rounded-lg border">
                             <div className="flex-1">
                                 <Label>Min Qty</Label>

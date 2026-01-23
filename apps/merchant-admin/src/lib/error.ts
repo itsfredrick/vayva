@@ -2,7 +2,7 @@
  * Centralized error reporting utility.
  * Use this instead of console.error to ensure errors are captured by monitoring (e.g. Sentry).
  */
-export function reportError(error: any, context: any) {
+export function reportError(error: unknown, context: unknown) {
     // In the future, this is where Sentry.captureException goes.
     // Sentry.captureException(error, { extra: context });
     // For now, robust logging to stdout

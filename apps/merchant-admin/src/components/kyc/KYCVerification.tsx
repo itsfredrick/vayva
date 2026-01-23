@@ -145,7 +145,7 @@ export function KYCVerification({ onSuccess, onCancel }: KYCVerificationProps) {
               label={`${method} Number`}
               placeholder={`Enter your ${method}`}
               value={formData.idNumber}
-              onChange={(e: any) =>
+              onChange={(e: unknown) =>
                 setFormData({ ...formData, idNumber: e.target.value })
               }
               required
@@ -155,7 +155,7 @@ export function KYCVerification({ onSuccess, onCancel }: KYCVerificationProps) {
                 label="First Name"
                 placeholder="As on ID"
                 value={formData.firstName}
-                onChange={(e: any) =>
+                onChange={(e: unknown) =>
                   setFormData({ ...formData, firstName: e.target.value })
                 }
                 required
@@ -164,7 +164,7 @@ export function KYCVerification({ onSuccess, onCancel }: KYCVerificationProps) {
                 label="Last Name"
                 placeholder="As on ID"
                 value={formData.lastName}
-                onChange={(e: any) =>
+                onChange={(e: unknown) =>
                   setFormData({ ...formData, lastName: e.target.value })
                 }
                 required
@@ -174,7 +174,7 @@ export function KYCVerification({ onSuccess, onCancel }: KYCVerificationProps) {
               label="Date of Birth"
               type="date"
               value={formData.dob}
-              onChange={(e: any) =>
+              onChange={(e: unknown) =>
                 setFormData({ ...formData, dob: e.target.value })
               }
               required
@@ -185,7 +185,7 @@ export function KYCVerification({ onSuccess, onCancel }: KYCVerificationProps) {
             <input
               type="checkbox"
               checked={consent}
-              onChange={(e: any) => setConsent(e.target.checked)}
+              onChange={(e: unknown) => setConsent(e.target.checked)}
               className="mt-1 accent-primary"
               id="consent-check"
             />

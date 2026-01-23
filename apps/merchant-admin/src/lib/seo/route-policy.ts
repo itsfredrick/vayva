@@ -40,13 +40,13 @@ export const HARD_NOINDEX_PREFIXES = [
 // special duplicate
 export const DUPLICATE_MARKETPLACE_PATH = "/marketplace"; // (marketing)/marketplace route path
 export const CANONICAL_MARKETPLACE_TARGET = "/market/categories";
-export function isHardNoindex(path: any) {
-    return HARD_NOINDEX_PREFIXES.some((p: any) => path === p || path.startsWith(p + "/"));
+export function isHardNoindex(path: unknown) {
+    return HARD_NOINDEX_PREFIXES.some((p: unknown) => path === p || path.startsWith(p + "/"));
 }
-export function isAllowIndex(path: any) {
-    return INDEX_ALLOW_PREFIXES.some((p: any) => path === p || path.startsWith(p + "/"));
+export function isAllowIndex(path: unknown) {
+    return INDEX_ALLOW_PREFIXES.some((p: unknown) => path === p || path.startsWith(p + "/"));
 }
-export function pageTypeFor(path: any) {
+export function pageTypeFor(path: unknown) {
     if (path === "/")
         return "home";
     if (path === "/templates")

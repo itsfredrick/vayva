@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import { getServerSession } from "next-auth/next";
 import { authOptions } from "@/lib/auth";
 import { MerchantRescueService } from "@/lib/rescue/merchant-rescue-service";
-export async function POST(req: any) {
+export async function POST(req: unknown) {
     const session = await getServerSession(authOptions);
     if (!session?.user) {
         // We allow anonymous reporting for critical UI crashes where session might be lost/unavailable

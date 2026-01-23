@@ -8,10 +8,10 @@ import { toast } from "sonner";
 
 interface NonprofitProductFormProps {
     productId?: string;
-    initialData?: any;
+    initialData?: unknown;
 }
 
-export function NonprofitProductForm({ productId: any, initialData }: NonprofitProductFormProps) {
+export function NonprofitProductForm({ productId: unknown, initialData }: NonprofitProductFormProps) {
     const router = useRouter();
     const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -27,7 +27,7 @@ export function NonprofitProductForm({ productId: any, initialData }: NonprofitP
         defaultValues
     });
 
-    const onSubmit = async (data: any) => {
+    const onSubmit = async (data: unknown) => {
         setIsSubmitting(true);
         try {
             const payload = {

@@ -48,7 +48,7 @@ export async function POST(
             success: true,
             message: "Webhook queued for reprocessing",
         });
-    } catch (error: unknown) {
+    } catch (error) {
         if (error.message === "Unauthorized") {
             return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
         }

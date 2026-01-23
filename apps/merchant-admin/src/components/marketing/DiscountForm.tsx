@@ -33,7 +33,7 @@ export function DiscountForm({ id }: { id?: string }) {
         if (id) {
             fetch(`/api/marketing/discounts/${id}`)
                 .then(res => res.json())
-                .then((data: any) => {
+                .then((data: unknown) => {
                     setFormData({
                         title: data.name || "",
                         code: data.code || "",
@@ -164,7 +164,7 @@ export function DiscountForm({ id }: { id?: string }) {
                     <div className="grid grid-cols-2 gap-4">
                         <div>
                             <Label>Type</Label>
-                            <Select value={type} onValueChange={(v: any) => setType(v)}>
+                            <Select value={type} onValueChange={(v: unknown) => setType(v)}>
                                 <SelectTrigger>
                                     <SelectValue />
                                 </SelectTrigger>

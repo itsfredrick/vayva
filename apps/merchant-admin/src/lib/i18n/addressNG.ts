@@ -37,7 +37,7 @@ export const NIGERIAN_STATES = [
     "Zamfara",
     "FCT - Abuja",
 ];
-export function validateAddressNG(addr: any) {
+export function validateAddressNG(addr: unknown) {
     if (!addr.addressLine1 || addr.addressLine1.length < 5)
         return { valid: false, error: "Address line too short" };
     if (!addr.city)

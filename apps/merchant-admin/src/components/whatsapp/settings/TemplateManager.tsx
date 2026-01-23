@@ -24,7 +24,7 @@ interface TemplateManagerProps {
     onRefresh: () => void;
 }
 
-export function TemplateManager({ templates: any, onRefresh }: TemplateManagerProps) {
+export function TemplateManager({ templates: unknown, onRefresh }: TemplateManagerProps) {
     const [isOpen, setIsOpen] = useState(false);
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [newTemplate, setNewTemplate] = useState({
@@ -130,7 +130,7 @@ export function TemplateManager({ templates: any, onRefresh }: TemplateManagerPr
                                     <Label>Category</Label>
                                     <Select
                                         value={newTemplate.category}
-                                        onValueChange={(val: any) => setNewTemplate({ ...newTemplate, category: val })}
+                                        onValueChange={(val: unknown) => setNewTemplate({ ...newTemplate, category: val })}
                                     >
                                         <SelectTrigger>
                                             <SelectValue />
@@ -146,7 +146,7 @@ export function TemplateManager({ templates: any, onRefresh }: TemplateManagerPr
                                     <Label>Language</Label>
                                     <Select
                                         value={newTemplate.language}
-                                        onValueChange={(val: any) => setNewTemplate({ ...newTemplate, language: val })}
+                                        onValueChange={(val: unknown) => setNewTemplate({ ...newTemplate, language: val })}
                                     >
                                         <SelectTrigger>
                                             <SelectValue />
@@ -196,7 +196,7 @@ export function TemplateManager({ templates: any, onRefresh }: TemplateManagerPr
                         </TableRow>
                     </TableHeader>
                     <TableBody>
-                        {templates?.map((t: any) => (
+                        {templates?.map((t: unknown) => (
                             <TableRow key={t.id}>
                                 <TableCell className="font-medium font-mono text-xs">{t.name}</TableCell>
                                 <TableCell>{t.category}</TableCell>

@@ -22,7 +22,7 @@ export async function GET() {
         return NextResponse.json({ error: "Failed to fetch payout accounts" }, { status: 500 });
     }
 }
-export async function POST(req: any) {
+export async function POST(req: unknown) {
     const session = await getServerSession(authOptions);
     if (!session?.user?.storeId)
         return new NextResponse("Unauthorized", { status: 401 });

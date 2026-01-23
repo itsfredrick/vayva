@@ -42,7 +42,7 @@ export class SupportContextService {
                 status: "ACTIVE",
                 aiActive: true,
             },
-            recentOrders: orders.map((o: any) => ({
+            recentOrders: orders.map((o: unknown) => ({
                 id: o.id,
                 status: o.status,
                 amount: `₦${(Number(o.total) / 100).toFixed(2)}`,

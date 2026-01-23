@@ -2,7 +2,7 @@
  * MARKET CATEGORY SCHEMA
  * Type: CollectionPage + ItemList
  */
-export function getMarketCategorySchema(props: any) {
+export function getMarketCategorySchema(props: unknown) {
     return {
         "@context": "https://schema.org",
         "@type": "CollectionPage",
@@ -14,7 +14,7 @@ export function getMarketCategorySchema(props: any) {
             "@type": "ItemList",
             itemListOrder: "https://schema.org/ItemListOrderDescending",
             numberOfItems: props.storeCount.toString(),
-            itemListElement: (props.items || []).map((item: any, index: any) => ({
+            itemListElement: (props.items || []).map((item: unknown, index: unknown) => ({
                 "@type": "ListItem",
                 position: index + 1,
                 name: item.name,

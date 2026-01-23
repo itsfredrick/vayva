@@ -36,7 +36,7 @@ export async function GET(req: NextRequest) {
             items: flaggedMerchants,
         });
     }
-    catch (error: any) {
+    catch (error) {
         console.error("Audit AML Error:", error);
         return NextResponse.json({ error: "Failed to fetch AML data" }, { status: 500 });
     }

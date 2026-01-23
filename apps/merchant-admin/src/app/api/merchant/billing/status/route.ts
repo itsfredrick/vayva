@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import { getSessionUser } from "@/lib/session";
 // NOTE: Disabled - aiSubscription and invoice models do not exist in current schema
 // This route needs to be refactored to use the correct billing models
-export async function GET(req: any) {
+export async function GET(req: unknown) {
     const user = await getSessionUser();
     if (!user?.storeId)
         return NextResponse.json({ error: "Unauthorized" }, { status: 401 });

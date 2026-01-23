@@ -32,7 +32,7 @@ export const ItemModal = ({ item, onClose, onAddToCart }: ItemModalProps) => {
     setSelectedModifiers((prev) => ({ ...prev, [modId]: price }));
   };
 
-  const handleToggle = (modId: string, option: any) => {
+  const handleToggle = (modId: string, option: unknown) => {
     // Simple logic for single select radio for now to keep it fast
     // For addons (checkboxes), we'd need array logic.
     // Testing 'addon' as single select for simplicity in this demo unless specified.

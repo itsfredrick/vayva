@@ -55,7 +55,7 @@ export class LifecycleManager {
         warnings,
         rollbackAvailable: true,
       };
-    } catch (error) {
+    } catch (_error) {
       errors.push("Failed to enable add-on");
       return {
         success: false,
@@ -129,7 +129,7 @@ export class LifecycleManager {
       );
       const data = await response.json();
       return data.isEnabled || false;
-    } catch (error) {
+    } catch (_error) {
       return false;
     }
   }
@@ -142,7 +142,7 @@ export class LifecycleManager {
       const response = await fetch(`/api/extensions/user/${userId}`);
       const data = await response.json();
       return data.enabledAddOns || [];
-    } catch (error) {
+    } catch (_error) {
       return [];
     }
   }

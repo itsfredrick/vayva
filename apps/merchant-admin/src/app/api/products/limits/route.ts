@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth"; // Adjust import path as needed
 import { prisma } from "@/lib/prisma";
-export async function GET(req: any) {
+export async function GET(req: unknown) {
     const session = await getServerSession(authOptions);
     // Use storeId from session or header (depending on auth strategy)
     // Assuming session.user.storeId exists based on project patterns

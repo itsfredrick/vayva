@@ -4,7 +4,7 @@ import { WhatsappManager } from "@/services/whatsapp";
 import { NotificationService } from "@/services/notifications";
 // Evolution API Webhook Handler
 // Handles incoming messages and routes them to the AI Sales Agent
-export async function POST(req: any) {
+export async function POST(req: unknown) {
     try {
         const body = await req.json();
         // Log basic heartbeat (remove in prod high volume)

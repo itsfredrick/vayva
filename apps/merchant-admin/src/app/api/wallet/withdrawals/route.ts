@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { getSessionUser } from "@/lib/session";
 import { prisma } from "@/lib/prisma";
-export async function GET(request: any) {
+export async function GET(request: unknown) {
     try {
         const user = await getSessionUser();
         if (!user) {
@@ -35,7 +35,7 @@ export async function GET(request: any) {
             prisma.withdrawal.count({ where }),
         ]);
         // Convert BigInt to Number for JSON response
-        const serialized = withdrawals.map((w: any) => ({
+        const serialized = withdrawals.map((w: unknown) => ({
             ...w,
             amountKobo: Number(w.amountKobo),
             feeKobo: Number(w.feeKobo),

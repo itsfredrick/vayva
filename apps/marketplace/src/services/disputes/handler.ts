@@ -131,7 +131,7 @@ export async function handleCreateDispute(
             success: true,
             data: { disputeId: dispute.id }
         });
-    } catch (error: unknown) {
+    } catch (error) {
         console.error("[DISPUTE_POST]", error);
         const errorMessage = error instanceof Error ? error.message : "Internal Server Error";
         return NextResponse.json(

@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-export async function POST(req: any) {
+export async function POST(req: unknown) {
     try {
         const { accountNumber, bankCode } = await req.json();
         if (!accountNumber || !bankCode) {

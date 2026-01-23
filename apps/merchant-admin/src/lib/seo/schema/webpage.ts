@@ -1,6 +1,6 @@
 // src/lib/seo/schema/webpage.ts
 import { SITE_ORIGIN } from "../route-policy";
-export function webPageSchema(path: any, ctx: any) {
+export function webPageSchema(path: unknown, ctx: unknown) {
     return {
         "@context": "https://schema.org",
         "@type": "WebPage",

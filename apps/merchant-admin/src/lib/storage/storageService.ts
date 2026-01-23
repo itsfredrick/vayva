@@ -52,7 +52,7 @@ export class StorageService {
         try {
             await head(key);
         }
-        catch (error) {
+        catch (_error) {
             throw new Error("File not found");
         }
         // 3. For Vercel Blob, construct the public URL

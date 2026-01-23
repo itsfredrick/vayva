@@ -13,7 +13,7 @@ interface OrderItem {
     productName: string;
     quantity: number;
     price: number;
-    productVariant?: any;
+    productVariant?: unknown;
 }
 
 interface Order {
@@ -40,7 +40,7 @@ interface Order {
         city: string;
         state: string;
     };
-    metadata?: any;
+    metadata?: unknown;
     shipment?: {
         status: string;
         trackingCode?: string;

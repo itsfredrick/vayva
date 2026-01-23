@@ -35,7 +35,7 @@ export default function ManageCookiesPage() {
                         setUpdatedAt(data.updatedAt);
                 }
             }
-            catch (error) {
+            catch (_error) {
                 // Silent fail on load, default strict
             }
             finally {

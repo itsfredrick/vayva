@@ -3,7 +3,7 @@ import { prisma } from "@vayva/db";
  * P11.2: Track API errors for ops monitoring
  * Only logs when statusCode >= 500 and feature flag is enabled
  */
-export async function trackApiError(params: any) {
+export async function trackApiError(params: unknown) {
     // Feature flag check
     const isEnabled = process.env.OPS_API_ERROR_TRACKING_ENABLED === "true";
     if (!isEnabled)

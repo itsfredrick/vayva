@@ -112,7 +112,7 @@ export const calendarSyncWorker = new Worker(QUEUES.CALENDAR_SYNC_SCHEDULER, asy
                 });
                 logger.info(`Imported ${createdCount} new bookings for ${sync.name}`);
 
-            } catch (err: any) {
+            } catch (err: unknown) {
                 logger.error(`Failed to sync calendar ${sync.id}`, err);
             }
         }

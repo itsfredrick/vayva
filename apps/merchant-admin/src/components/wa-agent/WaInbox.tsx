@@ -29,7 +29,7 @@ export const InboxSidebar = ({
         </div>
       </div>
       <div className="flex-1 overflow-y-auto">
-        {threads.map((thread: any) => (
+        {threads.map((thread: unknown) => (
           <div
             key={thread.id}
             onClick={() => router.push(`/admin/wa-agent/inbox/${thread.id}`)}
@@ -132,7 +132,7 @@ export const ChatWindow = ({ thread }: { thread?: WaThread | null }) => {
               timestamp: thread.lastMessageTime,
             },
           ]
-        ).map((msg: any) => (
+        ).map((msg: unknown) => (
           <div
             key={msg.id}
             className={cn(

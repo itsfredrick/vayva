@@ -1,6 +1,6 @@
 "use client";
 const STORAGE_KEY = "vayva_attribution";
-export function saveAttribution(data: any) {
+export function saveAttribution(data: unknown) {
     if (typeof window === "undefined")
         return;
     try {
@@ -24,11 +24,11 @@ export function getAttribution() {
         return {};
     }
 }
-export function captureUrlParams(searchParams: any, entryPoint: any) {
+export function captureUrlParams(searchParams: unknown, entryPoint: unknown) {
     const data = {};
     const utmKeys = ["utm_source", "utm_campaign", "utm_content", "utm_medium"];
     let hasData = false;
-    utmKeys.forEach((key: any) => {
+    utmKeys.forEach((key: unknown) => {
         const val = searchParams.get(key);
         if (val) {
             data[key] = val;

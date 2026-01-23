@@ -76,7 +76,7 @@ export const GET = withOpsAuth(async (_req: NextRequest) => {
             data: results
         });
 
-    } catch (error: unknown) {
+    } catch (error) {
         console.error("[DataQuality Job] Failed:", error);
         return NextResponse.json({
             success: false,
@@ -109,7 +109,7 @@ export const POST = withOpsAuth(async (req: NextRequest) => {
 
         return NextResponse.json({ error: "Unsupported remediation action" }, { status: 400 });
 
-    } catch (error: unknown) {
+    } catch (error) {
         const err = error as Error;
         return NextResponse.json({ error: err.message || "Internal server error" }, { status: 500 });
     }

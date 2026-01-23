@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { OpsAuthService } from "@/lib/ops-auth";
-export async function GET(request: any) {
+export async function GET(request: unknown) {
     const session = await OpsAuthService.getSession();
     if (!session) {
         return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
@@ -14,7 +14,7 @@ export async function GET(request: any) {
             },
             take: 100,
         });
-        const formatted = merchants.map((m: any) => {
+        const formatted = merchants.map((m: unknown) => {
             const kycStatus = m.kycRecord?.status || "NOT_STARTED";
             const bankExists = m.bankBeneficiaries.length > 0;
             const reasons = [];

@@ -16,7 +16,7 @@ interface StorefrontDraft {
     template: {
         displayName: string;
     } | null;
-    themeConfig: any;
+    themeConfig: unknown;
 }
 
 export default function StorefrontCustomizePage() {
@@ -45,7 +45,7 @@ export default function StorefrontCustomizePage() {
         }
     };
 
-    const handleUpdate = async (newConfig: any) => {
+    const handleUpdate = async (newConfig: unknown) => {
         // 1. Sync local status
         if (draft) {
             setDraft({ ...draft, themeConfig: newConfig });

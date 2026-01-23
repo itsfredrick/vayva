@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { getSessionUser } from "@/lib/session";
-export async function POST(request: any) {
+export async function POST(request: unknown) {
     try {
         const body = await request.json();
         const { eventName, properties } = body;

@@ -71,7 +71,7 @@ export class DeliveryConsolidationService {
                 data: {
                     deliveryFee: Math.round(allocatedFee * 100) / 100,
                     metadata: {
-                        ...(await this.getOrderMetadata(child.id) as any),
+                        ...(await this.getOrderMetadata(child.id) as Record<string, unknown>),
                         deliveryFeeAllocation: {
                             consolidatedTotal: consolidatedFee,
                             allocatedAmount: allocatedFee,
@@ -89,7 +89,7 @@ export class DeliveryConsolidationService {
             data: {
                 deliveryFee: consolidatedFee,
                 metadata: {
-                    ...(await this.getOrderMetadata(parentOrderId) as any),
+                    ...(await this.getOrderMetadata(parentOrderId) as Record<string, unknown>),
                     deliveryConsolidation: {
                         enabled: true,
                         totalFee: consolidatedFee,
@@ -133,17 +133,17 @@ export class DeliveryConsolidationService {
             },
         });
 
-        const consolidationData = (parentOrder?.metadata as any)
-            ?.deliveryConsolidation;
+        const consolidationData = (parentOrder?.metadata as Record<string, unknown>)
+            ?.deliveryConsolidation as { enabled?: boolean; totalFee?: number; childOrderCount?: number };
 
         return {
             consolidated: consolidationData?.enabled || false,
             totalFee: Number(parentOrder?.deliveryFee || 0),
             childOrders: childOrders.map((child) => ({
                 orderId: child.id,
-                storeName: child.store!.name,
+                storeName: (child.store! as { name: string }).name,
                 allocatedFee: Number(child.deliveryFee),
-                allocation: (child.metadata as any)?.deliveryFeeAllocation,
+                allocation: (child.metadata as Record<string, unknown>)?.deliveryFeeAllocation,
             })),
             savings: consolidationData?.enabled
                 ? childOrders.reduce((sum, o) => sum + Number(o.deliveryFee), 0) -

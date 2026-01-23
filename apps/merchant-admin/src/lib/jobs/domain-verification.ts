@@ -1,7 +1,7 @@
 import dns from "node:dns/promises";
 import { prisma } from "@vayva/db";
 import { logAuditEvent as logAudit } from "@/lib/audit";
-export async function verifyDomainDns(domainMappingId: any) {
+export async function verifyDomainDns(domainMappingId: unknown) {
     const mapping = await prisma.domainMapping.findUnique({
         where: { id: domainMappingId },
         include: { store: true },
@@ -19,7 +19,7 @@ export async function verifyDomainDns(domainMappingId: any) {
         // We check for a TXT record: vayva-verification=[token]
         const txtRecords = await dns.resolveTxt(domain);
         const flattened = txtRecords.flat();
-        const isVerified = flattened.some((record: any) => record.includes(`vayva-verification=${token}`));
+        const isVerified = flattened.some((record: unknown) => record.includes(`vayva-verification=${token}`));
         if (isVerified) {
             status = "verified";
         }

@@ -48,7 +48,7 @@ export async function POST(req: NextRequest) {
             message: `Export for ${type} has been queued. You will be notified when it is ready for download.`,
         });
     }
-    catch (error: any) {
+    catch (error) {
         console.error("Audit Export Error:", error);
         return NextResponse.json({ error: "Failed to initiate export" }, { status: 500 });
     }

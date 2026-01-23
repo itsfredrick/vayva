@@ -9,7 +9,7 @@ export async function GET() {
             where: { storeId },
             orderBy: { isDefault: "desc" },
         });
-        const maskedAccounts = accounts.map((acc: any) => ({
+        const maskedAccounts = accounts.map((acc: unknown) => ({
             id: acc.id,
             bankName: acc.bankName,
             accountNumber: `******${acc.accountNumber.slice(-4)}`,
@@ -24,7 +24,7 @@ export async function GET() {
         return NextResponse.json({ error: "Failed to fetch payout details" }, { status: 500 });
     }
 }
-export async function PUT(request: any) {
+export async function PUT(request: unknown) {
     try {
         const { checkFeatureAccess } = await import("@/lib/auth/gating");
         const access = await checkFeatureAccess("payouts");
@@ -40,7 +40,7 @@ export async function PUT(request: any) {
         const { bankName, accountNumber, accountName, id } = body;
         // Implementation would mirror POST in bank route but with update
         // For simplicity, we create a new one and set as default if it's a "Change Account" action
-        const beneficiary = await prisma.$transaction(async (tx: any) => {
+        const beneficiary = await prisma.$transaction(async (tx: unknown) => {
             await tx.bankBeneficiary.updateMany({
                 where: { storeId, isDefault: true },
                 data: { isDefault: false },

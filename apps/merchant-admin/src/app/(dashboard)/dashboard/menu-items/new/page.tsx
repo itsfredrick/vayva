@@ -51,7 +51,7 @@ export default function NewMenuItemPage() {
 
             toast.success("Menu item created!");
             router.push("/dashboard/menu-items");
-        } catch (error: any) {
+        } catch (error) {
             toast.error(error.message || "Failed to create menu item");
         } finally {
             setLoading(false);

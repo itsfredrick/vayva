@@ -100,7 +100,7 @@ const ROLE_PERMISSIONS = {
 /**
  * Checks if a role has a specific permission.
  */
-export function hasRolePermission(role: any, permission: any) {
+export function hasRolePermission(role: unknown, permission: unknown) {
     if (!role || !ROLE_PERMISSIONS[role])
         return false;
     return ROLE_PERMISSIONS[role].includes(permission);
@@ -109,7 +109,7 @@ export function hasRolePermission(role: any, permission: any) {
  * Server-side check: verifying if a specific user has permission in a store.
  * Requires fetching the membership role and its associated permissions.
  */
-export async function hasPermission(userId: any, storeId: any, permission: any) {
+export async function hasPermission(userId: unknown, storeId: unknown, permission: unknown) {
     const membership = await prisma.membership.findUnique({
         where: {
             userId_storeId: {
@@ -147,7 +147,7 @@ export const PLAN_SEAT_LIMITS = {
     PRO: 5,
     ENTERPRISE: 20,
 };
-export async function getPlanSeatLimit(storeId: any) {
+export async function getPlanSeatLimit(storeId: unknown) {
     const store = await prisma.store.findUnique({
         where: { id: storeId },
         select: { plan: true },
@@ -159,7 +159,7 @@ export async function getPlanSeatLimit(storeId: any) {
     const plan = store.plan;
     return PLAN_SEAT_LIMITS[plan] || 1;
 }
-export async function canInviteMember(storeId: any) {
+export async function canInviteMember(storeId: unknown) {
     const limit = await getPlanSeatLimit(storeId);
     const current = await prisma.membership.count({
         where: {

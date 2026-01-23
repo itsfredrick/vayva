@@ -10,19 +10,19 @@ const fixes = [
     {
         file: 'src/lib/validation/resource-validator.ts',
         search: 'const errors = {};',
-        replace: 'const errors: any = {};',
+        replace: 'const errors: unknown= {};',
     },
     // Fix 4: middleware/auth.ts - Add type assertion for options
     {
         file: 'src/middleware/auth.ts',
-        search: 'export async function withAuth(handler: any, options = {}) {',
-        replace: 'export async function withAuth(handler: any, options: any = {}) {',
+        search: 'export async function withAuth(handler: unknown, options = {}) {',
+        replace: 'export async function withAuth(handler: unknown, options: unknown= {}) {',
     },
     // Fix 5: verify-paystack.ts - Fix catch block
     {
         file: 'src/scripts/verify-paystack.ts',
-        search: 'catch (error) {',
-        replace: 'catch (error: any) {',
+        search: 'catch (_error) {',
+        replace: 'catch (_error) {',
     },
 ];
 

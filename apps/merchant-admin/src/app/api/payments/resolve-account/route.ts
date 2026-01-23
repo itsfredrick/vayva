@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { PaystackService } from "@/services/PaystackService";
 // POST /api/payments/resolve-account
-export async function POST(request: any) {
+export async function POST(request: unknown) {
     try {
         const body = await request.json();
         const { accountNumber, bankCode } = body || {};

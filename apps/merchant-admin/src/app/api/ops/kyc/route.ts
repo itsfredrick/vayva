@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { OpsAuthService } from "@/lib/ops-auth";
-export async function GET(request: any) {
+export async function GET(request: unknown) {
     const session = await OpsAuthService.getSession();
     if (!session) {
         return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
@@ -19,7 +19,7 @@ export async function GET(request: any) {
             orderBy: { createdAt: "desc" },
             take: 100,
         });
-        const formatted = records.map((r: any) => {
+        const formatted = records.map((r: unknown) => {
             const auditData = r.audit || [];
             const latestAttempt = auditData.length > 0 ? auditData[auditData.length - 1] : {};
             return {

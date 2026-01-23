@@ -1,7 +1,7 @@
 import { getSessionUser } from "@/lib/session";
 import { can } from "./permissions";
 import { NextResponse } from "next/server";
-export async function checkPermission(action: any) {
+export async function checkPermission(action: unknown) {
     const user = await getSessionUser();
     if (!user) {
         throw new Error("Unauthorized");
@@ -13,7 +13,7 @@ export async function checkPermission(action: any) {
     // Test session object structure for compatibility with existing handlers
     return { user };
 }
-export function withRBAC(action: any, handler: any) {
+export function withRBAC(action: unknown, handler: unknown) {
     return async (...args) => {
         try {
             const session = await checkPermission(action);

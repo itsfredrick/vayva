@@ -21,9 +21,9 @@ export const WalletService = {
         };
     },
     // 2. Ledger
-    getLedger: async (filters: any) => {
+    getLedger: async (filters: unknown) => {
         const entries = await PaymentService.getLedger();
-        return entries.map((e: any) => ({
+        return entries.map((e: unknown) => ({
             id: e.id,
             type: e.type.toLowerCase(),
             amount: Number(e.amountKobo) / 100,
@@ -38,14 +38,14 @@ export const WalletService = {
     getBanks: async () => {
         return PaymentService.listBanks();
     },
-    addBank: async (bank: any) => {
+    addBank: async (bank: unknown) => {
         return PaymentService.addBank(bank);
     },
-    deleteBank: async (id: any) => {
+    deleteBank: async (id: unknown) => {
         return PaymentService.deleteBank(id);
     },
     // 4. PIN & Security
-    verifyPin: async (pin: any) => {
+    verifyPin: async (pin: unknown) => {
         try {
             await PaymentService.verifyPin(pin);
             return true;
@@ -54,12 +54,12 @@ export const WalletService = {
             return false;
         }
     },
-    setPin: async (pin: any) => {
+    setPin: async (pin: unknown) => {
         await PaymentService.setPin(pin);
         return true;
     },
     // 5. Withdrawal
-    initiateWithdrawal: async (amount: any, bankId: any, pin: any) => {
+    initiateWithdrawal: async (amount: unknown, bankId: unknown, pin: unknown) => {
         const res = await PaymentService.initiateWithdrawal({
             amountKobo: (amount * 100).toString(),
             bankAccountId: bankId,
@@ -67,7 +67,7 @@ export const WalletService = {
         });
         return res.withdrawalId;
     },
-    confirmWithdrawal: async (withdrawalId: any, otp: any) => {
+    confirmWithdrawal: async (withdrawalId: unknown, otp: unknown) => {
         await PaymentService.confirmWithdrawal(withdrawalId, otp);
         return true;
     },

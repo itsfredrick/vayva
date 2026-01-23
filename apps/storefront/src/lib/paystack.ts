@@ -58,7 +58,7 @@ export const PaystackService = {
       }
 
       return await response.json();
-    } catch (error: unknown) {
+    } catch (error) {
       console.error("[Paystack] Init Error:", error.message);
       throw error;
     }

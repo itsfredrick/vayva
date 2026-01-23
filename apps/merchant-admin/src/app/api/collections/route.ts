@@ -13,7 +13,7 @@ export const GET = withVayvaAPI(PERMISSIONS.PRODUCTS_VIEW, async (req, { storeId
             },
             orderBy: { updatedAt: "desc" },
         });
-        const formatted = collections.map((col: any) => ({
+        const formatted = collections.map((col: unknown) => ({
             id: col.id,
             name: col.title,
             handle: col.handle,

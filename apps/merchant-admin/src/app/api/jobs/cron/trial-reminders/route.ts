@@ -4,7 +4,7 @@ import Groq from "groq-sdk";
 const groq = new Groq({
     apiKey: process.env.GROQ_ADMIN_KEY || "",
 });
-export async function GET(req: any) {
+export async function GET(req: unknown) {
     // Basic auth check for cron (e.g., Vercel Cron Secret)
     const authHeader = req.headers.get('authorization');
     if (process.env.NODE_ENV === 'production' && authHeader !== `Bearer ${process.env.CRON_SECRET}`) {
@@ -81,7 +81,7 @@ export async function GET(req: any) {
         return NextResponse.json({ error: error.message }, { status: 500 });
     }
 }
-async function dispatchWhatsApp(phone: any, text: any) {
+async function dispatchWhatsApp(phone: unknown, text: unknown) {
     const EVOLUTION_API_URL = process.env.EVOLUTION_API_URL;
     const EVOLUTION_API_KEY = process.env.EVOLUTION_API_KEY;
     const instanceName = process.env.EVOLUTION_INSTANCE_NAME || "vayva_global";

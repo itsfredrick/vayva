@@ -48,7 +48,7 @@ export async function POST(req: NextRequest) {
         console.log(`[HELP_AI_ANALYTICS] Message received at ${new Date().toISOString()}`);
 
         return NextResponse.json({ message: reply });
-    } catch (error: unknown) {
+    } catch (error) {
         console.error("AI Chat Error:", error);
         return NextResponse.json(
             { error: "Failed to process AI request" },

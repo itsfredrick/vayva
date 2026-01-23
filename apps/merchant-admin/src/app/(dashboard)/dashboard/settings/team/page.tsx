@@ -283,7 +283,7 @@ export default function TeamSettingsPage() {
                   <option value="support">Support</option>
                   <option value="finance">Finance</option>
                   <option value="admin">Admin</option>
-                  {customRoles.map((role: any) => (
+                  {customRoles.map((role: unknown) => (
                     <option key={role.id} value={role.id}>{role.name}</option>
                   ))}
                 </select>

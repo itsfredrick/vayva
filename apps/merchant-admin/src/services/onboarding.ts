@@ -55,7 +55,7 @@ export const OnboardingService = {
         logger.warn("Returning default onboarding state.");
         return defaultState;
     },
-    saveStep: async (stepId: any, data: any) => {
+    saveStep: async (stepId: unknown, data: unknown) => {
         try {
             // Save to backend API
             const response = await fetch("/api/onboarding/save-progress", {

@@ -54,7 +54,7 @@ function checkFile(filePath) {
         });
 
         return violations;
-    } catch (error) {
+    } catch (_error) {
         // Skip files that can't be read as text
         return [];
     }
@@ -76,7 +76,7 @@ function walkDir(dir, callback) {
                 callback(filePath);
             }
         });
-    } catch (error) {
+    } catch (_error) {
         // Skip directories we can't read
     }
 }

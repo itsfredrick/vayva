@@ -4,7 +4,7 @@ import { kycService } from "@/services/kyc";
 import { checkRateLimit } from "@/lib/rate-limit";
 import { FlagService } from "@/lib/flags/flagService";
 export const dynamic = "force-dynamic";
-export async function POST(req: any) {
+export async function POST(req: unknown) {
     try {
         const session = await requireAuth();
         const storeId = session.user.storeId;

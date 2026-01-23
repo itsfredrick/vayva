@@ -6,7 +6,7 @@ const PENDING_THRESHOLD_MS = 60 * 60 * 1000; // 60 minutes (P11.2)
 /**
  * Detect withdrawals stuck in PROCESSING status
  */
-export async function detectStuckWithdrawals(storeId: any) {
+export async function detectStuckWithdrawals(storeId: unknown) {
     const threshold = new Date(Date.now() - STUCK_THRESHOLD_MS);
     const stuck = await prisma.withdrawal.findMany({
         where: {
@@ -17,7 +17,7 @@ export async function detectStuckWithdrawals(storeId: any) {
         orderBy: { updatedAt: "asc" },
         take: 50,
     });
-    return stuck.map((w: any) => ({
+    return stuck.map((w: unknown) => ({
         id: w.id,
         referenceCode: w.referenceCode,
         status: w.status,
@@ -30,7 +30,7 @@ export async function detectStuckWithdrawals(storeId: any) {
 /**
  * P11.2: Detect withdrawals aging in PENDING status (>60 minutes)
  */
-export async function detectAgingPending(storeId: any) {
+export async function detectAgingPending(storeId: unknown) {
     const threshold = new Date(Date.now() - PENDING_THRESHOLD_MS);
     const aging = await prisma.withdrawal.findMany({
         where: {
@@ -41,7 +41,7 @@ export async function detectAgingPending(storeId: any) {
         orderBy: { createdAt: "asc" },
         take: 50,
     });
-    return aging.map((w: any) => ({
+    return aging.map((w: unknown) => ({
         id: w.id,
         referenceCode: w.referenceCode,
         status: w.status,
@@ -54,7 +54,7 @@ export async function detectAgingPending(storeId: any) {
 /**
  * Detect expired export jobs that were never downloaded
  */
-export async function detectStuckExports(merchantId: any) {
+export async function detectStuckExports(merchantId: unknown) {
     const now = new Date();
     const stuck = await prisma.exportJob.findMany({
         where: {
@@ -65,7 +65,7 @@ export async function detectStuckExports(merchantId: any) {
         orderBy: { createdAt: "desc" },
         take: 50,
     });
-    return stuck.map((e: any) => ({
+    return stuck.map((e: unknown) => ({
         id: e.id,
         type: e.type,
         status: e.status,
@@ -78,7 +78,7 @@ export async function detectStuckExports(merchantId: any) {
 /**
  * Get comprehensive ops metrics for a store (or all stores if storeId undefined)
  */
-export async function getOpsMetrics(storeId: any) {
+export async function getOpsMetrics(storeId: unknown) {
     const now = new Date();
     const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
     const yesterday = new Date(today.getTime() - 24 * 60 * 60 * 1000);
@@ -91,7 +91,7 @@ export async function getOpsMetrics(storeId: any) {
         _count: { id: true },
     });
     const byStatus = {};
-    withdrawalsByStatus.forEach((g: any) => {
+    withdrawalsByStatus.forEach((g: unknown) => {
         byStatus[g.status] = g._count.id;
     });
     const stuck = await detectStuckWithdrawals(storeId);
@@ -110,7 +110,7 @@ export async function getOpsMetrics(storeId: any) {
     });
     let avgTimeToPaid = null;
     if (paidWithdrawals.length > 0) {
-        const totalTime = paidWithdrawals.reduce((sum: any, w: any) => {
+        const totalTime = paidWithdrawals.reduce((sum: unknown, w: unknown) => {
             return sum + (w.updatedAt.getTime() - w.createdAt.getTime());
         }, 0);
         avgTimeToPaid = totalTime / paidWithdrawals.length;
@@ -200,7 +200,7 @@ export async function getOpsMetrics(storeId: any) {
         apiHealth = {
             errors1h,
             errors24h,
-            topFailingRoutes: topFailingRoutesData.map((r: any) => ({
+            topFailingRoutes: topFailingRoutesData.map((r: unknown) => ({
                 routeKey: r.routeKey,
                 count: r._count.id,
             })),
@@ -282,7 +282,7 @@ export async function getOpsMetrics(storeId: any) {
 /**
  * Log stuck operations (called by background job or on-demand)
  */
-export async function logStuckOperations(storeId: any, userId: any) {
+export async function logStuckOperations(storeId: unknown, userId: unknown) {
     const stuck = await detectStuckWithdrawals(storeId);
     for (const withdrawal of stuck) {
         await logAuditEvent(storeId, userId, AuditEventType.OPERATION_STUCK, {

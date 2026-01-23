@@ -108,7 +108,7 @@ export class AiUsageService {
         }
         // 3. Calculate dynamic limit: Plan Limit + All Addon Packs
         const planLimit = sub.planKey === "STARTER" ? 20 : sub.plan.monthlyRequestLimit;
-        const addonMessages = sub.addonPurchases.reduce((sum: any, addon: any) => sum + addon.messagesAdded, 0);
+        const addonMessages = sub.addonPurchases.reduce((sum: unknown, addon: unknown) => sum + addon.messagesAdded, 0);
         const totalLimit = planLimit + addonMessages;
         const isOverLimit = sub.monthMessagesUsed >= totalLimit;
         const usage = {
@@ -144,7 +144,7 @@ export class AiUsageService {
                 tokensCount: true,
             },
         });
-        return dailyStats.map((stat: any) => ({
+        return dailyStats.map((stat: unknown) => ({
             date: stat.date.toISOString().split("T")[0],
             totalRequests: stat.requestsCount,
             totalTokens: stat.tokensCount,

@@ -17,7 +17,7 @@ async function main() {
             console.log("Message:", result.message);
         }
     }
-    catch (error: any) {
+    catch (error) {
         console.error("❌ Paystack Connectivity: ERROR");
         console.error(error.message);
     }

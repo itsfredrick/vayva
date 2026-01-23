@@ -5,7 +5,7 @@ import { logger } from "@/lib/logger";
 import { FlagService } from "@/lib/flags/flagService";
 import { RevenueService } from "@/lib/ai/revenue.service";
 export async function POST(request: NextRequest) {
-    let body: any;
+    let body: unknown;
     try {
         body = await request.json();
         const { email, password, firstName, lastName } = body as Record<string, string>;
@@ -163,7 +163,7 @@ export async function POST(request: NextRequest) {
             email: user.email,
         });
     }
-    catch (error: any) {
+    catch (error) {
         logger.error("Registration error", error, { email: body?.email }, {});
         return NextResponse.json({ error: "Registration failed" }, { status: 500 });
     }

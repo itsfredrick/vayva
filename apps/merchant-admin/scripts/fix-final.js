@@ -9,8 +9,8 @@ const fixes = [
     // Fix 1: control-center page
     {
         file: 'src/app/(dashboard)/dashboard/control-center/page.tsx',
-        search: '} catch (error: unknown) {',
-        replace: '} catch (error: any) {',
+        search: '} catch (_error) {',
+        replace: '} catch (_error) {',
     },
     // Fix 2: inbox page  
     {
@@ -22,14 +22,14 @@ const fixes = [
     {
         file: 'src/app/(dashboard)/dashboard/orders/[id]/page.tsx',
         search: '} catch (err: unknown) {',
-        replace: '} catch (err: any) {',
+        replace: '} catch (err: unknown) {',
         all: true
     },
     // Fix 5-6: products/[id] page
     {
         file: 'src/app/(dashboard)/dashboard/products/[id]/page.tsx',
         search: '} catch (err: unknown) {',
-        replace: '} catch (err: any) {',
+        replace: '} catch (err: unknown) {',
         all: true
     },
 ];

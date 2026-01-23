@@ -69,7 +69,7 @@ export function withOpsAuth(
 
             // Call handler with authenticated context
             return handler(req, authContext);
-        } catch (error: unknown) {
+        } catch (error) {
             // Handle auth errors
             if (error.message === "Unauthorized" || error.message.includes("Insufficient permissions")) {
                 return NextResponse.json(

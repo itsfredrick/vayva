@@ -56,7 +56,7 @@ export async function handleGetProduct(
             success: true,
             data: { product: product as unknown as Record<string, unknown> }
         });
-    } catch (error: unknown) {
+    } catch (error) {
         console.error("[PRODUCT_GET]", error);
         return NextResponse.json(
             {

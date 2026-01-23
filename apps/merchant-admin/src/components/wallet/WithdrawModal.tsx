@@ -188,7 +188,7 @@ export const WithdrawModal = ({ isOpen, onClose }: WithdrawModalProps) => {
                     placeholder="0.00"
                     className="h-10 px-3 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-black/5"
                     value={amount}
-                    onChange={(e: any) => setAmount(e.target.value)}
+                    onChange={(e: unknown) => setAmount(e.target.value)}
                     autoFocus
                   />
                 </div>
@@ -202,10 +202,10 @@ export const WithdrawModal = ({ isOpen, onClose }: WithdrawModalProps) => {
                     aria-label="Select Destination Bank"
                     className="h-10 px-3 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-black/5 bg-white"
                     value={bankId}
-                    onChange={(e: any) => setBankId(e.target.value)}
+                    onChange={(e: unknown) => setBankId(e.target.value)}
                   >
                     <option value="">Select a bank account</option>
-                    {banks.map((b: any) => (
+                    {banks.map((b: unknown) => (
                       <option key={b.id} value={b.id}>
                         {b.bankName} - {b.accountNumber} ({b.accountName})
                       </option>
@@ -279,7 +279,7 @@ export const WithdrawModal = ({ isOpen, onClose }: WithdrawModalProps) => {
                     placeholder="••••"
                     className="h-10 px-3 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-black/5 text-center tracking-[0.5em] font-bold"
                     value={pin}
-                    onChange={(e: any) => setPin(e.target.value)}
+                    onChange={(e: unknown) => setPin(e.target.value)}
                     autoFocus
                   />
                 </div>
@@ -323,7 +323,7 @@ export const WithdrawModal = ({ isOpen, onClose }: WithdrawModalProps) => {
                   placeholder="000000"
                   className="h-12 text-center text-xl tracking-[0.5em] font-bold border-b-2 border-gray-200 focus:outline-none focus:border-black bg-transparent w-full"
                   value={otp}
-                  onChange={(e: any) => setOtp(e.target.value)}
+                  onChange={(e: unknown) => setOtp(e.target.value)}
                   autoFocus
                 />
 

@@ -9,7 +9,7 @@ import { isIP } from "node:net";
  * - Link-local (169.254.x)
  * - AWS Metadata service
  */
-export async function isSafeUrl(inputUrl: any) {
+export async function isSafeUrl(inputUrl: unknown) {
     try {
         const url = new URL(inputUrl);
         // 1. Protocol Check
@@ -53,7 +53,7 @@ export async function isSafeUrl(inputUrl: any) {
         return false;
     }
 }
-function isPublicIP(ip: any) {
+function isPublicIP(ip: unknown) {
     // IPv4 Checks
     if (ip.includes(".")) {
         const parts = ip.split(".").map(Number);

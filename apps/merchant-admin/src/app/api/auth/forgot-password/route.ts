@@ -43,7 +43,7 @@ export async function POST(req: NextRequest) {
         });
         return NextResponse.json({ message: "If an account exists, a reset link has been sent." });
     }
-    catch (error: any) {
+    catch (error) {
         console.error("[FORGOT_PASSWORD_ERROR]", error);
         return NextResponse.json({ error: "Internal Error" }, { status: 500 });
     }

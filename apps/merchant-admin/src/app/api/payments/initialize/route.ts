@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { PaystackService } from "@/services/PaystackService";
 // Public: Customer checkout flow
-export async function POST(request: any) {
+export async function POST(request: unknown) {
     try {
         const { orderId, callbackUrl } = await request.json();
         if (!orderId) {

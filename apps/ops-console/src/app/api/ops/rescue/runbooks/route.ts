@@ -92,7 +92,7 @@ export async function POST(req: NextRequest) {
             logs
         });
 
-    } catch (error: unknown) {
+    } catch (error) {
         return NextResponse.json({
             success: false,
             error: (error as Error).message || "Runbook execution failed"

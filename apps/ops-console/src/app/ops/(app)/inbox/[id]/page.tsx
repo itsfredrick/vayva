@@ -99,7 +99,7 @@ export default function TicketDetailPage() {
             const json = await res.json();
             setTicket(prev => prev ? ({ ...prev, ...data }) : null);
             toast.success(`${action} successful`);
-        } catch (error: unknown) {
+        } catch (error) {
             toast.error(error.message);
         } finally {
             setPerformingAction(false);

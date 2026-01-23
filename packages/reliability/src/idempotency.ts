@@ -53,7 +53,7 @@ export class IdempotencyService {
       });
 
       return result;
-    } catch (error: unknown) {
+    } catch (_error) {
       // Mark as FAILED
       await prisma.idempotencyKey.update({
         where: { storeId_scope_key: { storeId: storeId || "", scope, key } },

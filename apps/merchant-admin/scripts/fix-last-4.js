@@ -15,8 +15,8 @@ const fixes = [
     // Fix 2: verify-paystack script
     {
         file: 'src/scripts/verify-paystack.ts',
-        search: '} catch (error) {',
-        replace: '} catch (error: any) {',
+        search: '} catch (_error) {',
+        replace: '} catch (_error) {',
     },
 ];
 

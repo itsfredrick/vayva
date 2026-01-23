@@ -1,18 +1,18 @@
 import { PLANS } from "./plans";
-export function getPlanDefinition(slug: any) {
+export function getPlanDefinition(slug: unknown) {
     return PLANS[slug] || PLANS.growth; // Fallback to growth if unknown, or handle error
 }
 import { Gating } from "./gating";
 /**
  * Checks access and returns boolean (Legacy/Simple check)
  */
-export function checkFeatureAccess(entitlement: any, feature: any) {
+export function checkFeatureAccess(entitlement: unknown, feature: unknown) {
     return gateFeatureAccess(entitlement, feature).ok;
 }
 /**
  * Checks access and returns detailed GateResult (For UI/Paywalls)
  */
-export function gateFeatureAccess(entitlement: any, feature: any) {
+export function gateFeatureAccess(entitlement: unknown, feature: unknown) {
     const plan = getPlanDefinition(entitlement.planKey);
     // 1. Status Check
     if (["past_due", "expired"].includes(entitlement.status)) {
@@ -31,13 +31,13 @@ export function gateFeatureAccess(entitlement: any, feature: any) {
 /**
  * Checks limit and returns boolean
  */
-export function checkLimit(entitlement: any, limitName: any, currentUsage: any) {
+export function checkLimit(entitlement: unknown, limitName: unknown, currentUsage: unknown) {
     return gateLimit(entitlement, limitName, currentUsage).ok;
 }
 /**
  * Checks limit and returns detailed GateResult
  */
-export function gateLimit(entitlement: any, limitName: any, currentUsage: any) {
+export function gateLimit(entitlement: unknown, limitName: unknown, currentUsage: unknown) {
     const plan = getPlanDefinition(entitlement.planKey);
     const limit = plan.limits[limitName];
     if (typeof limit === "number") {

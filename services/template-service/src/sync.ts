@@ -128,7 +128,7 @@ export class TemplateSyncService {
           result.errors.push(`${pack.name}: ${err.message}`);
         }
       }
-    } catch (error: unknown) {
+    } catch (error) {
       result.errors.push(`Fatal: ${error.message}`);
     }
 

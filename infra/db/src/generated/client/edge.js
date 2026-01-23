@@ -3835,7 +3835,7 @@ const config = {
       "value": "prisma-client-js"
     },
     "output": {
-      "value": "/Users/fredrick/Documents/GitHub/vayva-platform/infra/db/src/generated/client",
+      "value": "/Users/fredrick/Documents/GitHub/vayva/infra/db/src/generated/client",
       "fromEnvVar": null
     },
     "config": {
@@ -3853,7 +3853,7 @@ const config = {
       }
     ],
     "previewFeatures": [],
-    "sourceFilePath": "/Users/fredrick/Documents/GitHub/vayva-platform/infra/db/prisma/schema.prisma",
+    "sourceFilePath": "/Users/fredrick/Documents/GitHub/vayva/infra/db/prisma/schema.prisma",
     "isCustomOutput": true
   },
   "relativeEnvPaths": {

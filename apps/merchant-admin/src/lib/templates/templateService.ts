@@ -12,7 +12,7 @@ export class TemplateService {
             where: { storeId },
         });
         // 3. Transactional Update
-        await prisma.$transaction(async (tx: any) => {
+        await prisma.$transaction(async (tx: unknown) => {
             await tx.storeTemplateSelection.upsert({
                 where: { storeId },
                 update: {
@@ -57,7 +57,7 @@ export class TemplateService {
             throw new Error("No previous template to rollback to");
         }
         // Apply Previous
-        await prisma.$transaction(async (tx: any) => {
+        await prisma.$transaction(async (tx: unknown) => {
             await tx.storeTemplateSelection.update({
                 where: { storeId },
                 data: {

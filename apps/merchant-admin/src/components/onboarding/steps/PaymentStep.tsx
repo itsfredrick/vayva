@@ -24,7 +24,7 @@ export default function PaymentStep() {
         // Load Banks
         fetch("/api/payments/banks")
             .then(res => res.json())
-            .then((data: any) => {
+            .then((data: unknown) => {
                 if (Array.isArray(data)) setBanks(data);
             })
             .catch(() => toast.error("Failed to load banks"))
@@ -53,7 +53,7 @@ export default function PaymentStep() {
 
             setResolvedName(data.account_name);
             toast.success("Account verified!");
-        } catch (error: any) {
+        } catch (error) {
             setResolvedName("");
             toast.error(error.message);
         } finally {
@@ -98,13 +98,13 @@ export default function PaymentStep() {
                     <select
                         id="bankSelect"
                         value={selectedBankCode}
-                        onChange={(e: any) => setSelectedBankCode(e.target.value)}
+                        onChange={(e: unknown) => setSelectedBankCode(e.target.value)}
                         disabled={loadingBanks}
                         className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
                         title="Select Bank"
                     >
                         <option value="" disabled>Select a bank</option>
-                        {banks.map((bank: any) => (
+                        {banks.map((bank: unknown) => (
                             <option key={bank.code} value={bank.code}>{bank.name}</option>
                         ))}
                     </select>
@@ -117,7 +117,7 @@ export default function PaymentStep() {
                             id="accountNumber"
                             placeholder="0123456789"
                             value={accountNumber}
-                            onChange={(e: any) => setAccountNumber(e.target.value.replace(/\D/g, '').slice(0, 10))}
+                            onChange={(e: unknown) => setAccountNumber(e.target.value.replace(/\D/g, '').slice(0, 10))}
                             maxLength={10}
                             className={resolvedName ? "border-green-500 pr-10" : ""}
                         />

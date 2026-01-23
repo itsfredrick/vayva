@@ -33,7 +33,7 @@ export async function GET(req: NextRequest) {
             integrityCheck: "VALID", // Tested integrity check
         });
     }
-    catch (error: any) {
+    catch (error) {
         console.error("Audit Ledger Error:", error);
         return NextResponse.json({ error: "Failed to fetch ledger" }, { status: 500 });
     }

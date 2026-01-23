@@ -91,7 +91,7 @@ export default function InventoryPage() {
                     // Fallback for backward compatibility
                     setProducts(response);
                 }
-            } catch (e: any) {
+            } catch (e: unknown) {
                 console.error("Failed to load inventory", e);
             } finally {
                 setLoading(false);

@@ -72,7 +72,7 @@ export default function ManageCookiesPage() {
         setStatus("error");
         setErrorMsg(err.message || "Failed to save preferences");
       }
-    } catch (_error) {
+    } catch (error) {
       setStatus("error");
       setErrorMsg("Network error occurred");
     }

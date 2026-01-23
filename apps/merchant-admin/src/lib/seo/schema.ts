@@ -59,11 +59,11 @@ export async function generateSoftwareAppSchemaWithReviews(reviewCount = 0, avgR
         } : undefined
     };
 }
-export function generateBreadcrumbSchema(items: any) {
+export function generateBreadcrumbSchema(items: unknown) {
     return {
         "@context": "https://schema.org",
         "@type": "BreadcrumbList",
-        itemListElement: items.map((item: any, index: any) => ({
+        itemListElement: items.map((item: unknown, index: unknown) => ({
             "@type": "ListItem",
             position: index + 1,
             name: item.name,

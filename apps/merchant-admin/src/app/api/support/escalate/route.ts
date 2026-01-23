@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 import { EscalationService, } from "@/lib/support/escalation.service";
-export async function POST(req: any) {
+export async function POST(req: unknown) {
     try {
         const session = await getServerSession(authOptions);
         if (!session?.user?.id) {

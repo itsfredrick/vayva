@@ -10,7 +10,8 @@ async function main() {
         skip: 0,
     };
 
-    while (true) {
+    let hasMore = true;
+    while (hasMore) {
         const products = await prisma.product.findMany({
             take: params.take,
             skip: params.skip,
@@ -18,7 +19,10 @@ async function main() {
             where: { productType: null }
         });
 
-        if (products.length === 0) break;
+        if (products.length === 0) {
+            hasMore = false;
+            break;
+        }
 
         for (const product of products) {
             if (!product.store?.category) continue;

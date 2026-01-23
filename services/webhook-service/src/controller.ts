@@ -157,7 +157,7 @@ export const WebhookController = {
           deliveredAt: new Date(),
         },
       });
-    } catch (error: unknown) {
+    } catch (_error) {
       const maxAttempts = 10;
       const nextAttempt = delivery.attempt + 1;
       const isDeadLetter = nextAttempt > maxAttempts;

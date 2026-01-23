@@ -75,7 +75,9 @@ async function waitForServer(url, tries = 40) {
         try {
             const res = await fetch(url, { headers: { "Accept": "application/json" } });
             if (res.ok) return;
-        } catch { }
+        } catch (_error) {
+            // Ignore temporary connection failures
+        }
         await sleep(250);
     }
     throw new Error(`Server did not become ready: ${url}`);

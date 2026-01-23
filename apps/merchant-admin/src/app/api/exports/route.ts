@@ -23,7 +23,7 @@ export async function GET() {
         return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
     }
 }
-export async function POST(req: any) {
+export async function POST(req: unknown) {
     try {
         const session = await getServerSession(authOptions);
         if (!session || !session.user) {

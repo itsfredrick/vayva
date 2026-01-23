@@ -11,24 +11,24 @@ const ROLE_PERMISSIONS = {
     [AppRole.ADMIN]: ["read", "write", "manage_team", "initiate_money_movement"],
     [AppRole.OWNER]: ["read", "write", "manage_team", "initiate_money_movement"],
 };
-export function hasPermission(role: any, permission: any) {
+export function hasPermission(role: unknown, permission: unknown) {
     const perms = ROLE_PERMISSIONS[role] || [];
     return perms.includes(permission);
 }
-export function isRoleAtLeast(userRole: any, requiredRole: any) {
+export function isRoleAtLeast(userRole: unknown, requiredRole: unknown) {
     const roles = [AppRole.VIEWER, AppRole.STAFF, AppRole.ADMIN, AppRole.OWNER];
     const userIndex = roles.indexOf(userRole);
     const requiredIndex = roles.indexOf(requiredRole);
     return userIndex >= requiredIndex;
 }
-export function requireRole(user: any, minimumRole: any) {
+export function requireRole(user: unknown, minimumRole: unknown) {
     if (!user)
         return false;
     // Assuming user.role contains the role string (e.g. 'staff')
     // If role is undefined, default to viewer or none
     return isRoleAtLeast(user.role || "viewer", minimumRole);
 }
-export async function authorizeAction(user: any, minimumRole: any) {
+export async function authorizeAction(user: unknown, minimumRole: unknown) {
     if (!user) {
         return Response.json({ error: "Unauthorized" }, { status: 401 });
     }

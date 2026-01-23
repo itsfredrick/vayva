@@ -23,10 +23,10 @@ export const FEATURES = {
     // Future flags
     CONTROL_CENTER_ENABLED: false,
 };
-export function isFeatureEnabled(feature: any) {
+export function isFeatureEnabled(feature: unknown) {
     return FEATURES[feature];
 }
-export function assertFeatureEnabled(feature: any) {
+export function assertFeatureEnabled(feature: unknown) {
     if (!FEATURES[feature]) {
         throw new Error(`Feature ${feature} is disabled due to missing configuration.`);
     }

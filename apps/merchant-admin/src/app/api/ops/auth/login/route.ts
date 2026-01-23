@@ -5,7 +5,7 @@ const loginSchema = z.object({
     email: z.string().email(),
     password: z.string().min(1),
 });
-export async function POST(req: any) {
+export async function POST(req: unknown) {
     const ip = req.headers.get("x-forwarded-for")?.split(",")[0] || "unknown";
     // 1. Rate Limiting Check
     if (await OpsAuthService.isRateLimited(ip)) {

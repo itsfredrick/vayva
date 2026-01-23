@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import { requireAuth } from "@/lib/auth/session";
 import { prisma } from "@/lib/prisma";
 import { z } from "zod";
-export async function GET(request: any) {
+export async function GET(request: unknown) {
     try {
         const session = await requireAuth();
         const storeId = session.user.storeId;
@@ -17,7 +17,7 @@ export async function GET(request: any) {
         return NextResponse.json({ error: "Failed to fetch AI profile" }, { status: 500 });
     }
 }
-export async function PUT(request: any) {
+export async function PUT(request: unknown) {
     try {
         const session = await requireAuth();
         const storeId = session.user.storeId;

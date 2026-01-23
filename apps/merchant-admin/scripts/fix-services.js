@@ -49,7 +49,7 @@ function fixServiceFile(filePath) {
     content = content.replace(staticPropRegex, (match, indent, staticKw, prop, value) => {
         if (staticKw && !match.includes(': any')) {
             changes++;
-            return `${indent}${staticKw}${prop}: any = ${value};`;
+            return `${indent}${staticKw}${prop}: unknown= ${value};`;
         }
         return match;
     });

@@ -5,7 +5,7 @@ import { authorizeAction, AppRole } from "@/lib/permissions";
 import { logAuditEvent, AuditEventType } from "@/lib/audit";
 import { checkRateLimit } from "@/lib/rate-limit";
 import { requireSudoMode } from "@/lib/security";
-export async function POST(request: any) {
+export async function POST(request: unknown) {
     try {
         const user = await getSessionUser();
         if (!user)

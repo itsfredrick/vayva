@@ -71,7 +71,7 @@ export function WebhookHealth() {
                                 No recent events found.
                             </div>
                         ) : (
-                            stats.recentEvents.map((event: any, i: number) => (
+                            stats.recentEvents.map((event: unknown, i: number) => (
                                 <div key={i} className="flex justify-between items-center p-2 border rounded">
                                     <span className="flex items-center gap-2">
                                         {event.status === "FAILED" ? (
@@ -94,4 +94,4 @@ export function WebhookHealth() {
     );
 }
 
-const fetcher = (url: string) => fetch(url).then((res: any) => res.json());
+const fetcher = (url: string) => fetch(url).then((res: unknown) => res.json());

@@ -9,14 +9,14 @@ const DEFAULT_TIMEZONE = "Africa/Lagos";
  * @param currency ISO 4217 Currency Code
  * @param locale Locale string
  */
-export function formatCurrency(amount: any, currency = DEFAULT_CURRENCY, locale = DEFAULT_LOCALE) {
+export function formatCurrency(amount: unknown, currency = DEFAULT_CURRENCY, locale = DEFAULT_LOCALE) {
     try {
         return new Intl.NumberFormat(locale, {
             style: "currency",
             currency: currency,
         }).format(amount);
     }
-    catch (error) {
+    catch (_error) {
         // Fallback if currency/locale is invalid
         return new Intl.NumberFormat(DEFAULT_LOCALE, {
             style: "currency",
@@ -30,18 +30,18 @@ export function formatCurrency(amount: any, currency = DEFAULT_CURRENCY, locale 
  * @param formatStr Format string (date-fns)
  * @param timezone IANA Timezone string
  */
-export function formatDateTime(date: any, formatStr = "PPP p", timezone = DEFAULT_TIMEZONE) {
+export function formatDateTime(date: unknown, formatStr = "PPP p", timezone = DEFAULT_TIMEZONE) {
     try {
         const d = new Date(date);
         return formatInTimeZone(d, timezone, formatStr);
     }
-    catch (error) {
+    catch (_error) {
         return date.toString();
     }
 }
 /**
  * Get readable timezone name
  */
-export function getTimezoneName(timezone: any) {
+export function getTimezoneName(timezone: unknown) {
     return timezone.replace(/_/g, " ");
 }

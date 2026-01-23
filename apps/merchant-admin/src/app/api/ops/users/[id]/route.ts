@@ -7,7 +7,7 @@ import crypto from "crypto";
 const patchSchema = z.object({
     action: z.enum(["DISABLE", "ENABLE", "RESET_PASSWORD"]),
 });
-export async function PATCH(req: any, { params }: any) {
+export async function PATCH(req: unknown, { params }: unknown) {
     const session = await OpsAuthService.getSession();
     if (!session || session.user.role !== "OPS_OWNER") {
         const ip = req.headers.get("x-forwarded-for")?.split(",")[0] || "unknown";

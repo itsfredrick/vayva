@@ -28,7 +28,7 @@ export class OnboardingService {
         return await prisma.$transaction(async (tx) => {
             const { step, data, isComplete } = payload;
             // 1. Prepare Onboarding Update
-            const updateData: any = {
+            const updateData: unknown= {
                 updatedAt: new Date(),
             };
             if (step)
@@ -78,7 +78,7 @@ export class OnboardingService {
                 data: updateData
             });
             // 2. Sync Store Fields
-            const storeUpdate: any = {};
+            const storeUpdate: unknown= {};
             if (step)
                 storeUpdate.onboardingLastStep = step;
             if (isComplete) {
@@ -100,7 +100,7 @@ export class OnboardingService {
             // 3. Sync KYC Data
             const kycData = data?.kyc || data?.identity;
             if (kycData) {
-                const kycUpdate: any = {};
+                const kycUpdate: unknown= {};
                 if (kycData.nin) {
                     kycUpdate.ninLast4 = kycData.nin.slice(-4);
                     kycUpdate.fullNinEncrypted = `ENCRYPTED_${kycData.nin}`; // START MOCK ENCRYPTION

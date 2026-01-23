@@ -5,7 +5,7 @@ import { createMockOrder, createMockOrders } from '../factories';
 
 // Mock the API handler wrapper
 vi.mock('@/lib/api-handler', () => ({
-    withVayvaAPI: (permission: any, handler: any) => handler,
+    withVayvaAPI: (permission: unknown, handler: unknown) => handler,
     PERMISSIONS: {
         ORDERS_VIEW: 'ORDERS_VIEW',
         ORDERS_MANAGE: 'ORDERS_MANAGE',

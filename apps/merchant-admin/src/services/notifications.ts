@@ -1,9 +1,9 @@
 import { WhatsappManager } from "./whatsapp";
 import { logger } from "@/lib/logger";
 export class NotificationService {
-    static SYSTEM_INSTANCE: any;
+    static SYSTEM_INSTANCE: unknown;
 
-    static async sendMilestone(event: any, data: any) {
+    static async sendMilestone(event: unknown, data: unknown) {
         let message = "";
         switch (event) {
             case "onboarding_complete":

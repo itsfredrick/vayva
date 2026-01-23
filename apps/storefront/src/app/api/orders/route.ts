@@ -177,7 +177,7 @@ export async function POST(req: NextRequest) {
       } : null
     });
 
-  } catch (error: unknown) {
+  } catch (error) {
     reportError(error, { route: "POST /api/orders", storeId: storeId });
     return NextResponse.json(
       {

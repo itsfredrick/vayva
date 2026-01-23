@@ -41,7 +41,7 @@ export var AuditEventType;
     AuditEventType["PAYOUT_SETTING_CHANGED"] = "PAYOUT_SETTING_CHANGED";
     AuditEventType["ACCOUNT_SECURITY_ACTION"] = "ACCOUNT_SECURITY_ACTION";
 })(AuditEventType || (AuditEventType = {}));
-export async function logAuditEvent(storeId: any, userId: any, action: any, details: any) {
+export async function logAuditEvent(storeId: unknown, userId: unknown, action: unknown, details: unknown) {
     try {
         await prisma.adminAuditLog.create({
             data: {
@@ -63,7 +63,7 @@ export async function logAuditEvent(storeId: any, userId: any, action: any, deta
     }
 }
 // Helper for diffing
-export function computeDiff(oldObj: any, newObj: any) {
+export function computeDiff(oldObj: unknown, newObj: unknown) {
     const before = {};
     const after = {};
     const allKeys = new Set([...Object.keys(oldObj || {}), ...Object.keys(newObj || {})]);

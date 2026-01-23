@@ -2,7 +2,7 @@
  * PRODUCT SCHEMA
  * Type: Product + Offer
  */
-export function getProductSchema(props: any) {
+export function getProductSchema(props: unknown) {
     return {
         "@context": "https://schema.org",
         "@type": "Product",

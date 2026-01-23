@@ -7,9 +7,9 @@ import { redirect } from "next/navigation";
  * Higher-order function for API routes.
  *
  * Usage:
- * export const POST = withPermission("orders:manage", async (req: any, session: any) => { ... });
+ * export const POST = withPermission("orders:manage", async (req: unknown, session: unknown) => { ... });
  */
-export function withPermission(permission: any, handler: any) {
+export function withPermission(permission: unknown, handler: unknown) {
     return async (req, ...args) => {
         try {
             const session = await requireAuth();
@@ -35,7 +35,7 @@ export function withPermission(permission: any, handler: any) {
  * requirePermission
  * Use this in Server Components.
  */
-export async function requirePermission(permission: any) {
+export async function requirePermission(permission: unknown) {
     const session = await requireAuth();
     const allowed = PermissionEngine.can({
         role: session.user.role,

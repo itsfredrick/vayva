@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
-export async function GET(request: any) {
+export async function GET(request: unknown) {
     const { searchParams } = new URL(request.url);
     const ticketId = searchParams.get("ticketId");
     const rating = searchParams.get("rating");

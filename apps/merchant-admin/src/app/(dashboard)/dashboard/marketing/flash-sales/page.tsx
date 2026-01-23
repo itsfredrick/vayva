@@ -83,7 +83,7 @@ export default function FlashSalesPage() {
             setIsOpen(false);
             setFormData({ name: "", discount: "20", durationHours: "24" }); // Reset
             fetchSales();
-        } catch (error: any) {
+        } catch (error) {
             toast.error(error.message || "Failed to create flash sale");
         } finally {
             setIsSubmitting(false);
@@ -158,7 +158,7 @@ export default function FlashSalesPage() {
             setEditingSale(null);
             setFormData({ name: "", discount: "20", durationHours: "24" });
             fetchSales();
-        } catch (error: any) {
+        } catch (error) {
             toast.error(error.message || "Failed to update flash sale");
         } finally {
             setIsSubmitting(false);

@@ -2,8 +2,8 @@ import { prisma } from "@vayva/db";
 import { assertFeatureEnabled } from "@/lib/env-validation";
 import { YouverifyService } from "@/lib/kyc/youverify";
 // Name matching logic
-export function calculateNameMatch(provided: any, verified: any) {
-    const normalize = (s: any) => s
+export function calculateNameMatch(provided: unknown, verified: unknown) {
+    const normalize = (s: unknown) => s
         .toLowerCase()
         .trim()
         .replace(/[^a-z0-9]/g, "");
@@ -23,7 +23,7 @@ export function calculateNameMatch(provided: any, verified: any) {
 }
 // Youverify Adapter (Real Implementation)
 class YouverifyProvider {
-    async verify(request: any) {
+    async verify(request: unknown) {
         try {
             const validationData = {
                 firstName: request.firstName,
@@ -55,7 +55,7 @@ class YouverifyProvider {
                         : undefined),
             };
         }
-        catch (error: any) {
+        catch (error) {
             return {
                 success: false,
                 matchScore: 0,
@@ -66,13 +66,13 @@ class YouverifyProvider {
     }
 }
 export class KycService {
-    provider: any;
+    provider: unknown;
 
     constructor() {
         // Only real provider allowed - no tests
         this.provider = new YouverifyProvider();
     }
-    async verifyIdentity(storeId: any, request: any) {
+    async verifyIdentity(storeId: unknown, request: unknown) {
         // Enforce feature flag at runtime call, not build time
         assertFeatureEnabled("KYC_ENABLED");
         if (!request.consent) {

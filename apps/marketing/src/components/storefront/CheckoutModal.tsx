@@ -78,7 +78,7 @@ export function CheckoutModal({
           onClose();
         }
       }
-    } catch (error: unknown) {
+    } catch (error) {
       console.error(error);
       toast.error(error.message || "Failed to process order");
     } finally {

@@ -7,7 +7,7 @@ const ALLOWED_TRANSITIONS = {
     PICKED_UP: ["IN_TRANSIT", "FAILED"],
     IN_TRANSIT: ["DELIVERED", "FAILED"],
 };
-export async function POST(request: any, context: any) {
+export async function POST(request: unknown, context: unknown) {
     try {
         const { id: orderId } = await context.params;
         const session = await requireAuth();

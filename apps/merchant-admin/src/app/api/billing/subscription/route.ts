@@ -86,7 +86,7 @@ export async function GET(req: NextRequest) {
         ...limits,
       })),
     });
-  } catch (error: any) {
+  } catch (error) {
     console.error("Subscription fetch error:", error);
 
     if (error.message === "Unauthorized") {
@@ -170,7 +170,7 @@ export async function POST(request: NextRequest) {
       paymentUrl: payment.authorization_url,
       reference: payment.reference,
     });
-  } catch (error: any) {
+  } catch (error) {
     console.error("Plan change error:", error);
 
     if (error.message === "Unauthorized") {

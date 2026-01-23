@@ -87,8 +87,8 @@ export class ResendAdapter {
         // Trim whitespace
         return text
             .split("\n")
-            .map((line: any) => line.trim())
-            .filter((line: any) => line)
+            .map((line: unknown) => line.trim())
+            .filter((line: unknown) => line)
             .join("\n");
     }
 }

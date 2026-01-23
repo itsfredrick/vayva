@@ -41,7 +41,7 @@ export class OutboxWorker {
                 data: { status: "PROCESSED" },
             });
         }
-        catch (error) {
+        catch (_error) {
             // Mark as failed and schedule retry
             const nextRetryAt = new Date(Date.now() + 60000); // 1 minute
             await prisma.outboxEvent.update({

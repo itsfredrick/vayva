@@ -48,7 +48,7 @@ export interface Store {
     slug: string;
     industrySlug: IndustrySlug;
     currency: string;
-    themeConfig?: any;
+    themeConfig?: unknown;
 }
 
 export interface ExtendedMerchant extends Omit<MerchantContext, "industrySlug"> {

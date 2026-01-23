@@ -3,7 +3,7 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 import { StorageService } from "@/lib/storage/storageService";
 import { FEATURES } from "@/lib/env-validation";
-export async function GET(request: any) {
+export async function GET(request: unknown) {
     if (!getServerSession(authOptions)) {
         return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
@@ -12,7 +12,7 @@ export async function GET(request: any) {
         provider: "vercel-blob",
     });
 }
-export async function POST(request: any) {
+export async function POST(request: unknown) {
     try {
         const session = await getServerSession(authOptions);
         if (!session?.user) {

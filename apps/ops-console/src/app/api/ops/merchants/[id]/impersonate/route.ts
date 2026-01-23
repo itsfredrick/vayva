@@ -69,7 +69,7 @@ export async function POST(
             redirectUrl: process.env.NEXT_PUBLIC_APP_URL || "https://app.vayva.ng"
         });
 
-    } catch (error: unknown) {
+    } catch (error) {
         console.error("Impersonation Error:", error);
         return NextResponse.json(
             { error: "Internal Server Error" },

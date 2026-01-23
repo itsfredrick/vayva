@@ -1,14 +1,14 @@
 "use client";
 import { useState, useEffect } from "react";
 const EducationStateManager = {
-    checkEligibility: async (userId: any, guidanceId: any) => {
+    checkEligibility: async (userId: unknown, guidanceId: unknown) => {
         return { shouldShow: false };
     },
-    markShown: async (userId: any, guidanceId: any) => { },
-    markCompleted: async (userId: any, guidanceId: any) => { },
-    dismiss: async (userId: any, guidanceId: any) => { },
+    markShown: async (userId: unknown, guidanceId: unknown) => { },
+    markCompleted: async (userId: unknown, guidanceId: unknown) => { },
+    dismiss: async (userId: unknown, guidanceId: unknown) => { },
 };
-export function useEducation(userId: any, guidanceId: any) {
+export function useEducation(userId: unknown, guidanceId: unknown) {
     const [eligibility, setEligibility] = useState({
         shouldShow: false,
     });

@@ -72,7 +72,7 @@ function fixFile(filePath) {
     const singleArrowRegex = /\b([a-zA-Z_$][\w$]*)\s*=>\s*{/g;
     content = content.replace(singleArrowRegex, (match, param) => {
         changes++;
-        return `(${param}: any) => {`;
+        return `(${param}: unknown) => {`;
     });
 
     // Fix 4: Change unknown to any

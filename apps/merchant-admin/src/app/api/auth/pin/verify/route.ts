@@ -64,7 +64,7 @@ export async function POST(request: NextRequest) {
         await createPinSession(session.user.storeId, wallet.pinVersion);
         return NextResponse.json({ success: true });
     }
-    catch (e: any) {
+    catch (e: unknown) {
         console.error(e);
         return NextResponse.json({ error: "Server error" }, { status: 500 });
     }

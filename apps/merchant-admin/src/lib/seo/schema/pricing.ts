@@ -2,7 +2,11 @@
  * PRICING SCHEMA
  * Type: OfferCatalog + FAQPage
  */
-export function getPricingSchema(props: any) {
+interface PricingSchemaProps {
+    baseUrl: string;
+}
+
+export function getPricingSchema(props: PricingSchemaProps) {
     return {
         "@context": "https://schema.org",
         "@graph": [

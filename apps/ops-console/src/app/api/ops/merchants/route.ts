@@ -90,15 +90,15 @@ export const GET = withOpsAuth(async (request: NextRequest) => {
     prisma.store.count({ where }),
   ]);
 
-  const data = stores.map((store: any) => {
+  const data = stores.map((store) => {
     // Find owner
     const members = store.tenant?.tenantMemberships || [];
-    const ownerMember = members.find((m: any) => m.role === "OWNER") || members[0];
+    const ownerMember = members.find((m) => m.role === "OWNER") || members[0];
     const owner = ownerMember?.user;
     const ownerName = owner ? `${owner.firstName || ""} ${owner.lastName || ""}`.trim() : "Unknown";
 
     // Calculate GMV
-    const gmv30d = store.orders.reduce((sum: number, o: any) => sum + Number(o.total), 0);
+    const gmv30d = store.orders.reduce((sum: number, o) => sum + Number(o.total), 0);
 
     // Determine Risk
     const riskFlags = [];

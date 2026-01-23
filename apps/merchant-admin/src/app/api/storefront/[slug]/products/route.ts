@@ -18,7 +18,7 @@ export async function GET(req: NextRequest, { params }: { params: Promise<{ slug
             return NextResponse.json({ error: "Store not found" }, { status: 404 });
         }
         // Build the query
-        const where: any = {
+        const where: unknown= {
             storeId: store.id,
             status: "ACTIVE",
         };

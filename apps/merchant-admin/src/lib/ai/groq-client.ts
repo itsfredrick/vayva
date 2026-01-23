@@ -40,7 +40,7 @@ export class GroqClient {
         }
         try {
             // 1. Sanitize user messages
-            const safeMessages = messages.map((m: any) => ({
+            const safeMessages = messages.map((m: unknown) => ({
                 ...m,
                 content: m.content ? this.sanitizeInput(m.content) : null,
             }));
@@ -70,7 +70,7 @@ export class GroqClient {
                         success: true,
                         channel: this.context === "MERCHANT" ? "INAPP" : "WHATSAPP",
                     }
-                }).catch((e: any) => logger.warn("[GroqClient] Audit log failed", undefined, { error: e }));
+                }).catch((e: unknown) => logger.warn("[GroqClient] Audit log failed", undefined, { error: e }));
             }
             return response;
         }

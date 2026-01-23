@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import { requireAuth } from "@/lib/auth/session";
 import { prisma } from "@/lib/prisma";
 import bcrypt from "bcryptjs";
-export async function POST(request: any) {
+export async function POST(request: unknown) {
     try {
         const session = await requireAuth();
         const userId = session.user.id;

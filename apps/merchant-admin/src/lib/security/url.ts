@@ -5,7 +5,7 @@ import { z } from "zod";
  * - Blocks local/internal I P addresses
  * - Strips sensitive credentials
  */
-export function normalizeUrl(inputUrl: any, allowedLocal = false) {
+export function normalizeUrl(inputUrl: unknown, allowedLocal = false) {
     try {
         const url = new URL(inputUrl);
         // 1. Protocol Check
@@ -44,7 +44,7 @@ export function normalizeUrl(inputUrl: any, allowedLocal = false) {
 /**
  * Zod helper for safe URLs
  */
-export const SafeUrlSchema = z.string().transform((val: any, ctx: any) => {
+export const SafeUrlSchema = z.string().transform((val: unknown, ctx: unknown) => {
     const normalized = normalizeUrl(val);
     if (!normalized) {
         ctx.addIssue({

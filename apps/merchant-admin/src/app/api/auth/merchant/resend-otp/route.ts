@@ -54,7 +54,7 @@ export async function POST(request: NextRequest) {
             email: user.email,
         });
     }
-    catch (error: any) {
+    catch (error) {
         console.error("Resend OTP error:", error);
         return NextResponse.json({ error: "Failed to resend verification code" }, { status: 500 });
     }

@@ -47,7 +47,7 @@ export default function NewServicePage() {
 
             toast.success("Service created!");
             router.push("/dashboard/services");
-        } catch (error: unknown) {
+        } catch (error) {
             toast.error(error.message);
         } finally {
             setLoading(false);

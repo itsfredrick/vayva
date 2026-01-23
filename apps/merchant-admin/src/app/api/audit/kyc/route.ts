@@ -31,7 +31,7 @@ export async function GET(req: NextRequest) {
         }));
         return NextResponse.json({ records: formattedRecords });
     }
-    catch (error: any) {
+    catch (error) {
         console.error("Audit KYC Error:", error);
         return NextResponse.json({ error: "Failed to fetch KYC records" }, { status: 500 });
     }

@@ -83,7 +83,7 @@ export async function POST(req: NextRequest) {
             tempPassword, // Return temp password to display once
         });
 
-    } catch (error: unknown) {
+    } catch (error) {
         if (error.code === "P2002") {
             return NextResponse.json({ error: "Email already exists" }, { status: 409 });
         }
@@ -126,7 +126,7 @@ export async function DELETE(req: NextRequest) {
 
         return NextResponse.json({ success: true });
 
-    } catch (error: unknown) {
+    } catch (error) {
         return NextResponse.json({ error: "Failed to delete user" }, { status: 500 });
     }
 }
@@ -179,7 +179,7 @@ export async function PATCH(req: NextRequest) {
 
         return NextResponse.json({ success: true, user: updated });
 
-    } catch (error: unknown) {
+    } catch (error) {
         console.error("Update User Error:", error);
         return NextResponse.json({ error: "Failed to update user" }, { status: 500 });
     }

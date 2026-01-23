@@ -3,7 +3,7 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth"; // Assumed path based on convention
 import { prisma } from "@/lib/prisma";
 import { Resend } from "resend";
-export async function POST(request: any) {
+export async function POST(request: unknown) {
     const session = await getServerSession(authOptions);
     if (!session || !session.user) {
         return NextResponse.json({ error: "Unauthorized" }, { status: 401 });

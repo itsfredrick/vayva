@@ -1,6 +1,6 @@
 "use client";
 import confetti from "canvas-confetti";
-export const triggerConfetti = (options: any) => {
+export const triggerConfetti = (options: unknown) => {
     const defaults = {
         particleCount: 100,
         spread: 70,
@@ -16,7 +16,7 @@ export const triggerSuccessConfetti = () => {
     const defaults = {
         origin: { y: 0.7 },
     };
-    function fire(particleRatio: any, opts: any) {
+    function fire(particleRatio: unknown, opts: unknown) {
         confetti({
             ...defaults,
             ...opts,

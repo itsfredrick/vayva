@@ -9,7 +9,7 @@ export async function PUT(req, context) {
         await CartService.updateItem(itemId, quantity);
         return NextResponse.json({ success: true });
     }
-    catch (error) {
+    catch (_error) {
         return new NextResponse("Error updating item", { status: 500 });
     }
 }
@@ -20,7 +20,7 @@ export async function DELETE(req, context) {
         await CartService.removeItem(itemId);
         return NextResponse.json({ success: true });
     }
-    catch (error) {
+    catch (_error) {
         return new NextResponse("Error removing item", { status: 500 });
     }
 }

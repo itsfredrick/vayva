@@ -21,7 +21,18 @@ const formatCurrency = (amount: number) => {
 
 export function CartItemRow({ item }: CartItemProps) {
     const { updateItem, removeItem, isLoading } = useCart();
-    const variant = item.variant as any;
+
+    // Type casting to avoid 'any' for CI compliance while resolving property access
+    const variant = item.variant as unknown as {
+        id: string;
+        title: string;
+        price: number;
+        product: {
+            title: string;
+            productImages?: { url: string }[]
+        };
+        productImage?: { url: string };
+    };
     const product = variant.product;
     const image = product.productImages?.[0] || variant.productImage;
 

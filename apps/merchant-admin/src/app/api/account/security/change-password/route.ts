@@ -4,7 +4,7 @@ import { prisma } from "@/lib/prisma";
 import bcrypt from "bcryptjs";
 import { logAuditEvent as logAudit, AuditEventType } from "@/lib/audit";
 import { checkRateLimit } from "@/lib/rate-limit";
-export async function POST(req: any) {
+export async function POST(req: unknown) {
     try {
         const session = await requireAuth();
         const userId = session.user.id;

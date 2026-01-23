@@ -39,7 +39,7 @@ export default function ShipmentsPage() {
             if (!res.ok) throw new Error("Failed to load shipments");
             const result = await res.json() as { data: Shipment[] };
             setShipments(result.data || []);
-        } catch (error: any) {
+        } catch (error) {
             console.error(error);
             toast.error(error.message || "Could not load shipments");
         } finally {

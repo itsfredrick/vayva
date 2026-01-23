@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { clearSession } from "@/lib/session";
-export async function POST(request: any) {
+export async function POST(request: unknown) {
     try {
         // Clear session and delete from database
         await clearSession();

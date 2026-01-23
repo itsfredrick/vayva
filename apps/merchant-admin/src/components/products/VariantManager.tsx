@@ -32,7 +32,7 @@ export function VariantManager({ productId, variantLabel = "Variants" }: Variant
         stock: "0"
     });
 
-    const handleOpen = (variant?: any) => {
+    const handleOpen = (variant?: unknown) => {
         if (variant) {
             setEditingVariant(variant);
             setFormData({
@@ -119,7 +119,7 @@ export function VariantManager({ productId, variantLabel = "Variants" }: Variant
                                 </TableCell>
                             </TableRow>
                         )}
-                        {variants?.map((v: any) => (
+                        {variants?.map((v: unknown) => (
                             <TableRow key={v.id} className="hover:bg-gray-50">
                                 <TableCell className="p-3 font-medium">{v.title}</TableCell>
                                 <TableCell className="p-3">{v.price}</TableCell>

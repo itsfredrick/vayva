@@ -21,7 +21,7 @@ export async function GET() {
         updatedAt: null, // Never set
     });
 }
-export async function POST(request: any) {
+export async function POST(request: unknown) {
     let body;
     try {
         body = await request.json();
@@ -60,7 +60,7 @@ export async function POST(request: any) {
             },
         });
     }
-    catch (error) {
+    catch (_error) {
         // Hard Rule: Return 503 if DB write fails
         return NextResponse.json({
             code: "service_unavailable",

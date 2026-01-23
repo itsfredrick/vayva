@@ -1,18 +1,18 @@
 import { SITE_ORIGIN, isAllowIndex, isHardNoindex, pageTypeFor, DUPLICATE_MARKETPLACE_PATH, CANONICAL_MARKETPLACE_TARGET, } from "./route-policy";
 import { buildJsonLdFor } from "./schema/index";
-export function canonicalFor(path: any) {
+export function canonicalFor(path: unknown) {
     // normalize
     const normalized = path === "" ? "/" : path;
     return `${SITE_ORIGIN}${normalized}`;
 }
-export function robotsFor(path: any) {
+export function robotsFor(path: unknown) {
     if (isHardNoindex(path))
         return { index: false, follow: true };
     if (!isAllowIndex(path))
         return { index: false, follow: true };
     return { index: true, follow: true };
 }
-export function metadataFor(path: any, ctx: any) {
+export function metadataFor(path: unknown, ctx: unknown) {
     // Duplicate marketplace handling: marketing /marketplace must not compete with /market/*
     const isDupMarketplace = path === DUPLICATE_MARKETPLACE_PATH;
     const robots = robotsFor(path);
@@ -42,7 +42,7 @@ export function metadataFor(path: any, ctx: any) {
         },
     };
 }
-function computeTitle(path: any, ctx: any) {
+function computeTitle(path: unknown, ctx: unknown) {
     const pt = pageTypeFor(path);
     switch (pt) {
         case "home":
@@ -65,7 +65,7 @@ function computeTitle(path: any, ctx: any) {
             return `${ctx?.pageTitle ?? "Vayva"} | Vayva`;
     }
 }
-function computeDescription(path: any, ctx: any) {
+function computeDescription(path: unknown, ctx: unknown) {
     const pt = pageTypeFor(path);
     switch (pt) {
         case "home":
@@ -81,6 +81,6 @@ function computeDescription(path: any, ctx: any) {
                 "Build, sell, and grow with Vayva—Nigeria-first ecommerce infrastructure.");
     }
 }
-export function jsonLdFor(path: any, ctx: any) {
+export function jsonLdFor(path: unknown, ctx: unknown) {
     return buildJsonLdFor(path, ctx);
 }

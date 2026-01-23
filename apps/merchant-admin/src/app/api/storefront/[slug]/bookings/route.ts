@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
-export async function POST(req: any, { params }: any) {
+export async function POST(req: unknown, { params }: unknown) {
     try {
         const { slug } = await params;
         const body = await req.json();

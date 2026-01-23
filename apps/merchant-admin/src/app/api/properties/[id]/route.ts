@@ -36,7 +36,7 @@ export const PUT = withVayvaAPI(PERMISSIONS.PRODUCTS_MANAGE, async (request, { s
             return NextResponse.json({ error: "Property not found" }, { status: 404 });
         }
         // Transaction update
-        const result = await prisma.$transaction(async (tx: any) => {
+        const result = await prisma.$transaction(async (tx: unknown) => {
             // 1. Update Base Product
             // 1. Update Base Product & Images
             await tx.product.update({
@@ -48,7 +48,7 @@ export const PUT = withVayvaAPI(PERMISSIONS.PRODUCTS_MANAGE, async (request, { s
                     productImages: {
                         deleteMany: {},
                         createMany: {
-                            data: (data.images || []).map((url: any, index: any) => ({
+                            data: (data.images || []).map((url: unknown, index: unknown) => ({
                                 url,
                                 position: index
                             }))

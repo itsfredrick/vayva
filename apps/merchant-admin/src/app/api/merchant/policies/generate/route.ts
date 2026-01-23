@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import { getServerSession } from "next-auth";
 import { prisma } from "@/lib/prisma";
 import { generateDefaultPolicies } from "@vayva/policies";
-export async function POST(req: any) {
+export async function POST(req: unknown) {
     try {
         const session = await getServerSession();
         const user = session?.user;
@@ -25,7 +25,7 @@ export async function POST(req: any) {
             supportEmail: settings?.supportEmail,
         });
         // Create policy records
-        const created = await Promise.all(policies.map((policy: any) => prisma.merchantPolicy.upsert({
+        const created = await Promise.all(policies.map((policy: unknown) => prisma.merchantPolicy.upsert({
             where: {
                 storeId_type: {
                     storeId: user.storeId,

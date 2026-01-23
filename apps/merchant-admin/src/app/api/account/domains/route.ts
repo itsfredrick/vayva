@@ -30,7 +30,7 @@ export async function GET() {
         return NextResponse.json({ error: "Failed to fetch domain details" }, { status: 500 });
     }
 }
-export async function POST(request: any) {
+export async function POST(request: unknown) {
     try {
         const { checkFeatureAccess } = await import("@/lib/auth/gating");
         const access = await checkFeatureAccess("custom_domain");

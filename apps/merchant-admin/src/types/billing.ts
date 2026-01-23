@@ -17,7 +17,7 @@ export interface PaystackTransactionVerify {
     channel: string;
     currency: string;
     ip_address: string;
-    metadata: any;
+    metadata: unknown;
     customer: {
         id: number;
         first_name: string | null;
@@ -25,7 +25,7 @@ export interface PaystackTransactionVerify {
         email: string;
         customer_code: string;
         phone: string | null;
-        metadata: any;
+        metadata: unknown;
         risk_action: string;
     };
     authorization: {

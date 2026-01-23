@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import { getSessionUser } from "@/lib/session";
 import { prisma } from "@/lib/prisma";
 // GET /api/merchant/onboarding/products - count products for onboarding checks
-export async function GET(_req: any) {
+export async function GET(_req: unknown) {
     try {
         const sessionUser = await getSessionUser();
         if (!sessionUser) {

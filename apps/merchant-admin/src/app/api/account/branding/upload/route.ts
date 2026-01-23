@@ -3,7 +3,7 @@ import { requireAuth } from "@/lib/auth/session";
 import { randomUUID } from "crypto";
 import { validateUploadedFile, DEFAULT_IMAGE_MAX_SIZE } from "@/lib/file-validation";
 import { applyRateLimit, RATE_LIMITS } from "@/lib/rate-limit-enhanced";
-export async function POST(request: any) {
+export async function POST(request: unknown) {
     try {
         // Apply rate limiting
         const rateLimitResult = await applyRateLimit(request, "branding-upload", RATE_LIMITS.FILE_UPLOAD);

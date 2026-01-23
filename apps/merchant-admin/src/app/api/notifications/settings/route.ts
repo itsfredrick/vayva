@@ -41,7 +41,7 @@ export async function GET() {
         return NextResponse.json({ error: "Failed to fetch notification settings" }, { status: 500 });
     }
 }
-export async function PUT(request: any) {
+export async function PUT(request: unknown) {
     try {
         const session = await requireAuth();
         const storeId = session.user.storeId;

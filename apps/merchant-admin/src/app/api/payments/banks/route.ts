@@ -7,7 +7,7 @@ export async function GET() {
         // Filter for active banks only and sort alphabetically
         const activeBanks = banks
             .filter(b => b.active)
-            .sort((a: any, b: any) => a.name.localeCompare(b.name))
+            .sort((a: unknown, b: unknown) => a.name.localeCompare(b.name))
             .map(b => ({ name: b.name, code: b.code }));
         return NextResponse.json(activeBanks);
     }

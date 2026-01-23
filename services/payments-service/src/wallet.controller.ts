@@ -230,7 +230,7 @@ export const createVirtualAccountHandler = async (
     });
 
     return reply.send(updated);
-  } catch (error: unknown) {
+  } catch (error) {
     console.error("Paystack DVA Error:", error.response?.data || error.message);
     return reply
       .status(500)

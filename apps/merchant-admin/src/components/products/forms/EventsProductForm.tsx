@@ -9,10 +9,10 @@ import { Trash2, Plus } from "lucide-react";
 
 interface EventsProductFormProps {
     productId?: string;
-    initialData?: any;
+    initialData?: unknown;
 }
 
-export function EventsProductForm({ productId: any, initialData }: EventsProductFormProps) {
+export function EventsProductForm({ productId: unknown, initialData }: EventsProductFormProps) {
     const router = useRouter();
     const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -41,19 +41,19 @@ export function EventsProductForm({ productId: any, initialData }: EventsProduct
 
     const isOnline = watch("isOnline");
 
-    const onSubmit = async (data: any) => {
+    const onSubmit = async (data: unknown) => {
         setIsSubmitting(true);
         try {
             // Map form data to backend schema
             // We use the 'price' field for the lowest ticket price for display purposes
-            const lowestPrice = Math.min(...data.ticketTiers.map((t: any) => Number(t.price) || 0));
+            const lowestPrice = Math.min(...data.ticketTiers.map((t: unknown) => Number(t.price) || 0));
 
             const payload = {
                 title: data.title,
                 description: data.description,
                 price: lowestPrice, // Base price for listing
                 trackInventory: true, // Events usually have limited tickets
-                stockQuantity: data.ticketTiers.reduce((acc: number, t: any) => acc + (Number(t.quantity) || 0), 0),
+                stockQuantity: data.ticketTiers.reduce((acc: number, t: unknown) => acc + (Number(t.quantity) || 0), 0),
                 metadata: {
                     type: "event",
                     venue: data.isOnline ? "Online" : data.venue,
@@ -186,7 +186,7 @@ export function EventsProductForm({ productId: any, initialData }: EventsProduct
                 </div>
 
                 <div className="space-y-4">
-                    {fields.map((field: any, index: any) => (
+                    {fields.map((field: unknown, index: unknown) => (
                         <div key={field.id} className="flex gap-4 items-end bg-gray-50 p-4 rounded-lg border">
                             <div className="flex-1">
                                 <Label>Tier Name</Label>

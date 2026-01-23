@@ -27,7 +27,7 @@ export const TemplatePreviewModal = ({
     >
       <div
         className="bg-white rounded-2xl max-w-5xl w-full shadow-2xl overflow-hidden animate-in fade-in zoom-in duration-200"
-        onClick={(e: any) => e.stopPropagation()}
+        onClick={(e: unknown) => e.stopPropagation()}
       >
         <div className="flex flex-col lg:flex-row">
           {/* Left: Preview Image & Created Items */}
@@ -67,7 +67,7 @@ export const TemplatePreviewModal = ({
                     {[
                       ...template.creates.pages,
                       ...template.creates.sections,
-                    ].map((item: any) => (
+                    ].map((item: unknown) => (
                       <li
                         key={item}
                         className="text-sm text-gray-600 flex items-center gap-2"
@@ -83,7 +83,7 @@ export const TemplatePreviewModal = ({
                     Data Objects
                   </p>
                   <ul className="space-y-1">
-                    {template.creates.objects.map((item: any) => (
+                    {template.creates.objects.map((item: unknown) => (
                       <li
                         key={item}
                         className="text-sm text-gray-600 flex items-center gap-2"
@@ -153,7 +153,7 @@ export const TemplatePreviewModal = ({
                   Setup logic
                 </h4>
                 <ul className="space-y-2">
-                  {template.configures.slice(0, 3).map((item: any) => (
+                  {template.configures.slice(0, 3).map((item: unknown) => (
                     <li
                       key={item}
                       className="text-sm text-gray-700 flex items-start gap-3"

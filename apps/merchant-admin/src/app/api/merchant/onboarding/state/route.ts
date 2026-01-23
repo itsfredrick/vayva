@@ -4,7 +4,7 @@ import { prisma } from "@/lib/prisma";
 import { applyRateLimit, RATE_LIMITS } from "@/lib/rate-limit-enhanced";
 import { sanitizeFormData } from "@/lib/input-sanitization";
 // GET /api/merchant/onboarding/state - Retrieve onboarding state
-export async function GET(request: any) {
+export async function GET(request: unknown) {
     try {
         // Get authenticated user from session
         const sessionUser = await getSessionUser();
@@ -51,7 +51,7 @@ export async function GET(request: any) {
     }
 }
 // POST /api/merchant/onboarding/state - Save onboarding progress
-export async function POST(request: any) {
+export async function POST(request: unknown) {
     try {
         // Apply rate limiting
         const rateLimitResult = await applyRateLimit(request, "onboarding-update", RATE_LIMITS.ONBOARDING_UPDATE);

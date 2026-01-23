@@ -3,7 +3,7 @@ import { wrapEmail, renderButton } from "./layout";
 import { FEATURES } from "../env-validation";
 import { BRAND, getCanonicalUrl } from "@vayva/shared";
 export class ResendEmailService {
-    static resendClient: any = null;
+    static resendClient: unknown= null;
     static fromEmail: string = process.env.RESEND_FROM_EMAIL || `No-reply@${BRAND.domain}`;
     static billingEmail: string = process.env.EMAIL_BILLING || `Billing@${BRAND.domain}`;
     static helloEmail: string = process.env.EMAIL_HELLO || `Hello@${BRAND.domain}`;
@@ -32,7 +32,7 @@ export class ResendEmailService {
         }
     }
     // --- 1. OTP Verification ---
-    static async sendOTPEmail(to: any, code: any, firstName: any) {
+    static async sendOTPEmail(to: unknown, code: unknown, firstName: unknown) {
         this.assertConfigured();
         try {
             const { data, error } = await this.client.emails.send({
@@ -53,7 +53,7 @@ export class ResendEmailService {
         }
     }
     // --- 2. Welcome Email ---
-    static async sendWelcomeEmail(to: any, firstName: any, storeName: any) {
+    static async sendWelcomeEmail(to: unknown, firstName: unknown, storeName: unknown) {
         this.assertConfigured();
         try {
             const { data, error } = await this.client.emails.send({
@@ -74,7 +74,7 @@ export class ResendEmailService {
         }
     }
     // --- 3. Password Changed ---
-    static async sendPasswordChangedEmail(to: any) {
+    static async sendPasswordChangedEmail(to: unknown) {
         this.assertConfigured();
         try {
             const { data, error } = await this.client.emails.send({
@@ -95,7 +95,7 @@ export class ResendEmailService {
         }
     }
     // --- 4. Payment Receipt ---
-    static async sendPaymentReceiptEmail(to: any, amountNgn: any, invoiceNumber: any, storeName: any) {
+    static async sendPaymentReceiptEmail(to: unknown, amountNgn: unknown, invoiceNumber: unknown, storeName: unknown) {
         this.assertConfigured();
         try {
             const { data, error } = await this.client.emails.send({
@@ -116,7 +116,7 @@ export class ResendEmailService {
         }
     }
     // --- 5. Subscription Expiry Reminder ---
-    static async sendSubscriptionExpiryReminder(to: any, storeName: any, planName: any, expiryDate: any) {
+    static async sendSubscriptionExpiryReminder(to: unknown, storeName: unknown, planName: unknown, expiryDate: unknown) {
         this.assertConfigured();
         try {
             const { billingSubscriptionExpiryReminder } = await import("./templates/core");
@@ -144,7 +144,7 @@ export class ResendEmailService {
         }
     }
     // --- 6. Order Shipped ---
-    static async sendOrderShippedEmail(to: any, orderNumber: any, trackingUrl: any, storeName: any) {
+    static async sendOrderShippedEmail(to: unknown, orderNumber: unknown, trackingUrl: unknown, storeName: unknown) {
         this.assertConfigured();
         try {
             const { data, error } = await this.client.emails.send({
@@ -167,7 +167,7 @@ export class ResendEmailService {
     /**
      * Internal Template Generators (Content Body Only)
      */
-    static getOTPTemplate(code: any, firstName: any) {
+    static getOTPTemplate(code: unknown, firstName: unknown) {
         return `
             <h1 style="margin:0 0 12px; font-size:22px; font-weight:600;">
                 ${firstName ? `Hi ${firstName}` : "Hello"}
@@ -183,7 +183,7 @@ export class ResendEmailService {
             </p>
         `;
     }
-    static getWelcomeTemplate(firstName: any, storeName: any) {
+    static getWelcomeTemplate(firstName: unknown, storeName: unknown) {
         const dashboardUrl = getCanonicalUrl("/onboarding");
         return `
             <h1 style="margin:0 0 12px; font-size:22px; font-weight:600;">
@@ -222,7 +222,7 @@ export class ResendEmailService {
             </div>
         `;
     }
-    static getReceiptTemplate(amount: any, invoiceRef: any, storeName: any) {
+    static getReceiptTemplate(amount: unknown, invoiceRef: unknown, storeName: unknown) {
         const formattedAmount = new Intl.NumberFormat("en-NG", {
             style: "currency",
             currency: "NGN",
@@ -259,7 +259,7 @@ export class ResendEmailService {
             </p>
         `;
     }
-    static getShippedTemplate(orderNumber: any, trackingUrl: any, storeName: any) {
+    static getShippedTemplate(orderNumber: unknown, trackingUrl: unknown, storeName: unknown) {
         return `
             <h1 style="margin:0 0 12px; font-size:22px; font-weight:600;">Good news!</h1>
             <p style="margin:0 0 16px; font-size:16px; line-height:1.6; color:#444444;">

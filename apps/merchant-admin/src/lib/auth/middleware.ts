@@ -6,7 +6,7 @@ import { can } from "../team/permissions";
  * 1. withRBAC(handler, [permissions]) (Kitchen Style)
  * 2. withRBAC(permission, handler) (Analytics Style)
  */
-export function withRBAC(arg1: any, arg2: any) {
+export function withRBAC(arg1: unknown, arg2: unknown) {
     let handler;
     let permissions;
     if (typeof arg1 === "function") {
@@ -26,7 +26,7 @@ export function withRBAC(arg1: any, arg2: any) {
                 return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
             }
             // Check permissions
-            const hasPermission = permissions.length === 0 || permissions.some((p: any) => can(user.role, p));
+            const hasPermission = permissions.length === 0 || permissions.some((p: unknown) => can(user.role, p));
             if (!hasPermission) {
                 return NextResponse.json({ error: "Forbidden: Insufficient permissions" }, { status: 403 });
             }
@@ -56,6 +56,6 @@ export function withRBAC(arg1: any, arg2: any) {
         }
     };
 }
-export function withStoreAuth(handler: any, permissions = []) {
+export function withStoreAuth(handler: unknown, permissions = []) {
     return withRBAC(handler, permissions);
 }

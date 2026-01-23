@@ -16,7 +16,7 @@ export const AuthService = {
             }
             return response.data!;
         }
-        catch (error: any) {
+        catch (error) {
             // NO TEST FALLBACK - Fail cleanly if backend unavailable
             if (error.message === "Request failed") {
                 throw new Error("Authentication service unavailable. Please try again later.");
@@ -39,7 +39,7 @@ export const AuthService = {
             }
             return response.data!;
         }
-        catch (error: any) {
+        catch (error) {
             if (error.message === "Request failed") {
                 throw new Error("Registration service unavailable. Please try again later.");
             }

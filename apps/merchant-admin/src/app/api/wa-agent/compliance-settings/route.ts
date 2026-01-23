@@ -7,7 +7,7 @@ let testSettings = {
 export async function GET() {
     return NextResponse.json(testSettings);
 }
-export async function PATCH(request: any) {
+export async function PATCH(request: unknown) {
     const body = await request.json();
     testSettings = {
         ...testSettings,

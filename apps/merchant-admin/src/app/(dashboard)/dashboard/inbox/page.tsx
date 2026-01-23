@@ -88,7 +88,9 @@ export default function InboxPage() {
       const res = await fetch("/api/merchant/quick-replies");
       const data = await res.json();
       setQuickReplies(data.items || []);
-    } catch (e) { }
+    } catch (_error) {
+    // Intentionally empty
+  }
   };
 
   const fetchMessages = async (id: string) => {

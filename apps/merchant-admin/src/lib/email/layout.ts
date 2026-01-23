@@ -10,7 +10,7 @@ export const TEXT_COLOR = "#444444";
 export const HEADLINE_COLOR = "#111111";
 // Use the absolute URL for the logo, derived from canonical origin
 const LOGO_URL = `${BRAND.canonicalOrigin}/brand-logo.png`;
-export function wrapEmail(contentHtml: any, title = "Vayva Notification") {
+export function wrapEmail(contentHtml: unknown, title = "Vayva Notification") {
     return `
 <!DOCTYPE html>
 <html lang="en">
@@ -78,7 +78,7 @@ export function wrapEmail(contentHtml: any, title = "Vayva Notification") {
     `;
 }
 // Helper to generate consistent buttons
-export function renderButton(url: any, label: any) {
+export function renderButton(url: unknown, label: unknown) {
     return `
     <a 
         href="${url}"

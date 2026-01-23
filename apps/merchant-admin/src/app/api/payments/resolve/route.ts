@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { PaystackService } from "@/lib/payment/paystack";
 export const dynamic = "force-dynamic";
-export async function GET(req: any) {
+export async function GET(req: unknown) {
     const { searchParams } = new URL(req.url);
     const accountNumber = searchParams.get("account_number");
     const bankCode = searchParams.get("bank_code");

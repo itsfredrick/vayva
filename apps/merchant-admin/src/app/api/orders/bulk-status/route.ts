@@ -3,7 +3,7 @@ import { getSessionUser } from "@/lib/session";
 import { authorizeAction, AppRole } from "@/lib/permissions";
 import { logAuditEvent, AuditEventType } from "@/lib/audit";
 import { OrderStateService } from "@/services/order-state.service";
-export async function POST(request: any) {
+export async function POST(request: unknown) {
     try {
         const user = await getSessionUser();
         if (!user) {
@@ -24,7 +24,7 @@ export async function POST(request: any) {
         let successCount = 0;
         const errors = [];
         // Process each order individually to ensure state rules & notifications trigger
-        await Promise.all(ids.map(async (id: any) => {
+        await Promise.all(ids.map(async (id: unknown) => {
             try {
                 await OrderStateService.transition(id, status, user.id, user.storeId);
                 successCount++;

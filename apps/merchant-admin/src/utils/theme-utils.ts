@@ -33,6 +33,6 @@ export const THEME_STYLES = {
         border: "border-slate-700",
     },
 };
-export function getThemeStyles(theme: any): any {
+export function getThemeStyles(theme: unknown): any {
     return THEME_STYLES[theme as keyof typeof THEME_STYLES] || THEME_STYLES.minimal;
 }

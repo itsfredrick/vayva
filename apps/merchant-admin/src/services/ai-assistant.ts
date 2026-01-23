@@ -1,6 +1,6 @@
 // AI Service Placeholder for Merchant Assistance
 export class AiService {
-    static async generateResponse(userMessage: any, productSchema: any) {
+    static async generateResponse(userMessage: unknown, productSchema: unknown) {
         // In real impl, checking OpenAI/Gemini with system prompt
         // Simple keyword mock
         const msg = userMessage.toLowerCase();

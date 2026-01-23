@@ -88,7 +88,7 @@ export default function BundlesPage() {
             setIsOpen(false);
             setFormData({ id: "", name: "", discount: "10", productIds: [], startsAt: "", endsAt: "" });
             fetchBundles();
-        } catch (error: any) {
+        } catch (error) {
             toast.error(error.message || "Failed to save bundle");
         } finally {
             setIsSubmitting(false);

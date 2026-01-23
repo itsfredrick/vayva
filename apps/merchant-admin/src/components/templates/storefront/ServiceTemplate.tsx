@@ -99,7 +99,7 @@ const ServiceDetailModal = ({
               <div>
                 <h3 className="font-bold text-sm mb-2">What's Included</h3>
                 <ul className="space-y-2">
-                  {service.included.map((inc: any, i: any) => (
+                  {service.included.map((inc: unknown, i: unknown) => (
                     <li key={i} className="flex gap-2 text-sm text-gray-600">
                       <Icon
                         name="Check"
@@ -178,7 +178,7 @@ const BookingRequestModal = ({
             <Input
               type="date"
               className="w-full"
-              onChange={(e: any) => setDate(e.target.value)}
+              onChange={(e: unknown) => setDate(e.target.value)}
             />
           </div>
           <div>
@@ -187,7 +187,7 @@ const BookingRequestModal = ({
             </label>
             <select
               className="w-full h-10 rounded-md border border-gray-300 px-3 text-sm bg-white"
-              onChange={(e: any) => setTime(e.target.value)}
+              onChange={(e: unknown) => setTime(e.target.value)}
               aria-label="Select booking time"
             >
               <option value="">Select Time...</option>
@@ -308,7 +308,7 @@ export function ServiceTemplate({ config }: { config: StorefrontConfig }) {
         </div>
 
         <div className="grid gap-4">
-          {services.map((s: any) => (
+          {services.map((s: unknown) => (
             <div
               key={s.id}
               className="bg-white p-5 rounded-2xl border border-gray-100 shadow-sm hover:shadow-md hover:border-blue-200 transition-all cursor-pointer group"

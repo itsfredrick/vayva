@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { requireAuth } from "@/lib/auth/session";
 import { prisma } from "@/lib/prisma";
-export async function GET(req: any) {
+export async function GET(req: unknown) {
     try {
         const session = await requireAuth();
         const storeId = session.user.storeId;

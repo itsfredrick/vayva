@@ -7,7 +7,7 @@ export const GET = withVayvaAPI(PERMISSIONS.METRICS_VIEW, async (request: NextRe
         const insights = await AnalyticsService.getInsights(storeId);
         return NextResponse.json({ insights });
     }
-    catch (error: any) {
+    catch (error) {
         return NextResponse.json({ error: error.message || "Failed to fetch insights" }, { status: 500 });
     }
 });

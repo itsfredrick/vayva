@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import { redis } from "@/lib/redis";
 const IDEMPOTENCY_HEADER = "x-idempotency-key";
 const EXPIRY_SECONDS = 60 * 60 * 24; // 24 hours
-export async function verifyIdempotency(req: any) {
+export async function verifyIdempotency(req: unknown) {
     const key = req.headers.get(IDEMPOTENCY_HEADER);
     if (!key)
         return { cached: null, key: null };
@@ -26,7 +26,7 @@ export async function verifyIdempotency(req: any) {
     // Ideally we use SETNX with short TTL to block concurrent.
     return { cached: null, key: compositeKey };
 }
-export async function saveIdempotencyResponse(key: any, response: any, bodyData: any) {
+export async function saveIdempotencyResponse(key: unknown, response: unknown, bodyData: unknown) {
     if (!key)
         return;
     // Only cache successful or definitive failures (e.g. 400, 401). 
