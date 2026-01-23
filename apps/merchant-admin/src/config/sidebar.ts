@@ -1,22 +1,6 @@
-
-import { IndustrySlug } from "@/lib/templates/types";
 import { INDUSTRY_CONFIG } from "./industry";
-
-export interface SidebarItem {
-    name: string;
-    href: string;
-    icon?: unknown;
-    external?: boolean;
-    alwaysShow?: boolean;
-}
-
-export interface SidebarGroup {
-    name: string;
-    items: SidebarItem[];
-}
-
 // Default Routes/Icons if not overridden by IndustryConfig
-const MODULE_DEFAULTS: Record<string, { label: string, href: string, icon: string }> = {
+const MODULE_DEFAULTS = {
     dashboard: { label: "Dashboard", href: "/dashboard", icon: "LayoutDashboard" },
     catalog: { label: "Products", href: "/dashboard/products", icon: "Package" },
     sales: { label: "Orders", href: "/dashboard/orders", icon: "ShoppingBag" },
@@ -26,11 +10,10 @@ const MODULE_DEFAULTS: Record<string, { label: string, href: string, icon: strin
     marketing: { label: "Marketing", href: "/dashboard/marketing/discounts", icon: "Megaphone" },
     content: { label: "Content", href: "/dashboard/digital-assets", icon: "FileText" },
     support: { label: "Support", href: "/dashboard/support", icon: "LifeBuoy" },
-    settings: { label: "Settings", href: "/dashboard/settings/overview", icon: "Settings" },
+    settings: { label: "Settings", href: "/dashboard/settings/profile", icon: "Settings" },
     control_center: { label: "Control Center", href: "/dashboard/control-center", icon: "LayoutTemplate" },
 };
-
-export const SIDEBAR_GROUPS: SidebarGroup[] = [
+export const SIDEBAR_GROUPS = [
     {
         name: "General",
         items: [
@@ -52,46 +35,29 @@ export const SIDEBAR_GROUPS: SidebarGroup[] = [
             MODULE_DEFAULTS.marketing,
             { name: "Creative Editor", href: "/dashboard/creative-editor", icon: "Megaphone" },
             MODULE_DEFAULTS.support,
-        ].map(m => {
-            const label = "label" in m ? m.label : (m as unknown).name;
-            return {
-                name: label,
-                href: m.href,
-                icon: m.icon
-            };
-        })
+        ].map(m => ({ name: m.label || m.name, href: m.href, icon: m.icon }))
     },
     {
         name: "System",
         items: [
-            { name: "Account", href: "/dashboard/account", icon: "Settings" },
-            { name: "WhatsApp Agent", href: "/dashboard/ai-agent", icon: "MessageSquare" },
+            { label: "Account", href: "/dashboard/account", icon: "Settings" },
+            { label: "WhatsApp Agent", href: "/dashboard/ai-agent/profile", icon: "Megaphone" },
             MODULE_DEFAULTS.control_center,
             MODULE_DEFAULTS.settings,
-            { name: "Store Settings", href: "/dashboard/settings/store", icon: "Settings" },
-        ].map(m => {
-            const label = "label" in m ? m.label : (m as unknown).name;
-            return {
-                name: label,
-                href: m.href,
-                icon: m.icon
-            };
-        })
+            { label: "Store Settings", href: "/dashboard/settings/store", icon: "Settings" },
+        ].map(m => ({ name: m.label, href: m.href, icon: m.icon }))
     }
 ];
-
 import { extensionRegistry } from "@/lib/extensions/registry";
-
-export function getSidebar(industrySlug: IndustrySlug, enabledIds?: string[]): SidebarGroup[] {
+export function getSidebar(industrySlug: any, enabledIds: any) {
     // 1. Get Base Industry Config
     const config = INDUSTRY_CONFIG[industrySlug];
-    if (!config) return SIDEBAR_GROUPS;
-
+    if (!config)
+        return SIDEBAR_GROUPS;
     // 2. Load Extensions for this store
     const activeExtensions = extensionRegistry.getActiveForStore(industrySlug, enabledIds);
-
     // 3. Build Sidebar from Extensions
-    const groups: SidebarGroup[] = [
+    const groups = [
         { name: "General", items: [{ name: "Dashboard", href: "/dashboard", icon: "LayoutDashboard" }] },
         { name: "Sales & Marketplace", items: [] },
         { name: "Operations", items: [] },
@@ -100,17 +66,17 @@ export function getSidebar(industrySlug: IndustrySlug, enabledIds?: string[]): S
                 { name: "Control Center", href: "/dashboard/control-center", icon: "LayoutTemplate" },
                 { name: "Roles & Permissions", href: "/dashboard/settings/roles", icon: "ShieldCheck" },
                 { name: "Developer Hub", href: "/dashboard/developer/apps", icon: "Code" },
-                { name: "Settings", href: "/dashboard/settings/overview", icon: "Settings" },
+                { name: "Settings", href: "/dashboard/settings/profile", icon: "Settings" },
             ]
         },
     ];
-
-    activeExtensions.forEach(ext => {
-        ext.sidebarItems?.forEach(item => {
+    activeExtensions.forEach((ext: any) => {
+        ext.sidebarItems?.forEach((item: any) => {
             let groupId = 1; // Default to Sales
-            if (item.parentGroup === "ops") groupId = 2;
-            if (item.parentGroup === "system") groupId = 3;
-
+            if (item.parentGroup === "ops")
+                groupId = 2;
+            if (item.parentGroup === "system")
+                groupId = 3;
             groups[groupId].items.push({
                 name: item.label,
                 href: item.href,
@@ -118,7 +84,6 @@ export function getSidebar(industrySlug: IndustrySlug, enabledIds?: string[]): S
             });
         });
     });
-
     // Cleanup empty groups
     return groups.filter(g => g.items.length > 0);
 }

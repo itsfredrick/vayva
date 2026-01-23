@@ -5,6 +5,7 @@ import { useSearchParams, useRouter } from "next/navigation";
 import Link from "next/link";
 import { Search, MapPin, Filter, ArrowLeft, Loader2, MessageCircle, ShoppingCart } from "lucide-react";
 import { Button } from "@vayva/ui";
+import { SearchResult } from "@vayva/shared";
 
 function SearchContent() {
     const searchParams = useSearchParams();
@@ -17,7 +18,7 @@ function SearchContent() {
     const [query, setQuery] = useState(initialQuery);
     const [category, setCategory] = useState(initialCategory);
     const [chinaBulk, setChinaBulk] = useState(initialChinaBulk);
-    const [results, setResults] = useState<any[]>([]);
+    const [results, setResults] = useState<SearchResult[]>([]);
     const [loading, setLoading] = useState(true);
 
     const CATEGORIES = ["All", "Vehicles", "Property", "Electronics", "Fashion", "Food"];
@@ -84,8 +85,8 @@ function SearchContent() {
                             onClick={() => setCategory(cat)}
                             variant="ghost"
                             className={`pb-3 text-sm font-medium whitespace-nowrap transition-colors border-b-2 rounded-none h-auto ${category === cat
-                                    ? "border-[#22C55E] text-[#22C55E]"
-                                    : "border-transparent text-gray-500 hover:text-gray-800"
+                                ? "border-[#22C55E] text-[#22C55E]"
+                                : "border-transparent text-gray-500 hover:text-gray-800"
                                 }`}
                         >
                             {cat}
@@ -96,8 +97,8 @@ function SearchContent() {
                         onClick={() => setChinaBulk(!chinaBulk)}
                         variant="ghost"
                         className={`pb-3 px-3 text-sm font-medium whitespace-nowrap transition-colors border-b-2 rounded-t-lg h-auto ${chinaBulk
-                                ? "border-orange-500 text-orange-600 bg-orange-50"
-                                : "border-transparent text-gray-500 hover:text-gray-800 hover:bg-gray-50"
+                            ? "border-orange-500 text-orange-600 bg-orange-50"
+                            : "border-transparent text-gray-500 hover:text-gray-800 hover:bg-gray-50"
                             }`}
                     >
                         🇨🇳 China Bulk {chinaBulk && "✓"}

@@ -1,10 +1,7 @@
-
 import { db } from "@/lib/db";
-import { FoodProductForm } from "@/lib/types/food";
-import { Prisma, PaymentStatus, FulfillmentStatus } from "@vayva/db";
-
+import { Prisma } from "@vayva/db";
 export const MenuService = {
-    async createMenuItem(storeId: string, data: FoodProductForm) {
+    async createMenuItem(storeId: any, data: any) {
         // 1. Create the base Product
         const product = await db.product.create({
             data: {
@@ -16,25 +13,21 @@ export const MenuService = {
                 productType: "menu_item",
                 status: "ACTIVE", // Default to active for menu items
                 trackInventory: false, // Usually unlimited for restaurants unless specific
-
                 // 2. Store food-specific fields in metadata
-                metadata: data.metadata as unknown as Prisma.JsonObject,
-
+                metadata: data.metadata,
                 // Default category handling could go here if categoryId is provided
             }
         });
-
         return product;
     },
-
-    async getKitchenOrders(storeId: string) {
+    async getKitchenOrders(storeId: any) {
         return await db.order.findMany({
             where: {
                 storeId,
                 // Using fulfillmentStatus as proxy for Kitchen Status
                 // In a real system, might want a specific 'kitchenStatus' field
                 fulfillmentStatus: { in: ["UNFULFILLED", "PREPARING"] },
-                paymentStatus: { in: ["SUCCESS", "PAID"] as PaymentStatus[] } // SUCCESS and PAID are typical members
+                paymentStatus: { in: ["SUCCESS", "VERIFIED"] }
             },
             include: {
                 items: true,
@@ -44,17 +37,14 @@ export const MenuService = {
             }
         });
     },
-
-    async updateOrderStatus(orderId: string, status: "READY" | "DELIVERED") {
+    async updateOrderStatus(orderId: any, status: any) {
         // Map simplified kitchen status to Order schema status
-        // READY -> FULFILLED (or separate status if exists)
-
-        const fulfillmentStatus = status === "READY" ? "FULFILLED" : "FULFILLED";
-
+        // READY -> READY_FOR_PICKUP
+        const fulfillmentStatus = status === "READY" ? "READY_FOR_PICKUP" : "READY_FOR_PICKUP";
         return await db.order.update({
             where: { id: orderId },
             data: {
-                fulfillmentStatus: fulfillmentStatus as FulfillmentStatus
+                fulfillmentStatus: fulfillmentStatus as any
             }
         });
     }

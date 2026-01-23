@@ -1,11 +1,10 @@
-
 import { db } from "@/lib/db";
-import { ServiceProductForm } from "@/lib/types/service";
 import { Prisma } from "@vayva/db";
-import { addMinutes, isBefore, isAfter } from "date-fns";
+import { addMinutes } from "date-fns";
+import { CreateServiceData, CreateBookingData, UpdateBookingData, BookingWithDetails } from "@/types/bookings";
 
 export const BookingService = {
-    async createServiceProduct(storeId: string, data: ServiceProductForm) {
+    async createServiceProduct(storeId: string, data: CreateServiceData) {
         return await db.product.create({
             data: {
                 storeId,
@@ -16,14 +15,12 @@ export const BookingService = {
                 status: "ACTIVE",
                 trackInventory: false, // Services don't track stock quantity usually
                 productType: "SERVICE", // Assuming we might want to differentiate, or just relying on metadata
-
-                metadata: data.metadata as unknown as Prisma.JsonObject,
+                metadata: data.metadata as any,
             }
         });
     },
-
-    async getBookings(storeId: string, startDate?: Date, endDate?: Date) {
-        return await db.booking.findMany({
+    async getBookings(storeId: string, startDate: Date, endDate: Date): Promise<BookingWithDetails[]> {
+        const bookings = await db.booking.findMany({
             where: {
                 storeId,
                 startsAt: {
@@ -39,28 +36,18 @@ export const BookingService = {
                 startsAt: "asc"
             }
         });
+        return bookings as unknown as BookingWithDetails[];
     },
-
-    async createBooking(storeId: string, data: {
-        serviceId: string;
-        customerId?: string;
-        startsAt: Date;
-        endsAt?: Date;
-        customerName?: string; // Fallback if no ID
-        customerEmail?: string;
-        notes?: string;
-    }) {
+    async createBooking(storeId: string, data: CreateBookingData) {
         const service = await db.product.findUnique({ where: { id: data.serviceId } });
-        if (!service) throw new Error("Service not found");
-
+        if (!service)
+            throw new Error("Service not found");
         let endsAt = data.endsAt;
-
         if (!endsAt) {
-            const meta = service.metadata as unknown;
+            const meta = service.metadata as any;
             const duration = meta?.durationMinutes || 60;
             endsAt = addMinutes(new Date(data.startsAt), duration);
         }
-
         // Simple collision detection
         const overlap = await db.booking.findFirst({
             where: {
@@ -78,11 +65,9 @@ export const BookingService = {
                 ]
             }
         });
-
         if (overlap) {
             throw new Error("Time slot unavailable");
         }
-
         // Create Customer if not exists and info provided
         let customerId = data.customerId;
         if (!customerId && data.customerEmail) {
@@ -91,7 +76,8 @@ export const BookingService = {
             });
             if (existing) {
                 customerId = existing.id;
-            } else {
+            }
+            else {
                 const newCustomer = await db.customer.create({
                     data: {
                         storeId,
@@ -103,62 +89,47 @@ export const BookingService = {
                 customerId = newCustomer.id;
             }
         }
-
         return await db.booking.create({
             data: {
                 storeId,
                 serviceId: data.serviceId,
                 customerId,
                 startsAt: data.startsAt,
-                endsAt,
+                endsAt: endsAt as Date,
                 status: "CONFIRMED",
                 notes: data.notes
             }
         });
     },
-
-    async updateBooking(storeId: string, bookingId: string, data: {
-        startsAt?: Date;
-        endsAt?: Date;
-        serviceId?: string;
-        notes?: string;
-        status?: "CONFIRMED" | "CANCELLED" | "COMPLETED" | "NO_SHOW";
-    }) {
+    async updateBooking(storeId: string, bookingId: string, data: UpdateBookingData) {
         // Ensure booking belongs to store
         const booking = await db.booking.findFirst({
             where: { id: bookingId, storeId }
         });
-
-        if (!booking) throw new Error("Booking not found");
-
+        if (!booking)
+            throw new Error("Booking not found");
         // Logic to update fields
         // If service changes, might need to re-calculate endsAt or price? For now simpler logic.
         return await db.booking.update({
             where: { id: bookingId },
-            data: {
-                ...data,
-                // If service changed, we should probably check existence, but assuming valid ID for now
-            }
+            data: data as any,
         });
     },
-
     async deleteBooking(storeId: string, bookingId: string) {
         // Ensure booking belongs to store
         const booking = await db.booking.findFirst({
             where: { id: bookingId, storeId }
         });
-
-        if (!booking) throw new Error("Booking not found");
-
+        if (!booking)
+            throw new Error("Booking not found");
         return await db.booking.delete({
             where: { id: bookingId }
         });
     },
-
-    async updateBookingStatus(bookingId: string, status: "CONFIRMED" | "CANCELLED" | "COMPLETED" | "NO_SHOW") {
+    async updateBookingStatus(bookingId: string, status: string) {
         return await db.booking.update({
             where: { id: bookingId },
-            data: { status }
+            data: { status: status as any }
         });
     }
 };

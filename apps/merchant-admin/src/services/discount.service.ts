@@ -1,27 +1,10 @@
-
 import { prisma } from "@/lib/prisma";
-import { DiscountType, DiscountAppliesTo, CouponStatus } from "@vayva/db";
-
 export class DiscountService {
     /**
      * Create a Discount Rule and optionally a Coupon.
      */
-    static async createDiscount(storeId: string, data: {
-        name: string;
-        type: DiscountType;
-        valueAmount?: number;
-        valuePercent?: number;
-        appliesTo?: DiscountAppliesTo;
-        productIds?: string[];
-        collectionIds?: string[];
-        minOrderAmount?: number;
-        startsAt: Date;
-        endsAt?: Date;
-        usageLimitTotal?: number;
-        usageLimitPerCustomer?: number;
-        code?: string; // If provided, creates a coupon linked to this rule
-    }) {
-        return await prisma.$transaction(async (tx) => {
+    static async createDiscount(storeId: any, data: any) {
+        return await prisma.$transaction(async (tx: any) => {
             // 1. Create Rule
             const rule = await tx.discountRule.create({
                 data: {
@@ -41,7 +24,6 @@ export class DiscountService {
                     requiresCoupon: !!data.code
                 }
             });
-
             // 2. Create Coupon if code provided
             let coupon = null;
             if (data.code) {
@@ -54,11 +36,9 @@ export class DiscountService {
                         }
                     }
                 });
-
                 if (existing) {
                     throw new Error(`Coupon code ${data.code} already exists`);
                 }
-
                 coupon = await tx.coupon.create({
                     data: {
                         storeId,
@@ -68,45 +48,26 @@ export class DiscountService {
                     }
                 });
             }
-
             return { rule, coupon };
         });
     }
-
-    static async getDiscount(storeId: string, ruleId: string) {
+    static async getDiscount(storeId: any, ruleId: any) {
         const rule = await prisma.discountRule.findUnique({
             where: { id: ruleId, storeId }
         });
-
-        if (!rule) return null;
-
+        if (!rule)
+            return null;
         const coupon = await prisma.coupon.findFirst({
             where: { storeId, ruleId }
         });
-
         return {
             ...rule,
             code: coupon?.code || null,
             couponId: coupon?.id || null
         };
     }
-
-    static async updateDiscount(storeId: string, ruleId: string, data: {
-        name?: string;
-        type?: DiscountType;
-        valueAmount?: number;
-        valuePercent?: number;
-        appliesTo?: DiscountAppliesTo;
-        productIds?: string[];
-        collectionIds?: string[];
-        minOrderAmount?: number;
-        startsAt?: Date;
-        endsAt?: Date;
-        usageLimitTotal?: number;
-        usageLimitPerCustomer?: number;
-        code?: string;
-    }) {
-        return await prisma.$transaction(async (tx) => {
+    static async updateDiscount(storeId: any, ruleId: any, data: any) {
+        return await prisma.$transaction(async (tx: any) => {
             // 1. Update Rule
             const rule = await tx.discountRule.update({
                 where: { id: ruleId, storeId },
@@ -126,20 +87,21 @@ export class DiscountService {
                     requiresCoupon: data.code !== undefined ? !!data.code : undefined
                 }
             });
-
             // 2. Sync Coupon if code provided (create/update/delete)
             if (data.code !== undefined) {
                 if (data.code === "") {
                     // Remove coupon
                     await tx.coupon.deleteMany({ where: { storeId, ruleId } });
-                } else {
+                }
+                else {
                     const existing = await tx.coupon.findFirst({ where: { storeId, ruleId } });
                     if (existing) {
                         await tx.coupon.update({
                             where: { id: existing.id },
                             data: { code: data.code }
                         });
-                    } else {
+                    }
+                    else {
                         await tx.coupon.create({
                             data: {
                                 storeId,
@@ -151,18 +113,15 @@ export class DiscountService {
                     }
                 }
             }
-
             return rule;
         });
     }
-
-    static async listDiscounts(storeId: string) {
+    static async listDiscounts(storeId: any) {
         // Fetch rules
         const rules = await prisma.discountRule.findMany({
             where: { storeId },
             orderBy: { createdAt: "desc" }
         });
-
         // Fetch coupons for these rules (manual join since no relation)
         const ruleIds = rules.filter(r => r.requiresCoupon).map(r => r.id);
         const coupons = await prisma.coupon.findMany({
@@ -171,23 +130,19 @@ export class DiscountService {
                 ruleId: { in: ruleIds }
             }
         });
-
         const couponMap = new Map(coupons.map(c => [c.ruleId, c]));
-
         return rules.map(rule => ({
             ...rule,
             code: couponMap.get(rule.id)?.code || null,
             couponId: couponMap.get(rule.id)?.id || null
         }));
     }
-
-    static async deleteDiscount(storeId: string, ruleId: string) {
-        return await prisma.$transaction(async (tx) => {
+    static async deleteDiscount(storeId: any, ruleId: any) {
+        return await prisma.$transaction(async (tx: any) => {
             // Delete associated coupons first
             await tx.coupon.deleteMany({
                 where: { storeId, ruleId }
             });
-
             // Delete rule
             await tx.discountRule.delete({
                 where: { id: ruleId, storeId }

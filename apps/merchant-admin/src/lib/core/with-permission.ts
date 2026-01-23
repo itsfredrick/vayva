@@ -1,36 +1,28 @@
-
 import { requireAuth } from "@/lib/auth/session";
 import { PermissionEngine } from "@/lib/core/permission-engine";
-import { PermissionKey } from "@/lib/core/permissions";
-import { NextResponse, NextRequest } from "next/server";
+import { NextResponse } from "next/server";
 import { redirect } from "next/navigation";
-
 /**
  * withPermission
  * Higher-order function for API routes.
- * 
+ *
  * Usage:
- * export const POST = withPermission("orders:manage", async (req, session) => { ... });
+ * export const POST = withPermission("orders:manage", async (req: any, session: any) => { ... });
  */
-export function withPermission(permission: PermissionKey, handler: Function) {
-    return async (req: NextRequest, ...args: unknown[]) => {
+export function withPermission(permission: any, handler: any) {
+    return async (req, ...args) => {
         try {
             const session = await requireAuth();
-
             const allowed = PermissionEngine.can({
                 role: session.user.role,
                 isOwner: session.user.role === "owner"
             }, permission);
-
             if (!allowed) {
-                return NextResponse.json(
-                    { error: "Forbidden: Insufficient permissions", permission },
-                    { status: 403 }
-                );
+                return NextResponse.json({ error: "Forbidden: Insufficient permissions", permission }, { status: 403 });
             }
-
             return await handler(req, session, ...args);
-        } catch (error: unknown) {
+        }
+        catch (error) {
             if (error.message === "Unauthorized") {
                 return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
             }
@@ -39,23 +31,19 @@ export function withPermission(permission: PermissionKey, handler: Function) {
         }
     };
 }
-
 /**
  * requirePermission
  * Use this in Server Components.
  */
-export async function requirePermission(permission: PermissionKey) {
+export async function requirePermission(permission: any) {
     const session = await requireAuth();
-
     const allowed = PermissionEngine.can({
         role: session.user.role,
         isOwner: session.user.role === "owner"
     }, permission);
-
     if (!allowed) {
         // For pages, we redirect to an access-denied page or dashboard
         redirect("/dashboard?error=access-denied");
     }
-
     return session;
 }

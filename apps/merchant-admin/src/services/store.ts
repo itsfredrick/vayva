@@ -1,27 +1,29 @@
-import { api } from "./api";
+export interface Store {
+    id: string;
+    name: string;
+    settings: {
+        currency: string;
+    };
+    [key: string]: any;
+}
 
 export const StoreService = {
-  create: async (data: unknown) => {
-
-
-    return {
-      id: "store_" + Date.now(),
-      ...data,
-      settings: { currency: "NGN" },
-    };
-  },
-
-  update: async (storeId: string, data: unknown) => {
-
-    return { id: storeId, ...data };
-  },
-
-  get: async (storeId: string) => {
-
-    return {
-      id: storeId,
-      name: "Test Store",
-      settings: { currency: "NGN" },
-    };
-  },
+    create: async (data: Partial<Store>): Promise<Store> => {
+        return {
+            id: "store_" + Date.now(),
+            name: data.name || "New Store",
+            settings: { currency: "NGN" },
+            ...data,
+        };
+    },
+    update: async (storeId: string, data: Partial<Store>): Promise<Store> => {
+        return { id: storeId, name: "Updated Store", settings: { currency: "NGN" }, ...data };
+    },
+    get: async (storeId: string): Promise<Store> => {
+        return {
+            id: storeId,
+            name: "Test Store",
+            settings: { currency: "NGN" },
+        };
+    },
 };

@@ -1,237 +1,174 @@
 import { Resend } from "resend";
-import { wrapEmail, renderButton, BRAND_COLOR } from "./layout";
+import { wrapEmail, renderButton } from "./layout";
 import { FEATURES } from "../env-validation";
 import { BRAND, getCanonicalUrl } from "@vayva/shared";
-
-
 export class ResendEmailService {
-  private static resendClient: Resend | null = null;
+    static resendClient: any = null;
+    static fromEmail: string = process.env.RESEND_FROM_EMAIL || `No-reply@${BRAND.domain}`;
+    static billingEmail: string = process.env.EMAIL_BILLING || `Billing@${BRAND.domain}`;
+    static helloEmail: string = process.env.EMAIL_HELLO || `Hello@${BRAND.domain}`;
+    static supportEmail: string = process.env.EMAIL_SUPPORT || `Support@${BRAND.domain}`;
 
-  private static get client() {
-    if (!this.resendClient) {
-      const RESEND_KEY =
-        process.env.NODE_ENV === "test"
-          ? process.env.RESEND_API_KEY || "re_test_test_key_123"
-          : process.env.RESEND_API_KEY;
-
-      if (!RESEND_KEY) {
-        // In build context or when key is missing, return a dummy or throw when used
-        console.error("[ResendEmailService] RESEND_API_KEY is missing. Fatal.");
-        throw new Error("Email service is not configured (missing RESEND_API_KEY).");
-      }
-      this.resendClient = new Resend(RESEND_KEY);
+    static get client() {
+        if (!this.resendClient) {
+            const RESEND_KEY = process.env.NODE_ENV === "test"
+                ? process.env.RESEND_API_KEY || "re_test_test_key_123"
+                : process.env.RESEND_API_KEY;
+            if (!RESEND_KEY) {
+                // In build context or when key is missing, return a dummy or throw when used
+                console.error("[ResendEmailService] RESEND_API_KEY is missing. Fatal.");
+                throw new Error("Email service is not configured (missing RESEND_API_KEY).");
+            }
+            this.resendClient = new Resend(RESEND_KEY);
+        }
+        return this.resendClient;
     }
-    return this.resendClient;
-  }
-
-  private static fromEmail =
-    process.env.RESEND_FROM_EMAIL || `No-reply@${BRAND.domain}`;
-  private static billingEmail = process.env.EMAIL_BILLING || `Billing@${BRAND.domain}`;
-  private static helloEmail = process.env.EMAIL_HELLO || `Hello@${BRAND.domain}`;
-  private static supportEmail = process.env.EMAIL_SUPPORT || `Support@${BRAND.domain}`;
-
-
-  /**
-   * Check if email service is configured
-   */
-  private static assertConfigured() {
-    if (!FEATURES.EMAIL_ENABLED) {
-      throw new Error("Email service is not configured");
+    /**
+     * Check if email service is configured
+     */
+    static assertConfigured() {
+        if (!FEATURES.EMAIL_ENABLED) {
+            throw new Error("Email service is not configured");
+        }
     }
-  }
-
-  // --- 1. OTP Verification ---
-  static async sendOTPEmail(to: string, code: string, firstName?: string) {
-    this.assertConfigured();
-
-    try {
-      const { data, error } = await this.client.emails.send({
-        from: this.fromEmail,
-        to,
-        subject: "Verify your email - Vayva",
-        html: wrapEmail(this.getOTPTemplate(code, firstName), "Verify Email"),
-      });
-
-      if (error) {
-        console.error("[Resend] OTP Error:", error);
-        throw new Error(`Failed to send OTP email: ${error.message}`);
-      }
-
-      return { success: true, messageId: data?.id };
-    } catch (error: unknown) {
-      console.error("[Resend] OTP Error:", error);
-      throw error;
+    // --- 1. OTP Verification ---
+    static async sendOTPEmail(to: any, code: any, firstName: any) {
+        this.assertConfigured();
+        try {
+            const { data, error } = await this.client.emails.send({
+                from: this.fromEmail,
+                to,
+                subject: "Verify your email - Vayva",
+                html: wrapEmail(this.getOTPTemplate(code, firstName), "Verify Email"),
+            });
+            if (error) {
+                console.error("[Resend] OTP Error:", error);
+                throw new Error(`Failed to send OTP email: ${error.message}`);
+            }
+            return { success: true, messageId: data?.id };
+        }
+        catch (error) {
+            console.error("[Resend] OTP Error:", error);
+            throw error;
+        }
     }
-  }
-
-  // --- 2. Welcome Email ---
-  static async sendWelcomeEmail(
-    to: string,
-    firstName: string,
-    storeName: string,
-  ) {
-    this.assertConfigured();
-
-    try {
-      const { data, error } = await this.client.emails.send({
-        from: this.helloEmail,
-        to,
-        subject: `Welcome to Vayva, ${firstName}!`,
-        html: wrapEmail(
-          this.getWelcomeTemplate(firstName, storeName),
-          "Welcome to Vayva",
-        ),
-      });
-
-      if (error) {
-        console.error("[Resend] Welcome Error:", error);
-        throw new Error(`Failed to send welcome email: ${error.message}`);
-      }
-
-      return { success: true, messageId: data?.id };
-    } catch (error: unknown) {
-      console.error("[Resend] Welcome Error:", error);
-      throw error;
+    // --- 2. Welcome Email ---
+    static async sendWelcomeEmail(to: any, firstName: any, storeName: any) {
+        this.assertConfigured();
+        try {
+            const { data, error } = await this.client.emails.send({
+                from: this.helloEmail,
+                to,
+                subject: `Welcome to Vayva, ${firstName}!`,
+                html: wrapEmail(this.getWelcomeTemplate(firstName, storeName), "Welcome to Vayva"),
+            });
+            if (error) {
+                console.error("[Resend] Welcome Error:", error);
+                throw new Error(`Failed to send welcome email: ${error.message}`);
+            }
+            return { success: true, messageId: data?.id };
+        }
+        catch (error) {
+            console.error("[Resend] Welcome Error:", error);
+            throw error;
+        }
     }
-  }
-
-  // --- 3. Password Changed ---
-  static async sendPasswordChangedEmail(to: string) {
-    this.assertConfigured();
-
-    try {
-      const { data, error } = await this.client.emails.send({
-        from: this.fromEmail,
-        to,
-        subject: "Security Alert: Password Changed",
-        html: wrapEmail(this.getPasswordChangedTemplate(), "Security Alert"),
-      });
-
-      if (error) {
-        console.error("[Resend] Password Change Error:", error);
-        throw new Error(
-          `Failed to send password change email: ${error.message}`,
-        );
-      }
-
-      return { success: true, messageId: data?.id };
-    } catch (error: unknown) {
-      console.error("[Resend] Password Change Error:", error);
-      throw error;
+    // --- 3. Password Changed ---
+    static async sendPasswordChangedEmail(to: any) {
+        this.assertConfigured();
+        try {
+            const { data, error } = await this.client.emails.send({
+                from: this.fromEmail,
+                to,
+                subject: "Security Alert: Password Changed",
+                html: wrapEmail(this.getPasswordChangedTemplate(), "Security Alert"),
+            });
+            if (error) {
+                console.error("[Resend] Password Change Error:", error);
+                throw new Error(`Failed to send password change email: ${error.message}`);
+            }
+            return { success: true, messageId: data?.id };
+        }
+        catch (error) {
+            console.error("[Resend] Password Change Error:", error);
+            throw error;
+        }
     }
-  }
-
-  // --- 4. Payment Receipt ---
-  static async sendPaymentReceiptEmail(
-    to: string,
-    amountNgn: number,
-    invoiceNumber: string,
-    storeName: string,
-  ) {
-    this.assertConfigured();
-
-    try {
-      const { data, error } = await this.client.emails.send({
-        from: this.billingEmail,
-        to,
-        subject: `Receipt for ${storeName} - ${invoiceNumber}`,
-        html: wrapEmail(
-          this.getReceiptTemplate(amountNgn, invoiceNumber, storeName),
-          "Payment Receipt",
-        ),
-      });
-
-      if (error) {
-        console.error("[Resend] Receipt Error:", error);
-        throw new Error(`Failed to send receipt email: ${error.message}`);
-      }
-
-      return { success: true, messageId: data?.id };
-    } catch (error: unknown) {
-      console.error("[Resend] Receipt Error:", error);
-      throw error;
+    // --- 4. Payment Receipt ---
+    static async sendPaymentReceiptEmail(to: any, amountNgn: any, invoiceNumber: any, storeName: any) {
+        this.assertConfigured();
+        try {
+            const { data, error } = await this.client.emails.send({
+                from: this.billingEmail,
+                to,
+                subject: `Receipt for ${storeName} - ${invoiceNumber}`,
+                html: wrapEmail(this.getReceiptTemplate(amountNgn, invoiceNumber, storeName), "Payment Receipt"),
+            });
+            if (error) {
+                console.error("[Resend] Receipt Error:", error);
+                throw new Error(`Failed to send receipt email: ${error.message}`);
+            }
+            return { success: true, messageId: data?.id };
+        }
+        catch (error) {
+            console.error("[Resend] Receipt Error:", error);
+            throw error;
+        }
     }
-  }
-
-  // --- 5. Subscription Expiry Reminder ---
-  static async sendSubscriptionExpiryReminder(
-    to: string,
-    storeName: string,
-    planName: string,
-    expiryDate: string,
-  ) {
-    this.assertConfigured();
-
-    try {
-      const { billingSubscriptionExpiryReminder } =
-        await import("./templates/core");
-      const billingUrl = getCanonicalUrl("/dashboard/settings/billing");
-
-
-      const { data, error } = await this.client.emails.send({
-        from: this.billingEmail,
-        to,
-        subject: `Action Required: Your subscription for ${storeName} expires in 3 days`,
-        html: billingSubscriptionExpiryReminder({
-          store_name: storeName,
-          plan_name: planName,
-          expiry_date: expiryDate,
-          billing_url: billingUrl,
-        }),
-      });
-
-      if (error) {
-        console.error("[Resend] Subscription Expiry Error:", error);
-        throw new Error(
-          `Failed to send subscription expiry email: ${error.message}`,
-        );
-      }
-
-      return { success: true, messageId: data?.id };
-    } catch (error: unknown) {
-      console.error("[Resend] Subscription Expiry Error:", error);
-      throw error;
+    // --- 5. Subscription Expiry Reminder ---
+    static async sendSubscriptionExpiryReminder(to: any, storeName: any, planName: any, expiryDate: any) {
+        this.assertConfigured();
+        try {
+            const { billingSubscriptionExpiryReminder } = await import("./templates/core");
+            const billingUrl = getCanonicalUrl("/dashboard/settings/billing");
+            const { data, error } = await this.client.emails.send({
+                from: this.billingEmail,
+                to,
+                subject: `Action Required: Your subscription for ${storeName} expires in 3 days`,
+                html: billingSubscriptionExpiryReminder({
+                    store_name: storeName,
+                    plan_name: planName,
+                    expiry_date: expiryDate,
+                    billing_url: billingUrl,
+                }),
+            });
+            if (error) {
+                console.error("[Resend] Subscription Expiry Error:", error);
+                throw new Error(`Failed to send subscription expiry email: ${error.message}`);
+            }
+            return { success: true, messageId: data?.id };
+        }
+        catch (error) {
+            console.error("[Resend] Subscription Expiry Error:", error);
+            throw error;
+        }
     }
-  }
-
-  // --- 6. Order Shipped ---
-  static async sendOrderShippedEmail(
-    to: string,
-    orderNumber: string,
-    trackingUrl: string | undefined,
-    storeName: string,
-  ) {
-    this.assertConfigured();
-
-    try {
-      const { data, error } = await this.client.emails.send({
-        from: this.fromEmail,
-        to,
-        subject: `Your order ${orderNumber} is on the way!`,
-        html: wrapEmail(
-          this.getShippedTemplate(orderNumber, trackingUrl, storeName),
-          "Order Shipped",
-        ),
-      });
-
-      if (error) {
-        console.error("[Resend] Shipped Error:", error);
-        throw new Error(`Failed to send shipped email: ${error.message}`);
-      }
-
-      return { success: true, messageId: data?.id };
-    } catch (error: unknown) {
-      console.error("[Resend] Shipped Error:", error);
-      throw error;
+    // --- 6. Order Shipped ---
+    static async sendOrderShippedEmail(to: any, orderNumber: any, trackingUrl: any, storeName: any) {
+        this.assertConfigured();
+        try {
+            const { data, error } = await this.client.emails.send({
+                from: this.fromEmail,
+                to,
+                subject: `Your order ${orderNumber} is on the way!`,
+                html: wrapEmail(this.getShippedTemplate(orderNumber, trackingUrl, storeName), "Order Shipped"),
+            });
+            if (error) {
+                console.error("[Resend] Shipped Error:", error);
+                throw new Error(`Failed to send shipped email: ${error.message}`);
+            }
+            return { success: true, messageId: data?.id };
+        }
+        catch (error) {
+            console.error("[Resend] Shipped Error:", error);
+            throw error;
+        }
     }
-  }
-
-  /**
-   * Internal Template Generators (Content Body Only)
-   */
-
-  private static getOTPTemplate(code: string, firstName?: string): string {
-    return `
+    /**
+     * Internal Template Generators (Content Body Only)
+     */
+    static getOTPTemplate(code: any, firstName: any) {
+        return `
             <h1 style="margin:0 0 12px; font-size:22px; font-weight:600;">
                 ${firstName ? `Hi ${firstName}` : "Hello"}
             </h1>
@@ -245,16 +182,10 @@ export class ResendEmailService {
                 If you didn't request this code, you can safely ignore this email.
             </p>
         `;
-  }
-
-  private static getWelcomeTemplate(
-    firstName: string,
-    storeName: string,
-  ): string {
-    const dashboardUrl = getCanonicalUrl("/onboarding");
-
-
-    return `
+    }
+    static getWelcomeTemplate(firstName: any, storeName: any) {
+        const dashboardUrl = getCanonicalUrl("/onboarding");
+        return `
             <h1 style="margin:0 0 12px; font-size:22px; font-weight:600;">
                 Welcome to Vayva!
             </h1>
@@ -277,10 +208,9 @@ export class ResendEmailService {
                 Need help? Reply to this email or contact support.
             </p>
         `;
-  }
-
-  private static getPasswordChangedTemplate(): string {
-    return `
+    }
+    static getPasswordChangedTemplate() {
+        return `
             <h1 style="margin:0 0 12px; font-size:22px; font-weight:600;">
                 Password Changed
             </h1>
@@ -291,19 +221,13 @@ export class ResendEmailService {
                 <strong>Note:</strong> If you did not make this change, please contact support immediately to secure your account.
             </div>
         `;
-  }
-
-  private static getReceiptTemplate(
-    amount: number,
-    invoiceRef: string,
-    storeName: string,
-  ): string {
-    const formattedAmount = new Intl.NumberFormat("en-NG", {
-      style: "currency",
-      currency: "NGN",
-    }).format(amount);
-
-    return `
+    }
+    static getReceiptTemplate(amount: any, invoiceRef: any, storeName: any) {
+        const formattedAmount = new Intl.NumberFormat("en-NG", {
+            style: "currency",
+            currency: "NGN",
+        }).format(amount);
+        return `
             <h1 style="margin:0 0 4px; font-size:22px; font-weight:600;">Receipt</h1>
             <p style="margin:0 0 24px; font-size:14px; color:#666666;">For ${storeName}</p>
 
@@ -334,27 +258,21 @@ export class ResendEmailService {
                 View your invoice history in <a href="${getCanonicalUrl("/dashboard/settings/billing")}" style="color:#111111; text-decoration:underline;">Billing Settings</a>.
             </p>
         `;
-  }
-
-  private static getShippedTemplate(
-    orderNumber: string,
-    trackingUrl: string | undefined,
-    storeName: string,
-  ): string {
-    return `
+    }
+    static getShippedTemplate(orderNumber: any, trackingUrl: any, storeName: any) {
+        return `
             <h1 style="margin:0 0 12px; font-size:22px; font-weight:600;">Good news!</h1>
             <p style="margin:0 0 16px; font-size:16px; line-height:1.6; color:#444444;">
                 Your order <strong>${orderNumber}</strong> from <strong>${storeName}</strong> has been shipped.
             </p>
 
             ${trackingUrl
-        ? renderButton(trackingUrl, "Track Shipment")
-        : ""
-      }
+                ? renderButton(trackingUrl, "Track Shipment")
+                : ""}
 
             <p style="margin:24px 0 0; font-size:14px; color:#666666;">
                 You will receive another update when it arrives.
             </p>
         `;
-  }
+    }
 }

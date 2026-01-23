@@ -1,11 +1,10 @@
-export function formatCurrency(amount: number, currency: string = "NGN") {
+export function formatCurrency(amount: any, currency = "NGN") {
     return new Intl.NumberFormat("en-NG", {
         style: "currency",
         currency,
     }).format(amount);
 }
-
-export function formatDate(date: string | Date) {
+export function formatDate(date: any) {
     return new Intl.DateTimeFormat("en-NG", {
         dateStyle: "medium",
         timeStyle: "short",

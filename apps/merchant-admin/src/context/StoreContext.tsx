@@ -4,6 +4,7 @@ import React, { createContext, useContext, useEffect, useState } from "react";
 import { useCart, CartItem, UseCartReturn } from "@/hooks/useCart";
 import { useCheckout, CheckoutMode } from "@/hooks/useCheckout";
 import { ProductServiceItem } from "@vayva/shared";
+import { Store } from "@/lib/templates/types";
 
 // -- Test Types until Shared is fully updated --
 interface StoreMerchant {
@@ -18,7 +19,7 @@ interface StoreContextType {
   isLoading: boolean;
   products: ProductServiceItem[];
   merchant: StoreMerchant | null;
-  store: unknown; // Full store object including template settings
+  store: Store | null; // Full store object including template settings
   currency: string;
 
   // Cart (Directly exposed from hook)
@@ -52,7 +53,7 @@ export const StoreProvider = ({
 }: StoreProviderProps) => {
   const [products, setProducts] = useState<ProductServiceItem[]>([]);
   const [merchant, setMerchant] = useState<StoreMerchant | null>(null);
-  const [store, setStore] = useState<unknown>(null);
+  const [store, setStore] = useState<Store | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [isCartOpen, setIsCartOpen] = useState(false);
 

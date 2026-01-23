@@ -1,7 +1,6 @@
 import { logger } from "../../logger";
-
 export class InstagramService {
-    static async connect(authCode: string) {
+    static async connect(authCode) {
         logger.info("Connecting Instagram account", { authCode });
         // Stub implementation
         return {
@@ -10,8 +9,7 @@ export class InstagramService {
             connected: true,
         };
     }
-
-    static async disconnect(integrationId: string) {
+    static async disconnect(integrationId) {
         logger.info("Disconnecting Instagram account", { integrationId });
         return true;
     }

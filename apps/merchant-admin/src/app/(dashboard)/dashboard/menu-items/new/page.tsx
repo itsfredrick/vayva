@@ -140,7 +140,7 @@ export default function NewMenuItemPage() {
                                 <Label>Spice Level</Label>
                                 <Select
                                     value={metadata.spiceLevel}
-                                    onValueChange={(val: string) => setMetadata({ ...metadata, spiceLevel: val })}
+                                    onValueChange={(val) => setMetadata({ ...metadata, spiceLevel: val as any })}
                                 >
                                     <SelectTrigger>
                                         <SelectValue placeholder="Select level" />

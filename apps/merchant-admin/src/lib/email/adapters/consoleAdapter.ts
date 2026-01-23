@@ -1,8 +1,6 @@
-import { EmailAdapter, EmailPayload } from "../types";
-
-export class ConsoleAdapter implements EmailAdapter {
-  async send(payload: EmailPayload) {
-    console.log(`
+export class ConsoleAdapter {
+    async send(payload) {
+        console.log(`
         [ConsoleEmailAdapter] Sending Email
         ------------------------------------------
         To: ${payload.to}
@@ -12,6 +10,6 @@ export class ConsoleAdapter implements EmailAdapter {
         Text: ${payload.text}
         ------------------------------------------
         `);
-    return { success: true, providerId: `console-${Date.now()}` };
-  }
+        return { success: true, providerId: `console-${Date.now()}` };
+    }
 }

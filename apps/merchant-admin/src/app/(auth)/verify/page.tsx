@@ -46,8 +46,7 @@ const VerifyContent = () => {
       }
     } catch (err) {
       console.error(err);
-      const data = (err as any).response?.data;
-      const message = data?.error || data?.message || (err as any).message || "Invalid verification code";
+      const message = err instanceof Error ? err.message : "Invalid verification code";
       setError(message);
       setOtp(""); // Clear OTP on error
     } finally {
@@ -65,8 +64,7 @@ const VerifyContent = () => {
       setError(null);
     } catch (err) {
       console.error(err);
-      const data = (err as any).response?.data;
-      const message = data?.error || data?.message || (err as any).message || "Failed to resend code";
+      const message = err instanceof Error ? err.message : "Failed to resend code";
       setError(message);
     }
   };

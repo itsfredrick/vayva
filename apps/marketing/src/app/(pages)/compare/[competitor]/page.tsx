@@ -1,7 +1,7 @@
 import { notFound } from "next/navigation";
 import { Metadata } from "next";
 import Link from "next/link";
-import { Button, Icon } from "@vayva/ui";
+
 import { ArrowRight } from "lucide-react";
 import { metadataFor, jsonLdFor } from "@/lib/seo/seo-engine";
 import { COMPETITORS } from "@/lib/seo/comparisons";

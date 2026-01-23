@@ -1,36 +1,28 @@
 // Enhanced Tailwind animations for Shopify-level polish
-
 export const animations = {
     // Button animations
     buttonHover: "transition-all duration-200 hover:scale-102 hover:shadow-lg active:scale-98",
     buttonSuccess: "animate-bounce-once",
-
     // Loading states
     pulse: "animate-pulse",
     spin: "animate-spin",
-
     // Entry animations
     fadeIn: "animate-fade-in",
     slideInRight: "animate-slide-in-right",
     slideInLeft: "animate-slide-in-left",
     slideInUp: "animate-slide-in-up",
     slideInDown: "animate-slide-in-down",
-
     // Exit animations
     fadeOut: "animate-fade-out",
     slideOutRight: "animate-slide-out-right",
-
     // Interactive feedback
     shake: "animate-shake",
     wiggle: "animate-wiggle",
-
     // Success states
     checkmark: "animate-checkmark",
-
     // Number counters
     countUp: "animate-count-up",
 };
-
 // Tailwind config additions (add to tailwind.config.ts)
 export const tailwindAnimations = {
     keyframes: {

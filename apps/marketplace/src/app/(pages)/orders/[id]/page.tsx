@@ -1,12 +1,37 @@
-import { prisma } from "@/lib/prisma";
+import { prisma, Prisma } from "@vayva/db";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 import Link from "next/link";
 import Image from "next/image";
-import { ChevronLeft, CheckCircle2, Clock, Truck, MapPin } from "lucide-react";
+import { ChevronLeft, CheckCircle2, Clock, Truck } from "lucide-react";
 import { redirect, notFound } from "next/navigation";
 import { Button } from "@vayva/ui";
 import { DisputeDialog } from "@/components/orders/DisputeDialog";
+
+type OrderWithRelations = Prisma.OrderGetPayload<{
+    include: {
+        fulfillmentGroups: {
+            include: {
+                store: true
+            }
+        },
+        items: {
+            include: {
+                productVariant: {
+                    include: {
+                        productImage: true,
+                        product: {
+                            include: {
+                                productImages: true
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        orderTimelineEvents: true
+    }
+}>;
 
 export default async function OrderDetailsPage({ params }: { params: { id: string } }) {
     const session = await getServerSession(authOptions);
@@ -41,11 +66,12 @@ export default async function OrderDetailsPage({ params }: { params: { id: strin
     });
 
     if (!order) return notFound();
-    if (order.customerId !== session.user?.id) return notFound(); // Basic security
+    const typedOrder = order as OrderWithRelations;
+    if (typedOrder.customerId !== session.user?.id) return notFound(); // Basic security
 
     // Helper to get items for a group
     const getItemsForGroup = (groupId: string) => {
-        return (order as unknown).items.filter((item: unknown) => item.fulfillmentGroupId === groupId);
+        return typedOrder.items.filter(item => item.fulfillmentGroupId === groupId);
     };
 
     return (
@@ -120,8 +146,8 @@ export default async function OrderDetailsPage({ params }: { params: { id: strin
                             <div className="mb-8">
                                 <h2 className="font-semibold mb-4">Tracking</h2>
                                 <div className="space-y-6 relative pl-4 border-l-2 border-gray-100 ml-2">
-                                    {(order as unknown).orderTimelineEvents?.length > 0 ? (
-                                        (order as unknown).orderTimelineEvents.map((event: unknown) => (
+                                    {typedOrder.orderTimelineEvents?.length > 0 ? (
+                                        typedOrder.orderTimelineEvents.map((event: { id: string, title: string, body: string | null, createdAt: Date }) => (
                                             <div key={event.id} className="relative">
                                                 <div className="absolute -left-[21px] top-1 h-3 w-3 rounded-full bg-blue-500 ring-4 ring-white" />
                                                 <div>
@@ -148,7 +174,7 @@ export default async function OrderDetailsPage({ params }: { params: { id: strin
                             {/* Shipment Groups */}
                             <h2 className="font-semibold mb-4">Packages</h2>
                             <div className="space-y-6">
-                                {((order as unknown).fulfillmentGroups as any[]).map((group: unknown) => (
+                                {typedOrder.fulfillmentGroups.map((group) => (
                                     <div key={group.id} className="border rounded-lg p-4">
                                         <div className="flex items-center gap-2 mb-3 pb-3 border-b">
                                             <Store className="h-4 w-4 text-gray-500" />
@@ -158,12 +184,12 @@ export default async function OrderDetailsPage({ params }: { params: { id: strin
                                             </span>
                                         </div>
                                         <div className="space-y-3">
-                                            {(getItemsForGroup(group.id) as any[]).map(item => (
+                                            {getItemsForGroup(group.id).map((item) => (
                                                 <div key={item.id} className="flex gap-3">
                                                     <div className="h-12 w-12 bg-gray-100 rounded relative shrink-0">
-                                                        {((item as unknown).productVariant?.productImage?.url || (item as unknown).productVariant?.product?.productImages?.[0]?.url) && (
+                                                        {(item.productVariant?.productImage?.url || item.productVariant?.product?.productImages?.[0]?.url) && (
                                                             <Image
-                                                                src={(item as unknown).productVariant?.productImage?.url || (item as unknown).productVariant?.product?.productImages?.[0]?.url || ""}
+                                                                src={item.productVariant?.productImage?.url || item.productVariant?.product?.productImages?.[0]?.url || ""}
                                                                 alt={item.title}
                                                                 fill
                                                                 className="object-cover rounded"
@@ -234,7 +260,7 @@ export default async function OrderDetailsPage({ params }: { params: { id: strin
 }
 
 // Icon for Store
-function Store(props: unknown) {
+function Store(props: React.SVGProps<SVGSVGElement>) {
     return (
         <svg
             {...props}

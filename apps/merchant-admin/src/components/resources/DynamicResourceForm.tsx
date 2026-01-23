@@ -36,7 +36,7 @@ export const DynamicResourceForm = ({
     const router = useRouter();
     const { merchant } = useAuth();
     const { store } = useStore();
-    const industrySlug = ((store as any)?.industrySlug || (merchant as any)?.industrySlug || "retail") as IndustrySlug;
+    const industrySlug = (store?.industrySlug || merchant?.industrySlug || "retail") as IndustrySlug;
 
     const config = INDUSTRY_CONFIG[industrySlug];
     // Fallback to retail if config missing to prevent crash

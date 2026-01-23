@@ -4,22 +4,26 @@ declare module "next-auth" {
   interface User {
     storeId: string;
     storeName: string;
-    role: string;
+    role: string | null;
+    plan: string;
+    trialEndsAt: Date | string | null;
     emailVerified: boolean;
     onboardingCompleted: boolean;
   }
 
   interface Session {
-    user: {
+    user: User & {
       id: string;
-      email: string;
-      name: string;
-      storeId: string;
-      storeName: string;
-      role: string;
-      onboardingCompleted: boolean;
-      emailVerified: boolean;
     };
+  }
+
+  interface AuthOptions {
+    adapter?: any;
+    session?: any;
+    pages?: any;
+    providers: any[];
+    callbacks?: any;
+    secret?: string;
   }
 }
 
@@ -27,8 +31,12 @@ declare module "next-auth/jwt" {
   interface JWT {
     storeId: string;
     storeName: string;
-    role: string;
-    onboardingCompleted: boolean;
+    role: string | null;
+    plan: string;
+    trialEndsAt: Date | string | null;
     emailVerified: boolean;
+    onboardingCompleted: boolean;
+    lastActive?: number;
+    error?: string;
   }
 }

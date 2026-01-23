@@ -1,5 +1,4 @@
 import { z } from "zod";
-
 // 1. Retail & Fashion
 export const RetailAttributesSchema = z.object({
     sizes: z.array(z.string()).optional(), // Optional in prompt they are arrays, but might be empty. Prompt said "sizes": ["S", "M"] which implies values.
@@ -8,7 +7,6 @@ export const RetailAttributesSchema = z.object({
     size_chart_url: z.string().url().optional(),
     weight_kg: z.number().optional(),
 });
-
 // 2. Service (Appointments)
 export const ServiceAttributesSchema = z.object({
     duration_minutes: z.number().int().positive().optional(),
@@ -16,7 +14,6 @@ export const ServiceAttributesSchema = z.object({
     location_type: z.enum(["Physical", "Virtual"]).optional(),
     meeting_link: z.string().url().optional(),
 });
-
 // 3. Food & Catering
 export const FoodAttributesSchema = z.object({
     ingredients: z.array(z.string()).optional(),
@@ -27,7 +24,6 @@ export const FoodAttributesSchema = z.object({
         price: z.number()
     })).optional(),
 });
-
 // 4. Digital Assets
 export const DigitalAttributesSchema = z.object({
     file_url: z.string().url().optional(),
@@ -35,7 +31,6 @@ export const DigitalAttributesSchema = z.object({
     file_extension: z.enum([".zip", ".pdf", ".mp4", "other"]).optional(), // Prompt listed specific exts, added 'other' for safety
     license_type: z.enum(["Personal", "Commercial"]).optional(),
 });
-
 // 5. Real Estate
 export const RealEstateAttributesSchema = z.object({
     property_type: z.enum(["Apartment", "Land", "Office", "House"]).optional(),
@@ -46,7 +41,6 @@ export const RealEstateAttributesSchema = z.object({
     virtual_tour_url: z.string().url().optional(),
     amenities: z.array(z.string()).optional(),
 });
-
 // 6. Events & Tickets
 export const EventsAttributesSchema = z.object({
     event_date: z.string().datetime().optional(), // ISO string
@@ -57,7 +51,6 @@ export const EventsAttributesSchema = z.object({
     })).optional(),
     is_virtual: z.boolean().optional(),
 });
-
 // 7. Education (Courses)
 export const EducationAttributesSchema = z.object({
     curriculum: z.array(z.object({
@@ -67,7 +60,6 @@ export const EducationAttributesSchema = z.object({
     total_hours: z.number().positive().optional(),
     certificate_included: z.boolean().optional(),
 });
-
 // 8. B2B / Wholesale
 export const WholesaleAttributesSchema = z.object({
     moq: z.number().int().positive().optional(), // Minimum Order Quantity
@@ -77,23 +69,20 @@ export const WholesaleAttributesSchema = z.object({
     })).optional(),
     lead_time_days: z.number().int().nonnegative().optional(),
 });
-
 // 9. Nonprofit (Donations)
 export const NonprofitAttributesSchema = z.object({
     goal_amount: z.number().positive().optional(),
     impact_metrics: z.string().optional(),
     is_recurring: z.boolean().optional(),
 });
-
 // 10. Marketplace (Multi-vendor)
 export const MarketplaceAttributesSchema = z.object({
     vendor_id: z.string().optional(),
     commission_rate: z.number().min(0).max(100).optional(),
     vendor_rating: z.number().min(0).max(5).optional(),
 });
-
 // Map segments to schemas
-export const SCHEMA_MAP: Record<string, z.ZodObject<unknown>> = {
+export const SCHEMA_MAP = {
     "retail": RetailAttributesSchema,
     "food": FoodAttributesSchema,
     "services": ServiceAttributesSchema,
@@ -105,13 +94,3 @@ export const SCHEMA_MAP: Record<string, z.ZodObject<unknown>> = {
     "non-profit": NonprofitAttributesSchema,
     "other": RetailAttributesSchema, // Default
 };
-
-// Types
-export type RetailAttributes = z.infer<typeof RetailAttributesSchema>;
-export type FoodAttributes = z.infer<typeof FoodAttributesSchema>;
-// ... others inferred as needed
-
-// Shared Types
-export interface ProductAttributeData {
-    [key: string]: unknown;
-}

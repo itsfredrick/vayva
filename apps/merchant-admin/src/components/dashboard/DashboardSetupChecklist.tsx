@@ -7,7 +7,18 @@ import { useAuth } from "@/context/AuthContext";
 import { OnboardingStatus } from "@vayva/shared";
 import { telemetry } from "@/lib/telemetry";
 import { INDUSTRY_CONFIG } from "@/config/industry";
+import { IndustrySlug } from "@/lib/templates/types";
 import styles from "./DashboardSetupChecklist.module.css";
+
+interface ActivationProgress {
+  hasProducts: boolean;
+  hasPayoutMethod: boolean;
+  kycStatus: "NOT_STARTED" | "PENDING" | "VERIFIED" | "FAILED";
+  isStoreLive: boolean;
+  hasCustomRoles: boolean;
+  industrySlug?: string;
+}
+
 
 export function DashboardSetupChecklist() {
   const { merchant } = useAuth();
@@ -16,7 +27,7 @@ export function DashboardSetupChecklist() {
   const [isPersistedHidden, setIsPersistedHidden] = useState(false);
 
   // Detailed progress state
-  const [activation, setActivation] = useState<unknown>(null);
+  const [activation, setActivation] = useState<ActivationProgress | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -68,9 +79,9 @@ export function DashboardSetupChecklist() {
   };
 
   // 1) Get Object name from industry
-  const industrySlug = activation.industrySlug || "retail";
-  const config = (INDUSTRY_CONFIG as unknown)[industrySlug] || (INDUSTRY_CONFIG as unknown)["retail"];
-  const primaryObject = config?.primaryObject || "product";
+  const industrySlug = (activation.industrySlug || "retail") as IndustrySlug;
+  const config = INDUSTRY_CONFIG[industrySlug] || INDUSTRY_CONFIG["retail"];
+  const primaryObject = config.primaryObject;
   const objectLabel = primaryObject.charAt(0).toUpperCase() + primaryObject.slice(1).replace(/_/g, " ");
 
   const items = [

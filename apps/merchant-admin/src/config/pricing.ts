@@ -5,84 +5,64 @@
  * This file is the single source of truth for all pricing, plans, and fees
  * across the Vayva platform (marketing, dashboard, and legal).
  */
-
 export const PRICING_VERSION = "2025-12-26_v2";
 export const CURRENCY = "NGN";
-
 // Transaction Fees
 export const FEES = {
-  WITHDRAWAL_PERCENTAGE: 3, // 3% fee on every withdrawal
+    WITHDRAWAL_PERCENTAGE: 3, // 3% fee on every withdrawal
 };
-
-// 1:1 Mapping to Prisma SubscriptionPlan enum
-export type PlanKey = "STARTER" | "GROWTH" | "PRO";
-
-export type Plan = {
-  key: PlanKey;
-  name: string;
-  monthlyAmount: number; // NGN (Inclusive of 7.5% VAT)
-  baseAmount?: number;
-  tagline: string;
-  trialDays?: number;
-  bullets: string[];
-  ctaLabel: string;
-  featured?: boolean;
-};
-
-export const PLANS: Plan[] = [
-  {
-    key: "STARTER",
-    name: "Free",
-    monthlyAmount: 0,
-    trialDays: 7,
-    tagline: "Perfect for testing ideas.",
-    bullets: [
-      "No staff seats",
-      "2 Included Templates",
-      "Basic Storefront",
-      "Standard Analytics",
-    ],
-    ctaLabel: "Start Free",
-  },
-  {
-    key: "GROWTH",
-    name: "Starter",
-    monthlyAmount: 32250,
-    baseAmount: 30000,
-    tagline: "For growing brands.",
-    bullets: [
-      "1 Staff Seat",
-      "5 Included Templates",
-      "Service & Digital Modules",
-      "Remove Branding",
-    ],
-    ctaLabel: "Upgrade to Starter",
-    featured: true,
-  },
-  {
-    key: "PRO",
-    name: "Pro",
-    monthlyAmount: 43000,
-    baseAmount: 40000,
-    tagline: "High volume scaling.",
-    bullets: [
-      "3 Staff Seats",
-      "All Templates (Any Choice)",
-      "Unlimited Everything",
-      "Vayva Cut Pro Included",
-    ],
-    ctaLabel: "Upgrade to Pro",
-  },
+export const PLANS = [
+    {
+        key: "STARTER",
+        name: "Free",
+        monthlyAmount: 0,
+        trialDays: 7,
+        tagline: "Perfect for testing ideas.",
+        bullets: [
+            "No staff seats",
+            "2 Included Templates",
+            "Basic Storefront",
+            "Standard Analytics",
+        ],
+        ctaLabel: "Start Free",
+    },
+    {
+        key: "GROWTH",
+        name: "Starter",
+        monthlyAmount: 32250,
+        baseAmount: 30000,
+        tagline: "For growing brands.",
+        bullets: [
+            "1 Staff Seat",
+            "5 Included Templates",
+            "Service & Digital Modules",
+            "Remove Branding",
+        ],
+        ctaLabel: "Upgrade to Starter",
+        featured: true,
+    },
+    {
+        key: "PRO",
+        name: "Pro",
+        monthlyAmount: 43000,
+        baseAmount: 40000,
+        tagline: "High volume scaling.",
+        bullets: [
+            "3 Staff Seats",
+            "All Templates (Any Choice)",
+            "Unlimited Everything",
+            "Vayva Cut Pro Included",
+        ],
+        ctaLabel: "Upgrade to Pro",
+    },
 ];
-
-export function formatNGN(amount: number): string {
-  return new Intl.NumberFormat("en-NG", {
-    style: "currency",
-    currency: "NGN",
-    maximumFractionDigits: 0,
-  }).format(amount);
+export function formatNGN(amount: number) {
+    return new Intl.NumberFormat("en-NG", {
+        style: "currency",
+        currency: "NGN",
+        maximumFractionDigits: 0,
+    }).format(amount);
 }
-
-export function calculateWithdrawalFee(amount: number): number {
-  return (amount * FEES.WITHDRAWAL_PERCENTAGE) / 100;
+export function calculateWithdrawalFee(amount: number) {
+    return (amount * FEES.WITHDRAWAL_PERCENTAGE) / 100;
 }

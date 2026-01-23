@@ -9,13 +9,31 @@ interface CategoryPageProps {
     params: { slug: string };
 }
 
+interface Store {
+    id: string;
+    name: string;
+    slug: string;
+    bannerUrl?: string | null;
+    bio?: string | null;
+}
+
+interface Product {
+    id: string;
+    title: string;
+    price: any; // Decimal type from Prisma
+    productImages: Array<{ url: string }>;
+    store?: {
+        name: string;
+    } | null;
+}
+
 export default async function CategoryPage({ params }: CategoryPageProps) {
     const slug = params.slug;
     const isFood = slug === "food";
     const title = slug.charAt(0).toUpperCase() + slug.slice(1);
 
     // Dynamic Data Fetching
-    let items: unknown[] = [];
+    let items: any[] = [];
 
     if (isFood) {
         // Fetch Restaurants
@@ -29,7 +47,7 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
                 isLive: true
             },
             take: 20
-        });
+        }) as Store[];
     } else {
         // Fetch Products
         items = await prisma.product.findMany({
@@ -42,7 +60,7 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
                 store: true
             },
             take: 20
-        });
+        }) as Product[];
     }
 
     return (
@@ -60,7 +78,7 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
                         {items.length === 0 ? (
                             <p className="text-gray-500 text-center py-10">No restaurants found.</p>
                         ) : (
-                            items.map((store) => (
+                            (items as Store[]).map((store) => (
                                 <Link href={`/store/${store.slug}`} key={store.id} className="block group">
                                     <div className="relative h-40 bg-gray-100 rounded-xl overflow-hidden mb-3">
                                         {store.bannerUrl ? (
@@ -72,7 +90,7 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
                                             />
                                         ) : (
                                             <div className="w-full h-full flex items-center justify-center text-gray-300">
-                                                <span className="text-4xl font-bold opacity-20">{store.name[0]}</span>
+                                                <span className="text-4xl font-bold opacity-20">{store.name ? store.name[0] : ''}</span>
                                             </div>
                                         )}
                                         {/* Overlay Info */}
@@ -105,7 +123,7 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
                                 No products found in {title}.
                             </div>
                         ) : (
-                            items.map((product) => (
+                            (items as Product[]).map((product) => (
                                 <Link href={`/listing/${product.id}`} key={product.id} className="bg-white border border-gray-100 rounded-xl overflow-hidden block">
                                     <div className="aspect-square bg-gray-50 relative">
                                         {product.productImages?.[0] ? (

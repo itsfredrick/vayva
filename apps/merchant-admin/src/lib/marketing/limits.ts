@@ -1,7 +1,6 @@
-import { PLANS, PlanKey } from "../billing/plans";
-
+import { PLANS } from "../billing/plans";
 export const MARKETING_LIMITS = {
-    getCampaignSendLimit: (planKey: PlanKey) => {
+    getCampaignSendLimit: (planKey: any) => {
         return PLANS[planKey]?.limits.monthlyCampaignSends || 0;
     },
 };

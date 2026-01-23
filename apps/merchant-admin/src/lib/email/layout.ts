@@ -2,24 +2,16 @@
  * Shared Vayva Email Layout
  * Provides a consistent header (Logo), container, and footer.
  */
-
 import { BRAND } from "@vayva/shared";
-
 export const BRAND_COLOR = "#111111"; // Black for premium feel matching the design
 export const ACCENT_COLOR = "#111111";
 export const BG_COLOR = "#f7f7f7";
 export const TEXT_COLOR = "#444444";
 export const HEADLINE_COLOR = "#111111";
-
 // Use the absolute URL for the logo, derived from canonical origin
 const LOGO_URL = `${BRAND.canonicalOrigin}/brand-logo.png`;
-
-
-export function wrapEmail(
-  contentHtml: string,
-  title: string = "Vayva Notification",
-): string {
-  return `
+export function wrapEmail(contentHtml: any, title = "Vayva Notification") {
+    return `
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -85,10 +77,9 @@ export function wrapEmail(
 </html>
     `;
 }
-
 // Helper to generate consistent buttons
-export function renderButton(url: string, label: string): string {
-  return `
+export function renderButton(url: any, label: any) {
+    return `
     <a 
         href="${url}"
         style="

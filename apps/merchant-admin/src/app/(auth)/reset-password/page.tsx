@@ -36,8 +36,7 @@ const ResetPasswordContent = () => {
       router.push("/signin?reset=success");
     } catch (err) {
       console.error(err);
-      const data = (err as any).response?.data;
-      const message = data?.error || data?.message || (err as any).message || "Failed to reset password";
+      const message = err instanceof Error ? err.message : "Failed to reset password";
       setError(message);
     } finally {
       setLoading(false);

@@ -1,11 +1,36 @@
-
-import { ExtensionManifest } from "@vayva/shared";
-
 /**
- * INTERNAL_EXTENSIONS
  * These are core modules that are treated as extensions.
  * In the future, these could be moved to separate packages.
  */
+
+export interface SidebarItem {
+    id: string;
+    label: string;
+    href: string;
+    icon: string;
+    parentGroup: string;
+}
+
+export interface DashboardWidget {
+    id: string;
+    label: string;
+    type: string;
+    gridCols: number;
+    icon?: string;
+    apiEndpoint: string;
+}
+
+export interface ExtensionManifest {
+    id: string;
+    name: string;
+    version: string;
+    description: string;
+    category: string;
+    sidebarItems: SidebarItem[];
+    primaryObject: string;
+    dashboardWidgets?: DashboardWidget[];
+}
+
 export const INTERNAL_EXTENSIONS: ExtensionManifest[] = [
     {
         id: "vayva.retail",
@@ -59,34 +84,30 @@ export const INTERNAL_EXTENSIONS: ExtensionManifest[] = [
         primaryObject: "workflow"
     }
 ];
-
 class ExtensionRegistry {
-    private extensions: Map<string, ExtensionManifest> = new Map();
-
+    private extensions: Map<string, ExtensionManifest>;
     constructor(initial: ExtensionManifest[]) {
+        this.extensions = new Map();
         initial.forEach(ext => this.extensions.set(ext.id, ext));
     }
-
     register(manifest: ExtensionManifest) {
         this.extensions.set(manifest.id, manifest);
     }
-
     get(id: string) {
         return this.extensions.get(id);
     }
-
     getAll() {
         return Array.from(this.extensions.values());
     }
-
     /**
      * Get active extensions for a store.
      * @param industrySlug - Legacy industry identifier
      * @param enabledIds - Explicitly enabled extension IDs (from DB)
      */
-    getActiveForStore(industrySlug: string, enabledIds?: string[]): ExtensionManifest[] {
+    getActiveForStore(industrySlug: string, enabledIds: string[]): ExtensionManifest[] {
         // Core retail is always active
-        const active: ExtensionManifest[] = [this.extensions.get("vayva.retail")!];
+        const retailExt = this.extensions.get("vayva.retail");
+        const active: ExtensionManifest[] = retailExt ? [retailExt] : [];
 
         // If we have explicit enabled IDs from DB, use them
         if (enabledIds && enabledIds.length > 0) {
@@ -96,19 +117,18 @@ class ExtensionRegistry {
                     active.push(ext);
                 }
             });
-            return active.filter(Boolean);
+            return active;
         }
-
         // Fallback for new stores or pre-migration: derive from industrySlug
         if (industrySlug === "food") {
-            active.push(this.extensions.get("vayva.kitchen")!);
+            const ext = this.extensions.get("vayva.kitchen");
+            if (ext) active.push(ext);
         }
         if (industrySlug === "real_estate") {
-            active.push(this.extensions.get("vayva.real-estate")!);
+            const ext = this.extensions.get("vayva.real-estate");
+            if (ext) active.push(ext);
         }
-
-        return active.filter(Boolean);
+        return active;
     }
 }
-
 export const extensionRegistry = new ExtensionRegistry(INTERNAL_EXTENSIONS);

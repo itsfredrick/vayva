@@ -2,7 +2,6 @@ import { prisma } from "@/lib/prisma";
 import { z } from "zod";
 import { sanitizeHtml } from "@/lib/security/sanitize";
 import { SCHEMA_MAP } from "@/lib/product-schemas";
-
 // Validation Schemas
 const BaseProductSchema = z.object({
     name: z.string().min(1, "Name is required"),
@@ -10,41 +9,34 @@ const BaseProductSchema = z.object({
     description: z.string().optional(),
     images: z.array(z.string()).optional(),
 });
-
 export class ProductCoreService {
-
     /**
      * Create a product with full business logic (Quotas, Inventory, Variants)
      */
-    static async createProduct(storeId: string, payload: unknown) {
+    static async createProduct(storeId: string, payload: any) {
         // 1. Fetch Merchant to know Category & Plan
         const store = await prisma.store.findUnique({
             where: { id: storeId },
             select: { category: true, plan: true }
         });
-
         if (!store) {
             throw new Error("Store not found");
         }
-
         // 2. Enforce Plan Limits (QuotaGuard)
-        const PLAN_LIMITS: Record<string, number> = {
+        const PLAN_LIMITS = {
             "FREE": 10,
             "STARTER": 50,
             "PRO": 1000,
             "GROWTH": 10000,
             "ENTERPRISE": 100000
         };
-
         const limit = PLAN_LIMITS[store.plan] || 5;
         const currentCount = await prisma.product.count({
             where: { storeId }
         });
-
         if (currentCount >= limit) {
             throw new Error(`Product limit reached for your plan (${store.plan}). Limit: ${limit}`);
         }
-
         // 3. Validate Base Fields
         // Map payload fields to schema (handling 'title' vs 'name')
         const input = {
@@ -53,15 +45,12 @@ export class ProductCoreService {
             description: payload.description,
             images: payload.images
         };
-
         const parseResult = BaseProductSchema.safeParse(input);
         if (!parseResult.success) {
             throw new Error("Invalid product data: " + JSON.stringify(parseResult.error.flatten()));
         }
-
         const { name, price, description } = parseResult.data;
         const variants = payload.variants || [];
-
         // 4. Gather industry-specific attributes into metadata
         const attributes = payload.metadata || payload.attributes || {};
         const industryFields = ["digital", "realEstate", "automotive", "stay", "event", "isTodaysSpecial"];
@@ -70,10 +59,9 @@ export class ProductCoreService {
                 attributes[field] = payload[field];
             }
         });
-
         // 4. Validate Category Specific Attributes
         // Fallback to retail if category not mapped
-        const schema = SCHEMA_MAP[store.category] || SCHEMA_MAP["retail"];
+        const schema = SCHEMA_MAP[store.category as keyof typeof SCHEMA_MAP] || SCHEMA_MAP["retail"];
         if (schema) {
             const attrParse = schema.safeParse(attributes);
             if (!attrParse.success) {
@@ -82,14 +70,12 @@ export class ProductCoreService {
                 // throw new Error(`Invalid attributes for category ${store.category}: ` + JSON.stringify(attrParse.error.flatten()));
             }
         }
-
         // 5. Transactional Creation
         const result = await prisma.$transaction(async (tx) => {
             // A. Ensure Inventory Location exists
             let location = await tx.inventoryLocation.findFirst({
                 where: { storeId, isDefault: true }
             });
-
             if (!location) {
                 location = await tx.inventoryLocation.create({
                     data: {
@@ -99,7 +85,6 @@ export class ProductCoreService {
                     }
                 });
             }
-
             // B. Create Product
             const product = await tx.product.create({
                 data: {
@@ -114,11 +99,9 @@ export class ProductCoreService {
                     status: payload.status || "ACTIVE"
                 }
             });
-
             // C. Handle Variants & Inventory
             const skuBase = payload.sku || `SKU-${Date.now()}`;
             const stockQuantity = Number(payload.stock || payload.inventory || 0);
-
             if (variants.length > 0) {
                 for (const v of variants) {
                     // Create Variant
@@ -132,11 +115,10 @@ export class ProductCoreService {
                             trackInventory: true
                         }
                     });
-
                     // Create Inventory Item
                     await tx.inventoryItem.create({
                         data: {
-                            locationId: location!.id,
+                            locationId: location.id,
                             variantId: variant.id,
                             productId: product.id,
                             onHand: v.stock || 0,
@@ -144,7 +126,8 @@ export class ProductCoreService {
                         }
                     });
                 }
-            } else {
+            }
+            else {
                 // Simple Product as Default Variant
                 const defaultVariant = await tx.productVariant.create({
                     data: {
@@ -156,10 +139,9 @@ export class ProductCoreService {
                         trackInventory: true
                     }
                 });
-
                 await tx.inventoryItem.create({
                     data: {
-                        locationId: location!.id,
+                        locationId: location.id,
                         variantId: defaultVariant.id,
                         productId: product.id,
                         onHand: stockQuantity,
@@ -167,7 +149,6 @@ export class ProductCoreService {
                     }
                 });
             }
-
             // D. Handle Automotive Vehicle Data (Legacy Support)
             if (store.category === "Automotive" && attributes.vehicle) {
                 const { year, make, model, vin, mileage, fuelType, transmission } = attributes.vehicle;
@@ -184,10 +165,8 @@ export class ProductCoreService {
                     }
                 });
             }
-
             return product;
         });
-
         return result;
     }
 }

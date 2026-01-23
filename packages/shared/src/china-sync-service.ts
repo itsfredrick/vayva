@@ -147,7 +147,7 @@ export class ChinaSyncService {
             }
 
             // Boost based on performance metrics if available
-            const metrics = store.performanceMetrics as unknown;
+            const metrics = store.performanceMetrics as any;
             if (metrics?.responseRate) score += metrics.responseRate * 2;
 
             if (score > highestScore) {

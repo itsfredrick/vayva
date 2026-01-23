@@ -1,187 +1,165 @@
 "use client";
-
-import React, { createContext, useContext, useEffect, useState } from "react";
+import { createContext, useContext, useEffect, useState, ReactNode } from "react";
 import { useRouter, usePathname } from "next/navigation";
 import { apiClient } from "@vayva/api-client";
-import {
-  User,
-  MerchantContext,
-} from "@vayva/shared";
+import { User, MerchantContext } from "@vayva/shared";
+import { ExtendedMerchant } from "@/lib/templates/types";
 import { getAuthRedirect } from "@/lib/auth/redirects";
-
 import { InactivityListener } from "@/components/auth/InactivityListener";
 
 interface AuthContextType {
-  user: User | null;
-  merchant: MerchantContext | null;
-  isLoading: boolean;
-  isAuthenticated: boolean;
-  login: (token: string, user: User, merchant?: MerchantContext) => void;
-  logout: () => void;
-  refreshProfile: () => Promise<void>;
+    user: User | null;
+    merchant: ExtendedMerchant | null;
+    isLoading: boolean;
+    isAuthenticated: boolean;
+    login: (newToken: string | undefined, newUser: User, newMerchant?: MerchantContext | null) => void;
+    logout: () => Promise<void>;
+    refreshProfile: () => Promise<void>;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
-export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
-  const [user, setUser] = useState<User | null>(null);
-  const [merchant, setMerchant] = useState<MerchantContext | null>(null);
-  const [isLoading, setIsLoading] = useState(true);
+export const AuthProvider = ({ children }: { children: ReactNode }) => {
+    const [user, setUser] = useState<User | null>(null);
+    const [merchant, setMerchant] = useState<ExtendedMerchant | null>(null);
+    const [isLoading, setIsLoading] = useState(true);
+    const router = useRouter();
+    const pathname = usePathname();
 
-  const router = useRouter();
-  const pathname = usePathname();
+    const fetchProfile = async () => {
+        try {
+            const response = await apiClient.auth.me();
+            if (response.success && response.data) {
+                setUser(response.data.user);
+                setMerchant(response.data.merchant || null);
+            } else {
+                setUser(null);
+                setMerchant(null);
+            }
+        }
+        catch (error) {
+            setUser(null);
+            setMerchant(null);
+        }
+    };
 
-  const fetchProfile = async () => {
-    try {
-      const response = await apiClient.auth.me();
-      if (response.success && response.data) {
-        setUser(response.data.user);
-        setMerchant(response.data.merchant || null);
-      } else {
+    useEffect(() => {
+        fetchProfile().finally(() => setIsLoading(false));
+    }, []);
+
+    const login = (newToken: string | undefined, newUser: User, newMerchant?: MerchantContext | null) => {
+        setUser(newUser);
+        setMerchant(newMerchant || null);
+        const destination = getAuthRedirect(newUser, newMerchant || null);
+        router.push(destination);
+    };
+
+    const logout = async () => {
+        try {
+            await apiClient.auth.logout();
+        }
+        catch (e) {
+            console.error("Logout error", e);
+        }
         setUser(null);
         setMerchant(null);
-      }
-    } catch {
-      setUser(null);
-      setMerchant(null);
-    }
-  };
+        router.push("/signin");
+    };
 
-  useEffect(() => {
-    // Since we use httpOnly cookies, we just try to fetch /me on mount
-    fetchProfile().finally(() => setIsLoading(false));
-  }, []);
+    // Route Guard & Redirection Logic
+    useEffect(() => {
+        if (isLoading)
+            return;
 
-  const login = (
-    newToken: string,
-    newUser: User,
-    newMerchant?: MerchantContext,
-  ) => {
-    // Token is handled by gateway cookie, but we still update local state
-    setUser(newUser);
-    setMerchant(newMerchant || null);
+        const publicRoutes = [
+            "/signin",
+            "/signup",
+            "/forgot-password",
+            "/reset-password",
+            "/verify",
+            "/",
+            "/features",
+            "/marketplace",
+            "/pricing",
+            "/templates",
+            "/help",
+            "/legal",
+            "/contact",
+            "/about",
+            "/how-vayva-works",
+            "/store-builder",
+            "/careers",
+            "/blog",
+            "/community",
+            "/trust",
+            "/system-status",
+        ];
 
-    const destination = getAuthRedirect(newUser, newMerchant || null);
-    router.push(destination);
-  };
+        const isPublicRoute = publicRoutes.some((p) => pathname === p || (p !== "/" && pathname.startsWith(p + "/")));
+        const isAuthRoute = ["/signin", "/signup", "/verify"].includes(pathname);
 
-  const logout = async () => {
-    try {
-      await apiClient.auth.logout();
-    } catch (e) {
-      console.error("Logout error", e);
-    }
-    setUser(null);
-    setMerchant(null);
-    router.push("/signin");
-  };
+        if (!user && !isPublicRoute) {
+            router.push("/signin");
+            return;
+        }
 
-  // Route Guard & Redirection Logic
-  useEffect(() => {
-    if (isLoading) return;
+        if (user) {
+            const destination = getAuthRedirect(user, merchant);
 
-    const publicRoutes = [
-      "/signin",
-      "/signup",
-      "/forgot-password",
-      "/reset-password",
-      "/verify",
-      "/",
-      "/features",
-      "/marketplace",
-      "/pricing",
-      "/templates",
-      "/help",
-      "/legal",
-      "/contact",
-      "/about",
-      "/how-vayva-works",
-      "/store-builder",
-      "/careers",
-      "/blog",
-      "/community",
-      "/trust",
-      "/system-status",
-    ];
+            if (isAuthRoute) {
+                if (pathname.startsWith("/verify") && destination.startsWith("/verify")) {
+                    return;
+                }
+                router.push(destination);
+                return;
+            }
 
-    const isPublicRoute = publicRoutes.some(
-      (p) => pathname === p || (p !== "/" && pathname.startsWith(p + "/")),
+            const isDestinationDashboard = destination === "/dashboard";
+            const isDestinationOnboarding = destination.startsWith("/onboarding");
+            const isDestinationVerify = destination.startsWith("/verify");
+
+            if (isDestinationVerify && !pathname.startsWith("/verify")) {
+                router.push(destination);
+                return;
+            }
+
+            if (isDestinationOnboarding) {
+                if (!pathname.startsWith("/onboarding")) {
+                    router.push(destination);
+                    return;
+                }
+            }
+
+            if (isDestinationDashboard) {
+                if (pathname.startsWith("/onboarding")) {
+                    router.push(destination);
+                    return;
+                }
+            }
+        }
+    }, [user, merchant, isLoading, pathname, router]);
+
+    const value: AuthContextType = {
+        user,
+        merchant,
+        isLoading,
+        isAuthenticated: !!user,
+        login,
+        logout,
+        refreshProfile: fetchProfile,
+    };
+
+    return (
+        <AuthContext.Provider value={value} >
+            <InactivityListener />
+            {children}
+        </AuthContext.Provider>
     );
-    const isAuthRoute = ["/signin", "/signup", "/verify"].includes(pathname);
-
-    // 1. Unauthenticated -> Redirect to Signin (protect private routes)
-    if (!user && !isPublicRoute) {
-      router.push("/signin");
-      return;
-    }
-
-    // 2. Authenticated
-    if (user) {
-      const destination = getAuthRedirect(user, merchant);
-
-      // If we are on an Auth Route, ALWAYs redirect to correct destination
-      if (isAuthRoute) {
-        // Special case: If we are on /verify and the destination IS /verify, stay.
-        if (pathname.startsWith("/verify") && destination.startsWith("/verify")) {
-          return;
-        }
-        router.push(destination);
-        return;
-      }
-
-      // If we are on a Private Route (e.g. Dashboard), ensure we are allowed to be here.
-      // logic: If destination != /dashboard, and we are currently ON /dashboard (or anything that is not onboarding/verify), force redirect.
-
-      const isDestinationDashboard = destination === "/dashboard";
-      const isDestinationOnboarding = destination.startsWith("/onboarding");
-      const isDestinationVerify = destination.startsWith("/verify");
-
-      if (isDestinationVerify && !pathname.startsWith("/verify")) {
-        router.push(destination);
-        return;
-      }
-
-      if (isDestinationOnboarding) {
-        // Allowed to be on /onboarding/*
-        if (!pathname.startsWith("/onboarding")) {
-          router.push(destination);
-          return;
-        }
-      }
-
-      if (isDestinationDashboard) {
-        // If we are supposed to be on dashboard, but we are on /onboarding allow user to finish optional steps?
-        // Or force dashboard?
-        // Prompt: "Visiting /onboarding when onboarding complete -> redirected to /dashboard"
-        if (pathname.startsWith("/onboarding")) {
-          router.push(destination);
-          return;
-        }
-      }
-    }
-  }, [user, merchant, isLoading, pathname, router]);
-
-  const value = {
-    user,
-    merchant,
-    isLoading,
-    isAuthenticated: !!user,
-    login,
-    logout,
-    refreshProfile: fetchProfile,
-  };
-
-
-  return (
-    <AuthContext.Provider value={value}>
-      <InactivityListener />
-      {children}
-    </AuthContext.Provider>
-  );
 };
 
 export const useAuth = () => {
-  const context = useContext(AuthContext);
-  if (!context) throw new Error("useAuth must be used within AuthProvider");
-  return context;
+    const context = useContext(AuthContext);
+    if (!context)
+        throw new Error("useAuth must be used within AuthProvider");
+    return context;
 };

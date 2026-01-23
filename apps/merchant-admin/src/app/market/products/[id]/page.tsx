@@ -7,9 +7,28 @@ import { useParams } from "next/navigation";
 import { MarketShell } from "@/components/market/market-shell"; // Ensure this exists or imports correct shell
 import { Icon, Button } from "@vayva/ui"; // Assume UI lib
 
+interface MarketProduct {
+  id: string;
+  name: string;
+  condition: string;
+  curr: string;
+  price: number;
+  images: string[];
+  warranty?: string;
+  desc: string;
+  seller: {
+    id: string;
+    name: string;
+    logo?: string;
+    verified: boolean;
+    location: string;
+  };
+  specs?: Record<string, string>;
+}
+
 export default function MarketProductPage() {
   const params = useParams();
-  const [product, setProduct] = useState<unknown>(null);
+  const [product, setProduct] = useState<MarketProduct | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
@@ -51,7 +70,7 @@ export default function MarketProductPage() {
               {/* Condition Badge */}
               <div className="absolute top-4 left-4 z-10">
                 <span className={`px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider ${product.condition === 'NEW' ? 'bg-green-500/20 text-green-400 border border-green-500/30' :
-                    'bg-yellow-500/20 text-yellow-400 border border-yellow-500/30'
+                  'bg-yellow-500/20 text-yellow-400 border border-yellow-500/30'
                   }`}>
                   {product.condition}
                 </span>
@@ -112,7 +131,7 @@ export default function MarketProductPage() {
               <div className="border-t border-white/10 pt-8">
                 <h3 className="text-lg font-bold text-white mb-4">Technical Specifications</h3>
                 <div className="grid grid-cols-1 gap-y-2">
-                  {Object.entries(product.specs).map(([key, val]: unknown) => (
+                  {Object.entries(product.specs).map(([key, val]: [string, string]) => (
                     <div key={key} className="grid grid-cols-2 py-2 border-b border-white/5">
                       <div className="text-sm text-gray-400 capitalize">{key.replace(/([A-Z])/g, ' $1').trim()}</div>
                       <div className="text-sm text-white font-medium">{val}</div>

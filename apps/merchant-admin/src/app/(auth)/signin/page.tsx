@@ -29,8 +29,7 @@ export default function SigninPage() {
       login(data.token, data.user);
     } catch (err) {
       console.error(err);
-      const data = (err as any).response?.data;
-      const message = data?.error || data?.message || (err as any).message || "Incorrect email or password";
+      const message = err instanceof Error ? err.message : "Incorrect email or password";
       setError(message);
     } finally {
       setLoading(false);

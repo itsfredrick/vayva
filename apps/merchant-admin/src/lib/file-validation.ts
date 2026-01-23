@@ -6,22 +6,6 @@
  * - Image dimension validation
  * - Security checks
  */
-
-export interface FileValidationOptions {
-    maxSizeBytes?: number;
-    allowedMimeTypes?: string[];
-    minWidth?: number;
-    maxWidth?: number;
-    minHeight?: number;
-    maxHeight?: number;
-}
-
-export interface FileValidationResult {
-    valid: boolean;
-    error?: string;
-    code?: string;
-}
-
 // Default limits
 export const DEFAULT_IMAGE_MAX_SIZE = 5 * 1024 * 1024; // 5MB
 export const DEFAULT_ALLOWED_IMAGE_TYPES = [
@@ -31,14 +15,10 @@ export const DEFAULT_ALLOWED_IMAGE_TYPES = [
     'image/webp',
     'image/gif'
 ];
-
 /**
  * Validate file size
  */
-export function validateFileSize(
-    file: File | Blob,
-    maxSizeBytes: number = DEFAULT_IMAGE_MAX_SIZE
-): FileValidationResult {
+export function validateFileSize(file: any, maxSizeBytes = DEFAULT_IMAGE_MAX_SIZE) {
     if (file.size > maxSizeBytes) {
         const maxSizeMB = (maxSizeBytes / (1024 * 1024)).toFixed(1);
         return {
@@ -49,14 +29,10 @@ export function validateFileSize(
     }
     return { valid: true };
 }
-
 /**
  * Validate MIME type
  */
-export function validateMimeType(
-    file: File | Blob,
-    allowedTypes: string[] = DEFAULT_ALLOWED_IMAGE_TYPES
-): FileValidationResult {
+export function validateMimeType(file: any, allowedTypes = DEFAULT_ALLOWED_IMAGE_TYPES) {
     if (!allowedTypes.includes(file.type)) {
         return {
             valid: false,
@@ -66,28 +42,16 @@ export function validateMimeType(
     }
     return { valid: true };
 }
-
 /**
  * Validate image dimensions
  */
-export async function validateImageDimensions(
-    file: File | Blob,
-    options: {
-        minWidth?: number;
-        maxWidth?: number;
-        minHeight?: number;
-        maxHeight?: number;
-    }
-): Promise<FileValidationResult> {
-    return new Promise((resolve) => {
+export async function validateImageDimensions(file: any, options: any) {
+    return new Promise((resolve: any) => {
         const img = new Image();
         const url = URL.createObjectURL(file);
-
         img.onload = () => {
             URL.revokeObjectURL(url);
-
             const { width, height } = img;
-
             if (options.minWidth && width < options.minWidth) {
                 resolve({
                     valid: false,
@@ -96,7 +60,6 @@ export async function validateImageDimensions(
                 });
                 return;
             }
-
             if (options.maxWidth && width > options.maxWidth) {
                 resolve({
                     valid: false,
@@ -105,7 +68,6 @@ export async function validateImageDimensions(
                 });
                 return;
             }
-
             if (options.minHeight && height < options.minHeight) {
                 resolve({
                     valid: false,
@@ -114,7 +76,6 @@ export async function validateImageDimensions(
                 });
                 return;
             }
-
             if (options.maxHeight && height > options.maxHeight) {
                 resolve({
                     valid: false,
@@ -123,10 +84,8 @@ export async function validateImageDimensions(
                 });
                 return;
             }
-
             resolve({ valid: true });
         };
-
         img.onerror = () => {
             URL.revokeObjectURL(url);
             resolve({
@@ -135,21 +94,18 @@ export async function validateImageDimensions(
                 code: 'INVALID_IMAGE'
             });
         };
-
         img.src = url;
     });
 }
-
 /**
  * Check for potentially malicious file content
  * Basic security check for common attack vectors
  */
-export async function checkMaliciousContent(file: File | Blob): Promise<FileValidationResult> {
+export async function checkMaliciousContent(file: any) {
     try {
         // Read first few bytes to check file signature
         const buffer = await file.slice(0, 512).arrayBuffer();
         const bytes = new Uint8Array(buffer);
-
         // Check for common image file signatures
         const signatures = {
             jpeg: [0xFF, 0xD8, 0xFF],
@@ -157,15 +113,13 @@ export async function checkMaliciousContent(file: File | Blob): Promise<FileVali
             gif: [0x47, 0x49, 0x46],
             webp: [0x52, 0x49, 0x46, 0x46] // RIFF
         };
-
         let hasValidSignature = false;
         for (const [format, signature] of Object.entries(signatures)) {
-            if (signature.every((byte, index) => bytes[index] === byte)) {
+            if (signature.every((byte: any, index: any) => bytes[index] === byte)) {
                 hasValidSignature = true;
                 break;
             }
         }
-
         if (!hasValidSignature) {
             return {
                 valid: false,
@@ -173,7 +127,6 @@ export async function checkMaliciousContent(file: File | Blob): Promise<FileVali
                 code: 'INVALID_FILE_SIGNATURE'
             };
         }
-
         // Check for embedded scripts or suspicious patterns
         const text = new TextDecoder().decode(bytes);
         const suspiciousPatterns = [
@@ -184,7 +137,6 @@ export async function checkMaliciousContent(file: File | Blob): Promise<FileVali
             /<object/i,
             /<embed/i
         ];
-
         for (const pattern of suspiciousPatterns) {
             if (pattern.test(text)) {
                 return {
@@ -194,9 +146,9 @@ export async function checkMaliciousContent(file: File | Blob): Promise<FileVali
                 };
             }
         }
-
         return { valid: true };
-    } catch (error) {
+    }
+    catch (error) {
         return {
             valid: false,
             error: 'Failed to scan file for malicious content',
@@ -204,47 +156,37 @@ export async function checkMaliciousContent(file: File | Blob): Promise<FileVali
         };
     }
 }
-
 /**
  * Comprehensive file validation
  * Runs all validation checks
  */
-export async function validateFile(
-    file: File | Blob,
-    options: FileValidationOptions = {}
-): Promise<FileValidationResult> {
+export async function validateFile(file: any, options = {}) {
     // Size validation
     const sizeResult = validateFileSize(file, options.maxSizeBytes);
-    if (!sizeResult.valid) return sizeResult;
-
+    if (!sizeResult.valid)
+        return sizeResult;
     // MIME type validation
     const mimeResult = validateMimeType(file, options.allowedMimeTypes);
-    if (!mimeResult.valid) return mimeResult;
-
+    if (!mimeResult.valid)
+        return mimeResult;
     // Malicious content check
     const securityResult = await checkMaliciousContent(file);
-    if (!securityResult.valid) return securityResult;
-
+    if (!securityResult.valid)
+        return securityResult;
     // Image dimension validation (if options provided)
     if (options.minWidth || options.maxWidth || options.minHeight || options.maxHeight) {
         const dimensionResult = await validateImageDimensions(file, options);
-        if (!dimensionResult.valid) return dimensionResult;
+        if (!dimensionResult.valid)
+            return dimensionResult;
     }
-
     return { valid: true };
 }
-
 /**
  * Server-side file validation for API routes
  * Validates FormData file uploads
  */
-export async function validateUploadedFile(
-    formData: FormData,
-    fieldName: string = 'file',
-    options: FileValidationOptions = {}
-): Promise<{ valid: boolean; file?: File; error?: string; code?: string }> {
+export async function validateUploadedFile(formData: any, fieldName = 'file', options = {}) {
     const file = formData.get(fieldName);
-
     if (!file) {
         return {
             valid: false,
@@ -252,7 +194,6 @@ export async function validateUploadedFile(
             code: 'NO_FILE'
         };
     }
-
     if (!(file instanceof File)) {
         return {
             valid: false,
@@ -260,9 +201,7 @@ export async function validateUploadedFile(
             code: 'INVALID_FORMAT'
         };
     }
-
     const result = await validateFile(file, options);
-
     if (!result.valid) {
         return {
             valid: false,
@@ -270,7 +209,6 @@ export async function validateUploadedFile(
             code: result.code
         };
     }
-
     return {
         valid: true,
         file

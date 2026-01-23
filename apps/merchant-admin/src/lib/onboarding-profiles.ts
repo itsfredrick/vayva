@@ -1,15 +1,8 @@
 import { TEMPLATE_REGISTRY } from "./templates-registry";
-import { OnboardingProfile } from "@/lib/templates/types";
-
-export const TEMPLATE_CONFIGS: Record<string, OnboardingProfile> =
-  Object.values(TEMPLATE_REGISTRY).reduce(
-    (acc: Record<string, OnboardingProfile>, t) => {
-      if (t.onboardingProfile) {
+export const TEMPLATE_CONFIGS = Object.values(TEMPLATE_REGISTRY).reduce((acc, t) => {
+    if (t.onboardingProfile) {
         acc[t.slug] = t.onboardingProfile;
-      }
-      return acc;
-    },
-    {} as Record<string, OnboardingProfile>,
-  );
-
+    }
+    return acc;
+}, {});
 export const ONBOARDING_PROFILES = TEMPLATE_CONFIGS;

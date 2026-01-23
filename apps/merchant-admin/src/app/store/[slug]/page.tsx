@@ -5,6 +5,7 @@ import Link from "next/link";
 import { StoreShell } from "@/components/storefront/store-shell";
 import { ProductCard, Product } from "@/components/storefront/product-card";
 import { Button, Icon } from "@vayva/ui";
+import type { IconName } from "@vayva/ui";
 
 const CATEGORIES = [
   { name: "Men", image: "man" },
@@ -14,7 +15,8 @@ const CATEGORIES = [
 ];
 
 export default function StoreHomepage({
-  params: any, }: {
+  params,
+}: {
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = React.use(params);
@@ -112,7 +114,7 @@ export default function StoreHomepage({
               >
                 <div className="group flex items-center gap-3 px-6 py-3 rounded-full bg-white/5 border border-white/5 hover:bg-white/10 transition-colors cursor-pointer">
                   <Icon
-                    name={cat.image as unknown}
+                    name={cat.image as IconName}
                     className="text-text-secondary group-hover:text-primary transition-colors"
                   />
                   <span className="font-bold text-white text-sm">
@@ -197,7 +199,7 @@ export default function StoreHomepage({
               className="flex flex-col items-center text-center p-6 rounded-2xl bg-white/5 border border-white/5"
             >
               <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center text-primary mb-4">
-                <Icon name={item.icon as unknown} size={24} />
+                <Icon name={item.icon as IconName} size={24} />
               </div>
               <h3 className="font-bold text-white text-lg mb-2">
                 {item.title}

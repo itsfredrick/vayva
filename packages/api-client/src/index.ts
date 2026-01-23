@@ -33,11 +33,42 @@ class ApiClient {
           error: { code: "UNKNOWN_ERROR", message: "Unknown error" }
         }));
 
-      // As a principal architect, we handle the error response explicitly
       return errorData;
     }
 
     return response.json();
+  }
+
+  async get<T>(path: string, options: RequestInit = {}): Promise<ApiResponse<T>> {
+    return this.request<T>(path, { ...options, method: "GET" });
+  }
+
+  async post<T>(path: string, data?: any, options: RequestInit = {}): Promise<ApiResponse<T>> {
+    return this.request<T>(path, {
+      ...options,
+      method: "POST",
+      body: data ? JSON.stringify(data) : undefined,
+    });
+  }
+
+  async put<T>(path: string, data?: any, options: RequestInit = {}): Promise<ApiResponse<T>> {
+    return this.request<T>(path, {
+      ...options,
+      method: "PUT",
+      body: data ? JSON.stringify(data) : undefined,
+    });
+  }
+
+  async patch<T>(path: string, data?: any, options: RequestInit = {}): Promise<ApiResponse<T>> {
+    return this.request<T>(path, {
+      ...options,
+      method: "PATCH",
+      body: data ? JSON.stringify(data) : undefined,
+    });
+  }
+
+  async delete<T>(path: string, options: RequestInit = {}): Promise<ApiResponse<T>> {
+    return this.request<T>(path, { ...options, method: "DELETE" });
   }
 
   // Auth

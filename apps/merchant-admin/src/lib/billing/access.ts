@@ -1,22 +1,16 @@
-import { prisma, SubscriptionPlan } from "@vayva/db";
-
-export type Feature = "order_creation" | "whatsapp_ai" | "advanced_analytics" | "custom_domain" | "vavya_cut_pro" | "template_usage";
-
-export async function checkFeatureAccess(storeId: string, feature: Feature) {
+import { prisma } from "@vayva/db";
+export async function checkFeatureAccess(storeId: any, feature: any) {
     const store = await prisma.store.findUnique({
         where: { id: storeId },
         include: {
             aiSubscription: true,
         },
     });
-
     if (!store) {
         throw new Error("Store not found");
     }
-
     const subscription = store.aiSubscription;
-    const plan = store.plan as string || "STARTER";
-
+    const plan = store.plan || "STARTER";
     // 1. Check Trial Expiry
     if (plan === "STARTER" && subscription?.trialExpiresAt) {
         if (new Date() > subscription.trialExpiresAt) {
@@ -27,7 +21,6 @@ export async function checkFeatureAccess(storeId: string, feature: Feature) {
             };
         }
     }
-
     // 2. Usage Limits
     if (plan === "STARTER") {
         if (feature === "whatsapp_ai") {
@@ -44,7 +37,7 @@ export async function checkFeatureAccess(storeId: string, feature: Feature) {
             const storeWithCount = await prisma.store.findUnique({
                 where: { id: storeId },
                 include: { _count: { select: { notificationTemplates: true } } }
-            }) as unknown;
+            });
             if ((storeWithCount?._count?.notificationTemplates || 0) >= 2) {
                 return {
                     allowed: false,
@@ -54,7 +47,6 @@ export async function checkFeatureAccess(storeId: string, feature: Feature) {
             }
         }
     }
-
     if (plan === "GROWTH") {
         if (feature === "order_creation") {
             const ordersThisMonth = await prisma.order.count({
@@ -73,7 +65,6 @@ export async function checkFeatureAccess(storeId: string, feature: Feature) {
                 };
             }
         }
-
         if (feature === "whatsapp_ai") {
             const messagesSent = await getWhatsAppMessageCount(storeId);
             if (messagesSent >= 500) {
@@ -84,12 +75,11 @@ export async function checkFeatureAccess(storeId: string, feature: Feature) {
                 };
             }
         }
-
         if (feature === "template_usage") {
             const storeWithCount = await prisma.store.findUnique({
                 where: { id: storeId },
                 include: { _count: { select: { notificationTemplates: true } } }
-            }) as unknown;
+            });
             if ((storeWithCount?._count?.notificationTemplates || 0) >= 5) {
                 return {
                     allowed: false,
@@ -99,7 +89,6 @@ export async function checkFeatureAccess(storeId: string, feature: Feature) {
             }
         }
     }
-
     // 3. Feature Gating
     if (feature === "vavya_cut_pro" && plan !== "PRO") {
         return {
@@ -108,7 +97,6 @@ export async function checkFeatureAccess(storeId: string, feature: Feature) {
             message: "Vayva Cut Pro is only available on the Pro plan.",
         };
     }
-
     if (plan === "STARTER" || plan === "GROWTH") {
         if (feature === "custom_domain" || feature === "advanced_analytics") {
             if (plan === "STARTER") {
@@ -127,11 +115,9 @@ export async function checkFeatureAccess(storeId: string, feature: Feature) {
             }
         }
     }
-
     return { allowed: true };
 }
-
-async function getWhatsAppMessageCount(storeId: string) {
+async function getWhatsAppMessageCount(storeId: any) {
     return prisma.notification.count({
         where: {
             storeId,

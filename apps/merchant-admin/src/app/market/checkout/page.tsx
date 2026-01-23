@@ -7,15 +7,22 @@ import { MarketShell } from "@/components/market/market-shell";
 import { Button, Input, Card } from "@vayva/ui"; // Mock UI lib
 import { useToast } from "@/components/ui/use-toast";
 
+interface DeliveryQuote {
+  id: string;
+  priceKobo: number;
+  etaMinutes: number;
+  vehicle: string;
+}
+
 export default function CheckoutPage() {
   const { toast } = useToast();
   const searchParams = useSearchParams();
   const router = useRouter();
   const productId = searchParams.get("productId");
 
-  const [product, setProduct] = useState<unknown>(null);
+  const [product, setProduct] = useState<any>(null); // Using any for large record fallback
   const [address, setAddress] = useState("");
-  const [quote, setQuote] = useState<unknown>(null);
+  const [quote, setQuote] = useState<DeliveryQuote | null>(null);
   const [loading, setLoading] = useState(false);
   const [initPayment, setInitPayment] = useState(false);
 

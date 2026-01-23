@@ -1,29 +1,24 @@
-
-import { IndustrySlug, IndustryConfig, DashboardWidget, IndustryModule, FormFieldConfig, IndustryFormConfig, FieldKey } from "@/lib/templates/types";
+import { IndustryConfig, IndustrySlug } from "@/lib/templates/types";
 
 // --- WIDGETS ---
-const COMMON_WIDGETS: DashboardWidget[] = [
+const COMMON_WIDGETS = [
     { id: "setup_checklist", title: "Setup Progress", dataSource: "real", type: "list", w: 4 },
 ];
-
-const COMMERCE_WIDGETS: DashboardWidget[] = [
+const COMMERCE_WIDGETS = [
     { id: "sales_today", title: "Sales Today", dataSource: "real", type: "stat", w: 1 },
     { id: "orders_pending", title: "Pending Orders", dataSource: "real", type: "stat", w: 1 },
     { id: "setup_checklist", title: "Next Steps", dataSource: "real", type: "list", w: 4 },
 ];
-
 // --- MODULE SETS ---
-const COMMERCE_MODULES: IndustryModule[] = ["dashboard", "catalog", "sales", "fulfillment", "finance", "marketing", "settings"];
-const SERVICE_MODULES: IndustryModule[] = ["dashboard", "bookings", "finance", "marketing", "content", "settings"];
-
+const COMMERCE_MODULES = ["dashboard", "catalog", "sales", "fulfillment", "finance", "marketing", "settings"];
+const SERVICE_MODULES = ["dashboard", "bookings", "finance", "marketing", "content", "settings"];
 // --- FORM PRESETS ---
-const BASE_PRODUCT_FORM: FormFieldConfig = {
+const BASE_PRODUCT_FORM = {
     requiredFields: ["price", "sku", "stock", "images"],
     optionalFields: ["barcode", "weight", "description"],
     variantLabel: "Options",
     validation: { minImages: 1, minDescriptionLength: 20 },
 };
-
 export const INDUSTRY_CONFIG: Record<IndustrySlug, IndustryConfig> = {
     // --- RETAIL & COMMERCE ---
     retail: {
@@ -34,7 +29,6 @@ export const INDUSTRY_CONFIG: Record<IndustrySlug, IndustryConfig> = {
         forms: { product: { ...BASE_PRODUCT_FORM } },
         onboardingSteps: ["store_profile", "payments", "shipping", "first_product"],
     },
-
     fashion: {
         displayName: "Fashion & Apparel",
         primaryObject: "product",
@@ -50,7 +44,6 @@ export const INDUSTRY_CONFIG: Record<IndustrySlug, IndustryConfig> = {
         },
         onboardingSteps: ["store_profile", "size_charts", "first_product"],
     },
-
     electronics: {
         displayName: "Electronics",
         primaryObject: "product",
@@ -66,7 +59,6 @@ export const INDUSTRY_CONFIG: Record<IndustrySlug, IndustryConfig> = {
         },
         onboardingSteps: ["store_profile", "first_product"],
     },
-
     beauty: {
         displayName: "Beauty & Cosmetics",
         primaryObject: "product",
@@ -82,7 +74,6 @@ export const INDUSTRY_CONFIG: Record<IndustrySlug, IndustryConfig> = {
         },
         onboardingSteps: ["store_profile", "first_product"],
     },
-
     grocery: {
         displayName: "Grocery",
         primaryObject: "product",
@@ -98,7 +89,6 @@ export const INDUSTRY_CONFIG: Record<IndustrySlug, IndustryConfig> = {
         },
         onboardingSteps: ["store_profile", "delivery_zones", "inventory"],
     },
-
     // --- FOOD & RESTAURANT ---
     food: {
         displayName: "Restaurants & Food",
@@ -120,7 +110,6 @@ export const INDUSTRY_CONFIG: Record<IndustrySlug, IndustryConfig> = {
         },
         onboardingSteps: ["store_profile", "menu_setup", "delivery_settings"],
     },
-
     // --- SERVICES & BOOKINGS ---
     services: {
         displayName: "Professional Services",
@@ -139,7 +128,6 @@ export const INDUSTRY_CONFIG: Record<IndustrySlug, IndustryConfig> = {
         },
         onboardingSteps: ["store_profile", "service_menu", "availability"],
     },
-
     // --- DIGITAL & COURSES ---
     digital: {
         displayName: "Digital Products",
@@ -158,7 +146,6 @@ export const INDUSTRY_CONFIG: Record<IndustrySlug, IndustryConfig> = {
         },
         onboardingSteps: ["store_profile", "file_setup"],
     },
-
     // --- EVENTS & TICKETING ---
     events: {
         displayName: "Events & Ticketing",
@@ -180,7 +167,6 @@ export const INDUSTRY_CONFIG: Record<IndustrySlug, IndustryConfig> = {
         },
         onboardingSteps: ["organizer_profile", "event_setup"],
     },
-
     // --- B2B & WHOLESALE ---
     b2b: {
         displayName: "B2B Wholesale",
@@ -202,14 +188,13 @@ export const INDUSTRY_CONFIG: Record<IndustrySlug, IndustryConfig> = {
         },
         onboardingSteps: ["company_verification", "first_product"],
     },
-
     // --- REAL ESTATE & AUTO ---
     real_estate: {
         displayName: "Real Estate",
         primaryObject: "listing",
         modules: ["dashboard", "catalog", "bookings", "marketing", "settings"],
         moduleLabels: { catalog: "Properties", bookings: "Viewings" },
-        moduleRoutes: { 
+        moduleRoutes: {
             catalog: { index: "/dashboard/properties", create: "/dashboard/properties/new" },
             bookings: { index: "/dashboard/viewings" }
         },
@@ -224,7 +209,6 @@ export const INDUSTRY_CONFIG: Record<IndustrySlug, IndustryConfig> = {
         },
         onboardingSteps: ["agency_profile", "listings_upload"],
     },
-
     automotive: {
         displayName: "Automotive",
         primaryObject: "vehicle",
@@ -251,7 +235,6 @@ export const INDUSTRY_CONFIG: Record<IndustrySlug, IndustryConfig> = {
         },
         onboardingSteps: ["dealer_profile", "inventory_upload"],
     },
-
     travel_hospitality: {
         displayName: "Travel",
         primaryObject: "stay",
@@ -269,7 +252,6 @@ export const INDUSTRY_CONFIG: Record<IndustrySlug, IndustryConfig> = {
         },
         onboardingSteps: ["property_profile", "room_setup"],
     },
-
     // --- CONTENT & MEDIA ---
     blog_media: {
         displayName: "Blog",
@@ -287,7 +269,6 @@ export const INDUSTRY_CONFIG: Record<IndustrySlug, IndustryConfig> = {
         },
         onboardingSteps: ["profile", "content_strategy"],
     },
-
     creative_portfolio: {
         displayName: "Portfolio",
         primaryObject: "project",
@@ -304,7 +285,6 @@ export const INDUSTRY_CONFIG: Record<IndustrySlug, IndustryConfig> = {
         },
         onboardingSteps: ["profile", "upload_work"],
     },
-
     nonprofit: {
         displayName: "Nonprofit",
         primaryObject: "campaign",

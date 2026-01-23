@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { User, MerchantContext, AuthMeResponse } from "../types";
 
 /**
  * Standard API Response Structure
@@ -50,21 +51,19 @@ export interface LoginRequest {
     email: string;
     password?: string;
     otp?: string;
+    rememberMe?: boolean;
 }
 
 export interface RegisterRequest {
     email: string;
     password?: string;
-    name?: string;
+    firstName?: string;
+    lastName?: string;
     businessName?: string;
 }
 
 export interface AuthResponseData {
-    user: {
-        id: string;
-        email: string;
-        role: string;
-    };
+    user: User;
     token?: string;
 }
 

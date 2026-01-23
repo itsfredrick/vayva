@@ -1,16 +1,14 @@
-
 import { prisma } from "@/lib/prisma";
-import { OnboardingState } from "@/types/onboarding";
+import { OnboardingState, OnboardingUpdatePayload } from "@/types/onboarding";
 
 export class OnboardingService {
     /**
      * Get or initialize onboarding state for a store
      */
-    static async getState(storeId: string) {
+    static async getState(storeId: string): Promise<OnboardingState> {
         let onboarding = await prisma.merchantOnboarding.findUnique({
             where: { storeId },
         });
-
         if (!onboarding) {
             onboarding = await prisma.merchantOnboarding.create({
                 data: {
@@ -21,30 +19,22 @@ export class OnboardingService {
                 },
             });
         }
-
-        return onboarding;
+        return onboarding as OnboardingState;
     }
-
     /**
      * Update onboarding state and sync related entities (Store, KYC, Bank)
      */
-    static async updateState(storeId: string, payload: {
-        step?: string;
-        data?: Partial<OnboardingState>;
-        status?: string;
-        isComplete?: boolean;
-    }) {
+    static async updateState(storeId: string, payload: OnboardingUpdatePayload): Promise<OnboardingState> {
         return await prisma.$transaction(async (tx) => {
             const { step, data, isComplete } = payload;
-
             // 1. Prepare Onboarding Update
-            const updateData: unknown = {
+            const updateData: any = {
                 updatedAt: new Date(),
             };
-
-            if (step) updateData.currentStepKey = step;
-            if (payload.status) updateData.status = payload.status;
-
+            if (step)
+                updateData.currentStepKey = step;
+            if (payload.status)
+                updateData.status = payload.status;
             // Merge data logic:
             // For now, we assume the frontend sends what it wants to persist for 'data'.
             // In a partial update scenario, we might need to fetch->merge->save if 'data' is partial.
@@ -59,7 +49,6 @@ export class OnboardingService {
                 }
                 updateData.data = scrubbed;
             }
-
             if (isComplete) {
                 // SERVER-SIDE VALIDATION
                 // We cannot trust the client to say "I'm done" without proof.
@@ -67,58 +56,51 @@ export class OnboardingService {
                 // Since we are inside a transaction, we can't see the uncommitted changes from step 3/4 easily 
                 // unless we rely on the implementation order or perform the check *after* this transaction?
                 // OR: We trust the current 'data' payload contains everything required, BUT that's weak.
-
                 // Better approach:
                 // We let the update happen, but we only flip `status='COMPLETED'` if validation passes.
                 // However, `validateCompletion` reads from DB. 
                 // Ideally, we move `updateState` logic to ensure dependent records are upserted FIRST.
                 // In this file, we DO upsert them later (Step 3/4). This is a logic flaw in the original code order.
                 // Fix: Move Onboarding Update (Step 1) to be LAST.
-
                 // For now, to minimize diff risk, we will optimistically allow it BUT 
                 // we should strictly check the *incoming data* if we can't check DB yet.
-
                 // Let's rely on the fact that if data.finance and data.kyc are present, we are good.
                 const hasFinance = data?.finance?.accountNumber || (await tx.bankBeneficiary.findFirst({ where: { storeId } }));
-                const hasKyc = (data as unknown)?.identity?.nin || (data as unknown)?.kyc?.nin || (await tx.kycRecord.findFirst({ where: { storeId } }));
-
+                const hasKyc = data?.identity?.nin || data?.kyc?.nin || (await tx.kycRecord.findFirst({ where: { storeId } }));
                 if (!hasFinance || !hasKyc) {
                     throw new Error("Cannot complete onboarding: Missing Finance or KYC data");
                 }
-
                 updateData.status = "COMPLETED";
                 updateData.completedAt = new Date();
             }
-
             const updatedOnboarding = await tx.merchantOnboarding.update({
                 where: { storeId },
                 data: updateData
             });
-
             // 2. Sync Store Fields
-            const storeUpdate: unknown = {};
-            if (step) storeUpdate.onboardingLastStep = step;
+            const storeUpdate: any = {};
+            if (step)
+                storeUpdate.onboardingLastStep = step;
             if (isComplete) {
                 storeUpdate.onboardingCompleted = true;
                 storeUpdate.isLive = true; // Go live on completion? Or wait for review?
                 // Usually "Completed" means ready to trade or ready for manual review.
                 // We'll set onboardingCompleted=true.
             }
-
-            if (data?.intent?.segment) storeUpdate.category = data.intent.segment;
-            if (data?.industrySlug) storeUpdate.industrySlug = data.industrySlug;
-
+            if (data?.intent?.segment)
+                storeUpdate.category = data.intent.segment;
+            if (data?.industrySlug)
+                storeUpdate.industrySlug = data.industrySlug;
             if (Object.keys(storeUpdate).length > 0) {
                 await tx.store.update({
                     where: { id: storeId },
                     data: storeUpdate
                 });
             }
-
             // 3. Sync KYC Data
             const kycData = data?.kyc || data?.identity;
             if (kycData) {
-                const kycUpdate: unknown = {};
+                const kycUpdate: any = {};
                 if (kycData.nin) {
                     kycUpdate.ninLast4 = kycData.nin.slice(-4);
                     kycUpdate.fullNinEncrypted = `ENCRYPTED_${kycData.nin}`; // START MOCK ENCRYPTION
@@ -141,7 +123,6 @@ export class OnboardingService {
                     });
                 }
             }
-
             // 4. Sync Financial Data (Bank)
             if (data?.finance?.accountNumber && data?.finance?.bankName) {
                 const bank = data.finance;
@@ -149,7 +130,6 @@ export class OnboardingService {
                 const existing = await tx.bankBeneficiary.findFirst({
                     where: { storeId, isDefault: true }
                 });
-
                 if (existing) {
                     await tx.bankBeneficiary.update({
                         where: { id: existing.id },
@@ -160,7 +140,8 @@ export class OnboardingService {
                             bankCode: bank.bankCode || "000"
                         }
                     });
-                } else {
+                }
+                else {
                     await tx.bankBeneficiary.create({
                         data: {
                             storeId,
@@ -173,8 +154,7 @@ export class OnboardingService {
                     });
                 }
             }
-
-            return updatedOnboarding;
+            return updatedOnboarding as OnboardingState;
         });
     }
 }

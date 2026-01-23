@@ -7,13 +7,50 @@ import { ArrowLeft, MapPin, Share2, Heart, ShieldCheck, MessageCircle, ShoppingC
 import { useCart } from "@/context/CartContext";
 import { Button, cn } from "@vayva/ui";
 
+
+interface ProductImage {
+    id: string;
+    url: string;
+}
+
+interface ProductVariant {
+    id: string;
+    title: string;
+    price: any;
+    productImage?: ProductImage | null;
+}
+
+interface Product {
+    id: string;
+    title: string;
+    description?: string | null;
+    price: any;
+    productType?: string | null;
+    condition?: string | null;
+    moq: number;
+    depositRequired?: boolean;
+    depositPercentage?: any;
+    shippingEstimate?: string | null;
+    store?: {
+        name: string;
+        type: string;
+    } | null;
+    productImages: ProductImage[];
+    productVariants: ProductVariant[];
+    pricingTiers?: Array<{
+        id: string;
+        minQty: number;
+        unitPrice: any;
+    }>;
+}
+
 export default function ListingDetailPage() {
     const { id } = useParams();
     const router = useRouter();
     const { addItem } = useCart();
-    const [product, setProduct] = useState<unknown>(null);
+    const [product, setProduct] = useState<Product | null>(null);
     const [loading, setLoading] = useState(true);
-    const [selectedVariant, setSelectedVariant] = useState<unknown>(null);
+    const [selectedVariant, setSelectedVariant] = useState<ProductVariant | null>(null);
     const [chatLoading, setChatLoading] = React.useState(false);
     const [isAddingToCart, setIsAddingToCart] = useState(false);
 
@@ -22,7 +59,7 @@ export default function ListingDetailPage() {
             try {
                 const res = await fetch(`/api/products/${id}`);
                 if (res.ok) {
-                    const data = await res.json();
+                    const data = await res.json() as Product;
                     setProduct(data);
                     if (data.productVariants?.length > 0) {
                         setSelectedVariant(data.productVariants[0]);
@@ -39,7 +76,7 @@ export default function ListingDetailPage() {
     }, [id]);
 
     const handleAddToCart = async () => {
-        if (!selectedVariant) return;
+        if (!selectedVariant || !product) return;
         setIsAddingToCart(true);
         try {
             await addItem(selectedVariant.id, product.moq || 1);
@@ -51,7 +88,7 @@ export default function ListingDetailPage() {
     };
 
     const handleBuyNow = async () => {
-        if (!selectedVariant) return;
+        if (!selectedVariant || !product) return;
         setIsAddingToCart(true);
         try {
             await addItem(selectedVariant.id, product.moq || 1);
@@ -64,6 +101,7 @@ export default function ListingDetailPage() {
     };
 
     const handleChat = async () => {
+        if (!product) return;
         setChatLoading(true);
         try {
             const res = await fetch("/api/conversations", {
@@ -131,7 +169,7 @@ export default function ListingDetailPage() {
                     </div>
 
                     <div className="flex gap-2 overflow-x-auto pb-2 hide-scrollbar">
-                        {product.productImages?.map((img: unknown, i: number) => (
+                        {product.productImages?.map((img: ProductImage, i: number) => (
                             <div key={img.id} className="w-20 h-20 flex-shrink-0 bg-gray-100 rounded-lg overflow-hidden border border-transparent hover:border-black transition-colors cursor-pointer">
                                 <img src={img.url} alt="" className="w-full h-full object-cover" />
                             </div>
@@ -156,7 +194,7 @@ export default function ListingDetailPage() {
 
                         {/* Bulk Logic Badges */}
                         <div className="flex gap-2 mt-2">
-                            {product.moq > 1 && (
+                            {(product.moq || 0) > 1 && (
                                 <span className="text-xs bg-orange-100 text-orange-800 px-2 py-0.5 rounded font-medium">
                                     Min Order: {product.moq} items
                                 </span>
@@ -170,11 +208,11 @@ export default function ListingDetailPage() {
                     </div>
 
                     {/* Pricing Tiers */}
-                    {product.pricingTiers?.length > 0 && (
+                    {product.pricingTiers && product.pricingTiers.length > 0 && (
                         <div className="bg-gray-100 rounded-lg p-4">
                             <h4 className="text-sm font-bold mb-2">Wholesale Pricing</h4>
                             <div className="grid grid-cols-2 gap-2">
-                                {product.pricingTiers.map((tier: unknown) => (
+                                {product.pricingTiers.map((tier: any) => (
                                     <div key={tier.id} className="bg-white p-2 rounded border text-xs">
                                         <p className="font-bold">{tier.minQty}+ units</p>
                                         <p className="text-gray-500">₦{Number(tier.unitPrice).toLocaleString()}/unit</p>
@@ -185,11 +223,11 @@ export default function ListingDetailPage() {
                     )}
 
                     {/* Variants */}
-                    {product.productVariants?.length > 1 && (
+                    {product.productVariants && product.productVariants.length > 1 && (
                         <div>
                             <h3 className="font-bold text-sm mb-2">Select Variant</h3>
                             <div className="flex flex-wrap gap-2">
-                                {product.productVariants.map((v: unknown) => (
+                                {product.productVariants.map((v: ProductVariant) => (
                                     <Button
                                         key={v.id}
                                         onClick={() => setSelectedVariant(v)}

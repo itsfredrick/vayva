@@ -53,6 +53,7 @@ export interface MerchantContext {
   onboardingLastStep: string;
   onboardingUpdatedAt: string;
   plan: SubscriptionPlan;
+  industrySlug: string;
 }
 
 export interface AuthMeResponse {

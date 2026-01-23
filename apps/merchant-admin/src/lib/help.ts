@@ -1,29 +1,12 @@
-export interface HelpArticle {
-  id: string;
-  slug: string;
-  title: string;
-  category:
-    | "Getting Started"
-    | "Payments"
-    | "Orders"
-    | "Logistics"
-    | "Account"
-    | "Pricing";
-  summary: string;
-  content: string;
-  lastUpdated: string;
-}
-
-export const HELP_ARTICLES: HelpArticle[] = [
-  {
-    id: "setup-whatsapp",
-    slug: "setup-whatsapp-sync",
-    title: "How to setup WhatsApp Sync",
-    category: "Getting Started",
-    summary:
-      "Connect your WhatsApp account to Vayva to start capturing orders automatically.",
-    lastUpdated: "Dec 24, 2025",
-    content: `
+export const HELP_ARTICLES = [
+    {
+        id: "setup-whatsapp",
+        slug: "setup-whatsapp-sync",
+        title: "How to setup WhatsApp Sync",
+        category: "Getting Started",
+        summary: "Connect your WhatsApp account to Vayva to start capturing orders automatically.",
+        lastUpdated: "Dec 24, 2025",
+        content: `
             Vayva connects to your WhatsApp through a secure cloud bridge. You don't need to install anything on your phone.
             
             ### Steps to connect:
@@ -34,16 +17,15 @@ export const HELP_ARTICLES: HelpArticle[] = [
             ### What we track:
             Vayva only looks for messages related to product inquiries, pricing, and order confirmation. Your private messages remain private.
         `,
-  },
-  {
-    id: "payment-methods",
-    slug: "payment-methods-nigeria",
-    title: "Supported Payment Methods in Nigeria",
-    category: "Payments",
-    summary:
-      "Learn how to accept bank transfers, USSD, and card payments through Vayva.",
-    lastUpdated: "Dec 24, 2025",
-    content: `
+    },
+    {
+        id: "payment-methods",
+        slug: "payment-methods-nigeria",
+        title: "Supported Payment Methods in Nigeria",
+        category: "Payments",
+        summary: "Learn how to accept bank transfers, USSD, and card payments through Vayva.",
+        lastUpdated: "Dec 24, 2025",
+        content: `
             Vayva handles the complexity of verifying diverse payment methods common in Nigeria.
             
             ### Bank Transfers
@@ -55,16 +37,15 @@ export const HELP_ARTICLES: HelpArticle[] = [
             ### Manual Recording
             If a customer pays you in cash, you can manually record the payment in the dashboard to keep your records clean.
         `,
-  },
-  {
-    id: "managing-orders",
-    slug: "managing-orders-workflow",
-    title: "Managing your Order Workflow",
-    category: "Orders",
-    summary:
-      "From pending to delivered: how to move orders through your business pipeline.",
-    lastUpdated: "Dec 22, 2025",
-    content: `
+    },
+    {
+        id: "managing-orders",
+        slug: "managing-orders-workflow",
+        title: "Managing your Order Workflow",
+        category: "Orders",
+        summary: "From pending to delivered: how to move orders through your business pipeline.",
+        lastUpdated: "Dec 22, 2025",
+        content: `
             Every business has a slightly different flow. Vayva supports custom order statuses.
             
             ### Default Workflow:
@@ -76,16 +57,15 @@ export const HELP_ARTICLES: HelpArticle[] = [
             
             You can add custom steps like **"On Hold"** or **"Awaiting Stock"** in your Settings.
         `,
-  },
-  {
-    id: "logistics-integration",
-    slug: "logistics-carriers-nigeria",
-    title: "Integrating with Nigerian Logistics",
-    category: "Logistics",
-    summary:
-      "How to coordinate with GIGL, Red Star, and local dispatch riders.",
-    lastUpdated: "Dec 20, 2025",
-    content: `
+    },
+    {
+        id: "logistics-integration",
+        slug: "logistics-carriers-nigeria",
+        title: "Integrating with Nigerian Logistics",
+        category: "Logistics",
+        summary: "How to coordinate with GIGL, Red Star, and local dispatch riders.",
+        lastUpdated: "Dec 20, 2025",
+        content: `
             Logistics is often the hardest part of selling in Nigeria. Vayva makes it easier by centralizing the data.
             
             ### Third-Party Carriers
@@ -94,30 +74,30 @@ export const HELP_ARTICLES: HelpArticle[] = [
             ### Local Dispatch
             If you use your own riders, they can access a 'Rider View' (optional) to see their daily queue and update delivery status on the fly.
         `,
-  },
-  {
-    id: "pricing-plans",
-    slug: "understanding-vayva-plans",
-    title: "Understanding Vayva Pricing Plans",
-    category: "Pricing",
-    summary: "Which plan is right for your business volume?",
-    lastUpdated: "Dec 25, 2025",
-    content: `
+    },
+    {
+        id: "pricing-plans",
+        slug: "understanding-vayva-plans",
+        title: "Understanding Vayva Pricing Plans",
+        category: "Pricing",
+        summary: "Which plan is right for your business volume?",
+        lastUpdated: "Dec 25, 2025",
+        content: `
             Vayva offers three main tiers:
             
             - **Starter (Free)**: For solo sellers getting started. Includes basic WhatsApp capture and manual records.
             - **Growth (₦5,000/mo)**: Most popular for established shops. Includes inventory, staff roles, and advanced exports.
             - **Scale (₦15,000/mo)**: For high-volume businesses or multi-branch operations. Includes full audit logs and priority support.
         `,
-  },
-  {
-    id: "adding-team",
-    slug: "multi-user-access",
-    title: "Adding Team Members & Permissions",
-    category: "Account",
-    summary: "Coordinate with your staff by giving them controlled access.",
-    lastUpdated: "Dec 18, 2025",
-    content: `
+    },
+    {
+        id: "adding-team",
+        slug: "multi-user-access",
+        title: "Adding Team Members & Permissions",
+        category: "Account",
+        summary: "Coordinate with your staff by giving them controlled access.",
+        lastUpdated: "Dec 18, 2025",
+        content: `
             Don't share your main login. Use the Team feature.
             
             ### Roles:
@@ -126,9 +106,8 @@ export const HELP_ARTICLES: HelpArticle[] = [
             - **Staff**: Can view and create orders, cannot see revenue reports.
             - **Dispatch**: Only sees shipping and delivery queues.
         `,
-  },
+    },
 ];
-
-export function getArticleBySlug(slug: string) {
-  return HELP_ARTICLES.find((a) => a.slug === slug);
+export function getArticleBySlug(slug: any) {
+    return HELP_ARTICLES.find((a: any) => a.slug === slug);
 }

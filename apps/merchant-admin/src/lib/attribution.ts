@@ -1,64 +1,45 @@
 "use client";
-
-export interface AttributionData {
-  utm_source?: string;
-  utm_campaign?: string;
-  utm_content?: string;
-  utm_medium?: string;
-  entry_point?: string;
-  initial_template?: string;
-  timestamp?: number;
-}
-
 const STORAGE_KEY = "vayva_attribution";
-
-export function saveAttribution(data: Partial<AttributionData>) {
-  if (typeof window === "undefined") return;
-
-  try {
-    const existing = getAttribution();
-    const merged = { ...existing, ...data, timestamp: Date.now() };
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(merged));
-
-    // Also log to console for debugging/telemetry verification
-    
-  } catch (e: unknown) {
-    console.error("Failed to save attribution", e);
-  }
-}
-
-export function getAttribution(): AttributionData {
-  if (typeof window === "undefined") return {};
-  try {
-    const raw = localStorage.getItem(STORAGE_KEY);
-    return raw ? JSON.parse(raw) : {};
-  } catch (e: unknown) {
-    return {};
-  }
-}
-
-export function captureUrlParams(
-  searchParams: URLSearchParams,
-  entryPoint?: string,
-) {
-  const data: Partial<AttributionData> = {};
-  const utmKeys = ["utm_source", "utm_campaign", "utm_content", "utm_medium"];
-
-  let hasData = false;
-  utmKeys.forEach((key) => {
-    const val = searchParams.get(key);
-    if (val) {
-      (data as unknown)[key] = val;
-      hasData = true;
+export function saveAttribution(data: any) {
+    if (typeof window === "undefined")
+        return;
+    try {
+        const existing = getAttribution();
+        const merged = { ...existing, ...data, timestamp: Date.now() };
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(merged));
+        // Also log to console for debugging/telemetry verification
     }
-  });
-
-  if (entryPoint) {
-    data.entry_point = entryPoint;
-    hasData = true;
-  }
-
-  if (hasData) {
-    saveAttribution(data);
-  }
+    catch (e) {
+        console.error("Failed to save attribution", e);
+    }
+}
+export function getAttribution() {
+    if (typeof window === "undefined")
+        return {};
+    try {
+        const raw = localStorage.getItem(STORAGE_KEY);
+        return raw ? JSON.parse(raw) : {};
+    }
+    catch (e) {
+        return {};
+    }
+}
+export function captureUrlParams(searchParams: any, entryPoint: any) {
+    const data = {};
+    const utmKeys = ["utm_source", "utm_campaign", "utm_content", "utm_medium"];
+    let hasData = false;
+    utmKeys.forEach((key: any) => {
+        const val = searchParams.get(key);
+        if (val) {
+            data[key] = val;
+            hasData = true;
+        }
+    });
+    if (entryPoint) {
+        data.entry_point = entryPoint;
+        hasData = true;
+    }
+    if (hasData) {
+        saveAttribution(data);
+    }
 }

@@ -1,13 +1,11 @@
 import React from "react";
 import Link from "next/link";
-import { Button } from "@vayva/ui";
+
 import {
   Globe,
   ShieldCheck,
   Zap,
   Heart,
-  Users,
-  ArrowRight,
 } from "lucide-react";
 import * as motion from "framer-motion/client";
 import { PremiumButton } from "@/components/marketing/PremiumButton";
