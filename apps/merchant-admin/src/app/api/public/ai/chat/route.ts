@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { MarketingAIService } from "@/lib/ai/marketing-ai";
-export async function POST(request: unknown) {
+export async function POST(request: Request) {
     try {
         const { messages } = await request.json();
         if (!messages || !Array.isArray(messages)) {
@@ -9,7 +9,7 @@ export async function POST(request: unknown) {
         const result = await MarketingAIService.getResponse(messages);
         return NextResponse.json(result);
     }
-    catch (error) {
+    catch (error: any) {
         console.error("Marketing AI Route Error:", error);
         return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
     }

@@ -17,7 +17,7 @@ const getFilesWithButtons = () => {
             { encoding: 'utf8', cwd: process.cwd() }
         );
         return output.trim().split('\n').filter(Boolean);
-    } catch (error) {
+    } catch (_error) {
         return [];
     }
 };

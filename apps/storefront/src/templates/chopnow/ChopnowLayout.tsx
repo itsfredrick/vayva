@@ -12,17 +12,17 @@ interface ChopnowLayoutProps {
   products: PublicProduct[];
 }
 
-export const ChopnowLayout = ({ store, products }: ChopnowLayoutProps) => {
+export const ChopnowLayout = ({ store, products }: ChopnowLayoutProps): React.JSX.Element => {
   const { addToCart } = useStore();
   const [selectedItem, setSelectedItem] = useState<PublicProduct | null>(null);
   const [activeCategory, setActiveCategory] = useState("Mains");
 
   // Extract categories
   const categories = Array.from(
-    new Set(products.map((p) => p.category || "Other")),
+    new Set(products.map((p: any) => p.category || "Other")),
   );
 
-  const handleAddToCart = (item: unknown, total: number) => {
+  const handleAddToCart = (item: any, total: number) => {
     addToCart({
       productId: item.id,
       variantId: "default",
@@ -55,7 +55,7 @@ export const ChopnowLayout = ({ store, products }: ChopnowLayoutProps) => {
           <div className="px-4 py-4 font-bold text-lg border-b border-gray-100 text-gray-900">
             {activeCategory}
           </div>
-          {filteredProducts.map((p) => (
+          {filteredProducts.map((p: any) => (
             <FoodItemCard
               key={p.id}
               item={p}

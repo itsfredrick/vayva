@@ -28,7 +28,7 @@ export const POST = withVayvaAPI(PERMISSIONS.COMMERCE_VIEW, async (req, { user }
         });
         return response;
     }
-    catch (error) {
+    catch (error: any) {
         console.error("Session Switch Error:", error);
         return NextResponse.json({ error: "Internal Error" }, { status: 500 });
     }

@@ -34,14 +34,14 @@ export default function MarketCartPage() {
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
           <div className="lg:col-span-2 space-y-4">
-            {[1].map((item) => (
+            {[1].map((item: any) => (
               <div
                 key={item}
                 className="flex gap-4 p-4 rounded-xl bg-white/5 border border-white/5"
               >
                 <div className="w-24 h-24 bg-[#0b141a] rounded-lg flex items-center justify-center shrink-0 border border-white/5">
                   <Icon
-                    name={"CircleHelp" as unknown}
+                    name={"CircleHelp" as any}
                     size={14}
                     className="text-gray-400"
                   />
@@ -53,7 +53,7 @@ export default function MarketCartPage() {
                         MacBook Pro M3 Max
                       </h3>
                       <Button className="text-text-secondary hover:text-state-danger">
-                        <Icon name={"CircleHelp" as unknown} size={16} /> Need help
+                        <Icon name={"CircleHelp" as any} size={16} /> Need help
                         with this order?
                       </Button>
                     </div>

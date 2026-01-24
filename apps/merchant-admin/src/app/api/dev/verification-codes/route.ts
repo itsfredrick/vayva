@@ -4,7 +4,7 @@ import { prisma } from "@/lib/prisma";
  * DEV/TEST ONLY: Get verification codes for an email or the latest ones.
  * Useful for E2E testing when you cannot access the email provider.
  */
-export async function GET(request: unknown) {
+export async function GET(request: Request) {
     // Safety check: Only allow in non-production or if explicitly enabled
     if (process.env.NODE_ENV === "production" &&
         process.env.ENABLE_DEV_ENDPOINTS !== "true") {
@@ -27,7 +27,7 @@ export async function GET(request: unknown) {
         });
         return NextResponse.json({ latestCodes });
     }
-    catch (error) {
+    catch (error: any) {
         console.error("Dev verification codes error:", error);
         return NextResponse.json({ error: "Failed to fetch codes" }, { status: 500 });
     }

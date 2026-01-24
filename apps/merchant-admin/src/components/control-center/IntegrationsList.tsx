@@ -22,7 +22,7 @@ export const IntegrationsList = ({ integrations }: IntegrationsListProps) => {
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {integrations.map((integration) => (
+        {integrations.map((integration: any) => (
           <div
             key={integration.id}
             className="bg-white rounded-2xl border border-gray-200 p-6 flex flex-col h-full hover:border-gray-300 transition-colors"
@@ -31,7 +31,7 @@ export const IntegrationsList = ({ integrations }: IntegrationsListProps) => {
               <div className="w-12 h-12 rounded-xl bg-gray-50 flex items-center justify-center shrink-0 border border-gray-100">
                 {/* Use Icon name from data as dynamic lookup if possible, or fallback */}
                 <Icon
-                  name={(integration.logoUrl as unknown) || "Puzzle"}
+                  name={(integration.logoUrl as any) || "Puzzle"}
                   size={24}
                   className="text-gray-700"
                 />

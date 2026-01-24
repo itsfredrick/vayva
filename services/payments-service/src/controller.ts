@@ -25,7 +25,7 @@ const initializeSchema = z.object({
 export const initializeTransactionHandler = async (
   req: FastifyRequest,
   reply: FastifyReply,
-) => {
+): Promise<unknown> => {
   const body = initializeSchema.parse(req.body);
 
   const order = await prisma.order.findUnique({ where: { id: body.orderId } });
@@ -118,7 +118,7 @@ export const initializeTransactionHandler = async (
 export const verifyPaymentHandler = async (
   req: FastifyRequest,
   reply: FastifyReply,
-) => {
+): Promise<unknown> => {
   const { reference } = verifySchema.parse(req.body);
 
   const tx = await prisma.paymentTransaction.findUnique({
@@ -170,7 +170,7 @@ export const verifyPaymentHandler = async (
 export const webhookHandler = async (
   req: FastifyRequest,
   reply: FastifyReply,
-) => {
+): Promise<unknown> => {
   const signature = req.headers["x-paystack-signature"] as string;
 
   // In test mode without key, we might skip signature check for internal test endpoint
@@ -190,7 +190,6 @@ export const webhookHandler = async (
   }
 
   const event = req.body as { event: string; data: { reference: string } };
-  console.log("Paystack Webhook Received:", event.event);
 
   if (event.event === "charge.success") {
     const reference = event.data.reference;
@@ -272,7 +271,7 @@ async function processSuccessfulPayment(tx: { id: string; orderId: string; curre
 export const listTransactionsHandler = async (
   req: FastifyRequest,
   reply: FastifyReply,
-) => {
+): Promise<unknown> => {
   const storeId = req.headers["x-store-id"] as string;
   if (!storeId) return reply.status(400).send({ error: "Store ID required" });
 

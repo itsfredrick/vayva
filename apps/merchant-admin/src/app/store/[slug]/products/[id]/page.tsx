@@ -52,7 +52,7 @@ export default function ProductDetailPage({
               <Icon name="Image" size={64} className="text-white/10" />
             </div>
             <div className="grid grid-cols-4 gap-4">
-              {[1, 2, 3, 4].map((i) => (
+              {[1, 2, 3, 4].map((i: any) => (
                 <div
                   key={i}
                   className="aspect-square bg-white/5 rounded-lg cursor-pointer hover:bg-white/10 transition-colors"
@@ -77,7 +77,7 @@ export default function ProductDetailPage({
                   Color: <span className="text-white">{selectedColor}</span>
                 </label>
                 <div className="flex gap-3">
-                  {DEMO_PRODUCT.colors.map((color) => (
+                  {DEMO_PRODUCT.colors.map((color: any) => (
                     <div
                       key={color}
                       onClick={() => setSelectedColor(color)}
@@ -106,7 +106,7 @@ export default function ProductDetailPage({
                   Size: <span className="text-white">{selectedSize}</span>
                 </label>
                 <div className="flex gap-3">
-                  {DEMO_PRODUCT.sizes.map((size) => (
+                  {DEMO_PRODUCT.sizes.map((size: any) => (
                     <div
                       key={size}
                       onClick={() => setSelectedSize(size)}

@@ -38,7 +38,7 @@ export default function BuyerOrdersPage() {
                     </div>
                 ) : (
                     <div className="space-y-4">
-                        {orders.map((order) => (
+                        {orders.map((order: any) => (
                             <div key={order.id} className="bg-white/5 border border-white/10 p-6 rounded-xl">
                                 <div className="flex justify-between items-start border-b border-white/5 pb-4 mb-4">
                                     <div>

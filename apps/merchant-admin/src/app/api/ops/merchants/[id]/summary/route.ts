@@ -51,7 +51,7 @@ export async function GET(request: NextRequest, { params }: { params: Promise<{ 
             health,
         });
     }
-    catch (err) {
+    catch (err: any) {
         console.error(err);
         return NextResponse.json({ error: "Internal server error" }, { status: 500 });
     }

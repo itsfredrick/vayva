@@ -12,7 +12,7 @@ interface FileVaultLayoutProps {
   products: PublicProduct[];
 }
 
-export const FileVaultLayout = ({ store, products }: FileVaultLayoutProps) => {
+export const FileVaultLayout = ({ store, products }: FileVaultLayoutProps): React.JSX.Element => {
   const { addToCart } = useStore();
   const [selectedProduct, setSelectedProduct] = useState<PublicProduct | null>(
     null,

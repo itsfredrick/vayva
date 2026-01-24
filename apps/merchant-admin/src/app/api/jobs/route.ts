@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
-export async function GET(req: unknown) {
+export async function GET(req: any) {
     try {
         const session = await getServerSession(authOptions);
         if (!session || !session.user) {
@@ -11,7 +11,7 @@ export async function GET(req: unknown) {
         const storeId = session.user.storeId;
         const { searchParams } = new URL(req.url);
         const query = searchParams.get("q") || "";
-        const where = { storeId };
+        const where: any = { storeId };
         if (query) {
             where.OR = [
                 { jobName: { contains: query, mode: "insensitive" } },
@@ -25,7 +25,7 @@ export async function GET(req: unknown) {
         });
         return NextResponse.json({ jobs });
     }
-    catch (error) {
+    catch (error: any) {
         console.error("Job runs fetch error:", error);
         return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
     }

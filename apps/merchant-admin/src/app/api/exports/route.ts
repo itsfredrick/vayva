@@ -12,18 +12,18 @@ export async function GET() {
         }
         const storeId = session.user.storeId;
         const jobs = await prisma.exportJob.findMany({
-            where: { storeId },
+            where: { storeId } as any,
             orderBy: { createdAt: "desc" },
             take: 10,
         });
         return NextResponse.json({ jobs });
     }
-    catch (error) {
+    catch (error: any) {
         console.error("Export jobs fetch error:", error);
         return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
     }
 }
-export async function POST(req: unknown) {
+export async function POST(req: any) {
     try {
         const session = await getServerSession(authOptions);
         if (!session || !session.user) {
@@ -44,7 +44,7 @@ export async function POST(req: unknown) {
                 type,
                 status: "PENDING",
                 expiresAt: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000), // 7 days
-            },
+            } as any,
         });
         await logAudit(storeId, userId, AuditEventType.EXPORT_CREATED, {
             targetType: "ExportJob",
@@ -54,7 +54,7 @@ export async function POST(req: unknown) {
         });
         return NextResponse.json({ job });
     }
-    catch (error) {
+    catch (error: any) {
         console.error("Export request error:", error);
         return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
     }

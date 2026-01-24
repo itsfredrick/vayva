@@ -5,7 +5,7 @@ const loginSchema = z.object({
     email: z.string().email(),
     password: z.string().min(1),
 });
-export async function POST(req: unknown) {
+export async function POST(req: any) {
     const ip = req.headers.get("x-forwarded-for")?.split(",")[0] || "unknown";
     // 1. Rate Limiting Check
     if (await OpsAuthService.isRateLimited(ip)) {
@@ -33,7 +33,7 @@ export async function POST(req: unknown) {
             }
             return NextResponse.json({ success: true, role: user.role });
         }
-        catch (authError) {
+        catch (authError: any) {
             // Handle known auth errors (e.g. Disabled Account)
             if (authError.message === "Account disabled") {
                 await OpsAuthService.logEvent(null, "OPS_LOGIN_FAILED", {
@@ -46,7 +46,7 @@ export async function POST(req: unknown) {
             throw authError;
         }
     }
-    catch (error) {
+    catch (error: any) {
         return NextResponse.json({ error: "Invalid request" }, { status: 400 });
     }
 }

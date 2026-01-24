@@ -34,8 +34,8 @@ export interface BookingWithDetails {
     service: {
         id: string;
         title: string;
-        price: unknown; // Prisma.Decimal
-        metadata: unknown;
+        price: any; // Prisma.Decimal
+        metadata: any;
     };
     customer: {
         id: string;

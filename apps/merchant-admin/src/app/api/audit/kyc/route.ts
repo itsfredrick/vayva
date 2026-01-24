@@ -19,7 +19,7 @@ export async function GET(req: NextRequest) {
             orderBy: { submittedAt: "desc" },
             take: 100, // Limit for performance
         });
-        const formattedRecords = kycRecords.map((record) => ({
+        const formattedRecords = kycRecords.map((record: any) => ({
             id: record.id,
             storeId: record.storeId,
             businessName: (record as any).store.name,
@@ -31,7 +31,7 @@ export async function GET(req: NextRequest) {
         }));
         return NextResponse.json({ records: formattedRecords });
     }
-    catch (error) {
+    catch (error: any) {
         console.error("Audit KYC Error:", error);
         return NextResponse.json({ error: "Failed to fetch KYC records" }, { status: 500 });
     }

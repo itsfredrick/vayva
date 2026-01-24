@@ -65,7 +65,7 @@ export default function ProductsPage() {
                     // Fallback for backward compatibility if API rollback happens
                     setProducts(data);
                 }
-            } catch (e) {
+            } catch (e: any) {
                 logger.error("Failed to load products", ErrorCategory.API, e as Error, {});
             } finally {
                 setLoading(false);
@@ -101,7 +101,7 @@ export default function ProductsPage() {
                 </div>
                 <div className="bg-white rounded-xl border border-gray-100 overflow-hidden">
                     <div className="h-12 bg-gray-50 border-b border-gray-100" />
-                    {[1, 2, 3, 4, 5].map((i) => (
+                    {[1, 2, 3, 4, 5].map((i: any) => (
                         <div key={i} className="h-16 border-b border-gray-100 flex items-center px-6 gap-8">
                             <div className="h-4 w-48 bg-gray-50 rounded animate-pulse" />
                             <div className="h-4 w-24 bg-gray-50 rounded animate-pulse" />
@@ -120,7 +120,7 @@ export default function ProductsPage() {
                 description="You haven't added any products to your store yet."
                 actionLabel="Add Product"
                 actionHref="/dashboard/products/new"
-                icon={Package}
+                icon={(Package as any)}
             />
         );
     }

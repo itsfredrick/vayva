@@ -14,7 +14,7 @@ export const GET = withVayvaAPI(PERMISSIONS.PRODUCTS_VIEW, async (req, { storeId
         }
         return NextResponse.json({ success: true, data: collection });
     }
-    catch (error) {
+    catch (error: any) {
         return NextResponse.json({ error: "Internal Error" }, { status: 500 });
     }
 });
@@ -28,7 +28,7 @@ export const DELETE = withVayvaAPI(PERMISSIONS.PRODUCTS_MANAGE, async (req, { st
         await prisma.collection.delete({ where: { id: collectionId } });
         return NextResponse.json({ success: true });
     }
-    catch (error) {
+    catch (error: any) {
         return NextResponse.json({ error: "Failed to delete" }, { status: 500 });
     }
 });
@@ -51,7 +51,7 @@ export const PUT = withVayvaAPI(PERMISSIONS.PRODUCTS_EDIT, async (req, { storeId
         });
         return NextResponse.json({ success: true, data: updated });
     }
-    catch (error) {
+    catch (error: any) {
         return NextResponse.json({ error: "Failed to update" }, { status: 500 });
     }
 });

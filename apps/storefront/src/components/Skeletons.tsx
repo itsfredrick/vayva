@@ -1,10 +1,10 @@
 import React from "react";
 import { Skeleton } from "@/components/ui/skeleton";
 
-export function ProductGridSkeleton() {
+export function ProductGridSkeleton(): React.JSX.Element {
     return (
         <div className="grid grid-cols-2 md:grid-cols-4 gap-x-6 gap-y-10">
-            {[1, 2, 3, 4, 5, 6, 7, 8].map((i) => (
+            {[1, 2, 3, 4, 5, 6, 7, 8].map((i: any) => (
                 <div key={i} className="space-y-4">
                     <Skeleton className="aspect-[4/5] w-full rounded-2xl" />
                     <div className="space-y-2">
@@ -17,7 +17,7 @@ export function ProductGridSkeleton() {
     );
 }
 
-export function PDPSkeleton() {
+export function PDPSkeleton(): React.JSX.Element {
     return (
         <div className="max-w-7xl mx-auto px-4 py-12 grid grid-cols-1 md:grid-cols-2 gap-12">
             <Skeleton className="aspect-[4/5] w-full rounded-3xl" />
@@ -35,7 +35,7 @@ export function PDPSkeleton() {
                 <div className="space-y-4 pt-4">
                     <Skeleton className="h-6 w-32" />
                     <div className="flex gap-2">
-                        {[1, 2, 3, 4].map((i) => (
+                        {[1, 2, 3, 4].map((i: any) => (
                             <Skeleton key={i} className="h-10 w-16" />
                         ))}
                     </div>

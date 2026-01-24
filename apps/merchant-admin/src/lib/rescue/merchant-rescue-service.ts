@@ -7,7 +7,7 @@ export class MerchantRescueService {
     /**
      * Ingest a new incident from the merchant frontend
      */
-    static async reportIncident(data) {
+    static async reportIncident(data: any) {
         // 1. Redact PII
         const redactedMessage = this.redactPII(data.errorMessage);
         // 2. Generate fingerprint if not provided
@@ -41,7 +41,7 @@ export class MerchantRescueService {
         this.analyzeAndSuggest(incident.id).catch(err => console.error("Rescue AI background fail", err));
         return incident;
     }
-    static async getIncidentStatus(id) {
+    static async getIncidentStatus(id: any) {
         return prisma.rescueIncident.findUnique({
             where: { id },
             select: {
@@ -54,7 +54,7 @@ export class MerchantRescueService {
     /**
      * AI Analysis
      */
-    static async analyzeAndSuggest(incidentId) {
+    static async analyzeAndSuggest(incidentId: any) {
         const incident = await prisma.rescueIncident.findUnique({ where: { id: incidentId } });
         if (!incident)
             return;
@@ -96,22 +96,22 @@ export class MerchantRescueService {
                 data: {
                     status: nextStatus,
                     diagnostics: {
-                        ...incident.diagnostics,
+                        ...(incident.diagnostics as any),
                         aiAnalysis: analysis,
                     },
                 },
             });
         }
-        catch (error) {
+        catch (error: any) {
             console.error("Rescue Analysis Error", error);
         }
     }
-    static redactPII(msg) {
+    static redactPII(msg: any) {
         return msg
             .replace(/[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}/g, "[EMAIL]")
             .replace(/password[:=]\s*[^\s&]+/gi, "password=[REDACTED]");
     }
-    static generateFingerprint(type, msg) {
+    static generateFingerprint(type: any, msg: any) {
         const str = `${type}:${msg.slice(0, 100)}`;
         let hash = 0;
         for (let i = 0; i < str.length; i++) {

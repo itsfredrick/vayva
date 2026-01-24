@@ -40,7 +40,7 @@ export function ViewingRequestCard({ request, onUpdate }: ViewingRequestCardProp
             if (!res.ok) throw new Error("Failed to update status");
             toast.success(status === "CONFIRMED" ? "Tour Confirmed" : "Request Declined");
             onUpdate();
-        } catch (e) {
+        } catch (e: any) {
             toast.error("An error occurred");
         } finally {
             setIsLoading(false);
@@ -120,10 +120,10 @@ export function ViewingRequestCard({ request, onUpdate }: ViewingRequestCardProp
     );
 }
 
-function ClockIcon(props: unknown) {
+function ClockIcon(props: any) {
     return (
         <svg
-            {...props}
+            {...(props as any)}
             xmlns="http://www.w3.org/2000/svg"
             width="24"
             height="24"

@@ -25,7 +25,7 @@ export const PremiumButton: React.FC<PremiumButtonProps> = ({
         "cubic-bezier(0.2, 0.8, 0.2, 1)",
         className,
       )}
-      {...props}
+      {...(props as any)}
     >
       {/* Shimmer / Gradient Sweep Effect */}
       <span className="absolute inset-0 w-full h-full bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:animate-shimmer pointer-events-none" />

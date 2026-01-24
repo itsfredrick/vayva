@@ -1,4 +1,4 @@
-import { NextRequest, NextResponse } from "next/server";
+import { NextRequest, NextResponse } from 'next/server';
 import { OpsAuthService } from "@/lib/ops-auth";
 import { prisma } from "@vayva/db";
 
@@ -26,7 +26,7 @@ export async function GET(
             return NextResponse.json({ error: "Webhook not found" }, { status: 404 });
         }
 
-        const data = {
+        const data: any = {
             id: webhook.id,
             provider: webhook.provider,
             eventType: webhook.eventType,
@@ -40,7 +40,7 @@ export async function GET(
         };
 
         return NextResponse.json({ data });
-    } catch (error) {
+    } catch (error: any) {
         console.error("Webhook detail error:", error);
         return NextResponse.json(
             { error: "Internal Server Error" },

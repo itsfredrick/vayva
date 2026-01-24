@@ -10,7 +10,7 @@ export const GET = withVayvaAPI(PERMISSIONS.SETTINGS_VIEW, async (req, { storeId
         const type = searchParams.get("type");
         const limit = Math.min(parseInt(searchParams.get("limit") || "50"), 100);
         const cursor = searchParams.get("cursor");
-        const where = { storeId };
+        const where: any = { storeId };
         if (status === "unread") {
             where.isRead = false;
         }
@@ -38,7 +38,7 @@ export const GET = withVayvaAPI(PERMISSIONS.SETTINGS_VIEW, async (req, { storeId
             },
         });
         return NextResponse.json({
-            items: notifications.map((n) => ({
+            items: notifications.map((n: any) => ({
                 ...n,
                 type: n.severity,
                 message: n.body,
@@ -47,7 +47,7 @@ export const GET = withVayvaAPI(PERMISSIONS.SETTINGS_VIEW, async (req, { storeId
             unread_count: unreadCount,
         });
     }
-    catch (error) {
+    catch (error: any) {
         console.error("Notifications API Error:", error);
         return NextResponse.json({ error: "Internal Error" }, { status: 500 });
     }

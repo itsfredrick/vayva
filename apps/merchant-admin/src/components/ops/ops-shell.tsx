@@ -44,7 +44,7 @@ export function OpsShell({
         </div>
 
         <nav className="flex-1 p-4 space-y-1 overflow-y-auto">
-          {NAV_ITEMS.map((item) => {
+          {NAV_ITEMS.map((item: any) => {
             const isActive = pathname.startsWith(item.path);
             return (
               <Link key={item.path} href={item.path}>
@@ -54,7 +54,7 @@ export function OpsShell({
                                 `}
                 >
                   <Icon
-                    name={item.icon as unknown}
+                    name={item.icon as any}
                     size={20}
                     className={isActive ? "text-white" : "text-text-secondary"}
                   />

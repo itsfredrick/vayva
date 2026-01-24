@@ -24,7 +24,7 @@ export const GET = withVayvaAPI(PERMISSIONS.TEAM_MANAGE, async (req, { storeId }
             orderBy: { createdAt: "desc" },
         });
         return NextResponse.json({
-            members: members.map((m) => ({
+            members: members.map((m: any) => ({
                 id: m.id,
                 userId: m.userId,
                 name: `${m.user.firstName || ""} ${m.user.lastName || ""}`.trim() ||
@@ -34,7 +34,7 @@ export const GET = withVayvaAPI(PERMISSIONS.TEAM_MANAGE, async (req, { storeId }
                 status: m.status,
                 joinedAt: m.createdAt,
             })),
-            invites: invites.map((i) => ({
+            invites: invites.map((i: any) => ({
                 id: i.id,
                 email: i.email,
                 role: i.role,
@@ -48,7 +48,7 @@ export const GET = withVayvaAPI(PERMISSIONS.TEAM_MANAGE, async (req, { storeId }
             })),
         });
     }
-    catch (error) {
+    catch (error: any) {
         console.error("Team List API Error:", error);
         return NextResponse.json({ error: "Internal Error" }, { status: 500 });
     }

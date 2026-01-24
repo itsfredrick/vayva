@@ -1,27 +1,40 @@
-import Redis from "ioredis";
-// Use environment variable or default to localhost
-const redisUrl = process.env.REDIS_URL || "redis://localhost:6379";
-const redis = new Redis(redisUrl);
-// Config per route type (simplified)
-const LIMITS = {
-    "auth": { limit: 5, window: 60 * 15 }, // 5 failures per 15 min (handled by auth logic usually, but here for API)
-    "api_write": { limit: 100, window: 60 }, // 100 requests per minute
-    "api_read": { limit: 300, window: 60 }, // 300 requests per minute
-    "default": { limit: 200, window: 60 }
+import { redis } from "./redis";
+
+const RATES = {
+    auth: { limit: 5, window: 60 * 15 }, // 5 failures per 15 min
+    api_write: { limit: 100, window: 60 },
+    api_read: { limit: 300, window: 60 },
+    default: { limit: 60, window: 60 },
 };
-export async function checkRateLimit(identifier: unknown, type: unknown) {
-    const config = LIMITS[type];
+
+export async function checkRateLimit(identifier: any, type: any = "default") {
+    // If no redis, skip (dev mode or fallback)
+    if (!redis) return { success: true, limit: 0, remaining: 100, reset: 0 };
+
+    const rate = (RATES as any)[type] || RATES.default;
     const key = `ratelimit:${type}:${identifier}`;
-    const currentUsage = await redis.incr(key);
-    if (currentUsage === 1) {
-        await redis.expire(key, config.window);
+
+    // Simple counter implementation
+    const current = await redis.incr(key);
+    if (current === 1) {
+        await redis.expire(key, rate.window);
     }
-    const remaining = Math.max(0, config.limit - currentUsage);
-    const success = currentUsage <= config.limit;
+
+    const reset = await redis.ttl(key);
+
+    if (current > rate.limit) {
+        return {
+            success: false,
+            limit: rate.limit,
+            remaining: 0,
+            reset
+        };
+    }
+
     return {
-        success,
-        limit: config.limit,
-        remaining,
-        reset: Math.floor(Date.now() / 1000) + config.window // approximate
+        success: true,
+        limit: rate.limit,
+        remaining: rate.limit - current,
+        reset
     };
 }

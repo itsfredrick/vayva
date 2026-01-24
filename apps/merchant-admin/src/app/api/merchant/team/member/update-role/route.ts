@@ -56,7 +56,7 @@ export const POST = withVayvaAPI(PERMISSIONS.TEAM_MANAGE, async (req, { storeId,
         });
         return NextResponse.json({ ok: true });
     }
-    catch (error) {
+    catch (error: any) {
         console.error("Update Role API Error:", error);
         return NextResponse.json({ error: "Internal Error" }, { status: 500 });
     }

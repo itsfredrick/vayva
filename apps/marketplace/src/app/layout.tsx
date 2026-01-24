@@ -1,3 +1,4 @@
+import React from "react";
 import "@vayva/theme/css";
 import "./globals.css";
 import type { Metadata } from "next";
@@ -18,7 +19,7 @@ interface RootLayoutProps {
 
 export default function RootLayout({
   children,
-}: RootLayoutProps) {
+}: RootLayoutProps): React.JSX.Element {
   return (
     <html lang="en">
       <body className="font-sans">

@@ -1,3 +1,4 @@
+import React from "react";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -19,7 +20,7 @@ export function Logo({
     showText = true,
     href = "/",
     className = "",
-}: LogoProps) {
+}: LogoProps): React.JSX.Element {
     const { width, height, text } = sizeMap[size];
 
     const content = (

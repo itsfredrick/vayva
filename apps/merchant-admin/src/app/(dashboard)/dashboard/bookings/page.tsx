@@ -61,7 +61,7 @@ export default async function BookingsPage() {
                         </div>
                     ) : (
                         <div className="space-y-4">
-                            {bookings.map((booking) => (
+                            {bookings.map((booking: any) => (
                                 <div key={booking.id} className="bg-white p-4 rounded-xl border border-gray-200 shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-4">
                                     <div className="flex items-start gap-4">
                                         <div className="w-12 h-12 rounded-lg bg-green-50 flex items-center justify-center text-green-600 font-bold text-lg shrink-0">
@@ -85,7 +85,7 @@ export default async function BookingsPage() {
                                     </div>
 
                                     <div className="flex items-center gap-3">
-                                        <Badge variant={(booking.status as unknown) === 'CONFIRMED' ? 'success' : 'default'}>
+                                        <Badge variant={(booking.status as any) === 'CONFIRMED' ? 'success' : 'default'}>
                                             {booking.status}
                                         </Badge>
                                         <BookingListActions

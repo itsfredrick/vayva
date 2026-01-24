@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { requireAuth } from "@/lib/auth/session";
 import { prisma } from "@/lib/prisma";
-export async function GET(req: unknown) {
+export async function GET(req: any) {
     try {
         const session = await requireAuth();
         const storeId = session.user.storeId;
@@ -25,7 +25,7 @@ export async function GET(req: unknown) {
             },
         });
     }
-    catch (error) {
+    catch (error: any) {
         console.error("Audit log fetch error:", error);
         return NextResponse.json({ error: "Failed to fetch audit logs" }, { status: 500 });
     }

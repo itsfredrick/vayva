@@ -9,14 +9,14 @@ import { Button } from "@vayva/ui";
 
 
 
-export default function SliceLifePizza({ slug = "slice-life" }: { slug?: string }) {
+export default function SliceLifePizza({ slug = "slice-life" }: { slug?: string }): React.JSX.Element {
     const { store } = useStorefrontStore(slug);
     const { cart } = useStorefrontCart(slug);
     const { products } = useStorefrontProducts(slug);
 
     if (!store) return <div className="p-10 text-center">Loading Slice Life...</div>;
 
-    const productCount = (products || []).reduce((acc: number, item: unknown) => acc + 1, 0);
+    const productCount = (products || []).reduce((acc: number, item: any) => acc + 1, 0);
 
     return (
         <div className="min-h-screen bg-[#FFF5E1] font-sans text-stone-800">
@@ -56,7 +56,7 @@ export default function SliceLifePizza({ slug = "slice-life" }: { slug?: string 
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                    {products?.map((product: unknown) => (
+                    {(products as any[])?.map((product: any) => (
                         <div key={product.id} className="group bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300">
                             {product.image ? (
                                 <img src={product.image} alt={product.name} className="w-full h-full object-cover" />

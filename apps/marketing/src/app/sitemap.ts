@@ -19,7 +19,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
         "/market/categories",
         "/market/products",
         "/market/sellers"
-    ].map((p) => ({
+    ].map((p: any) => ({
         url: `${SITE_ORIGIN}${p}`,
         lastModified: new Date(),
         changeFrequency: (p === "" ? "daily" : "weekly") as "daily" | "weekly",
@@ -27,7 +27,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     }));
 
     const programmaticPages = INDUSTRIES.flatMap((industry) =>
-        CITIES.map((city) => ({
+        CITIES.map((city: any) => ({
             url: `${SITE_ORIGIN}/solutions/${industry}-in-${city}`,
             lastModified: new Date(),
             changeFrequency: "monthly" as const,
@@ -36,7 +36,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     );
 
     const dropshippingPages = INDUSTRIES.flatMap((industry) =>
-        CITIES.map((city) => ({
+        CITIES.map((city: any) => ({
             url: `${SITE_ORIGIN}/dropshipping/${industry}-in-${city}`,
             lastModified: new Date(),
             changeFrequency: "monthly" as const,
@@ -44,7 +44,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
         }))
     );
 
-    const comparisonPages = ["shopify", "instagram-shopping", "jumia"].map((competitor) => ({
+    const comparisonPages = ["shopify", "instagram-shopping", "jumia"].map((competitor: any) => ({
         url: `${SITE_ORIGIN}/vs/${competitor}`,
         lastModified: new Date(),
         changeFrequency: "monthly" as const,
@@ -53,7 +53,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
     const highIntentComparison = [
         "/compare/shopify-vs-vayva-nigeria"
-    ].map((p) => ({
+    ].map((p: any) => ({
         url: `${SITE_ORIGIN}${p}`,
         lastModified: new Date(),
         changeFrequency: "weekly" as const,
@@ -69,13 +69,13 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
             take: 5000 // Limit for now to prevent sitemap overflow
         });
 
-        merchantPages = merchants.map((m) => ({
+        merchantPages = merchants.map((m: any) => ({
             url: `https://${m.slug}.vayva.ng`,
             lastModified: m.updatedAt,
             changeFrequency: "daily" as const,
             priority: 0.9,
         }));
-    } catch (error) {
+    } catch (error: any) {
         console.error("Failed to fetch merchant slugs for sitemap:", error);
     }
 

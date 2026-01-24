@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import { Button, Input, Label } from "@vayva/ui";
 import { X } from "lucide-react";
 
-export function MobileAppWaitlist() {
+export function MobileAppWaitlist(): React.ReactNode {
     const [isOpen, setIsOpen] = useState(false);
     const [email, setEmail] = useState("");
     const [isSubmitting, setIsSubmitting] = useState(false);
@@ -50,7 +50,7 @@ export function MobileAppWaitlist() {
             setTimeout(() => {
                 handleClose();
             }, 2000);
-        } catch (err) {
+        } catch {
             setError("Failed to join waitlist. Please try again.");
         } finally {
             setIsSubmitting(false);
@@ -99,7 +99,7 @@ export function MobileAppWaitlist() {
                                     type="email"
                                     placeholder="you@example.com"
                                     value={email}
-                                    onChange={(e) => setEmail(e.target.value)}
+                                    onChange={(e: any) => setEmail(e.target.value)}
                                     required
                                     disabled={isSubmitting}
                                 />

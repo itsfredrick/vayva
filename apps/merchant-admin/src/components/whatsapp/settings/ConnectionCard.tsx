@@ -10,8 +10,8 @@ import { RefreshCw, CheckCircle2, AlertCircle, Link as LinkIcon, Unlink } from "
 import { format } from "date-fns";
 
 interface ConnectionCardProps {
-    channel: unknown;
-    onUpdate: (data: unknown) => Promise<void>;
+    channel: any;
+    onUpdate: (data: any) => Promise<void>;
 }
 
 export function ConnectionCard({ channel, onUpdate }: ConnectionCardProps) {
@@ -36,7 +36,7 @@ export function ConnectionCard({ channel, onUpdate }: ConnectionCardProps) {
                 provider: "meta",
             });
             toast.success("WhatsApp Connected Successfully");
-        } catch (error) {
+        } catch (error: any) {
             toast.error("Failed to connect");
         } finally {
             setIsLoading(false);
@@ -49,7 +49,7 @@ export function ConnectionCard({ channel, onUpdate }: ConnectionCardProps) {
         try {
             await onUpdate({ status: "DISCONNECTED" });
             toast.success("Disconnected");
-        } catch (error) {
+        } catch (error: any) {
             toast.error("Failed to disconnect");
         } finally {
             setIsLoading(false);
@@ -94,7 +94,7 @@ export function ConnectionCard({ channel, onUpdate }: ConnectionCardProps) {
                             <Label>Phone Number ID</Label>
                             <Input
                                 placeholder="e.g. 10452..."
-                                value={credentials.phoneNumberId}
+                                value={(credentials.phoneNumberId as any)}
                                 onChange={(e: React.ChangeEvent<HTMLInputElement>) => setCredentials({ ...credentials, phoneNumberId: e.target.value })}
                             />
                         </div>
@@ -102,7 +102,7 @@ export function ConnectionCard({ channel, onUpdate }: ConnectionCardProps) {
                             <Label>WABA ID</Label>
                             <Input
                                 placeholder="e.g. 10833..."
-                                value={credentials.wabaId}
+                                value={(credentials.wabaId as any)}
                                 onChange={(e: React.ChangeEvent<HTMLInputElement>) => setCredentials({ ...credentials, wabaId: e.target.value })}
                             />
                         </div>

@@ -4,7 +4,7 @@ export interface Store {
     settings: {
         currency: string;
     };
-    [key: string]: unknown;
+    [key: string]: any;
 }
 
 export const StoreService = {

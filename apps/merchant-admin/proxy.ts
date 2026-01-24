@@ -117,7 +117,7 @@ export async function proxy(request: NextRequest) {
 
       // Define restricted paths
       const foodPaths = ["/dashboard/food", "/dashboard/menu-items", "/dashboard/kitchen"];
-      const retailPaths = ["/dashboard/products", "/dashboard/inventory"]; // Example
+      // const retailPaths = ["/dashboard/products", "/dashboard/inventory"]; // Example
       const servicePaths = ["/dashboard/bookings", "/dashboard/services"];
 
       // Logic: If I am Retail, I cannot go to Food paths

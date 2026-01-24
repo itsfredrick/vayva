@@ -8,7 +8,7 @@ export interface IncidentReport {
     errorSnippet: string;
     stackTrace?: string;
     sentryEventId?: string;
-    context?: unknown;
+    context?: any;
 }
 
 
@@ -94,7 +94,7 @@ export class RescueService {
 
 
 
-        } catch (error) {
+        } catch (error: any) {
             logger.error("[RescueService] Diagnosis failed", { auditEventId: auditEvent.id, error });
             return {
                 incidentId: auditEvent.id,

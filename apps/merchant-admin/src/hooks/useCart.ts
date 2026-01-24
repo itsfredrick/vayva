@@ -36,7 +36,7 @@ export const useCart = (merchantId: string | undefined): UseCartReturn => {
             try {
                 setCart(JSON.parse(stored));
             }
-            catch (e) {
+            catch (e: any) {
                 console.error("Failed to parse cart", e);
             }
         }
@@ -78,7 +78,7 @@ export const useCart = (merchantId: string | undefined): UseCartReturn => {
 
     const updateQuantity = useCallback((itemId: string, delta: number) => {
         setCart((prev) => prev
-            .map((item) => {
+            .map((item: any) => {
                 if (item.id === itemId) {
                     const newQty = Math.max(0, item.quantity + delta);
                     return { ...item, quantity: newQty };

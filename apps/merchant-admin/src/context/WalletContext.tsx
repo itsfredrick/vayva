@@ -35,7 +35,7 @@ export const WalletProvider = ({ children }: { children: React.ReactNode }) => {
 
       const l = await WalletService.getLedger({});
       setLedger(l);
-    } catch (error) {
+    } catch (error: any) {
       console.error("Failed to load wallet", error);
     } finally {
       setIsLoading(false);

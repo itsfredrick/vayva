@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth"; // Adjust path as per repo structure
 import { SupportContextService } from "@/lib/support/support-context.service";
-export async function GET(req: unknown) {
+export async function GET(req: any) {
     try {
         const session = await getServerSession(authOptions);
         if (!session?.user?.id) {
@@ -15,7 +15,7 @@ export async function GET(req: unknown) {
         }
         return NextResponse.json(context);
     }
-    catch (error) {
+    catch (error: any) {
         console.error("[SupportContext] Error fetching context", error);
         return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
     }

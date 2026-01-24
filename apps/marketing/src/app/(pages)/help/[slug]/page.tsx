@@ -6,7 +6,7 @@ import Link from "next/link";
 import { getArticleBySlug } from "@/lib/help";
 import { Button } from "@vayva/ui";
 
-export default function HelpArticlePage() {
+export default function HelpArticlePage(): React.JSX.Element {
   const params = useParams();
   const slug = params?.slug as string;
   const article = getArticleBySlug(slug);

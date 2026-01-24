@@ -3,8 +3,8 @@ export class DiscountService {
     /**
      * Create a Discount Rule and optionally a Coupon.
      */
-    static async createDiscount(storeId: unknown, data: unknown) {
-        return await prisma.$transaction(async (tx: unknown) => {
+    static async createDiscount(storeId: any, data: any) {
+        return await prisma.$transaction(async (tx: any) => {
             // 1. Create Rule
             const rule = await tx.discountRule.create({
                 data: {
@@ -51,7 +51,7 @@ export class DiscountService {
             return { rule, coupon };
         });
     }
-    static async getDiscount(storeId: unknown, ruleId: unknown) {
+    static async getDiscount(storeId: any, ruleId: any) {
         const rule = await prisma.discountRule.findUnique({
             where: { id: ruleId, storeId }
         });
@@ -66,8 +66,8 @@ export class DiscountService {
             couponId: coupon?.id || null
         };
     }
-    static async updateDiscount(storeId: unknown, ruleId: unknown, data: unknown) {
-        return await prisma.$transaction(async (tx: unknown) => {
+    static async updateDiscount(storeId: any, ruleId: any, data: any) {
+        return await prisma.$transaction(async (tx: any) => {
             // 1. Update Rule
             const rule = await tx.discountRule.update({
                 where: { id: ruleId, storeId },
@@ -116,7 +116,7 @@ export class DiscountService {
             return rule;
         });
     }
-    static async listDiscounts(storeId: unknown) {
+    static async listDiscounts(storeId: any) {
         // Fetch rules
         const rules = await prisma.discountRule.findMany({
             where: { storeId },
@@ -137,8 +137,8 @@ export class DiscountService {
             couponId: couponMap.get(rule.id)?.id || null
         }));
     }
-    static async deleteDiscount(storeId: unknown, ruleId: unknown) {
-        return await prisma.$transaction(async (tx: unknown) => {
+    static async deleteDiscount(storeId: any, ruleId: any) {
+        return await prisma.$transaction(async (tx: any) => {
             // Delete associated coupons first
             await tx.coupon.deleteMany({
                 where: { storeId, ruleId }

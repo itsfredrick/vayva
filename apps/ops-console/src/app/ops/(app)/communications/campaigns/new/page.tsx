@@ -1,12 +1,12 @@
 "use client";
 
 import React, { useState } from "react";
-import { useRouter } from "next/navigation";
-import { ArrowLeft, Megaphone, Send, Clock, Users, MessageSquare } from "lucide-react";
-import { toast } from "sonner";
+import { useRouter } from 'next/navigation';
+import { ArrowLeft, Megaphone, Send, Clock, Users, MessageSquare } from 'lucide-react';
+import { toast } from 'sonner';
 import { cn, Button } from "@vayva/ui";
 
-export default function NewCampaignPage() {
+export default function NewCampaignPage(): React.JSX.Element {
     const router = useRouter();
     const [loading, setLoading] = useState(false);
     const [form, setForm] = useState({
@@ -18,7 +18,7 @@ export default function NewCampaignPage() {
     });
 
     const handleSubmit = async (e: React.FormEvent) => {
-        e.preventDefault();
+        (e as any).preventDefault();
         setLoading(true);
 
         try {
@@ -37,7 +37,7 @@ export default function NewCampaignPage() {
 
             toast.success("Campaign created successfully");
             router.push("/ops/communications/campaigns");
-        } catch (error) {
+        } catch (error: any) {
             toast.error("Failed to create campaign");
             console.error(error);
         } finally {
@@ -76,8 +76,8 @@ export default function NewCampaignPage() {
                         <input
                             required
                             type="text"
-                            value={form.name}
-                            onChange={(e) => setForm({ ...form, name: e.target.value })}
+                            value={(form.name as any)}
+                            onChange={(e: any) => setForm({ ...form, name: (e as any).target.value })}
                             placeholder="e.g. June Merchant Newsletter"
                             className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500"
                         />
@@ -86,8 +86,8 @@ export default function NewCampaignPage() {
                         <label className="block text-sm font-semibold text-gray-700 mb-2">Campaign Type</label>
                         <select
                             aria-label="Campaign Type"
-                            value={form.type}
-                            onChange={(e) => setForm({ ...form, type: e.target.value })}
+                            value={(form.type as any)}
+                            onChange={(e: any) => setForm({ ...form, type: (e as any).target.value })}
                             className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 bg-white"
                         >
                             <option value="NEWSLETTER">Newsletter</option>
@@ -103,7 +103,7 @@ export default function NewCampaignPage() {
                     <div>
                         <label className="block text-sm font-semibold text-gray-700 mb-2">Channel</label>
                         <div className="flex gap-2">
-                            {["EMAIL", "SMS", "WHATSAPP", "PUSH"].map((c) => (
+                            {["EMAIL", "SMS", "WHATSAPP", "PUSH"].map((c: any) => (
                                 <Button
                                     key={c}
                                     type="button"
@@ -127,8 +127,8 @@ export default function NewCampaignPage() {
                             <select
                                 title="Target Audience"
                                 aria-label="Target Audience"
-                                value={form.segmentId}
-                                onChange={(e) => setForm({ ...form, segmentId: e.target.value })}
+                                value={(form.segmentId as any)}
+                                onChange={(e: any) => setForm({ ...form, segmentId: (e as any).target.value })}
                                 className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 bg-white appearance-none"
                             >
                                 <option value="all">All Active Merchants</option>
@@ -148,8 +148,8 @@ export default function NewCampaignPage() {
                     </label>
                     <textarea
                         required
-                        value={form.messageBody}
-                        onChange={(e) => setForm({ ...form, messageBody: e.target.value })}
+                        value={(form.messageBody as any)}
+                        onChange={(e: any) => setForm({ ...form, messageBody: (e as any).target.value })}
                         rows={8}
                         placeholder="Write your message here..."
                         className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 font-mono text-sm"

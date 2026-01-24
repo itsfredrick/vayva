@@ -7,7 +7,7 @@ export class RevenueService {
      * Check if a merchant is eligible for a new free trial
      * Prevents "trial farming" while remaining fair to shared networks
      */
-    static async checkTrialEligibility(signal) {
+    static async checkTrialEligibility(signal: any) {
         const thresholdDate = new Date();
         thresholdDate.setDate(thresholdDate.getDate() - 90);
         const pattern = await prisma.signupAbuseSignal.findFirst({
@@ -43,7 +43,7 @@ export class RevenueService {
     /**
      * Purchase a 1,000 Message Add-on Pack (₦5,000)
      */
-    static async purchaseAddon(storeId, transactionId) {
+    static async purchaseAddon(storeId: any, transactionId: any) {
         const sub = await prisma.merchantAiSubscription.findUnique({
             where: { storeId },
         });
@@ -66,7 +66,7 @@ export class RevenueService {
     /**
      * Handle Trial Expiry Transition
      */
-    static async expireTrial(storeId) {
+    static async expireTrial(storeId: any) {
         const sub = await prisma.merchantAiSubscription.findUnique({
             where: { storeId },
         });
@@ -86,7 +86,7 @@ export class RevenueService {
     /**
      * Final Closure after Grace
      */
-    static async closeAccount(storeId) {
+    static async closeAccount(storeId: any) {
         await prisma.merchantAiSubscription.update({
             where: { storeId },
             data: {

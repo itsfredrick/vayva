@@ -3,7 +3,7 @@ export function faqSchema(path: string, ctx?: Record<string, unknown>) {
   return {
     "@context": "https://schema.org",
     "@type": "FAQPage",
-    mainEntity: (ctx?.faqs ?? []).map((faq: unknown) => ({
+    mainEntity: (ctx?.faqs as any[] ?? []).map((faq: any) => ({
       "@type": "Question",
       name: faq.question,
       acceptedAnswer: {

@@ -8,7 +8,7 @@ import { useEffect, useState } from "react";
 import Image from "next/image";
 import { SplitCartGroup, CartWithRelations } from "@vayva/shared/cart-service";
 
-export default function CheckoutPage() {
+export default function CheckoutPage(): React.JSX.Element {
     const { cart, isLoading } = useCart();
     const { data: session } = useSession();
     const router = useRouter();
@@ -27,7 +27,7 @@ export default function CheckoutPage() {
 
     const grandTotal = cart.groups.reduce((acc: number, group: SplitCartGroup) => acc + group.subtotal + group.deliveryFee, 0);
 
-    const handlePlaceOrder = async () => {
+    const handlePlaceOrder = async (): Promise<void> => {
         if (!session?.user) {
             // Should be handled by middleware or UI redirect, but safe guard
             router.push("/api/auth/signin");
@@ -130,7 +130,7 @@ export default function CheckoutPage() {
 }
 
 
-function CheckoutGroup({ group }: { group: SplitCartGroup }) {
+function CheckoutGroup({ group }: { group: SplitCartGroup }): React.JSX.Element {
     return (
         <div className="border rounded-xl bg-white overflow-hidden">
             <div className="bg-gray-50 px-6 py-3 border-b">

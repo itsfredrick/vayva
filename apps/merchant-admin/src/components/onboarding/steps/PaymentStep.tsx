@@ -12,7 +12,8 @@ interface Bank {
 }
 
 export default function PaymentStep() {
-    const { nextStep, prevStep, updateData, state, isSaving } = useOnboarding();
+    const { nextStep, prevStep, updateData, state: rawState, isSaving } = useOnboarding();
+    const state = rawState as any;
     const [accountNumber, setAccountNumber] = useState(state.finance?.accountNumber || "");
     const [selectedBankCode, setSelectedBankCode] = useState(state.finance?.bankCode || ""); // Initialize with existing state
     const [banks, setBanks] = useState<Bank[]>([]);
@@ -24,7 +25,7 @@ export default function PaymentStep() {
         // Load Banks
         fetch("/api/payments/banks")
             .then(res => res.json())
-            .then((data: unknown) => {
+            .then((data: any) => {
                 if (Array.isArray(data)) setBanks(data);
             })
             .catch(() => toast.error("Failed to load banks"))
@@ -53,7 +54,7 @@ export default function PaymentStep() {
 
             setResolvedName(data.account_name);
             toast.success("Account verified!");
-        } catch (error) {
+        } catch (error: any) {
             setResolvedName("");
             toast.error(error.message);
         } finally {
@@ -81,7 +82,7 @@ export default function PaymentStep() {
                     pos: false
                 }
             },
-        });
+        } as any);
         nextStep();
     };
 
@@ -97,15 +98,15 @@ export default function PaymentStep() {
                     <Label htmlFor="bankSelect">Select Bank</Label>
                     <select
                         id="bankSelect"
-                        value={selectedBankCode}
-                        onChange={(e: unknown) => setSelectedBankCode(e.target.value)}
+                        value={(selectedBankCode as any)}
+                        onChange={(e: any) => setSelectedBankCode(e.target.value)}
                         disabled={loadingBanks}
                         className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
                         title="Select Bank"
                     >
                         <option value="" disabled>Select a bank</option>
-                        {banks.map((bank: unknown) => (
-                            <option key={bank.code} value={bank.code}>{bank.name}</option>
+                        {banks.map((bank: any) => (
+                            <option key={bank.code} value={(bank.code as any)}>{bank.name}</option>
                         ))}
                     </select>
                 </div>
@@ -116,8 +117,8 @@ export default function PaymentStep() {
                         <Input
                             id="accountNumber"
                             placeholder="0123456789"
-                            value={accountNumber}
-                            onChange={(e: unknown) => setAccountNumber(e.target.value.replace(/\D/g, '').slice(0, 10))}
+                            value={(accountNumber as any)}
+                            onChange={(e: any) => setAccountNumber(e.target.value.replace(/\D/g, '').slice(0, 10))}
                             maxLength={10}
                             className={resolvedName ? "border-green-500 pr-10" : ""}
                         />

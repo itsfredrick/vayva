@@ -1,5 +1,5 @@
 
-import { NextResponse } from "next/server";
+import { NextResponse } from 'next/server';
 import { prisma } from "@vayva/db";
 import { OpsAuthService } from "@/lib/ops-auth";
 
@@ -58,7 +58,7 @@ export async function GET(
             }
         });
 
-    } catch (error) {
+    } catch (error: any) {
         console.error("Fetch Integrations Error:", error);
         return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
     }

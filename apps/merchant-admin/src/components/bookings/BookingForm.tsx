@@ -12,7 +12,7 @@ interface BookingFormProps {
     onSuccess: () => void;
     services: { id: string; name: string }[];
     customers: { id: string; name: string }[];
-    initialData?: unknown;
+    initialData?: any;
 }
 
 interface BookingFormValues {
@@ -23,7 +23,7 @@ interface BookingFormValues {
     notes?: string;
 }
 
-export function BookingForm({ services: unknown, customers: unknown, onSuccess: unknown, initialData }: BookingFormProps) { // Updated props
+export function BookingForm({ services, customers, onSuccess, initialData }: BookingFormProps) {
     const router = useRouter();
     const [isLoading, setIsLoading] = useState(false); // Changed isSubmitting to isLoading
     const { register, handleSubmit, watch, formState: { errors } } = useForm<BookingFormValues>({ // Changed BookingFormValues to BookingFormData
@@ -66,7 +66,7 @@ export function BookingForm({ services: unknown, customers: unknown, onSuccess: 
             toast.success(initialData ? "Booking updated" : "Booking created successfully"); // Updated toast message
             router.refresh(); // Refresh server data
             onSuccess();
-        } catch (error) { // Updated error handling
+        } catch (error: any) { // Updated error handling
             console.error(error);
             toast.error(error.message);
         } finally {
@@ -81,8 +81,8 @@ export function BookingForm({ services: unknown, customers: unknown, onSuccess: 
                     <Label htmlFor="serviceId">Service</Label>
                     <select id="serviceId" {...register("serviceId", { required: true })} defaultValue="" className="flex h-10 w-full items-center justify-between rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 [&>span]:line-clamp-1">
                         <option value="" disabled>Select service</option>
-                        {services.map(s => (
-                            <option key={s.id} value={s.id}>{s.name}</option>
+                        {services.map((s: any) => (
+                            <option key={s.id} value={(s.id as any)}>{s.name}</option>
                         ))}
                     </select>
                 </div>
@@ -91,8 +91,8 @@ export function BookingForm({ services: unknown, customers: unknown, onSuccess: 
                     <Label htmlFor="customerId">Customer</Label>
                     <select id="customerId" {...register("customerId", { required: true })} defaultValue="" className="flex h-10 w-full items-center justify-between rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 [&>span]:line-clamp-1">
                         <option value="" disabled>Select customer</option>
-                        {customers.map(c => (
-                            <option key={c.id} value={c.id}>{c.name}</option>
+                        {customers.map((c: any) => (
+                            <option key={c.id} value={(c.id as any)}>{c.name}</option>
                         ))}
                     </select>
                 </div>

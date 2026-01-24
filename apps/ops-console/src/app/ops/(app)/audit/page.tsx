@@ -1,27 +1,23 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams } from 'next/navigation';
 import {
     Search,
     Filter,
-    RefreshCw,
-    ShieldAlert,
-    User,
+    RefreshCw, ShieldAlert, User,
     Activity,
     Calendar,
     Eye,
-    X,
-    Copy,
-    Check
-} from "lucide-react";
-import { formatDistanceToNow } from "date-fns";
+    X, Copy, Check
+} from 'lucide-react';
+import { formatDistanceToNow } from 'date-fns';
 import { Button } from "@vayva/ui";
 
 interface AuditEvent {
     id: string;
     eventType: string;
-    metadata: unknown;
+    metadata: any;
     createdAt: string;
     actor: {
         name: string;
@@ -37,7 +33,7 @@ interface Meta {
     totalPages: number;
 }
 
-export default function AuditLogsPage() {
+export default function AuditLogsPage(): React.JSX.Element {
     const router = useRouter();
     const searchParams = useSearchParams();
 
@@ -76,7 +72,7 @@ export default function AuditLogsPage() {
             const result = await res.json();
             setData(result.data || []);
             setMeta(result.meta || null);
-        } catch (error) {
+        } catch (error: any) {
             console.error("Failed to fetch logs:", error);
         } finally {
             setLoading(false);
@@ -84,7 +80,7 @@ export default function AuditLogsPage() {
     };
 
     const handleSearch = (e: React.FormEvent) => {
-        e.preventDefault();
+        (e as any).preventDefault();
         const params = new URLSearchParams(searchParams);
         if (searchInput) {
             params.set("actor", searchInput);
@@ -113,7 +109,7 @@ export default function AuditLogsPage() {
     };
 
     // Helper to extract target info from metadata
-    const getTargetInfo = (metadata: unknown) => {
+    const getTargetInfo = (metadata: any) => {
         if (!metadata) return "—";
 
         // Common patterns
@@ -151,8 +147,8 @@ export default function AuditLogsPage() {
                             type="text"
                             placeholder="Search by actor name or email..."
                             className="w-full pl-10 pr-4 py-2.5 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
-                            value={searchInput}
-                            onChange={(e) => setSearchInput(e.target.value)}
+                            value={(searchInput as any)}
+                            onChange={(e: any) => setSearchInput((e as any).target.value)}
                         />
                     </form>
 
@@ -188,8 +184,8 @@ export default function AuditLogsPage() {
                     <div className="pt-4 border-t border-gray-200">
                         <label className="block text-xs font-medium text-gray-700 mb-2">Event Type</label>
                         <select
-                            value={eventType}
-                            onChange={(e) => handleFilterChange("eventType", e.target.value)}
+                            value={(eventType as any)}
+                            onChange={(e: any) => handleFilterChange("eventType", (e as any).target.value)}
                             className="w-full max-w-xs px-3 py-2 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
                             aria-label="Filter by event type"
                         >
@@ -236,7 +232,7 @@ export default function AuditLogsPage() {
                                 </td>
                             </tr>
                         ) : (
-                            data.map((event) => (
+                            data.map((event: any) => (
                                 <tr key={event.id} className="hover:bg-gray-50 group transition-colors">
                                     <td className="px-6 py-4 text-gray-500 whitespace-nowrap">
                                         <div className="flex items-center gap-2">

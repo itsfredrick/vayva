@@ -1,6 +1,6 @@
 import { prisma } from "@vayva/db";
 export class TemplateService {
-    static async applyTemplate(storeId, templateId, userId) {
+    static async applyTemplate(storeId: any, templateId: any, userId: any) {
         // 1. Verify Template Exists
         const template = await prisma.templateManifest.findUnique({
             where: { id: templateId },
@@ -12,7 +12,7 @@ export class TemplateService {
             where: { storeId },
         });
         // 3. Transactional Update
-        await prisma.$transaction(async (tx: unknown) => {
+        await prisma.$transaction(async (tx: any) => {
             await tx.storeTemplateSelection.upsert({
                 where: { storeId },
                 update: {
@@ -49,7 +49,7 @@ export class TemplateService {
         });
         return { success: true };
     }
-    static async rollback(storeId, userId) {
+    static async rollback(storeId: any, userId: any) {
         const current = await prisma.storeTemplateSelection.findUnique({
             where: { storeId },
         });
@@ -57,7 +57,7 @@ export class TemplateService {
             throw new Error("No previous template to rollback to");
         }
         // Apply Previous
-        await prisma.$transaction(async (tx: unknown) => {
+        await prisma.$transaction(async (tx: any) => {
             await tx.storeTemplateSelection.update({
                 where: { storeId },
                 data: {

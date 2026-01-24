@@ -7,7 +7,7 @@ import { Search, MapPin, Filter, ArrowLeft, Loader2, MessageCircle, ShoppingCart
 import { Button } from "@vayva/ui";
 import { SearchResult } from "@vayva/shared";
 
-function SearchContent() {
+function SearchContent(): React.JSX.Element {
     const searchParams = useSearchParams();
     const router = useRouter();
 
@@ -46,7 +46,7 @@ function SearchContent() {
         return () => clearTimeout(debounce);
     }, [query, category, chinaBulk]);
 
-    const handleSearch = (e: React.FormEvent) => {
+    const handleSearch = (e: React.FormEvent): void => {
         e.preventDefault();
         router.push(`/search?q=${encodeURIComponent(query)}&category=${encodeURIComponent(category)}`);
     };
@@ -192,7 +192,7 @@ function SearchContent() {
     );
 }
 
-export default function SearchPage() {
+export default function SearchPage(): React.JSX.Element {
     return (
         <Suspense fallback={
             <div className="min-h-screen bg-gray-50 flex items-center justify-center">

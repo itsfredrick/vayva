@@ -19,7 +19,7 @@ export async function requireAuth() {
     }
     return session;
 }
-export async function requireStoreAccess(storeId: unknown) {
+export async function requireStoreAccess(storeId: any) {
     const session = await requireAuth();
     // If storeId provided, verify access
     if (storeId && session.user.storeId !== storeId) {
@@ -28,13 +28,13 @@ export async function requireStoreAccess(storeId: unknown) {
     return session;
 }
 // Helper for wrapping API routes with auth
-export function withAuth(handler: unknown) {
-    return async (request: unknown, context: unknown) => {
+export function withAuth(handler: any) {
+    return async (request: any, context: any) => {
         try {
             const session = await requireAuth();
             return await handler(request, session);
         }
-        catch (error) {
+        catch (error: any) {
             if (error.message === "Unauthorized") {
                 return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
             }

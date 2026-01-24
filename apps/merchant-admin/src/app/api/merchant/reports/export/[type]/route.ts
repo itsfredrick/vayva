@@ -17,7 +17,7 @@ export const GET = withVayvaAPI(PERMISSIONS.METRICS_VIEW, async (req, { storeId,
             },
         });
     }
-    catch (error) {
+    catch (error: any) {
         console.error("Reports Export API Error:", error);
         return NextResponse.json({ error: "Internal Error" }, { status: 500 });
     }

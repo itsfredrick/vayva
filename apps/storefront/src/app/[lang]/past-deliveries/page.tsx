@@ -22,8 +22,8 @@ import { Meal } from "@/types/menu";
 import { StorefrontService } from "@/services/storefront.service";
 
 // Simple Toast Component (Internal)
-function Toast({ message, show }: { message: string; show: boolean }) {
-  if (!show) return null;
+function Toast({ message, show }: { message: string; show: boolean }): React.JSX.Element {
+  if (!show) return <></>;
   return (
     <div className="fixed bottom-6 left-1/2 -translate-x-1/2 bg-gray-900 text-white px-4 py-2 rounded-lg shadow-lg text-sm font-medium z-50 animate-fade-in-up">
       {message}
@@ -31,7 +31,7 @@ function Toast({ message, show }: { message: string; show: boolean }) {
   );
 }
 
-export default function PastDeliveriesPage({ params }: unknown) {
+export default function PastDeliveriesPage({ params: _params }: any): React.JSX.Element {
   const { lang: rawLang } = useParams() as { lang: string };
   const lang = (rawLang === "tr" ? "tr" : "en") as LocaleKey;
   const { store } = useStore();
@@ -40,7 +40,7 @@ export default function PastDeliveriesPage({ params }: unknown) {
     useUserInteractions();
 
   const [meals, setMeals] = useState<Meal[]>([]);
-  const [loading, setLoading] = useState(true);
+  const [_loading, setLoading] = useState(true);
 
   useEffect(() => {
     if (!store) return;
@@ -70,7 +70,7 @@ export default function PastDeliveriesPage({ params }: unknown) {
     showToast(result.isFavorite ? t.favorites.added : t.favorites.removed);
   };
 
-  if (!isLoaded) return null; // Hydration safe
+  if (!isLoaded) return <></>; // Hydration safe
 
   return (
     <div className="min-h-screen bg-gray-50 pb-20 font-sans bg-noise">

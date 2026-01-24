@@ -18,7 +18,7 @@ const INDUSTRY_GROUPS = {
 export default function IndustrySettingsPage() {
     const router = useRouter();
     const { merchant } = useAuth();
-    const [selectedSlug, setSelectedSlug] = useState<IndustrySlug | null>((merchant as unknown)?.industrySlug || "retail");
+    const [selectedSlug, setSelectedSlug] = useState<IndustrySlug | null>(((merchant as any))?.industrySlug || "retail");
     const [isLoading, setIsLoading] = useState(false);
 
     const handleSave = async () => {
@@ -38,7 +38,7 @@ export default function IndustrySettingsPage() {
 
             // Force reload to update sidebar and app context
             window.location.href = "/dashboard";
-        } catch (error) {
+        } catch (error: any) {
             toast.error("Something went wrong");
         } finally {
             setIsLoading(false);
@@ -60,7 +60,7 @@ export default function IndustrySettingsPage() {
                         {groupTitle}
                     </h2>
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                        {slugs.map((slug) => {
+                        {slugs.map((slug: any) => {
                             // Safe access to config
                             const config = INDUSTRY_CONFIG[slug as IndustrySlug];
                             if (!config) return null;
@@ -96,9 +96,9 @@ export default function IndustrySettingsPage() {
 
                                     {/* Feature Tags Pilled - Simplified */}
                                     <div className="flex flex-wrap gap-2">
-                                        {(config as unknown).features?.bookings && <span className="text-[10px] bg-blue-50 text-blue-700 px-2 py-1 rounded">Bookings</span>}
-                                        {(config as unknown).features?.delivery && <span className="text-[10px] bg-green-50 text-green-700 px-2 py-1 rounded">Delivery</span>}
-                                        {(config as unknown).features?.content && <span className="text-[10px] bg-pink-50 text-pink-700 px-2 py-1 rounded">Content</span>}
+                                        {(config as any).features?.bookings && <span className="text-[10px] bg-blue-50 text-blue-700 px-2 py-1 rounded">Bookings</span>}
+                                        {(config as any).features?.delivery && <span className="text-[10px] bg-green-50 text-green-700 px-2 py-1 rounded">Delivery</span>}
+                                        {(config as any).features?.content && <span className="text-[10px] bg-pink-50 text-pink-700 px-2 py-1 rounded">Content</span>}
                                     </div>
                                 </div>
                             );

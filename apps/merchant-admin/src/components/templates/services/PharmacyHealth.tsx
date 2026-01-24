@@ -65,7 +65,7 @@ export const PharmacyHealthTemplate: React.FC<TemplateProps> = ({
             "Vitamins",
             "Sexual Health",
             "First Aid",
-          ].map((cat) => (
+          ].map((cat: any) => (
             <div
               key={cat}
               className="bg-white min-w-[120px] p-4 rounded-xl shadow-sm text-center cursor-pointer hover:shadow-md transition-shadow"

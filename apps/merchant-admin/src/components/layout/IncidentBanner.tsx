@@ -32,7 +32,7 @@ export function IncidentBanner() {
                         setIncident(data);
                     }
                 }
-            } catch (e) {
+            } catch (e: any) {
                 // Fail silently for banners
             }
         };

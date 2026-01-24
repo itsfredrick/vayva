@@ -1,10 +1,10 @@
-import { NextRequest, NextResponse } from "next/server";
+import { NextRequest, NextResponse } from 'next/server';
 import { OpsAuthService } from "@/lib/ops-auth";
 import { prisma } from "@vayva/db";
 
 export const dynamic = "force-dynamic";
 
-export async function GET(req: NextRequest) {
+export async function GET(_req: NextRequest) {
     try {
         await OpsAuthService.requireSession();
 
@@ -17,7 +17,7 @@ export async function GET(req: NextRequest) {
             await prisma.$queryRaw`SELECT 1`;
             dbStatus = "healthy";
             dbLatency = Date.now() - start;
-        } catch (e) {
+        } catch (e: any) {
             console.error("Health check DB fail:", e);
             dbStatus = "unhealthy";
         }
@@ -43,7 +43,7 @@ export async function GET(req: NextRequest) {
             uptime: process.uptime(),
         });
 
-    } catch (error) {
+    } catch {
         return NextResponse.json({ error: "Health check failed" }, { status: 500 });
     }
 }

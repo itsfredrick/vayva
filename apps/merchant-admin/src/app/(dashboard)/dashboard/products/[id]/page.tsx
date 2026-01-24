@@ -48,7 +48,7 @@ export default function EditProductPage() {
                     inventory: data.inventory.toString(),
                     status: data.status,
                 });
-            } catch (err) {
+            } catch (err: any) {
                 toast.error("Failed to load product");
                 router.push("/dashboard/products");
             } finally {
@@ -157,16 +157,16 @@ export default function EditProductPage() {
                         <div className="space-y-2">
                             <Label>Product Name</Label>
                             <Input
-                                value={formData.name}
-                                onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                                value={(formData.name as any)}
+                                onChange={(e: any) => setFormData({ ...formData, name: e.target.value })}
                                 required
                             />
                         </div>
                         <div className="space-y-2">
                             <Label>Description</Label>
                             <Textarea
-                                value={formData.description}
-                                onChange={(e) => setFormData({ ...formData, description: e.target.value })}
+                                value={(formData.description as any)}
+                                onChange={(e: any) => setFormData({ ...formData, description: e.target.value })}
                                 rows={5}
                             />
                         </div>
@@ -179,8 +179,8 @@ export default function EditProductPage() {
                                 <Label>Price (NGN)</Label>
                                 <Input
                                     type="number"
-                                    value={formData.price}
-                                    onChange={(e) => setFormData({ ...formData, price: e.target.value })}
+                                    value={(formData.price as any)}
+                                    onChange={(e: any) => setFormData({ ...formData, price: e.target.value })}
                                     required
                                 />
                             </div>
@@ -188,8 +188,8 @@ export default function EditProductPage() {
                                 <Label>Stock Quantity</Label>
                                 <Input
                                     type="number"
-                                    value={formData.inventory}
-                                    onChange={(e) => setFormData({ ...formData, inventory: e.target.value })}
+                                    value={(formData.inventory as any)}
+                                    onChange={(e: any) => setFormData({ ...formData, inventory: e.target.value })}
                                     required
                                 />
                             </div>
@@ -203,9 +203,9 @@ export default function EditProductPage() {
                         <h2 className="font-semibold text-gray-900">Status</h2>
                         <select
                             className="w-full p-2 border border-gray-200 rounded-lg"
-                            value={formData.status}
+                            value={(formData.status as any)}
                             aria-label="Product Status"
-                            onChange={(e) => setFormData({ ...formData, status: e.target.value })}
+                            onChange={(e: any) => setFormData({ ...formData, status: e.target.value })}
                         >
                             <option value="ACTIVE">Active</option>
                             <option value="DRAFT">Draft</option>

@@ -19,7 +19,7 @@ export const InsightHub = ({ insights }: { insights: Insight[] }) => {
       </h3>
 
       <div className="grid grid-cols-1 gap-4">
-        {insights.map((insight) => (
+        {insights.map((insight: any) => (
           <div
             key={insight.id}
             className="bg-white border border-gray-200 rounded-xl p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-4 hover:shadow-md transition-shadow"

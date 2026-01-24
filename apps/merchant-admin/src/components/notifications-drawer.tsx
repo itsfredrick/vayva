@@ -39,7 +39,7 @@ export const NotificationsDrawer = ({
       });
 
   const markAllRead = () => {
-    setNotifications(notifications.map((n) => ({ ...n, unread: false })));
+    setNotifications(notifications.map((n: any) => ({ ...n, unread: false })));
   };
 
   const getIcon = (type: string) => {
@@ -89,7 +89,7 @@ export const NotificationsDrawer = ({
 
           {/* Tabs */}
           <div className="flex gap-2 overflow-x-auto pb-2 no-scrollbar">
-            {TABS.map((tab) => (
+            {TABS.map((tab: any) => (
               <Button
                 key={tab}
                 onClick={() => setActiveTab(tab)}
@@ -117,7 +117,7 @@ export const NotificationsDrawer = ({
             </div>
           ) : (
             <div className="divide-y divide-white/5">
-              {filtered.map((item) => (
+              {filtered.map((item: any) => (
                 <div
                   key={item.id}
                   className="p-4 flex gap-4 hover:bg-white/5 transition-colors cursor-pointer group"
@@ -128,7 +128,7 @@ export const NotificationsDrawer = ({
                       getColor(item.type),
                     )}
                   >
-                    <Icon name={getIcon(item.type) as unknown} size={20} />
+                    <Icon name={getIcon(item.type) as any} size={20} />
                   </div>
                   <div className="flex-1 min-w-0">
                     <p

@@ -57,7 +57,7 @@ export default function WalletGuard({ children }: WalletGuardProps) {
                 toast.error(data.error || "Incorrect PIN");
                 setPin("");
             }
-        } catch (error) {
+        } catch (error: any) {
             console.error("Unlock Error", error);
             toast.error("Failed to verify PIN");
         } finally {
@@ -86,7 +86,7 @@ export default function WalletGuard({ children }: WalletGuardProps) {
                         <Input
                             type="password"
                             className="text-center text-2xl tracking-[1em] h-14 font-mono w-full"
-                            value={pin}
+                            value={(pin as any)}
                             onChange={(e: React.ChangeEvent<HTMLInputElement>) => setPin(e.target.value.replace(/[^0-9]/g, '').slice(0, 6))}
                             placeholder="••••••"
                             autoFocus
@@ -115,7 +115,7 @@ export default function WalletGuard({ children }: WalletGuardProps) {
                             const d = await res.json();
                             if (res.ok) toast.success(d.message);
                             else toast.error(d.error);
-                        } catch (e) {
+                        } catch (e: any) {
                             toast.error("Failed to send reset link");
                         }
                     }} className="text-xs text-gray-400 font-normal hover:text-gray-600">

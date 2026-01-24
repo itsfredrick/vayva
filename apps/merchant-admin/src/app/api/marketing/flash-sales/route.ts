@@ -23,7 +23,7 @@ export const POST = withVayvaAPI(PERMISSIONS.MARKETING_MANAGE, async (req: NextR
         });
         return NextResponse.json({ success: true, data: flashSale });
     }
-    catch (error) {
+    catch (error: any) {
         console.error("Failed to create flash sale:", error);
         return NextResponse.json({ error: error.message || "Internal Server Error" }, { status: 500 });
     }
@@ -37,7 +37,7 @@ export const GET = withVayvaAPI(PERMISSIONS.MARKETING_VIEW, async (req: NextRequ
         });
         return NextResponse.json({ success: true, data: sales });
     }
-    catch (error) {
+    catch (error: any) {
         console.error("Failed to fetch flash sales:", error);
         return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
     }

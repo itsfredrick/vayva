@@ -18,15 +18,15 @@ export function OfflineSyncBanner() {
 
   useEffect(() => {
     const updateOnlineStatus = () => {
-      setStatus((s: unknown) => ({ ...s, isOnline: navigator.onLine }));
+      setStatus((s: any) => ({ ...s, isOnline: navigator.onLine }));
     };
 
     const checkPending = async () => {
       try {
         await offlineStorage.init();
         const pending = await offlineStorage.getPendingActions();
-        setStatus((s: unknown) => ({ ...s, pendingCount: pending.length }));
-      } catch {}
+        setStatus((s: any) => ({ ...s, pendingCount: (pending as any[]).length }));
+      } catch { }
     };
 
     window.addEventListener("online", updateOnlineStatus);
@@ -43,9 +43,8 @@ export function OfflineSyncBanner() {
 
   return (
     <div
-      className={`fixed top-0 left-0 right-0 z-50 px-4 py-2 text-sm text-center ${
-        status.isOnline ? "bg-blue-500 text-white" : "bg-yellow-500 text-black"
-      }`}
+      className={`fixed top-0 left-0 right-0 z-50 px-4 py-2 text-sm text-center ${status.isOnline ? "bg-blue-500 text-white" : "bg-yellow-500 text-black"
+        }`}
     >
       {!status.isOnline ? (
         <span>📡 You're offline. Actions will sync when connected.</span>

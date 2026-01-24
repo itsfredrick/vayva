@@ -5,13 +5,13 @@ export class LedgerService {
      * Records a double-entry transaction.
      * Guaranteed atomic update of LedgerEntries and Wallet Balance.
      */
-    static async recordTransaction(req: unknown) {
-        return await prisma.$transaction(async (tx: unknown) => {
+    static async recordTransaction(req: any) {
+        return await prisma.$transaction(async (tx: any) => {
             // 1. Determine accounts and direction based on transaction type
             const entries = this.determineEntries(req);
             // 2. Create Ledger Entries
             await tx.ledgerEntry.createMany({
-                data: entries.map((e: unknown) => ({
+                data: entries.map((e: any) => ({
                     storeId: req.storeId,
                     referenceType: req.referenceType,
                     referenceId: req.referenceId,
@@ -26,7 +26,7 @@ export class LedgerService {
             });
             // 3. Update Wallet Balance (Materialized View)
             // We only update wallet balance for specific accounts (e.g., 'wallet_available')
-            const walletImpact = entries.reduce((acc: unknown, e: unknown) => {
+            const walletImpact = entries.reduce((acc: any, e: any) => {
                 if (e.account === "wallet_available") {
                     return acc + (e.direction === "CREDIT" ? e.amount : -e.amount);
                 }
@@ -56,7 +56,7 @@ export class LedgerService {
     /**
      * Helper to define the double-entry logic
      */
-    static determineEntries(req: unknown) {
+    static determineEntries(req: any) {
         const { type, amount } = req;
         const entries = [];
         switch (type) {
@@ -92,7 +92,7 @@ export class LedgerService {
         }
         return entries;
     }
-    static async getBalance(storeId: unknown) {
+    static async getBalance(storeId: any) {
         const wallet = await prisma.wallet.findUnique({
             where: { storeId },
         });

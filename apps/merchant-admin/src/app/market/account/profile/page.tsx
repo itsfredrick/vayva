@@ -66,14 +66,14 @@ export default function ProfilePage() {
                             <div className="bg-black/30 p-4 rounded mb-4 space-y-3 border border-white/10">
                                 <Input
                                     placeholder="Street Address"
-                                    value={newAddress.street}
-                                    onChange={e => setNewAddress({ ...newAddress, street: e.target.value })}
+                                    value={(newAddress.street as any)}
+                                    onChange={(e: any) => setNewAddress({ ...newAddress, street: e.target.value })}
                                     className="bg-black/50 border-white/10 text-white"
                                 />
                                 <Input
                                     placeholder="Phone for Delivery"
-                                    value={newAddress.phone}
-                                    onChange={e => setNewAddress({ ...newAddress, phone: e.target.value })}
+                                    value={(newAddress.phone as any)}
+                                    onChange={(e: any) => setNewAddress({ ...newAddress, phone: e.target.value })}
                                     className="bg-black/50 border-white/10 text-white"
                                 />
                                 <Button onClick={handleSave} className="w-full">Save Address</Button>

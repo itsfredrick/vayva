@@ -8,7 +8,7 @@ export async function GET() {
             where: { id: session.user.storeId },
             select: { settings: true },
         });
-        const settings = store?.settings || {};
+        const settings: any = store?.settings || {};
         const policies = settings.policies || {
             refundPolicy: "",
             shippingPolicy: "",
@@ -17,12 +17,12 @@ export async function GET() {
         };
         return NextResponse.json(policies);
     }
-    catch (error) {
+    catch (error: any) {
         console.error("Fetch policies error:", error);
         return NextResponse.json({ error: "Failed to fetch policies" }, { status: 500 });
     }
 }
-export async function PATCH(request: unknown) {
+export async function PATCH(request: Request) {
     try {
         const session = await requireAuth();
         const body = await request.json();
@@ -31,7 +31,7 @@ export async function PATCH(request: unknown) {
             where: { id: session.user.storeId },
             select: { settings: true },
         });
-        const currentSettings = store?.settings || {};
+        const currentSettings: any = store?.settings || {};
         const updatedPolicies = { ...(currentSettings.policies || {}), ...body };
         const updatedSettings = {
             ...currentSettings,
@@ -43,7 +43,7 @@ export async function PATCH(request: unknown) {
         });
         return NextResponse.json(updatedPolicies);
     }
-    catch (error) {
+    catch (error: any) {
         console.error("Update policies error:", error);
         return NextResponse.json({ error: "Failed to update policies" }, { status: 500 });
     }

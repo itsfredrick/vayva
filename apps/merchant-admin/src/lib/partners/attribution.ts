@@ -1,7 +1,7 @@
 import { prisma } from "@vayva/db";
 import { verifyReferralToken } from "./referral";
 export class AttributionService {
-    static async trackSignup(merchantId, token) {
+    static async trackSignup(merchantId: any, token: any) {
         const payload = verifyReferralToken(token);
         if (!payload)
             return null;
@@ -26,7 +26,7 @@ export class AttributionService {
             },
         });
     }
-    static async trackStoreLive(storeId) {
+    static async trackStoreLive(storeId: any) {
         // Need to link Store -> Merchant.
         // We assume Store has a 'Subscription' or we look up owner.
         // For V1, let's assume `storeId` tells us the merchant implicitly via ownership.
@@ -50,7 +50,7 @@ export class AttributionService {
             // Optional: Create "activation" ledger entry?
         }
     }
-    static async trackPayment(storeId, amount) {
+    static async trackPayment(storeId: any, amount: any) {
         const store = await prisma.store.findUnique({
             where: { id: storeId },
             include: { memberships: { where: { role_enum: "OWNER" } } },

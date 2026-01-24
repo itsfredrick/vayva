@@ -27,7 +27,7 @@ export const POST = withVayvaAPI(PERMISSIONS.SUPPORT_MANAGE, async (req, { store
         });
         return NextResponse.json({ success: true });
     }
-    catch (error) {
+    catch (error: any) {
         console.error("[DISPUTE_EVIDENCE]", error);
         return NextResponse.json({ error: "Internal Error" }, { status: 500 });
     }

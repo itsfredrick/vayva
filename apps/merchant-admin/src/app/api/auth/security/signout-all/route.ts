@@ -33,7 +33,7 @@ export async function POST(req: NextRequest) {
         });
         return NextResponse.json({ success: true, message: "Signed out of all devices" });
     }
-    catch (error) {
+    catch (error: any) {
         console.error("Signout All Error:", error);
         return NextResponse.json({ error: "Failed to sign out all sessions" }, { status: 500 });
     }

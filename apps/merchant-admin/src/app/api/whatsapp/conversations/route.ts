@@ -32,7 +32,7 @@ export async function GET() {
         });
         return NextResponse.json(conversations);
     }
-    catch (error) {
+    catch (error: any) {
         console.error("Fetch WhatsApp Conversations Error:", error);
         return NextResponse.json({ error: "Failed to fetch conversations" }, { status: 500 });
     }

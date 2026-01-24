@@ -8,7 +8,7 @@ export class DataGovernanceService {
     /**
      * Initiate a background data export
      */
-    static async requestExport(storeId, requestedBy, scopes) {
+    static async requestExport(storeId: any, requestedBy: any, scopes: any) {
         const request = await prisma.dataExportRequest.create({
             data: {
                 storeId,
@@ -26,7 +26,7 @@ export class DataGovernanceService {
     /**
      * Log a PII-redacted AI trace for audit
      */
-    static async logAiTrace(params) {
+    static async logAiTrace(params: any) {
         try {
             await prisma.aiTrace.create({
                 data: {
@@ -43,14 +43,14 @@ export class DataGovernanceService {
                 },
             });
         }
-        catch (error) {
+        catch (error: any) {
             console.error("[DataGovernance] Failed to log AI trace:", error);
         }
     }
     /**
      * Request full account deletion (Soft-to-Hard transition)
      */
-    static async requestDeletion(storeId, requestedBy, reason) {
+    static async requestDeletion(storeId: any, requestedBy: any, reason: any) {
         const request = await prisma.dataDeletionRequest.create({
             data: {
                 storeId,
@@ -69,7 +69,7 @@ export class DataGovernanceService {
      * Enhanced regex-based masking.
      * NOTE: For Enterprise usage, integrate with VGS, Google DLP, or AWS Macie.
      */
-    static redactPII(text) {
+    static redactPII(text: any) {
         if (!text)
             return text;
         return text

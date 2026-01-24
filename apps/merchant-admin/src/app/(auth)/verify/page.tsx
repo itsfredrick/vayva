@@ -44,7 +44,7 @@ const VerifyContent = () => {
         // For now, let's assume we need to redirect to signin or dashboard.
         router.push("/dashboard");
       }
-    } catch (err) {
+    } catch (err: any) {
       console.error(err);
       const message = err instanceof Error ? err.message : "Invalid verification code";
       setError(message);
@@ -62,7 +62,7 @@ const VerifyContent = () => {
       setResendTimer(30);
       setCanResend(false);
       setError(null);
-    } catch (err) {
+    } catch (err: any) {
       console.error(err);
       const message = err instanceof Error ? err.message : "Failed to resend code";
       setError(message);
@@ -92,7 +92,7 @@ const VerifyContent = () => {
         )}
 
         <OTPInput
-          value={otp}
+          value={(otp as any)}
           onChange={setOtp}
           onComplete={handleVerify}
           disabled={loading}

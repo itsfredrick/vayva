@@ -15,7 +15,7 @@ export const GET = withVayvaAPI(PERMISSIONS.PRODUCTS_VIEW, async (request, { sto
         }
         return NextResponse.json(accommodation);
     }
-    catch (error) {
+    catch (error: any) {
         console.error("Property Fetch Error:", error);
         return NextResponse.json({ error: error.message }, { status: 400 });
     }
@@ -36,7 +36,7 @@ export const PUT = withVayvaAPI(PERMISSIONS.PRODUCTS_MANAGE, async (request, { s
             return NextResponse.json({ error: "Property not found" }, { status: 404 });
         }
         // Transaction update
-        const result = await prisma.$transaction(async (tx: unknown) => {
+        const result = await prisma.$transaction(async (tx: any) => {
             // 1. Update Base Product
             // 1. Update Base Product & Images
             await tx.product.update({
@@ -48,7 +48,7 @@ export const PUT = withVayvaAPI(PERMISSIONS.PRODUCTS_MANAGE, async (request, { s
                     productImages: {
                         deleteMany: {},
                         createMany: {
-                            data: (data.images || []).map((url: unknown, index: unknown) => ({
+                            data: (data.images || []).map((url: any, index: any) => ({
                                 url,
                                 position: index
                             }))
@@ -72,7 +72,7 @@ export const PUT = withVayvaAPI(PERMISSIONS.PRODUCTS_MANAGE, async (request, { s
         });
         return NextResponse.json(result);
     }
-    catch (error) {
+    catch (error: any) {
         console.error("Property Update Error:", error);
         return NextResponse.json({ error: error.message }, { status: 400 });
     }
@@ -95,7 +95,7 @@ export const DELETE = withVayvaAPI(PERMISSIONS.PRODUCTS_MANAGE, async (request, 
         });
         return NextResponse.json({ success: true });
     }
-    catch (error) {
+    catch (error: any) {
         console.error("Property Delete Error:", error);
         return NextResponse.json({ error: error.message }, { status: 400 });
     }

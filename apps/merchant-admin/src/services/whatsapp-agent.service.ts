@@ -1,7 +1,7 @@
 import { prisma } from "@/lib/prisma";
 export const WhatsAppAgentService = {
     // --- Agent Logic Settings ---
-    getSettings: async (storeId: unknown) => {
+    getSettings: async (storeId: any) => {
         // Upsert to ensure it exists
         return await prisma.whatsAppAgentSettings.upsert({
             where: { storeId },
@@ -9,19 +9,19 @@ export const WhatsAppAgentService = {
             create: { storeId },
         });
     },
-    updateSettings: async (storeId: unknown, data: unknown) => {
+    updateSettings: async (storeId: any, data: any) => {
         return await prisma.whatsAppAgentSettings.update({
             where: { storeId },
             data,
         });
     },
     // --- Connection (Channel) ---
-    getChannel: async (storeId: unknown) => {
+    getChannel: async (storeId: any) => {
         return await prisma.whatsappChannel.findUnique({
             where: { storeId },
         });
     },
-    updateChannel: async (storeId: unknown, data: unknown) => {
+    updateChannel: async (storeId: any, data: any) => {
         return await prisma.whatsappChannel.upsert({
             where: { storeId },
             update: data,
@@ -32,13 +32,13 @@ export const WhatsAppAgentService = {
         });
     },
     // --- Templates ---
-    listTemplates: async (storeId: unknown) => {
+    listTemplates: async (storeId: any) => {
         return await prisma.whatsappTemplate.findMany({
             where: { storeId },
             orderBy: { createdAt: "desc" },
         });
     },
-    createTemplate: async (storeId: unknown, data: unknown) => {
+    createTemplate: async (storeId: any, data: any) => {
         // Note: Schema defines storeId as String, not relation in strict sense for this model in some versions,
         // but we pass it directly.
         return await prisma.whatsappTemplate.create({
@@ -52,7 +52,7 @@ export const WhatsAppAgentService = {
             },
         });
     },
-    deleteTemplate: async (storeId: unknown, templateId: unknown) => {
+    deleteTemplate: async (storeId: any, templateId: any) => {
         // Ensure ownership
         const template = await prisma.whatsappTemplate.findUnique({ where: { id: templateId } });
         if (!template || template.storeId !== storeId) {

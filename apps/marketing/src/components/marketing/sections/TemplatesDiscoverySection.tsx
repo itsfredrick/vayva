@@ -6,7 +6,7 @@ import { Button } from "@vayva/ui";
 import { ArrowRight } from "lucide-react";
 import * as motion from "framer-motion/client";
 
-export default function TemplatesDiscoverySection() {
+export default function TemplatesDiscoverySection(): React.JSX.Element {
     return (
         <section className="py-24 px-4 bg-gray-900 border-t border-white/10 relative overflow-hidden">
             <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-b from-green-500/5 to-transparent pointer-events-none" />
@@ -59,7 +59,7 @@ export default function TemplatesDiscoverySection() {
                             headline: "Professional booking and scheduling for experts.",
                             slug: "Service",
                         },
-                    ].map((cat) => (
+                    ].map((cat: any) => (
                         <Link
                             key={cat.name}
                             href={`/templates?category=${cat.slug}&utm_source=homepage_discovery`}

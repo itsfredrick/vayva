@@ -1,11 +1,11 @@
 "use client";
 
 import React, { useState } from "react";
-import { MessageSquare, Mail, Smartphone, CheckCircle, AlertCircle, RefreshCw, Filter } from "lucide-react";
+import { MessageSquare, Mail, Smartphone, CheckCircle, AlertCircle, RefreshCw, Filter } from 'lucide-react';
 import { useOpsQuery } from "@/hooks/useOpsQuery";
 import { Button } from "@vayva/ui";
 
-export default function CommunicationsPage() {
+export default function CommunicationsPage(): React.JSX.Element {
     const [filter, setFilter] = useState("ALL");
     const { data: logs, isLoading, refetch } = useOpsQuery(
         ["comm-logs", filter],
@@ -46,7 +46,7 @@ export default function CommunicationsPage() {
                         variant={filter === s ? "secondary" : "ghost"}
                         onClick={() => setFilter(s)}
                         className={`px-3 py-1.5 text-xs font-bold rounded-lg transition-colors h-auto ${filter === s ? "bg-indigo-100 text-indigo-700 hover:bg-indigo-200" : "text-gray-600 hover:bg-gray-50"}`}
-                        aria-label={`Filter logs by status: ${s.toLowerCase()}`}
+                        aria-label={`Filter logs by status: ${(s as any).toLowerCase()}`}
                     >
                         {s}
                     </Button>
@@ -70,24 +70,24 @@ export default function CommunicationsPage() {
                         ) : !logs?.length ? (
                             <tr><td colSpan={5} className="p-12 text-center text-gray-400">No logs found.</td></tr>
                         ) : (
-                            logs.map((log: unknown) => (
-                                <tr key={log.id} className="hover:bg-gray-50">
+                            logs.map((log: any) => (
+                                <tr key={(log as any).id} className="hover:bg-gray-50">
                                     <td className="px-6 py-4 font-mono text-xs text-gray-600">
-                                        {(log.metadata as unknown)?.to || (log.metadata as unknown)?.email || "N/A"}
+                                        {((log as any).metadata as any)?.to || ((log as any).metadata as any)?.email || "N/A"}
                                     </td>
                                     <td className="px-6 py-4 flex items-center gap-2">
-                                        {getChannelIcon(log.channel)}
-                                        <span className="text-xs font-medium">{log.channel}</span>
+                                        {getChannelIcon((log as any).channel)}
+                                        <span className="text-xs font-medium">{(log as any).channel}</span>
                                     </td>
-                                    <td className="px-6 py-4 text-gray-600">{log.type}</td>
+                                    <td className="px-6 py-4 text-gray-600">{(log as any).type}</td>
                                     <td className="px-6 py-4">
-                                        <span className={`px-2 py-0.5 rounded text-[10px] font-bold ${log.status === "SENT" ? "bg-green-100 text-green-700" :
-                                            log.status === "FAILED" ? "bg-red-100 text-red-700" : "bg-yellow-100 text-yellow-700"
+                                        <span className={`px-2 py-0.5 rounded text-[10px] font-bold ${(log as any).status === "SENT" ? "bg-green-100 text-green-700" :
+                                            (log as any).status === "FAILED" ? "bg-red-100 text-red-700" : "bg-yellow-100 text-yellow-700"
                                             }`}>
-                                            {log.status}
+                                            {(log as any).status}
                                         </span>
                                     </td>
-                                    <td className="px-6 py-4 text-gray-500 text-xs">{new Date(log.createdAt).toLocaleString()}</td>
+                                    <td className="px-6 py-4 text-gray-500 text-xs">{new Date((log as any).createdAt).toLocaleString()}</td>
                                 </tr>
                             ))
                         )}

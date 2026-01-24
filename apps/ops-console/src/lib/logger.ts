@@ -5,9 +5,9 @@ type LogLevel = "info" | "warn" | "error";
 interface LogPayload {
   route?: string;
   message: string;
-  error?: unknown;
+  error?: any;
   requestId?: string;
-  context?: unknown;
+  context?: any;
   code?: string;
 }
 
@@ -25,8 +25,6 @@ export const logger = {
       // Use console.error for errors to ensure they hit stderr
       if (level === "error") {
         console.error(JSON.stringify(entry));
-      } else {
-        console.log(JSON.stringify(entry));
       }
     } else {
       // Client: Readable
@@ -49,16 +47,16 @@ export const logger = {
     }
   },
 
-  error: (message: string, error?: unknown, context?: unknown) => {
+  error: (message: string, error?: any, context?: any) => {
     logger.log("error", { message, error, context });
     captureException(error || new Error(message), { ...context, message });
   },
 
-  warn: (message: string, context?: unknown) => {
+  warn: (message: string, context?: any) => {
     logger.log("warn", { message, context });
   },
 
-  info: (message: string, context?: unknown) => {
+  info: (message: string, context?: any) => {
     logger.log("info", { message, context });
   },
 };

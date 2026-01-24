@@ -13,7 +13,7 @@ interface EduflowLayoutProps {
   products: PublicProduct[];
 }
 
-export const EduflowLayout = ({ store, products }: EduflowLayoutProps) => {
+export const EduflowLayout = ({ store, products }: EduflowLayoutProps): React.JSX.Element => {
   // Demo: Select first course
   const course = products[0];
 

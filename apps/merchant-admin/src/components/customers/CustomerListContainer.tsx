@@ -51,8 +51,8 @@ export const CustomerListContainer = ({ customers }: CustomerListContainerProps)
                             type="text"
                             placeholder="Search customers..."
                             className="w-full pl-10 pr-4 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-black/5 focus:border-black transition-all"
-                            value={search}
-                            onChange={(e) => setSearch(e.target.value)}
+                            value={(search as any)}
+                            onChange={(e: any) => setSearch(e.target.value)}
                         />
                     </div>
                     <div className="flex gap-2">

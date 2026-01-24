@@ -108,7 +108,7 @@ export function GizmoTechHome({
                   [NO_ITEMS_DETECTED]
                 </div>
               ) : (
-                cart.map((item) => (
+                cart.map((item: any) => (
                   <div
                     key={item.id}
                     className="flex gap-4 border border-[#00ff41]/10 p-2 bg-[#00ff41]/5"
@@ -203,7 +203,7 @@ export function GizmoTechHome({
           </div>
         ) : (
           <div className="grid md:grid-cols-4 gap-6">
-            {products.map((product) => (
+            {products.map((product: any) => (
               <div
                 key={product.id}
                 className="group border border-[#00ff41]/30 bg-black hover:bg-[#00ff41]/5 transition-all relative overflow-hidden"

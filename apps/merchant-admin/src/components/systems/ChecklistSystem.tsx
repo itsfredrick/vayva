@@ -143,7 +143,7 @@ export function ChecklistEngine({
         <div className="max-h-[300px] overflow-y-auto">
           {items
             .sort((a, b) => b.priority - a.priority)
-            .map((item) => (
+            .map((item: any) => (
               <div
                 key={item.id}
                 className={cn(

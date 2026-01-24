@@ -1,3 +1,4 @@
+import React from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { SchemaOrg } from "@/components/seo/SchemaOrg";
@@ -43,7 +44,7 @@ const INDUSTRY_VARIANTS: Record<string, { headline: string; sub: string }> = {
 
 export default async function LandingPage(props: {
   searchParams: Promise<{ industry?: string }>;
-}) {
+}): Promise<React.JSX.Element> {
   const searchParams = await props.searchParams;
   const industry = searchParams.industry || "default";
   const content = INDUSTRY_VARIANTS[industry] || INDUSTRY_VARIANTS.default;
@@ -198,7 +199,7 @@ export default async function LandingPage(props: {
               { title: "Trust-Based Selling", desc: "Escrow-style wallets to bridge the gap between buyer and seller.", Icon: ShieldCheck, color: "text-purple-600", bg: "bg-purple-50" },
               { title: "Network Resilience", desc: "Works flawlessly on Edge/3G connections common in local markets.", Icon: Wifi, color: "text-blue-600", bg: "bg-blue-50" },
               { title: "Scale Efficiency", desc: "One-to-many selling without the manual-reply fatigue.", Icon: Zap, color: "text-orange-600", bg: "bg-orange-50" },
-            ].map((item) => (
+            ].map((item: any) => (
               <div key={item.title} className="bg-gray-50/50 rounded-3xl p-8 border border-gray-100 hover:bg-white hover:shadow-[0_20px_40px_-15px_rgba(0,0,0,0.05)] transition-all group">
                 <div className={`w-12 h-12 rounded-2xl ${item.bg} flex items-center justify-center mb-6 group-hover:scale-110 transition-transform`}>
                   <item.Icon className={`w-6 h-6 ${item.color}`} />

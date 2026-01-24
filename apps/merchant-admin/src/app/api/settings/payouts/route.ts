@@ -9,7 +9,7 @@ export const GET = withVayvaAPI(PERMISSIONS.FINANCE_VIEW, async (req, { storeId 
         });
         return NextResponse.json(beneficiaries);
     }
-    catch (error) {
+    catch (error: any) {
         console.error("Beneficiaries fetch error:", error);
         return NextResponse.json({ error: "Failed to fetch beneficiaries" }, { status: 500 });
     }
@@ -51,7 +51,7 @@ export const POST = withVayvaAPI(PERMISSIONS.PAYOUTS_MANAGE, async (req, { store
         });
         return NextResponse.json(beneficiary);
     }
-    catch (error) {
+    catch (error: any) {
         console.error("Beneficiary create error:", error);
         return NextResponse.json({ error: "Failed to add payout method" }, { status: 500 });
     }

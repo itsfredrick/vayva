@@ -58,7 +58,7 @@ export default function SupportPage() {
         </div>
 
         <div className="flex bg-gray-100 p-1 rounded-lg">
-          {(["tickets", "whatsapp", "settings"] as const).map((tab) => (
+          {(["tickets", "whatsapp", "settings"] as const).map((tab: any) => (
             <Button
               key={tab}
               onClick={() => setActiveTab(tab)}
@@ -104,7 +104,7 @@ export default function SupportPage() {
                 </div>
               ) : (
                 <div className="divide-y divide-gray-100">
-                  {tickets.map((t) => (
+                  {tickets.map((t: any) => (
                     <div
                       key={t.id}
                       className="p-4 hover:bg-gray-50 flex justify-between items-center cursor-pointer"
@@ -199,7 +199,7 @@ function SettingsView() {
         ]);
         setSettings(s);
         setProfile(p);
-      } catch (e) {
+      } catch (e: any) {
         console.error("Failed to load settings", e);
       } finally {
         setTimeout(() => setLoading(false), 0);
@@ -217,7 +217,7 @@ function SettingsView() {
         WaAgentService.updateProfile(profile),
       ]);
       // Optional: Toast success
-    } catch (e) {
+    } catch (e: any) {
       console.error("Failed to save", e);
     } finally {
       setSaving(false);
@@ -319,8 +319,8 @@ function SettingsView() {
 
           <div className="flex gap-2 mb-4">
             <input
-              value={newClaim}
-              onChange={(e) => setNewClaim(e.target.value)}
+              value={(newClaim as any)}
+              onChange={(e: any) => setNewClaim(e.target.value)}
               placeholder="e.g. 'We offer medical advice'"
               className="flex-1 border p-2 rounded text-sm"
               onKeyDown={(e) => e.key === "Enter" && addClaim()}
@@ -359,7 +359,7 @@ function CreateTicketModal({ onClose }: { onClose: () => void }) {
     e.preventDefault();
     setSubmitting(true);
     const form = e.target as HTMLFormElement;
-    const data = {
+    const data: any = {
       subject: (form.elements.namedItem("subject") as HTMLInputElement).value,
       type: (form.elements.namedItem("type") as HTMLSelectElement).value,
       description: (

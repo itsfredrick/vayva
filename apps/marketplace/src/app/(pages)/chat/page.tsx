@@ -1,6 +1,7 @@
+import React from "react";
 import { ChatInbox } from "../../../components/chat/ChatInbox";
 
-export default function ChatPage() {
+export default function ChatPage(): React.JSX.Element {
     return (
         <div className="min-h-screen bg-gray-50 flex flex-col">
             <header className="bg-white border-b border-gray-100 py-4 px-4 sticky top-0 z-10">

@@ -1,5 +1,5 @@
 
-import { NextResponse } from "next/server";
+import { NextResponse } from 'next/server';
 import { prisma } from "@vayva/db";
 import { OpsAuthService } from "@/lib/ops-auth";
 
@@ -43,7 +43,7 @@ export async function GET(
             }
         });
 
-    } catch (error) {
+    } catch (error: any) {
         if (error.message === "Unauthorized") {
             return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
         }

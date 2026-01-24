@@ -1,6 +1,6 @@
 import Fastify from "fastify";
 import cors from "@fastify/cors";
-import { prisma, RiskScope, RiskSeverity } from "@vayva/db";
+import { _prisma, RiskScope, RiskSeverity } from "@vayva/db";
 
 const server = Fastify({
   logger: true,
@@ -37,7 +37,6 @@ server.post<{
 const start = async () => {
   try {
     await server.listen({ port: 3020, host: "0.0.0.0" }); // Port 3020 for Risk Service
-    console.log("Risk Service running on port 3020");
   } catch (err) {
     (server.log as unknown).error(err);
     process.exit(1);

@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import { MerchantRescueService } from "@/lib/rescue/merchant-rescue-service";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
-export async function GET(req: unknown, props: unknown) {
+export async function GET(req: any, props: any) {
     const params = await props.params;
     // Validate session - user should only see their own incidents ideally, 
     // but for rescue speed/UX we might relax strict ownership check if incident ID is known (UUID is hard to guess).

@@ -11,7 +11,7 @@ import {
     Users,
 } from "lucide-react";
 
-export function FeaturesSection() {
+export function FeaturesSection(): React.JSX.Element {
     return (
         <section id="features" className="py-24 px-4 bg-white">
             <div className="max-w-6xl mx-auto">

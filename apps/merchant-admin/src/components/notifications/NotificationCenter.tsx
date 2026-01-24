@@ -40,7 +40,7 @@ export const NotificationCenter = ({
       const res = await fetch(url);
       const data = await res.json();
       setNotifications(data.items || []); // Ensure we handle the { items: [], ... } response structure
-    } catch (err) {
+    } catch (err: any) {
       console.error("Failed to load notifications", err);
     } finally {
       setLoading(false);
@@ -55,9 +55,9 @@ export const NotificationCenter = ({
       });
       // Improve UI update: mark local state as read immediately
       setNotifications((prev) =>
-        prev.map((n) => (n.id === id ? { ...n, isRead: true } : n)),
+        prev.map((n: any) => (n.id === id ? { ...n, isRead: true } : n)),
       );
-    } catch (err) {
+    } catch (err: any) {
       console.error("Failed to mark read", err);
     }
   };
@@ -68,8 +68,8 @@ export const NotificationCenter = ({
         method: "POST",
         body: JSON.stringify({ markAll: true }),
       });
-      setNotifications((prev) => prev.map((n) => ({ ...n, isRead: true })));
-    } catch (err) {
+      setNotifications((prev) => prev.map((n: any) => ({ ...n, isRead: true })));
+    } catch (err: any) {
       console.error("Failed to mark all read", err);
     }
   };
@@ -91,7 +91,7 @@ export const NotificationCenter = ({
           <div>
             <h3 className="font-bold text-gray-900">Notifications</h3>
             <div className="flex gap-2 mt-2">
-              {(["all", "unread", "critical"] as const).map((f) => (
+              {(["all", "unread", "critical"] as const).map((f: any) => (
                 <Button
                   key={f}
                   variant="ghost"
@@ -142,7 +142,7 @@ export const NotificationCenter = ({
               </p>
             </div>
           ) : (
-            notifications.map((notification) => (
+            notifications.map((notification: any) => (
               <NotificationItem
                 key={notification.id}
                 notification={notification}

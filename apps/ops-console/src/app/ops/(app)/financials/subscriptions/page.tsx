@@ -1,11 +1,11 @@
 "use client";
 
 import React from "react";
-import { CreditCard, Calendar, CheckCircle2, RefreshCw } from "lucide-react";
+import { CreditCard, Calendar, CheckCircle2, RefreshCw } from 'lucide-react';
 import { useOpsQuery } from "@/hooks/useOpsQuery";
 import { Button } from "@vayva/ui";
 
-export default function BillingPage() {
+export default function BillingPage(): React.JSX.Element {
     const { data: subs, isLoading, refetch } = useOpsQuery(
         ["billing-subs"],
         () => fetch("/api/ops/financials/subscriptions").then(res => res.json().then(j => j.data))
@@ -49,21 +49,21 @@ export default function BillingPage() {
                         ) : !subs?.length ? (
                             <tr><td colSpan={5} className="p-12 text-center text-gray-400">No active subscriptions.</td></tr>
                         ) : (
-                            subs.map((s: unknown) => (
-                                <tr key={s.id} className="hover:bg-gray-50">
-                                    <td className="px-6 py-4 font-medium text-gray-900">{s.store?.name || "Unknown Store"}</td>
-                                    <td className="px-6 py-4 font-mono text-xs text-purple-600 font-bold">{s.planKey}</td>
+                            subs.map((s: any) => (
+                                <tr key={(s as any).id} className="hover:bg-gray-50">
+                                    <td className="px-6 py-4 font-medium text-gray-900">{(s as any).store?.name || "Unknown Store"}</td>
+                                    <td className="px-6 py-4 font-mono text-xs text-purple-600 font-bold">{(s as any).planKey}</td>
                                     <td className="px-6 py-4">
-                                        <span className={`px-2 py-0.5 rounded text-xs font-bold ${s.status === "ACTIVE" ? "bg-green-100 text-green-700" :
-                                            s.status === "TRIALING" ? "bg-blue-100 text-blue-700" : "bg-red-100 text-red-700"
+                                        <span className={`px-2 py-0.5 rounded text-xs font-bold ${(s as any).status === "ACTIVE" ? "bg-green-100 text-green-700" :
+                                            (s as any).status === "TRIALING" ? "bg-blue-100 text-blue-700" : "bg-red-100 text-red-700"
                                             }`}>
-                                            {s.status}
+                                            {(s as any).status}
                                         </span>
                                     </td>
-                                    <td className="px-6 py-4 text-gray-500 text-xs">{s.provider}</td>
+                                    <td className="px-6 py-4 text-gray-500 text-xs">{(s as any).provider}</td>
                                     <td className="px-6 py-4 flex items-center gap-1 text-gray-600">
                                         <Calendar size={14} className="text-gray-400" />
-                                        {new Date(s.currentPeriodEnd).toLocaleDateString()}
+                                        {new Date((s as any).currentPeriodEnd).toLocaleDateString()}
                                     </td>
                                 </tr>
                             ))

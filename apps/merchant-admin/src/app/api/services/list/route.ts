@@ -19,7 +19,7 @@ export const GET = withVayvaAPI(PERMISSIONS.ORDERS_MANAGE, async (request, { sto
             price: s.price
         })));
     }
-    catch (error) {
+    catch (error: any) {
         return NextResponse.json({ error: error.message }, { status: 500 });
     }
 });

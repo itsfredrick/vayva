@@ -13,8 +13,8 @@ interface AuditLog {
   entityType: string;
   entityId: string;
   correlationId: string;
-  beforeState?: unknown;
-  afterState?: unknown;
+  beforeState?: any;
+  afterState?: any;
 }
 
 export default function AuditLogPage() {
@@ -76,8 +76,8 @@ export default function AuditLogPage() {
           <Input
             type="text"
             placeholder="Search action or user..."
-            value={searchTerm}
-            onChange={(e: unknown) => setSearchTerm(e.target.value)}
+            value={(searchTerm as any)}
+            onChange={(e: any) => setSearchTerm(((e as any).target as any).value)}
             className="pl-9 pr-4 py-2 border border-gray-200 rounded-lg text-sm bg-white/50 focus:bg-white focus:ring-2 focus:ring-indigo-500 outline-none w-64"
           />
         </div>
@@ -111,7 +111,7 @@ export default function AuditLogPage() {
                   </td>
                 </tr>
               ) : (
-                filteredLogs.map((log: unknown) => (
+                filteredLogs.map((log: any) => (
                   <tr
                     key={log.id}
                     className="hover:bg-gray-50/50 transition-colors"
@@ -224,7 +224,7 @@ export default function AuditLogPage() {
                     Before State
                   </label>
                   <pre className="bg-gray-900 text-gray-100 p-3 rounded-lg text-xs overflow-x-auto font-mono">
-                    {JSON.stringify(selectedLog.beforeState, null, 2)}
+                    {JSON.stringify((selectedLog as any).beforeState, null, 2)}
                   </pre>
                 </div>
               )}
@@ -235,7 +235,7 @@ export default function AuditLogPage() {
                     After State
                   </label>
                   <pre className="bg-gray-900 text-gray-100 p-3 rounded-lg text-xs overflow-x-auto font-mono">
-                    {JSON.stringify(selectedLog.afterState, null, 2)}
+                    {JSON.stringify((selectedLog as any).afterState, null, 2)}
                   </pre>
                 </div>
               )}

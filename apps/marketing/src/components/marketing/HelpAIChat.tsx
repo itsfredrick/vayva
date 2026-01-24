@@ -17,7 +17,7 @@ const SUGGESTED_PROMPTS = [
     "Can I use my own riders?",
 ];
 
-export function HelpAIChat() {
+export function HelpAIChat(): React.JSX.Element {
     const [messages, setMessages] = useState<Message[]>([]);
     const [input, setInput] = useState("");
     const [isLoading, setIsLoading] = useState(false);
@@ -58,7 +58,7 @@ export function HelpAIChat() {
             };
 
             setMessages((prev) => [...prev, assistantMsg]);
-        } catch (error) {
+        } catch (error: any) {
             console.error("Chat Error:", error);
         } finally {
             setIsLoading(false);
@@ -100,7 +100,7 @@ export function HelpAIChat() {
                             <p className="text-xs text-gray-500 mt-1">Try asking one of our popular topics below.</p>
                         </div>
                         <div className="flex flex-wrap gap-2 justify-center">
-                            {SUGGESTED_PROMPTS.map((prompt) => (
+                            {SUGGESTED_PROMPTS.map((prompt: any) => (
                                 <Button
                                     key={prompt}
                                     onClick={() => handleSend(prompt)}
@@ -148,7 +148,7 @@ export function HelpAIChat() {
                 <div className="relative group">
                     <textarea
                         value={input}
-                        onChange={(e) => setInput(e.target.value)}
+                        onChange={(e: any) => setInput(e.target.value)}
                         onKeyDown={onKeyDown}
                         placeholder="Type your question..."
                         className="w-full pl-4 pr-12 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-[#22C55E] focus:border-transparent outline-none text-sm transition-all resize-none max-h-32"

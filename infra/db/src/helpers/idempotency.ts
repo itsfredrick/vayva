@@ -1,5 +1,5 @@
 import { prisma } from "../client";
-import crypto from "crypto";
+import _crypto from "crypto";
 
 /**
  * Ensures that a request with a specific Idempotency-Key is only processed once.
@@ -53,6 +53,7 @@ export async function withIdempotency<T>(
         },
         update: {
             status: "COMPLETED",
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
             responseJson: result as any,
             updatedAt: new Date()
         },
@@ -61,6 +62,7 @@ export async function withIdempotency<T>(
             scope: route,
             key: key,
             status: "COMPLETED",
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
             responseJson: result as any
         }
     });

@@ -69,7 +69,7 @@ export const WithdrawalModal = ({
       });
       onSuccess();
       onClose();
-    } catch (e) {
+    } catch (e: any) {
       console.error(e);
       alert("Withdrawal failed. Please try again.");
     } finally {
@@ -117,7 +117,7 @@ export const WithdrawalModal = ({
                       </span>
                     ) : (
                       <span className="text-xs font-bold text-amber-600 bg-amber-50 px-2 py-1 rounded-md flex items-center gap-1">
-                        <Icon name={"AlertTriangle" as unknown} size={12} /> Action
+                        <Icon name={"AlertTriangle" as any} size={12} /> Action
                         Required
                       </span>
                     )}
@@ -177,7 +177,7 @@ export const WithdrawalModal = ({
               <label className="text-xs font-bold text-gray-500 uppercase">
                 Payout Account
               </label>
-              {accounts.map((acc: PayoutAccount) => (
+              {accounts.map((acc: any) => (
                 <div
                   key={acc.id}
                   onClick={() => setSelectedAccount(acc.id)}
@@ -218,7 +218,7 @@ export const WithdrawalModal = ({
                 <input
                   type="number"
                   value={amount || ""}
-                  onChange={(e) => setAmount(Number(e.target.value))}
+                  onChange={(e: any) => setAmount(Number(e.target.value))}
                   className="w-full pl-10 pr-4 py-3 border border-gray-200 rounded-xl font-mono text-lg font-bold focus:ring-2 focus:ring-black focus:border-transparent outline-none transition-shadow"
                   placeholder="0.00"
                 />

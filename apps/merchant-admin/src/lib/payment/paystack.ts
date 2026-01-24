@@ -1,7 +1,7 @@
 const PAYSTACK_SECRET_KEY = process.env.PAYSTACK_SECRET_KEY || "";
 const PAYSTACK_BASE_URL = "https://api.paystack.co";
 export class PaystackService {
-    static async request(endpoint: string, options: unknown= {}): Promise<any> {
+    static async request(endpoint: string, options: any = {}): Promise<any> {
         const response = await fetch(`${PAYSTACK_BASE_URL}${endpoint}`, {
             ...options,
             headers: {
@@ -16,7 +16,7 @@ export class PaystackService {
         }
         return data;
     }
-    static async initializeTransaction(params: unknown) {
+    static async initializeTransaction(params: any) {
         return this.request("/transaction/initialize", {
             method: "POST",
             body: JSON.stringify(params),
@@ -25,7 +25,7 @@ export class PaystackService {
     static async verifyTransaction(reference: string) {
         return this.request(`/transaction/verify/${reference}`);
     }
-    static async createPaymentForPlanChange(email: string, newPlan: unknown, storeId: string) {
+    static async createPaymentForPlanChange(email: string, newPlan: any, storeId: string) {
         // Plan prices in kobo
         const planPrices = {
             FREE: 0,
@@ -100,6 +100,20 @@ export class PaystackService {
     static async resolveAccount(accountNumber: string, bankCode: string) {
         const response = await this.request(`/bank/resolve?account_number=${accountNumber}&bank_code=${bankCode}`, {
             method: "GET",
+        });
+        return response.data;
+    }
+
+    static async createTransferRecipient(name: string, accountNumber: string, bankCode: string) {
+        const response = await this.request("/transferrecipient", {
+            method: "POST",
+            body: JSON.stringify({
+                type: "nuban",
+                name,
+                account_number: accountNumber,
+                bank_code: bankCode,
+                currency: "NGN"
+            }),
         });
         return response.data;
     }

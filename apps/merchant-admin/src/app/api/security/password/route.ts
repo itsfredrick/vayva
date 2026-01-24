@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import { requireAuth } from "@/lib/auth/session";
 import { prisma } from "@/lib/prisma";
 import bcrypt from "bcryptjs";
-export async function POST(request: unknown) {
+export async function POST(request: Request) {
     try {
         const session = await requireAuth();
         const userId = session.user.id;
@@ -38,7 +38,7 @@ export async function POST(request: unknown) {
             message: "Password updated successfully",
         });
     }
-    catch (error) {
+    catch (error: any) {
         console.error("Password change error:", error);
         if (error.message === "Unauthorized") {
             return NextResponse.json({ error: "Unauthorized" }, { status: 401 });

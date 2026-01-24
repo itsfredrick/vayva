@@ -4,7 +4,7 @@ import { authOptions } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { generateApiKey } from "@/lib/security/keys";
 // DELETE: Revoke Key
-export async function DELETE(req: unknown, { params }: unknown) {
+export async function DELETE(req: any, { params }: any) {
     const session = await getServerSession(authOptions);
     if (!session?.user?.storeId)
         return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
@@ -25,13 +25,13 @@ export async function DELETE(req: unknown, { params }: unknown) {
         });
         return NextResponse.json({ success: true });
     }
-    catch (error) {
+    catch (error: any) {
         return NextResponse.json({ error: "Failed to revoke key" }, { status: 500 });
     }
 }
 // POST: Rotate Key
 // Generates a new key, and optionally sets expiry on old one.
-export async function POST(req: unknown, { params }: unknown) {
+export async function POST(req: any, { params }: any) {
     const session = await getServerSession(authOptions);
     if (!session?.user?.storeId)
         return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
@@ -76,7 +76,7 @@ export async function POST(req: unknown, { params }: unknown) {
             }
         });
     }
-    catch (error) {
+    catch (error: any) {
         return NextResponse.json({ error: "Failed to rotate key" }, { status: 500 });
     }
 }

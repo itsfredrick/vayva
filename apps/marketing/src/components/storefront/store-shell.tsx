@@ -17,9 +17,9 @@ export function StoreShell({
   storeName = "Vayva Store",
   slug = "demo-store",
   plan = "STARTER",
-}: StoreShellProps) {
-  const pathname = usePathname();
-  const isCartOpen = false; // Test state
+}: StoreShellProps): React.JSX.Element {
+  const _pathname = usePathname();
+  const _isCartOpen = false; // Test state
 
   return (
     <div className="min-h-screen bg-[#142210] text-white font-sans selection:bg-primary/30 relative">

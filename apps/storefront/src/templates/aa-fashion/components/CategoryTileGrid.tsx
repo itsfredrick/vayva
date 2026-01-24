@@ -13,10 +13,10 @@ interface CategoryTileGridProps {
   categories: Category[];
 }
 
-export const CategoryTileGrid = ({ categories }: CategoryTileGridProps) => {
+export const CategoryTileGrid = ({ categories }: CategoryTileGridProps): React.JSX.Element => {
   return (
     <div className="grid grid-cols-2 gap-3 px-4">
-      {categories.map((cat) => (
+      {categories.map((cat: any) => (
         <Link
           key={cat.id}
           href={`/collections/${cat.slug}`}

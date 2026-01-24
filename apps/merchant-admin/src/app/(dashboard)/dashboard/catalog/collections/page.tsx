@@ -43,7 +43,7 @@ export default function CollectionsPage() {
             if (!res.ok) throw new Error("Failed to load collections");
             const data = await res.json();
             setCollections(data.data || []);
-        } catch (error) {
+        } catch (error: any) {
             console.error(error);
             toast.error("Could not load collections");
         } finally {
@@ -64,7 +64,7 @@ export default function CollectionsPage() {
             title: col.name,
             handle: col.handle,
             description: col.description || "",
-            productIds: col.products?.map((p) => p.id) || []
+            productIds: col.products?.map((p: any) => p.id) || []
         });
         setCurrentId(col.id);
         setIsOpen(true);
@@ -92,8 +92,8 @@ export default function CollectionsPage() {
             toast.success(mode === "CREATE" ? "Collection created" : "Collection updated");
             setIsOpen(false);
             fetchCollections();
-        } catch (error) {
-            toast.error(error.message || "Operation failed");
+        } catch (error: any) {
+            toast.error((error as any).message || "Operation failed");
         } finally {
             setSubmitting(false);
         }
@@ -107,7 +107,7 @@ export default function CollectionsPage() {
             if (!res.ok) throw new Error("Failed to delete");
             toast.success("Collection deleted");
             fetchCollections();
-        } catch (error) {
+        } catch (error: any) {
             toast.error("Could not delete collection");
         }
     };
@@ -171,7 +171,7 @@ export default function CollectionsPage() {
                                 </tr>
                             </thead>
                             <tbody className="divide-y divide-slate-100">
-                                {collections.map((col) => (
+                                {collections.map((col: any) => (
                                     <tr key={col.id} className="hover:bg-slate-50/50 group">
                                         <td className="px-6 py-4 font-medium text-slate-900">
                                             {col.name}
@@ -228,7 +228,7 @@ export default function CollectionsPage() {
                             <Label htmlFor="title">Title</Label>
                             <Input
                                 id="title"
-                                value={formData.title}
+                                value={(formData.title as any)}
                                 onChange={(e: React.ChangeEvent<HTMLInputElement>) => generateHandle(e.target.value)}
                                 placeholder="e.g. Summer Arrivals"
                             />
@@ -237,7 +237,7 @@ export default function CollectionsPage() {
                             <Label htmlFor="handle">Handle (URL)</Label>
                             <Input
                                 id="handle"
-                                value={formData.handle}
+                                value={(formData.handle as any)}
                                 onChange={(e: React.ChangeEvent<HTMLInputElement>) => setFormData({ ...formData, handle: e.target.value })}
                                 placeholder="e.g. summer-arrivals"
                             />
@@ -246,7 +246,7 @@ export default function CollectionsPage() {
                             <Label htmlFor="desc">Description</Label>
                             <Textarea
                                 id="desc"
-                                value={formData.description}
+                                value={(formData.description as any)}
                                 onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => setFormData({ ...formData, description: e.target.value })}
                                 placeholder="Optional description for SEO..."
                             />
@@ -255,7 +255,7 @@ export default function CollectionsPage() {
                             <Label>Products</Label>
                             <ProductPicker
                                 selectedIds={formData.productIds}
-                                onSelectionChange={(ids) => setFormData({ ...formData, productIds: ids })}
+                                onSelectionChange={(e: any) => setFormData({ ...formData, productIds: e as any })}
                             />
                         </div>
                     </div>

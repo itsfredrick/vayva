@@ -8,7 +8,7 @@ interface EventHeroProps {
   onBuy: () => void;
 }
 
-export const EventHero = ({ event, onBuy }: EventHeroProps) => {
+export const EventHero = ({ event, onBuy }: EventHeroProps): React.JSX.Element => {
   const eventDate = event.eventDetails
     ? new Date(event.eventDetails.date)
     : new Date();

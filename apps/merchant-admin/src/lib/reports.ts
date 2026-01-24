@@ -1,7 +1,7 @@
 import { prisma } from "@vayva/db";
 export class ReportsService {
     // --- SUMMARY METRICS ---
-    static async getSummary(merchantId, range) {
+    static async getSummary(merchantId: any, range: any) {
         const whereDate = {
             createdAt: { gte: range.from, lte: range.to },
         };
@@ -15,8 +15,8 @@ export class ReportsService {
             },
             select: { total: true, status: true, paymentStatus: true },
         });
-        const grossSales = orders.reduce((sum: unknown, o: unknown) => sum + Number(o.total), 0);
-        const ordersPaidCount = orders.filter((o: unknown) => o.paymentStatus === "SUCCESS" || o.paymentStatus === "VERIFIED").length;
+        const grossSales = orders.reduce((sum: any, o: any) => sum + Number(o.total), 0);
+        const ordersPaidCount = orders.filter((o: any) => o.paymentStatus === "SUCCESS" || o.paymentStatus === "VERIFIED").length;
         // 2. Refunds
         const refunds = await prisma.refund.findMany({
             where: {
@@ -26,7 +26,7 @@ export class ReportsService {
             },
             select: { amount: true },
         });
-        const refundsAmount = refunds.reduce((sum: unknown, r: unknown) => sum + Number(r.amount), 0);
+        const refundsAmount = refunds.reduce((sum: any, r: any) => sum + Number(r.amount), 0);
         const refundsCount = refunds.length;
         const netSales = grossSales - refundsAmount;
         // 3. Payments (Actual Cash Flow)
@@ -39,7 +39,7 @@ export class ReportsService {
             },
             select: { amount: true },
         });
-        const paymentsReceived = payments.reduce((sum: unknown, p: unknown) => sum + Number(p.amount), 0);
+        const paymentsReceived = payments.reduce((sum: any, p: any) => sum + Number(p.amount), 0);
         // 4. Delivery
         // Using `Shipment` status if available, or Order fulfillmentStatus as proxy if Shipment missing
         // Checking Shipment model usage.
@@ -50,8 +50,8 @@ export class ReportsService {
             },
             select: { status: true },
         });
-        const deliveredCount = shipments.filter((s: unknown) => s.status === "DELIVERED").length;
-        const failedCount = shipments.filter((s: unknown) => s.status === "FAILED" || s.status === "RETURNED").length;
+        const deliveredCount = shipments.filter((s: any) => s.status === "DELIVERED").length;
+        const failedCount = shipments.filter((s: any) => s.status === "FAILED" || s.status === "RETURNED").length;
         const totalShipments = shipments.length;
         const successRate = totalShipments > 0 ? (deliveredCount / totalShipments) * 100 : 0;
         return {
@@ -69,9 +69,9 @@ export class ReportsService {
         };
     }
     // --- RECONCILIATION TABLE ---
-    static async getReconciliation(merchantId, limit, cursor) {
+    static async getReconciliation(merchantId: any, limit: any, cursor: any = undefined) {
         const take = limit + 1;
-        const where = {
+        const where: any = {
             storeId: merchantId,
             status: { not: "DRAFT" }, // Report usually excludes incomplete carts
         };
@@ -91,14 +91,14 @@ export class ReportsService {
             const nextItem = itemsRaw.pop();
             nextCursor = nextItem?.id;
         }
-        const items = itemsRaw.map((o: unknown) => {
+        const items = itemsRaw.map((o: any) => {
             const total = Number(o.total);
             // Sum successful payments
-            const paidTransactions = o.paymentTransactions.filter((t: unknown) => t.status === "SUCCESS" && t.type === "CHARGE");
-            const paidAmount = paidTransactions.reduce((acc: unknown, t: unknown) => acc + Number(t.amount), 0);
+            const paidTransactions = o.paymentTransactions.filter((t: any) => t.status === "SUCCESS" && t.type === "CHARGE");
+            const paidAmount = paidTransactions.reduce((acc: any, t: any) => acc + Number(t.amount), 0);
             // Sum completed refunds via transactions
-            const refundTransactions = o.paymentTransactions.filter((t: unknown) => t.status === "SUCCESS" && t.type === "REFUND");
-            const refundedAmount = refundTransactions.reduce((acc: unknown, t: unknown) => acc + Number(t.amount), 0);
+            const refundTransactions = o.paymentTransactions.filter((t: any) => t.status === "SUCCESS" && t.type === "REFUND");
+            const refundedAmount = refundTransactions.reduce((acc: any, t: any) => acc + Number(t.amount), 0);
             const discrepancies = [];
             // Flag 1: Paid but Order Cancelled
             if (o.status === "CANCELLED" && paidAmount > 0)
@@ -127,8 +127,8 @@ export class ReportsService {
                 date: o.createdAt,
                 customerName: o.customer
                     ? `${o.customer.firstName || ""} ${o.customer.lastName || ""}`.trim() ||
-                        o.customer.phone ||
-                        "Unknown"
+                    o.customer.phone ||
+                    "Unknown"
                     : "Guest",
                 status: o.status,
                 total,
@@ -142,7 +142,7 @@ export class ReportsService {
         return { items, nextCursor };
     }
     // --- CSV EXPORT GENERATOR ---
-    static async generateCSV(merchantId, type, range) {
+    static async generateCSV(merchantId: any, type: any, range: any) {
         // Simplified V1: Generate string in memory. Large scale would stream.
         if (type === "reconciliation") {
             // Fetch ALL (warn: memory)
@@ -158,7 +158,7 @@ export class ReportsService {
                 "Refunded",
                 "Discrepancies",
             ];
-            const rows = items.map((i: unknown) => [
+            const rows = items.map((i: any) => [
                 i.date.toISOString(),
                 i.refCode,
                 i.customerName,
@@ -168,7 +168,7 @@ export class ReportsService {
                 i.refundedAmount.toFixed(2),
                 i.discrepancies.join(" | "),
             ]);
-            return [headers.join(","), ...rows.map((r: unknown) => r.join(","))].join("\n");
+            return [headers.join(","), ...rows.map((r: any) => r.join(","))].join("\n");
         }
         // Add other types if needed
         return "Not Implemented";

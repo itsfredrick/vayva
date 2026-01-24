@@ -13,7 +13,7 @@ const legalDocuments = [
   { title: "EULA", href: "/legal/eula" },
 ];
 
-export default function TermsOfServicePage() {
+export default function TermsOfServicePage(): React.JSX.Element {
   return (
     <div className="min-h-screen bg-white">
       <div className="max-w-7xl mx-auto px-6 py-16">
@@ -25,7 +25,7 @@ export default function TermsOfServicePage() {
                 Legal Documents
               </h3>
               <ul className="space-y-2">
-                {legalDocuments.map((doc) => (
+                {legalDocuments.map((doc: any) => (
                   <li key={doc.href}>
                     <Link
                       href={doc.href}

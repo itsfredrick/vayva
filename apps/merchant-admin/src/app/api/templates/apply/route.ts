@@ -8,14 +8,14 @@ const PLAN_HIERARCHY = {
     growth: 1,
     pro: 2,
 };
-function canUseTemplate(userPlan: unknown, requiredPlan: unknown) {
-    const u = PLAN_HIERARCHY[userPlan] || 0;
-    const r = PLAN_HIERARCHY[requiredPlan] || 0;
+function canUseTemplate(userPlan: any, requiredPlan: any) {
+    const u = (PLAN_HIERARCHY as any)[userPlan] || 0;
+    const r = (PLAN_HIERARCHY as any)[requiredPlan] || 0;
     return u >= r;
 }
 // Hardcoded map removed in favor of TEMPLATE_REGISTRY
 // to ensure single source of truth
-export async function POST(req: unknown) {
+export async function POST(req: any) {
     try {
         // 1. Auth & Permission Check
         const { checkPermission } = await import("@/lib/team/rbac");
@@ -40,7 +40,7 @@ export async function POST(req: unknown) {
         if (!templateId) {
             return NextResponse.json({ error: "Missing templateId" }, { status: 400 });
         }
-        const requiredPlan = TEMPLATE_REGISTRY[templateId]?.requiredPlan;
+        const requiredPlan = (TEMPLATE_REGISTRY as any)[templateId]?.requiredPlan;
         if (!requiredPlan) {
             return NextResponse.json({ error: "TEMPLATE_NOT_FOUND" }, { status: 404 });
         }
@@ -87,7 +87,7 @@ export async function POST(req: unknown) {
             }, { status: 403 });
         }
         // 4. Verification Passed - Idempotent Apply
-        const currentSettings = store.settings || {};
+        const currentSettings = (store.settings as any) || {};
         const activeTemplate = currentSettings.templateId;
         if (activeTemplate === templateId) {
             return NextResponse.json({
@@ -106,7 +106,7 @@ export async function POST(req: unknown) {
         });
         return NextResponse.json({ success: true, templateId });
     }
-    catch (error) {
+    catch (error: any) {
         console.error("Template apply error:", error);
         if (error.message === "Unauthorized") {
             return NextResponse.json({ error: "Unauthorized" }, { status: 401 });

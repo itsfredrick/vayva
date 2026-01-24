@@ -9,7 +9,7 @@ export async function GET() {
             const value = JSON.parse(consentCookie.value);
             return NextResponse.json(value);
         }
-        catch (e) {
+        catch (e: any) {
             // Invalid cookie
         }
     }
@@ -21,12 +21,12 @@ export async function GET() {
         updatedAt: null, // Never set
     });
 }
-export async function POST(request: unknown) {
+export async function POST(request: Request) {
     let body;
     try {
         body = await request.json();
     }
-    catch (e) {
+    catch (e: any) {
         return NextResponse.json({ code: "bad_request", message: "Invalid JSON" }, { status: 400 });
     }
     const { analytics, marketing } = body;
@@ -60,7 +60,7 @@ export async function POST(request: unknown) {
             },
         });
     }
-    catch (_error) {
+    catch (_error: any) {
         // Hard Rule: Return 503 if DB write fails
         return NextResponse.json({
             code: "service_unavailable",

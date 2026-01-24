@@ -6,7 +6,7 @@ export class VisitorService {
      * returned ID is safe to store (hashed) if privacy strictly required,
      * but here we manage the Cookie ID vs Storage ID.
      */
-    static getVisitorId(req) {
+    static getVisitorId(req: any) {
         const existing = req.cookies.get(this.COOKIE_NAME)?.value;
         if (existing)
             return { id: existing, isNew: false };
@@ -18,12 +18,12 @@ export class VisitorService {
      * For V1, we store the UUID to allow basic retention analysis.
      * Use this method if we decide to salt/hash later.
      */
-    static hashForStorage(visitorId) {
+    static hashForStorage(visitorId: any) {
         return crypto
             .createHash("sha256")
             .update(visitorId + process.env.ANALYTICS_SALT)
             .digest("hex")
             .substring(0, 16);
     }
+    static COOKIE_NAME = "vayva_vid";
 }
-VisitorService.COOKIE_NAME = "vayva_vid";

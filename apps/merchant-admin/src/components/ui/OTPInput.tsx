@@ -101,7 +101,7 @@ export const OTPInput: React.FC<OTPInputProps> = ({
           inputMode="numeric"
           maxLength={1}
           value={value[index] || ""}
-          onChange={(e) => handleChange(index, e.target.value)}
+          onChange={(e: any) => handleChange(index, e.target.value)}
           onKeyDown={(e) => handleKeyDown(index, e)}
           onPaste={handlePaste}
           onFocus={() => setFocusedIndex(index)}

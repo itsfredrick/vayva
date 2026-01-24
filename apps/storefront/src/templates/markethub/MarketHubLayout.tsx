@@ -7,6 +7,7 @@ import { MarketHeader } from "./components/MarketHeader";
 import { MarketHero } from "./components/MarketHero";
 import { VendorCard } from "./components/VendorCard";
 import { MultiVendorCart } from "./components/MultiVendorCart";
+import { MarketActivityTicker } from "./components/MarketActivityTicker";
 import { Star, ShoppingCart } from "lucide-react";
 
 interface MarketHubLayoutProps {
@@ -14,7 +15,7 @@ interface MarketHubLayoutProps {
   products: PublicProduct[];
 }
 
-export const MarketHubLayout = ({ store, products }: MarketHubLayoutProps) => {
+export const MarketHubLayout = ({ store, products }: MarketHubLayoutProps): React.JSX.Element => {
   const [cartItems, setCartItems] = useState<
     { product: PublicProduct; qty: number }[]
   >([]);
@@ -42,7 +43,7 @@ export const MarketHubLayout = ({ store, products }: MarketHubLayoutProps) => {
   // Extract unique vendors from products for "Top Vendors" section
   const vendors = Array.from(
     new Map(
-      products.map((p) => [p.vendorDetails?.id, p.vendorDetails]),
+      products.map((p: any) => [p.vendorDetails?.id, p.vendorDetails]),
     ).values(),
   ).filter(Boolean);
 
@@ -54,8 +55,18 @@ export const MarketHubLayout = ({ store, products }: MarketHubLayoutProps) => {
         onOpenCart={() => setIsCartOpen(true)}
       />
 
-      <main>
-        <MarketHero />
+      <MarketActivityTicker />
+
+      <main className="relative">
+        {/* Background Ambient Gfx */}
+        <div className="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none z-0">
+          <div className="absolute top-[-10%] right-[-10%] w-[500px] h-[500px] bg-[#10B981]/10 rounded-full blur-[120px]" />
+          <div className="absolute bottom-[20%] left-[-5%] w-[400px] h-[400px] bg-blue-500/5 rounded-full blur-[100px]" />
+        </div>
+
+        <div className="relative z-10">
+          <MarketHero />
+        </div>
 
         {/* Top Vendors */}
         <section className="max-w-7xl mx-auto px-6 py-12">
@@ -64,7 +75,7 @@ export const MarketHubLayout = ({ store, products }: MarketHubLayoutProps) => {
             Trending Vendors
           </h3>
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
-            {vendors.map((v: unknown) => (
+            {vendors.map((v: any) => (
               <VendorCard key={v.id} vendor={v} />
             ))}
           </div>
@@ -76,7 +87,7 @@ export const MarketHubLayout = ({ store, products }: MarketHubLayoutProps) => {
             Explore Marketplace
           </h3>
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
-            {products.map((product) => (
+            {products.map((product: any) => (
               <div
                 key={product.id}
                 className="bg-white border border-gray-100 rounded-xl overflow-hidden hover:shadow-lg transition-all group"
@@ -90,19 +101,19 @@ export const MarketHubLayout = ({ store, products }: MarketHubLayoutProps) => {
                   />
 
                   {/* Vendor Badge */}
-                  {product.vendorDetails && ( // Added conditional rendering for the entire badge
+                  {(product as any).vendorDetails && ( // Added conditional rendering for the entire badge
                     <div className="absolute top-3 left-3 bg-white/90 backdrop-blur px-2 py-1 rounded-full flex items-center gap-1.5 text-xs font-medium shadow-sm z-10">
-                      {product.vendorDetails?.logo && (
+                      {(product as any).vendorDetails?.logo && (
                         <div className="relative w-3 h-3 rounded-full overflow-hidden">
                           <Image
-                            src={product.vendorDetails.logo}
-                            alt={product.vendorDetails.name}
+                            src={(product as any).vendorDetails.logo}
+                            alt={(product as any).vendorDetails.name}
                             fill
                             className="object-cover"
                           />
                         </div>
                       )}
-                      {product.vendorDetails?.name}
+                      {(product as any).vendorDetails?.name}
                     </div>
                   )}
                 </div>

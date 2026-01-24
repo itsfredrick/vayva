@@ -1,14 +1,14 @@
 "use client";
 import { useState, useEffect } from "react";
 const ActivationManager = {
-    checkActivation: async (userId: unknown) => {
+    checkActivation: async (userId: any) => {
         try {
             const res = await fetch("/api/analytics/activation");
             if (res.ok) {
                 return await res.json();
             }
         }
-        catch (e) {
+        catch (e: any) {
             console.error("Activation check failed", e);
         }
         // Fallback if API fails
@@ -20,7 +20,7 @@ const ActivationManager = {
         };
     },
 };
-export function useActivation(userId: unknown) {
+export function useActivation(userId: any) {
     const [status, setStatus] = useState({
         isActivated: false,
         firstOrderCreated: false,
@@ -36,7 +36,7 @@ export function useActivation(userId: unknown) {
             const activationStatus = await ActivationManager.checkActivation(userId);
             setStatus(activationStatus);
         }
-        catch (error) {
+        catch (error: any) {
             console.error("Failed to load activation status:", error);
         }
         finally {

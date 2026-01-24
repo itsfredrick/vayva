@@ -1,4 +1,4 @@
-import { NextResponse } from "next/server";
+import { NextResponse } from 'next/server';
 import { prisma } from "@vayva/db";
 import { OpsAuthService } from "@/lib/ops-auth";
 import { validateStoreCompliance } from "@vayva/compliance";
@@ -56,11 +56,11 @@ export async function GET(
             where: { storeId: id }
         });
 
-        const ownerMember = store.tenant?.tenantMemberships.find((m: unknown) => m.role === "OWNER");
+        const ownerMember = store.tenant?.tenantMemberships.find((m) => m.role === "OWNER");
         const ownerEmail = ownerMember?.user.email;
 
         // Parse settings for notes
-        const settings = (store.settings as unknown) || {};
+        const settings = ((store.settings as any) as any) || {};
         const notes = settings.internalNotes || [];
 
         return NextResponse.json({
@@ -80,7 +80,7 @@ export async function GET(
                 gmv: gmvAggregate._sum.total || 0,
                 walletBalance: wallet ? Number(wallet.availableKobo) / 100 : 0,
             },
-            users: store.tenant?.tenantMemberships.map((m: unknown) => ({
+            users: store.tenant?.tenantMemberships.map((m: any) => ({
                 id: m.user.id,
                 name: `${m.user.firstName || ""} ${m.user.lastName || ""}`.trim() || "Unknown",
                 email: m.user.email,
@@ -90,7 +90,7 @@ export async function GET(
             compliance: complianceReport
         });
 
-    } catch (error) {
+    } catch (error: any) {
         console.error("Fetch Merchant Detail Error:", error);
         return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
     }
@@ -126,7 +126,7 @@ export async function PATCH(
             return NextResponse.json({ error: "Store not found" }, { status: 404 });
         }
 
-        const currentSettings = (store.settings as unknown) || {};
+        const currentSettings = ((store.settings as any) as any) || {};
         const currentNotes = Array.isArray(currentSettings.internalNotes) ? currentSettings.internalNotes : [];
 
         // 2. Append new note
@@ -158,7 +158,7 @@ export async function PATCH(
 
         return NextResponse.json({ success: true, notes: updatedNotes });
 
-    } catch (error) {
+    } catch (error: any) {
         console.error("Update Merchant Note Error:", error);
         return NextResponse.json({ error: "Update failed" }, { status: 500 });
     }

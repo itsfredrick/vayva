@@ -3,7 +3,7 @@ import { getSessionUser } from "@/lib/session";
 import { authorizeAction, AppRole } from "@/lib/permissions";
 import { logAuditEvent, AuditEventType } from "@/lib/audit";
 import { OrderStateService } from "@/services/order-state.service";
-export async function POST(request: unknown) {
+export async function POST(request: Request) {
     try {
         const user = await getSessionUser();
         if (!user) {
@@ -22,14 +22,14 @@ export async function POST(request: unknown) {
         if (!status)
             return NextResponse.json({ error: "Invalid status" }, { status: 400 });
         let successCount = 0;
-        const errors = [];
+        const errors: any[] = [];
         // Process each order individually to ensure state rules & notifications trigger
-        await Promise.all(ids.map(async (id: unknown) => {
+        await Promise.all(ids.map(async (id: any) => {
             try {
                 await OrderStateService.transition(id, status, user.id, user.storeId);
                 successCount++;
             }
-            catch (error) {
+            catch (error: any) {
                 console.error(`Failed to update order ${id}`, error);
                 errors.push({ id, error: error.message });
             }
@@ -42,12 +42,12 @@ export async function POST(request: unknown) {
                 requested: ids.length,
                 success: successCount,
                 toStatus: status,
-                errors
+                errors: errors
             }
         });
         return NextResponse.json({ success: true, count: ids.length });
     }
-    catch (error) {
+    catch (error: any) {
         console.error("Bulk Update Error:", error);
         return NextResponse.json({ error: "Failed to update orders" }, { status: 500 });
     }

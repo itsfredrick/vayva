@@ -2,10 +2,9 @@ import { NextResponse } from "next/server";
 import { prisma } from "@vayva/db";
 import { Resend } from "resend";
 
-export async function POST(request: Request) {
+export async function POST(request: Request): Promise<NextResponse> {
   try {
     const body = await request.json();
-    console.log("Contact API: Received submission", body);
 
     // Send email notification if Resend is configured
     let emailSent = false;
@@ -55,8 +54,7 @@ export async function POST(request: Request) {
           `
         });
         emailSent = true;
-        console.info(`[Contact Form] Email sent to ${helloEmail} from ${body.email}`);
-      } catch (emailError) {
+      } catch (emailError: any) {
         console.error("[Contact Form] Email send failed:", emailError);
         // Continue to persist even if email fails
       }
@@ -84,10 +82,9 @@ export async function POST(request: Request) {
       }
     });
 
-    console.info(`[Contact Form] Persisted submission from ${body.email}`);
 
     return NextResponse.json({ success: true, message: "Message received" });
-  } catch (error) {
+  } catch (error: any) {
     console.error("Contact API Error:", error);
     return NextResponse.json(
       { error: "Failed to process request" },

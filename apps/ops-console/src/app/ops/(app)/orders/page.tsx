@@ -2,21 +2,18 @@
 
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams } from 'next/navigation';
 import {
     Search,
     Filter,
-    RefreshCw,
-    ShoppingBag,
-    CreditCard,
-    Truck,
+    RefreshCw, ShoppingBag, CreditCard, Truck,
     CheckCircle2,
     XCircle,
     Clock,
     AlertCircle,
-} from "lucide-react";
+} from 'lucide-react';
 import { Button } from "@vayva/ui";
-import { OpsPagination } from "@/components/shared/OpsPagination";
+import { OpsPagination } from '@/components/shared/OpsPagination';
 
 interface Order {
     id: string;
@@ -39,7 +36,7 @@ interface Meta {
     totalPages: number;
 }
 
-export default function OrdersPage() {
+export default function OrdersPage(): React.JSX.Element {
     const router = useRouter();
     const searchParams = useSearchParams();
 
@@ -79,7 +76,7 @@ export default function OrdersPage() {
             const result = await res.json();
             setData(result.data || []);
             setMeta(result.meta || null);
-        } catch (error) {
+        } catch (error: any) {
             console.error("Failed to fetch orders:", error);
         } finally {
             setLoading(false);
@@ -87,7 +84,7 @@ export default function OrdersPage() {
     };
 
     const handleSearch = (e: React.FormEvent) => {
-        e.preventDefault();
+        (e as any).preventDefault();
         const params = new URLSearchParams(searchParams);
         if (searchInput) {
             params.set("q", searchInput);
@@ -116,7 +113,7 @@ export default function OrdersPage() {
     };
 
     // Status Badge Helper
-    const getStatusBadge = (status: string, type: 'status' | 'payment' | 'fulfillment') => {
+    const getStatusBadge = (status: string, _type: 'status' | 'payment' | 'fulfillment') => {
         const statusLower = status.toLowerCase();
 
         let colorClass = "bg-gray-100 text-gray-700";
@@ -165,8 +162,8 @@ export default function OrdersPage() {
                             type="text"
                             placeholder="Search order #, customer email..."
                             className="w-full pl-10 pr-4 py-2.5 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
-                            value={searchInput}
-                            onChange={(e) => setSearchInput(e.target.value)}
+                            value={(searchInput as any)}
+                            onChange={(e: any) => setSearchInput((e as any).target.value)}
                         />
                     </form>
                     <Button
@@ -203,8 +200,8 @@ export default function OrdersPage() {
                         <div>
                             <label className="block text-xs font-medium text-gray-700 mb-2">Order Status</label>
                             <select
-                                value={status}
-                                onChange={(e) => handleFilterChange("status", e.target.value)}
+                                value={(status as any)}
+                                onChange={(e: any) => handleFilterChange("status", (e as any).target.value)}
                                 className="w-full px-3 py-2 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
                                 aria-label="Filter by order status"
                             >
@@ -218,8 +215,8 @@ export default function OrdersPage() {
                         <div>
                             <label className="block text-xs font-medium text-gray-700 mb-2">Payment Status</label>
                             <select
-                                value={paymentStatus}
-                                onChange={(e) => handleFilterChange("paymentStatus", e.target.value)}
+                                value={(paymentStatus as any)}
+                                onChange={(e: any) => handleFilterChange("paymentStatus", (e as any).target.value)}
                                 className="w-full px-3 py-2 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
                                 aria-label="Filter by payment status"
                             >
@@ -267,7 +264,7 @@ export default function OrdersPage() {
                                     </td>
                                 </tr>
                             ) : (
-                                data.map((order) => (
+                                data.map((order: any) => (
                                     <tr key={order.id} className="hover:bg-gray-50 group transition-colors">
                                         <td className="px-6 py-4 font-mono font-medium text-indigo-600">
                                             <Link href={`/ops/orders/${order.id}`} className="hover:underline">

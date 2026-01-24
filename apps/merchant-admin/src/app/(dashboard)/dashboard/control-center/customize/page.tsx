@@ -16,7 +16,7 @@ interface StorefrontDraft {
     template: {
         displayName: string;
     } | null;
-    themeConfig: unknown;
+    themeConfig: any;
 }
 
 export default function StorefrontCustomizePage() {
@@ -38,14 +38,14 @@ export default function StorefrontCustomizePage() {
             if (!res.ok) throw new Error("Failed to load draft");
             const data = await res.json();
             setDraft(data);
-        } catch (error) {
+        } catch (error: any) {
             toast.error("Could not load storefront draft");
         } finally {
             setLoading(false);
         }
     };
 
-    const handleUpdate = async (newConfig: unknown) => {
+    const handleUpdate = async (newConfig: any) => {
         // 1. Sync local status
         if (draft) {
             setDraft({ ...draft, themeConfig: newConfig });
@@ -67,7 +67,7 @@ export default function StorefrontCustomizePage() {
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ themeConfig: newConfig })
             });
-        } catch (e) {
+        } catch (e: any) {
             console.error("Auto-save failed", e);
         }
     };
@@ -78,7 +78,7 @@ export default function StorefrontCustomizePage() {
             const res = await fetch("/api/control-center/publish", { method: "POST" });
             if (!res.ok) throw new Error("Publish failed");
             toast.success("Storefront Published Live!");
-        } catch (error) {
+        } catch (error: any) {
             toast.error("Failed to publish");
         } finally {
             setIsSaving(false);

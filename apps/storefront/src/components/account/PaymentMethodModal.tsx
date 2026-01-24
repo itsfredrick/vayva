@@ -9,7 +9,7 @@ interface PaymentMethodModalProps {
   lang: LocaleKey;
   isOpen: boolean;
   onClose: () => void;
-  onSave: (payment: unknown) => void;
+  onSave: (payment: any) => void;
 }
 
 export function PaymentMethodModal({
@@ -84,7 +84,7 @@ export function PaymentMethodModal({
               required
               type="text"
               value={holder}
-              onChange={(e) => setHolder(e.target.value)}
+              onChange={(e: any) => setHolder(e.target.value)}
               className="w-full p-3 bg-gray-50 border border-gray-100 rounded-xl"
             />
           </div>
@@ -103,7 +103,7 @@ export function PaymentMethodModal({
               maxLength={19}
               placeholder="0000 0000 0000 0000"
               value={number}
-              onChange={(e) => setNumber(e.target.value)}
+              onChange={(e: any) => setNumber(e.target.value)}
               className="w-full p-3 bg-gray-50 border border-gray-100 rounded-xl font-mono"
             />
           </div>
@@ -123,7 +123,7 @@ export function PaymentMethodModal({
                 placeholder="MM/YY"
                 maxLength={5}
                 value={expiry}
-                onChange={(e) => setExpiry(e.target.value)}
+                onChange={(e: any) => setExpiry(e.target.value)}
                 className="w-full p-3 bg-gray-50 border border-gray-100 rounded-xl text-center"
               />
             </div>
@@ -141,7 +141,7 @@ export function PaymentMethodModal({
                 maxLength={3}
                 placeholder="123"
                 value={cvv}
-                onChange={(e) => setCvv(e.target.value)}
+                onChange={(e: any) => setCvv(e.target.value)}
                 className="w-full p-3 bg-gray-50 border border-gray-100 rounded-xl text-center"
               />
             </div>

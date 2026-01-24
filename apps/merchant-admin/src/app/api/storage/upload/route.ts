@@ -3,7 +3,7 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 import { StorageService } from "@/lib/storage/storageService";
 import { FEATURES } from "@/lib/env-validation";
-export async function GET(request: unknown) {
+export async function GET(request: Request) {
     if (!getServerSession(authOptions)) {
         return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
@@ -12,7 +12,7 @@ export async function GET(request: unknown) {
         provider: "vercel-blob",
     });
 }
-export async function POST(request: unknown) {
+export async function POST(request: Request) {
     try {
         const session = await getServerSession(authOptions);
         if (!session?.user) {
@@ -32,7 +32,7 @@ export async function POST(request: unknown) {
         }
         // Validate file size (10MB max)
         const maxSize = 10 * 1024 * 1024;
-        if (file.size > maxSize) {
+        if ((file as any).size > maxSize) {
             return NextResponse.json({ error: "File too large (max 10MB)" }, { status: 400 });
         }
         // Validate file type
@@ -43,7 +43,7 @@ export async function POST(request: unknown) {
             "image/webp",
             "application/pdf",
         ];
-        if (!allowedTypes.includes(file.type)) {
+        if (!allowedTypes.includes((file as any).type)) {
             return NextResponse.json({ error: "Invalid file type" }, { status: 400 });
         }
         const ctx = {
@@ -52,16 +52,16 @@ export async function POST(request: unknown) {
             storeId: session.user.storeId,
             roles: [session.user.role || "owner"],
         };
-        const url = await StorageService.upload(ctx, file.name, file);
+        const url = await StorageService.upload(ctx, (file as any).name, file);
         return NextResponse.json({
             success: true,
             url,
-            filename: file.name,
-            size: file.size,
-            type: file.type,
+            filename: (file as any).name,
+            size: (file as any).size,
+            type: (file as any).type,
         });
     }
-    catch (error) {
+    catch (error: any) {
         console.error("File upload error:", error);
         return NextResponse.json({ error: error.message || "Upload failed" }, { status: 500 });
     }

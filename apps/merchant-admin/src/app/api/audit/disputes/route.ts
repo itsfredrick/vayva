@@ -13,7 +13,7 @@ export async function GET(req: NextRequest) {
             orderBy: { createdAt: "desc" },
             take: 100,
         });
-        const formattedDisputes = disputes.map((d) => ({
+        const formattedDisputes = disputes.map((d: any) => ({
             id: d.id,
             merchant: (d as any).store.name,
             amount: d.amount,
@@ -26,7 +26,7 @@ export async function GET(req: NextRequest) {
         }));
         return NextResponse.json({ disputes: formattedDisputes });
     }
-    catch (error) {
+    catch (error: any) {
         console.error("Audit Disputes Error:", error);
         return NextResponse.json({ error: "Failed to fetch disputes" }, { status: 500 });
     }

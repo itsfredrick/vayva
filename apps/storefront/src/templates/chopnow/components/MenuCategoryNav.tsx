@@ -16,7 +16,7 @@ export const MenuCategoryNav = ({
   return (
     <div className="sticky top-[105px] z-40 bg-white border-b border-gray-100 shadow-sm overflow-x-auto no-scrollbar">
       <div className="flex items-center gap-6 px-4 py-3 min-w-max">
-        {categories.map((cat) => (
+        {categories.map((cat: any) => (
           <Button
             key={cat}
             variant="ghost"

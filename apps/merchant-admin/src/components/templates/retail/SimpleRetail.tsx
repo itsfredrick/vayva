@@ -158,7 +158,7 @@ export const SimpleRetailTemplate: React.FC<TemplateProps> = ({
         </div>
 
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-x-4 gap-y-8">
-          {featuredProducts.map((product) => (
+          {featuredProducts.map((product: any) => (
             <div key={product.id} className="group cursor-pointer">
               <div className="aspect-[3/4] bg-gray-100 rounded-md overflow-hidden mb-3 relative">
                 <div className="absolute top-2 right-2 z-10 opacity-0 group-hover:opacity-100 transition-opacity">

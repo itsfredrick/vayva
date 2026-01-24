@@ -11,9 +11,9 @@ export function FoodProductForm({ productId }: { productId?: string }) {
     const [isSubmitting, setIsSubmitting] = useState(false);
     const { register, handleSubmit } = useForm();
 
-    const onSubmit = async (data: unknown) => {
+    const onSubmit = async (data: any) => {
         setIsSubmitting(true);
-        const payload = {
+        const payload: any = {
             title: data.itemName,
             description: data.description,
             price: data.price,
@@ -21,7 +21,7 @@ export function FoodProductForm({ productId }: { productId?: string }) {
             metadata: {
                 ingredients: data.ingredients,
                 prepTimeMinutes: data.prepTime,
-                dietaryTags: data.dietaryTags?.split(",").map((t: string) => t.trim()),
+                dietaryTags: data.dietaryTags?.split(",").map((t: any) => t.trim()),
                 addOns: [
                     // Mocking add-ons structure
                     { name: "Extra Cheese", price: 500 },

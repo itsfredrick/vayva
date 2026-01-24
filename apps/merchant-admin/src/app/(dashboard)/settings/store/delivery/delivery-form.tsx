@@ -66,7 +66,7 @@ export function DeliveryForm() {
             if (!res.ok) throw new Error("Failed to save");
 
             toast.success("Delivery settings saved successfully");
-        } catch (error) {
+        } catch (error: any) {
             toast.error("Failed to save settings");
         }
     }
@@ -160,7 +160,7 @@ export function DeliveryForm() {
                         render={({ field }) => (
                             <FormItem>
                                 <FormLabel>Fee Calculation</FormLabel>
-                                <Select onValueChange={field.onChange} defaultValue={field.value}>
+                                <Select onValueChange={field.onChange} defaultValue={(field.value as any)}>
                                     <FormControl>
                                         <SelectTrigger>
                                             <SelectValue placeholder="Select a fee type" />

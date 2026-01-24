@@ -19,7 +19,7 @@ export const GET = withVayvaAPI(PERMISSIONS.SETTINGS_VIEW, async (req, { storeId
             isVerified: true // Assuming verified if it exists in this table for now
         });
     }
-    catch (error) {
+    catch (error: any) {
         console.error("[BENEFICIARY_GET]", error);
         return NextResponse.json({ error: "Internal Error" }, { status: 500 });
     }

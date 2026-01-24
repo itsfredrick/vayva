@@ -20,12 +20,12 @@ export const CommandPalette = () => {
         };
 
         // Expose trigger globally for button clicks
-        (window as unknown).triggerCommandPalette = () => setOpen(prev => !prev);
+        (window as any).triggerCommandPalette = () => setOpen(prev => !prev);
 
         document.addEventListener("keydown", down);
         return () => {
             document.removeEventListener("keydown", down);
-            delete (window as unknown).triggerCommandPalette;
+            delete (window as any).triggerCommandPalette;
         };
     }, []);
 
@@ -63,8 +63,8 @@ export const CommandPalette = () => {
                     <input
                         className="flex h-12 w-full rounded-md bg-transparent py-3 text-sm outline-none placeholder:text-gray-400 disabled:cursor-not-allowed disabled:opacity-50"
                         placeholder="Type a command or search..."
-                        value={query}
-                        onChange={(e) => setQuery(e.target.value)}
+                        value={(query as any)}
+                        onChange={(e: any) => setQuery(e.target.value)}
                         autoFocus
                     />
                     <div className="flex items-center gap-1 text-xs text-gray-400">
@@ -82,14 +82,14 @@ export const CommandPalette = () => {
                             <p className="px-2 py-1.5 text-xs font-semibold text-gray-400 uppercase tracking-wider">
                                 Navigation
                             </p>
-                            {filteredItems.map((item) => (
+                            {filteredItems.map((item: any) => (
                                 <Button
                                     key={item.href}
                                     onClick={() => handleSelect(item.href)}
                                     variant="ghost"
                                     className="w-full flex items-center gap-3 px-2 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-black rounded-lg transition-colors text-left"
                                 >
-                                    <Icon name={item.icon as unknown} size={16} className="text-gray-500" />
+                                    <Icon name={item.icon as any} size={16} className="text-gray-500" />
                                     {item.name}
                                     <Icon name="ArrowRight" size={14} className="ml-auto opacity-0 group-hover:opacity-50" />
                                 </Button>

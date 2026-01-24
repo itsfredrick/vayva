@@ -11,7 +11,7 @@ export const ProductGrid = ({ items, isLoading }: ProductGridProps) => {
   if (isLoading) {
     return (
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-        {[1, 2, 3, 4, 5, 6].map((i) => (
+        {[1, 2, 3, 4, 5, 6].map((i: any) => (
           <div
             key={i}
             className="h-[280px] bg-gray-50 rounded-2xl animate-pulse"
@@ -34,7 +34,7 @@ export const ProductGrid = ({ items, isLoading }: ProductGridProps) => {
 
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-      {items.map((item) => (
+      {items.map((item: any) => (
         <ProductCard key={item.id} item={item} />
       ))}
     </div>

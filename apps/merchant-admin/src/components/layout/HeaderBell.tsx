@@ -30,7 +30,7 @@ export function HeaderBell() {
         setNotifications(data.items);
         setUnreadCount(data.unread_count);
       }
-    } catch (e: unknown) {
+    } catch (e: any) {
       console.error("Failed to fetch notifications", e instanceof Error ? e.message : e);
     }
   };
@@ -62,7 +62,7 @@ export function HeaderBell() {
       body: JSON.stringify({ mark_all: true }),
     });
     setUnreadCount(0);
-    setNotifications(notifications.map((n) => ({ ...n, isRead: true })));
+    setNotifications(notifications.map((n: any) => ({ ...n, isRead: true })));
   };
 
   const handleNotificationClick = async (n: Notification) => {
@@ -73,7 +73,7 @@ export function HeaderBell() {
       });
       setUnreadCount(Math.max(0, unreadCount - 1));
       setNotifications(
-        notifications.map((item) =>
+        notifications.map((item: any) =>
           item.id === n.id ? { ...item, isRead: true } : item,
         ),
       );
@@ -118,7 +118,7 @@ export function HeaderBell() {
               </div>
             ) : (
               <div className="divide-y divide-gray-50">
-                {notifications.map((n) => (
+                {notifications.map((n: any) => (
                   <div
                     key={n.id}
                     onClick={() => handleNotificationClick(n)}

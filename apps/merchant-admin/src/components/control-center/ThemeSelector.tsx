@@ -26,7 +26,7 @@ export const ThemeSelector = () => {
         method: "POST",
         body: JSON.stringify({ themeId: id }),
       });
-    } catch (e) {
+    } catch (e: any) {
       console.error("Failed to apply theme", e);
     }
   };
@@ -40,7 +40,7 @@ export const ThemeSelector = () => {
       </h4>
 
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-        {themes.map((theme) => (
+        {themes.map((theme: any) => (
           <div
             key={theme.id}
             onClick={() => handleApply(theme.id)}
@@ -53,7 +53,7 @@ export const ThemeSelector = () => {
           >
             {/* Color Swatches */}
             <div className="flex gap-1 mb-3">
-              {theme.colors.map((c, i) => (
+              {theme.colors.map((c: any, i: any) => (
                 <div
                   key={i}
                   className="w-4 h-4 rounded-full border border-gray-100 shadow-sm"

@@ -16,7 +16,7 @@ export const MERCHANT_VISIBLE_EVENTS = [
     "COMPLIANCE_REPORT_CREATED",
     "COMPLIANCE_REPORT_DOWNLOADED",
 ];
-export function formatActivityForMerchant(event: unknown) {
+export function formatActivityForMerchant(event: any) {
     const time = new Date(event.createdAt).toLocaleString();
     const actor = event.actorRole || "System";
     let action = "";

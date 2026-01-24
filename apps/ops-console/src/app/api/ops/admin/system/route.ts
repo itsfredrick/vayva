@@ -1,9 +1,9 @@
-import { NextResponse } from "next/server";
+import { NextResponse } from 'next/server';
 import { OpsAuthService } from "@/lib/ops-auth";
 
 export const dynamic = "force-dynamic";
 
-export async function GET(request: Request) {
+export async function GET(_request: Request) {
     const { user } = await OpsAuthService.requireSession();
     if (user.role !== "OPS_OWNER") {
         return NextResponse.json({ error: "Unauthorized: Owners Only" }, { status: 403 });
@@ -19,9 +19,9 @@ export async function GET(request: Request) {
                 obj[key] = process.env[key];
             }
             return obj;
-        }, {} as unknown);
+        }, {} as any);
 
-    const data = {
+    const data: any = {
         env: process.env.NODE_ENV,
         region: process.env.VERCEL_REGION || "local",
         timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,

@@ -88,7 +88,7 @@ class ExtensionRegistry {
     private extensions: Map<string, ExtensionManifest>;
     constructor(initial: ExtensionManifest[]) {
         this.extensions = new Map();
-        initial.forEach(ext => this.extensions.set(ext.id, ext));
+        initial.forEach((ext: any) => this.extensions.set(ext.id, ext));
     }
     register(manifest: ExtensionManifest) {
         this.extensions.set(manifest.id, manifest);
@@ -111,7 +111,7 @@ class ExtensionRegistry {
 
         // If we have explicit enabled IDs from DB, use them
         if (enabledIds && enabledIds.length > 0) {
-            enabledIds.forEach(id => {
+            enabledIds.forEach((id: any) => {
                 const ext = this.extensions.get(id);
                 if (ext && !active.find(a => a.id === id)) {
                     active.push(ext);

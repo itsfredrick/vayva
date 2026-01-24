@@ -1,6 +1,6 @@
 "use client";
 const STORAGE_KEY = "vayva_attribution";
-export function saveAttribution(data: unknown) {
+export function saveAttribution(data: any) {
     if (typeof window === "undefined")
         return;
     try {
@@ -9,7 +9,7 @@ export function saveAttribution(data: unknown) {
         localStorage.setItem(STORAGE_KEY, JSON.stringify(merged));
         // Also log to console for debugging/telemetry verification
     }
-    catch (e) {
+    catch (e: any) {
         console.error("Failed to save attribution", e);
     }
 }
@@ -20,15 +20,15 @@ export function getAttribution() {
         const raw = localStorage.getItem(STORAGE_KEY);
         return raw ? JSON.parse(raw) : {};
     }
-    catch (e) {
+    catch (e: any) {
         return {};
     }
 }
-export function captureUrlParams(searchParams: unknown, entryPoint: unknown) {
-    const data = {};
+export function captureUrlParams(searchParams: any, entryPoint: any) {
+    const data: any = {};
     const utmKeys = ["utm_source", "utm_campaign", "utm_content", "utm_medium"];
     let hasData = false;
-    utmKeys.forEach((key: unknown) => {
+    utmKeys.forEach((key: any) => {
         const val = searchParams.get(key);
         if (val) {
             data[key] = val;

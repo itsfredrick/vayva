@@ -28,7 +28,7 @@ export const OnboardingController = {
   ) => {
     const flow = await OnboardingController.getWizardState(storeId);
 
-    const updates: unknown = { currentStepKey: stepKey };
+    const updates: { currentStepKey: string; completedSteps?: string[]; skippedSteps?: string[] } = { currentStepKey: stepKey };
 
     if (action === "complete") {
       updates.completedSteps = [...flow.completedSteps, stepKey];
@@ -94,42 +94,42 @@ export const OnboardingController = {
         title: "Add Products",
         description: "Add at least one product to your catalog",
         category: "STOREFRONT",
-        status: (store?.products?.length && store.products.length > 0) ? "DONE" : "PENDING",
+        status: (store?.products?.length && store.products.length > 0) ? "DONE" : "TODO",
       },
       {
         key: "storefront.logo_set",
         title: "Upload Logo",
         description: "Set your store logo for branding",
         category: "STOREFRONT",
-        status: settings?.logoS3Key ? "DONE" : "PENDING",
+        status: settings?.logoS3Key ? "DONE" : "TODO",
       },
       {
         key: "payments.connected",
         title: "Connect Payment Provider",
         description: "Link your Paystack or Stripe account",
         category: "PAYMENTS",
-        status: paymentAccount ? "DONE" : "PENDING",
+        status: paymentAccount ? "DONE" : "TODO",
       },
       {
         key: "delivery.configured",
         title: "Setup Delivery",
         description: "Configure delivery options",
         category: "DELIVERY",
-        status: deliveryOption ? "DONE" : "PENDING",
+        status: deliveryOption ? "DONE" : "TODO",
       },
       {
         key: "whatsapp.connected",
         title: "Connect WhatsApp",
         description: "Link your WhatsApp Business account",
         category: "WHATSAPP",
-        status: whatsappChannel ? "DONE" : "PENDING",
+        status: whatsappChannel ? "DONE" : "TODO",
       },
       {
         key: "policies.terms_published",
         title: "Publish Terms of Service",
         description: "Review and publish your terms",
         category: "POLICIES",
-        status: tosTemplate ? "DONE" : "PENDING",
+        status: tosTemplate ? "DONE" : "TODO",
       },
     ];
 
@@ -137,8 +137,10 @@ export const OnboardingController = {
     for (const item of items) {
       await prisma.goLiveChecklistItem.upsert({
         where: { storeId_key: { storeId, key: item.key } },
-        create: { storeId, ...item } as unknown,
-        update: { status: item.status } as unknown,
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        create: { storeId, ...item } as any, // Pragmatic cast for now due to generated type complexity
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        update: { status: item.status } as any,
       });
     }
 
@@ -160,11 +162,13 @@ export const OnboardingController = {
     });
   },
 
-  updateStorefrontSettings: async (storeId: string, data: unknown) => {
+  updateStorefrontSettings: async (storeId: string, data: Record<string, unknown>) => {
     return await prisma.storefrontSettings.upsert({
       where: { storeId },
-      create: { storeId, ...data },
-      update: data,
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      create: { storeId, ...data } as any, // Pragmatic cast to accept loose inputs
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      update: data as any,
     });
   },
 };

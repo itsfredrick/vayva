@@ -1,4 +1,4 @@
-import { NextResponse } from "next/server";
+import { NextResponse } from 'next/server';
 import { prisma } from "@vayva/db";
 import { OpsAuthService } from "@/lib/ops-auth";
 
@@ -16,7 +16,7 @@ export async function GET() {
         try {
             const res = await fetch(`${gatewayUrl}/health`, { signal: AbortSignal.timeout(3000) });
             if (!res.ok) gatewayStatus = "DOWN";
-        } catch (e) {
+        } catch {
             gatewayStatus = "DOWN";
         }
 
@@ -36,7 +36,7 @@ export async function GET() {
             }
         });
 
-    } catch (error) {
+    } catch (error: any) {
         return NextResponse.json(
             { status: "UNHEALTHY", error: error.message },
             { status: 500 }

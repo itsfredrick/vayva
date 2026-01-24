@@ -2,7 +2,7 @@
  * ANTIGRAVITY TENANT RESOLVER
  * Authoritative logic for Vayva domain routing.
  */
-export function resolveRequest(input: unknown) {
+export function resolveRequest(input: any) {
     const { hostname, path, tenantMap } = input;
     const host = hostname.toLowerCase();
     const APP_DOMAIN = process.env.NEXT_PUBLIC_APP_DOMAIN || "vayva.ng";

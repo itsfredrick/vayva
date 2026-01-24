@@ -8,7 +8,7 @@ import { StorefrontService } from "@/services/storefront.service";
 import { PublicProduct } from "@/types/storefront";
 import { useSearchParams } from "next/navigation";
 
-export default function SearchPage() {
+export default function SearchPage(): React.JSX.Element {
   const { store } = useStore();
   const searchParams = useSearchParams();
   const query = searchParams.get("q") || "";
@@ -30,7 +30,7 @@ export default function SearchPage() {
     }
   }, [store, query]);
 
-  if (!store) return null;
+  if (!store) return <></>;
 
   return (
     <StoreShell>
@@ -39,7 +39,7 @@ export default function SearchPage() {
 
         {loading ? (
           <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
-            {[1, 2, 3, 4].map((i) => (
+            {[1, 2, 3, 4].map((i: any) => (
               <div key={i} className="animate-pulse">
                 <div className="bg-gray-100 aspect-[4/5] rounded-xl mb-4"></div>
                 <div className="h-4 bg-gray-100 w-2/3 rounded mb-2"></div>
@@ -48,7 +48,7 @@ export default function SearchPage() {
           </div>
         ) : products.length > 0 ? (
           <div className="grid grid-cols-2 md:grid-cols-4 gap-x-6 gap-y-10">
-            {products.map((product) => (
+            {products.map((product: any) => (
               <ProductCard
                 key={product.id}
                 product={product}

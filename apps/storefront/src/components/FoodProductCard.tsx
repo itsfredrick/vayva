@@ -1,7 +1,7 @@
 
 import React from "react";
 import NextLink from "next/link";
-const Link = NextLink as unknown;
+const Link = NextLink;
 import Image from "next/image";
 import { PublicProduct } from "@/types/storefront";
 import { Clock, Flame } from "lucide-react";
@@ -12,8 +12,8 @@ interface FoodProductCardProps {
     storeSlug: string;
 }
 
-export function FoodProductCard({ product, storeSlug }: FoodProductCardProps) {
-    const metadata = product.metadata as unknown; // Safe cast for variant fields
+export function FoodProductCard({ product, storeSlug }: FoodProductCardProps): React.JSX.Element {
+    const metadata = product.metadata as any; // Safe cast for variant fields
 
     return (
         <div className="flex gap-4 border-b border-gray-100 py-4 group">

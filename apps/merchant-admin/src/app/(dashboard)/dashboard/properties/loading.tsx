@@ -13,7 +13,7 @@ export default function Loading() {
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {[1, 2, 3, 4, 5, 6].map((i) => (
+                {[1, 2, 3, 4, 5, 6].map((i: any) => (
                     <div key={i} className="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden animate-pulse">
                         <div className="aspect-video bg-gray-100" />
                         <div className="p-4 space-y-4">

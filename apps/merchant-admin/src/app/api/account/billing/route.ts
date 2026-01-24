@@ -29,7 +29,7 @@ export async function GET() {
             },
         });
     }
-    catch (error) {
+    catch (error: any) {
         console.error("Billing fetch error:", error);
         if (error.message === "Unauthorized") {
             return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
@@ -72,7 +72,7 @@ export async function PUT(request: NextRequest) {
             profile: updatedProfile,
         });
     }
-    catch (error) {
+    catch (error: any) {
         console.error("Billing update error:", error);
         if (error.message === "Unauthorized") {
             return NextResponse.json({ error: "Unauthorized" }, { status: 401 });

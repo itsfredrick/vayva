@@ -33,7 +33,7 @@ export function DiscountForm({ id }: { id?: string }) {
         if (id) {
             fetch(`/api/marketing/discounts/${id}`)
                 .then(res => res.json())
-                .then((data: unknown) => {
+                .then((data: any) => {
                     setFormData({
                         title: data.name || "",
                         code: data.code || "",
@@ -60,7 +60,7 @@ export function DiscountForm({ id }: { id?: string }) {
             if (!formData.title) throw new Error("Title is required");
             if (!formData.value) throw new Error("Discount value is required");
 
-            const payload = {
+            const payload: any = {
                 name: formData.title,
                 code: method === "CODE" ? formData.code.toUpperCase() : undefined,
                 type,
@@ -126,7 +126,7 @@ export function DiscountForm({ id }: { id?: string }) {
                         <div>
                             <Label>Discount Code</Label>
                             <Input
-                                value={formData.code}
+                                value={(formData.code as any)}
                                 onChange={(e: React.ChangeEvent<HTMLInputElement>) => setFormData({ ...formData, code: e.target.value.toUpperCase() })}
                                 placeholder="SUMMER2024"
                                 className="font-mono uppercase text-lg"
@@ -137,7 +137,7 @@ export function DiscountForm({ id }: { id?: string }) {
                         <div>
                             <Label>Title</Label>
                             <Input
-                                value={formData.title}
+                                value={(formData.title as any)}
                                 onChange={(e: React.ChangeEvent<HTMLInputElement>) => setFormData({ ...formData, title: e.target.value })}
                                 placeholder="Summer Sale"
                             />
@@ -149,7 +149,7 @@ export function DiscountForm({ id }: { id?: string }) {
                         <div>
                             <Label>Internal Name (Optional)</Label>
                             <Input
-                                value={formData.title}
+                                value={(formData.title as any)}
                                 onChange={(e: React.ChangeEvent<HTMLInputElement>) => setFormData({ ...formData, title: e.target.value })}
                                 placeholder="Summer Sale Campaign"
                             />
@@ -164,7 +164,7 @@ export function DiscountForm({ id }: { id?: string }) {
                     <div className="grid grid-cols-2 gap-4">
                         <div>
                             <Label>Type</Label>
-                            <Select value={type} onValueChange={(v: unknown) => setType(v)}>
+                            <Select value={(type as any)} onValueChange={(v: any) => setType(v)}>
                                 <SelectTrigger>
                                     <SelectValue />
                                 </SelectTrigger>
@@ -178,7 +178,7 @@ export function DiscountForm({ id }: { id?: string }) {
                             <Label>Value</Label>
                             <Input
                                 type="number"
-                                value={formData.value}
+                                value={(formData.value as any)}
                                 onChange={(e: React.ChangeEvent<HTMLInputElement>) => setFormData({ ...formData, value: e.target.value })}
                                 placeholder={type === "PERCENTAGE" ? "20" : "1000"}
                             />
@@ -195,7 +195,7 @@ export function DiscountForm({ id }: { id?: string }) {
                         <Label>Minimum Order Amount (Optional)</Label>
                         <Input
                             type="number"
-                            value={formData.minOrder}
+                            value={(formData.minOrder as any)}
                             onChange={(e: React.ChangeEvent<HTMLInputElement>) => setFormData({ ...formData, minOrder: e.target.value })}
                             placeholder="0.00"
                         />
@@ -204,7 +204,7 @@ export function DiscountForm({ id }: { id?: string }) {
                         <Label>Usage Limit (Total)</Label>
                         <Input
                             type="number"
-                            value={formData.usageLimit}
+                            value={(formData.usageLimit as any)}
                             onChange={(e: React.ChangeEvent<HTMLInputElement>) => setFormData({ ...formData, usageLimit: e.target.value })}
                             placeholder="No limit"
                         />
@@ -222,7 +222,7 @@ export function DiscountForm({ id }: { id?: string }) {
                             <Label>Start Date</Label>
                             <Input
                                 type="datetime-local"
-                                value={formData.startsAt}
+                                value={(formData.startsAt as any)}
                                 onChange={(e: React.ChangeEvent<HTMLInputElement>) => setFormData({ ...formData, startsAt: e.target.value })}
                             />
                         </div>
@@ -230,7 +230,7 @@ export function DiscountForm({ id }: { id?: string }) {
                             <Label>End Date (Optional)</Label>
                             <Input
                                 type="datetime-local"
-                                value={formData.endsAt}
+                                value={(formData.endsAt as any)}
                                 onChange={(e: React.ChangeEvent<HTMLInputElement>) => setFormData({ ...formData, endsAt: e.target.value })}
                             />
                         </div>

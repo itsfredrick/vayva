@@ -31,7 +31,7 @@ export default function TransactionsPage() {
             if (!res.ok) throw new Error("Failed to load transactions");
             const data = await res.json();
             setTransactions(data.data || []);
-        } catch (error) {
+        } catch (error: any) {
             console.error(error);
             toast.error("Could not load transaction history");
         } finally {
@@ -80,7 +80,7 @@ export default function TransactionsPage() {
                                 </tr>
                             </thead>
                             <tbody className="divide-y divide-slate-100">
-                                {transactions.map((tx) => (
+                                {transactions.map((tx: any) => (
                                     <tr key={tx.id} className="hover:bg-slate-50/50">
                                         <td className="px-6 py-4 text-slate-900 whitespace-nowrap">
                                             {new Date(tx.date).toLocaleDateString()}

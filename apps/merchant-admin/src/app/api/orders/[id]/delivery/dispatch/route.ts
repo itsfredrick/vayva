@@ -45,30 +45,31 @@ export const POST = withVayvaAPI(PERMISSIONS.COMMERCE_MANAGE, async (request, { 
         const order = await db.order.findUnique({
             where: { id: orderId, storeId },
             include: {
-                Shipment: true,
-                Customer: true,
+                shipment: true,
+                customer: true,
             },
         });
         if (!order)
             return NextResponse.json({ error: "Order not found" }, { status: 404 });
         // Check if shipment is in terminal state
-        if (order.Shipment) {
-            const status = order.Shipment.status;
+        const s = (order as any).shipment;
+        if (s) {
+            const status = s.status;
             if (["DELIVERED", "CANCELED", "FAILED"].includes(status)) {
                 return NextResponse.json({ error: "Delivery is already finished (Terminal State)." }, { status: 409 });
             }
             if (["REQUESTED", "ACCEPTED", "PICKED_UP", "IN_TRANSIT"].includes(status)) {
-                return NextResponse.json({ success: true, shipment: order.Shipment });
+                return NextResponse.json({ success: true, shipment: s });
             }
         }
         // 4. Prepare Dispatch Data
-        const recipientName = order.Shipment?.recipientName || order.Customer?.name || "Customer";
-        const recipientPhone = order.Shipment?.recipientPhone ||
+        const recipientName = s?.recipientName || (order as any).customer?.name || "Customer";
+        const recipientPhone = s?.recipientPhone ||
             order.customerPhone ||
-            order.Customer?.phone ||
+            (order as any).customer?.phone ||
             "";
-        const addressLine1 = order.Shipment?.addressLine1 || "";
-        const addressCity = order.Shipment?.addressCity || "";
+        const addressLine1 = s?.addressLine1 || "";
+        const addressCity = s?.addressCity || "";
         // Kwik Validation
         if (settings.provider === "KWIK") {
             if (!recipientPhone || !addressLine1) {
@@ -103,10 +104,10 @@ export const POST = withVayvaAPI(PERMISSIONS.COMMERCE_MANAGE, async (request, { 
         try {
             provider = getDeliveryProvider(settings.provider);
         }
-        catch (e) {
+        catch (e: any) {
             return NextResponse.json({ error: `Invalid delivery provider configured: ${settings.provider}` }, { status: 400 });
         }
-        const result = await provider.dispatch(dispatchData, settings);
+        const result = (await provider.dispatch(dispatchData, settings)) as any;
         if (!result.success) {
             return NextResponse.json({ error: `Dispatch Failed: ${result.error}` }, { status: 502 });
         }
@@ -151,12 +152,12 @@ export const POST = withVayvaAPI(PERMISSIONS.COMMERCE_MANAGE, async (request, { 
                 });
             }
         }
-        catch (e) {
+        catch (e: any) {
             console.warn("Failed to create delivery event log:", e);
         }
         return NextResponse.json({ success: true, shipment });
     }
-    catch (error) {
+    catch (error: any) {
         console.error("Dispatch error:", error);
         return NextResponse.json({ error: error.message }, { status: 500 });
     }

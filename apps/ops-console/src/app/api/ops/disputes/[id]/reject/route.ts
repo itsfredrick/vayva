@@ -1,4 +1,4 @@
-import { NextRequest, NextResponse } from "next/server";
+import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from "@vayva/db";
 import { OpsAuthService } from "@/lib/ops-auth";
 import { logger } from "@/lib/logger";
@@ -12,9 +12,8 @@ export async function POST(
         const sessionData = await OpsAuthService.requireSession();
         try {
             OpsAuthService.requireRole(sessionData.user, "OPS_ADMIN");
-        } catch (e: unknown) {
-            const err = e as Error;
-            return NextResponse.json({ error: err.message }, { status: 403 });
+        } catch (e: any) {
+            return NextResponse.json({ error: (e as any).message }, { status: 403 });
         }
         const { user } = sessionData;
 
@@ -70,7 +69,7 @@ export async function POST(
             dispute: updatedDispute,
             message: "Dispute rejected successfully",
         });
-    } catch (error) {
+    } catch (error: any) {
         logger.error("Reject dispute error", error);
         return NextResponse.json(
             { error: "Failed to reject dispute" },

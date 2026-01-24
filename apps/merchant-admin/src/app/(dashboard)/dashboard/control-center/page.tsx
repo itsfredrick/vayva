@@ -59,7 +59,7 @@ export default function TemplatesPage() {
             if (Array.isArray(data)) {
                 setTemplates(data);
             }
-        } catch (error) {
+        } catch (error: any) {
             toast.error("Failed to load templates");
         } finally {
             setIsLoading(false);
@@ -71,9 +71,9 @@ export default function TemplatesPage() {
             const res = await fetch("/api/control-center/history");
             const data = await res.json();
             if (Array.isArray(data)) setHistory(data);
-        } catch (_error) {
-    // Intentionally empty
-  }
+        } catch (_error: any) {
+            // Intentionally empty
+        }
     };
 
     const handleApply = async (templateId: string) => {
@@ -88,7 +88,7 @@ export default function TemplatesPage() {
             if (!res.ok) throw new Error("Failed to apply");
 
             toast.success("Template applied to Draft!");
-        } catch (error) {
+        } catch (error: any) {
             toast.error("Failed to apply template");
         } finally {
             setApplyingId(null);
@@ -106,7 +106,7 @@ export default function TemplatesPage() {
             });
             if (!res.ok) throw new Error("Rollback failed");
             toast.success("Restored version to Draft!");
-        } catch (error) {
+        } catch (error: any) {
             toast.error("Failed to rollback");
         } finally {
             setApplyingId(null);
@@ -121,7 +121,7 @@ export default function TemplatesPage() {
             if (!res.ok) throw new Error("Publish failed");
             toast.success("Storefront Published Live!");
             loadHistory(); // Refresh history
-        } catch (error) {
+        } catch (error: any) {
             toast.error("Failed to publish");
         } finally {
             setIsPublishing(false);
@@ -145,8 +145,8 @@ export default function TemplatesPage() {
 
             toast.success("Upgrade Successful! Template Unlocked.");
             loadTemplates();
-        } catch (error) {
-            toast.error(error.message);
+        } catch (error: any) {
+            toast.error((error as any).message);
         } finally {
             toast.dismiss(loadingToast);
         }
@@ -178,13 +178,14 @@ export default function TemplatesPage() {
             <Tabs defaultValue="gallery" className="w-full">
                 <TabsList className="mb-4">
                     <TabsTrigger value="gallery">Theme Gallery</TabsTrigger>
+                    <TabsTrigger value="tools">Website Tools</TabsTrigger>
                     <TabsTrigger value="extensions">Extensions</TabsTrigger>
                     <TabsTrigger value="history">Version History</TabsTrigger>
                 </TabsList>
 
                 <TabsContent value="gallery">
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                        {templates.map((tpl) => (
+                        {templates.map((tpl: any) => (
                             <Card key={tpl.id} className="overflow-hidden flex flex-col">
                                 <div className="relative">
                                     <AspectRatio ratio={16 / 9}>
@@ -248,6 +249,44 @@ export default function TemplatesPage() {
                     </div>
                 </TabsContent>
 
+                <TabsContent value="tools">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <Card className="hover:border-black transition-all cursor-pointer group" onClick={() => router.push("/dashboard/blog")}>
+                            <CardHeader className="flex flex-row items-center gap-4">
+                                <div className="p-3 bg-blue-50 rounded-xl group-hover:bg-blue-100 transition-colors">
+                                    <Icon name="BookOpen" className="text-blue-600" />
+                                </div>
+                                <div>
+                                    <CardTitle>Blog Engine</CardTitle>
+                                    <CardDescription>Write articles, news, and updates for your storefront.</CardDescription>
+                                </div>
+                            </CardHeader>
+                            <CardFooter>
+                                <Button variant="ghost" className="w-full justify-between">
+                                    Manage Posts <Icon name="ArrowRight" size={16} />
+                                </Button>
+                            </CardFooter>
+                        </Card>
+
+                        <Card className="hover:border-black transition-all cursor-pointer group" onClick={() => router.push("/dashboard/control-center/customize")}>
+                            <CardHeader className="flex flex-row items-center gap-4">
+                                <div className="p-3 bg-purple-50 rounded-xl group-hover:bg-purple-100 transition-colors">
+                                    <Icon name="Palette" className="text-purple-600" />
+                                </div>
+                                <div>
+                                    <CardTitle>Theme Designer</CardTitle>
+                                    <CardDescription>Customize colors, fonts, and reorder website sections.</CardDescription>
+                                </div>
+                            </CardHeader>
+                            <CardFooter>
+                                <Button variant="ghost" className="w-full justify-between">
+                                    Open Designer <Icon name="ArrowRight" size={16} />
+                                </Button>
+                            </CardFooter>
+                        </Card>
+                    </div>
+                </TabsContent>
+
                 <TabsContent value="extensions">
                     <div className="bg-gray-50/50 rounded-3xl p-8 border border-gray-100">
                         <div className="max-w-2xl mb-8">
@@ -279,7 +318,7 @@ export default function TemplatesPage() {
                                     </TableRow>
                                 </TableHeader>
                                 <TableBody>
-                                    {history.map((ver) => (
+                                    {history.map((ver: any) => (
                                         <TableRow key={ver.id}>
                                             <TableCell className="font-mono text-xs">{ver.id.slice(0, 8)}</TableCell>
                                             <TableCell>{ver.template?.name || "Unknown"}</TableCell>

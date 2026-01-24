@@ -38,7 +38,6 @@ fastify.get("/health", async () => {
 const start = async () => {
     try {
         await fastify.listen({ port: 3015, host: "0.0.0.0" });
-        console.log("Compliance Service listening on port 3015");
     } catch (err) {
         fastify.log.error(err);
         process.exit(1);

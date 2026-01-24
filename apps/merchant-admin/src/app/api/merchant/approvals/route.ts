@@ -38,7 +38,7 @@ export const POST = withVayvaAPI(PERMISSIONS.COMMERCE_MANAGE, async (req, { stor
         });
         return NextResponse.json({ ok: true, id: approval.id });
     }
-    catch (error) {
+    catch (error: any) {
         console.error("Approval Request Error", error);
         return NextResponse.json({ error: error.message || "Internal Error" }, { status: 500 });
     }
@@ -48,7 +48,7 @@ export const GET = withVayvaAPI(PERMISSIONS.COMMERCE_VIEW, async (req, { storeId
         const { searchParams } = new URL(req.url);
         const status = searchParams.get("status");
         const limit = parseInt(searchParams.get("limit") || "20");
-        const where = { merchantId: storeId };
+        const where: any = { merchantId: storeId };
         if (status && status !== "all")
             where.status = status;
         const items = await prisma.approval.findMany({
@@ -58,7 +58,7 @@ export const GET = withVayvaAPI(PERMISSIONS.COMMERCE_VIEW, async (req, { storeId
         });
         return NextResponse.json({ items });
     }
-    catch (error) {
+    catch (error: any) {
         console.error("Fetch Approvals Error:", error);
         return NextResponse.json({ error: "Internal Error" }, { status: 500 });
     }

@@ -11,7 +11,7 @@ interface HomeListLayoutProps {
   products: PublicProduct[];
 }
 
-export const HomeListLayout = ({ store, products }: HomeListLayoutProps) => {
+export const HomeListLayout = ({ store, products }: HomeListLayoutProps): React.JSX.Element => {
   const [viewingListing, setViewingListing] = useState<PublicProduct | null>(
     null,
   );
@@ -43,7 +43,7 @@ export const HomeListLayout = ({ store, products }: HomeListLayoutProps) => {
           </div>
 
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {products.map((product) => (
+            {products.map((product: any) => (
               <ListingCard
                 key={product.id}
                 product={product}

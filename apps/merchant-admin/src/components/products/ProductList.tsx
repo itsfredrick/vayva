@@ -181,7 +181,7 @@ export const ProductList: React.FC<ProductListProps> = ({
     <ResponsiveTable
       data={items as any}
       columns={columns as any}
-      keyExtractor={(item: unknown) => item.id}
+      keyExtractor={(item: any) => item.id}
       onRowClick={onEdit as any}
       loading={isLoading}
       emptyMessage="No products found"

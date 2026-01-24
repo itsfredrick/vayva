@@ -11,7 +11,7 @@ interface GiftCardBuyFormProps {
 
 const AMOUNTS = [500, 1000, 1500, 2000];
 
-export function GiftCardBuyForm({ lang }: GiftCardBuyFormProps) {
+export function GiftCardBuyForm({ lang }: GiftCardBuyFormProps): React.JSX.Element {
   const t = LOCALES[lang].giftCards.buy;
 
   // Form State
@@ -108,7 +108,7 @@ export function GiftCardBuyForm({ lang }: GiftCardBuyFormProps) {
 
       {/* Amounts */}
       <div className="grid grid-cols-2 md:grid-cols-3 gap-4 mb-8">
-        {AMOUNTS.map((val) => (
+        {AMOUNTS.map((val: any) => (
           <Button
             key={val}
             type="button"
@@ -128,7 +128,7 @@ export function GiftCardBuyForm({ lang }: GiftCardBuyFormProps) {
             type="number"
             placeholder={t.customAmount}
             value={customAmount}
-            onChange={(e) => {
+            onChange={(e: any) => {
               setAmount("custom");
               setCustomAmount(e.target.value);
             }}
@@ -153,7 +153,7 @@ export function GiftCardBuyForm({ lang }: GiftCardBuyFormProps) {
             type="text"
             placeholder={t.recipientName}
             value={recipientName}
-            onChange={(e) => setRecipientName(e.target.value)}
+            onChange={(e: any) => setRecipientName(e.target.value)}
             className="w-full p-4 bg-gray-50 border border-gray-100 rounded-xl outline-none focus:ring-2 focus:ring-black/5 transaction-all"
           />
           <input
@@ -161,7 +161,7 @@ export function GiftCardBuyForm({ lang }: GiftCardBuyFormProps) {
             type="email"
             placeholder={t.recipientEmail}
             value={recipientEmail}
-            onChange={(e) => setRecipientEmail(e.target.value)}
+            onChange={(e: any) => setRecipientEmail(e.target.value)}
             className="w-full p-4 bg-gray-50 border border-gray-100 rounded-xl outline-none focus:ring-2 focus:ring-black/5 transaction-all"
           />
         </div>
@@ -170,14 +170,14 @@ export function GiftCardBuyForm({ lang }: GiftCardBuyFormProps) {
           type="email"
           placeholder={t.senderEmail}
           value={senderEmail}
-          onChange={(e) => setSenderEmail(e.target.value)}
+          onChange={(e: any) => setSenderEmail(e.target.value)}
           className="w-full p-4 bg-gray-50 border border-gray-100 rounded-xl outline-none focus:ring-2 focus:ring-black/5 transaction-all"
         />
         <textarea
           rows={3}
           placeholder={t.message}
           value={message}
-          onChange={(e) => setMessage(e.target.value)}
+          onChange={(e: any) => setMessage(e.target.value)}
           className="w-full p-4 bg-gray-50 border border-gray-100 rounded-xl outline-none focus:ring-2 focus:ring-black/5 transaction-all resize-none"
         />
       </div>

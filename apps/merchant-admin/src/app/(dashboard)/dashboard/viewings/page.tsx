@@ -17,7 +17,7 @@ export default function ViewingsPage() {
             if (data.viewings) {
                 setRequests(data.viewings);
             }
-        } catch (error) {
+        } catch (error: any) {
             console.error(error);
         } finally {
             setIsLoading(false);

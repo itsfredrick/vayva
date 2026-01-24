@@ -1,7 +1,7 @@
 /**
  * Fetches an external extension manifest from a URL and validates its structure.
  */
-export async function fetchAndValidateManifest(url: unknown) {
+export async function fetchAndValidateManifest(url: any) {
     try {
         const response = await fetch(url, {
             method: 'GET',
@@ -27,7 +27,7 @@ export async function fetchAndValidateManifest(url: unknown) {
         }
         return manifest;
     }
-    catch (error) {
+    catch (error: any) {
         console.error("Manifest Fetch Error:", error);
         throw error;
     }

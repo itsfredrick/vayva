@@ -10,7 +10,7 @@ export const GET = withVayvaAPI(PERMISSIONS.MARKETING_VIEW, async (request: Next
             return NextResponse.json({ error: "Not found" }, { status: 404 });
         return NextResponse.json(discount);
     }
-    catch (error) {
+    catch (error: any) {
         console.error("Get Discount Error", error);
         return NextResponse.json({ error: "Internal Error" }, { status: 500 });
     }
@@ -26,7 +26,7 @@ export const PATCH = withVayvaAPI(PERMISSIONS.MARKETING_MANAGE, async (request: 
         });
         return NextResponse.json(updated);
     }
-    catch (error) {
+    catch (error: any) {
         console.error("Update Discount Error", error);
         return NextResponse.json({ error: "Internal Error" }, { status: 500 });
     }
@@ -37,7 +37,7 @@ export const DELETE = withVayvaAPI(PERMISSIONS.MARKETING_MANAGE, async (request:
         await DiscountService.deleteDiscount(storeId, id);
         return NextResponse.json({ success: true });
     }
-    catch (error) {
+    catch (error: any) {
         console.error("Delete Discount Error", error);
         return NextResponse.json({ error: "Internal Error" }, { status: 500 });
     }

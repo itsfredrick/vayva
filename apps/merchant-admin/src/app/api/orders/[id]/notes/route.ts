@@ -33,7 +33,7 @@ export async function POST(request: NextRequest, { params }: { params: Promise<{
             created_at: timestamp,
         });
     }
-    catch (error) {
+    catch (error: any) {
         console.error("Add note error:", error);
         return NextResponse.json({ error: "Failed to add note" }, { status: 500 });
     }

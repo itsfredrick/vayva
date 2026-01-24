@@ -8,7 +8,7 @@ export const POST = withVayvaAPI(PERMISSIONS.BILLING_MANAGE, async (request, { s
     // storeId is present in session
     const body = await request.json();
     const { plan_slug } = body;
-    if (!PLANS[plan_slug]) {
+    if (!(PLANS as any)[plan_slug]) {
         return new NextResponse("Invalid Plan", { status: 400 });
     }
     try {
@@ -34,7 +34,7 @@ export const POST = withVayvaAPI(PERMISSIONS.BILLING_MANAGE, async (request, { s
         });
         return NextResponse.json({ ok: true, checkout_url: payment.authorization_url });
     }
-    catch (e) {
+    catch (e: any) {
         return new NextResponse(e.message, { status: 500 });
     }
 });

@@ -3,7 +3,7 @@ import { NextResponse } from "next/server";
 // Internal API to trigger receipt sending. Protected by internal checks or session if needed.
 // For webhook-to-webhook calls, we might need a shared secret or assume internal network trust (localhost).
 // For now, we'll allow it if valid payload, but in production, verify caller or signature.
-export async function POST(request: unknown) {
+export async function POST(request: Request) {
     try {
         const body = await request.json();
         const { orderId, amount, currency, customerName, customerPhone, storeName, subdomain } = body;
@@ -56,7 +56,7 @@ export async function POST(request: unknown) {
                     return NextResponse.json({ error: "WhatsApp Receipt Failed", details: responseData }, { status: 500 });
                 }
             }
-            catch (apiError) {
+            catch (apiError: any) {
                 console.error("Evolution API Network Error:", apiError);
                 // Fallback/Mock for Dev if API is unreachable
             }
@@ -65,7 +65,7 @@ export async function POST(request: unknown) {
         }
         return NextResponse.json({ success: true, message: "Receipt sent" });
     }
-    catch (error) {
+    catch (error: any) {
         console.error("WhatsApp Receipt Error:", error);
         return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
     }

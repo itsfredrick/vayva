@@ -12,7 +12,7 @@ import { PublicProduct } from "@/types/storefront";
 interface BookingWizardProps {
   service: PublicProduct;
   onClose: () => void;
-  onComplete: (bookingDetails: unknown) => void;
+  onComplete: (bookingDetails: any) => void;
 }
 
 const DEMO_SLOTS = ["09:00", "10:00", "11:30", "14:00", "16:30"];

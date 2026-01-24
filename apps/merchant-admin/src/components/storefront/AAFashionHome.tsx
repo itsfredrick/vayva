@@ -90,7 +90,7 @@ export function AAFashionHome({
                   <p>Your bag is empty.</p>
                 </div>
               ) : (
-                cart.map((item) => (
+                cart.map((item: any) => (
                   <div key={item.id} className="flex gap-4">
                     <div className="w-20 h-24 bg-gray-900 rounded overflow-hidden">
                       {item.image && (
@@ -210,7 +210,7 @@ export function AAFashionHome({
           </div>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-16">
-            {products.map((product) => (
+            {(products as any[]).map((product: any) => (
               <div key={product.id} className="group cursor-pointer">
                 <div className="aspect-[3/4] bg-gray-900 mb-6 overflow-hidden relative">
                   <img

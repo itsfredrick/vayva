@@ -30,7 +30,7 @@ export function generateDefaultPolicies(
     returnsWindowDays = 7,
     refundWindowDays = 5,
     dispatchMode = "both",
-    partnerName = "Kwik",
+    partnerName: _partnerName = "Kwik",
   } = input;
 
   return [
@@ -316,20 +316,18 @@ If your location is not listed, contact us to check if we can deliver to you.
 
 ## Delivery Methods
 
-${
-  showSelfDispatch
-    ? `### Self-Dispatch
+${showSelfDispatch
+        ? `### Self-Dispatch
 We use our own riders for deliveries. This allows us to provide personalized service and ensure your order arrives safely.
 `
-    : ""
-}
-${
-  showPartner
-    ? `### Partner Delivery
+        : ""
+      }
+${showPartner
+        ? `### Partner Delivery
 We may use delivery partners like ${partnerName} where available. This helps us reach more locations and provide faster delivery.
 `
-    : ""
-}
+        : ""
+      }
 ### Customer Pickup
 You can also pick up your order from: ${pickupAddress}
 

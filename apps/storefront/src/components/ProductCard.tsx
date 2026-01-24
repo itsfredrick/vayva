@@ -1,6 +1,6 @@
 import React from "react";
 import NextLink from "next/link";
-const Link = NextLink as unknown;
+const Link = NextLink;
 import Image from "next/image";
 import { PublicProduct } from "@/types/storefront";
 import { useStore } from "@/context/StoreContext";
@@ -12,7 +12,7 @@ interface ProductCardProps {
   storeSlug: string;
 }
 
-export function ProductCard({ product, storeSlug }: ProductCardProps) {
+export function ProductCard({ product, storeSlug }: ProductCardProps): React.JSX.Element {
   const { store } = useStore();
   const industry = store?.industry || "RETAIL"; // Default to retail
 

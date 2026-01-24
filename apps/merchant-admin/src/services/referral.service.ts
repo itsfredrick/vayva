@@ -7,7 +7,7 @@ export class ReferralService {
     /**
      * Retrieves or generates a unique referral code for a store.
      */
-    static async getOrCreateCode(storeId: unknown) {
+    static async getOrCreateCode(storeId: any) {
         const store = await prisma.store.findUnique({
             where: { id: storeId },
             select: { settings: true }
@@ -30,7 +30,7 @@ export class ReferralService {
     /**
      * Fetches affiliate stats for a store.
      */
-    static async getStats(storeId: unknown) {
+    static async getStats(storeId: any) {
         const store = await prisma.store.findUnique({
             where: { id: storeId },
             select: { settings: true }
@@ -54,7 +54,7 @@ export class ReferralService {
                 orderBy: { createdAt: "desc" }
             })
         ]);
-        const totalEarned = credits.reduce((sum: unknown, c: unknown) => sum + Number(c.amount), 0);
+        const totalEarned = credits.reduce((sum: any, c: any) => sum + Number(c.amount), 0);
         return {
             referralCode,
             stats: {
@@ -73,7 +73,7 @@ export class ReferralService {
     /**
      * Records a new referral during onboarding.
      */
-    static async trackReferral(refereeStoreId: unknown, referralCode: unknown) {
+    static async trackReferral(refereeStoreId: any, referralCode: any) {
         const referrer = await prisma.store.findFirst({
             where: {
                 settings: {
@@ -99,7 +99,7 @@ export class ReferralService {
     /**
      * Triggers the reward logic when a referee makes their first payment.
      */
-    static async processRefereePayment(refereeStoreId: unknown) {
+    static async processRefereePayment(refereeStoreId: any) {
         const attribution = await prisma.referralAttribution.findUnique({
             where: { merchantId: refereeStoreId },
         });
@@ -126,11 +126,27 @@ export class ReferralService {
             },
         });
     }
-    static async generateCode(storeId: unknown) {
+    static async generateCode(storeId: any) {
         return this.getOrCreateCode(storeId);
     }
-    static async getMonthlyDiscount(storeId: unknown) {
-        // Stub implementation
-        return 0;
+    static async getMonthlyDiscount(storeId: any) {
+        // Real implementation: Count rewarded referrals for current month
+        const now = new Date();
+        const startOfMonth = new Date(now.getFullYear(), now.getMonth(), 1);
+
+        const rewardedReferrals = await prisma.referralAttribution.count({
+            where: {
+                metadata: {
+                    path: ["referrerStoreId"],
+                    equals: storeId
+                },
+                firstPaymentAt: {
+                    gte: startOfMonth
+                }
+            }
+        });
+
+        // Rule: 1,000 NGN discount per successful referral this month
+        return rewardedReferrals * 1000;
     }
 }

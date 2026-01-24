@@ -1,83 +1,85 @@
-import { NextRequest, NextResponse } from "next/server";
-import { prisma } from "@/lib/prisma";
+import { NextResponse } from "next/server";
 import { requireAuth } from "@/lib/auth/session";
-import { checkPermission } from "@/lib/team/rbac";
-import { PERMISSIONS } from "@/lib/team/permissions";
-import { logAuditEvent as logAudit, AuditEventType } from "@/lib/audit";
+import { prisma } from "@/lib/prisma";
+import { PaystackService } from "@/lib/payment/paystack";
+
 export async function GET() {
     try {
         const session = await requireAuth();
-        await checkPermission(PERMISSIONS.SETTINGS_VIEW);
         const storeId = session.user.storeId;
-        const accounts = await prisma.bankBeneficiary.findMany({
-            where: { storeId },
-            orderBy: { createdAt: "desc" },
+
+        const bankAccount = await prisma.bankBeneficiary.findFirst({
+            where: { storeId, isDefault: true },
         });
-        // Mask account numbers (show ONLY last 4)
-        const maskedAccounts = accounts.map((acc) => ({
-            id: acc.id,
-            bankName: acc.bankName,
-            accountNumber: `******${acc.accountNumber.slice(-4)}`,
-            accountName: acc.accountName,
-            isDefault: acc.isDefault,
-        }));
-        return NextResponse.json({ accounts: maskedAccounts });
+
+        if (!bankAccount) {
+            return NextResponse.json({});
+        }
+
+        return NextResponse.json({
+            bankName: bankAccount.bankName,
+            accountNumber: bankAccount.accountNumber,
+            accountName: bankAccount.accountName,
+            bankCode: bankAccount.bankCode
+        });
     }
-    catch (error) {
-        console.error("Bank fetch error:", error);
-        return NextResponse.json({ error: "Failed to fetch bank accounts" }, { status: 500 });
+    catch (error: any) {
+        console.error("Fetch bank error:", error);
+        return NextResponse.json({ error: "Failed to fetch bank account" }, { status: 500 });
     }
 }
-export async function POST(request: NextRequest) {
+
+export async function POST(request: Request) {
     try {
-        const { checkFeatureAccess } = await import("@/lib/auth/gating");
-        const access = await checkFeatureAccess("bank_settings");
-        if (!access.allowed) {
-            return NextResponse.json({
-                error: access.reason,
-                requiredAction: access.requiredAction,
-            }, { status: 403 });
-        }
         const session = await requireAuth();
-        await checkPermission(PERMISSIONS.PAYOUTS_MANAGE);
         const storeId = session.user.storeId;
+
+        const { checkFeatureAccess } = await import("@/lib/auth/gating");
+        const access = await checkFeatureAccess(storeId, "payouts");
+        if (!access.allowed) {
+            return NextResponse.json({ error: access.reason }, { status: 403 });
+        }
+
         const body = await request.json();
-        const { bankCode, bankName, accountNumber, accountName, isDefault } = body;
-        // Validation
-        if (!bankCode || !accountNumber || !accountName) {
-            return NextResponse.json({ error: "Missing required bank details" }, { status: 400 });
+        const { accountNumber, bankCode, bankName } = body;
+
+        if (!accountNumber || !bankCode) {
+            return NextResponse.json({ error: "Account number and bank code required" }, { status: 400 });
         }
-        if (accountNumber.length !== 10) {
-            return NextResponse.json({ error: "Account number must be 10 digits" }, { status: 400 });
+
+        // 1. Verify with Paystack
+        let resolvedAccount;
+        try {
+            resolvedAccount = await PaystackService.resolveAccount(accountNumber, bankCode);
+        } catch (e: any) {
+            console.error("Paystack resolution failed:", e.message);
+            return NextResponse.json({ error: "Could not verify account details. Please check the number and try again." }, { status: 400 });
         }
-        // Create or update beneficiary
-        const beneficiary = await prisma.$transaction(async (tx) => {
-            // If setting as default, unset others first
-            if (isDefault) {
-                await tx.bankBeneficiary.updateMany({
-                    where: { storeId, isDefault: true },
-                    data: { isDefault: false },
-                });
+
+        const verifiedAccountName = resolvedAccount.account_name;
+
+        // 2. Save to DB (BankBeneficiary)
+        // Deactivate others
+        await prisma.bankBeneficiary.updateMany({
+            where: { storeId, isDefault: true },
+            data: { isDefault: false }
+        });
+
+        const account = await prisma.bankBeneficiary.create({
+            data: {
+                storeId,
+                bankName: bankName || "Unknown Bank", // Paystack resolve doesn't return bank name usually, client should send it or we fetch from bank list
+                accountNumber,
+                accountName: verifiedAccountName,
+                bankCode,
+                isDefault: true
             }
-            return await tx.bankBeneficiary.create({
-                data: {
-                    storeId,
-                    bankCode,
-                    bankName: bankName || "Bank",
-                    accountNumber,
-                    accountName,
-                    isDefault: isDefault || false,
-                },
-            });
         });
-        await logAudit(storeId, session.user.id, AuditEventType.PAYOUT_SETTING_CHANGED, {
-            reason: "Payout destination changed",
-            after: { bankName, accountNumberLast4: accountNumber.slice(-4) },
-        });
-        return NextResponse.json({ success: true, beneficiary });
+
+        return NextResponse.json(account);
     }
-    catch (error) {
-        console.error("Bank update error:", error);
-        return NextResponse.json({ error: error.message || "Failed to update bank account" }, { status: 500 });
+    catch (error: any) {
+        console.error("Save bank error:", error);
+        return NextResponse.json({ error: "Failed to save bank account" }, { status: 500 });
     }
 }

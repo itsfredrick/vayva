@@ -3,7 +3,7 @@ import { requireAuth } from "@/lib/auth/session";
 import { randomUUID } from "crypto";
 import { validateUploadedFile, DEFAULT_IMAGE_MAX_SIZE } from "@/lib/file-validation";
 import { applyRateLimit, RATE_LIMITS } from "@/lib/rate-limit-enhanced";
-export async function POST(request: unknown) {
+export async function POST(request: Request) {
     try {
         // Apply rate limiting
         const rateLimitResult = await applyRateLimit(request, "branding-upload", RATE_LIMITS.FILE_UPLOAD);
@@ -28,15 +28,19 @@ export async function POST(request: unknown) {
                 code: validation.code
             }, { status: 400 });
         }
-        const file = validation.file;
-        // Security: Derive extension from MIME type, do NOT trust user input
-        const mimeMap = {
+        const file = (validation as any).file;
+        if (!file) {
+            return NextResponse.json({ error: "File not found" }, { status: 400 });
+        }
+        // Security: Derive extension from MIME type
+        const mimeMap: Record<string, string> = {
             "image/png": "png",
             "image/jpeg": "jpg",
             "image/jpg": "jpg",
             "image/webp": "webp"
         };
-        const ext = mimeMap[file.type] || "bin";
+        const contentType = (file as any).type || "image/png";
+        const ext = mimeMap[contentType] || "bin";
         const filename = `${storeId}-${randomUUID()}.${ext}`;
         let logoUrl = "";
         // Check if we should use Vercel Blob (Production) or local storage (Development)
@@ -56,7 +60,7 @@ export async function POST(request: unknown) {
             // Ensure directory exists
             await mkdir(uploadDir, { recursive: true });
             const filepath = join(uploadDir, filename);
-            const bytes = await file.arrayBuffer();
+            const bytes = await (file as any).arrayBuffer();
             const buffer = Buffer.from(bytes);
             await writeFile(filepath, buffer);
             logoUrl = `/uploads/logos/${filename}`;
@@ -73,7 +77,7 @@ export async function POST(request: unknown) {
             message: "Logo uploaded successfully",
         });
     }
-    catch (error) {
+    catch (error: any) {
         console.error("Logo upload error:", error);
         if (error.message === "Unauthorized") {
             return NextResponse.json({ error: "Unauthorized" }, { status: 401 });

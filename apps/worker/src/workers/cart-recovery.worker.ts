@@ -42,7 +42,7 @@ export const cartRecoveryWorker = new Worker(
 
             for (const cart of staleCarts) {
                 // Check for automation rule (Optional: could enforce global rule here)
-                const storeId = "GLOBAL"; // Or resolve from cart if we had store context. Assuming single-tenant or store-aware later.
+                const _storeId = "GLOBAL"; // Or resolve from cart if we had store context. Assuming single-tenant or store-aware later.
                 // For now, Vayva Platform logic:
 
                 if (cart.phone) {

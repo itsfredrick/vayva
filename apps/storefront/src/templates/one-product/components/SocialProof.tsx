@@ -5,7 +5,7 @@ interface SocialProofProps {
   testimonials: { name: string; text: string; rating: number }[];
 }
 
-export const SocialProof = ({ testimonials }: SocialProofProps) => {
+export const SocialProof = ({ testimonials }: SocialProofProps): React.JSX.Element => {
   return (
     <section id="reviews" className="py-20 bg-white border-t border-gray-100">
       <div className="max-w-6xl mx-auto px-6">

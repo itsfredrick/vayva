@@ -8,12 +8,12 @@ import NextLink from "next/link";
 import { CheckCircle, ShoppingBag, ArrowRight } from "lucide-react";
 import { motion } from "framer-motion";
 
-const Link = NextLink as unknown;
+const Link = NextLink as any;
 
-export default function OrderSuccessPage() {
+export default function OrderSuccessPage(): React.JSX.Element {
   const { store } = useStore();
 
-  if (!store) return null;
+  if (!store) return <></>;
 
   return (
     <StoreShell>
@@ -84,6 +84,12 @@ export default function OrderSuccessPage() {
             </Button>
           </Link>
         </motion.div>
+        <div className="mt-12 pt-8 border-t border-gray-100 flex flex-col items-center gap-2">
+          <p className="text-xs text-gray-500">Powered by Vayva eCommerce</p>
+          <a href="https://vayva.ng/start" className="text-xs font-bold text-blue-600 hover:underline">
+            Run your own business? Start for free.
+          </a>
+        </div>
       </div>
     </StoreShell>
   );

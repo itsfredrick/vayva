@@ -1,5 +1,5 @@
 
-import { NextResponse } from "next/server";
+import { NextResponse } from 'next/server';
 import { prisma } from "@vayva/db";
 import { OpsAuthService } from "@/lib/ops-auth";
 import crypto from "crypto";
@@ -66,10 +66,10 @@ export async function POST(
         return NextResponse.json({
             success: true,
             token,
-            redirectUrl: process.env.NEXT_PUBLIC_APP_URL || "https://app.vayva.ng"
+            redirectUrl: process.env.NEXT_PUBLIC_APP_URL || "https://(app as any).vayva.ng"
         });
 
-    } catch (error) {
+    } catch (error: any) {
         console.error("Impersonation Error:", error);
         return NextResponse.json(
             { error: "Internal Server Error" },

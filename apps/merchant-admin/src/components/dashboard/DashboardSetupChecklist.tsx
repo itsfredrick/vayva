@@ -45,7 +45,7 @@ export function DashboardSetupChecklist() {
           const json = await res.json();
           setActivation(json.data || {});
         }
-      } catch (e) {
+      } catch (e: any) {
         console.error(e);
       } finally {
         setLoading(false);
@@ -194,7 +194,7 @@ export function DashboardSetupChecklist() {
       <div className={cn("h-full rounded-full", styles.progressBar, progressClass)} />
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-4">
-        {items.map((item) => (
+        {items.map((item: any) => (
           <div
             key={item.id}
             onClick={() => {

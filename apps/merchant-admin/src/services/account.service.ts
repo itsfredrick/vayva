@@ -1,3 +1,4 @@
+import { prisma } from "@vayva/db";
 import {
     UserProfile,
     StoreProfile,
@@ -7,104 +8,128 @@ import {
     NotificationSettings
 } from "@/types/account";
 
-// Test Data
-let profile: UserProfile = {
-    firstName: "Fredrick",
-    lastName: "Admin",
-    email: "fredrick@vayva.shop",
-    phone: "+234 800 000 0000",
-};
-let store: StoreProfile = {
-    name: "Fredrick Store",
-    category: "Fashion",
-    slug: "fredrick-store",
-    address: "123 Lagos Way",
-    city: "Lekki",
-    state: "Lagos",
-    isPublished: false,
-};
-let staff: StaffMember[] = [
-    {
-        id: "1",
-        name: "Fredrick Admin",
-        email: "fredrick@vayva.shop",
-        role: "admin",
-        status: "active",
-        joinedAt: new Date().toISOString(),
-    },
-];
-let kyc: KYCState = {
-    status: "not_started",
-};
-const security: SecurityState = {
-    lastPasswordChange: new Date(Date.now() - 1000 * 60 * 60 * 24 * 30).toISOString(), // 30 days ago
-    twoFactorEnabled: false,
-    walletPinSet: false,
-    activeSessions: [
-        {
-            id: "sess_1",
-            device: "MacBook Pro (Chrome)",
-            location: "Lagos, NG",
-            lastActive: "Just now",
-            isCurrent: true,
-        },
-    ],
-};
-let notifications: NotificationSettings = {
-    email: {
-        orders: true,
-        payouts: true,
-        waApprovals: true,
-        lowStock: false,
-    },
-    whatsapp: {
-        orders: false,
-        payouts: false,
-    },
-};
+/**
+ * Service to handle merchant account details, security, and staff management.
+ * Now fully database-backed via Prisma.
+ */
 export const AccountService = {
-    getProfile: async (): Promise<UserProfile> => {
-        return profile;
+    getProfile: async (userId: string): Promise<UserProfile | null> => {
+        const user = await prisma.user.findUnique({
+            where: { id: userId },
+            select: { firstName: true, lastName: true, email: true, phone: true, avatarUrl: true }
+        });
+        if (!user) return null;
+        return {
+            firstName: user.firstName || "",
+            lastName: user.lastName || "",
+            email: user.email,
+            phone: user.phone || "",
+            avatarUrl: user.avatarUrl || undefined
+        };
     },
-    updateProfile: async (data: Partial<UserProfile>) => {
-        profile = { ...profile, ...data };
-    },
-    getStoreProfile: async (): Promise<StoreProfile> => {
-        return store;
-    },
-    updateStoreProfile: async (data: Partial<StoreProfile>) => {
-        store = { ...store, ...data };
-    },
-    getStaff: async (): Promise<StaffMember[]> => {
-        return staff;
-    },
-    inviteStaff: async (email: string, role: string) => {
-        staff.push({
-            id: Math.random().toString(36).substr(2, 9),
-            name: email.split("@")[0],
-            email,
-            role: role,
-            status: "invited",
-            joinedAt: new Date().toISOString(),
+
+    updateProfile: async (userId: string, data: Partial<UserProfile>) => {
+        await prisma.user.update({
+            where: { id: userId },
+            data: {
+                firstName: data.firstName,
+                lastName: data.lastName,
+                phone: data.phone,
+                avatarUrl: data.avatarUrl
+            }
         });
     },
-    removeStaff: async (id: string) => {
-        staff = staff.filter((s) => s.id !== id);
+
+    getStoreProfile: async (storeId: string): Promise<StoreProfile | null> => {
+        const [store, profile] = await Promise.all([
+            prisma.store.findUnique({
+                where: { id: storeId }
+            }),
+            prisma.storeProfile.findUnique({
+                where: { storeId }
+            })
+        ]);
+
+        if (!store) return null;
+
+        return {
+            name: store.name,
+            category: store.category,
+            slug: store.slug,
+            address: profile?.pickupAddress || "", // fallback or specific field
+            city: profile?.city || "",
+            state: profile?.state || "",
+            isPublished: store.isLive,
+            logoUrl: store.logoUrl || undefined
+        };
     },
-    getKycStatus: async (): Promise<KYCState> => {
-        return kyc;
+
+    updateStoreProfile: async (storeId: string, data: Partial<StoreProfile>) => {
+        await prisma.store.update({
+            where: { id: storeId },
+            data: {
+                name: data.name,
+                category: data.category,
+                logoUrl: data.logoUrl,
+                isLive: data.isPublished
+            }
+        });
     },
-    submitKyc: async (data: Partial<KYCState>) => {
-        kyc = { ...kyc, status: "pending", ...data };
+
+    getStaff: async (storeId: string): Promise<StaffMember[]> => {
+        const memberships = await prisma.membership.findMany({
+            where: { storeId },
+            include: { user: true }
+        });
+        return memberships.map(m => ({
+            id: m.id,
+            name: `${m.user.firstName || ""} ${m.user.lastName || ""}`.trim() || m.user.email,
+            email: m.user.email,
+            role: m.role_enum,
+            status: m.status === "ACTIVE" ? "active" : "invited",
+            joinedAt: m.createdAt.toISOString()
+        })) as StaffMember[];
     },
-    getSecurityState: async (): Promise<SecurityState> => {
-        // Test linking verified KYC to simulate PIN prompt requirement if needed
-        return security;
+
+    getKycStatus: async (storeId: string): Promise<KYCState> => {
+        const kyc = await prisma.kycRecord.findUnique({
+            where: { storeId }
+        });
+        return {
+            status: kyc?.status || "NOT_STARTED",
+            submittedAt: kyc?.createdAt?.toISOString()
+        };
     },
-    getNotifications: async (): Promise<NotificationSettings> => {
-        return notifications;
+
+    getSecurityState: async (storeId: string): Promise<SecurityState> => {
+        const wallet = await prisma.wallet.findUnique({
+            where: { storeId }
+        });
+        return {
+            lastPasswordChange: new Date().toISOString(),
+            twoFactorEnabled: wallet?.twoFactorEnabled || false,
+            walletPinSet: wallet?.pinSet || false,
+            activeSessions: []
+        };
     },
-    updateNotifications: async (data: Partial<NotificationSettings>) => {
-        notifications = { ...notifications, ...data };
-    },
+
+    getNotifications: async (storeId: string): Promise<NotificationSettings> => {
+        const store = await prisma.store.findUnique({
+            where: { id: storeId },
+            select: { settings: true }
+        });
+        const settings = (store?.settings as any)?.notifications || {};
+        return {
+            email: {
+                orders: settings.emailOrders ?? true,
+                payouts: settings.emailPayouts ?? true,
+                waApprovals: settings.emailApprovals ?? true,
+                lowStock: settings.emailLowStock ?? false,
+            },
+            whatsapp: {
+                orders: settings.waOrders ?? false,
+                payouts: settings.waPayouts ?? false,
+            },
+        };
+    }
 };

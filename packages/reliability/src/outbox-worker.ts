@@ -20,13 +20,15 @@ export class OutboxWorker {
   static async processEvent(event: unknown) {
     // Mark as processing
     await prisma.outboxEvent.update({
-      where: { id: event.id },
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      where: { id: (event as any).id },
       data: { status: "PROCESSING" },
     });
 
     try {
       // Route to appropriate handler based on type
-      switch (event.type) {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      switch ((event as any).type) {
         case "whatsapp.send":
           // await WhatsAppService.send(event.payload);
           break;
@@ -37,19 +39,22 @@ export class OutboxWorker {
           // await NotificationService.send(event.payload);
           break;
         default:
-          console.warn(`Unknown outbox event type: ${event.type}`);
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          console.warn(`Unknown outbox event type: ${(event as any).type}`);
       }
 
       // Mark as processed
       await prisma.outboxEvent.update({
-        where: { id: event.id },
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        where: { id: (event as any).id },
         data: { status: "PROCESSED" },
       });
-    } catch (_error) {
+    } catch {
       // Mark as failed and schedule retry
       const nextRetryAt = new Date(Date.now() + 60000); // 1 minute
       await prisma.outboxEvent.update({
-        where: { id: event.id },
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        where: { id: (event as any).id },
         data: {
           status: "FAILED",
           nextRetryAt,

@@ -35,7 +35,7 @@ export function QuickBitesFood({
   bannerTitle = "Get 20% off your first order!",
   bannerCode = "VAYVA20",
   bannerDiscount = "20%",
-}: QuickBitesFoodProps) {
+}: QuickBitesFoodProps): React.JSX.Element {
   const { store } = useStorefrontStore(storeSlug);
   const { products, isLoading } = useStorefrontProducts(storeSlug, {
     limit: 100,
@@ -59,7 +59,7 @@ export function QuickBitesFood({
   const [selectedCategory, setSelectedCategory] = useState("All");
 
   const categories = useMemo(() => {
-    const unique = new Set(products.map((p) => p.category || "Popular"));
+    const unique = new Set(products.map((p: any) => p.category || "Popular"));
     return ["All", ...Array.from(unique)];
   }, [products]);
 
@@ -97,7 +97,7 @@ export function QuickBitesFood({
             <div className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-4 px-2">
               Menu
             </div>
-            {categories.map((cat) => (
+            {categories.map((cat: any) => (
               <Button
                 key={cat}
                 variant={selectedCategory === cat ? "primary" : "ghost"}
@@ -135,7 +135,7 @@ export function QuickBitesFood({
               <Button variant="ghost" size="icon" onClick={() => setIsMobileMenuOpen(false)} aria-label="Close mobile menu"><X className="w-5 h-5" /></Button>
             </div>
             <nav className="space-y-2">
-              {categories.map((cat) => (
+              {categories.map((cat: any) => (
                 <Button
                   key={cat}
                   variant={selectedCategory === cat ? "primary" : "ghost"}
@@ -217,7 +217,7 @@ export function QuickBitesFood({
             </div>
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 pb-20">
-              {filteredProducts.map((p) => (
+              {filteredProducts.map((p: any) => (
                 <div
                   key={p.id}
                   className="bg-white p-4 rounded-2xl border border-gray-100 hover:shadow-lg transition-all group cursor-pointer hover:-translate-y-1"
@@ -286,7 +286,7 @@ export function QuickBitesFood({
               <p>Your plate is empty</p>
             </div>
           ) : (
-            cart.map((item) => (
+            cart.map((item: any) => (
               <div key={item.id} className="flex gap-4 items-center animate-in slide-in-from-right-2">
                 <div className="w-12 h-12 bg-gray-100 rounded-lg overflow-hidden flex-shrink-0">
                   {item.image && (

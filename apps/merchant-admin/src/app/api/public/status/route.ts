@@ -12,7 +12,7 @@ export async function GET() {
             },
         });
     }
-    catch (error) {
+    catch (error: any) {
         console.error("Public Status fetch error:", error);
         return NextResponse.json({ error: "Status engine unavailable" }, { status: 500 });
     }

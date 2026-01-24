@@ -1,15 +1,15 @@
-import { prisma } from "@vayva/db";
+import { _prisma } from "@vayva/db";
 
-export async function checkIdempotency(key: string, tenantId: string) {
+export async function checkIdempotency(_key: string, _tenantId: string) {
   // Pending implementation
   // Check Redis or DB for existing processed event
   return false;
 }
 
 export async function recordIdempotency(
-  key: string,
-  tenantId: string,
-  result: unknown,
+  _key: string,
+  _tenantId: string,
+  _result: unknown,
 ) {
   // Pending implementation
 }

@@ -43,14 +43,14 @@ export const DisputeList = ({ disputes, isLoading }: DisputeListProps) => {
       </div>
 
       <div className="space-y-3">
-        {disputes.map((disp) => (
+        {disputes.map((disp: any) => (
           <div
             key={disp.id}
             className="bg-white border border-red-100 rounded-xl p-4 flex flex-col md:flex-row md:items-center justify-between gap-4 shadow-sm hover:shadow-md transition-shadow"
           >
             <div className="flex items-start gap-3">
               <div className="w-10 h-10 bg-gray-100 rounded-full flex items-center justify-center text-gray-500 shrink-0">
-                <Icon name={"AlertTriangle" as unknown} size={20} />
+                <Icon name={"AlertTriangle" as any} size={20} />
               </div>
               <div>
                 <div className="flex items-center gap-2 mb-1">

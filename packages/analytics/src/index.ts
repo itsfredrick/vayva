@@ -8,12 +8,11 @@ export interface AnalyticsEvent {
 export const AnalyticsProvider = {
     track: (event: AnalyticsEvent) => {
         if (typeof window !== 'undefined') {
-            console.log(`[Analytics] ${event.eventName}`, event);
             // Todo: Send to backend / Mixpanel / PostHog
         }
     },
 
-    identify: (userId: string, traits?: unknown) => {
-        console.log(`[Analytics] Identify ${userId}`, traits);
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    identify: (userId: string, traits?: any) => {
     }
 };

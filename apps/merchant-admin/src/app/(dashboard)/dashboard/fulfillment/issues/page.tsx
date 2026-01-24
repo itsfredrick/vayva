@@ -41,7 +41,7 @@ export default function DeliveryIssuesPage() {
             if (!res.ok) throw new Error("Failed to load delivery issues");
             const result = await res.json();
             setIssues(result.data || []);
-        } catch (error) {
+        } catch (error: any) {
             console.error(error);
             toast.error("Could not load delivery issues");
         } finally {
@@ -90,9 +90,9 @@ export default function DeliveryIssuesPage() {
             if (!res.ok) throw new Error("Failed to create ticket");
 
             toast.success("Support call request submitted", { id: toastId });
-        } catch (error) {
+        } catch (error: any) {
             console.error(error);
-            toast.error(error.message || `Failed to initiate ${action}`, { id: toastId });
+            toast.error((error as any).message || `Failed to initiate ${action}`, { id: toastId });
         }
     };
 
@@ -143,9 +143,9 @@ export default function DeliveryIssuesPage() {
 
             toast.success("Evidence submitted successfully", { id: toastId });
             setIsEvidenceOpen(false);
-        } catch (error) {
+        } catch (error: any) {
             console.error(error);
-            toast.error(error.message || "Failed to submit evidence", { id: toastId });
+            toast.error((error as any).message || "Failed to submit evidence", { id: toastId });
         } finally {
             setIsSubmitting(false);
         }
@@ -186,7 +186,7 @@ export default function DeliveryIssuesPage() {
                                 </tr>
                             </thead>
                             <tbody className="divide-y divide-slate-100">
-                                {issues.map((shipment) => (
+                                {issues.map((shipment: any) => (
                                     <tr key={shipment.id} className="hover:bg-slate-50/50 group">
                                         <td className="px-6 py-4">
                                             <Link href={`/dashboard/orders/${shipment.orderId}`} className="font-medium text-indigo-600 hover:underline">
@@ -261,8 +261,8 @@ export default function DeliveryIssuesPage() {
                             <textarea
                                 className="flex min-h-[80px] w-full rounded-md border border-slate-200 bg-white px-3 py-2 text-sm ring-offset-white placeholder:text-slate-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-600 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
                                 placeholder="Describe the evidence..."
-                                value={evidenceNote}
-                                onChange={(e) => setEvidenceNote(e.target.value)}
+                                value={(evidenceNote as any)}
+                                onChange={(e: any) => setEvidenceNote(e.target.value)}
                             />
                         </div>
                         <div className="grid gap-2">
@@ -273,7 +273,7 @@ export default function DeliveryIssuesPage() {
                                 accept="image/*,.pdf"
                                 title="Upload Evidence"
                                 aria-label="Upload Evidence"
-                                onChange={(e) => setEvidenceFile(e.target.files?.[0] || null)}
+                                onChange={(e: any) => setEvidenceFile(e.target.files?.[0] || null)}
                                 className="block w-full text-sm text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-indigo-50 file:text-indigo-700 hover:file:bg-indigo-100"
                             />
                         </div>

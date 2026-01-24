@@ -1,6 +1,6 @@
 
 import { useQuery, UseQueryOptions } from "@tanstack/react-query";
-import { toast } from "sonner";
+import { toast } from 'sonner';
 
 export function useOpsQuery<T>(
     queryKey: string[],
@@ -12,7 +12,7 @@ export function useOpsQuery<T>(
         queryFn: async () => {
             try {
                 return await fetcher();
-            } catch (error) {
+            } catch (error: any) {
                 toast.error("Data Fetch Error", {
                     description: error.message || "Something went wrong while fetching data.",
                 });

@@ -25,7 +25,7 @@ export default function SettingsPage() {
             });
             if (!res.ok) throw new Error("Failed to save");
             // toast.success("Settings saved");
-        } catch (error) {
+        } catch (error: any) {
             console.error(error);
             // toast.error("Failed to save");
         } finally {
@@ -73,8 +73,8 @@ export default function SettingsPage() {
                         <Input
                             id="store-name"
                             placeholder="Enter your store name"
-                            value={name}
-                            onChange={(e: unknown) => setName(e.target.value)}
+                            value={(name as any)}
+                            onChange={(e: any) => setName(e.target.value)}
                         />
                         <p className="text-xs text-gray-500">This is visible to your customers.</p>
                     </div>
@@ -84,8 +84,8 @@ export default function SettingsPage() {
                         <Input
                             id="support-email"
                             placeholder="support@yourstore.com"
-                            value={email}
-                            onChange={(e: unknown) => setEmail(e.target.value)}
+                            value={(email as any)}
+                            onChange={(e: any) => setEmail(e.target.value)}
                         />
                         <p className="text-xs text-gray-500">Where customers can reach you.</p>
                     </div>
@@ -95,8 +95,8 @@ export default function SettingsPage() {
                         <select
                             id="category"
                             className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
-                            value={category}
-                            onChange={(e) => setCategory(e.target.value)}
+                            value={(category as any)}
+                            onChange={(e: any) => setCategory(e.target.value)}
                             aria-label="Select Business Category"
                         >
                             <option value="retail">Retail</option>

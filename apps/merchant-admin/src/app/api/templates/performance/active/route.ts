@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-export async function GET(request: unknown) {
+export async function GET(request: Request) {
     // Simulate real data processing
     return NextResponse.json({
         template_id: "tmpl_retail_simple",

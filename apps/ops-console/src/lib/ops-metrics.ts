@@ -56,10 +56,10 @@ export async function getDashboardMetrics(): Promise<DashboardMetrics> {
     prisma.order.aggregate({
       where: {
         createdAt: { gte: oneDayAgo },
-        status: { in: ["PAID", "COMPLETED"] as unknown}
+        status: { in: ["PAID", "COMPLETED"] as any }
       },
       _sum: { total: true }
-    }).then(res => Number(res._sum.total || 0)),
+    }).then(res => Number((res as any)._sum?.total || 0)),
 
     prisma.charge.count({
       where: { status: "SUCCESS", createdAt: { gte: oneDayAgo } }
@@ -99,22 +99,22 @@ export async function getDashboardMetrics(): Promise<DashboardMetrics> {
 
   return {
     overview: {
-      orders24h: orders24h as unknown,
-      grossSales24h: grossSales24h as unknown,
-      paymentsSuccess24h: paymentsSuccess24h as unknown,
-      paymentsFailed24h: paymentsFailed24h as unknown,
-      activeDispatchJobs: activeDispatchJobs as unknown,
-      appDownloads: 0, // Metric not yet tracked
+      orders24h: orders24h as any,
+      grossSales24h: grossSales24h as any,
+      paymentsSuccess24h: paymentsSuccess24h as any,
+      paymentsFailed24h: paymentsFailed24h as any,
+      activeDispatchJobs: activeDispatchJobs as any,
+      appDownloads: 0,
     },
     growth: {
-      totalMerchants: totalMerchants as unknown,
-      newMerchants7d: newMerchants7d as unknown,
-      activeStores24h: activeStores24h as unknown,
+      totalMerchants: totalMerchants as any,
+      newMerchants7d: newMerchants7d as any,
+      activeStores24h: activeStores24h as any,
     },
     exceptions: {
-      stuckOrdersCount: stuckOrdersCount as unknown,
-      failedWebhooks24h: failedWebhooks24h as unknown,
-      disputesOpen: disputesOpen as unknown,
+      stuckOrdersCount: stuckOrdersCount as any,
+      failedWebhooks24h: failedWebhooks24h as any,
+      disputesOpen: disputesOpen as any,
     },
     health: {
       paystack: "OPERATIONAL",

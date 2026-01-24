@@ -10,7 +10,7 @@ interface ProductGridProps {
   loading?: boolean;
 }
 
-export const ProductGrid = ({ products, storeSlug, loading }: ProductGridProps) => {
+export const ProductGrid = ({ products, storeSlug, loading }: ProductGridProps): React.JSX.Element => {
   if (loading) {
     return (
       <div className="grid grid-cols-2 gap-x-4 gap-y-8 px-4">
@@ -27,7 +27,7 @@ export const ProductGrid = ({ products, storeSlug, loading }: ProductGridProps) 
 
   return (
     <div className="grid grid-cols-2 gap-x-4 gap-y-8 px-4">
-      {products.map((product) => (
+      {products.map((product: any) => (
         <ProductCard key={product.id} product={product} storeSlug={storeSlug} />
       ))}
     </div>

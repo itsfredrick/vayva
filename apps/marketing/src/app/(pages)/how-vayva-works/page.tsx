@@ -12,7 +12,7 @@ export const metadata = {
     "Learn how Vayva turns your WhatsApp conversations into a structured business engine in 5 simple steps.",
 };
 
-export default function HowItWorksPage() {
+export default function HowItWorksPage(): React.JSX.Element {
   return (
     <div className="min-h-screen bg-white">
       {/* Section 1: Hero */}

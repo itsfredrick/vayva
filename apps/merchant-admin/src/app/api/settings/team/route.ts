@@ -24,10 +24,10 @@ export async function GET(req: NextRequest) {
             where: { id: session.user.storeId },
             select: { settings: true }
         });
-        const settings: unknown= store?.settings || {};
+        const settings: any= store?.settings || {};
         const invites = settings.invites || [];
         return NextResponse.json({
-            members: memberships.map((m: unknown) => ({
+            members: memberships.map((m: any) => ({
                 id: m.id,
                 userId: m.userId,
                 name: `${m.user.firstName || ''} ${m.user.lastName || ''}`.trim() || m.user.email,
@@ -39,7 +39,7 @@ export async function GET(req: NextRequest) {
             invites: invites
         });
     }
-    catch (error) {
+    catch (error: any) {
         console.error("Team Fetch Error:", error);
         return NextResponse.json({ error: "Failed to fetch team" }, { status: 500 });
     }
@@ -63,7 +63,7 @@ export async function DELETE(req: NextRequest) {
         });
         return NextResponse.json({ success: true });
     }
-    catch (error) {
+    catch (error: any) {
         return NextResponse.json({ error: "Failed to remove member" }, { status: 500 });
     }
 }

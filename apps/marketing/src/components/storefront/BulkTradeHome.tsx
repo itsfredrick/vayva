@@ -13,7 +13,7 @@ interface BulkTradeHomeProps {
 export default function BulkTradeHome({
     storeName: initialStoreName,
     storeSlug,
-}: BulkTradeHomeProps) {
+}: BulkTradeHomeProps): React.JSX.Element {
     const { store } = useStorefrontStore(storeSlug);
     const displayName = store?.name || initialStoreName || "Global Trade Co.";
 

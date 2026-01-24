@@ -107,7 +107,7 @@ export function StandardRetailHome({
           </div>
         ) : (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
-            {products.map((product) => (
+            {products.map((product: any) => (
               <div key={product.id} className="group cursor-pointer">
                 <div className="aspect-square bg-gray-100 rounded-2xl mb-4 overflow-hidden relative">
                   <img

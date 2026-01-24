@@ -1,3 +1,4 @@
+import React from "react";
 import { MarketingHeader } from "@/components/marketing/marketing-header";
 import { MarketingFooter } from "@/components/marketing/marketing-footer";
 import { MarketingShell } from "@/components/marketing/marketing-shell";
@@ -19,7 +20,7 @@ export default function MarketingLayout({
   children,
 }: {
   children: React.ReactNode;
-}) {
+}): React.JSX.Element {
   return (
     <MarketingShell>
       <DownloadModalProvider>

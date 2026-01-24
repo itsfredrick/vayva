@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { getServerSession } from "next-auth";
 import { prisma } from "@/lib/prisma";
-export async function POST(req: unknown) {
+export async function POST(req: any) {
     try {
         const session = await getServerSession();
         if (!session?.user?.storeId) {
@@ -27,7 +27,7 @@ export async function POST(req: unknown) {
             "SHIPPING_DELIVERY",
         ];
         const today = new Date().toISOString().split("T")[0]; // YYYY-MM-DD
-        await prisma.$transaction(policyTypes.map((type: unknown) => prisma.merchantPolicy.updateMany({
+        await prisma.$transaction(policyTypes.map((type: any) => prisma.merchantPolicy.updateMany({
             where: {
                 storeId: session.user.storeId,
                 type: type,
@@ -41,7 +41,7 @@ export async function POST(req: unknown) {
         })));
         return NextResponse.json({ ok: true, publishedCount: 5 });
     }
-    catch (error) {
+    catch (error: any) {
         console.error("Error publishing policies:", error);
         return NextResponse.json({ error: "Internal server error" }, { status: 500 });
     }

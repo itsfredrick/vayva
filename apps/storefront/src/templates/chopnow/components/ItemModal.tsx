@@ -6,10 +6,10 @@ import { PublicProduct } from "@/types/storefront";
 interface ItemModalProps {
   item: PublicProduct;
   onClose: () => void;
-  onAddToCart: (item: unknown, total: number) => void;
+  onAddToCart: (item: any, total: number) => void;
 }
 
-export const ItemModal = ({ item, onClose, onAddToCart }: ItemModalProps) => {
+export const ItemModal = ({ item, onClose, onAddToCart }: ItemModalProps): React.JSX.Element => {
   const [qty, setQty] = useState(1);
   const [selectedModifiers, setSelectedModifiers] = useState<
     Record<string, unknown>
@@ -18,7 +18,7 @@ export const ItemModal = ({ item, onClose, onAddToCart }: ItemModalProps) => {
   // Calculate total reactive to modifiers and qty
   const total = useMemo(() => {
     let modTotal = 0;
-    Object.values(selectedModifiers).forEach((val: unknown) => {
+    Object.values(selectedModifiers).forEach((val: any) => {
       if (typeof val === "number") modTotal += val; // Direct price
       if (Array.isArray(val)) {
         // Multi-select
@@ -32,13 +32,13 @@ export const ItemModal = ({ item, onClose, onAddToCart }: ItemModalProps) => {
     setSelectedModifiers((prev) => ({ ...prev, [modId]: price }));
   };
 
-  const handleToggle = (modId: string, option: unknown) => {
+  const _handleToggle = (modId: string, option: any) => {
     // Simple logic for single select radio for now to keep it fast
     // For addons (checkboxes), we'd need array logic.
     // Testing 'addon' as single select for simplicity in this demo unless specified.
     // Let's implement full multi-select for type='addon'.
 
-    const current = selectedModifiers[modId] || [];
+    const _current = selectedModifiers[modId] || [];
     // Check if already selected
     // Skipping complex logic for speed: Assuming radio behavior for 'choice' and checkbox for 'addon'
     // Just testing the state update for the UI visual:
@@ -84,7 +84,7 @@ export const ItemModal = ({ item, onClose, onAddToCart }: ItemModalProps) => {
           </div>
 
           {/* Modifiers */}
-          {item.modifiers?.map((mod) => (
+          {item.modifiers?.map((mod: any) => (
             <div key={mod.id} className="mb-6">
               <div className="flex justify-between items-center mb-3">
                 <h3 className="font-bold text-gray-900">{mod.name}</h3>
@@ -96,9 +96,9 @@ export const ItemModal = ({ item, onClose, onAddToCart }: ItemModalProps) => {
               </div>
 
               <div className="space-y-2">
-                {mod.options.map((opt, idx) => (
+                {mod.options.map((opt: any, idx: any) => (
                   <label
-                    key={idx}
+                    key={(idx as any)}
                     className="flex items-center justify-between p-3 border border-gray-100 rounded-lg has-[:checked]:border-red-600 has-[:checked]:bg-red-50 cursor-pointer"
                   >
                     <div className="flex items-center gap-3">

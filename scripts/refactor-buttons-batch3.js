@@ -17,7 +17,7 @@ const getFilesWithButtons = () => {
             { encoding: 'utf8', cwd: process.cwd() }
         );
         return output.trim().split('\n').filter(Boolean);
-    } catch (error) {
+    } catch (_error) {
         return [];
     }
 };
@@ -74,7 +74,7 @@ function refactorFile(filePath) {
     content = content.replace(/<\/button>/g, '</Button>');
 
     // Count buttons after
-    const buttonsAfter = (content.match(/<Button/g) || []).length;
+    const _buttonsAfter = (content.match(/<Button/g) || []).length;
 
     if (content !== originalContent) {
         fs.writeFileSync(fullPath, content, 'utf8');

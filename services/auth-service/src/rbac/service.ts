@@ -122,15 +122,16 @@ export const PermissionGuard = {
     if (!member) return false;
 
     // Owner Override (Legacy Enum or System Role)
-    if ((member as unknown).role_enum === "OWNER") return true;
+    if ((member as unknown as { role_enum: string }).role_enum === "OWNER") return true;
 
     // Check Role Relation permissions
     if (member.role) {
       // System Role super-admin check?
       if (member.role.name === "Owner") return true;
 
-      const hasPerm = (member.role as unknown).rolePermissions.some(
-        (rp: unknown) => rp.permission.key === requiredPermission,
+      const roleWithPerms = member.role as unknown as { rolePermissions: Array<{ permission: { key: string } }> };
+      const hasPerm = roleWithPerms.rolePermissions.some(
+        (rp) => rp.permission.key === requiredPermission,
       );
       if (hasPerm) return true;
     }

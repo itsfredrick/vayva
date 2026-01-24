@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import { getSessionUser } from "@/lib/session";
 import { prisma } from "@/lib/prisma";
 // GET /api/merchant/onboarding/products - count products for onboarding checks
-export async function GET(_req: unknown) {
+export async function GET(_req: any) {
     try {
         const sessionUser = await getSessionUser();
         if (!sessionUser) {
@@ -13,7 +13,7 @@ export async function GET(_req: unknown) {
         });
         return NextResponse.json({ count });
     }
-    catch (error) {
+    catch (error: any) {
         console.error("Product count check failed", error);
         return NextResponse.json({ error: "Failed to count products" }, { status: 500 });
     }

@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { PaystackService } from "@/services/PaystackService";
 // POST /api/payments/resolve-account
-export async function POST(request: unknown) {
+export async function POST(request: Request) {
     try {
         const body = await request.json();
         const { accountNumber, bankCode } = body || {};
@@ -11,7 +11,7 @@ export async function POST(request: unknown) {
         const data = await PaystackService.resolveBankAccount(accountNumber, bankCode);
         return NextResponse.json({ data });
     }
-    catch (error) {
+    catch (error: any) {
         console.error("Resolve account error:", error);
         return NextResponse.json({ error: error?.message || "Failed to resolve account" }, { status: 400 });
     }

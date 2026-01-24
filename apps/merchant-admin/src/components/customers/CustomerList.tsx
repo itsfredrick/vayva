@@ -142,7 +142,7 @@ export const CustomerList = ({
   return (
     <div className="bg-white border border-gray-200 rounded-2xl overflow-hidden shadow-sm">
       <ResponsiveTable
-        data={customers}
+        data={customers as any[]}
         columns={columns}
         keyExtractor={(customer) => customer.id}
         onRowClick={onSelectCustomer}

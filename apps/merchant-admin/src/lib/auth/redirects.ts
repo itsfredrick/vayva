@@ -7,7 +7,7 @@ import { OnboardingStatus } from "@vayva/shared";
  * 2. Onboarding Completion (Merchant.onboardingStatus)
  * 3. Dashboard
  */
-export const getAuthRedirect = (user: unknown, merchant: unknown) => {
+export const getAuthRedirect = (user: any, merchant: any) => {
     // 1. Email Verification
     if (!user.emailVerified) {
         return `/verify?email=${encodeURIComponent(user.email)}`;

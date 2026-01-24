@@ -108,7 +108,7 @@ export function BloomeHome({
                   </Button>
                 </div>
               ) : (
-                cart.map((item) => (
+                cart.map((item: any) => (
                   <div key={item.id} className="flex gap-6">
                     <div className="w-24 h-32 bg-[#E7E5E4] flex-shrink-0">
                       {item.image && (
@@ -212,7 +212,7 @@ export function BloomeHome({
           </div>
         ) : (
           <div className="grid md:grid-cols-4 gap-x-8 gap-y-12">
-            {newArrivals.map((product) => (
+            {newArrivals.map((product: any) => (
               <div key={product.id} className="group cursor-pointer">
                 <div className="aspect-[4/5] bg-[#F5F5F4] mb-6 overflow-hidden relative">
                   <img

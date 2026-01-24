@@ -40,7 +40,7 @@ export function useUserPlan(): UserPlan {
           setSource(data.source || "api");
           setIsAuthenticated(!!data.isAuthenticated);
         }
-      } catch (err) {
+      } catch (err: any) {
         console.error("Error fetching user plan:", err);
         if (mounted) {
           setSource("error_fallback");

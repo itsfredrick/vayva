@@ -56,11 +56,11 @@ export const FoodCateringTemplate: React.FC<TemplateProps> = ({
     ]
     : products
       .filter((p) => p.type === "food")
-      .map((p) => ({
+      .map((p: any) => ({
         ...p,
         desc: p.description,
-        time: (p as unknown).prepTimeMinutes
-          ? `${(p as unknown).prepTimeMinutes}m`
+        time: (p as any).prepTimeMinutes
+          ? `${(p as any).prepTimeMinutes}m`
           : "15m",
       }));
 
@@ -166,7 +166,7 @@ export const FoodCateringTemplate: React.FC<TemplateProps> = ({
       <section className="px-4 mt-4">
         <h2 className="font-bold text-lg mb-4">Popular Favorites</h2>
         <div className="space-y-6">
-          {cateringItems.map((item) => (
+          {cateringItems.map((item: any) => (
             <div
               key={item.id}
               className="flex gap-4 group cursor-pointer"

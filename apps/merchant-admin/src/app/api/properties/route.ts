@@ -7,7 +7,7 @@ export const POST = withVayvaAPI(PERMISSIONS.PRODUCTS_MANAGE, async (request, { 
     try {
         const data = await request.json();
         // Transaction approach: Create Product, then AccommodationProduct
-        const result = await prisma.$transaction(async (tx: unknown) => {
+        const result = await prisma.$transaction(async (tx: any) => {
             // 1. Create Base Product
             const product = await tx.product.create({
                 data: {
@@ -37,7 +37,7 @@ export const POST = withVayvaAPI(PERMISSIONS.PRODUCTS_MANAGE, async (request, { 
         });
         return NextResponse.json(result);
     }
-    catch (error) {
+    catch (error: any) {
         console.error("Property Create Error:", error);
         return NextResponse.json({ error: error.message }, { status: 400 });
     }

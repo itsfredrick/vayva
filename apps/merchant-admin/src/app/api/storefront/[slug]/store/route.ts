@@ -37,7 +37,7 @@ export async function GET(req: NextRequest, { params }: { params: Promise<{ slug
         }
         return NextResponse.json(store);
     }
-    catch (error) {
+    catch (error: any) {
         console.error("Error fetching store:", error);
         return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
     }

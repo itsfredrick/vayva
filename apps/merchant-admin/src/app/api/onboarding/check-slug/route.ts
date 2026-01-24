@@ -20,7 +20,7 @@ export async function GET(req: NextRequest) {
             available: !existing,
             slug
         });
-    } catch (error) {
+    } catch (error: any) {
         console.error("Check Slug Error:", error);
         return NextResponse.json(
             { error: "Failed to check slug availability" },

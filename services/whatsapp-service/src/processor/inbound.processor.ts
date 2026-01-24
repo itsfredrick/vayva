@@ -1,7 +1,14 @@
 import { prisma, Direction, MessageStatus, MessageType } from "@vayva/db";
 
 export class InboundProcessor {
-  static async processMessage(storeId: string, payload: unknown) {
+  static async processMessage(storeId: string, payload: {
+    contacts?: Array<{ wa_id: string; profile?: { name: string } }>;
+    messages?: Array<{
+      id: string;
+      type?: string;
+      text?: { body: string };
+    }>;
+  }) {
     const contactData = payload.contacts?.[0];
     const messageData = payload.messages?.[0];
 
@@ -69,7 +76,7 @@ export class InboundProcessor {
         storeId: storeId,
         conversationId: conversation.id,
         direction: Direction.INBOUND,
-        type: (messageData.type?.toUpperCase() as unknown) || MessageType.TEXT,
+        type: (messageData.type?.toUpperCase() as MessageType) || MessageType.TEXT,
         providerMessageId: messageData.id,
         textBody: messageData.text?.body || "",
         status: MessageStatus.DELIVERED,
@@ -89,7 +96,7 @@ export class InboundProcessor {
     return message;
   }
 
-  static async processStatus(storeId: string, status: unknown) {
+  static async processStatus(storeId: string, status: { id: string; status: string }) {
     if (!status.id || !status.status) return;
 
     await prisma.message.updateMany({
@@ -98,7 +105,7 @@ export class InboundProcessor {
         providerMessageId: status.id,
       },
       data: {
-        status: (status.status.toUpperCase() as unknown) || MessageStatus.SENT,
+        status: (status.status.toUpperCase() as MessageStatus) || MessageStatus.SENT,
       },
     });
   }

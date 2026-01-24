@@ -7,7 +7,7 @@ export class DeletionService {
      * - Enforces Grace Period (7 days)
      * - Checks for Blockers
      */
-    static async requestDeletion(storeId: unknown, userId: unknown, reason: unknown) {
+    static async requestDeletion(storeId: any, userId: any, reason: any) {
         // 1. Check ownership
         // Assuming middleware covers it.
         // 2. Check Blockers
@@ -36,7 +36,7 @@ export class DeletionService {
     /**
      * Confirm Deletion with Token
      */
-    static async confirmDeletion(token: unknown) {
+    static async confirmDeletion(token: any) {
         // Implementation placeholder if needed, currently requests create as SCHEDULED immediately
         // But if we wanted PENDING_CONFIRMATION -> SCHEDULED, we'd use this.
         // For now, adhering to instructions "Create token... Add endpoint to confirm"
@@ -46,7 +46,7 @@ export class DeletionService {
     /**
      * Cancel Pending Deletion
      */
-    static async cancelDeletion(storeId: unknown, userId: unknown) {
+    static async cancelDeletion(storeId: any, userId: any) {
         const activeRequest = await prisma.accountDeletionRequest.findFirst({
             where: { storeId, status: "SCHEDULED" },
         });
@@ -62,7 +62,7 @@ export class DeletionService {
     /**
      * Get Current Deletion Status
      */
-    static async getStatus(storeId: unknown) {
+    static async getStatus(storeId: any) {
         return await prisma.accountDeletionRequest.findFirst({
             where: { storeId, status: "SCHEDULED" },
             orderBy: { createdAt: "desc" },
@@ -71,7 +71,7 @@ export class DeletionService {
     /**
      * Execute Logic (To be called by Job Worker)
      */
-    static async executeDeletion(requestId: unknown) {
+    static async executeDeletion(requestId: any) {
         const request = await prisma.accountDeletionRequest.findUnique({
             where: { id: requestId },
             include: { store: true },
@@ -93,7 +93,7 @@ export class DeletionService {
         ]);
         // 4. Invalidate Sessions (would need Redis/Auth logic here)
     }
-    static async checkBlockers(storeId: unknown) {
+    static async checkBlockers(storeId: any) {
         const blockers = [];
         // Check 1: Pending Payouts
         const pendingPayouts = await prisma.payout.count({

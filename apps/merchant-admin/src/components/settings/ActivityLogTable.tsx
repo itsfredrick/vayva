@@ -27,8 +27,8 @@ interface LogEntry {
     targetType: string;
     targetId: string;
     reason: string | null;
-    before: unknown;
-    after: unknown;
+    before: any;
+    after: any;
 }
 
 interface ActivityLogTableProps {
@@ -51,7 +51,7 @@ export function ActivityLogTable({ logs }: ActivityLogTableProps) {
                     </TableRow>
                 </TableHeader>
                 <TableBody>
-                    {logs.map((log) => (
+                    {logs.map((log: any) => (
                         <TableRow key={log.id} className="hover:bg-gray-50/50">
                             <TableCell className="text-gray-500 whitespace-nowrap">
                                 {format(new Date(log.createdAt), "MMM d, h:mm a")}

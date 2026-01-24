@@ -8,7 +8,7 @@ interface DownloadSuccessProps {
   onClose: () => void;
 }
 
-export const DownloadSuccess = ({ product, onClose }: DownloadSuccessProps) => {
+export const DownloadSuccess = ({ product, onClose }: DownloadSuccessProps): React.JSX.Element => {
   // Test License Key
   const licenseKey = "LICENSE-8A7B-92CD-4F1E";
 

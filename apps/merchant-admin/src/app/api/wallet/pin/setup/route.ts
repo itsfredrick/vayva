@@ -4,7 +4,7 @@ import { prisma } from "@/lib/prisma";
 import bcrypt from "bcryptjs";
 import { Resend } from "resend";
 // POST /api/wallet/pin/setup
-export async function POST(request: unknown) {
+export async function POST(request: Request) {
     try {
         const user = await getSessionUser();
         if (!user) {
@@ -65,13 +65,13 @@ export async function POST(request: unknown) {
                 `
                 });
             }
-            catch (emailError) {
+            catch (emailError: any) {
                 console.error("Failed to send wallet security email:", emailError);
             }
         }
         return NextResponse.json({ success: true, message: "PIN set successfully" });
     }
-    catch (error) {
+    catch (error: any) {
         console.error("Wallet PIN Setup Error:", error);
         return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
     }

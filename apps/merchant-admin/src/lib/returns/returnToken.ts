@@ -4,7 +4,7 @@ import crypto from "crypto";
  * Allows customers to access return form without login.
  */
 export class ReturnTokenService {
-    static generate(orderId, customerPhone) {
+    static generate(orderId: any, customerPhone: any) {
         const payload = JSON.stringify({
             o: orderId,
             p: customerPhone,
@@ -16,7 +16,7 @@ export class ReturnTokenService {
         encrypted = Buffer.concat([encrypted, cipher.final()]);
         return iv.toString("hex") + ":" + encrypted.toString("hex");
     }
-    static validate(token) {
+    static validate(token: any) {
         try {
             const parts = token.split(":");
             const iv = Buffer.from(parts.shift() || "", "hex");
@@ -29,9 +29,9 @@ export class ReturnTokenService {
                 return null; // Expired
             return { orderId: data.o, customerPhone: data.p };
         }
-        catch (e) {
+        catch (e: any) {
             return null; // Invalid
         }
     }
+    static SECRET = process.env.RETURN_TOKEN_SECRET || "dev-secret-key-change-in-prod";
 }
-ReturnTokenService.SECRET = process.env.RETURN_TOKEN_SECRET || "dev-secret-key-change-in-prod";

@@ -24,7 +24,7 @@ export function BulkProductTable({ initialProducts }: BulkProductTableProps) {
     const [edits, setEdits] = useState<Record<string, Partial<Product>>>({});
     const [isSaving, setIsSaving] = useState(false);
 
-    const handleChange = (id: string, field: keyof Product, value: unknown) => {
+    const handleChange = (id: string, field: keyof Product, value: any) => {
         setEdits((prev) => ({
             ...prev,
             [id]: {
@@ -60,7 +60,7 @@ export function BulkProductTable({ initialProducts }: BulkProductTableProps) {
             toast.success(result.message);
             setEdits({});
             router.refresh();
-        } catch (error) {
+        } catch (error: any) {
             console.error(error);
             toast.error("Failed to save changes");
         } finally {
@@ -114,30 +114,30 @@ export function BulkProductTable({ initialProducts }: BulkProductTableProps) {
                         </tr>
                     </thead>
                     <tbody className="divide-y divide-gray-100">
-                        {products.map((p) => {
+                        {products.map((p: any) => {
                             const isDirty = !!edits[p.id];
                             return (
                                 <tr key={p.id} className={`transition-colors ${isDirty ? "bg-blue-50/50" : "hover:bg-gray-50"}`}>
                                     <td className="px-6 py-3">
                                         <Input
-                                            value={p.name}
-                                            onChange={(e) => handleChange(p.id, "name", e.target.value)}
+                                            value={(p.name as any)}
+                                            onChange={(e: any) => handleChange(p.id, "name", e.target.value)}
                                             className="h-8 bg-transparent border-transparent hover:border-gray-200 focus:bg-white"
                                         />
                                     </td>
                                     <td className="px-6 py-3">
                                         <Input
                                             type="number"
-                                            value={p.price}
-                                            onChange={(e) => handleChange(p.id, "price", e.target.value)}
+                                            value={(p.price as any)}
+                                            onChange={(e: any) => handleChange(p.id, "price", e.target.value)}
                                             className="h-8 bg-transparent border-transparent hover:border-gray-200 focus:bg-white"
                                         />
                                     </td>
                                     <td className="px-6 py-3">
                                         <select
                                             aria-label="Status"
-                                            value={p.status}
-                                            onChange={(e) => handleChange(p.id, "status", e.target.value)}
+                                            value={(p.status as any)}
+                                            onChange={(e: any) => handleChange(p.id, "status", e.target.value)}
                                             className="h-8 bg-transparent border-none text-sm font-medium focus:ring-0 cursor-pointer"
                                         >
                                             <option value="ACTIVE">ACTIVE</option>

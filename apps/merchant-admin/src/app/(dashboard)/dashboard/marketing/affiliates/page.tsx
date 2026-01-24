@@ -35,7 +35,7 @@ export default function AffiliatesPage() {
             if (!res.ok) throw new Error("Failed to load data");
             const result = await res.json();
             setData(result.data);
-        } catch (error) {
+        } catch (error: any) {
             console.error(error);
             toast.error("Could not load affiliate program data");
         } finally {
@@ -148,7 +148,7 @@ export default function AffiliatesPage() {
                             </tr>
                         </thead>
                         <tbody className="divide-y divide-slate-100">
-                            {data.history.map((reward) => (
+                            {data.history.map((reward: any) => (
                                 <tr key={reward.id} className="hover:bg-slate-50/50">
                                     <td className="px-6 py-4 text-slate-500">{formatDate(reward.date)}</td>
                                     <td className="px-6 py-4 font-medium text-slate-900">{reward.description}</td>

@@ -11,7 +11,7 @@ import { PlanComparisonMobile } from "@/components/pricing/PlanComparisonMobile"
 import { PremiumButton } from "@/components/marketing/PremiumButton";
 import { useUserPlan } from "@/hooks/useUserPlan";
 
-export default function PricingPage() {
+export default function PricingPage(): React.JSX.Element {
   const { tier, isAuthenticated, loading } = useUserPlan();
 
   return (
@@ -85,7 +85,7 @@ export default function PricingPage() {
               let label = plan.ctaLabel;
 
               if (loading) {
-                console.log("Pricing: Loading user plan...");
+                // Loading state handled by parent or skeletal UI
               } else if (isAuthenticated) {
                 if (isCurrentPlan) {
                   href = `${APP_URL}/settings/billing`;

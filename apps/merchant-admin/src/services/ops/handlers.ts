@@ -20,7 +20,7 @@ interface KycAuditItem {
     lastName?: string;
     method?: string;
     provider?: string;
-    [key: string]: unknown;
+    [key: string]: any;
 }
 
 /**
@@ -59,7 +59,7 @@ export async function handleGetMerchants(
             take: 50,
         });
 
-        const formatted: MerchantListItem[] = merchants.map((m) => {
+        const formatted: MerchantListItem[] = merchants.map((m: any) => {
             const aiSub = m.aiSubscription;
             const kyc = m.kycRecord;
 
@@ -79,7 +79,7 @@ export async function handleGetMerchants(
             success: true,
             data: { merchants: formatted }
         });
-    } catch (err) {
+    } catch (err: any) {
         console.error(err);
         return NextResponse.json(
             {
@@ -125,8 +125,8 @@ export async function handleGetKyc(
             take: 100,
         });
 
-        const formatted: KycListItem[] = records.map((r) => {
-            const auditData = (r.audit as unknown as KycAuditItem[]) || [];
+        const formatted: KycListItem[] = records.map((r: any) => {
+            const auditData = (r.audit as any as KycAuditItem[]) || [];
             const latestAttempt =
                 Array.isArray(auditData) && auditData.length > 0 ? auditData[auditData.length - 1] : {};
 
@@ -151,7 +151,7 @@ export async function handleGetKyc(
             success: true,
             data: { records: formatted }
         });
-    } catch (err) {
+    } catch (err: any) {
         console.error(err);
         return NextResponse.json(
             {
@@ -271,7 +271,7 @@ export async function handleCreateOpsUser(
             success: true,
             data: { user, tempPassword }
         });
-    } catch (e: unknown) {
+    } catch (e: any) {
         console.error(e);
         const error = e instanceof Error ? e.message : "Internal Server Error";
         return NextResponse.json(
@@ -342,7 +342,7 @@ export async function handleOpsLogin(
                 success: true,
                 data: { success: true, role: user.role }
             });
-        } catch (authError: unknown) {
+        } catch (authError: any) {
             // Handle known auth errors (e.g. Disabled Account)
             const error = authError as Error;
             if (error.message === "Account disabled") {

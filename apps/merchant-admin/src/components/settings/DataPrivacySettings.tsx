@@ -60,7 +60,7 @@ export function DataPrivacySettings() {
 
         <div className="p-8 space-y-8">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            {scopesList.map((scope) => (
+            {scopesList.map((scope: any) => (
               <Button
                 key={scope.id}
                 onClick={() => toggleScope(scope.id)}
@@ -79,7 +79,7 @@ export function DataPrivacySettings() {
                       : "bg-gray-100 text-gray-400",
                   )}
                 >
-                  <Icon name={scope.icon as unknown} size={20} />
+                  <Icon name={scope.icon as any} size={20} />
                 </div>
                 <div className="flex-1">
                   <p className="text-sm font-bold text-black">
@@ -123,7 +123,7 @@ export function DataPrivacySettings() {
                 </p>
               </div>
             ) : (
-              exports.map((exp) => (
+              exports.map((exp: any) => (
                 <div
                   key={exp.id}
                   className="bg-white p-4 rounded-xl border border-gray-100 flex items-center justify-between"

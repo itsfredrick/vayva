@@ -4,7 +4,7 @@ import axios from "axios";
 
 export const WebhookController = {
   // --- API Keys ---
-  createApiKey: async (storeId: string, name: string, scopes: string[]) => {
+  createApiKey: async (storeId: string, name: string, scopes: string[]): Promise<unknown> => {
     const rawKey = `vayva_${crypto.randomBytes(32).toString("hex")}`;
     const keyHash = crypto.createHash("sha256").update(rawKey).digest("hex");
 
@@ -22,14 +22,14 @@ export const WebhookController = {
     return { ...apiKey, rawKey }; // Return raw key ONCE
   },
 
-  listApiKeys: async (storeId: string) => {
+  listApiKeys: async (storeId: string): Promise<unknown> => {
     return await prisma.apiKey.findMany({
       where: { storeId },
       orderBy: { createdAt: "desc" },
     });
   },
 
-  revokeApiKey: async (keyId: string) => {
+  revokeApiKey: async (keyId: string): Promise<unknown> => {
     return await prisma.apiKey.update({
       where: { id: keyId },
       data: { status: "REVOKED", revokedAt: new Date() },
@@ -41,7 +41,7 @@ export const WebhookController = {
     storeId: string,
     url: string,
     events: string[],
-  ) => {
+  ): Promise<unknown> => {
     const secret = crypto.randomBytes(32).toString("hex");
     const secretEnc = Buffer.from(secret).toString("base64"); // Simple encoding
 
@@ -58,7 +58,7 @@ export const WebhookController = {
     return { ...endpoint, secret }; // Return secret ONCE
   },
 
-  listWebhookEndpoints: async (storeId: string) => {
+  listWebhookEndpoints: async (storeId: string): Promise<unknown> => {
     return await prisma.webhookEndpoint.findMany({
       where: { storeId },
       orderBy: { createdAt: "desc" },
@@ -66,9 +66,10 @@ export const WebhookController = {
   },
 
   // --- Event Publishing ---
-  publishEvent: async (storeId: string, type: string, payload: unknown) => {
+  publishEvent: async (storeId: string, type: string, payload: Record<string, unknown>): Promise<unknown> => {
     const event = await prisma.webhookEventV2.create({
-      data: { storeId, type, payload },
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      data: { storeId, type, payload: payload as any },
     });
 
     // Find matching endpoints manually since filtered relation queries are complex or unsupported here
@@ -98,7 +99,7 @@ export const WebhookController = {
   },
 
   // --- Delivery Worker ---
-  deliverWebhook: async (deliveryId: string) => {
+  deliverWebhook: async (deliveryId: string): Promise<void> => {
     const delivery = await prisma.webhookDelivery.findUnique({
       where: { id: deliveryId },
       // include: { endpoint: true, event: true } // Relations NOT defined in schema
@@ -129,10 +130,10 @@ export const WebhookController = {
 
     // Sign payload (Ensure deterministic stringification or use raw body if available in real scenario)
     const timestamp = Date.now();
-    
+
     // FIX: Stringify manually to ensure signature matches the exact body sent
-    const payloadStr = JSON.stringify(event.payload); 
-    
+    const payloadStr = JSON.stringify(event.payload);
+
     const signature = crypto
       .createHmac("sha256", secret)
       .update(`${timestamp}.${payloadStr}`)
@@ -157,7 +158,7 @@ export const WebhookController = {
           deliveredAt: new Date(),
         },
       });
-    } catch (_error) {
+    } catch (error: unknown) {
       const maxAttempts = 10;
       const nextAttempt = delivery.attempt + 1;
       const isDeadLetter = nextAttempt > maxAttempts;
@@ -171,8 +172,9 @@ export const WebhookController = {
         data: {
           status: isDeadLetter ? "DEAD" : "FAILED",
           attempt: nextAttempt,
-          responseCode: error.response?.status,
-          responseBodySnippet: error.message?.substring(0, 500),
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          responseCode: (error as any).response?.status,
+          responseBodySnippet: (error as Error).message?.substring(0, 500),
           nextRetryAt: isDeadLetter ? null : nextRetryAt,
         },
       });
@@ -180,7 +182,7 @@ export const WebhookController = {
   },
 
   // --- Logs & Replay ---
-  listDeliveries: async (storeId: string, endpointId?: string) => {
+  listDeliveries: async (storeId: string, endpointId?: string): Promise<unknown> => {
     return await prisma.webhookDelivery.findMany({
       where: {
         storeId,
@@ -192,7 +194,7 @@ export const WebhookController = {
     });
   },
 
-  replayDelivery: async (deliveryId: string) => {
+  replayDelivery: async (deliveryId: string): Promise<void> => {
     const delivery = await prisma.webhookDelivery.findUnique({
       where: { id: deliveryId },
     });
@@ -211,7 +213,7 @@ export const WebhookController = {
 
     // Trigger delivery (Fire and Forget)
     WebhookController.deliverWebhook(deliveryId).catch(err => {
-        console.error(`[Replay] Failed to trigger delivery ${deliveryId}:`, err);
+      console.error(`[Replay] Failed to trigger delivery ${deliveryId}:`, err);
     });
   },
 };

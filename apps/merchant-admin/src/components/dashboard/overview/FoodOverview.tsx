@@ -59,7 +59,7 @@ export const FoodOverview = () => {
               </span>
             </div>
             <Icon
-              name={"CheckCircle2" as unknown}
+              name={"CheckCircle2" as any}
               className="text-green-200"
               size={16}
             />

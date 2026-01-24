@@ -8,10 +8,10 @@ import { toast } from "sonner";
 
 interface NonprofitProductFormProps {
     productId?: string;
-    initialData?: unknown;
+    initialData?: any;
 }
 
-export function NonprofitProductForm({ productId: unknown, initialData }: NonprofitProductFormProps) {
+export function NonprofitProductForm({ productId, initialData }: NonprofitProductFormProps) {
     const router = useRouter();
     const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -27,10 +27,10 @@ export function NonprofitProductForm({ productId: unknown, initialData }: Nonpro
         defaultValues
     });
 
-    const onSubmit = async (data: unknown) => {
+    const onSubmit = async (data: any) => {
         setIsSubmitting(true);
         try {
-            const payload = {
+            const payload: any = {
                 title: data.title,
                 description: data.impactDescription, // Mapping impact desc to main description
                 price: 0, // Donations usually act as open price or varying, setting 0 as base
@@ -38,7 +38,7 @@ export function NonprofitProductForm({ productId: unknown, initialData }: Nonpro
                 metadata: {
                     type: "nonprofit",
                     goalAmount: Number(data.goalAmount),
-                    suggestedAmounts: data.suggestedAmounts.split(",").map((s: string) => Number(s.trim())).filter(Boolean),
+                    suggestedAmounts: data.suggestedAmounts.split(",").map((s: any) => Number(s.trim())).filter(Boolean),
                     allowRecurring: data.allowRecurring
                 }
             };
@@ -59,7 +59,7 @@ export function NonprofitProductForm({ productId: unknown, initialData }: Nonpro
 
             toast.success(productId ? "Campaign updated" : "Campaign created");
             router.push("/dashboard/products");
-        } catch (e) {
+        } catch (e: any) {
             toast.error("Something went wrong");
         } finally {
             setIsSubmitting(false);

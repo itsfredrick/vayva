@@ -9,7 +9,7 @@ interface MarketingShellProps {
 export function MarketingShell({
   children,
   className = "",
-}: MarketingShellProps) {
+}: MarketingShellProps): React.JSX.Element {
   return (
     <div
       className={`min-h-screen bg-[#F5F5F7] text-[#1d1d1f] font-sans ${className}`}

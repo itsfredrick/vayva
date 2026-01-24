@@ -81,7 +81,7 @@ export async function GET(req: NextRequest, { params }: { params: Promise<{ id: 
         };
         return NextResponse.json(response);
     }
-    catch (error) {
+    catch (error: any) {
         console.error("Fetch Product Error:", error);
         const errorResponse = {
             error: "Internal Error",
@@ -120,7 +120,7 @@ export async function PATCH(req: NextRequest, { params }: { params: Promise<{ id
                 ...(body.images && {
                     productImages: {
                         deleteMany: {},
-                        create: body.images.map((img: unknown, idx: number) => ({
+                        create: body.images.map((img: any, idx: number) => ({
                             url: img.url,
                             altText: img.altText || img.alt,
                             position: idx,
@@ -131,7 +131,7 @@ export async function PATCH(req: NextRequest, { params }: { params: Promise<{ id
         });
         // Handle Variants: Delete removed, Update existing, Create new
         if (body.variants && Array.isArray(body.variants)) {
-            const incomingIds = body.variants.map((v: unknown) => v.id).filter(Boolean);
+            const incomingIds = body.variants.map((v: any) => v.id).filter(Boolean);
             await prisma.productVariant.deleteMany({
                 where: {
                     productId: id,
@@ -175,7 +175,7 @@ export async function PATCH(req: NextRequest, { params }: { params: Promise<{ id
         });
         return NextResponse.json(finalProduct);
     }
-    catch (error) {
+    catch (error: any) {
         console.error("Update Product Error:", error);
         return NextResponse.json({ error: "Update Failed" }, { status: 500 });
     }

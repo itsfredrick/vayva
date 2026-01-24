@@ -5,9 +5,9 @@ import { NIGERIAN_STATES } from "@/lib/i18n/addressNG";
 import { COPY } from "@/lib/i18n/copy";
 
 interface AddressInputNGProps {
-  value: unknown;
-  onChange: (val: unknown) => void;
-  errors?: unknown;
+  value: any;
+  onChange: (val: any) => void;
+  errors?: any;
 }
 
 export function AddressInputNG({
@@ -27,7 +27,7 @@ export function AddressInputNG({
         </label>
         <input
           value={value?.addressLine1 || ""}
-          onChange={(e) => handleChange("addressLine1", e.target.value)}
+          onChange={(e: any) => handleChange("addressLine1", e.target.value)}
           className="w-full border p-2 rounded"
           placeholder="123 Street Name"
         />
@@ -43,12 +43,12 @@ export function AddressInputNG({
           </label>
           <select
             value={value?.state || ""}
-            onChange={(e) => handleChange("state", e.target.value)}
+            onChange={(e: any) => handleChange("state", e.target.value)}
             className="w-full border p-2 rounded bg-white"
           >
             <option value="">Select State</option>
-            {NIGERIAN_STATES.map((s) => (
-              <option key={s} value={s}>
+            {NIGERIAN_STATES.map((s: any) => (
+              <option key={s} value={(s as any)}>
                 {s}
               </option>
             ))}
@@ -63,7 +63,7 @@ export function AddressInputNG({
           </label>
           <input
             value={value?.city || ""}
-            onChange={(e) => handleChange("city", e.target.value)}
+            onChange={(e: any) => handleChange("city", e.target.value)}
             className="w-full border p-2 rounded"
             placeholder="e.g. Ikeja"
           />
@@ -79,7 +79,7 @@ export function AddressInputNG({
         </label>
         <input
           value={value?.landmark || ""}
-          onChange={(e) => handleChange("landmark", e.target.value)}
+          onChange={(e: any) => handleChange("landmark", e.target.value)}
           className="w-full border p-2 rounded"
           placeholder={COPY.LANDMARK_PLACEHOLDER}
         />

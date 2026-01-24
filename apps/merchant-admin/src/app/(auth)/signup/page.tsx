@@ -37,7 +37,7 @@ export default function SignupPage() {
     try {
       await AuthService.register({ email, password, firstName, lastName, businessName });
       router.push(`/verify?email=${encodeURIComponent(email)}`);
-    } catch (err) {
+    } catch (err: any) {
       console.error(err);
       const message = err instanceof Error ? err.message : "Failed to create account";
       setError(message);
@@ -65,8 +65,8 @@ export default function SignupPage() {
             <Input
               id="firstName"
               placeholder="John"
-              value={firstName}
-              onChange={(e) => setFirstName(e.target.value)}
+              value={(firstName as any)}
+              onChange={(e: any) => setFirstName(e.target.value)}
               required
             />
           </div>
@@ -75,8 +75,8 @@ export default function SignupPage() {
             <Input
               id="lastName"
               placeholder="Doe"
-              value={lastName}
-              onChange={(e) => setLastName(e.target.value)}
+              value={(lastName as any)}
+              onChange={(e: any) => setLastName(e.target.value)}
               required
             />
           </div>
@@ -87,8 +87,8 @@ export default function SignupPage() {
           <Input
             id="businessName"
             placeholder="e.g. Acme Retail"
-            value={businessName}
-            onChange={(e) => setBusinessName(e.target.value)}
+            value={(businessName as any)}
+            onChange={(e: any) => setBusinessName(e.target.value)}
             required
           />
         </div>
@@ -99,8 +99,8 @@ export default function SignupPage() {
             id="email"
             type="email"
             placeholder="you@business.com"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
+            value={(email as any)}
+            onChange={(e: any) => setEmail(e.target.value)}
             required
             data-testid="auth-signup-email"
           />
@@ -113,8 +113,8 @@ export default function SignupPage() {
               id="password"
               type={showPassword ? "text" : "password"}
               placeholder="Create a strong password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
+              value={(password as any)}
+              onChange={(e: any) => setPassword(e.target.value)}
               required
               data-testid="auth-signup-password"
             />
@@ -139,8 +139,8 @@ export default function SignupPage() {
             id="confirmPassword"
             type={showConfirmPassword ? "text" : "password"}
             placeholder="Re-enter your password"
-            value={confirmPassword}
-            onChange={(e) => setConfirmPassword(e.target.value)}
+            value={(confirmPassword as any)}
+            onChange={(e: any) => setConfirmPassword(e.target.value)}
             required
           />
         </div>
@@ -150,7 +150,7 @@ export default function SignupPage() {
             id="terms-agreement"
             type="checkbox"
             checked={agreedToTerms}
-            onChange={(e) => setAgreedToTerms(e.target.checked)}
+            onChange={(e: any) => setAgreedToTerms(e.target.checked)}
             className="w-4 h-4 mt-0.5 rounded border-gray-300 text-primary focus:ring-primary"
           />
           <span className="text-sm text-gray-600">

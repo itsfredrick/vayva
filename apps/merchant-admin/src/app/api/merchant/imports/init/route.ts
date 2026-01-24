@@ -33,7 +33,7 @@ export const POST = withVayvaAPI(PERMISSIONS.COMMERCE_MANAGE, async (req, { stor
         });
         return NextResponse.json(job);
     }
-    catch (error) {
+    catch (error: any) {
         console.error("Import Init Error:", error);
         return NextResponse.json({ error: error.message || "Internal Error" }, { status: 500 });
     }

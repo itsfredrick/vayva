@@ -5,7 +5,7 @@ import { authorizeAction, AppRole } from "@/lib/permissions";
 import { logAuditEvent, AuditEventType } from "@/lib/audit";
 import { checkRateLimit } from "@/lib/rate-limit";
 import { requireSudoMode } from "@/lib/security";
-export async function POST(request: unknown) {
+export async function POST(request: Request) {
     try {
         const user = await getSessionUser();
         if (!user)
@@ -47,7 +47,7 @@ export async function POST(request: unknown) {
         });
         return NextResponse.json({ exportId: job.id, expiresAt });
     }
-    catch (error) {
+    catch (error: any) {
         console.error("Export Create Error:", error);
         if (error.message === "Sudo mode required") {
             return NextResponse.json({ error: "Sudo mode required", code: "SUDO_REQUIRED" }, { status: 403 });

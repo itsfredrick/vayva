@@ -1,4 +1,4 @@
-function hashString(input: unknown) {
+function hashString(input: any) {
     // Simple stable hash (deterministic, fast, no deps)
     let h = 2166136261;
     for (let i = 0; i < input.length; i++) {
@@ -7,10 +7,13 @@ function hashString(input: unknown) {
     }
     return Math.abs(h);
 }
-function pick(arr: unknown, idx: unknown) {
+function pick(arr: any, idx: any) {
     return arr[idx % arr.length];
 }
-export function getDemoStore(templateSlug: unknown) {
+export type DemoStore = ReturnType<typeof getDemoStore>;
+export type DemoProduct = DemoStore['products'][number];
+
+export function getDemoStore(templateSlug: any) {
     // SAFETY: Prevent demo data leakage in production unless explicitly enabled for Preview Deployment
     if (process.env.NODE_ENV === "production" && process.env.NEXT_PUBLIC_ENABLE_DEMO_PREVIEW !== "true") {
         throw new Error("Demo data generation is disabled in production.");
@@ -59,7 +62,7 @@ export function getDemoStore(templateSlug: unknown) {
         "Wallet",
         "Bottle",
     ];
-    const products = Array.from({ length: 18 }).map((_: unknown, i: unknown) => {
+    const products = Array.from({ length: 18 }).map((_: any, i: any) => {
         const cat = pick(categories, seed + i);
         const name = `${pick(adjectives, seed + i)} ${pick(nouns, seed + i * 3)}`;
         const price = 7500 + ((seed + i * 7919) % 45000);

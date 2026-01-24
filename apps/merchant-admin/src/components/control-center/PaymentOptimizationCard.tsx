@@ -90,7 +90,7 @@ export const PaymentOptimizationCard = ({
             <h4 className="text-xs font-bold text-gray-500 uppercase">
               Active Protections
             </h4>
-            {status.rules.map((rule: unknown) => (
+            {status.rules.map((rule: any) => (
               <div
                 key={rule.id}
                 className="flex items-center justify-between p-3 bg-gray-50 rounded-lg border border-gray-100 hover:bg-gray-100 transition-colors"

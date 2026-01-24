@@ -6,17 +6,17 @@ export class EventBus {
      * Automatically creates Notifications and AuditLogs based on the Catalog definition.
      * Wraps writes in a transaction if possible, or executes them safely.
      */
-    static async publish(event) {
-        const def = EVENT_CATALOG[event.type];
+    static async publish(event: any) {
+        const def = EVENT_CATALOG[event.type as keyof typeof EVENT_CATALOG];
         if (!def) {
             // Event not in catalog - ignore or just log debug
             console.warn(`[EventBus] Unregistered event type: ${event.type}`);
             return;
         }
         const { merchantId, type, entityType, entityId, payload = {}, dedupeKey, ctx, } = event;
-        const ops = [];
-        // 1. Audit Log handling
-        if (def.audit) {
+        const ops: any[] = [];
+        if ('audit' in def && def.audit) {
+            const auditDef = def.audit as any; // Cast to bypass strict union property check
             ops.push(prisma.auditLog.create({
                 data: {
                     storeId: merchantId,
@@ -26,30 +26,30 @@ export class EventBus {
                     ipAddress: ctx.ipAddress,
                     userAgent: ctx.userAgent,
                     correlationId: ctx.correlationId,
-                    action: def.audit.action,
+                    action: auditDef.action,
                     entityType,
                     entityId,
-                    beforeState: def.audit.beforeState
-                        ? def.audit.beforeState(payload)
+                    beforeState: auditDef.beforeState
+                        ? auditDef.beforeState(payload)
                         : undefined,
-                    afterState: def.audit.afterState
-                        ? def.audit.afterState(payload)
+                    afterState: auditDef.afterState
+                        ? auditDef.afterState(payload)
                         : undefined,
                 },
             }));
         }
-        // 2. Notification handling
-        if (def.notification) {
-            const title = typeof def.notification.title === "function"
-                ? def.notification.title(payload)
-                : def.notification.title;
-            const body = typeof def.notification.body === "function"
-                ? def.notification.body(payload)
-                : def.notification.body;
-            const actionUrl = def.notification.actionUrl
-                ? typeof def.notification.actionUrl === "function"
-                    ? def.notification.actionUrl(payload, entityId)
-                    : def.notification.actionUrl
+        if ('notification' in def && def.notification) {
+            const notifDef = def.notification as any; // Cast to bypass strict union check
+            const title = typeof notifDef.title === "function"
+                ? notifDef.title(payload)
+                : notifDef.title;
+            const body = typeof notifDef.body === "function"
+                ? notifDef.body(payload)
+                : notifDef.body;
+            const actionUrl = notifDef.actionUrl
+                ? typeof notifDef.actionUrl === "function"
+                    ? notifDef.actionUrl(payload, entityId)
+                    : notifDef.actionUrl
                 : null;
             // Handle deduplication if key provided
             if (dedupeKey) {
@@ -65,7 +65,7 @@ export class EventBus {
                         type,
                         title,
                         body,
-                        severity: def.notification.severity,
+                        severity: notifDef.severity,
                         actionUrl,
                         entityType,
                         entityId,
@@ -73,8 +73,8 @@ export class EventBus {
                         metadata: payload,
                     },
                     update: {
-                    // If it already exists, maybe bump timestamp or just ignore?
-                    // Usually we ignore duplicates.
+                        // If it already exists, maybe bump timestamp or just ignore?
+                        // Usually we ignore duplicates.
                     },
                 }));
             }
@@ -86,7 +86,7 @@ export class EventBus {
                         type,
                         title,
                         body,
-                        severity: def.notification.severity,
+                        severity: notifDef.severity,
                         actionUrl,
                         entityType,
                         entityId,
@@ -100,7 +100,7 @@ export class EventBus {
             try {
                 await prisma.$transaction(ops);
             }
-            catch (error) {
+            catch (error: any) {
                 console.error(`[EventBus] Failed to process event ${event.type}:`, error);
                 // Don't throw, to avoid breaking the main business logic flow if this was awaited
             }

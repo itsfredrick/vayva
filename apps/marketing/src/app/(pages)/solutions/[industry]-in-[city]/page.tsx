@@ -14,7 +14,7 @@ interface Props {
     }>;
 }
 
-function capitalize(s: string) {
+function capitalize(s: string): string {
     return s.charAt(0).toUpperCase() + s.slice(1).replace(/-/g, " ");
 }
 
@@ -36,7 +36,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     };
 }
 
-export default async function ProgrammaticLandingPage({ params }: Props) {
+export default async function ProgrammaticLandingPage({ params }: Props): Promise<React.JSX.Element> {
     const { industry, city } = await params;
     const industryLabel = capitalize(industry);
     const cityLabel = capitalize(city);

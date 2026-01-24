@@ -32,7 +32,7 @@ export const TemplatePerformanceView = () => {
         setComparisonData(compare);
         setInsights(ins);
         setRecommendation(rec);
-      } catch (e) {
+      } catch (e: any) {
         console.error("Failed to load analytics", e);
       } finally {
         setLoading(false);

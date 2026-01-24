@@ -16,7 +16,7 @@ const legalDocuments = [
   { title: "Manage Cookies", href: "/legal/cookies", active: true },
 ];
 
-export default function ManageCookiesPage() {
+export default function ManageCookiesPage(): React.JSX.Element {
   const [essentialEnabled] = useState(true); // Always enabled
   const [analyticsEnabled, setAnalyticsEnabled] = useState(false);
   const [marketingEnabled, setMarketingEnabled] = useState(false);
@@ -29,7 +29,7 @@ export default function ManageCookiesPage() {
 
   // Load initial state from API (which reads cookie)
   useEffect(() => {
-    async function loadConsent() {
+    async function loadConsent(): Promise<void> {
       try {
         const res = await fetch("/api/consent/cookies");
         if (res.ok) {
@@ -38,7 +38,7 @@ export default function ManageCookiesPage() {
           setMarketingEnabled(!!data.marketing);
           if (data.updatedAt) setUpdatedAt(data.updatedAt);
         }
-      } catch (_error) {
+      } catch {
         // Silent fail on load, default strict
       } finally {
         setIsLoading(false);
@@ -47,7 +47,7 @@ export default function ManageCookiesPage() {
     loadConsent();
   }, []);
 
-  const handleSave = async () => {
+  const handleSave = async (): Promise<void> => {
     setStatus("saving");
     setErrorMsg("");
 
@@ -72,7 +72,7 @@ export default function ManageCookiesPage() {
         setStatus("error");
         setErrorMsg(err.message || "Failed to save preferences");
       }
-    } catch (error) {
+    } catch (error: any) {
       setStatus("error");
       setErrorMsg("Network error occurred");
     }
@@ -97,13 +97,13 @@ export default function ManageCookiesPage() {
                 Legal Documents
               </h3>
               <ul className="space-y-2">
-                {legalDocuments.map((doc) => (
+                {legalDocuments.map((doc: any) => (
                   <li key={doc.href}>
                     <Link
                       href={doc.href}
                       className={`block px-3 py-2 text-sm rounded ${doc.active
-                          ? "bg-gray-100 text-gray-900 font-medium"
-                          : "text-gray-600 hover:bg-gray-50 hover:text-gray-900"
+                        ? "bg-gray-100 text-gray-900 font-medium"
+                        : "text-gray-600 hover:bg-gray-50 hover:text-gray-900"
                         }`}
                     >
                       {doc.title}
@@ -207,7 +207,7 @@ export default function ManageCookiesPage() {
                         title="Analytics Cookies"
                         placeholder="Analytics Cookies"
                         checked={analyticsEnabled}
-                        onChange={(e) => setAnalyticsEnabled(e.target.checked)}
+                        onChange={(e: any) => setAnalyticsEnabled(e.target.checked)}
                         className="w-5 h-5 text-[#22C55E] border-gray-300 rounded focus:ring-[#22C55E]"
                       />
                       <span className="ml-2 text-sm text-gray-700">
@@ -238,7 +238,7 @@ export default function ManageCookiesPage() {
                         title="Marketing Cookies"
                         placeholder="Marketing Cookies"
                         checked={marketingEnabled}
-                        onChange={(e) => setMarketingEnabled(e.target.checked)}
+                        onChange={(e: any) => setMarketingEnabled(e.target.checked)}
                         className="w-5 h-5 text-[#22C55E] border-gray-300 rounded focus:ring-[#22C55E]"
                       />
                       <span className="ml-2 text-sm text-gray-700">
@@ -256,8 +256,8 @@ export default function ManageCookiesPage() {
                 onClick={handleSave}
                 disabled={status === "saving"}
                 className={`px-6 py-3 font-semibold rounded transition-colors ${status === "saving"
-                    ? "bg-gray-300 text-gray-500 cursor-not-allowed"
-                    : "bg-[#22C55E] hover:bg-[#16A34A] text-white"
+                  ? "bg-gray-300 text-gray-500 cursor-not-allowed"
+                  : "bg-[#22C55E] hover:bg-[#16A34A] text-white"
                   }`}
               >
                 {status === "saving" ? "Saving..." : "Save Preferences"}

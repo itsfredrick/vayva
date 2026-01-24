@@ -1,11 +1,10 @@
 import { redis } from "@/lib/redis";
-export var QuotaType;
-(function (QuotaType) {
-    QuotaType["EXPORT_GENERATION"] = "EXPORT_GENERATION";
-    QuotaType["BULK_IMPORT"] = "BULK_IMPORT";
-    QuotaType["WHATSAPP_MESSAGE"] = "WHATSAPP_MESSAGE";
-    QuotaType["AI_GENERATION"] = "AI_GENERATION";
-})(QuotaType || (QuotaType = {}));
+export enum QuotaType {
+    EXPORT_GENERATION = "EXPORT_GENERATION",
+    BULK_IMPORT = "BULK_IMPORT",
+    WHATSAPP_MESSAGE = "WHATSAPP_MESSAGE",
+    AI_GENERATION = "AI_GENERATION",
+}
 const QUOTA_DEFAULTS = {
     [QuotaType.EXPORT_GENERATION]: 10, // 10 per day
     [QuotaType.BULK_IMPORT]: 5, // 5 per day
@@ -16,14 +15,14 @@ const QUOTA_DEFAULTS = {
  * Checks if a store has exceeded their quota for a specific action.
  * Returns { allowed: boolean, remaining: number, resetAt: Date }
  */
-export async function checkQuota(storeId: unknown, type: unknown) {
+export async function checkQuota(storeId: string, type: QuotaType) {
     if (!redis) {
         console.warn("Redis not available for quota check. allowing.");
         return { allowed: true, remaining: 999, limit: 999, resetInSeconds: 0 };
     }
     const dateKey = new Date().toISOString().split("T")[0]; // YYYY-MM-DD
     const key = `quota:${storeId}:${type}:${dateKey}`;
-    const limit = QUOTA_DEFAULTS[type];
+    const limit = QUOTA_DEFAULTS[type as keyof typeof QUOTA_DEFAULTS];
     const currentUsageStr = await redis.get(key);
     const currentUsage = currentUsageStr ? parseInt(currentUsageStr) : 0;
     if (currentUsage >= limit) {
@@ -40,7 +39,7 @@ export async function checkQuota(storeId: unknown, type: unknown) {
 /**
  * Increments the quota usage for a store.
  */
-export async function incrementQuota(storeId: unknown, type: unknown) {
+export async function incrementQuota(storeId: any, type: any) {
     if (!redis)
         return;
     const dateKey = new Date().toISOString().split("T")[0];

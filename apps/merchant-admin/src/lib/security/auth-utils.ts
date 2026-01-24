@@ -24,7 +24,7 @@ export async function verifyMerchantRole() {
 /**
  * Verify user owns the store
  */
-export async function verifyStoreOwnership(storeId: unknown) {
+export async function verifyStoreOwnership(storeId: any) {
     const authResult = await verifyMerchantRole();
     if (!authResult.success)
         return authResult;

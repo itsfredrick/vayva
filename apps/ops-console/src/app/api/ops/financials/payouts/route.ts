@@ -1,4 +1,4 @@
-import { NextResponse } from "next/server";
+import { NextResponse } from 'next/server';
 import { prisma } from "@vayva/db";
 import { OpsAuthService } from "@/lib/ops-auth";
 
@@ -11,7 +11,7 @@ export async function GET(request: Request) {
     const { searchParams } = new URL(request.url);
     const status = searchParams.get("status") || "PENDING";
 
-    const where: unknown = {};
+    const where: any = {};
     if (status !== "ALL") where.status = status;
 
     const withdrawals = await prisma.withdrawal.findMany({
@@ -36,20 +36,20 @@ export async function GET(request: Request) {
 
     // Handle BigInt serialization & Attach Bank Details
     const data = withdrawals.map(w => {
-        const bank = w.store.bankBeneficiaries[0];
+        const bank = (w as any).store.bankBeneficiaries[0];
         return {
             ...w,
-            amountKobo: w.amountKobo.toString(),
-            feeKobo: w.feeKobo.toString(),
-            amountNetKobo: w.amountNetKobo.toString(),
-            feePercent: w.feePercent.toString(),
+            amountKobo: (w as any).amountKobo.toString(),
+            feeKobo: (w as any).feeKobo.toString(),
+            amountNetKobo: (w as any).amountNetKobo.toString(),
+            feePercent: (w as any).feePercent.toString(),
             // Flatten bank details for UI
             bankDetails: bank ? {
                 bankName: bank.bankName,
                 accountNumber: bank.accountNumber,
                 accountName: bank.accountName
             } : null,
-            hasWalletPin: !!w.store.walletPin
+            hasWalletPin: !!(w as any).store.walletPin
         };
     });
 

@@ -43,7 +43,7 @@ export async function GET() {
             _count: { _all: true },
         });
         const byTemplate = templateStarts
-            .map((s) => {
+            .map((s: any) => {
             const slug = s.templateSlug || "unknown";
             const started = s._count._all;
             const comp = templateCompletes.find((c) => (c.templateSlug || "unknown") === slug)?._count._all || 0;
@@ -72,7 +72,7 @@ export async function GET() {
             },
             _count: { _all: true },
         });
-        const byPlan = planStarts.map((s) => {
+        const byPlan = planStarts.map((s: any) => {
             const plan = s.plan || "unknown";
             const started = s._count._all;
             const comp = planCompletes.find((c) => (c.plan || "unknown") === plan)?._count
@@ -96,7 +96,7 @@ export async function GET() {
         });
         // Normalize step names if necessary or return raw
         const byStep = stepViews
-            .map((s) => ({
+            .map((s: any) => ({
             step: s.step || "unknown",
             views: s._count._all,
         }))
@@ -134,7 +134,7 @@ export async function GET() {
             fastPathStats,
         });
     }
-    catch (e) {
+    catch (e: any) {
         console.error("Analytics aggregation error:", e);
         return NextResponse.json({ error: "Failed to generate analytics" }, { status: 500 });
     }

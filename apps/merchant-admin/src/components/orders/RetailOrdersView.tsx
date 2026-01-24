@@ -28,7 +28,7 @@ export const RetailOrdersView = ({
 
   return (
     <div className="space-y-3">
-      {orders.map((order) => (
+      {orders.map((order: any) => (
         <OrderCard key={order.id} order={order} onClick={onSelect} />
       ))}
     </div>

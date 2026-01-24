@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
-export async function POST(req: unknown) {
+export async function POST(req: any) {
     try {
         const body = await req.json();
         const { type, context } = body; // context includes orderId, transactionId, etc.
@@ -49,7 +49,7 @@ export async function POST(req: unknown) {
             action: "CONTACT_SUPPORT",
         });
     }
-    catch (error) {
+    catch (error: any) {
         console.error("Resolve Check Error:", error);
         return NextResponse.json({ resolved: false, message: "System check failed" }, { status: 500 });
     }

@@ -17,7 +17,7 @@ export const GET = withVayvaAPI(PERMISSIONS.METRICS_VIEW, async (request: NextRe
         };
         return NextResponse.json(status);
     }
-    catch (error) {
+    catch (error: any) {
         return NextResponse.json({ error: "Failed to fetch activation metrics" }, { status: 500 });
     }
 });

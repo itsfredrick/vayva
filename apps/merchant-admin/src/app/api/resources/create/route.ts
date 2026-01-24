@@ -25,7 +25,7 @@ export const POST = withVayvaAPI(PERMISSIONS.PRODUCTS_MANAGE, async (req, { stor
         }
         // Map Generic Resource Payload to Product Service Payload
         // We pass 'primaryObject' as 'productType'
-        const payload = {
+        const payload: any = {
             ...data,
             productType: primaryObject,
             // Defaulting title/name mapping if needed, but Service checks for title/name
@@ -33,7 +33,7 @@ export const POST = withVayvaAPI(PERMISSIONS.PRODUCTS_MANAGE, async (req, { stor
         const product = await ProductCoreService.createProduct(storeId, payload);
         return NextResponse.json({ success: true, id: product.id });
     }
-    catch (error) {
+    catch (error: any) {
         console.error("[RESOURCE_CREATE]", error);
         const status = error.message.includes("limit") ? 403 : 400;
         return NextResponse.json({ error: error.message || "Internal Server Error" }, { status: status > 499 ? 500 : status });

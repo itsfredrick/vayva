@@ -10,7 +10,7 @@ import { router } from "expo-router";
 import { BlurView } from "expo-blur";
 import { SafeAreaView } from "react-native-safe-area-context";
 
-export default function LoginScreen() {
+export default function LoginScreen(): React.JSX.Element {
   const handleLogin = () => {
     router.replace("/(tabs)");
   };

@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-export async function POST(request: unknown) {
+export async function POST(request: Request) {
     const { templateId } = await request.json();
     // Simulate purchase
     return NextResponse.json({

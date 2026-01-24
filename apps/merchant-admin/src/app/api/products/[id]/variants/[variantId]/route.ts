@@ -3,7 +3,7 @@ import { getServerSession } from "next-auth";
 import { prisma } from "@/lib/prisma";
 import { authOptions } from "@/lib/auth";
 import { InventoryService } from "@/services/inventory.service";
-export async function DELETE(req: unknown, { params }: unknown) {
+export async function DELETE(req: any, { params }: any) {
     const session = await getServerSession(authOptions);
     if (!session?.user?.storeId) {
         return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
@@ -29,12 +29,12 @@ export async function DELETE(req: unknown, { params }: unknown) {
         });
         return NextResponse.json({ success: true });
     }
-    catch (error) {
+    catch (error: any) {
         console.error("Delete Variant Error", error);
         return NextResponse.json({ error: "Internal Error" }, { status: 500 });
     }
 }
-export async function PATCH(req: unknown, { params }: unknown) {
+export async function PATCH(req: any, { params }: any) {
     const session = await getServerSession(authOptions);
     if (!session?.user?.storeId) {
         return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
@@ -71,7 +71,7 @@ export async function PATCH(req: unknown, { params }: unknown) {
         if (stock !== undefined) {
             const newStock = parseInt(stock);
             // Calculate current total
-            const currentStock = variant.inventoryItems.reduce((acc: unknown, i: unknown) => acc + i.onHand, 0);
+            const currentStock = variant.inventoryItems.reduce((acc: any, i: any) => acc + i.onHand, 0);
             const diff = newStock - currentStock;
             if (diff !== 0) {
                 await InventoryService.adjustStock(storeId, variantId, productId, diff, "Manual Update from Admin", session.user.id);
@@ -79,7 +79,7 @@ export async function PATCH(req: unknown, { params }: unknown) {
         }
         return NextResponse.json({ success: true });
     }
-    catch (error) {
+    catch (error: any) {
         console.error("Update Variant Error", error);
         return NextResponse.json({ error: "Internal Error" }, { status: 500 });
     }

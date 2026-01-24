@@ -13,7 +13,7 @@ interface LandingHeroProps {
     sub: string;
 }
 
-export function LandingHero({ headline, sub }: LandingHeroProps) {
+export function LandingHero({ headline, sub }: LandingHeroProps): React.JSX.Element {
     return (
         <section className="pt-12 pb-20 px-4">
             <motion.div

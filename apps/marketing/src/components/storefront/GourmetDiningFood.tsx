@@ -14,7 +14,7 @@ export function GourmetDiningFood({
 }: {
   storeName: string;
   storeSlug?: string;
-}) {
+}): React.JSX.Element {
   const { store } = useStorefrontStore(storeSlug);
   const { products, isLoading } = useStorefrontProducts(storeSlug, {
     limit: 50,
@@ -118,7 +118,7 @@ export function GourmetDiningFood({
                   Your order is empty.
                 </div>
               ) : (
-                cart.map((item) => (
+                cart.map((item: any) => (
                   <div key={item.id} className="flex gap-4">
                     <div className="flex-1">
                       <div className="flex justify-between font-bold mb-1">
@@ -277,7 +277,7 @@ export function GourmetDiningFood({
                   {category}
                 </h3>
                 <div className="grid md:grid-cols-2 gap-x-16 gap-y-12">
-                  {items.map((dish) => (
+                  {items.map((dish: any) => (
                     <div key={dish.id} className="group cursor-pointer">
                       <div className="flex justify-between items-baseline mb-2">
                         <h4 className="text-xl font-bold group-hover:text-[#d4af37] transition-colors">

@@ -43,8 +43,8 @@ export default function BillingPage() {
       if (data.checkout_url) {
         window.location.href = data.checkout_url; // Redirect to payment
       }
-    } catch (e: unknown) {
-      alert("Error: " + (e.message || "Unknown error"));
+    } catch (e: any) {
+      alert("Error: " + ((e as any).message || "Unknown error"));
       setProcessing(null);
     }
   };
@@ -84,7 +84,7 @@ export default function BillingPage() {
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
-        {[PLANS.STARTER, PLANS.PRO].map((plan) => {
+        {[PLANS.STARTER, PLANS.PRO].map((plan: any) => {
           const isCurrent = currentPlan === plan.slug;
           return (
             <div
@@ -158,7 +158,7 @@ export default function BillingPage() {
           </thead>
           <tbody className="divide-y">
             {status?.invoices && status.invoices.length > 0 ? (
-              status.invoices.map((inv) => (
+              status.invoices.map((inv: any) => (
                 <tr key={inv.id}>
                   <td className="px-6 py-4">
                     {new Date(inv.issuedAt).toLocaleDateString()}

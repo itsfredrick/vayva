@@ -27,10 +27,10 @@ export function RealEstateProductForm({ productId }: { productId?: string }) {
 
     const amenitiesList = ["WiFi", "Pool", "Gym", "Security", "Parking", "Air Conditioning", "Furnished"];
 
-    const onSubmit = async (data: unknown) => {
+    const onSubmit = async (data: any) => {
         setIsSubmitting(true);
         try {
-            const payload = {
+            const payload: any = {
                 title: data.title,
                 description: data.description,
                 price: contactForPrice ? 0 : Number(data.price),
@@ -56,7 +56,7 @@ export function RealEstateProductForm({ productId }: { productId?: string }) {
             if (!res.ok) throw new Error("Failed to save property");
             toast.success(productId ? "Property updated" : "Property created");
             router.push("/dashboard/products");
-        } catch (e) {
+        } catch (e: any) {
             toast.error("Something went wrong");
         } finally {
             setIsSubmitting(false);
@@ -109,7 +109,7 @@ export function RealEstateProductForm({ productId }: { productId?: string }) {
                     <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                         {amenitiesList.map(item => (
                             <div key={item} className="flex items-center gap-2">
-                                <input type="checkbox" value={item} {...register("amenities")} className="w-4 h-4" />
+                                <input type="checkbox" value={(item as any)} {...register("amenities")} className="w-4 h-4" />
                                 <span className="text-sm">{item}</span>
                             </div>
                         ))}

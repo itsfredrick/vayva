@@ -49,7 +49,7 @@ export const BusinessHealthWidget = ({
         <div className="flex-1 w-full">
           <p className="text-sm text-gray-500 mb-2">Primary Drivers:</p>
           <ul className="space-y-2">
-            {data.factors.map((factor) => (
+            {data.factors.map((factor: any) => (
               <li
                 key={factor.id}
                 className="flex items-start gap-2 text-xs font-medium text-gray-700 justify-center sm:justify-start"

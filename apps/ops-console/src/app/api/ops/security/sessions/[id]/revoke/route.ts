@@ -1,4 +1,4 @@
-import { NextResponse } from "next/server";
+import { NextResponse } from 'next/server';
 import { prisma } from "@vayva/db";
 import { OpsAuthService } from "@/lib/ops-auth";
 
@@ -18,7 +18,7 @@ export async function DELETE(request: Request, { params }: { params: Promise<{ i
         await OpsAuthService.logEvent(user.id, "SESSION_REVOKE", { sessionId: id });
 
         return NextResponse.json({ success: true });
-    } catch (error) {
+    } catch {
         return NextResponse.json({ error: "Failed to revoke session" }, { status: 500 });
     }
 }

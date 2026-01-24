@@ -8,10 +8,10 @@ import { toast } from "sonner";
 
 interface MarketplaceProductFormProps {
     productId?: string;
-    initialData?: unknown;
+    initialData?: any;
 }
 
-export function MarketplaceProductForm({ productId: unknown, initialData }: MarketplaceProductFormProps) {
+export function MarketplaceProductForm({ productId, initialData }: MarketplaceProductFormProps) {
     const router = useRouter();
     const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -30,14 +30,14 @@ export function MarketplaceProductForm({ productId: unknown, initialData }: Mark
         defaultValues
     });
 
-    const onSubmit = async (data: unknown) => {
+    const onSubmit = async (data: any) => {
         setIsSubmitting(true);
         try {
-            const payload = {
+            const payload: any = {
                 title: data.title,
                 description: data.description,
                 price: Number(data.price),
-                tags: data.categoryTags.split(",").map((t: string) => t.trim()).filter(Boolean),
+                tags: data.categoryTags.split(",").map((t: any) => t.trim()).filter(Boolean),
                 metadata: {
                     type: "marketplace",
                     vendorName: data.vendorName,
@@ -63,7 +63,7 @@ export function MarketplaceProductForm({ productId: unknown, initialData }: Mark
 
             toast.success(productId ? "Product updated" : "Product created");
             router.push("/dashboard/products");
-        } catch (e) {
+        } catch (e: any) {
             toast.error("Something went wrong");
         } finally {
             setIsSubmitting(false);

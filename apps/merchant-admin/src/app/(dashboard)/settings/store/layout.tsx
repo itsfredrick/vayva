@@ -17,7 +17,7 @@ export default function StoreSettingsLayout({ children }: PropsWithChildren) {
     return (
         <div className="flex flex-col gap-6">
             <div className="flex items-center gap-4 border-b">
-                {TABS.map((tab) => {
+                {TABS.map((tab: any) => {
                     const isActive = pathname === tab.href;
                     return (
                         <Link

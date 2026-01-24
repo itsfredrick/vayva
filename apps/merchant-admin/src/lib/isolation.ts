@@ -7,8 +7,8 @@ import { requireAuth } from "@/lib/session";
  *
  * @param handler API handler receiving the authenticated session
  */
-export function withTenantIsolation(handler: unknown) {
-    return async (request, ...args) => {
+export function withTenantIsolation(handler: any) {
+    return async (request: Request, ...args: any[]) => {
         try {
             const session = await requireAuth();
             // If the URL contains a storeId (e.g. /api/store/[storeId]/...), verify it
@@ -44,7 +44,7 @@ export function withTenantIsolation(handler: unknown) {
             }
             return await handler(session, request, ...args);
         }
-        catch (error) {
+        catch (error: any) {
             if (error.message === "Unauthorized") {
                 return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
             }

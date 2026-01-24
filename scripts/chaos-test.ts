@@ -1,4 +1,4 @@
-import { KillSwitchService, KillSwitchFeature } from "../apps/merchant-admin/src/lib/ops/KillSwitch";
+import { KillSwitchService, _KillSwitchFeature } from "../apps/merchant-admin/src/lib/ops/KillSwitch";
 import { logger } from "../apps/merchant-admin/src/lib/logger";
 
 // Mock Logger

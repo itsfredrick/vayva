@@ -12,7 +12,7 @@ export class MerchantSupportBot {
     /**
      * Handle support message from a merchant
      */
-    static async handleQuery(storeId, query, history = []) {
+    static async handleQuery(storeId: any, query: any, history = []) {
         try {
             // 1. Fetch Real Context (Account Facts)
             const snapshot = await SupportContextService.getMerchantSnapshot(storeId);
@@ -60,7 +60,7 @@ Support Guidelines:
                     aiSummary: `Auto-escalation triggered. Reason: ${decision.reason}. User Query: "${query}"`,
                 });
                 // Telemetry: Log Escalation
-                const prismaCtx = global.prisma || (await import("@vayva/db")).prisma;
+                const prismaCtx = (global as any).prisma || (await import("@vayva/db")).prisma;
                 await prismaCtx.supportTelemetryEvent.create({
                     data: {
                         storeId,
@@ -79,14 +79,14 @@ Support Guidelines:
                 suggestedActions: this.deriveSupportActions(reply),
             };
         }
-        catch (error) {
+        catch (error: any) {
             logger.error("[SupportBot] Error", error);
             return {
                 message: "I'm currently having trouble accessing our support systems. Please opening a support ticket manually.",
             };
         }
     }
-    static getRelevantPlaybooks(query) {
+    static getRelevantPlaybooks(query: any) {
         // Simple keyword matcher for file-based knowledge
         const kbPath = path.join(process.cwd(), "support/knowledge/playbooks");
         try {
@@ -100,11 +100,11 @@ Support Guidelines:
             }
             return context;
         }
-        catch (e) {
+        catch (e: any) {
             return "No playbooks found.";
         }
     }
-    static shouldEscalate(reply, query) {
+    static shouldEscalate(reply: any, query: any) {
         const lower = (reply + query).toLowerCase();
         if (lower.includes("billing error") ||
             lower.includes("refund") ||
@@ -116,7 +116,7 @@ Support Guidelines:
             return "MANUAL";
         return null;
     }
-    static deriveSupportActions(reply) {
+    static deriveSupportActions(reply: any) {
         const actions = [];
         if (reply.toLowerCase().includes("domain"))
             actions.push("Check Domains");

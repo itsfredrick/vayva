@@ -1,6 +1,7 @@
+import React from "react";
 import Link from "next/link";
 
-export default function PrivacyPage() {
+export default function PrivacyPage(): React.JSX.Element {
   return (
     <div className="min-h-screen bg-white text-black font-sans p-8 max-w-3xl mx-auto">
       <h1 className="text-3xl font-bold mb-6">Privacy Policy</h1>

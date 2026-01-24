@@ -4,7 +4,6 @@ import { prisma } from "@vayva/db";
 export const processPaystackEvent = async (job: Job) => {
     const { eventType, data, metadata } = job.data;
 
-    console.log(`[PAYSTACK_WORKER] Processing ${eventType} for ${data.reference}`);
 
     if (eventType === "charge.success") {
         await handleChargeSuccess(data, metadata);
@@ -21,7 +20,6 @@ async function handleChargeSuccess(data: unknown, metadata: unknown) {
     });
 
     if (existingCharge) {
-        console.log(`[PAYSTACK_WORKER] Charge ${data.id} already processed`);
         return;
     }
 
@@ -100,5 +98,4 @@ async function handleChargeSuccess(data: unknown, metadata: unknown) {
         ]
     });
 
-    console.log(`[PAYSTACK_WORKER] Ledger entries created for ${reference}`);
 }

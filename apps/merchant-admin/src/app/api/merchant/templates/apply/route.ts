@@ -4,7 +4,7 @@ import { authOptions } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { TemplateService } from "@/lib/templates/templateService";
 import { cookies } from "next/headers";
-export async function POST(req: unknown) {
+export async function POST(req: any) {
     const session = await getServerSession(authOptions);
     if (!session?.user?.id)
         return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
@@ -42,7 +42,7 @@ export async function POST(req: unknown) {
         await TemplateService.applyTemplate(storeId, templateId, session.user.id);
         return NextResponse.json({ success: true });
     }
-    catch (e) {
+    catch (e: any) {
         return new NextResponse(e.message, { status: 500 });
     }
 }

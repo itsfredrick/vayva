@@ -4,7 +4,7 @@ import * as jwt from "jsonwebtoken";
 import { ForgotPasswordRequestSchema } from "@vayva/schemas";
 
 const forgotPasswordRoute: FastifyPluginAsync = async (fastify) => {
-  fastify.post("/forgot-password", async (request, reply) => {
+  fastify.post("/forgot-password", async (request, _reply) => {
     const body = ForgotPasswordRequestSchema.parse(request.body);
 
     const user = await prisma.user.findUnique({

@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import { getServerSession } from "next-auth";
 import { prisma } from "@/lib/prisma";
 import { authOptions } from "@/lib/auth";
-export async function GET(req: unknown, { params }: unknown) {
+export async function GET(req: any, { params }: any) {
     const session = await getServerSession(authOptions);
     if (!session?.user?.storeId) {
         return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
@@ -65,7 +65,7 @@ export async function GET(req: unknown, { params }: unknown) {
         }));
         return NextResponse.json(enriched);
     }
-    catch (error) {
+    catch (error: any) {
         console.error("Fetch Inventory History Error", error);
         return NextResponse.json({ error: "Internal Error" }, { status: 500 });
     }

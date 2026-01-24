@@ -13,11 +13,11 @@ interface OneProductHomeProps {
 export default function OneProductHome({
     storeName: initialStoreName,
     storeSlug,
-}: OneProductHomeProps) {
+}: OneProductHomeProps): React.JSX.Element {
     const { store } = useStorefrontStore(storeSlug);
-    const displayName = store?.name || initialStoreName || "Aura Glow";
+    const _displayName = store?.name || initialStoreName || "Aura Glow";
 
-    const [timeLeft, setTimeLeft] = useState({ hours: 12, minutes: 45, seconds: 30 });
+    const [timeLeft, _setTimeLeft] = useState({ hours: 12, minutes: 45, seconds: 30 });
 
     return (
         <div className="min-h-screen bg-white font-sans text-gray-900">

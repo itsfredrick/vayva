@@ -11,7 +11,9 @@ export interface IconProps extends LucideProps {
   size?: number | string;
 }
 
-export const Icon = ({ name, size = 24, ...props }: IconProps) => {
+const ICON_CACHE: Record<string, React.ComponentType<LucideProps>> = {};
+
+export const Icon = ({ name, size = 24, ...props }: IconProps): React.JSX.Element | null => {
   const kebabName = useMemo(() => {
     return name
       .replace(/([a-z0-9])([A-Z])/g, "$1-$2")
@@ -19,9 +21,15 @@ export const Icon = ({ name, size = 24, ...props }: IconProps) => {
   }, [name]);
 
   const LucideIcon = useMemo(() => {
+    if (ICON_CACHE[kebabName]) return ICON_CACHE[kebabName];
+
     const dynamicIcon = (dynamicIconImports as Record<string, () => Promise<{ default: React.ComponentType<LucideProps> }>>)[kebabName];
     if (!dynamicIcon) return null;
-    return dynamic(dynamicIcon);
+
+    const Comp = dynamic(dynamicIcon);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    ICON_CACHE[kebabName] = Comp;
+    return Comp;
   }, [kebabName]);
 
   if (!LucideIcon) {

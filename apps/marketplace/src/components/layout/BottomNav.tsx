@@ -1,4 +1,5 @@
 "use client";
+import React from "react";
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -6,7 +7,7 @@ import { useCart } from "@/context/CartContext";
 import { Home, Search, ShoppingCart, Package, User } from "lucide-react";
 import { Button, cn } from "@vayva/ui";
 
-export function BottomNav() {
+export function BottomNav(): React.ReactNode {
     const pathname = usePathname();
     const { cart, isOpen, setIsOpen } = useCart();
 

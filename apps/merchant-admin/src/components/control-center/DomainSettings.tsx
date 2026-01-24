@@ -31,7 +31,7 @@ export const DomainSettings = ({
       </div>
 
       <div className="bg-white rounded-2xl border border-gray-200 divide-y divide-gray-100 overflow-hidden">
-        {domains.map((domain) => (
+        {domains.map((domain: any) => (
           <div
             key={domain.id}
             className="p-5 flex flex-col md:flex-row md:items-center justify-between gap-4"

@@ -25,7 +25,7 @@ export default function ThemeBuilderPage() {
       });
       if (!res.ok) throw new Error("Failed to save draft");
       toast.success("Theme draft saved successfully!");
-    } catch (error) {
+    } catch (error: any) {
       toast.error("Error saving theme draft");
     }
   };
@@ -37,7 +37,7 @@ export default function ThemeBuilderPage() {
       });
       if (!res.ok) throw new Error("Failed to publish");
       toast.success("Theme published to storefront! 🚀");
-    } catch (error) {
+    } catch (error: any) {
       toast.error("Error publishing theme");
     }
   };

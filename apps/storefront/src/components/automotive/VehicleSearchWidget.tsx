@@ -5,7 +5,7 @@ import { Search, ChevronRight, Car } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { Button } from "@vayva/ui";
 
-export function VehicleSearchWidget() {
+export function VehicleSearchWidget(): React.JSX.Element {
     const router = useRouter();
 
     const [years, setYears] = useState<number[]>([]);
@@ -28,11 +28,8 @@ export function VehicleSearchWidget() {
 
     // Load Makes when Year changes
     useEffect(() => {
-        if (!selectedYear) {
-            setMakes([]);
-            return;
-        }
-        setLoading(true);
+        if (!selectedYear) return;
+
         fetch(`/api/vehicles?type=makes&year=${selectedYear}`)
             .then(res => res.json())
             .then(data => {
@@ -46,11 +43,8 @@ export function VehicleSearchWidget() {
 
     // Load Models when Make changes
     useEffect(() => {
-        if (!selectedMake) {
-            setModels([]);
-            return;
-        }
-        setLoading(true);
+        if (!selectedMake) return;
+
         fetch(`/api/vehicles?type=models&year=${selectedYear}&make=${selectedMake}`)
             .then(res => res.json())
             .then(data => {
@@ -79,7 +73,15 @@ export function VehicleSearchWidget() {
                 <select
                     className="h-12 w-full rounded-lg border-gray-200 bg-gray-50 px-4 text-sm focus:border-blue-500 focus:ring-blue-500"
                     value={selectedYear}
-                    onChange={(e) => setSelectedYear(e.target.value)}
+                    onChange={(e: any) => {
+                        const val = e.target.value;
+                        setSelectedYear(val);
+                        setMakes([]);
+                        setModels([]);
+                        setSelectedMake("");
+                        setSelectedModel("");
+                        if (val) setLoading(true);
+                    }}
                 >
                     <option value="">Year</option>
                     {years.map(y => <option key={y} value={y}>{y}</option>)}
@@ -88,7 +90,13 @@ export function VehicleSearchWidget() {
                 <select
                     className="h-12 w-full rounded-lg border-gray-200 bg-gray-50 px-4 text-sm focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50"
                     value={selectedMake}
-                    onChange={(e) => setSelectedMake(e.target.value)}
+                    onChange={(e: any) => {
+                        const val = e.target.value;
+                        setSelectedMake(val);
+                        setModels([]);
+                        setSelectedModel("");
+                        if (val) setLoading(true);
+                    }}
                     disabled={!selectedYear}
                 >
                     <option value="">Make</option>
@@ -98,7 +106,7 @@ export function VehicleSearchWidget() {
                 <select
                     className="h-12 w-full rounded-lg border-gray-200 bg-gray-50 px-4 text-sm focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50"
                     value={selectedModel}
-                    onChange={(e) => setSelectedModel(e.target.value)}
+                    onChange={(e: any) => setSelectedModel(e.target.value)}
                     disabled={!selectedMake}
                 >
                     <option value="">Model</option>

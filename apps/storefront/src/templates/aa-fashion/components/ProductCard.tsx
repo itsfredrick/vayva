@@ -11,7 +11,7 @@ interface ProductCardProps {
   storeSlug?: string;
 }
 
-export const ProductCard = ({ product, storeSlug = "#" }: ProductCardProps) => {
+export const ProductCard = ({ product, storeSlug = "#" }: ProductCardProps): React.JSX.Element => {
   const { addToCart } = useStore();
   const [added, setAdded] = React.useState(false);
 

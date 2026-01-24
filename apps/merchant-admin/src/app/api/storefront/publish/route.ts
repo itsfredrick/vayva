@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
-export async function POST(req: unknown) {
+export async function POST(req: any) {
     try {
         const session = await getServerSession(authOptions);
         if (!session?.user) {
@@ -47,7 +47,7 @@ export async function POST(req: unknown) {
         });
         return NextResponse.json({ success: true, published });
     }
-    catch (error) {
+    catch (error: any) {
         console.error("POST /api/storefront/publish error:", error);
         return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
     }

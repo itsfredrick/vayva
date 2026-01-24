@@ -5,7 +5,7 @@ export async function logAdminAction(data: {
   userId: string; // Admin ID
   action: string; // VERIFY_SELLER, UPDATE_IMPORT
   resourceId: string; // Store ID / Import ID
-  details: unknown; // JSON Diff
+  details: any; // JSON Diff
 }) {
   try {
     await prisma.auditLog.create({
@@ -16,12 +16,12 @@ export async function logAdminAction(data: {
         action: data.action,
         entityId: data.resourceId,
         entityType: "STORE", // Defaulting to STORE based on usage context
-        afterState: data.details ?? {},
+        afterState: (data.details as any) ?? {},
         correlationId: crypto.randomUUID(), // Ensure uniqueness
       }
     });
 
-  } catch (error) {
+  } catch (error: any) {
     console.error("Audit Log Failed:", error);
     // Don't block main action, but log error
   }
@@ -36,7 +36,7 @@ export async function logAuditEvent(
   storeId: string,
   userId: string,
   eventType: string,
-  details: unknown) {
+  details: any) {
   try {
     await prisma.auditLog.create({
       data: {
@@ -47,11 +47,11 @@ export async function logAuditEvent(
         action: eventType,
         entityType: "PERFORMANCE",
         entityId: "N/A",
-        afterState: details,
+        afterState: details as any,
         correlationId: crypto.randomUUID(),
       },
     });
-  } catch (error) {
+  } catch (error: any) {
     console.error("Audit Event Log Failed:", error);
   }
 }

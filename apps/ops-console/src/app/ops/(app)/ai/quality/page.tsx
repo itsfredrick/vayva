@@ -1,11 +1,11 @@
 "use client";
 
 import React, { useState } from "react";
-import { Bot, ThumbsUp, ThumbsDown, RefreshCw, MessageSquare } from "lucide-react";
+import { Bot, ThumbsUp, ThumbsDown, RefreshCw, MessageSquare } from 'lucide-react';
 import { useOpsQuery } from "@/hooks/useOpsQuery";
 import { Button } from "@vayva/ui";
 
-export default function AiQualityPage() {
+export default function AiQualityPage(): React.JSX.Element {
     const [filter, setFilter] = useState("ALL");
     const { data: feedbacks, isLoading, refetch } = useOpsQuery(
         ["ai-feedback", filter],
@@ -64,10 +64,10 @@ export default function AiQualityPage() {
                         ) : !feedbacks?.length ? (
                             <tr><td colSpan={5} className="p-12 text-center text-gray-400">No feedback found.</td></tr>
                         ) : (
-                            feedbacks.map((item: unknown) => (
-                                <tr key={item.id} className="hover:bg-gray-50">
+                            feedbacks.map((item: any) => (
+                                <tr key={(item as any).id} className="hover:bg-gray-50">
                                     <td className="px-6 py-4">
-                                        {item.rating === "SOLVED" ? (
+                                        {(item as any).rating === "SOLVED" ? (
                                             <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded text-xs font-bold bg-green-100 text-green-700">
                                                 <ThumbsUp size={12} /> Positive
                                             </span>
@@ -78,16 +78,16 @@ export default function AiQualityPage() {
                                         )}
                                     </td>
                                     <td className="px-6 py-4 font-medium text-gray-900">
-                                        {item.store?.name || "Unknown Store"}
+                                        {(item as any).store?.name || "Unknown Store"}
                                     </td>
                                     <td className="px-6 py-4 text-gray-600">
-                                        {item.reason || <span className="text-gray-300 italic">No reason provided</span>}
+                                        {(item as any).reason || <span className="text-gray-300 italic">No reason provided</span>}
                                     </td>
                                     <td className="px-6 py-4 font-mono text-xs text-gray-500 flex items-center gap-1">
                                         <MessageSquare size={12} />
-                                        {item.conversationId.substring(0, 8)}...
+                                        {(item as any).conversationId.substring(0, 8)}...
                                     </td>
-                                    <td className="px-6 py-4 text-gray-500 text-xs">{new Date(item.createdAt).toLocaleString()}</td>
+                                    <td className="px-6 py-4 text-gray-500 text-xs">{new Date((item as any).createdAt).toLocaleString()}</td>
                                 </tr>
                             ))
                         )}

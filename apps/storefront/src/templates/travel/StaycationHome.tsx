@@ -1,8 +1,9 @@
+import React from "react";
 
 import { BookingWidget } from "@/components/travel/BookingWidget";
 import { MapPin, Wifi, Coffee, Wind } from "lucide-react";
 
-export default function StaycationHome({ store }: { store: unknown }) {
+export default function StaycationHome({ store }: { store: any }): React.JSX.Element {
     // Mock Product for Demo
     const mockRoom = {
         id: "room-123",

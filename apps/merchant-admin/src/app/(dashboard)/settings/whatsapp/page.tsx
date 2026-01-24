@@ -14,7 +14,7 @@ const fetcher = (url: string) => fetch(url).then((res) => res.json());
 export default function WhatsAppSettingsPage() {
     const { data, error, isLoading } = useSWR("/api/settings/whatsapp", fetcher);
 
-    const handleChannelUpdate = async (updateData: unknown) => {
+    const handleChannelUpdate = async (updateData: any) => {
         const res = await fetch("/api/settings/whatsapp", {
             method: "PATCH",
             headers: { "Content-Type": "application/json" },
@@ -26,7 +26,7 @@ export default function WhatsAppSettingsPage() {
         if (!res.ok) throw new Error("Update failed");
         mutate("/api/settings/whatsapp");
     };
-    const handleSafetyUpdate = async (updateData: unknown) => {
+    const handleSafetyUpdate = async (updateData: any) => {
         const res = await fetch("/api/settings/whatsapp", {
             method: "PATCH",
             headers: { "Content-Type": "application/json" },

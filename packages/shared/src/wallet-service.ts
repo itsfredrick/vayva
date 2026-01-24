@@ -8,36 +8,20 @@ export class WalletService {
      * Ensures double-entry consistency and idempotency if referenceId is provided.
      */
     static async processTransaction(params: {
-        ownerId: string | null; // null for system wallets
-        amount: bigint; // In Kobo (INTEGER)
-        type: TransactionType; // CREDIT or DEBIT
+        ownerId: string | null;
+        amount: bigint;
+        type: TransactionType;
         accountType: LedgerAccountType;
         referenceId: string;
         description?: string;
-    }) {
+    }): Promise<{ status: string; transaction: unknown; account: unknown }> {
         const { ownerId, amount, type, accountType, referenceId, description } = params;
 
-        // 1. Idempotency Check
-        const existing = await prisma.ledgerTransaction.findFirst({
-            where: { referenceId, accountId: { in: [] } } // Optimization: Check inside transaction?
-        });
-        // Actually, referenceId should be unique globally? 
-        // Schema says @@index([referenceId]), not unique.
-        // If double-entry, same referenceId might appear twice (Credit one, Debit another).
-        // So check if transaction exists for THIS account?
-        // Let's rely on strict business logic:
-
         return prisma.$transaction(async (tx) => {
-            // Find or Create Account
-            // We use upsert to ensure it exists.
-            // Note: ownerId is part of unique constraint [ownerId, type, currency]
-            // IF ownerId is null, we can't use 'where: { ownerId: null }' in upsert effectively in simple objects sometimes.
-            // But Prisma supports it.
-
             const account = await tx.ledgerAccount.upsert({
                 where: {
                     ownerId_type_currency: {
-                        ownerId: ownerId as unknown, // Cast to avoid TS null check strictness
+                        ownerId: ownerId!, // Assert non-null as schema might require it for this composite key, or logic ensures it
                         type: accountType,
                         currency: "NGN",
                     }
@@ -98,7 +82,7 @@ export class WalletService {
         });
     }
 
-    static async getBalance(ownerId: string, type: LedgerAccountType = 'MERCHANT_AVAILABLE') {
+    static async getBalance(ownerId: string, type: LedgerAccountType = 'MERCHANT_AVAILABLE'): Promise<bigint> {
         const account = await prisma.ledgerAccount.findUnique({
             where: {
                 ownerId_type_currency: {
@@ -111,12 +95,12 @@ export class WalletService {
         return account?.balance || 0n;
     }
 
-    static async getSystemBalance(type: LedgerAccountType) {
+    static async getSystemBalance(type: LedgerAccountType): Promise<bigint> {
         if (!type.startsWith("SYSTEM")) throw new Error("Not a system account type");
         const account = await prisma.ledgerAccount.findUnique({
             where: {
                 ownerId_type_currency: {
-                    ownerId: null as unknown, // Cast to avoid TS null check strictness
+                    ownerId: null as unknown as string,
                     type,
                     currency: "NGN"
                 }

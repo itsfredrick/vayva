@@ -34,7 +34,7 @@ export interface ExtensionManifest {
     forms?: Record<string, unknown>; // Form configuration for the objects it manages
 
     // Settings
-    settingsSchema?: unknown; // JSON Schema for extension-specific settings
+    settingsSchema?: Record<string, unknown>; // JSON Schema for extension-specific settings
 }
 
 export interface StoreExtension {

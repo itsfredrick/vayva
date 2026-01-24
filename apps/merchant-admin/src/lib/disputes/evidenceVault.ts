@@ -6,7 +6,7 @@ export class EvidenceVault {
     /**
      * Generates a secure upload URL (Tested)
      */
-    static async generateUploadUrl(disputeId, fileName, contentType) {
+    static async generateUploadUrl(disputeId: any, fileName: any, contentType: any) {
         // In Prod: AWS S3 Presigned PUT
         // In Dev: Return a URL to our own API that handles the upload
         // e.g. /api/merchant/disputes/[id]/evidence/upload?file=...
@@ -19,7 +19,7 @@ export class EvidenceVault {
     /**
      * Securely deletes evidence (Tested)
      */
-    static async secureDelete(fileUrl) {
+    static async secureDelete(fileUrl: any) {
         return true;
     }
 }

@@ -12,11 +12,11 @@ import {
     TrendingUp,
     MoreHorizontal,
     Loader2
-} from "lucide-react";
+} from 'lucide-react';
 import { Button } from "@vayva/ui";
-import { OpsPagination } from "@/components/shared/OpsPagination";
-import { useRouter, useSearchParams } from "next/navigation";
-import { toast } from "sonner";
+import { OpsPagination } from '@/components/shared/OpsPagination';
+import { useRouter, useSearchParams } from 'next/navigation';
+import { toast } from 'sonner';
 
 interface Merchant {
     id: string;
@@ -42,7 +42,7 @@ interface Meta {
     totalPages: number;
 }
 
-export default function MerchantsListPage() {
+export default function MerchantsListPage(): React.JSX.Element {
     const router = useRouter();
     const searchParams = useSearchParams();
 
@@ -85,7 +85,7 @@ export default function MerchantsListPage() {
             const result = await res.json();
             setData(result.data || []);
             setMeta(result.meta || null);
-        } catch (error) {
+        } catch (error: any) {
             console.error("Failed to fetch merchants:", error);
         } finally {
             setLoading(false);
@@ -98,7 +98,7 @@ export default function MerchantsListPage() {
     }, [page, search, plan, kyc, risk, fetchMerchants]);
 
     const handleSearch = (e: React.FormEvent) => {
-        e.preventDefault();
+        (e as any).preventDefault();
         const params = new URLSearchParams(searchParams);
         if (searchInput) params.set("q", searchInput);
         else params.delete("q");
@@ -155,7 +155,7 @@ export default function MerchantsListPage() {
             toast.success(`Action Complete: ${json.count} updated`);
             setSelectedIds(new Set());
             fetchMerchants(); // Refresh data
-        } catch (e: unknown) {
+        } catch (e: any) {
             const error = e as Error;
             toast.error(error.message);
         } finally {
@@ -198,8 +198,8 @@ export default function MerchantsListPage() {
                             type="text"
                             placeholder="Search by store name, slug, owner email..."
                             className="w-full pl-10 pr-4 py-2.5 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
-                            value={searchInput}
-                            onChange={(e) => setSearchInput(e.target.value)}
+                            value={(searchInput as any)}
+                            onChange={(e: any) => setSearchInput((e as any).target.value)}
                         />
                     </form>
                     <Button
@@ -223,7 +223,7 @@ export default function MerchantsListPage() {
                     <div className="grid grid-cols-3 gap-4 pt-4 border-t border-gray-200">
                         <div>
                             <label className="block text-xs font-medium text-gray-700 mb-2">Plan</label>
-                            <select aria-label="Filter by Plan" title="Filter by Plan" value={plan} onChange={(e) => handleFilterChange("plan", e.target.value)} className="w-full px-3 py-2 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                            <select aria-label="Filter by Plan" title="Filter by Plan" value={(plan as any)} onChange={(e: any) => handleFilterChange("plan", (e as any).target.value)} className="w-full px-3 py-2 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500">
                                 <option value="">All Plans</option>
                                 <option value="FREE">Free</option>
                                 <option value="STARTER">Starter</option>
@@ -233,7 +233,7 @@ export default function MerchantsListPage() {
                         </div>
                         <div>
                             <label className="block text-xs font-medium text-gray-700 mb-2">KYC Status</label>
-                            <select aria-label="Filter by KYC" title="Filter by KYC Status" value={kyc} onChange={(e) => handleFilterChange("kyc", e.target.value)} className="w-full px-3 py-2 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                            <select aria-label="Filter by KYC" title="Filter by KYC Status" value={(kyc as any)} onChange={(e: any) => handleFilterChange("kyc", (e as any).target.value)} className="w-full px-3 py-2 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500">
                                 <option value="">All Statuses</option>
                                 <option value="APPROVED">Approved</option>
                                 <option value="PENDING">Pending</option>
@@ -243,7 +243,7 @@ export default function MerchantsListPage() {
                         </div>
                         <div>
                             <label className="block text-xs font-medium text-gray-700 mb-2">Risk</label>
-                            <select aria-label="Filter by Risk" title="Filter by Risk" value={risk} onChange={(e) => handleFilterChange("risk", e.target.value)} className="w-full px-3 py-2 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                            <select aria-label="Filter by Risk" title="Filter by Risk" value={(risk as any)} onChange={(e: any) => handleFilterChange("risk", (e as any).target.value)} className="w-full px-3 py-2 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500">
                                 <option value="">All Merchants</option>
                                 <option value="flagged">Flagged Only</option>
                                 <option value="clean">Clean Only</option>
@@ -292,7 +292,7 @@ export default function MerchantsListPage() {
                                 <td colSpan={8} className="px-6 py-12 text-center text-gray-400">No merchants found</td>
                             </tr>
                         ) : (
-                            data.map((merchant) => (
+                            data.map((merchant: any) => (
                                 <tr key={merchant.id} className={selectedIds.has(merchant.id) ? "bg-indigo-50" : "hover:bg-gray-50 transition-colors"}>
                                     <td className="px-6 py-4">
                                         <input

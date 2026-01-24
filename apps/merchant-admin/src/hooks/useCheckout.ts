@@ -61,14 +61,14 @@ export const useCheckout = (options: UseCheckoutOptions) => {
                             " (Redirecting to Paystack...)");
                     }
                 }
-                catch (apiError) {
+                catch (apiError: any) {
                     console.error("Checkout API Error", apiError);
                     // Fallback for Demo/Dev until API is fully ready
                     alert("Checkout Service Unavailable. Please try WhatsApp.");
                 }
             }
         }
-        catch (e) {
+        catch (e: any) {
             console.error("Checkout Failed", e);
             alert("Checkout could not be started. Please try again.");
         }

@@ -31,13 +31,13 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
             const response = await apiClient.auth.me();
             if (response.success && response.data) {
                 setUser(response.data.user);
-                setMerchant(response.data.merchant || null);
+                setMerchant((response.data.merchant || null) as any);
             } else {
                 setUser(null);
                 setMerchant(null);
             }
         }
-        catch (_error) {
+        catch (_error: any) {
             setUser(null);
             setMerchant(null);
         }
@@ -49,7 +49,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
     const login = (newToken: string | undefined, newUser: User, newMerchant?: MerchantContext | null) => {
         setUser(newUser);
-        setMerchant(newMerchant || null);
+        setMerchant((newMerchant || null) as any);
         const destination = getAuthRedirect(newUser, newMerchant || null);
         router.push(destination);
     };
@@ -58,7 +58,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         try {
             await apiClient.auth.logout();
         }
-        catch (e) {
+        catch (e: any) {
             console.error("Logout error", e);
         }
         setUser(null);
@@ -150,7 +150,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     };
 
     return (
-        <AuthContext.Provider value={value} >
+        <AuthContext.Provider value={(value as any)} >
             <InactivityListener />
             {children}
         </AuthContext.Provider>

@@ -18,7 +18,7 @@ export const metadata = {
     "Learn how Vayva protects your business data, ensures platform security, and maintains compliance with Nigerian regulations.",
 };
 
-export default function TrustPage() {
+export default function TrustPage(): React.JSX.Element {
   return (
     <div className="min-h-screen bg-white text-[#0F172A]">
       {/* Section 1: Hero */}

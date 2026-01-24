@@ -12,7 +12,7 @@ export async function PUT(req: Request, context: { params: Promise<{ itemId: str
         await CartService.updateItem(itemId, quantity);
 
         return NextResponse.json({ success: true });
-    } catch (_error) {
+    } catch {
         return new NextResponse("Error updating item", { status: 500 });
     }
 }
@@ -23,7 +23,7 @@ export async function DELETE(req: Request, context: { params: Promise<{ itemId: 
         const { itemId } = params;
         await CartService.removeItem(itemId);
         return NextResponse.json({ success: true });
-    } catch (_error) {
+    } catch {
         return new NextResponse("Error removing item", { status: 500 });
     }
 }

@@ -10,7 +10,7 @@ export class PermissionEngine {
     /**
      * Core check logic
      */
-    static can(user, permission) {
+    static can(user: any, permission: any) {
         // 1. Owners have all permissions
         if (user.isOwner || user.role === ROLES.OWNER)
             return true;
@@ -30,13 +30,13 @@ export class PermissionEngine {
     /**
      * Check multiple permissions (must have all)
      */
-    static canAll(user, permissions) {
-        return permissions.every(p => this.can(user, p));
+    static canAll(user: any, permissions: any) {
+        return permissions.every((p: any) => this.can(user, p));
     }
     /**
      * Check multiple permissions (must have any)
      */
-    static canAny(user, permissions) {
-        return permissions.some(p => this.can(user, p));
+    static canAny(user: any, permissions: any) {
+        return permissions.some((p: any) => this.can(user, p));
     }
 }

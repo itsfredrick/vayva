@@ -83,7 +83,7 @@ export function StandardFoodHome({
                     </div>
                 ) : (
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-16">
-                        {products.map((item) => (
+                        {products.map((item: any) => (
                             <div key={item.id} className="group flex gap-6 cursor-pointer" onClick={() => addToCart(item)}>
                                 <div className="w-32 h-32 md:w-40 md:h-40 bg-[#E5E1D8] rounded-full overflow-hidden flex-shrink-0 relative">
                                     <img src={item.image || `https://via.placeholder.com/200?text=Dish`} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700 grayscale group-hover:grayscale-0" />
@@ -116,7 +116,7 @@ export function StandardFoodHome({
                         </div>
 
                         <div className="flex-1 space-y-6 overflow-y-auto">
-                            {cart.map(item => (
+                            {cart.map((item: any) => (
                                 <div key={item.id} className="flex gap-4">
                                     <div className="w-16 h-16 bg-[#E5E1D8] rounded-full overflow-hidden flex-shrink-0">
                                         {item.image && <img src={item.image} className="w-full h-full object-cover" />}

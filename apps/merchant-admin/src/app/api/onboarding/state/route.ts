@@ -7,7 +7,7 @@ export const GET = withVayvaAPI(PERMISSIONS.SETTINGS_VIEW, async (request, { sto
         const state = await OnboardingService.getState(storeId);
         return NextResponse.json(state);
     }
-    catch (error) {
+    catch (error: any) {
         console.error("Failed to fetch onboarding state:", error);
         return NextResponse.json({ error: "Failed to fetch onboarding state" }, { status: 500 });
     }
@@ -32,7 +32,7 @@ export const PUT = withVayvaAPI(PERMISSIONS.SETTINGS_VIEW, async (request, { sto
         }
         return NextResponse.json(updated);
     }
-    catch (error) {
+    catch (error: any) {
         console.error("Failed to update onboarding state:", error);
         return NextResponse.json({ error: "Failed to update onboarding state" }, { status: 500 });
     }

@@ -16,7 +16,7 @@ export const PerformanceInsights = ({
         <h4 className="text-sm font-bold text-gray-900 flex items-center gap-2">
           <Icon name="Lightbulb" size={16} /> Key Insights
         </h4>
-        {insights.map((insight) => (
+        {insights.map((insight: any) => (
           <div
             key={insight.id}
             className={cn(

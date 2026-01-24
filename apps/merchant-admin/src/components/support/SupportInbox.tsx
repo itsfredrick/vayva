@@ -61,7 +61,7 @@ export function SupportInbox() {
           </div>
         </div>
         <div className="flex-1 overflow-y-auto">
-          {tickets.map((ticket) => (
+          {tickets.map((ticket: any) => (
             <Button
               key={ticket.id}
               onClick={() => setSelectedTicket(ticket)}

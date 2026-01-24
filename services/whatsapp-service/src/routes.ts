@@ -8,7 +8,7 @@ import {
   syncAgentContext,
 } from "./controller";
 
-export const whatsappRoutes = async (server: FastifyInstance) => {
+export const whatsappRoutes = async (server: FastifyInstance): Promise<void> => {
   // Webhooks
   server.get("/webhooks/whatsapp", verifyWebhook);
   server.post("/webhooks/whatsapp", webhookHandler);

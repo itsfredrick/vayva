@@ -16,7 +16,6 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
 
         // Logic scheduled for upcoming waitlist database model integration
         // For now, just log and send confirmation email
-        console.log(`Waitlist signup: ${email}`);
 
         // Send confirmation email (async, don't wait)
         const appUrl = process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3003';
@@ -30,7 +29,7 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
             { message: "Successfully joined waitlist" },
             { status: 201 }
         );
-    } catch (error) {
+    } catch (error: any) {
         console.error("Waitlist error:", error);
         return NextResponse.json(
             { error: "Failed to join waitlist" },

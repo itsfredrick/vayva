@@ -20,7 +20,7 @@ export const GET = withVayvaAPI(PERMISSIONS.SUPPORT_VIEW, async (req, { params, 
         }
         return NextResponse.json(conversation);
     }
-    catch (error) {
+    catch (error: any) {
         console.error("[CONVERSATION_GET]", error);
         return NextResponse.json({ error: "Internal Error" }, { status: 500 });
     }
@@ -66,7 +66,7 @@ export const POST = withVayvaAPI(PERMISSIONS.SUPPORT_MANAGE, async (req, { param
         });
         return NextResponse.json(message);
     }
-    catch (error) {
+    catch (error: any) {
         console.error("[CONVERSATION_REPLY]", error);
         return NextResponse.json({ error: "Internal Error" }, { status: 500 });
     }

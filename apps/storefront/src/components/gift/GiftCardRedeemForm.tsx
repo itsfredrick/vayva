@@ -10,7 +10,7 @@ interface GiftCardRedeemFormProps {
   lang: LocaleKey;
 }
 
-export function GiftCardRedeemForm({ lang }: GiftCardRedeemFormProps) {
+export function GiftCardRedeemForm({ lang }: GiftCardRedeemFormProps): React.JSX.Element {
   const t = LOCALES[lang].giftCards.redeem;
   const { redeemCode } = useUserInteractions();
 
@@ -50,7 +50,7 @@ export function GiftCardRedeemForm({ lang }: GiftCardRedeemFormProps) {
         <input
           type="text"
           value={code}
-          onChange={(e) => setCode(e.target.value.toUpperCase())}
+          onChange={(e: any) => setCode(e.target.value.toUpperCase())}
           placeholder={t.placeholder}
           className="w-full text-center text-xl tracking-widest p-4 bg-gray-50 border border-gray-200 rounded-xl outline-none focus:ring-2 focus:ring-black/5 font-mono uppercase placeholder:tracking-normal placeholder:font-sans placeholder:text-base placeholder:text-gray-400"
         />

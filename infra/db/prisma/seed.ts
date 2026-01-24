@@ -3,8 +3,6 @@ const { prisma } = require("../src/client");
 const bcrypt = require("bcryptjs");
 
 async function main() {
-  console.log("🌱 Seeding database...");
-  console.log("Debug: DATABASE_URL is", process.env.DATABASE_URL ? "SET" : "UNSET");
 
   // 0. Create Auth Users (Owner & Admin)
   const password = "Smackdown21!";
@@ -29,7 +27,7 @@ async function main() {
 
   // 0.1. Create Ops User (For Ops Console Login!)
   // Ops Console uses a separate table 'OpsUser', NOT 'User'.
-  const opsUser = await prisma.opsUser.upsert({
+  const _opsUser = await prisma.opsUser.upsert({
     where: { email: "fred@vayva.ng" },
     update: {
       password: hashedPassword,
@@ -287,7 +285,7 @@ async function main() {
     });
 
     // Create Default Variant & Inventory for tracking
-    const variant = await prisma.productVariant.create({
+    const _variant = await prisma.productVariant.create({
       data: {
         productId: product.id,
         title: "Default Title",
@@ -524,7 +522,6 @@ async function main() {
     }
   }
 
-  console.log("✅ Seeding complete!");
 }
 
 main()

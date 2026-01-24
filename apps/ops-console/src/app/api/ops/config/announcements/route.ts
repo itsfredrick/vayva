@@ -1,9 +1,9 @@
 
-import { NextRequest, NextResponse } from "next/server";
+import { NextRequest, NextResponse } from 'next/server';
 import { OpsAuthService } from "@/lib/ops-auth";
 import { prisma } from "@vayva/db";
 
-export async function GET(req: NextRequest) {
+export async function GET(_req: NextRequest) {
     try {
         const { user } = await OpsAuthService.requireSession();
 
@@ -21,14 +21,14 @@ export async function GET(req: NextRequest) {
         }
 
         // Check if "deleted" (we will model delete as posting an empty announcement or active:false)
-        const announcement = latestInfo.metadata as unknown;
+        const announcement = latestInfo.metadata as any;
         if (!announcement.active) {
             return NextResponse.json({ announcement: null });
         }
 
         return NextResponse.json({ announcement });
 
-    } catch (error) {
+    } catch {
         return NextResponse.json({ error: "Failed to fetch announcement" }, { status: 500 });
     }
 }
@@ -54,12 +54,12 @@ export async function POST(req: NextRequest) {
 
         return NextResponse.json({ success: true });
 
-    } catch (error) {
+    } catch {
         return NextResponse.json({ error: "Failed to set announcement" }, { status: 500 });
     }
 }
 
-export async function DELETE(req: NextRequest) {
+export async function DELETE(_req: NextRequest) {
     try {
         const { user } = await OpsAuthService.requireSession();
         if (!["OPS_OWNER", "OPS_ADMIN"].includes(user.role)) {
@@ -74,7 +74,7 @@ export async function DELETE(req: NextRequest) {
 
         return NextResponse.json({ success: true });
 
-    } catch (error) {
+    } catch {
         return NextResponse.json({ error: "Failed" }, { status: 500 });
     }
 }

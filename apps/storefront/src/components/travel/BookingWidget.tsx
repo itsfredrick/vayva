@@ -7,7 +7,7 @@ import { Button, Input } from "@vayva/ui";
 // Mocking "product" prop for simplicity in this file
 import { CheckoutModal } from "@/templates/one-product/components/CheckoutModal"; // Cross-template import
 
-export function BookingWidget({ productId, price, store }: { productId: string, price: number, store: unknown }) {
+export function BookingWidget({ productId, price, store }: { productId: string, price: number, store: any }): React.JSX.Element {
     const [startDate, setStartDate] = useState("");
     const [endDate, setEndDate] = useState("");
     const [guests, setGuests] = useState(2);
@@ -25,7 +25,7 @@ export function BookingWidget({ productId, price, store }: { productId: string, 
             const res = await fetch(`/api/bookings/availability?productId=${productId}&start=${startDate}&end=${endDate}`);
             const data = await res.json();
             setAvailability(data);
-        } catch (e) {
+        } catch (e: any) {
             console.error(e);
         } finally {
             setChecking(false);
@@ -53,7 +53,7 @@ export function BookingWidget({ productId, price, store }: { productId: string, 
                         <Input
                             type="date"
                             value={startDate}
-                            onChange={(e) => { setStartDate(e.target.value); setAvailability(null); }}
+                            onChange={(e: any) => { setStartDate(e.target.value); setAvailability(null); }}
                         />
                     </div>
                     <div>
@@ -61,7 +61,7 @@ export function BookingWidget({ productId, price, store }: { productId: string, 
                         <Input
                             type="date"
                             value={endDate}
-                            onChange={(e) => { setEndDate(e.target.value); setAvailability(null); }}
+                            onChange={(e: any) => { setEndDate(e.target.value); setAvailability(null); }}
                         />
                     </div>
                 </div>
@@ -74,7 +74,7 @@ export function BookingWidget({ productId, price, store }: { productId: string, 
                             type="number"
                             min={1}
                             value={guests}
-                            onChange={(e) => setGuests(parseInt(e.target.value))}
+                            onChange={(e: any) => setGuests(parseInt(e.target.value))}
                             className="pl-9"
                         />
                     </div>
@@ -105,10 +105,10 @@ export function BookingWidget({ productId, price, store }: { productId: string, 
                         price: totalPrice,
                         images: [], // passed from parent ideally, but okay to specific here
                         description: `Booking for ${guests} guests`,
-                        storeId: store.id,
+                        storeId: (store as any).id,
                         variants: [], // Required by type
                         isDigital: true
-                    } as unknown}
+                    } as any}
                 />
             </div>
         </div>

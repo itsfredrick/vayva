@@ -25,7 +25,6 @@ export const TeamService = {
       },
     });
 
-    console.log(`[Email] Invite sent to ${email} with token ${invite.token}`);
     return invite;
   },
 

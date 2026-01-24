@@ -8,7 +8,7 @@ import { Button } from "@vayva/ui";
 import { User, Lock, ArrowRight, Loader2, Mail, PenTool } from "lucide-react";
 import Link from "next/link";
 
-export default function RegisterPage() {
+export default function RegisterPage(): React.JSX.Element {
   const { store } = useStore();
   const router = useRouter();
   const params = useParams();
@@ -67,14 +67,14 @@ export default function RegisterPage() {
       );
 
       router.push(`/${lang}/account`);
-    } catch (e: unknown) {
+    } catch (e: any) {
       setError(e.message);
     } finally {
       setIsLoading(false);
     }
   };
 
-  if (!store) return null;
+  if (!store) return <></>;
 
   return (
     <StoreShell>
@@ -120,7 +120,7 @@ export default function RegisterPage() {
                       type="text"
                       required
                       value={form.firstName}
-                      onChange={(e) =>
+                      onChange={(e: any) =>
                         setForm({ ...form, firstName: e.target.value })
                       }
                       className="pl-10 block w-full border-gray-300 rounded-xl focus:ring-black focus:border-black sm:text-sm py-3"
@@ -138,7 +138,7 @@ export default function RegisterPage() {
                       type="text"
                       required
                       value={form.lastName}
-                      onChange={(e) =>
+                      onChange={(e: any) =>
                         setForm({ ...form, lastName: e.target.value })
                       }
                       className="block w-full border-gray-300 rounded-xl focus:ring-black focus:border-black sm:text-sm py-3 px-4"
@@ -161,7 +161,7 @@ export default function RegisterPage() {
                     type="email"
                     required
                     value={form.email}
-                    onChange={(e) =>
+                    onChange={(e: any) =>
                       setForm({ ...form, email: e.target.value })
                     }
                     className="pl-10 block w-full border-gray-300 rounded-xl focus:ring-black focus:border-black sm:text-sm py-3"
@@ -183,7 +183,7 @@ export default function RegisterPage() {
                     type="password"
                     required
                     value={form.password}
-                    onChange={(e) =>
+                    onChange={(e: any) =>
                       setForm({ ...form, password: e.target.value })
                     }
                     className="pl-10 block w-full border-gray-300 rounded-xl focus:ring-black focus:border-black sm:text-sm py-3"
@@ -205,7 +205,7 @@ export default function RegisterPage() {
                     type="password"
                     required
                     value={form.confirmPassword}
-                    onChange={(e) =>
+                    onChange={(e: any) =>
                       setForm({ ...form, confirmPassword: e.target.value })
                     }
                     className="pl-10 block w-full border-gray-300 rounded-xl focus:ring-black focus:border-black sm:text-sm py-3"

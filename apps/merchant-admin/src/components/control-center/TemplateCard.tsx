@@ -4,10 +4,10 @@ import { Recommendation } from "@/types/designer";
 import { TemplateMiniPreview } from "./TemplateMiniPreview";
 
 interface TemplateCardProps {
-  template: unknown; // Using any for compatibility with NormalizedTemplate
-  onPreview: (template: unknown) => void;
-  onUse: (template: unknown) => void;
-  onUnlock?: (template: unknown) => void;
+  template: any; // Using any for compatibility with NormalizedTemplate
+  onPreview: (template: any) => void;
+  onUse: (template: any) => void;
+  onUnlock?: (template: any) => void;
   userPlan: "free" | "growth" | "pro";
   recommendation?: Recommendation;
   compact?: boolean;
@@ -143,7 +143,7 @@ export const TemplateCard = ({
         </div>
 
         <div className="flex flex-wrap gap-1 mb-4">
-          {template.tags.slice(0, 3).map((tag: string) => (
+          {template.tags.slice(0, 3).map((tag: any) => (
             <span
               key={tag}
               className="text-[10px] bg-gray-50 text-gray-500 px-2 py-1 rounded-md border border-gray-100 font-medium"

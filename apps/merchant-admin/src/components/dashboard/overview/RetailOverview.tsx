@@ -30,9 +30,9 @@ interface Metric {
 interface DashMetrics {
   metrics: { [key: string]: Metric };
   charts: {
-    revenue: unknown[];
-    orders: unknown[];
-    fulfillment: unknown;
+    revenue: any[];
+    orders: any[];
+    fulfillment: any;
   };
 }
 
@@ -63,7 +63,7 @@ export const RetailOverview = () => {
         setContext(ctxRes);
         setData(metricsRes);
         setActivity(activityRes);
-      } catch (e) {
+      } catch (e: any) {
         console.error("Dashboard data load failed", e);
       } finally {
         setLoading(false);
@@ -90,7 +90,7 @@ export const RetailOverview = () => {
   }: {
     label: string;
     status: string;
-    icon: unknown;
+    icon: any;
     healthy: boolean;
     detail?: string;
   }) => (

@@ -51,7 +51,7 @@ export async function POST(req: NextRequest) {
         name: `${customer.firstName} ${customer.lastName}`,
       },
     });
-  } catch (error) {
+  } catch (error: any) {
     if (error instanceof z.ZodError) {
       return NextResponse.json(
         { error: "Invalid input data" },

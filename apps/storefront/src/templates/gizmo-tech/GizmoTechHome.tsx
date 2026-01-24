@@ -13,7 +13,7 @@ interface GizmoTechHomeProps {
   products: PublicProduct[];
 }
 
-export const GizmoTechHome = ({ store, products }: GizmoTechHomeProps) => {
+export const GizmoTechHome = ({ store, products }: GizmoTechHomeProps): React.JSX.Element => {
   const { cart } = useStore();
   const cartItemCount = cart.reduce((acc, item) => acc + item.quantity, 0);
 
@@ -36,7 +36,7 @@ export const GizmoTechHome = ({ store, products }: GizmoTechHomeProps) => {
           actionHref={`/collections/all?store=${store.slug}`}
         />
         <div className="grid grid-cols-2 gap-4 px-4 mb-8">
-          {topPicks.map((product) => (
+          {topPicks.map((product: any) => (
             <ProductCardTech
               key={product.id}
               product={product}

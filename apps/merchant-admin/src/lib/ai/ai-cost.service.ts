@@ -4,7 +4,7 @@ export class AiCostService {
     /**
      * Compute estimated cost of a request in Kobo
      */
-    static async estimateRequestCost(params) {
+    static async estimateRequestCost(params: any) {
         const pricing = await prisma.providerPricing.findFirst({
             where: { provider: params.provider },
             orderBy: { effectiveFrom: "desc" },
@@ -25,7 +25,7 @@ export class AiCostService {
     /**
      * Update daily cost records for a merchant
      */
-    static async recordMerchantUsage(storeId, costKobo) {
+    static async recordMerchantUsage(storeId: any, costKobo: any) {
         const today = new Date();
         today.setHours(0, 0, 0, 0);
         try {
@@ -43,14 +43,14 @@ export class AiCostService {
                 },
             });
         }
-        catch (error) {
+        catch (error: any) {
             logger.error("[CostService] Failed to record usage", { storeId, error });
         }
     }
     /**
      * Check if a merchant or platform is over budget
      */
-    static async checkBudgetSafety(storeId) {
+    static async checkBudgetSafety(storeId: any) {
         // 1. Check Platform-wide budget
         const today = new Date();
         today.setHours(0, 0, 0, 0);

@@ -1,12 +1,12 @@
 import { prisma } from "@vayva/db";
 export class CustomerOrderService {
-    static async getOrders(storeId, customerId) {
+    static async getOrders(storeId: any, customerId: any) {
         return prisma.order.findMany({
             where: { storeId, customerId },
             orderBy: { createdAt: "desc" },
         });
     }
-    static async getOrderDetail(storeId, customerId, orderId) {
+    static async getOrderDetail(storeId: any, customerId: any, orderId: any) {
         const order = await prisma.order.findUnique({
             where: { id: orderId },
         });

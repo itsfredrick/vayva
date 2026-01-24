@@ -4,7 +4,7 @@ import { authOptions } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { validateRow } from "@/lib/imports/csv";
 // Test fetching file content from URL
-const fetchFileContent = async (url: unknown) => {
+const fetchFileContent = async (url: any) => {
     // In dev, if url is "demo://...", return placeholder CSV
     if (url.startsWith("demo://")) {
         return `Name,Price,Stock,Category
@@ -18,7 +18,7 @@ Sneakers,25000,2,Shoes`;
         throw new Error("Failed to fetch CSV file");
     return res.text();
 };
-export async function POST(req: unknown) {
+export async function POST(req: any) {
     const session = await getServerSession(authOptions);
     const user = session?.user;
     if (!user?.storeId)
@@ -34,16 +34,16 @@ export async function POST(req: unknown) {
         });
         const csvContent = await fetchFileContent(job.fileUrl);
         // Parse
-        const lines = csvContent.split("\n").filter((l: unknown) => l.trim().length > 0);
-        const headers = lines[0].split(",").map((h: unknown) => h.trim());
+        const lines = csvContent.split("\n").filter((l: any) => l.trim().length > 0);
+        const headers = lines[0].split(",").map((h: any) => h.trim());
         let valid = 0;
         let invalid = 0;
         const errors = [];
         const preview = [];
         for (let i = 1; i < lines.length; i++) {
-            const vals = lines[i].split(",").map((s: unknown) => s.trim());
+            const vals = lines[i].split(",").map((s: any) => s.trim());
             const row = {};
-            headers.forEach((h: unknown, idx: unknown) => (row[h] = vals[idx]));
+            headers.forEach((h: any, idx: any) => ((row as any)[h] = vals[idx]));
             const result = validateRow(row);
             if (result.valid) {
                 valid++;
@@ -68,7 +68,7 @@ export async function POST(req: unknown) {
         });
         return NextResponse.json(updated);
     }
-    catch (e) {
+    catch (e: any) {
         await prisma.importJob.update({
             where: { id: jobId },
             data: { status: "failed", summary: { error: e.message } },

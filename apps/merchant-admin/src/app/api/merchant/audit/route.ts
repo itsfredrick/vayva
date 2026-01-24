@@ -12,7 +12,7 @@ export const GET = withVayvaAPI(PERMISSIONS.TEAM_MANAGE, async (req, { storeId }
         const entityId = searchParams.get("entity_id");
         const action = searchParams.get("action");
         const actorId = searchParams.get("actor_id");
-        const where = { storeId };
+        const where: any = { storeId };
         if (entityType)
             where.entityType = entityType;
         if (entityId)
@@ -37,7 +37,7 @@ export const GET = withVayvaAPI(PERMISSIONS.TEAM_MANAGE, async (req, { storeId }
             next_cursor: nextCursor,
         });
     }
-    catch (error) {
+    catch (error: any) {
         console.error("Audit Log API Error:", error);
         return NextResponse.json({ error: "Internal Error" }, { status: 500 });
     }

@@ -16,7 +16,7 @@ export const GET = withVayvaAPI(PERMISSIONS.COMMERCE_VIEW, async (request, { sto
                 }
             }
         });
-        const transformed = customers.map((c) => ({
+        const transformed = customers.map((c: any) => ({
             id: c.id,
             merchantId: c.storeId,
             name: `${c.firstName || ""} ${c.lastName || ""}`.trim() || "Unknown",
@@ -31,7 +31,7 @@ export const GET = withVayvaAPI(PERMISSIONS.COMMERCE_VIEW, async (request, { sto
         }));
         return NextResponse.json(transformed);
     }
-    catch (error) {
+    catch (error: any) {
         console.error("Fetch Customers Error:", error);
         return NextResponse.json({ error: "Failed to fetch customers" }, { status: 500 });
     }

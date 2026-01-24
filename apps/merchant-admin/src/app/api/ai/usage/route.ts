@@ -19,7 +19,7 @@ export async function GET(request: NextRequest) {
             current: limitInfo.usage.messagesUsed,
             allowed: limitInfo.allowed,
             reason: limitInfo.reason,
-            history: history.map((h) => ({
+            history: history.map((h: any) => ({
                 date: h.date,
                 tokens: h.totalTokens,
                 requests: h.totalRequests,
@@ -31,7 +31,7 @@ export async function GET(request: NextRequest) {
             data: responseData,
         });
     }
-    catch (error) {
+    catch (error: any) {
         console.error("[AI Usage API] Error:", error);
         return NextResponse.json({
             error: "Failed to fetch usage stats",

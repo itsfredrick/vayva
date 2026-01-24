@@ -53,7 +53,7 @@ export async function POST(request: NextRequest) {
         });
         return NextResponse.json({ success: true, sudoExpiresAt: expiresAt });
     }
-    catch (error) {
+    catch (error: any) {
         console.error("Sudo Error:", error);
         return NextResponse.json({ error: "Failed to verify" }, { status: 500 });
     }

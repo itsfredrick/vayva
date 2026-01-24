@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
-export async function GET(req: unknown) {
+export async function GET(req: any) {
     try {
         const session = await getServerSession(authOptions);
         if (!session?.user) {
@@ -24,12 +24,12 @@ export async function GET(req: unknown) {
         }
         return NextResponse.json({ found: true, draft });
     }
-    catch (error) {
+    catch (error: any) {
         console.error("GET /api/storefront/draft error:", error);
         return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
     }
 }
-export async function POST(req: unknown) {
+export async function POST(req: any) {
     try {
         const session = await getServerSession(authOptions);
         if (!session?.user) {
@@ -62,7 +62,7 @@ export async function POST(req: unknown) {
         });
         return NextResponse.json({ success: true, draft });
     }
-    catch (error) {
+    catch (error: any) {
         console.error("POST /api/storefront/draft error:", error);
         return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
     }

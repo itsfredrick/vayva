@@ -8,7 +8,7 @@ export const GET = withVayvaAPI(PERMISSIONS.SUPPORT_VIEW, async (req, { storeId 
             where: { id: storeId },
             select: { settings: true }
         });
-        const settings = store?.settings || {};
+        const settings: any = (store?.settings as any) || {};
         const aiAgent = settings.aiAgent || {
             enabled: false,
             tone: "PROFESSIONAL",
@@ -17,7 +17,7 @@ export const GET = withVayvaAPI(PERMISSIONS.SUPPORT_VIEW, async (req, { storeId 
         };
         return NextResponse.json(aiAgent);
     }
-    catch (error) {
+    catch (error: any) {
         console.error("[AI_AGENT_SETTINGS_GET]", error);
         return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
     }
@@ -30,9 +30,9 @@ export const PATCH = withVayvaAPI(PERMISSIONS.SUPPORT_MANAGE, async (req, { stor
             where: { id: storeId },
             select: { settings: true }
         });
-        const currentSettings = store?.settings || {};
+        const currentSettings = (store?.settings as any) || {};
         const updatedAiAgent = {
-            ...currentSettings.aiAgent,
+            ...(currentSettings.aiAgent || {}),
             enabled: enabled ?? currentSettings.aiAgent?.enabled,
             tone: tone ?? currentSettings.aiAgent?.tone,
             knowledgeBase: knowledgeBase ?? currentSettings.aiAgent?.knowledgeBase,
@@ -57,12 +57,12 @@ export const PATCH = withVayvaAPI(PERMISSIONS.SUPPORT_MANAGE, async (req, { stor
                 body: JSON.stringify({ storeId })
             });
         }
-        catch (syncError) {
+        catch (syncError: any) {
             console.warn("[AI_AGENT_SYNC_TRIGGER_FAILED]", syncError);
         }
         return NextResponse.json(updatedAiAgent);
     }
-    catch (error) {
+    catch (error: any) {
         console.error("[AI_AGENT_SETTINGS_PATCH]", error);
         return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
     }

@@ -39,7 +39,7 @@ async function cleanup() {
             });
             console.log(`  ✅ Deleted ${auditLogs} audit logs.`);
         }
-    } catch (e) {
+    } catch (_e) {
         console.warn("  ⚠️ AuditLog model might not exist or match this query.");
     }
 

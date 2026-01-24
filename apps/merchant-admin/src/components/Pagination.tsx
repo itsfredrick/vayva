@@ -124,14 +124,14 @@ export function Pagination({
                             </label>
                             <select
                                 id="items-per-page"
-                                value={itemsPerPage}
-                                onChange={(e) => onItemsPerPageChange(Number(e.target.value))}
+                                value={(itemsPerPage as any)}
+                                onChange={(e: any) => onItemsPerPageChange(Number(e.target.value))}
                                 className="rounded-md border border-gray-300 px-2 py-1 text-sm focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
                             >
-                                <option value={10}>10</option>
-                                <option value={25}>25</option>
-                                <option value={50}>50</option>
-                                <option value={100}>100</option>
+                                <option value={(10 as any)}>10</option>
+                                <option value={(25 as any)}>25</option>
+                                <option value={(50 as any)}>50</option>
+                                <option value={(100 as any)}>100</option>
                             </select>
                         </div>
                     )}

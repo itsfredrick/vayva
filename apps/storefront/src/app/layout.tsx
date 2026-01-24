@@ -3,43 +3,30 @@ import { Inter, Space_Grotesk } from "next/font/google";
 import "./globals.css";
 import { StoreProvider } from "@/context/StoreContext";
 import { Suspense } from "react";
-import { headers } from "next/headers";
 import { prisma } from "@vayva/db";
+import { notFound } from "next/navigation";
+import { PublicStore } from "@/types/storefront";
 import { Analytics } from "@vercel/analytics/react";
 import { SpeedInsights } from "@vercel/speed-insights/next";
+import { getSlugFromHeaders } from "./utils";
 
 const spaceGrotesk = Space_Grotesk({
   subsets: ["latin"],
   variable: "--font-space-grotesk",
+  display: "swap",
 });
 
 const inter = Inter({
   subsets: ["latin"],
   variable: "--font-inter",
+  display: "swap",
 });
 
 export async function generateMetadata(
-  { params, searchParams }: unknown,
-  parent: ResolvingMetadata
+  { params: _params, searchParams: _searchParams }: any,
+  _parent: ResolvingMetadata
 ): Promise<Metadata> {
-  const headersList = await headers();
-  const host = headersList.get("host") || "";
-
-  let slug = null;
-
-  // Domain resolution logic
-  if (process.env.NEXT_PUBLIC_ROOT_DOMAIN && host.includes(process.env.NEXT_PUBLIC_ROOT_DOMAIN)) {
-    slug = host.replace(`.${process.env.NEXT_PUBLIC_ROOT_DOMAIN}`, "");
-  } else if (host.endsWith(".vayva.com")) {
-    slug = host.replace(".vayva.com", "");
-  } else if (host.endsWith(".vayva.shop")) {
-    slug = host.replace(".vayva.shop", "");
-  } else if (host.endsWith(".vayva.ng")) {
-    slug = host.replace(".vayva.ng", "");
-  }
-
-  // Handle localhost via manual override for testing if needed, though hard on server layout without params
-  // Use a fallback if no slug found on domain
+  const slug = await getSlugFromHeaders();
 
   if (slug) {
     try {
@@ -47,7 +34,6 @@ export async function generateMetadata(
         where: { slug },
         select: {
           name: true,
-          // tagline: true, // Legacy field removed
           seoTitle: true,
           seoDescription: true,
           socialImage: true,
@@ -56,8 +42,8 @@ export async function generateMetadata(
       });
 
       if (store) {
-        const title = store.seoTitle || store.name;
-        const description = store.seoDescription || `Powered by Vayva`;
+        const title = store.seoTitle || `${store.name} | Powered by Vayva`;
+        const description = store.seoDescription || `Shop at ${store.name} - Powered by Vayva`;
         const images = store.socialImage ? [store.socialImage] : (store.logoUrl ? [store.logoUrl] : []);
 
         return {
@@ -67,6 +53,7 @@ export async function generateMetadata(
             title,
             description,
             images,
+            siteName: store.name,
             type: "website",
           },
           twitter: {
@@ -77,7 +64,7 @@ export async function generateMetadata(
           }
         };
       }
-    } catch (e) {
+    } catch (e: unknown) {
       console.error("SEO Fetch Error", e);
     }
   }
@@ -92,7 +79,62 @@ export async function generateMetadata(
   };
 }
 
-export default function RootLayout({ children }: { children: unknown }) {
+export default async function RootLayout({ children }: { children: React.ReactNode }): Promise<React.JSX.Element> {
+  const slug = await getSlugFromHeaders();
+  let store: PublicStore | null = null;
+
+  if (slug) {
+    try {
+      const rawStore = await prisma.store.findUnique({
+        where: { slug },
+        include: {
+          storefrontPublished: true,
+          merchantPolicies: true,
+          // contacts is a JSON field, no include
+        }
+      });
+
+      if (rawStore) {
+        const themeConfig = (rawStore.storefrontPublished?.themeConfig as any) || {
+          primaryColor: "#000000",
+          accentColor: "#FFFFFF",
+          templateId: "minimal"
+        };
+        const contacts = (rawStore.contacts as any) || {};
+
+        const policies = {
+          shipping: rawStore.merchantPolicies.find((p: any) => p.type === 'SHIPPING_DELIVERY')?.contentMd || "",
+          returns: rawStore.merchantPolicies.find((p: any) => p.type === 'RETURNS')?.contentMd || "",
+          privacy: rawStore.merchantPolicies.find((p: any) => p.type === 'PRIVACY')?.contentMd || "",
+        };
+
+        store = {
+          id: rawStore.id,
+          slug: rawStore.slug,
+          name: rawStore.name,
+          tagline: rawStore.seoDescription || undefined,
+          logoUrl: rawStore.logoUrl || undefined,
+          theme: themeConfig,
+          contact: {
+            phone: contacts.phone,
+            email: contacts.email,
+            whatsapp: contacts.whatsapp
+          },
+          policies,
+          industry: rawStore.industrySlug || undefined,
+          plan: rawStore.plan as "FREE" | "STARTER" | "PRO"
+        };
+      }
+    } catch (e) {
+      console.error("Layout Store Fetch Error", e);
+    }
+  }
+
+  // STRICT 404 RULE: If we have a slug but no store, 404.
+  if (slug && !store) {
+    notFound();
+  }
+
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
@@ -109,7 +151,7 @@ export default function RootLayout({ children }: { children: unknown }) {
         suppressHydrationWarning
       >
         <Suspense fallback={<div className="p-10 text-center">Loading...</div>}>
-          <StoreProvider>{children}</StoreProvider>
+          <StoreProvider initialStore={store}>{children}</StoreProvider>
         </Suspense>
         {/* Performance Monitoring */}
         <Analytics />

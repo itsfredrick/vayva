@@ -15,7 +15,7 @@ export const GET = withVayvaAPI(PERMISSIONS.ORDERS_VIEW, async (request, { store
         }
         return NextResponse.json(booking);
     }
-    catch (error) {
+    catch (error: any) {
         return NextResponse.json({ error: error.message }, { status: 400 });
     }
 });
@@ -33,7 +33,7 @@ export const PUT = withVayvaAPI(PERMISSIONS.ORDERS_MANAGE, async (request, { sto
         const booking = await BookingService.updateBooking(storeId, id, updateData);
         return NextResponse.json(booking);
     }
-    catch (error) {
+    catch (error: any) {
         return NextResponse.json({ error: error.message }, { status: 400 });
     }
 });
@@ -46,7 +46,7 @@ export const DELETE = withVayvaAPI(PERMISSIONS.ORDERS_MANAGE, async (request, { 
         });
         return NextResponse.json({ success: true });
     }
-    catch (error) {
+    catch (error: any) {
         return NextResponse.json({ error: error.message }, { status: 400 });
     }
 });

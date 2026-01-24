@@ -1,5 +1,5 @@
 import { prisma } from "@vayva/db";
-import { crypto } from "crypto";
+import crypto from "crypto";
 
 /**
  * Ensures that a request with a specific Idempotency-Key is only processed once.
@@ -18,7 +18,8 @@ export async function withIdempotency<T>(
     execute: () => Promise<T>
 ): Promise<T> {
     // Check for existing record
-    const existing = await prisma.idempotencyRecord.findUnique({
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const existing = await (prisma as any).idempotencyRecord.findUnique({
         where: { key }
     });
 
@@ -33,13 +34,15 @@ export async function withIdempotency<T>(
     const result = await execute();
 
     // Record the result
-    await prisma.idempotencyRecord.create({
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    await (prisma as any).idempotencyRecord.create({
         data: {
             key,
             userId,
             merchantId,
             route,
-            response: result as unknown,
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            response: result as any,
             responseHash: "", // Optional: for integrity checks
             expiresAt: new Date(Date.now() + 24 * 60 * 60 * 1000) // 24h expiry
         }

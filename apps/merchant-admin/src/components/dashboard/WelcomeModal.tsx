@@ -32,7 +32,7 @@ export function WelcomeModal({
 
             const randomInRange = (min: number, max: number) => Math.random() * (max - min) + min;
 
-            const interval: unknown = setInterval(function () {
+            const interval: any = setInterval(function () {
                 const timeLeft = animationEnd - Date.now();
 
                 if (timeLeft <= 0) {

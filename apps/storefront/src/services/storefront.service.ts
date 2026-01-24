@@ -12,7 +12,7 @@ export const StorefrontService = {
       const response = await fetch(`${API_BASE}/stores/${slug}`);
       if (response.ok) return await response.json();
       return null;
-    } catch (e) {
+    } catch (e: any) {
       reportError(e, { method: "getStore", slug });
       return null;
     }
@@ -29,7 +29,7 @@ export const StorefrontService = {
 
       if (response.ok) return await response.json();
       return [];
-    } catch (e) {
+    } catch (e: any) {
       reportError(e, { method: "getProducts", storeId });
       return [];
     }
@@ -45,7 +45,7 @@ export const StorefrontService = {
       });
       if (response.ok) return await response.json();
       return null;
-    } catch (e) {
+    } catch (e: any) {
       reportError(e, { method: "getProduct", id });
       return null;
     }
@@ -55,7 +55,7 @@ export const StorefrontService = {
    * Create Order
    */
   createOrder: async (
-    orderData: unknown,
+    orderData: any,
   ): Promise<{
     success: boolean;
     orderId?: string;
@@ -104,7 +104,7 @@ export const StorefrontService = {
       }
 
       return await response.json();
-    } catch (e) {
+    } catch (e: any) {
       reportError(e, { method: "initializePayment", ...paymentData });
       return { status: false, message: "Payment failed to start" };
     }
@@ -148,6 +148,41 @@ export const StorefrontService = {
       }
       return null;
     } catch {
+      return null;
+    }
+  },
+
+  /**
+   * Get Blog Posts for a Store
+   */
+  getBlogPosts: async (storeId: string): Promise<any[]> => {
+    try {
+      const response = await fetch(`${API_BASE}/content/posts?storeId=${storeId}`, {
+        next: { revalidate: 300 },
+      });
+      if (response.ok) {
+        const data = await response.json();
+        return data.posts || [];
+      }
+      return [];
+    } catch (e: any) {
+      reportError(e, { method: "getBlogPosts", storeId });
+      return [];
+    }
+  },
+
+  /**
+   * Get Single Blog Post
+   */
+  getBlogPost: async (slug: string, storeId: string): Promise<any | null> => {
+    try {
+      const response = await fetch(`${API_BASE}/content/posts/${slug}?storeId=${storeId}`, {
+        next: { revalidate: 300 },
+      });
+      if (response.ok) return await response.json();
+      return null;
+    } catch (e: any) {
+      reportError(e, { method: "getBlogPost", slug, storeId });
       return null;
     }
   },

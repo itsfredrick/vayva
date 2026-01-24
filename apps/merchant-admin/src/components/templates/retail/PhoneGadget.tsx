@@ -153,22 +153,22 @@ export const PhoneGadgetTemplate: React.FC<TemplateProps> = ({
       <main className="container mx-auto px-4 py-8">
         <h2 className="text-xl font-bold mb-6">Latest Arrivals</h2>
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-          {gadgetItems.map((item) => (
+          {gadgetItems.map((item: any) => (
             <div
               key={item.id}
               className="bg-white p-3 rounded-xl border border-gray-200 flex flex-col shadow-sm"
             >
               <div className="aspect-square bg-gray-100 rounded-lg mb-3 overflow-hidden relative">
-                {(item as unknown).image && (
+                {(item as any).image && (
                   <img
-                    src={(item as unknown).image}
+                    src={(item as any).image}
                     alt={item.name}
                     className="w-full h-full object-cover"
                   />
                 )}
-                {(item as unknown).specs?.condition && (
+                {(item as any).specs?.condition && (
                   <span className="absolute top-2 left-2 bg-black/70 text-white text-[10px] px-2 py-1 rounded backdrop-blur-md">
-                    {(item as unknown).specs.condition}
+                    {(item as any).specs.condition}
                   </span>
                 )}
               </div>
@@ -176,16 +176,16 @@ export const PhoneGadgetTemplate: React.FC<TemplateProps> = ({
                 <h3 className="font-bold text-gray-900 text-sm leading-tight mb-1">
                   {item.name}
                 </h3>
-                {(item as unknown).specs && (
+                {(item as any).specs && (
                   <div className="flex flex-wrap gap-1 mb-2">
-                    {(item as unknown).specs.storage && (
+                    {(item as any).specs.storage && (
                       <span className="text-[10px] bg-gray-100 px-1.5 py-0.5 rounded text-gray-600">
-                        {(item as unknown).specs.storage}
+                        {(item as any).specs.storage}
                       </span>
                     )}
-                    {(item as unknown).specs.battery && (
+                    {(item as any).specs.battery && (
                       <span className="text-[10px] bg-green-50 px-1.5 py-0.5 rounded text-green-700">
-                        🔋 {(item as unknown).specs.battery}
+                        🔋 {(item as any).specs.battery}
                       </span>
                     )}
                   </div>

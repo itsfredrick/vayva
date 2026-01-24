@@ -5,8 +5,8 @@ import { StorefrontService } from "@/services/storefront.service";
 import { Zap, Clock } from "lucide-react";
 import Link from "next/link";
 
-export function FlashSaleBanner({ storeId }: { storeId: string }) {
-  const [sale, setSale] = useState<unknown>(null);
+export function FlashSaleBanner({ storeId }: { storeId: string }): React.JSX.Element {
+  const [sale, setSale] = useState<any>(null);
   const [timeLeft, setTimeLeft] = useState("");
 
   useEffect(() => {
@@ -20,7 +20,7 @@ export function FlashSaleBanner({ storeId }: { storeId: string }) {
 
     const timer = setInterval(() => {
       const now = new Date().getTime();
-      const end = new Date(sale.endTime).getTime();
+      const end = new Date((sale as any).endTime).getTime();
       const distance = end - now;
 
       if (distance < 0) {
@@ -41,7 +41,7 @@ export function FlashSaleBanner({ storeId }: { storeId: string }) {
     return () => clearInterval(timer);
   }, [sale]);
 
-  if (!sale) return null;
+  if (!sale) return <></>;
 
   return (
     <div className="bg-gradient-to-r from-red-600 to-orange-600 text-white py-3 px-4 shadow-lg animate-in slide-in-from-top duration-500 relative overflow-hidden">
@@ -54,10 +54,10 @@ export function FlashSaleBanner({ storeId }: { storeId: string }) {
             <Zap size={18} className="text-yellow-300 fill-yellow-300" />
           </div>
           <span className="font-bold text-lg tracking-wide uppercase">
-            {sale.name}
+            {sale?.name}
           </span>
           <span className="bg-white text-red-600 text-xs font-black px-2 py-0.5 rounded ml-2">
-            {sale.discount}% OFF
+            {sale?.discount}% OFF
           </span>
         </div>
 

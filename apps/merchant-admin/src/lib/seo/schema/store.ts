@@ -1,6 +1,6 @@
 // src/lib/seo/schema/store.ts
 import { SITE_ORIGIN } from "../route-policy";
-export function storeSchema(path: unknown, ctx: unknown) {
+export function storeSchema(path: any, ctx: any) {
     return {
         "@context": "https://schema.org",
         "@type": "Store",

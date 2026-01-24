@@ -6,7 +6,7 @@ import { getPaymentsQueue } from "@/lib/queue";
  * Paystack Webhook Handler (Asynchronous)
  * Purely responsible for verification, persistence, and hand-off to background worker.
  */
-export async function POST(req: unknown) {
+export async function POST(req: any) {
     const rawBody = await req.text();
     const signature = req.headers.get("x-paystack-signature") || "";
     const secret = process.env.PAYSTACK_SECRET_KEY;
@@ -18,7 +18,7 @@ export async function POST(req: unknown) {
     try {
         event = JSON.parse(rawBody);
     }
-    catch (e) {
+    catch (e: any) {
         return new NextResponse("Invalid JSON", { status: 400 });
     }
     if (!verifyPaystackSignature(rawBody, signature, secret)) {
@@ -90,7 +90,7 @@ export async function POST(req: unknown) {
                         }
                     });
                 }
-                catch (subErr) {
+                catch (subErr: any) {
                     console.error("Failed to update merchant subscription", subErr);
                 }
             }
@@ -130,13 +130,13 @@ export async function POST(req: unknown) {
                     })
                 }).catch(err => console.error("Receipt Send Trigger Failed", err));
             }
-            catch (receiptErr) {
+            catch (receiptErr: any) {
                 console.error("Receipt logic error", receiptErr);
             }
         }
         return new NextResponse("OK", { status: 200 });
     }
-    catch (e) {
+    catch (e: any) {
         console.error("Webhook ingestion error:", e);
         return new NextResponse("Error", { status: 500 });
     }

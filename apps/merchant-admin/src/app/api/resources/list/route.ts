@@ -36,7 +36,7 @@ export const GET = withVayvaAPI(PERMISSIONS.PRODUCTS_VIEW, async (req, { storeId
             },
             orderBy: { updatedAt: 'desc' }
         });
-        const mapped = resources.map((r) => ({
+        const mapped = resources.map((r: any) => ({
             id: r.id,
             name: r.title, // ResourceListPage expects 'name'
             title: r.title,
@@ -46,7 +46,7 @@ export const GET = withVayvaAPI(PERMISSIONS.PRODUCTS_VIEW, async (req, { storeId
         }));
         return NextResponse.json(mapped);
     }
-    catch (error) {
+    catch (error: any) {
         console.error("[RESOURCE_LIST]", error);
         return NextResponse.json({ error: "Internal Error" }, { status: 500 });
     }

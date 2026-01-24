@@ -29,7 +29,7 @@ export const InventoryHistory = ({ productId }: { productId: string }) => {
             if (res.ok) {
                 setMovements(await res.json());
             }
-        } catch (err) {
+        } catch (err: any) {
             console.error(err);
         } finally {
             setLoading(false);
@@ -61,7 +61,7 @@ export const InventoryHistory = ({ productId }: { productId: string }) => {
                             </tr>
                         </thead>
                         <tbody className="divide-y divide-gray-100">
-                            {movements.map((move) => (
+                            {movements.map((move: any) => (
                                 <tr key={move.id} className="hover:bg-gray-50/50">
                                     <td className="p-3 pl-4 text-gray-600">
                                         {format(new Date(move.createdAt), "MMM d, HH:mm")}

@@ -6,7 +6,7 @@ interface StickyCTAProps {
   onBuy: () => void;
 }
 
-export const StickyCTA = ({ price, onBuy }: StickyCTAProps) => {
+export const StickyCTA = ({ price, onBuy }: StickyCTAProps): React.JSX.Element => {
   return (
     <div className="fixed bottom-0 left-0 w-full bg-white border-t border-gray-200 p-4 md:hidden z-50 shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.1)] flex items-center justify-between gap-4 safe-area-bottom">
       <div>

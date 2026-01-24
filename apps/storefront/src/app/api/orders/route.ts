@@ -34,7 +34,8 @@ export async function POST(req: NextRequest) {
       }, { status: 400 });
     }
 
-    const { storeId, items, customer, deliveryMethod, paymentMethod } = parseResult.data;
+    const { storeId: _s, items, customer, deliveryMethod } = parseResult.data;
+    storeId = _s;
 
     // Generate Identifiers
     const count = await prisma.order.count({ where: { storeId } });
@@ -118,7 +119,7 @@ export async function POST(req: NextRequest) {
           refCode,
           orderNumber,
           status: "DRAFT",
-          paymentStatus: initialPaymentStatus as unknown,
+          paymentStatus: initialPaymentStatus as any,
           fulfillmentStatus: "UNFULFILLED",
           total: finalTotal,
           subtotal: calculatedSubtotal,
@@ -177,7 +178,7 @@ export async function POST(req: NextRequest) {
       } : null
     });
 
-  } catch (error) {
+  } catch (error: any) {
     reportError(error, { route: "POST /api/orders", storeId: storeId });
     return NextResponse.json(
       {

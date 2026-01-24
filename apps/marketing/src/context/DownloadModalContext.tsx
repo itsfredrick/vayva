@@ -13,7 +13,7 @@ const DownloadModalContext = createContext<DownloadModalContextType | undefined>
     undefined
 );
 
-export function DownloadModalProvider({ children }: { children: ReactNode }) {
+export function DownloadModalProvider({ children }: { children: ReactNode }): React.JSX.Element {
     const [isOpen, setIsOpen] = useState(false);
     const [installStep, setInstallStep] = useState<"select" | "instructions">("select");
     const [selectedPlatform, setSelectedPlatform] = useState<"ios" | "android" | null>(null);

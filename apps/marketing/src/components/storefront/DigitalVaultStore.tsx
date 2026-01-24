@@ -14,7 +14,7 @@ export function DigitalVaultStore({
 }: {
   storeName: string;
   storeSlug?: string;
-}) {
+}): React.JSX.Element {
   const { store } = useStorefrontStore(storeSlug);
   const { products, isLoading } = useStorefrontProducts(storeSlug, {
     limit: 12,
@@ -90,7 +90,7 @@ export function DigitalVaultStore({
                   <p>Cart is empty.</p>
                 </div>
               ) : (
-                cart.map((item) => (
+                cart.map((item: any) => (
                   <div
                     key={item.id}
                     className="bg-white border-2 border-black rounded-xl p-4 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]"
@@ -165,7 +165,7 @@ export function DigitalVaultStore({
           </div>
         ) : (
           <div className="grid md:grid-cols-3 gap-8">
-            {products.map((product) => (
+            {products.map((product: any) => (
               <div key={product.id} className="group cursor-pointer">
                 <div className="bg-white border-2 border-black rounded-2xl overflow-hidden shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] hover:shadow-[12px_12px_0px_0px_rgba(0,0,0,1)] hover:-translate-y-1 transition-all duration-200">
                   <div className="aspect-[4/3] bg-gray-100 border-b-2 border-black relative">

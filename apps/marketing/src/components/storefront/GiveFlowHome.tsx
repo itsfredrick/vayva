@@ -13,7 +13,7 @@ interface GiveFlowHomeProps {
 export default function GiveFlowHome({
     storeName: initialStoreName,
     storeSlug,
-}: GiveFlowHomeProps) {
+}: GiveFlowHomeProps): React.JSX.Element {
     const { store } = useStorefrontStore(storeSlug);
     const displayName = store?.name || initialStoreName || "GiveFlow Charity";
 
@@ -75,7 +75,7 @@ export default function GiveFlowHome({
             <div className="max-w-7xl mx-auto px-4 py-20">
                 <h2 className="text-3xl font-bold text-center mb-12 text-emerald-900">Active Campaigns</h2>
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-                    {campaigns.map((c) => (
+                    {campaigns.map((c: any) => (
                         <div key={c.id} className="bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition-shadow">
                             <div className="h-48 relative">
                                 <img src={c.image} alt={c.name} className="w-full h-full object-cover" />

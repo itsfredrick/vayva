@@ -22,7 +22,7 @@ export const GET = withVayvaAPI(PERMISSIONS.SETTINGS_VIEW, async (req, { storeId
         }
         // Map DB nested JSON back to UI flat keys
         // Assuming db.categories structure: { orders: { email: boolean, push: boolean }, ... }
-        const cats = prefs.categories;
+        const cats: any = prefs.categories;
         const response = {
             orders_email: cats.orders?.email ?? defaultState.orders_email,
             orders_push: cats.orders?.push ?? defaultState.orders_push,
@@ -34,7 +34,7 @@ export const GET = withVayvaAPI(PERMISSIONS.SETTINGS_VIEW, async (req, { storeId
         };
         return NextResponse.json(response);
     }
-    catch (error) {
+    catch (error: any) {
         console.error("[NOTIFICATIONS_GET]", error);
         return NextResponse.json({ error: "Internal Error" }, { status: 500 });
     }
@@ -80,7 +80,7 @@ export const POST = withVayvaAPI(PERMISSIONS.SETTINGS_EDIT, async (req, { storeI
         });
         return NextResponse.json({ success: true, message: "Preferences saved" });
     }
-    catch (error) {
+    catch (error: any) {
         console.error("[NOTIFICATIONS_POST]", error);
         return NextResponse.json({ error: "Internal Error" }, { status: 500 });
     }

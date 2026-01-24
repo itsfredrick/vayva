@@ -22,7 +22,7 @@ import { FileUpload } from "@/components/ui/FileUpload";
 interface ValidatedFormProps {
     primaryObject: PrimaryObject;
     mode: "create" | "edit";
-    initialData?: unknown;
+    initialData?: any;
     resourceId?: string;
     onSuccessPath?: string;
 }
@@ -55,11 +55,11 @@ export const DynamicResourceForm = ({
 
     const { requiredFields, optionalFields, variantLabel } = formConfig;
 
-    const handleChange = (field: string, val: unknown) => {
-        setFormData((prev: unknown) => ({ ...prev, [field]: val }));
+    const handleChange = (field: string, val: any) => {
+        setFormData((prev: any) => ({ ...prev, [field]: val }));
         // Clear error on type
         if (errors[field]) {
-            setErrors((prev: unknown) => {
+            setErrors((prev: any) => {
                 const next = { ...prev };
                 delete next[field];
                 return next;
@@ -155,8 +155,8 @@ export const DynamicResourceForm = ({
                         onChange={(e: React.ChangeEvent<HTMLSelectElement>) => handleChange(key, e.target.value)}
                     >
                         <option value="">Select {def.label}</option>
-                        {def.options?.map((opt: unknown) => (
-                            <option key={opt.value} value={opt.value}>{opt.label}</option>
+                        {def.options?.map((opt: any) => (
+                            <option key={opt.value} value={(opt.value as any)}>{opt.label}</option>
                         ))}
                     </select>
                 );
@@ -166,7 +166,7 @@ export const DynamicResourceForm = ({
                 return (
                     <FileUpload
                         value={formData[key] || ""}
-                        onChange={(url: unknown) => handleChange(key, url)}
+                        onChange={(url: any) => handleChange(key, url)}
                         label={def.label || "Upload File"}
                         accept={accept}
                     />
@@ -216,7 +216,7 @@ export const DynamicResourceForm = ({
                         </div>
                     )}
 
-                    {requiredFields.map((field: string) => (
+                    {requiredFields.map((field: any) => (
                         <React.Fragment key={field}>{renderFieldBlock(field, true)}</React.Fragment>
                     ))}
 
@@ -225,7 +225,7 @@ export const DynamicResourceForm = ({
                             <div className="col-span-2 pt-4 pb-2 border-b border-gray-100">
                                 <h3 className="text-sm font-bold text-gray-500 uppercase tracking-wider">Optional Details</h3>
                             </div>
-                            {optionalFields.map((field: string) => (
+                            {optionalFields.map((field: any) => (
                                 <React.Fragment key={field}>{renderFieldBlock(field, false)}</React.Fragment>
                             ))}
                         </>

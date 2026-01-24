@@ -10,14 +10,15 @@ import { PublicProduct } from "@/types/storefront";
 import { useParams } from "next/navigation";
 import NextLink from "next/link";
 import { PDPSkeleton } from "@/components/Skeletons";
-const Link = NextLink as unknown;
+const Link = NextLink as any;
 
 import Image from "next/image";
 import { FoodPDP } from "@/components/pdp/FoodPDP"; import { ServicePDP } from "@/components/pdp/ServicePDP";
 import { ReportProductDialog } from "@/components/pdp/ReportProductDialog";
+import { WhatsAppShare } from "@/components/WhatsAppShare";
 
 
-export default function ProductPage(props: unknown) {
+export default function ProductPage(_props: any): React.JSX.Element {
   const { id } = useParams() as { id: string };
   const { store, addToCart } = useStore();
   const [product, setProduct] = useState<PublicProduct | null>(null);
@@ -36,7 +37,7 @@ export default function ProductPage(props: unknown) {
         // Auto-select first options
         if (data && data.variants) {
           const defaults: Record<string, string> = {};
-          data.variants.forEach(v => {
+          data.variants.forEach((v: any) => {
             if (v.options.length > 0) defaults[v.name] = v.options[0];
           });
           setSelections(defaults);
@@ -50,7 +51,7 @@ export default function ProductPage(props: unknown) {
     setSelections(prev => ({ ...prev, [variantName]: option }));
   };
 
-  if (!store) return null; // Handled by shell
+  if (!store) return <></>; // Handled by shell
 
   // Variant Rendering
   const industry = store.industry || "RETAIL";
@@ -126,11 +127,11 @@ export default function ProductPage(props: unknown) {
             </div>
 
             {/* Variants */}
-            {product.variants.map((v) => (
+            {product.variants.map((v: any) => (
               <div key={v.id} className="mb-6">
                 <label className="block text-sm font-bold mb-2">{v.name}</label>
                 <div className="flex gap-2">
-                  {v.options.map((opt) => {
+                  {v.options.map((opt: any) => {
                     const isSelected = selections[v.name] === opt;
                     return (
                       <Button
@@ -149,30 +150,60 @@ export default function ProductPage(props: unknown) {
               </div>
             ))}
 
-            <div className="flex gap-4 pt-6 border-t border-gray-100">
-              <Button
-                onClick={() => {
-                  // Construct Variant ID from selections
-                  const variantId = Object.entries(selections)
-                    .map(([k, v]) => `${k}:${v}`)
-                    .sort()
-                    .join(", ") || "default";
+            <div className="flex justify-end mb-2">
+              <WhatsAppShare text={`Check out ${product.name} on ${store.name}!`} />
+            </div>
 
-                  addToCart({
-                    productId: product.id,
-                    variantId: variantId,
-                    quantity: 1,
-                    price: product.price,
-                    productName: product.name,
-                    image: product.images[0],
-                  });
-                  // Optional: Redirect / show toast
-                  window.location.href = `/cart?store=${store.slug}`;
-                }}
-                className="flex-1 bg-black text-white h-14 rounded-full font-bold hover:bg-gray-900 transition-colors"
-              >
-                Add to Cart
-              </Button>
+            <div className="flex gap-4 pt-6 border-t border-gray-100 flex-col sm:flex-row">
+              {product.inventory === 0 ? (
+                <div className="w-full space-y-3">
+                  <div className="rounded-md bg-amber-50 p-4">
+                    <div className="flex">
+                      <div className="flex-shrink-0">
+                        <svg className="h-5 w-5 text-amber-400" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                          <path fillRule="evenodd" d="M8.485 2.495c.673-1.167 2.357-1.167 3.03 0l6.28 10.875c.673 1.167-.17 2.625-1.516 2.625H3.72c-1.347 0-2.189-1.458-1.515-2.625L8.485 2.495zM10 5a.75.75 0 01.75.75v3.5a.75.75 0 01-1.5 0v-3.5A.75.75 0 0110 5zm0 9a1 1 0 100-2 1 1 0 000 2z" clipRule="evenodd" />
+                        </svg>
+                      </div>
+                      <div className="ml-3">
+                        <h3 className="text-sm font-medium text-amber-800">Out of Stock</h3>
+                        <div className="mt-2 text-sm text-amber-700">
+                          <p>This item is currently unavailable.</p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <Button
+                    onClick={() => alert("You will be notified when this product is back in stock!")}
+                    className="w-full bg-white text-black border-2 border-black h-14 rounded-full font-bold hover:bg-gray-50 transition-colors"
+                  >
+                    Notify Me When Available
+                  </Button>
+                </div>
+              ) : (
+                <Button
+                  onClick={() => {
+                    // Construct Variant ID from selections
+                    const variantId = Object.entries(selections)
+                      .map(([k, v]) => `${k}:${v}`)
+                      .sort()
+                      .join(", ") || "default";
+
+                    addToCart({
+                      productId: product.id,
+                      variantId: variantId,
+                      quantity: 1,
+                      price: product.price,
+                      productName: product.name,
+                      image: product.images[0],
+                    });
+                    // Optional: Redirect / show toast
+                    window.location.href = `/cart?store=${store.slug}`;
+                  }}
+                  className="flex-1 bg-black text-white h-14 rounded-full font-bold hover:bg-gray-900 transition-colors"
+                >
+                  Add to Cart
+                </Button>
+              )}
             </div>
 
             <div className="mt-8 space-y-4 text-sm text-gray-500">

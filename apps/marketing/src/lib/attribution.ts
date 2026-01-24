@@ -19,7 +19,7 @@ export function saveAttribution(data: Partial<AttributionData>) {
     const existing = getAttribution();
     const merged = { ...existing, ...data, timestamp: Date.now() };
     localStorage.setItem(STORAGE_KEY, JSON.stringify(merged));
-  } catch (e) {
+  } catch (e: any) {
     console.error("Failed to save attribution", e);
   }
 }
@@ -29,7 +29,7 @@ export function getAttribution(): AttributionData {
   try {
     const raw = localStorage.getItem(STORAGE_KEY);
     return raw ? JSON.parse(raw) : {};
-  } catch (e) {
+  } catch {
     return {};
   }
 }
@@ -45,7 +45,7 @@ export function captureUrlParams(
   utmKeys.forEach((key) => {
     const val = searchParams.get(key);
     if (val) {
-      (data as unknown)[key] = val;
+      (data as any)[key] = val;
       hasData = true;
     }
   });

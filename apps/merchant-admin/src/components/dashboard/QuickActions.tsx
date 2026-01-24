@@ -24,7 +24,7 @@ export const QuickActions = () => {
           const data = await res.json();
           setIndustrySlug(data?.data?.industrySlug || "retail");
         }
-      } catch (e) {
+      } catch (e: any) {
         // ignore, default retail
       }
     }
@@ -35,14 +35,6 @@ export const QuickActions = () => {
     return INDUSTRY_CONFIG[industrySlug] || INDUSTRY_CONFIG.retail;
   }, [industrySlug]);
 
-  const createPath =
-    config?.moduleRoutes?.catalog?.create ||
-    (config?.primaryObject === "menu_item"
-      ? "/dashboard/menu-items/new"
-      : config?.primaryObject === "digital_asset"
-        ? "/dashboard/digital-assets/new"
-        : "/dashboard/products/new");
-
   const primaryLabelMap: Record<string, string> = {
     menu_item: "Menu Item",
     digital_asset: "Digital Asset",
@@ -52,9 +44,41 @@ export const QuickActions = () => {
     event: "Event",
     project: "Project",
     campaign: "Campaign",
+    vehicle: "Vehicle",
+    stay: "Stay",
+    post: "Post",
   };
   const primaryLabel =
     primaryLabelMap[config?.primaryObject] || "Product";
+
+  // Smart create path lookup
+  let createPath = "/dashboard/products/new"; // Fallback
+  if (config?.moduleRoutes) {
+    for (const mod of config.modules) {
+      if (config.moduleRoutes[mod]?.create) {
+        createPath = config.moduleRoutes[mod].create!;
+        break;
+      }
+    }
+  }
+
+  if (createPath === "/dashboard/products/new") {
+    const fallbackMap: Record<string, string> = {
+      menu_item: "/dashboard/menu-items/new",
+      digital_asset: "/dashboard/digital-assets/new",
+      service: "/dashboard/services/new",
+      listing: "/dashboard/listings/new",
+      event: "/dashboard/events/new",
+      project: "/dashboard/projects/new",
+      campaign: "/dashboard/campaigns/new",
+      vehicle: "/dashboard/vehicles/new",
+      stay: "/dashboard/stays/new",
+      post: "/dashboard/posts/new",
+    };
+    if (fallbackMap[config?.primaryObject]) {
+      createPath = fallbackMap[config.primaryObject];
+    }
+  }
 
   const hasFulfillment = (config?.modules || []).includes("fulfillment");
 
@@ -89,7 +113,7 @@ export const QuickActions = () => {
 
   return (
     <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 mb-8">
-      {actions.map((action) => (
+      {actions.map((action: any) => (
         <Link
           key={action.label}
           href={action.available ? action.href : "#"}

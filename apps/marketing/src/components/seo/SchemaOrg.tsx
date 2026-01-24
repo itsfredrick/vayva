@@ -1,3 +1,4 @@
+import React from "react";
 import { BRAND } from "@vayva/shared";
 
 
@@ -5,7 +6,7 @@ interface SchemaOrgProps {
   type: "Organization" | "WebSite" | "SoftwareApplication";
 }
 
-export function SchemaOrg({ type }: SchemaOrgProps) {
+export function SchemaOrg({ type }: SchemaOrgProps): React.ReactNode {
   const getSchema = () => {
     switch (type) {
       case "Organization":

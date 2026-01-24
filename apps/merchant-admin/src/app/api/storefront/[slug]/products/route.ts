@@ -18,7 +18,7 @@ export async function GET(req: NextRequest, { params }: { params: Promise<{ slug
             return NextResponse.json({ error: "Store not found" }, { status: 404 });
         }
         // Build the query
-        const where: unknown= {
+        const where: any= {
             storeId: store.id,
             status: "ACTIVE",
         };
@@ -55,7 +55,7 @@ export async function GET(req: NextRequest, { params }: { params: Promise<{ slug
             },
         });
         // Transform formatting to match what templates expect
-        const formattedProducts = products.map((p) => ({
+        const formattedProducts = products.map((p: any) => ({
             id: p.id,
             name: p.title,
             description: p.description,
@@ -67,7 +67,7 @@ export async function GET(req: NextRequest, { params }: { params: Promise<{ slug
         }));
         return NextResponse.json(formattedProducts);
     }
-    catch (error) {
+    catch (error: any) {
         console.error("Error fetching products:", error);
         return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
     }

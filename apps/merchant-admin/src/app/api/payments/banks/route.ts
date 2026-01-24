@@ -6,12 +6,12 @@ export async function GET() {
         const banks = await PaystackService.getBanks();
         // Filter for active banks only and sort alphabetically
         const activeBanks = banks
-            .filter(b => b.active)
-            .sort((a: unknown, b: unknown) => a.name.localeCompare(b.name))
-            .map(b => ({ name: b.name, code: b.code }));
+            .filter((b: any) => b.active)
+            .sort((a: any, b: any) => a.name.localeCompare(b.name))
+            .map((b: any) => ({ name: b.name, code: b.code }));
         return NextResponse.json(activeBanks);
     }
-    catch (error) {
+    catch (error: any) {
         console.error("[BANKS_GET]", error);
         return NextResponse.json({ error: "Failed to fetch banks" }, { status: 500 });
     }

@@ -77,7 +77,7 @@ export function OnboardingProvider({ children }: { children: React.ReactNode }) 
     const saveState = useCallback(async (newState: Partial<OnboardingState>, newStep?: OnboardingStepId, isComplete = false) => {
         setIsSaving(true);
         try {
-            const payload = {
+            const payload: any = {
                 data: newState,
                 step: newStep,
                 isComplete,
@@ -94,7 +94,7 @@ export function OnboardingProvider({ children }: { children: React.ReactNode }) 
 
             // Update SWR cache
             await reload();
-        } catch (err) {
+        } catch (err: any) {
             console.error(err);
             toast.error("Failed to save progress. Please check your connection.");
         } finally {
@@ -184,7 +184,7 @@ export function OnboardingProvider({ children }: { children: React.ReactNode }) 
         setIsSaving(true);
         try {
             // Save status as TRIAL_MODE
-            const payload = {
+            const payload: any = {
                 data: formData,
                 status: "TRIAL_MODE"
             };
@@ -201,7 +201,7 @@ export function OnboardingProvider({ children }: { children: React.ReactNode }) 
             toast.success("Entering Trial Mode - Explore the demo store!");
             router.push("/dashboard");
             router.refresh();
-        } catch (error) {
+        } catch (error: any) {
             console.error(error);
             toast.error("Failed to start trial.");
         } finally {
@@ -225,7 +225,7 @@ export function OnboardingProvider({ children }: { children: React.ReactNode }) 
     };
 
     return (
-        <OnboardingContext.Provider value={value}>
+        <OnboardingContext.Provider value={(value as any)}>
             {children}
         </OnboardingContext.Provider>
     );

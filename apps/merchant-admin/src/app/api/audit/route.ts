@@ -15,7 +15,7 @@ export async function GET(req: NextRequest) {
         const query = searchParams.get("q") || "";
         const limit = 20;
         const skip = (page - 1) * limit;
-        const where: unknown= { storeId };
+        const where: any= { storeId };
         if (type !== "ALL") {
             if (type === "LOGIN")
                 where.action = { startsWith: "LOGIN" };
@@ -49,7 +49,7 @@ export async function GET(req: NextRequest) {
         });
         return NextResponse.json({ logs });
     }
-    catch (error) {
+    catch (error: any) {
         console.error("Audit fetch error:", error);
         return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
     }

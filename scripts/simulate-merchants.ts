@@ -98,7 +98,7 @@ async function createMerchantScenario(config: ScenarioConfig) {
     });
 
     // Create User linked to Store
-    const user = await prisma.user.create({
+    const _user = await prisma.user.create({
         data: {
             email: config.email,
             password: hashedPassword,
@@ -120,7 +120,7 @@ async function createMerchantScenario(config: ScenarioConfig) {
 
 
     // Create Inventory Location
-    const location = await prisma.inventoryLocation.create({
+    const _location = await prisma.inventoryLocation.create({
         data: {
             storeId: store.id,
             name: "Main Location",

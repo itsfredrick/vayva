@@ -8,7 +8,7 @@ interface CourseHeroProps {
   onEnroll: () => void;
 }
 
-export const CourseHero = ({ course, onEnroll }: CourseHeroProps) => {
+export const CourseHero = ({ course, onEnroll }: CourseHeroProps): React.JSX.Element => {
   return (
     <section className="bg-[#F8FAFC] py-12 px-6 border-b border-gray-200">
       <div className="max-w-5xl mx-auto flex flex-col md:flex-row gap-12 items-center">
@@ -35,16 +35,16 @@ export const CourseHero = ({ course, onEnroll }: CourseHeroProps) => {
 
           <div className="flex items-center gap-3 py-2 border-t border-b border-gray-200">
             <img
-              src={course.courseDetails?.instructor.avatar}
-              alt={course.courseDetails?.instructor.name}
+              src={(course as any).courseDetails?.instructor.avatar}
+              alt={(course as any).courseDetails?.instructor.name}
               className="w-10 h-10 rounded-full object-cover bg-gray-200"
             />
             <div>
               <p className="text-sm font-bold text-gray-900">
-                {course.courseDetails?.instructor.name}
+                {(course as any).courseDetails?.instructor.name}
               </p>
               <p className="text-xs text-gray-500">
-                {course.courseDetails?.instructor.title}
+                {(course as any).courseDetails?.instructor.title}
               </p>
             </div>
           </div>

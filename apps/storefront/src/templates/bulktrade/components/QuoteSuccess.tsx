@@ -6,7 +6,7 @@ interface QuoteSuccessProps {
   onClose: () => void;
 }
 
-export const QuoteSuccess = ({ onClose }: QuoteSuccessProps) => {
+export const QuoteSuccess = ({ onClose }: QuoteSuccessProps): React.JSX.Element => {
   return (
     <div className="fixed inset-0 z-[110] flex items-center justify-center bg-black/70 backdrop-blur-sm p-4">
       <div className="bg-white rounded-2xl w-full max-w-md p-8 text-center animate-in zoom-in-95 duration-300 relative">

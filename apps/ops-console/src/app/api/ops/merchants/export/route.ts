@@ -1,8 +1,8 @@
-import { NextRequest, NextResponse } from "next/server";
+import { NextRequest, NextResponse } from 'next/server';
 import { OpsAuthService } from "@/lib/ops-auth";
 import { prisma } from "@vayva/db";
 
-export async function GET(req: NextRequest) {
+export async function GET(_req: NextRequest) {
     try {
         await OpsAuthService.requireSession();
 
@@ -48,7 +48,7 @@ export async function GET(req: NextRequest) {
             },
         });
 
-    } catch (error) {
+    } catch (error: any) {
         console.error("Export error:", error);
         return NextResponse.json({ error: "Export failed" }, { status: 500 });
     }

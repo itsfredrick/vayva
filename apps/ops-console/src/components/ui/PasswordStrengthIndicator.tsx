@@ -13,7 +13,7 @@ interface PasswordRequirement {
 }
 
 const requirements: PasswordRequirement[] = [
-  { label: "At least 8 characters", test: (p) => p.length >= 8 },
+  { label: "At least 8 characters", test: (p) => (p as any).length >= 8 },
   { label: "One uppercase letter", test: (p) => /[A-Z]/.test(p) },
   { label: "One lowercase letter", test: (p) => /[a-z]/.test(p) },
   { label: "One number", test: (p) => /\d/.test(p) },
@@ -42,7 +42,7 @@ export const PasswordStrengthIndicator: React.FC<
     return "bg-status-success";
   };
 
-  if (!password) return null;
+  if (!password) return <></>;
 
   return (
     <div className="space-y-2 mt-2">

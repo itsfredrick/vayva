@@ -1,4 +1,4 @@
-import { NextRequest, NextResponse } from "next/server";
+import { NextRequest, NextResponse } from 'next/server';
 import { OpsAuthService } from "@/lib/ops-auth";
 import { prisma } from "@vayva/db";
 
@@ -19,10 +19,10 @@ export async function GET(req: NextRequest) {
 
         const skip = (page - 1) * limit;
 
-        const where: unknown = {
+        const where: any = {
             AND: [
-                status ? { status: status as unknown} : {},
-                paymentStatus ? { paymentStatus: paymentStatus as unknown} : {},
+                status ? { status } : {},
+                paymentStatus ? { paymentStatus } : {},
                 storeId ? { storeId } : {},
                 search
                     ? {
@@ -52,7 +52,7 @@ export async function GET(req: NextRequest) {
             prisma.order.count({ where }),
         ]);
 
-        const data = orders.map((o: unknown) => ({
+        const data = orders.map((o: any) => ({
             id: o.id,
             orderNumber: o.orderNumber,
             status: o.status,
@@ -76,7 +76,7 @@ export async function GET(req: NextRequest) {
                 totalPages: Math.ceil(total / limit),
             },
         });
-    } catch (error) {
+    } catch (error: any) {
         console.error("Orders list error:", error);
         return NextResponse.json(
             { error: "Internal Server Error" },

@@ -16,7 +16,7 @@ export const AuthService = {
             }
             return response.data!;
         }
-        catch (error) {
+        catch (error: any) {
             // NO TEST FALLBACK - Fail cleanly if backend unavailable
             if (error.message === "Request failed") {
                 throw new Error("Authentication service unavailable. Please try again later.");
@@ -39,7 +39,7 @@ export const AuthService = {
             }
             return response.data!;
         }
-        catch (error) {
+        catch (error: any) {
             if (error.message === "Request failed") {
                 throw new Error("Registration service unavailable. Please try again later.");
             }
@@ -51,7 +51,7 @@ export const AuthService = {
             const response = await apiClient.auth.verifyOtp(payload);
             return response.success;
         }
-        catch (error) {
+        catch (error: any) {
             throw error;
         }
     },

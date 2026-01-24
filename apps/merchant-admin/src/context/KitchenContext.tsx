@@ -30,7 +30,7 @@ export function KitchenProvider({ children }: { children: React.ReactNode }) {
         const res = await fetch("/api/kitchen/orders"); // Or a metrics specific endpoint
         const data = await res.json();
         // map data if needed
-      } catch (_error) {
+      } catch (_error: any) {
     // Intentionally empty
   }
     }
@@ -44,7 +44,7 @@ export function KitchenProvider({ children }: { children: React.ReactNode }) {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ status })
       });
-    } catch (_error) {
+    } catch (_error: any) {
     // Intentionally empty
   }
   };

@@ -75,7 +75,7 @@ export const GET = withVayvaAPI(PERMISSIONS.METRICS_VIEW, async (request, { stor
             },
         });
     }
-    catch (error) {
+    catch (error: any) {
         console.error("Dashboard Metrics Error:", error);
         return NextResponse.json({ error: "Failed to fetch dashboard metrics" }, { status: 500 });
     }

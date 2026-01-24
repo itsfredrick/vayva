@@ -1,4 +1,4 @@
-import { NextRequest, NextResponse } from "next/server";
+import { NextRequest, NextResponse } from 'next/server';
 import { OpsAuthService } from "@/lib/ops-auth";
 import { prisma } from "@vayva/db";
 
@@ -28,8 +28,8 @@ export async function POST(req: NextRequest) {
         }
 
         // Prepare update data
-        let updateData: unknown = {};
-        let orderUpdateData: unknown = {};
+        let updateData: any = {};
+        let orderUpdateData: any = {};
         let auditAction = "";
 
         if (action === "MARK_PAID") {
@@ -76,7 +76,7 @@ export async function POST(req: NextRequest) {
             success: true,
             message: `Transaction force updated to ${updateData.status}`,
         });
-    } catch (error) {
+    } catch (error: any) {
         if (error.message === "Unauthorized") return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
         if (error.message?.includes("permissions")) return NextResponse.json({ error: error.message }, { status: 403 });
 

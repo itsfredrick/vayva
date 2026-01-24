@@ -9,7 +9,7 @@ import { isIP } from "node:net";
  * - Link-local (169.254.x)
  * - AWS Metadata service
  */
-export async function isSafeUrl(inputUrl: unknown) {
+export async function isSafeUrl(inputUrl: any) {
     try {
         const url = new URL(inputUrl);
         // 1. Protocol Check
@@ -40,7 +40,7 @@ export async function isSafeUrl(inputUrl: unknown) {
                 }
             }
         }
-        catch (e) {
+        catch (e: any) {
             // If DNS fails, it's safer to reject or decide based on policy.
             // If we can't resolve it, we can't fetch it anyway, so safe? 
             // Or it might resolve internally in the worker.
@@ -49,11 +49,11 @@ export async function isSafeUrl(inputUrl: unknown) {
         }
         return true;
     }
-    catch (e) {
+    catch (e: any) {
         return false;
     }
 }
-function isPublicIP(ip: unknown) {
+function isPublicIP(ip: any) {
     // IPv4 Checks
     if (ip.includes(".")) {
         const parts = ip.split(".").map(Number);

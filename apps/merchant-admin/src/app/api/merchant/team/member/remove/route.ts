@@ -41,7 +41,7 @@ export const POST = withVayvaAPI(PERMISSIONS.TEAM_MANAGE, async (req, { storeId,
         });
         return NextResponse.json({ ok: true });
     }
-    catch (error) {
+    catch (error: any) {
         console.error("Remove Member API Error:", error);
         return NextResponse.json({ error: "Internal Error" }, { status: 500 });
     }

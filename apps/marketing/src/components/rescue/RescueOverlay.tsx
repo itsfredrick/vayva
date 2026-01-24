@@ -10,7 +10,7 @@ interface RescueOverlayProps {
     reset: () => void;
 }
 
-export function RescueOverlay({ error, reset }: RescueOverlayProps) {
+export function RescueOverlay({ error, reset }: RescueOverlayProps): React.JSX.Element {
     const router = useRouter();
     const [incidentId, setIncidentId] = useState<string | null>(null);
     const [status, setStatus] = useState<"INIT" | "RUNNING" | "READY_TO_REFRESH" | "NEEDS_ENGINEERING">("INIT");
@@ -35,7 +35,7 @@ export function RescueOverlay({ error, reset }: RescueOverlayProps) {
                     setStatus("RUNNING");
                     setStatusMessage("Analyzing issue...");
                 }
-            } catch (err) {
+            } catch (err: any) {
                 console.error("Failed to report to rescue service", err);
                 setStatus("NEEDS_ENGINEERING");
                 setStatusMessage("Please try refreshing directly.");
@@ -61,7 +61,7 @@ export function RescueOverlay({ error, reset }: RescueOverlayProps) {
                     setStatus("NEEDS_ENGINEERING");
                     setStatusMessage("Our team has been notified.");
                 }
-            } catch (err) {
+            } catch (err: any) {
                 console.error("Poll fail", err);
             }
         }, 2500);

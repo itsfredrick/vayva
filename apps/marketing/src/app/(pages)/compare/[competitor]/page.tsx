@@ -1,3 +1,4 @@
+import React from "react";
 import { notFound } from "next/navigation";
 import { Metadata } from "next";
 import Link from "next/link";
@@ -31,13 +32,13 @@ export async function generateMetadata({
   });
 }
 
-export function generateStaticParams() {
-  return Object.keys(COMPETITORS).map((competitor) => ({
+export function generateStaticParams(): { competitor: string }[] {
+  return Object.keys(COMPETITORS).map((competitor: any) => ({
     competitor,
   }));
 }
 
-export default async function ComparisonPage({ params }: PageProps) {
+export default async function ComparisonPage({ params }: PageProps): Promise<React.JSX.Element> {
   const { competitor } = await params;
   const data = COMPETITORS[competitor];
 

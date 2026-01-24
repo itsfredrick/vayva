@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Search, MapPin } from "lucide-react";
 import { Button } from "@vayva/ui";
 
-export const HeroSearch = () => {
+export const HeroSearch = (): React.JSX.Element => {
   const [activeTab, setActiveTab] = useState<"buy" | "rent" | "shortlet">(
     "rent",
   );
@@ -18,7 +18,7 @@ export const HeroSearch = () => {
 
         {/* Tabs */}
         <div className="inline-flex bg-white/20 backdrop-blur-md p-1 rounded-t-xl overflow-hidden">
-          {(["buy", "rent", "shortlet"] as const).map((tab) => (
+          {(["buy", "rent", "shortlet"] as const).map((tab: any) => (
             <Button
               key={tab}
               variant="ghost"

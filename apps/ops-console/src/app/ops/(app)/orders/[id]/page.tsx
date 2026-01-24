@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import { useParams, useRouter } from "next/navigation";
+import { useParams, useRouter } from 'next/navigation';
 import Link from "next/link";
 import {
     ArrowLeft,
@@ -9,16 +9,15 @@ import {
     User,
     CreditCard,
     Truck,
-    History,
-    Calendar,
+    History, Calendar,
     MapPin
-} from "lucide-react";
+} from 'lucide-react';
 import { Button } from "@vayva/ui";
 
-export default function OrderDetailPage() {
+export default function OrderDetailPage(): React.JSX.Element {
     const { id } = useParams() as { id: string };
     const router = useRouter();
-    const [order, setOrder] = useState<unknown>(null);
+    const [order, setOrder] = useState<any>(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState("");
 
@@ -36,8 +35,8 @@ export default function OrderDetailPage() {
             if (!res.ok) throw new Error("Failed to load order");
             const json = await res.json();
             setOrder(json.data);
-        } catch (err: unknown) {
-            setError(err.message);
+        } catch (err: any) {
+            setError(err.message || "An unknown error occurred");
         } finally {
             setLoading(false);
         }
@@ -116,19 +115,19 @@ export default function OrderDetailPage() {
                             <span className="text-sm text-gray-500">{order.items?.length || 0} items</span>
                         </div>
                         <div className="divide-y divide-gray-100">
-                            {order.items?.map((item: unknown) => (
-                                <div key={item.id} className="px-6 py-4 flex justify-between items-center hover:bg-gray-50">
+                            {order.items?.map((item: any) => (
+                                <div key={(item as any).id} className="px-6 py-4 flex justify-between items-center hover:bg-gray-50">
                                     <div className="flex items-center gap-4">
                                         <div className="h-10 w-10 bg-gray-100 rounded-lg flex items-center justify-center text-gray-400">
                                             <Box size={20} />
                                         </div>
                                         <div>
-                                            <p className="font-medium text-gray-900">{item.title}</p>
-                                            <p className="text-sm text-gray-500">Qty: {item.quantity}</p>
+                                            <p className="font-medium text-gray-900">{(item as any).title}</p>
+                                            <p className="text-sm text-gray-500">Qty: {(item as any).quantity}</p>
                                         </div>
                                     </div>
                                     <p className="font-medium text-gray-900">
-                                        ₦{Number(item.price).toLocaleString()}
+                                        ₦{Number((item as any).price).toLocaleString()}
                                     </p>
                                 </div>
                             ))}
@@ -151,12 +150,12 @@ export default function OrderDetailPage() {
                         </div>
                         <div className="p-6">
                             <ul className="space-y-6 border-l-2 border-gray-100 ml-3 pl-6 relative">
-                                {order.OrderEvent?.map((evt: unknown, idx: number) => (
+                                {order.OrderEvent?.map((evt: any, idx: number) => (
                                     <li key={idx} className="relative">
                                         <div className="absolute -left-[2.15rem] mt-1.5 h-3 w-3 rounded-full bg-gray-300 ring-4 ring-white"></div>
-                                        <p className="text-sm font-medium text-gray-900">{evt.event}</p>
+                                        <p className="text-sm font-medium text-gray-900">{(evt as any).event}</p>
                                         <p className="text-xs text-gray-500 mt-0.5">
-                                            {new Date(evt.createdAt).toLocaleString()}
+                                            {new Date((evt as any).createdAt).toLocaleString()}
                                         </p>
                                     </li>
                                 ))}

@@ -18,7 +18,7 @@ export const DEFAULT_ALLOWED_IMAGE_TYPES = [
 /**
  * Validate file size
  */
-export function validateFileSize(file: unknown, maxSizeBytes = DEFAULT_IMAGE_MAX_SIZE) {
+export function validateFileSize(file: any, maxSizeBytes = DEFAULT_IMAGE_MAX_SIZE) {
     if (file.size > maxSizeBytes) {
         const maxSizeMB = (maxSizeBytes / (1024 * 1024)).toFixed(1);
         return {
@@ -32,7 +32,7 @@ export function validateFileSize(file: unknown, maxSizeBytes = DEFAULT_IMAGE_MAX
 /**
  * Validate MIME type
  */
-export function validateMimeType(file: unknown, allowedTypes = DEFAULT_ALLOWED_IMAGE_TYPES) {
+export function validateMimeType(file: any, allowedTypes = DEFAULT_ALLOWED_IMAGE_TYPES) {
     if (!allowedTypes.includes(file.type)) {
         return {
             valid: false,
@@ -45,8 +45,8 @@ export function validateMimeType(file: unknown, allowedTypes = DEFAULT_ALLOWED_I
 /**
  * Validate image dimensions
  */
-export async function validateImageDimensions(file: unknown, options: unknown) {
-    return new Promise((resolve: unknown) => {
+export async function validateImageDimensions(file: any, options: any) {
+    return new Promise((resolve: any) => {
         const img = new Image();
         const url = URL.createObjectURL(file);
         img.onload = () => {
@@ -101,7 +101,7 @@ export async function validateImageDimensions(file: unknown, options: unknown) {
  * Check for potentially malicious file content
  * Basic security check for common attack vectors
  */
-export async function checkMaliciousContent(file: unknown) {
+export async function checkMaliciousContent(file: any) {
     try {
         // Read first few bytes to check file signature
         const buffer = await file.slice(0, 512).arrayBuffer();
@@ -115,7 +115,7 @@ export async function checkMaliciousContent(file: unknown) {
         };
         let hasValidSignature = false;
         for (const [format, signature] of Object.entries(signatures)) {
-            if (signature.every((byte: unknown, index: unknown) => bytes[index] === byte)) {
+            if (signature.every((byte: any, index: any) => bytes[index] === byte)) {
                 hasValidSignature = true;
                 break;
             }
@@ -148,7 +148,7 @@ export async function checkMaliciousContent(file: unknown) {
         }
         return { valid: true };
     }
-    catch (error) {
+    catch (error: any) {
         return {
             valid: false,
             error: 'Failed to scan file for malicious content',
@@ -160,7 +160,7 @@ export async function checkMaliciousContent(file: unknown) {
  * Comprehensive file validation
  * Runs all validation checks
  */
-export async function validateFile(file: unknown, options = {}) {
+export async function validateFile(file: any, options: any = {}) {
     // Size validation
     const sizeResult = validateFileSize(file, options.maxSizeBytes);
     if (!sizeResult.valid)
@@ -175,7 +175,7 @@ export async function validateFile(file: unknown, options = {}) {
         return securityResult;
     // Image dimension validation (if options provided)
     if (options.minWidth || options.maxWidth || options.minHeight || options.maxHeight) {
-        const dimensionResult = await validateImageDimensions(file, options);
+        const dimensionResult = await validateImageDimensions(file, options) as any;
         if (!dimensionResult.valid)
             return dimensionResult;
     }
@@ -185,7 +185,7 @@ export async function validateFile(file: unknown, options = {}) {
  * Server-side file validation for API routes
  * Validates FormData file uploads
  */
-export async function validateUploadedFile(formData: unknown, fieldName = 'file', options = {}) {
+export async function validateUploadedFile(formData: any, fieldName = 'file', options: any = {}) {
     const file = formData.get(fieldName);
     if (!file) {
         return {
@@ -201,7 +201,7 @@ export async function validateUploadedFile(formData: unknown, fieldName = 'file'
             code: 'INVALID_FORMAT'
         };
     }
-    const result = await validateFile(file, options);
+    const result = await validateFile(file, options) as any;
     if (!result.valid) {
         return {
             valid: false,

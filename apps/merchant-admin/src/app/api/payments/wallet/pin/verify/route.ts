@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import { getSessionUser } from "@/lib/session";
 import { prisma } from "@/lib/prisma";
 import bcrypt from "bcryptjs";
-export async function POST(request: unknown) {
+export async function POST(request: Request) {
     try {
         const user = await getSessionUser();
         if (!user) {
@@ -12,11 +12,12 @@ export async function POST(request: unknown) {
         const wallet = await prisma.wallet.findUnique({
             where: { storeId: user.storeId },
         });
-        if (!wallet || !wallet.pinHash) {
+        const w = wallet as any;
+        if (!w || !w.pinHash) {
             return NextResponse.json({ error: "PIN not set" }, { status: 400 });
         }
-        if (wallet.isLocked) {
-            if (wallet.lockedUntil && new Date() < wallet.lockedUntil) {
+        if (w.isLocked) {
+            if (w.lockedUntil && new Date() < w.lockedUntil) {
                 return NextResponse.json({ error: "Wallet is locked due to too many failed attempts. Try again later." }, { status: 403 });
             }
             // Unlock if time passed
@@ -25,10 +26,10 @@ export async function POST(request: unknown) {
                 data: { isLocked: false, failedPinAttempts: 0, lockedUntil: null }
             });
         }
-        const isValid = await bcrypt.compare(pin, wallet.pinHash);
+        const isValid = await bcrypt.compare(pin, w.pinHash);
         if (!isValid) {
-            const attempts = wallet.failedPinAttempts + 1;
-            const updateData = { failedPinAttempts: attempts };
+            const attempts = w.failedPinAttempts + 1;
+            const updateData: any = { failedPinAttempts: attempts };
             if (attempts >= 5) {
                 updateData.isLocked = true;
                 updateData.lockedUntil = new Date(Date.now() + 30 * 60 * 1000); // 30 mins
@@ -40,7 +41,7 @@ export async function POST(request: unknown) {
             return NextResponse.json({ error: "Invalid PIN" }, { status: 400 });
         }
         // Success - reset counters
-        if (wallet.failedPinAttempts > 0) {
+        if (w.failedPinAttempts > 0) {
             await prisma.wallet.update({
                 where: { storeId: user.storeId },
                 data: { failedPinAttempts: 0, isLocked: false, lockedUntil: null }
@@ -48,7 +49,7 @@ export async function POST(request: unknown) {
         }
         return NextResponse.json({ success: true });
     }
-    catch (error) {
+    catch (error: any) {
         console.error("Verify PIN error:", error);
         return NextResponse.json({ error: "Failed to verify PIN" }, { status: 500 });
     }

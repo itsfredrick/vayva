@@ -1,21 +1,20 @@
 // Deprecated for backward compat if needed, but we prefer checking IndustrySlug
-export var TemplateCategory;
-(function (TemplateCategory) {
-    TemplateCategory["RETAIL"] = "Retail";
-    TemplateCategory["SERVICE"] = "Service";
-    TemplateCategory["FOOD"] = "Food";
-    TemplateCategory["DIGITAL"] = "Digital";
-    TemplateCategory["EVENTS"] = "Events";
-    TemplateCategory["EDUCATION"] = "Education";
-    TemplateCategory["B2B"] = "B2B";
-    TemplateCategory["MARKETPLACE"] = "Marketplace";
-    TemplateCategory["NONPROFIT"] = "Nonprofit";
-    TemplateCategory["REAL_ESTATE"] = "Real Estate";
-    TemplateCategory["CREATIVE"] = "Creative & Portfolio";
-    TemplateCategory["AUTOMOTIVE"] = "Automotive";
-    TemplateCategory["TRAVEL"] = "Travel & Hospitality";
-    TemplateCategory["BLOG"] = "Blog & Media";
-})(TemplateCategory || (TemplateCategory = {}));
+export enum TemplateCategory {
+    RETAIL = "Retail",
+    SERVICE = "Service",
+    FOOD = "Food",
+    DIGITAL = "Digital",
+    EVENTS = "Events",
+    EDUCATION = "Education",
+    B2B = "B2B",
+    MARKETPLACE = "Marketplace",
+    NONPROFIT = "Nonprofit",
+    REAL_ESTATE = "Real Estate",
+    CREATIVE = "Creative & Portfolio",
+    AUTOMOTIVE = "Automotive",
+    TRAVEL = "Travel & Hospitality",
+    BLOG = "Blog & Media",
+}
 export const TEMPLATE_REGISTRY = {
     "vayva-standard": {
         templateId: "vayva-standard",
@@ -811,7 +810,7 @@ export const TEMPLATE_REGISTRY = {
     },
 };
 export function getNormalizedTemplates() {
-    return Object.values(TEMPLATE_REGISTRY).filter((t: unknown) => t.status !== "deprecated");
+    return Object.values(TEMPLATE_REGISTRY).filter((t: any) => t.status !== "deprecated");
 }
 export const TEMPLATE_CATEGORIES = [
     { slug: "fashion-clothing", displayName: "Fashion", isActive: true },
@@ -833,6 +832,6 @@ export const TEMPLATE_CATEGORIES = [
         .filter(t => t.industry === c.slug)
         .map(t => t.templateId)
 }));
-export function getTemplatesByCategory(categorySlug: unknown) {
+export function getTemplatesByCategory(categorySlug: any) {
     return Object.values(TEMPLATE_REGISTRY).filter(t => t.industry === categorySlug);
 }

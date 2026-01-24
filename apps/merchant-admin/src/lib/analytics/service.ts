@@ -2,7 +2,7 @@ import { prisma } from "@vayva/db";
 import { ACTIVATION_EVENTS, COMMERCE_EVENTS, } from "./events";
 export class AnalyticsService {
     // 1. Event Counts (Total & Unique Users)
-    static async getEventCounts(storeId, range) {
+    static async getEventCounts(storeId: any, range: any) {
         const events = await prisma.analyticsEvent.groupBy({
             by: ["category", "action"],
             where: {
@@ -13,14 +13,14 @@ export class AnalyticsService {
                 _all: true,
             },
         });
-        return events.map((e: unknown) => ({
+        return events.map((e: any) => ({
             category: e.category,
             action: e.action,
             count: e._count._all,
         }));
     }
     // 2. Conversion Funnel (Preview -> Checkout)
-    static async getCheckoutFunnel(storeId, range) {
+    static async getCheckoutFunnel(storeId: any, range: any) {
         // Step 1: View Product
         // Step 2: Add to Cart
         // Step 3: Begin Checkout
@@ -63,7 +63,7 @@ export class AnalyticsService {
         ];
     }
     // 3. Activation Progress (For Merchant Admin)
-    static async getActivationProgress(storeId) {
+    static async getActivationProgress(storeId: any) {
         // Check distinct activation events for this store
         const events = await prisma.analyticsEvent.groupBy({
             by: ["action"],
@@ -72,7 +72,7 @@ export class AnalyticsService {
                 category: "ACTIVATION",
             },
         });
-        const actions = new Set(events.map((e: unknown) => e.action));
+        const actions = new Set(events.map((e: any) => e.action));
         return {
             categorySelected: actions.has(ACTIVATION_EVENTS.SELECT_CATEGORY),
             templateSelected: actions.has(ACTIVATION_EVENTS.SELECT_TEMPLATE),
@@ -81,7 +81,7 @@ export class AnalyticsService {
         };
     }
     // 4. Daily Revenue (For Trend Chart)
-    static async getDailyRevenue(storeId, range) {
+    static async getDailyRevenue(storeId: any, range: any) {
         // Group by Date
         // Note: Prisma groupBy doesn't natively support Date truncation easily across all DBs without raw query.
         // For local Postgres/Launch, we can fetch orders and aggregate in JS or use raw query.
@@ -89,7 +89,7 @@ export class AnalyticsService {
         const orders = await prisma.order.findMany({
             where: {
                 storeId,
-                paymentStatus: "PAID",
+                paymentStatus: "PAID" as any,
                 createdAt: { gte: range.from, lte: range.to },
             },
             select: {
@@ -106,7 +106,7 @@ export class AnalyticsService {
             const dateStr = new Date(d).toISOString().split('T')[0];
             dailyMap.set(dateStr, 0);
         }
-        orders.forEach((o: unknown) => {
+        orders.forEach((o: any) => {
             const dateStr = o.createdAt.toISOString().split('T')[0];
             const amount = o.total.toNumber ? o.total.toNumber() : Number(o.total);
             dailyMap.set(dateStr, (dailyMap.get(dateStr) || 0) + amount);

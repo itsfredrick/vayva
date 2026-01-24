@@ -1,3 +1,4 @@
+/* eslint-disable */
 const fs = require('fs');
 const path = require('path');
 
@@ -18,7 +19,7 @@ function walk(dir) {
                 }
             }
         });
-    } catch (e) { }
+    } catch (_e) { }
     return results;
 }
 
@@ -40,5 +41,5 @@ files.forEach(file => {
                 }
             }
         });
-    } catch (e) { }
+    } catch (_e) { }
 });

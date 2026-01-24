@@ -1,5 +1,6 @@
-
 "use client";
+
+import React from "react";
 
 import Image from "next/image";
 import { Button } from "@vayva/ui";
@@ -12,14 +13,14 @@ interface CartItemProps {
 }
 
 // format currency helper
-const formatCurrency = (amount: number) => {
+const formatCurrency = (amount: number): string => {
     return new Intl.NumberFormat("en-NG", {
         style: "currency",
         currency: "NGN",
     }).format(amount);
 };
 
-export function CartItemRow({ item }: CartItemProps) {
+export function CartItemRow({ item }: CartItemProps): React.JSX.Element {
     const { updateItem, removeItem, isLoading } = useCart();
 
     // Type casting to avoid 'any' for CI compliance while resolving property access
@@ -36,7 +37,7 @@ export function CartItemRow({ item }: CartItemProps) {
     const product = variant.product;
     const image = product.productImages?.[0] || variant.productImage;
 
-    const handleUpdate = (qty: number) => {
+    const handleUpdate = (qty: number): void => {
         if (qty < 1) return;
         updateItem(item.id, qty);
     };

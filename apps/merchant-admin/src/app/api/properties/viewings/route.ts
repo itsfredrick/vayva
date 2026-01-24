@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import { getSessionUser } from "@/lib/session";
 import { prisma } from "@/lib/prisma";
 // GET /api/properties/viewings
-export async function GET(request: unknown) {
+export async function GET(request: Request) {
     try {
         const sessionUser = await getSessionUser();
         if (!sessionUser)
@@ -32,13 +32,13 @@ export async function GET(request: unknown) {
         });
         return NextResponse.json({ viewings });
     }
-    catch (e) {
+    catch (e: any) {
         console.error("Fetch viewings error:", e);
         return NextResponse.json({ error: "Internal Error" }, { status: 500 });
     }
 }
 // POST /api/properties/viewings (For testing/manual creation)
-export async function POST(request: unknown) {
+export async function POST(request: Request) {
     try {
         const sessionUser = await getSessionUser();
         if (!sessionUser)
@@ -65,7 +65,7 @@ export async function POST(request: unknown) {
         });
         return NextResponse.json({ booking });
     }
-    catch (e) {
+    catch (e: any) {
         console.error("Create viewing error:", e);
         return NextResponse.json({ error: "Internal Error" }, { status: 500 });
     }

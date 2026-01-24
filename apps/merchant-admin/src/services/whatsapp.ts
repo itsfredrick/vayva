@@ -2,7 +2,7 @@
 const EVOLUTION_API_URL = process.env.EVOLUTION_API_URL || "http://localhost:8080";
 const EVOLUTION_API_KEY = process.env.EVOLUTION_API_KEY || "global-api-key";
 export class WhatsappManager {
-    static async createInstance(instanceName: unknown) {
+    static async createInstance(instanceName: any) {
         try {
             const res = await fetch(`${EVOLUTION_API_URL}/instance/create`, {
                 method: "POST",
@@ -18,12 +18,12 @@ export class WhatsappManager {
             });
             return await res.json();
         }
-        catch (error) {
+        catch (error: any) {
             console.error("Failed to create WhatsApp instance:", error);
             throw error;
         }
     }
-    static async connectInstance(instanceName: unknown) {
+    static async connectInstance(instanceName: any) {
         try {
             // In Evolution API, connect usually fetches QR
             const res = await fetch(`${EVOLUTION_API_URL}/instance/connect/${instanceName}`, {
@@ -34,12 +34,12 @@ export class WhatsappManager {
                 throw new Error("Failed to connect instance");
             return await res.json();
         }
-        catch (error) {
+        catch (error: any) {
             console.error("Failed to connect WhatsApp instance:", error);
             throw error;
         }
     }
-    static async sendMessage(instanceName: unknown, phone: unknown, text: unknown) {
+    static async sendMessage(instanceName: any, phone: any, text: any) {
         try {
             // Standardize phone (remove +, ensure 234)
             const cleanPhone = phone.replace(/\D/g, "");
@@ -59,8 +59,33 @@ export class WhatsappManager {
                 throw new Error("Failed to send message: " + res.statusText);
             return await res.json();
         }
-        catch (error) {
+        catch (error: any) {
             console.error(`Failed to send WA message to ${phone}:`, error);
+            throw error;
+        }
+    }
+
+    static async getPairingCode(instanceName: any, phoneNumber: string) {
+        try {
+            const cleanPhone = phoneNumber.replace(/\D/g, "");
+            const res = await fetch(`${EVOLUTION_API_URL}/instance/connect/${instanceName}/phonenumber`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "apikey": EVOLUTION_API_KEY
+                },
+                body: JSON.stringify({
+                    phoneNumber: cleanPhone
+                })
+            });
+            if (!res.ok)
+                throw new Error("Failed to get pairing code: " + res.statusText);
+
+            // Expected response: { pairingCode: "ABCD-1234", ... }
+            return await res.json();
+        }
+        catch (error: any) {
+            console.error("Failed to get pairing code:", error);
             throw error;
         }
     }

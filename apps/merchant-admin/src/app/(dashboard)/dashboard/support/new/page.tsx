@@ -43,8 +43,8 @@ export default function CreateTicketPage() {
             setFormData({ subject: "", category: "TECHNICAL", priority: "MEDIUM", description: "" });
             // Redirect to list page if it existed, for now stay here or redirect to dashboard
             // router.push("/dashboard/support"); 
-        } catch (error) {
-            toast.error(error.message);
+        } catch (error: any) {
+            toast.error((error as any).message);
         } finally {
             setIsLoading(false);
         }
@@ -69,11 +69,11 @@ export default function CreateTicketPage() {
                         <label className="text-sm font-semibold text-gray-700">Category</label>
                         <select
                             title="Category"
-                            value={formData.category}
+                            value={(formData.category as any)}
                             onChange={(e: React.ChangeEvent<HTMLSelectElement>) => setFormData({ ...formData, category: e.target.value })}
                             className="w-full p-3 border border-gray-200 rounded-lg bg-gray-50 focus:bg-white focus:ring-2 focus:ring-indigo-100 outline-none transition-all"
                         >
-                            {categories.map(c => <option key={c.value} value={c.value}>{c.label}</option>)}
+                            {categories.map(c => <option key={c.value} value={(c.value as any)}>{c.label}</option>)}
                         </select>
                     </div>
 
@@ -81,7 +81,7 @@ export default function CreateTicketPage() {
                         <label className="text-sm font-semibold text-gray-700">Priority</label>
                         <select
                             title="Priority"
-                            value={formData.priority}
+                            value={(formData.priority as any)}
                             onChange={(e: React.ChangeEvent<HTMLSelectElement>) => setFormData({ ...formData, priority: e.target.value })}
                             className="w-full p-3 border border-gray-200 rounded-lg bg-gray-50 focus:bg-white focus:ring-2 focus:ring-indigo-100 outline-none transition-all"
                         >
@@ -98,7 +98,7 @@ export default function CreateTicketPage() {
                         type="text"
                         placeholder="e.g. Cannot process payments"
                         required
-                        value={formData.subject}
+                        value={(formData.subject as any)}
                         onChange={(e: React.ChangeEvent<HTMLInputElement>) => setFormData({ ...formData, subject: e.target.value })}
                         className="w-full p-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-indigo-100 outline-none transition-all"
                     />
@@ -110,7 +110,7 @@ export default function CreateTicketPage() {
                         rows={6}
                         placeholder="Please describe the issue in detail..."
                         required
-                        value={formData.description}
+                        value={(formData.description as any)}
                         onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => setFormData({ ...formData, description: e.target.value })}
                         className="w-full p-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-indigo-100 outline-none transition-all resize-y"
                     />

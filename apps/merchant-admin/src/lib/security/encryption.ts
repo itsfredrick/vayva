@@ -4,7 +4,7 @@ const SECRET_KEY = process.env.NEXTAUTH_SECRET || 'fallback-secret-key-do-not-us
 const IV_LENGTH = 16;
 // Derive a 32-byte key from the secret
 const KEY = scryptSync(SECRET_KEY, 'salt', 32);
-export function encrypt(text: unknown) {
+export function encrypt(text: any) {
     const iv = randomBytes(IV_LENGTH);
     const cipher = createCipheriv(ALGORITHM, KEY, iv);
     let encrypted = cipher.update(text, 'utf8', 'hex');
@@ -13,7 +13,7 @@ export function encrypt(text: unknown) {
     // Format: iv:authTag:encrypted
     return `${iv.toString('hex')}:${authTag}:${encrypted}`;
 }
-export function decrypt(text: unknown) {
+export function decrypt(text: any) {
     const [ivHex, authTagHex, encryptedHex] = text.split(':');
     if (!ivHex || !authTagHex || !encryptedHex)
         throw new Error('Invalid encrypted text format');

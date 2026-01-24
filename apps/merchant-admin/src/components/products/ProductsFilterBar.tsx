@@ -7,8 +7,8 @@ import { Button, Icon } from "@vayva/ui";
 interface ProductsFilterBarProps {
     search: string;
     onSearch: (value: string) => void;
-    filters: unknown;
-    onFilterChange: (filters: unknown) => void;
+    filters: any;
+    onFilterChange: (filters: any) => void;
     onRefresh: () => void;
 }
 
@@ -38,8 +38,8 @@ export function ProductsFilterBar({
                     type="text"
                     placeholder="Search products by name, SKU or brand..."
                     className="w-full pl-10 pr-4 py-2.5 border border-gray-200 rounded-xl focus:ring-4 focus:ring-vayva-green/10 focus:border-vayva-green transition-all font-medium text-sm placeholder:text-gray-400"
-                    value={search}
-                    onChange={(e) => onSearch(e.target.value)}
+                    value={(search as any)}
+                    onChange={(e: any) => onSearch(e.target.value)}
                 />
             </div>
 
@@ -49,7 +49,7 @@ export function ProductsFilterBar({
                     <select
                         aria-label="Filter by Status"
                         className="pl-9 pr-8 py-2.5 border border-gray-200 rounded-xl bg-white focus:ring-4 focus:ring-vayva-green/10 focus:border-vayva-green appearance-none font-bold text-gray-700 cursor-pointer min-w-[120px]"
-                        value={status}
+                        value={(status as any)}
                         onChange={handleStatusChange}
                     >
                         <option value="ALL">Status</option>
@@ -64,7 +64,7 @@ export function ProductsFilterBar({
                     <select
                         aria-label="Filter by Category"
                         className="pl-9 pr-8 py-2.5 border border-gray-200 rounded-xl bg-white focus:ring-4 focus:ring-vayva-green/10 focus:border-vayva-green appearance-none font-bold text-gray-700 cursor-pointer min-w-[140px]"
-                        onChange={(e) => onFilterChange({ ...filters, category: e.target.value })}
+                        onChange={(e: any) => onFilterChange({ ...filters, category: e.target.value })}
                     >
                         <option value="ALL">Category</option>
                         <option value="retail">Retail</option>

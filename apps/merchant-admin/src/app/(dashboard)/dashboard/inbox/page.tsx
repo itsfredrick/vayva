@@ -77,7 +77,7 @@ export default function InboxPage() {
       const data = await res.json();
       setConversations(data.items || []);
       setLoading(false);
-    } catch (e) {
+    } catch (e: any) {
       console.error(e);
       setLoading(false);
     }
@@ -88,7 +88,7 @@ export default function InboxPage() {
       const res = await fetch("/api/merchant/quick-replies");
       const data = await res.json();
       setQuickReplies(data.items || []);
-    } catch (_error) {
+    } catch (_error: any) {
     // Intentionally empty
   }
   };
@@ -99,7 +99,7 @@ export default function InboxPage() {
       const res = await fetch(`/api/merchant/inbox/conversations/${id}`);
       const data = await res.json();
       setMessages(data.messages || []);
-    } catch (e) {
+    } catch (e: any) {
       console.error(e);
     } finally {
       setLoadingMessages(false);
@@ -150,7 +150,7 @@ export default function InboxPage() {
               Loading...
             </div>
           )}
-          {conversations.map((c) => (
+          {conversations.map((c: any) => (
             <div
               key={c.id}
               onClick={() => handleSelect(c.id)}

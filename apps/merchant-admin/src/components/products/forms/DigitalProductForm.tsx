@@ -11,9 +11,9 @@ export function DigitalProductForm({ productId }: { productId?: string }) {
     const [isSubmitting, setIsSubmitting] = useState(false);
     const { register, handleSubmit } = useForm();
 
-    const onSubmit = async (data: unknown) => {
+    const onSubmit = async (data: any) => {
         setIsSubmitting(true);
-        const payload = {
+        const payload: any = {
             title: data.assetName,
             description: data.description,
             price: data.price,

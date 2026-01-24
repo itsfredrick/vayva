@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-export async function POST(request: unknown) {
+export async function POST(request: Request) {
     // Revoke all sessions logic
     return NextResponse.json({
         success: true,

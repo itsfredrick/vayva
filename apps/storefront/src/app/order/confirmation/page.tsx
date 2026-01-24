@@ -13,25 +13,25 @@ import {
   MapPin as MapPinIcon,
   Phone as PhoneIcon,
 } from "lucide-react";
-const CheckCircle = CheckCircleIcon as unknown;
-const Clock = ClockIcon as unknown;
-const XCircle = XCircleIcon as unknown;
-const ChevronRight = ChevronRightIcon as unknown;
-const Package = PackageIcon as unknown;
-const MapPin = MapPinIcon as unknown;
-const Phone = PhoneIcon as unknown;
+const CheckCircle = CheckCircleIcon;
+const Clock = ClockIcon;
+const XCircle = XCircleIcon;
+const ChevronRight = ChevronRightIcon;
+const Package = PackageIcon;
+const MapPin = MapPinIcon;
+const Phone = PhoneIcon;
 import NextLink from "next/link";
-const Link = NextLink as unknown;
+const Link = NextLink;
 
-function OrderConfirmationContent() {
+function OrderConfirmationContent(): React.JSX.Element {
   const searchParams = useSearchParams();
   const reference = searchParams.get("reference");
   const orderId = searchParams.get("orderId"); // We might have orderId or reference
   const storeSlug = searchParams.get("store");
 
-  const [order, setOrder] = useState<unknown>(null);
+  const [order, setOrder] = useState<any>(null);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+  const [_error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchOrder = async () => {
@@ -63,7 +63,7 @@ function OrderConfirmationContent() {
         } else {
           setError("Order not found");
         }
-      } catch (err) {
+      } catch {
         setError("Failed to load order details");
       } finally {
         setLoading(false);
@@ -147,7 +147,7 @@ function OrderConfirmationContent() {
                 Order Details
               </h2>
               <div className="space-y-4">
-                {order.items?.map((item: unknown, idx: number) => (
+                {order.items?.map((item: any, idx: number) => (
                   <div key={idx} className="flex justify-between text-sm">
                     <span className="text-gray-600">
                       {item.title} x {item.quantity}
@@ -252,7 +252,7 @@ function OrderConfirmationContent() {
   );
 }
 
-export default function OrderConfirmationPage() {
+export default function OrderConfirmationPage(): React.JSX.Element {
   return (
     <Suspense
       fallback={<div className="p-20 text-center">Loading confirmation...</div>}

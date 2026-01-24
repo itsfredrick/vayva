@@ -39,9 +39,9 @@ export default function ShipmentsPage() {
             if (!res.ok) throw new Error("Failed to load shipments");
             const result = await res.json() as { data: Shipment[] };
             setShipments(result.data || []);
-        } catch (error) {
+        } catch (error: any) {
             console.error(error);
-            toast.error(error.message || "Could not load shipments");
+            toast.error((error as any).message || "Could not load shipments");
         } finally {
             setLoading(false);
         }
@@ -55,7 +55,7 @@ export default function ShipmentsPage() {
             </div>
 
             <div className="flex items-center gap-4 border-b border-slate-200">
-                {["ALL", "IN_TRANSIT", "DELIVERED", "PICKED_UP"].map((tab) => (
+                {["ALL", "IN_TRANSIT", "DELIVERED", "PICKED_UP"].map((tab: any) => (
                     <Button
                         key={tab}
                         onClick={() => setActiveTab(tab)}
@@ -100,7 +100,7 @@ export default function ShipmentsPage() {
                                 </tr>
                             </thead>
                             <tbody className="divide-y divide-slate-100">
-                                {shipments.map((shipment) => (
+                                {shipments.map((shipment: any) => (
                                     <tr key={shipment.id} className="hover:bg-slate-50/50 group">
                                         <td className="px-6 py-4">
                                             <div className="font-medium text-slate-900">{shipment.trackingCode || "Pending"}</div>

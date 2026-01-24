@@ -35,7 +35,7 @@ export async function GET() {
             canWithdraw: kycRecord?.status === "VERIFIED",
         });
     }
-    catch (error) {
+    catch (error: any) {
         console.error("KYC status fetch error:", error);
         if (error.message === "Unauthorized") {
             return NextResponse.json({ error: "Unauthorized" }, { status: 401 });

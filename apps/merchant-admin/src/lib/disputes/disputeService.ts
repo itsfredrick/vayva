@@ -1,90 +1,56 @@
 import { prisma } from "@vayva/db";
+
 export class DisputeService {
-    static async handleWebhookEvent(event) {
-        const { event: eventType, data } = event;
-        const providerDisputeId = data.id.toString();
-        const amount = data.amount;
-        const amountNgn = amount / 100;
-        const providerRef = data.transaction?.reference;
-        if (!providerRef)
-            return;
-        // Use PaymentTransaction for unique lookup
-        const transaction = await prisma.paymentTransaction.findUnique({
-            where: { reference: providerRef },
-            include: {
-                store: {
-                    include: {
-                        memberships: {
-                            where: { role_enum: "OWNER" },
-                            take: 1,
-                        },
-                    },
-                },
+    static async getDisputes(storeId: any, status: any) {
+        return prisma.dispute.findMany({
+            where: {
+                storeId,
+                status: status || undefined,
             },
+            include: {
+                order: true,
+            },
+            orderBy: { createdAt: "desc" },
         });
-        if (!transaction || !transaction.store)
-            return;
-        const storeId = transaction.store.id;
-        // Resolve real merchant owner ID or fallback
-        const merchantId = transaction.store.memberships[0]?.userId || "system_fallback";
-        // Upsert Dispute
-        let status = "OPENED";
-        if (eventType === "dispute.evidence_required")
-            status = "EVIDENCE_REQUIRED";
-        if (eventType === "dispute.won")
-            status = "WON";
-        if (eventType === "dispute.lost")
-            status = "LOST";
-        const existingDispute = await prisma.dispute.findFirst({
-            where: { providerDisputeId },
-        });
-        if (existingDispute) {
-            await prisma.dispute.update({
-                where: { id: existingDispute.id },
-                data: {
-                    status: status,
-                    evidenceDueAt: data.due_at ? new Date(data.due_at) : undefined,
-                },
-            });
-        }
-        else {
-            await prisma.dispute.create({
-                data: {
-                    merchantId: merchantId,
-                    storeId: storeId,
-                    provider: "PAYSTACK",
-                    providerDisputeId,
-                    status: status,
-                    amount: amountNgn,
-                    currency: "NGN",
-                    reasonCode: data.reason || "General Dispute",
-                    evidenceDueAt: data.due_at ? new Date(data.due_at) : undefined,
-                },
-            });
-        }
     }
-    static async addEvidence(disputeId, userId, fileData) {
+
+    static async getDispute(disputeId: any, storeId: any) {
+        return prisma.dispute.findFirst({
+            where: {
+                id: disputeId,
+                storeId,
+            },
+            include: {
+                order: true,
+                evidence: true,
+            } as any,
+        });
+    }
+
+    static async submitEvidence(disputeId: any, userId: any, fileData: any) {
         return prisma.disputeEvidence.create({
             data: {
                 disputeId,
-                type: fileData.type,
-                url: fileData.fileUrl,
+                fileUrl: fileData.url,
+                fileType: "DOCUMENT",
                 metadata: {
                     fileName: fileData.fileName,
                     fileSize: fileData.fileSize,
                     contentType: fileData.contentType,
                     uploadedBy: userId,
                 },
-            },
+            } as any,
         });
     }
-    static async submitResponse(disputeId, userId, note) {
+
+    static async submitResponse(disputeId: any, userId: any, note: any) {
         // Reject submission if not configured, using structure API can parse
         const error = new Error("Dispute submission is not configured");
-        error.code = "feature_not_configured";
-        error.feature = "DISPUTES_ENABLED";
+        (error as any).code = "feature_not_configured";
+        (error as any).feature = "DISPUTES_ENABLED";
         throw error;
     }
+
     static async getRecentDeadlines() {
         const soon = new Date();
         soon.setHours(soon.getHours() + 72); // 3 Days

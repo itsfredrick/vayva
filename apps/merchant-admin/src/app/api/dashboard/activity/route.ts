@@ -59,7 +59,7 @@ export const GET = withVayvaAPI(PERMISSIONS.COMMERCE_VIEW, async (request, { sto
             .slice(0, 10); // Keep top 10
         return NextResponse.json(activity);
     }
-    catch (error) {
+    catch (error: any) {
         console.error("Activity API Error:", error);
         return NextResponse.json({ error: "Failed to fetch activity" }, { status: 500 });
     }

@@ -1,4 +1,4 @@
-import { prisma, RiskScope, RiskSeverity, EnforcementActionType } from "@vayva/db";
+import { prisma, RiskScope, RiskSeverity, EnforcementActionType, EnforcementScope, RiskStatus } from "@vayva/db";
 
 export class RiskEngine {
   // Ingest a signal and evaluate side effects
@@ -8,7 +8,7 @@ export class RiskEngine {
     scopeId?: string;
     key: string;
     severity: RiskSeverity;
-    metadata?: unknown;
+    metadata?: Record<string, unknown>;
   }) {
     const scoreDelta = this.getScoreDelta(data.severity);
 
@@ -21,7 +21,8 @@ export class RiskEngine {
         key: data.key,
         severity: data.severity,
         scoreDelta: scoreDelta,
-        metadata: data.metadata || {},
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        metadata: (data.metadata || {}) as any,
       },
     });
 
@@ -70,18 +71,17 @@ export class RiskEngine {
     // Simple threshold check for Status
     if (
       profile.merchantRiskScore > 100 &&
-      profile.status !== ("RESTRICTED" as unknown) &&
-      profile.status !== ("SUSPENDED" as unknown)
+      profile.status !== RiskStatus.CRITICAL
     ) {
       await prisma.riskProfile.update({
         where: { merchantId },
-        data: { status: "RESTRICTED" as unknown},
+        data: { status: RiskStatus.CRITICAL },
       });
       // Auto-enforce
       await this.createEnforcement(
         merchantId,
         "REQUIRE_MANUAL_APPROVAL",
-        "MERCHANT",
+        EnforcementScope.MERCHANT,
         null,
         "Risk score exceeded 100",
       );
@@ -103,7 +103,7 @@ export class RiskEngine {
   private async createEnforcement(
     merchantId: string,
     action: EnforcementActionType,
-    scope: unknown,
+    scope: EnforcementScope,
     scopeId: string | null,
     reason: string,
   ) {
@@ -113,7 +113,7 @@ export class RiskEngine {
       where: {
         merchantId,
         action,
-        scope, // Prisma enum match
+        scope,
         scopeId,
       },
     });
@@ -132,7 +132,7 @@ export class RiskEngine {
     }
   }
 
-  private async evaluateRules(merchantId: string) {
+  private async evaluateRules(_merchantId: string) {
     // Placeholder for complex rule logic (e.g. velocity checks provided by User)
     // Example: Check COD failure rate
     // In a real system, this would query aggregations

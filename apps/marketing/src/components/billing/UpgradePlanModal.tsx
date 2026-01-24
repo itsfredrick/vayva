@@ -17,7 +17,7 @@ export function UpgradePlanModal({
   onClose,
   currentPlan,
   requiredPlan,
-}: Props) {
+}: Props): React.ReactNode {
   if (!isOpen) return null;
 
   // Display formatted name (e.g. growth -> Growth)

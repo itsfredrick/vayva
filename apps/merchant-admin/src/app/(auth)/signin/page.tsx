@@ -27,7 +27,7 @@ export default function SigninPage() {
     try {
       const data = await AuthService.login({ email, password, rememberMe });
       login(data.token, data.user);
-    } catch (err) {
+    } catch (err: any) {
       console.error(err);
       const message = err instanceof Error ? err.message : "Incorrect email or password";
       setError(message);
@@ -56,8 +56,8 @@ export default function SigninPage() {
             id="email"
             type="email"
             placeholder="you@business.com"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
+            value={(email as any)}
+            onChange={(e: any) => setEmail(e.target.value)}
             required
             data-testid="auth-signin-email"
           />
@@ -71,8 +71,8 @@ export default function SigninPage() {
               id="password"
               type={showPassword ? "text" : "password"}
               placeholder="••••••••"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
+              value={(password as any)}
+              onChange={(e: any) => setPassword(e.target.value)}
               required
               data-testid="auth-signin-password"
             />
@@ -102,7 +102,7 @@ export default function SigninPage() {
                 id="remember-me"
                 type="checkbox"
                 checked={rememberMe}
-                onChange={(e) => setRememberMe(e.target.checked)}
+                onChange={(e: any) => setRememberMe(e.target.checked)}
                 className="w-4 h-4 rounded border-gray-300 text-primary focus:ring-primary transition-all cursor-pointer"
               />
               <span className="text-sm text-gray-600 group-hover:text-gray-900 transition-colors">

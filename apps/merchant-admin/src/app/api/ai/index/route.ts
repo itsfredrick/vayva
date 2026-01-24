@@ -18,7 +18,7 @@ export async function POST(request: NextRequest) {
             data: result,
         });
     }
-    catch (error) {
+    catch (error: any) {
         console.error("[AI Index API] Error:", error);
         return NextResponse.json({
             error: "Failed to index store catalog",

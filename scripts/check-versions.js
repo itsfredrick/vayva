@@ -50,7 +50,7 @@ packageJsons.forEach(pkgPath => {
                 versionMap[dep].add(allDeps[dep]);
             }
         });
-    } catch (e) {
+    } catch (_e) {
         // ignore
     }
 });

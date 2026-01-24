@@ -7,7 +7,7 @@ import { Button, GlassPanel, Icon, Input } from "@vayva/ui";
 import { CalendarSyncSettings } from "./products/calendar-sync-settings";
 
 interface ProductFormProps {
-  initialData?: unknown;
+  initialData?: any;
   isEdit?: boolean;
 }
 
@@ -63,7 +63,7 @@ export const ProductForm = ({
     setVariants(newVariants);
   };
 
-  const updateVariant = (idx: number, field: string, value: unknown) => {
+  const updateVariant = (idx: number, field: string, value: any) => {
     const updated = [...variants];
     updated[idx] = { ...updated[idx], [field]: value };
     setVariants(updated);
@@ -161,7 +161,7 @@ export const ProductForm = ({
                 type="checkbox"
                 className="toggle toggle-primary"
                 checked={hasVariants}
-                onChange={(e) => setHasVariants(e.target.checked)}
+                onChange={(e: any) => setHasVariants(e.target.checked)}
                 aria-label="Enable variants"
               />
             </div>
@@ -190,8 +190,8 @@ export const ProductForm = ({
                       <label className="text-xs text-text-secondary uppercase font-bold tracking-wider mb-2 block">Option Name</label>
                       <Input
                         placeholder="e.g. Size"
-                        value={newOptionName}
-                        onChange={(e) => setNewOptionName(e.target.value)}
+                        value={(newOptionName as any)}
+                        onChange={(e: any) => setNewOptionName(e.target.value)}
                         aria-label="New Option Name"
                       />
                     </div>
@@ -200,8 +200,8 @@ export const ProductForm = ({
                       <div className="flex gap-2">
                         <Input
                           placeholder="e.g. Small, Medium (comma separated)"
-                          value={newOptionValues}
-                          onChange={(e) => setNewOptionValues(e.target.value)}
+                          value={(newOptionValues as any)}
+                          onChange={(e: any) => setNewOptionValues(e.target.value)}
                           onKeyDown={(e) => {
                             if (e.key === 'Enter') {
                               e.preventDefault();
@@ -236,15 +236,15 @@ export const ProductForm = ({
                               <Input
                                 className="h-8 w-24 text-right font-mono"
                                 defaultValue={initialData?.price || 0}
-                                onChange={(e) => updateVariant(idx, 'price', e.target.value)}
+                                onChange={(e: any) => updateVariant(idx, 'price', e.target.value)}
                                 aria-label={`Price for ${variant.name}`}
                               />
                             </td>
                             <td className="p-3">
                               <Input
                                 className="h-8 w-20 text-right font-mono"
-                                defaultValue={0}
-                                onChange={(e) => updateVariant(idx, 'inventory', e.target.value)}
+                                defaultValue={(0 as any)}
+                                onChange={(e: any) => updateVariant(idx, 'inventory', e.target.value)}
                                 aria-label={`Stock for ${variant.name}`}
                               />
                             </td>
@@ -252,7 +252,7 @@ export const ProductForm = ({
                               <Input
                                 className="h-8 w-32 font-mono text-xs"
                                 placeholder="SKU"
-                                onChange={(e) => updateVariant(idx, 'sku', e.target.value)}
+                                onChange={(e: any) => updateVariant(idx, 'sku', e.target.value)}
                                 aria-label={`SKU for ${variant.name}`}
                               />
                             </td>

@@ -10,7 +10,7 @@ export const GET = withVayvaAPI(PERMISSIONS.SETTINGS_VIEW, async (req, { storeId
         });
         return NextResponse.json({ policies });
     }
-    catch (error) {
+    catch (error: any) {
         console.error("Error fetching policies:", error);
         return NextResponse.json({ error: "Internal Error" }, { status: 500 });
     }

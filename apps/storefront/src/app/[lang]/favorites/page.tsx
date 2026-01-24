@@ -11,8 +11,8 @@ import { useStore } from "@/context/StoreContext";
 import { Meal } from "@/types/menu";
 
 // Simple Toast Component (Internal) - Copied for simplicity/isolation
-function Toast({ message, show }: { message: string; show: boolean }) {
-  if (!show) return null;
+function Toast({ message, show }: { message: string; show: boolean }): React.JSX.Element {
+  if (!show) return <></>;
   return (
     <div className="fixed bottom-6 left-1/2 -translate-x-1/2 bg-gray-900 text-white px-4 py-2 rounded-lg shadow-lg text-sm font-medium z-50 animate-fade-in-up">
       {message}
@@ -20,7 +20,7 @@ function Toast({ message, show }: { message: string; show: boolean }) {
   );
 }
 
-export default function FavoritesPage({ params }: unknown) {
+export default function FavoritesPage({ params: _params }: any): React.JSX.Element {
   const { lang: rawLang } = useParams() as { lang: string };
   const lang = (rawLang === "tr" ? "tr" : "en") as LocaleKey;
   const { store } = useStore();
@@ -29,7 +29,7 @@ export default function FavoritesPage({ params }: unknown) {
     useUserInteractions();
 
   const [meals, setMeals] = useState<Meal[]>([]);
-  const [loading, setLoading] = useState(true);
+  const [_loading, setLoading] = useState(true);
 
   useEffect(() => {
     if (!store) return;
@@ -62,7 +62,7 @@ export default function FavoritesPage({ params }: unknown) {
     showToast(result.isFavorite ? t.favorites.added : t.favorites.removed);
   };
 
-  if (!isLoaded) return null;
+  if (!isLoaded) return <></>;
 
   return (
     <div className="min-h-screen bg-gray-50 pb-20 font-sans bg-noise">
@@ -87,7 +87,7 @@ export default function FavoritesPage({ params }: unknown) {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {favoritedMeals.length > 0 ? (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-            {favoritedMeals.map((meal) => (
+            {favoritedMeals.map((meal: any) => (
               <DeliveryCard
                 key={meal.id}
                 meal={meal}

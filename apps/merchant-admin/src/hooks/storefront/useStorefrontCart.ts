@@ -1,7 +1,16 @@
 import { useState, useEffect } from "react";
 import { toast } from "sonner";
-export function useStorefrontCart(storeSlug: unknown) {
-    const [cart, setCart] = useState([]);
+
+export interface CartItem {
+    id: string;
+    name: string;
+    price: number;
+    image?: string;
+    quantity: number;
+    modifiers?: Record<string, any>;
+}
+export function useStorefrontCart(storeSlug: any): { cart: CartItem[]; addToCart: any; removeFromCart: any; updateQuantity: any; clearCart: any; total: number; isOpen: boolean; setIsOpen: any } {
+    const [cart, setCart] = useState<CartItem[]>([]);
     const [isOpen, setIsOpen] = useState(false);
     // Load cart from local storage on mount
     useEffect(() => {
@@ -12,7 +21,7 @@ export function useStorefrontCart(storeSlug: unknown) {
             try {
                 setCart(JSON.parse(saved));
             }
-            catch (e) {
+            catch (e: any) {
                 console.error("Failed to parse cart", e);
             }
         }
@@ -41,11 +50,11 @@ export function useStorefrontCart(storeSlug: unknown) {
             }
         }
     }, [storeSlug]);
-    const addToCart = (product, quantity = 1) => {
-        setCart((prev: unknown) => {
-            const existing = prev.find((item: unknown) => item.id === product.id);
+    const addToCart = (product: any, quantity: number = 1) => {
+        setCart((prev: any) => {
+            const existing = prev.find((item: any) => item.id === product.id);
             if (existing) {
-                return prev.map((item: unknown) => item.id === product.id
+                return prev.map((item: any) => item.id === product.id
                     ? { ...item, quantity: item.quantity + quantity }
                     : item);
             }
@@ -62,25 +71,25 @@ export function useStorefrontCart(storeSlug: unknown) {
         });
         setIsOpen(true); // Open cart sidebar/modal
     };
-    const removeFromCart = (productId: unknown) => {
-        setCart((prev: unknown) => prev.filter((item: unknown) => item.id !== productId));
+    const removeFromCart = (productId: any) => {
+        setCart((prev: any) => prev.filter((item: any) => item.id !== productId));
     };
-    const updateQuantity = (productId: unknown, delta: unknown) => {
-        setCart((prev: unknown) => prev
-            .map((item: unknown) => {
-            if (item.id === productId) {
-                const newQty = Math.max(0, item.quantity + delta);
-                return { ...item, quantity: newQty };
-            }
-            return item;
-        })
-            .filter((item: unknown) => item.quantity > 0));
+    const updateQuantity = (productId: any, delta: any) => {
+        setCart((prev: any) => prev
+            .map((item: any) => {
+                if (item.id === productId) {
+                    const newQty = Math.max(0, item.quantity + delta);
+                    return { ...item, quantity: newQty };
+                }
+                return item;
+            })
+            .filter((item: any) => item.quantity > 0));
     };
     const clearCart = () => {
         setCart([]);
         localStorage.removeItem(`vayva_cart_${storeSlug}`);
     };
-    const total = cart.reduce((sum: unknown, item: unknown) => sum + item.price * item.quantity, 0);
+    const total = cart.reduce((sum: any, item: any) => sum + item.price * item.quantity, 0);
     return {
         cart,
         addToCart,

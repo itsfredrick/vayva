@@ -21,7 +21,7 @@ export async function PATCH(req: NextRequest) {
         });
         const productMap = new Map(currentProducts.map(p => [p.id, p]));
         // Use transaction for atomic updates
-        const updates = await prisma.$transaction(items.map((item) => {
+        const updates = await prisma.$transaction(items.map((item: any) => {
             const current = productMap.get(item.id);
             // Prepare update
             return prisma.product.update({
@@ -35,7 +35,7 @@ export async function PATCH(req: NextRequest) {
         }));
         // 2. Async Logging (don't block response)
         // We log each change individually for clarity
-        items.forEach(item => {
+        items.forEach((item: any) => {
             const older = productMap.get(item.id);
             const newer = updates.find(u => u.id === item.id);
             if (older && newer) {
@@ -56,7 +56,7 @@ export async function PATCH(req: NextRequest) {
             message: `Successfully updated ${updates.length} products`
         });
     }
-    catch (error) {
+    catch (error: any) {
         console.error("Bulk update failed:", error);
         return new NextResponse("Internal Server Error", { status: 500 });
     }

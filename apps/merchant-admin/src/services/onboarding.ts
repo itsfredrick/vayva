@@ -41,7 +41,7 @@ export const OnboardingService = {
                 }
             }
         }
-        catch (error) {
+        catch (error: any) {
             logger.error("Error reading onboarding state", error);
             // Try localStorage fallback
             if (typeof window !== "undefined") {
@@ -55,7 +55,7 @@ export const OnboardingService = {
         logger.warn("Returning default onboarding state.");
         return defaultState;
     },
-    saveStep: async (stepId: unknown, data: unknown) => {
+    saveStep: async (stepId: any, data: any) => {
         try {
             // Save to backend API
             const response = await fetch("/api/onboarding/save-progress", {
@@ -86,7 +86,7 @@ export const OnboardingService = {
                 localStorage.setItem(STORAGE_KEY, JSON.stringify(newState));
             }
         }
-        catch (error) {
+        catch (error: any) {
             logger.error("Error saving onboarding step", error);
             // Fallback to localStorage only
             if (typeof window !== "undefined") {
@@ -125,7 +125,7 @@ export const OnboardingService = {
                 localStorage.removeItem(STORAGE_KEY);
             }
         }
-        catch (error) {
+        catch (error: any) {
             logger.error("Error completing onboarding", error);
             // Still try to save locally
             await OnboardingService.saveStep("review", { isComplete: true });

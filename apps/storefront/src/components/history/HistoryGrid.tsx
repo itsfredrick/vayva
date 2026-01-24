@@ -24,11 +24,11 @@ export function HistoryGrid({
   onToggleFavorite,
 }: HistoryGridProps) {
   const t = LOCALES[lang];
-  const mealMap = new Map(meals.map((m) => [m.id, m]));
+  const mealMap = new Map(meals.map((m: any) => [m.id, m]));
 
   return (
     <div className="space-y-12">
-      {deliveries.map((delivery) => {
+      {deliveries.map((delivery: any) => {
         const deliveryDate = new Date(delivery.date);
         const dateStr = deliveryDate.toLocaleDateString(
           lang === "tr" ? "tr-TR" : "en-US",
@@ -47,7 +47,7 @@ export function HistoryGrid({
             </h2>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-              {delivery.mealIds.map((mealId) => {
+              {delivery.mealIds.map((mealId: any) => {
                 const meal = mealMap.get(mealId);
                 if (!meal) return null;
 

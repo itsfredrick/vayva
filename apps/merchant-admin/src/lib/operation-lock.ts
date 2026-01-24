@@ -2,7 +2,7 @@ import { prisma } from "@vayva/db";
 import { logAuditEvent, AuditEventType } from "./audit";
 const LOCK_TIMEOUT_MS = 30000; // 30 seconds
 export class LockError extends Error {
-    constructor(message) {
+    constructor(message: any) {
         super(message);
         this.name = "LockError";
     }
@@ -11,7 +11,7 @@ export class LockError extends Error {
  * Acquire a soft lock on a withdrawal record.
  * Throws LockError if already locked by another user.
  */
-export async function acquireWithdrawalLock(withdrawalId: unknown, userId: unknown, storeId: unknown) {
+export async function acquireWithdrawalLock(withdrawalId: any, userId: any, storeId: any) {
     const now = new Date();
     const lockTimeout = new Date(now.getTime() - LOCK_TIMEOUT_MS);
     // Try to acquire lock
@@ -57,7 +57,7 @@ export async function acquireWithdrawalLock(withdrawalId: unknown, userId: unkno
 /**
  * Release a lock on a withdrawal record.
  */
-export async function releaseWithdrawalLock(withdrawalId: unknown, userId: unknown) {
+export async function releaseWithdrawalLock(withdrawalId: any, userId: any) {
     await prisma.withdrawal.updateMany({
         where: {
             id: withdrawalId,
@@ -90,7 +90,7 @@ export async function cleanupStaleLocks() {
 /**
  * Acquire a soft lock on an export job.
  */
-export async function acquireExportLock(exportId: unknown, userId: unknown) {
+export async function acquireExportLock(exportId: any, userId: any) {
     const now = new Date();
     const lockTimeout = new Date(now.getTime() - LOCK_TIMEOUT_MS);
     const result = await prisma.exportJob.updateMany({
@@ -114,7 +114,7 @@ export async function acquireExportLock(exportId: unknown, userId: unknown) {
 /**
  * Release a lock on an export job.
  */
-export async function releaseExportLock(exportId: unknown, userId: unknown) {
+export async function releaseExportLock(exportId: any, userId: any) {
     await prisma.exportJob.updateMany({
         where: {
             id: exportId,

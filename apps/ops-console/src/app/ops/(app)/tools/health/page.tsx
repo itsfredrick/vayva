@@ -1,12 +1,12 @@
 "use client";
 
-import { OpsShell } from "@/components/OpsShell";
+import { OpsShell } from '@/components/OpsShell';
 import { useOpsQuery } from "@/hooks/useOpsQuery";
-import { Activity, Database, Server, CheckCircle2, AlertTriangle, RefreshCw } from "lucide-react";
+import { Activity, Database, Server, CheckCircle2, AlertTriangle, RefreshCw } from 'lucide-react';
 import { useState } from "react";
 import { Button } from "@vayva/ui";
 
-const StatusBadge = ({ status }: { status: string }) => {
+const StatusBadge = ({ status }: { status: string }): React.JSX.Element => {
     const isHealthy = status === "healthy";
     return (
         <span className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium border ${isHealthy
@@ -29,7 +29,7 @@ interface HealthData {
     };
 }
 
-export default function HealthPage() {
+export default function HealthPage(): React.JSX.Element {
     const { data: rawData, isLoading: loading, error: _error, refetch: refresh } = useOpsQuery(
         ["system-health"],
         () => fetch("/api/ops/tools/health").then(res => res.json())

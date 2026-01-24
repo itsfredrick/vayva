@@ -24,8 +24,8 @@ export async function GET() {
         const totalOrders = orders.length;
         const avgOrderValue = totalOrders > 0 ? totalSales / totalOrders : 0;
         const itemFrequency: Record<string, number> = {};
-        orders.forEach(o => {
-            o.items.forEach((item) => {
+        orders.forEach((o: any) => {
+            o.items.forEach((item: any) => {
                 itemFrequency[item.title] = (itemFrequency[item.title] || 0) + item.quantity;
             });
         });
@@ -77,7 +77,7 @@ export async function GET() {
             insights: aiInsights,
         });
     }
-    catch (error) {
+    catch (error: any) {
         console.error("BI Analytics error:", error);
         return NextResponse.json({ error: "Failed to generate business intelligence" }, { status: 500 });
     }

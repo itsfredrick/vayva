@@ -31,7 +31,7 @@ async (req, { storeId }) => {
         // if strict 1-to-1 mapping isn't clean, but that violates "Real Data".
         // Let's go with: Group by `regions` equality.
         const zonesMap = new Map();
-        profile.deliveryZones.forEach(dbZone => {
+        profile.deliveryZones.forEach((dbZone: any) => {
             const regionKey = dbZone.states.sort().join(",");
             const zoneName = dbZone.name.split(" - ")[0]; // Heuristic: "Lagos - Standard" -> "Lagos"
             let uiZone = zonesMap.get(regionKey);
@@ -54,7 +54,7 @@ async (req, { storeId }) => {
         });
         return NextResponse.json(Array.from(zonesMap.values()));
     }
-    catch (error) {
+    catch (error: any) {
         console.error("[SHIPPING_GET]", error);
         return NextResponse.json({ error: "Internal Error" }, { status: 500 });
     }
@@ -96,7 +96,7 @@ export const POST = withVayvaAPI(PERMISSIONS.SETTINGS_EDIT, async (req, { storeI
         });
         return NextResponse.json({ success: true });
     }
-    catch (error) {
+    catch (error: any) {
         console.error("[SHIPPING_POST]", error);
         return NextResponse.json({ error: "Internal Error" }, { status: 500 });
     }

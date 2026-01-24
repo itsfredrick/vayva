@@ -3,7 +3,7 @@ import { SupportBotService } from "@/lib/support/support-bot.service";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 const rateLimitMap = new Map();
-export async function POST(req: unknown) {
+export async function POST(req: any) {
     try {
         const session = await getServerSession(authOptions);
         if (!session?.user?.id) {
@@ -39,7 +39,7 @@ export async function POST(req: unknown) {
         // --- Rate Limit Check (Distributed) ---
         // Use a scoped variable for prisma to avoid top-level shadowing if that was the issue,
         // or just reuse the import properly.
-        const prismaRateLimit = global.prisma || (await import("@vayva/db")).prisma;
+        const prismaRateLimit = (global as any).prisma || (await import("@vayva/db")).prisma;
         // Clean up old entries (Lazy cleanup)
         // await prismaCtx.otpCode.deleteMany({ where: { expiresAt: { lt: now }, type: "SUPPORT_RATE_LIMIT" } }); 
         // Find existing bucket
@@ -96,7 +96,7 @@ export async function POST(req: unknown) {
         const messageId = `msg_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
         // Telemetry: Log Bot Reply
         // In a real event queue, this would be async/fire-and-forget
-        const prismaCtx = global.prisma || (await import("@vayva/db")).prisma;
+        const prismaCtx = (global as any).prisma || (await import("@vayva/db")).prisma;
         await prismaCtx.supportTelemetryEvent.create({
             data: {
                 storeId,
@@ -116,7 +116,7 @@ export async function POST(req: unknown) {
             suggestedActions: result.actions,
         });
     }
-    catch (error) {
+    catch (error: any) {
         console.error("[SupportAPI] Error:", error);
         return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
     }

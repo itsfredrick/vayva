@@ -1,7 +1,7 @@
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
-export function AgentPreview({ config }: { config: unknown }) {
+export function AgentPreview({ config }: { config: any }) {
     if (!config) return null;
 
     return (

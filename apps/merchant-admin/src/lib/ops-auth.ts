@@ -33,7 +33,7 @@ export class OpsAuthService {
     /**
      * Authenticate user and create session
      */
-    static async login(email, passwordString) {
+    static async login(email: any, passwordString: any) {
         const user = await prisma.opsUser.findUnique({ where: { email } });
         if (!user)
             return null;
@@ -74,7 +74,7 @@ export class OpsAuthService {
     /**
      * Check if IP is rate limited (Max 5 failed attempts in 15 mins)
      */
-    static async isRateLimited(ip) {
+    static async isRateLimited(ip: any) {
         const WINDOW_MINUTES = 15;
         const MAX_ATTEMPTS = 5;
         const windowStart = new Date(Date.now() - WINDOW_MINUTES * 60 * 1000);
@@ -86,7 +86,7 @@ export class OpsAuthService {
             },
             select: { metadata: true },
         });
-        const count = failures.filter((f: unknown) => f.metadata?.ip === ip).length;
+        const count = failures.filter((f: any) => f.metadata?.ip === ip).length;
         return count >= MAX_ATTEMPTS;
     }
     /**
@@ -129,7 +129,7 @@ export class OpsAuthService {
         }
         cookieStore.delete(SESSION_COOKIE_NAME);
     }
-    static async logEvent(userId, eventType, metadata = {}) {
+    static async logEvent(userId: any, eventType: any, metadata = {}) {
         await prisma.opsAuditEvent.create({
             data: {
                 opsUserId: userId,
@@ -139,7 +139,7 @@ export class OpsAuthService {
         });
     }
     // --- User Management ---
-    static async createUser(currentUserRole, data) {
+    static async createUser(currentUserRole: any, data: any) {
         if (currentUserRole !== "OPS_OWNER") {
             throw new Error("Unauthorized");
         }

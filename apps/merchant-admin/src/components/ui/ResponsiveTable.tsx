@@ -32,7 +32,7 @@ export function ResponsiveTable<T extends Record<string, unknown>>({
     if (loading) {
         return (
             <div className="space-y-3">
-                {[1, 2, 3].map((i) => (
+                {[1, 2, 3].map((i: any) => (
                     <div key={i} className="h-16 bg-gray-100 rounded-lg animate-pulse" />
                 ))}
             </div>
@@ -54,7 +54,7 @@ export function ResponsiveTable<T extends Record<string, unknown>>({
                 <table className="w-full">
                     <thead>
                         <tr className="border-b border-gray-200">
-                            {columns.map((col) => (
+                            {columns.map((col: any) => (
                                 <th
                                     key={col.key}
                                     className="px-4 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider"
@@ -65,7 +65,7 @@ export function ResponsiveTable<T extends Record<string, unknown>>({
                         </tr>
                     </thead>
                     <tbody className="divide-y divide-gray-100">
-                        {data.map((item) => (
+                        {data.map((item: any) => (
                             <tr
                                 key={keyExtractor(item)}
                                 onClick={() => onRowClick?.(item)}
@@ -74,7 +74,7 @@ export function ResponsiveTable<T extends Record<string, unknown>>({
                   ${onRowClick ? "cursor-pointer" : ""}
                 `}
                             >
-                                {columns.map((col) => (
+                                {columns.map((col: any) => (
                                     <td key={col.key} className="px-4 py-4 text-sm text-gray-900">
                                         {col.render ? col.render(item) : item[col.key]}
                                     </td>
@@ -87,7 +87,7 @@ export function ResponsiveTable<T extends Record<string, unknown>>({
 
             {/* Mobile Card View (visible only on mobile) */}
             <div className="md:hidden space-y-3">
-                {data.map((item) => (
+                {data.map((item: any) => (
                     <Card
                         key={keyExtractor(item)}
                         className={`
@@ -98,7 +98,7 @@ export function ResponsiveTable<T extends Record<string, unknown>>({
                     >
                         {columns
                             .filter((col) => col.priority !== "low") // Hide low-priority columns on mobile
-                            .map((col) => (
+                            .map((col: any) => (
                                 <div key={col.key} className="flex justify-between items-start gap-2">
                                     <span className="text-xs font-semibold text-gray-500 uppercase tracking-wide min-w-[80px]">
                                         {col.mobileLabel || col.label}

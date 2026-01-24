@@ -17,17 +17,25 @@ export default function AccountPage({
   const lang = (rawLang === "tr" ? "tr" : "en") as LocaleKey;
   const t = LOCALES[lang].account.overview;
   const router = useRouter();
-  const [user, setUser] = useState<unknown>(null);
+  const [user, setUser] = useState<any>(() => {
+    if (typeof window === 'undefined') return null;
+    try {
+      const saved = localStorage.getItem("vayva_user");
+      if (saved) return JSON.parse(saved);
+    } catch (e) {
+      // Ignore parse errors from legacy cookie
+    }
+    return null;
+  });
+
+  useEffect(() => {
+    if (!user) {
+      router.push(`/${lang}/account/login`);
+    }
+  }, [user, lang, router]);
 
   // Auth Guard (Test)
-  useEffect(() => {
-    const savedUser = localStorage.getItem("vayva_user");
-    if (!savedUser) {
-      router.push(`/${lang}/account/login`);
-    } else {
-      setUser(JSON.parse(savedUser));
-    }
-  }, [lang, router]);
+  /* Effect logic moved to lazy state initializer */
 
   const handleLogout = () => {
     localStorage.removeItem("vayva_user");
@@ -47,9 +55,9 @@ export default function AccountPage({
             <div className="relative z-10 flex justify-between items-start">
               <div>
                 <h1 className="text-3xl font-bold mb-2">
-                  {t.welcome}, {user.name}!
+                  {t.welcome}, {user?.name}!
                 </h1>
-                <p className="opacity-60 font-mono text-sm">{user.email}</p>
+                <p className="opacity-60 font-mono text-sm">{user?.email}</p>
               </div>
               <Button
                 variant="ghost"

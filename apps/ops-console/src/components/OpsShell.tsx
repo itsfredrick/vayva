@@ -2,9 +2,9 @@
 
 import { OpsSidebar } from "./OpsSidebar";
 import { CommandMenu } from "./CommandMenu";
-import { Search, Bell } from "lucide-react";
+import { Search, Bell } from 'lucide-react';
 import { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter } from 'next/navigation';
 import { Button } from "@vayva/ui";
 
 interface OpsUser {
@@ -13,7 +13,7 @@ interface OpsUser {
   role: string;
 }
 
-export function OpsShell({ children }: { children: React.ReactNode }) {
+export function OpsShell({ children }: { children: React.ReactNode }): React.JSX.Element {
   const router = useRouter();
   const [isCollapsed, setIsCollapsed] = useState(() => {
     if (typeof window !== "undefined") {
@@ -59,7 +59,7 @@ export function OpsShell({ children }: { children: React.ReactNode }) {
   const getInitials = (name: string) => {
     return name
       .split(" ")
-      .map((n) => n[0])
+      .map((n: any) => n[0])
       .join("")
       .toUpperCase()
       .slice(0, 2);
@@ -75,8 +75,8 @@ export function OpsShell({ children }: { children: React.ReactNode }) {
         <div className="w-96 relative">
           <form
             onSubmit={(e) => {
-              e.preventDefault();
-              const q = (e.currentTarget.elements.namedItem("q") as HTMLInputElement).value;
+              (e as any).preventDefault();
+              const q = ((e as any).currentTarget.elements.namedItem("q") as HTMLInputElement).value;
               if (!q) return;
 
               // Simple heuristic routing

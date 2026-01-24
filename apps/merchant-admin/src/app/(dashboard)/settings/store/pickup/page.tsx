@@ -22,7 +22,7 @@ export default function PickupPage() {
             const res = await fetch("/api/settings/pickup");
             const data = await res.json();
             setLocations(data);
-        } catch (e) {
+        } catch (e: any) {
             console.error(e);
         } finally {
             setIsLoading(false);
@@ -33,10 +33,10 @@ export default function PickupPage() {
         fetchLocations();
     }, []);
 
-    const handleSubmit = async (data: unknown) => {
+    const handleSubmit = async (data: any) => {
         try {
             const url = editingLocation
-                ? `/api/settings/pickup/${editingLocation.id}`
+                ? `/api/settings/pickup/${(editingLocation as any).id}`
                 : "/api/settings/pickup";
 
             const method = editingLocation ? "PUT" : "POST";
@@ -53,7 +53,7 @@ export default function PickupPage() {
             setIsOpen(false);
             setEditingLocation(null);
             fetchLocations();
-        } catch (e) {
+        } catch (e: any) {
             toast.error("Error saving location");
         }
     };
@@ -64,7 +64,7 @@ export default function PickupPage() {
             await fetch(`/api/settings/pickup/${id}`, { method: "DELETE" });
             toast.success("Deleted");
             fetchLocations();
-        } catch (e) {
+        } catch (e: any) {
             toast.error("Failed to delete");
         }
     };
@@ -100,7 +100,7 @@ export default function PickupPage() {
             </div>
 
             <div className="grid gap-4 md:grid-cols-2">
-                {locations.map((loc) => (
+                {locations.map((loc: any) => (
                     <Card key={loc.id}>
                         <CardHeader className="pb-2">
                             <div className="flex justify-between items-start">

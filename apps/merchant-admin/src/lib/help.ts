@@ -108,6 +108,6 @@ export const HELP_ARTICLES = [
         `,
     },
 ];
-export function getArticleBySlug(slug: unknown) {
-    return HELP_ARTICLES.find((a: unknown) => a.slug === slug);
+export function getArticleBySlug(slug: any) {
+    return HELP_ARTICLES.find((a: any) => a.slug === slug);
 }

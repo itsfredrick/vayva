@@ -8,9 +8,9 @@ import axios from "axios";
 const API_URL = process.env.NEXT_PUBLIC_API_URL || "";
 
 
-export default function PublicPolicyPage({ params }: unknown) {
+export default function PublicPolicyPage({ params: _params }: any): React.JSX.Element {
   const { slug } = useParams() as { slug: string };
-  const [policy, setPolicy] = useState<unknown>(null);
+  const [policy, setPolicy] = useState<any>(null);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
@@ -19,7 +19,7 @@ export default function PublicPolicyPage({ params }: unknown) {
         // Assuming slug maps to key like 'privacy'
         const res = await axios.get(`${API_URL}/compliance/policies/${slug}`);
         setPolicy(res.data);
-      } catch (err) {
+      } catch (err: any) {
         console.error(err);
       } finally {
         setIsLoading(false);
@@ -37,7 +37,7 @@ export default function PublicPolicyPage({ params }: unknown) {
 
   return (
     <div className="max-w-3xl mx-auto py-16 px-6 sm:px-8">
-      <h1 className="text-3xl font-bold text-[#0B1220] mb-8">{policy.title}</h1>
+      <h1 className="text-3xl font-bold text-[#0B1220] mb-8">{policy?.title}</h1>
       {/* 
                 CRITICAL SECURITY NOTE: 
                 In a production environment, this content MUST be sanitized using a library like DOMPurify 
@@ -48,7 +48,7 @@ export default function PublicPolicyPage({ params }: unknown) {
         dangerouslySetInnerHTML={{ __html: policy.content }}
       />
       <div className="mt-12 pt-8 border-t border-gray-100 text-sm text-gray-400 italic">
-        Last updated: {new Date(policy.updatedAt).toLocaleDateString()}
+        Last updated: {new Date(policy?.updatedAt).toLocaleDateString()}
       </div>
     </div>
   );

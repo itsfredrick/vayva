@@ -5,7 +5,7 @@ import { Button } from "@vayva/ui";
 import { X } from "lucide-react";
 import { useDownloadModal } from "@/context/DownloadModalContext";
 
-export function PWAInstallToast() {
+export function PWAInstallToast(): React.ReactNode {
     const [isVisible, setIsVisible] = useState(false);
     const { openDownloadModal } = useDownloadModal();
 
@@ -13,7 +13,7 @@ export function PWAInstallToast() {
         // Try to detect PWA status. If standalone, hide.
         const isStandalone =
             window.matchMedia("(display-mode: standalone)").matches ||
-            (window.navigator as unknown).standalone;
+            (window.navigator as any).standalone;
 
         if (isStandalone) return;
 

@@ -57,6 +57,8 @@ export interface TemplateDefinition {
   layoutComponent: string; // The import path key or component name
   componentProps?: Record<string, unknown>; // Optional props to pass to the component
   onboardingProfile?: OnboardingProfile;
+  features?: string[];
+  description?: string;
 }
 
 export const TEMPLATE_REGISTRY: Record<string, TemplateDefinition> = {
@@ -1000,12 +1002,12 @@ export type NormalizedTemplate = {
 
   layoutComponent?: string | null;
   componentProps?: Record<string, unknown>; // Pass through props
-  registry: unknown;
+  registry: any;
 };
 
 export function getNormalizedTemplates(): NormalizedTemplate[] {
   return Object.values(TEMPLATE_REGISTRY)
-    .map((t: unknown) => {
+    .map((t: any) => {
       const slug = t.slug || t.templateId;
 
       // Normalize desktop image (fallback used if null)
@@ -1047,7 +1049,7 @@ export function getNormalizedTemplates(): NormalizedTemplate[] {
         registry: t, // Keep ref to original
       };
     })
-    .filter((t) => t.status === "active" || t.status === "implemented");
+    .filter((t) => t.status === "implemented" || t.status === "pending");
 }
 
 export const TEMPLATES = getNormalizedTemplates();
@@ -1061,61 +1063,61 @@ export interface CategoryConfig {
 
 export const TEMPLATE_CATEGORIES: CategoryConfig[] = [
   {
-    slug: TemplateCategory.RETAIL as unknown,
+    slug: TemplateCategory.RETAIL,
     displayName: "Retail",
     recommendedTemplates: ["vayva-standard", "vayva-aa-fashion"],
     isActive: true,
   },
   {
-    slug: TemplateCategory.SERVICE as unknown,
+    slug: TemplateCategory.SERVICE,
     displayName: "Services & Appointments",
     recommendedTemplates: ["vayva-bookly-pro"],
     isActive: true,
   },
   {
-    slug: TemplateCategory.FOOD as unknown,
+    slug: TemplateCategory.FOOD,
     displayName: "Food & Dining",
     recommendedTemplates: ["vayva-chopnow", "slice-life-pizza"],
     isActive: true,
   },
   {
-    slug: TemplateCategory.DIGITAL as unknown,
+    slug: TemplateCategory.DIGITAL,
     displayName: "Digital Products",
     recommendedTemplates: ["vayva-file-vault"],
     isActive: true,
   },
   {
-    slug: TemplateCategory.EVENTS as unknown,
+    slug: TemplateCategory.EVENTS,
     displayName: "Events & Ticketing",
     recommendedTemplates: ["vayva-ticketly"],
     isActive: true,
   },
   {
-    slug: TemplateCategory.EDUCATION as unknown,
+    slug: TemplateCategory.EDUCATION,
     displayName: "Education & Courses",
     recommendedTemplates: ["vayva-eduflow"],
     isActive: true,
   },
   {
-    slug: TemplateCategory.B2B as unknown,
+    slug: TemplateCategory.B2B,
     displayName: "Wholesale B2B",
     recommendedTemplates: ["vayva-bulktrade"],
     isActive: true,
   },
   {
-    slug: TemplateCategory.MARKETPLACE as unknown,
+    slug: TemplateCategory.MARKETPLACE,
     displayName: "Marketplace",
     recommendedTemplates: ["vayva-markethub"],
     isActive: true,
   },
   {
-    slug: TemplateCategory.NONPROFIT as unknown,
+    slug: TemplateCategory.NONPROFIT,
     displayName: "Donations & Fundraising",
     recommendedTemplates: ["vayva-giveflow"],
     isActive: true,
   },
   {
-    slug: TemplateCategory.REAL_ESTATE as unknown,
+    slug: TemplateCategory.REAL_ESTATE,
     displayName: "Real Estate",
     recommendedTemplates: ["vayva-homelist"],
     isActive: true,

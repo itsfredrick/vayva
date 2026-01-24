@@ -1,11 +1,11 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import Link from "next/link";
+import _Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
 import { ArrowLeft, MapPin, Share2, Heart, ShieldCheck, MessageCircle, ShoppingCart, Truck } from "lucide-react";
 import { useCart } from "@/context/CartContext";
-import { Button, cn } from "@vayva/ui";
+import { Button } from "@vayva/ui";
 import {
     MarketProduct,
     MarketProductImage,
@@ -15,7 +15,7 @@ import {
 
 
 
-export default function ListingDetailPage() {
+export default function ListingDetailPage(): React.JSX.Element {
     const { id } = useParams();
     const router = useRouter();
     const { addItem } = useCart();
@@ -46,7 +46,7 @@ export default function ListingDetailPage() {
         if (id) fetchProduct();
     }, [id]);
 
-    const handleAddToCart = async () => {
+    const handleAddToCart = async (): Promise<void> => {
         if (!selectedVariant || !product) return;
         setIsAddingToCart(true);
         try {
@@ -58,7 +58,7 @@ export default function ListingDetailPage() {
         }
     };
 
-    const handleBuyNow = async () => {
+    const handleBuyNow = async (): Promise<void> => {
         if (!selectedVariant || !product) return;
         setIsAddingToCart(true);
         try {
@@ -71,7 +71,7 @@ export default function ListingDetailPage() {
         }
     };
 
-    const handleChat = async () => {
+    const handleChat = async (): Promise<void> => {
         if (!product) return;
         setChatLoading(true);
         try {

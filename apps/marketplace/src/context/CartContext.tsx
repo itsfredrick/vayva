@@ -18,11 +18,11 @@ interface CartContextType {
 
 const CartContext = createContext<CartContextType | undefined>(undefined);
 
-export function CartProvider({ children }: PropsWithChildren) {
+export function CartProvider({ children }: PropsWithChildren): React.JSX.Element {
     const [cart, setCart] = useState<EnrichedCart | null>(null);
     const [isLoading, setIsLoading] = useState(false);
     const [isOpen, setIsOpen] = useState(false);
-    const { data: session } = useSession();
+    const { data: _session } = useSession();
 
     // Load Cart ID
     useEffect(() => {

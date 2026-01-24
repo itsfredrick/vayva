@@ -59,7 +59,7 @@ export default function StoreSettingsPage() {
             if (!res.ok) throw new Error("Failed to load store profile");
             const data = await res.json();
             setProfile(data);
-        } catch (error) {
+        } catch (error: any) {
             console.error(error);
             toast.error("Could not load store profile");
         } finally {
@@ -85,7 +85,7 @@ export default function StoreSettingsPage() {
             }
 
             toast.success("Store profile updated successfully");
-        } catch (error) {
+        } catch (error: any) {
             toast.error(error.message || "Failed to update profile");
         } finally {
             setSaving(false);
@@ -139,8 +139,8 @@ export default function StoreSettingsPage() {
                                     id="store-name"
                                     type="text"
                                     placeholder="Enter your store name"
-                                    value={profile.name}
-                                    onChange={e => setProfile({ ...profile, name: e.target.value })}
+                                    value={(profile.name as any)}
+                                    onChange={(e: any) => setProfile({ ...profile, name: e.target.value })}
                                     className="w-full px-3 py-2 rounded-lg border border-slate-300 focus:ring-2 focus:ring-indigo-500 focus:border-transparent outline-none transition-all text-slate-900"
                                     required
                                 />
@@ -157,8 +157,8 @@ export default function StoreSettingsPage() {
                                 <label htmlFor="store-category" className="block text-sm font-medium text-slate-700 mb-1.5 text-left">Business Category</label>
                                 <select
                                     id="store-category"
-                                    value={profile.businessType}
-                                    onChange={e => setProfile({ ...profile, businessType: e.target.value })}
+                                    value={(profile.businessType as any)}
+                                    onChange={(e: any) => setProfile({ ...profile, businessType: e.target.value })}
                                     className="w-full px-3 py-2 rounded-lg border border-slate-300 focus:ring-2 focus:ring-indigo-500 outline-none text-slate-900"
                                 >
                                     <option value="fashion">Fashion & Apparel</option>
@@ -176,8 +176,8 @@ export default function StoreSettingsPage() {
                         <label htmlFor="store-description" className="block text-sm font-medium text-slate-700 mb-1.5 text-left">Short Description</label>
                         <textarea
                             id="store-description"
-                            value={profile.description}
-                            onChange={e => setProfile({ ...profile, description: e.target.value })}
+                            value={(profile.description as any)}
+                            onChange={(e: any) => setProfile({ ...profile, description: e.target.value })}
                             rows={3}
                             placeholder="A brief bio that appears on your store profile..."
                             className="w-full px-3 py-2 rounded-lg border border-slate-300 focus:ring-2 focus:ring-indigo-500 outline-none text-slate-900 resize-none"
@@ -201,8 +201,8 @@ export default function StoreSettingsPage() {
                                     id="support-email"
                                     type="email"
                                     placeholder="support@yourstore.com"
-                                    value={profile.supportEmail}
-                                    onChange={e => setProfile({ ...profile, supportEmail: e.target.value })}
+                                    value={(profile.supportEmail as any)}
+                                    onChange={(e: any) => setProfile({ ...profile, supportEmail: e.target.value })}
                                     className="w-full pl-10 pr-3 py-2 rounded-lg border border-slate-300 focus:ring-2 focus:ring-indigo-500 outline-none text-slate-900"
                                     required
                                 />
@@ -216,8 +216,8 @@ export default function StoreSettingsPage() {
                                     id="support-phone"
                                     type="tel"
                                     placeholder="+234..."
-                                    value={profile.supportPhone}
-                                    onChange={e => setProfile({ ...profile, supportPhone: e.target.value })}
+                                    value={(profile.supportPhone as any)}
+                                    onChange={(e: any) => setProfile({ ...profile, supportPhone: e.target.value })}
                                     className="w-full pl-10 pr-3 py-2 rounded-lg border border-slate-300 focus:ring-2 focus:ring-indigo-500 outline-none text-slate-900"
                                 />
                             </div>
@@ -230,8 +230,8 @@ export default function StoreSettingsPage() {
                                     id="whatsapp-number"
                                     type="text"
                                     placeholder="+234..."
-                                    value={profile.whatsappNumber}
-                                    onChange={e => setProfile({ ...profile, whatsappNumber: e.target.value })}
+                                    value={(profile.whatsappNumber as any)}
+                                    onChange={(e: any) => setProfile({ ...profile, whatsappNumber: e.target.value })}
                                     className="w-full pl-10 pr-3 py-2 rounded-lg border border-slate-300 focus:ring-2 focus:ring-indigo-500 outline-none text-slate-900 font-mono"
                                 />
                                 <p className="mt-1 text-xs text-slate-400">This number will be used for AI Agent responses and customer contact.</p>
@@ -287,7 +287,7 @@ export default function StoreSettingsPage() {
                                             <input
                                                 type="checkbox"
                                                 checked={hours.isClosed}
-                                                onChange={e => {
+                                                onChange={(e: any) => {
                                                     const newHours = { ...profile.operatingHours };
                                                     newHours[day] = { ...hours, isClosed: e.target.checked };
                                                     setProfile({ ...profile, operatingHours: newHours });
@@ -303,7 +303,7 @@ export default function StoreSettingsPage() {
                                                     type="time"
                                                     value={hours.open || "08:00"}
                                                     aria-label={`${day} opening time`}
-                                                    onChange={e => {
+                                                    onChange={(e: any) => {
                                                         const newHours = { ...profile.operatingHours };
                                                         newHours[day] = { ...hours, open: e.target.value };
                                                         setProfile({ ...profile, operatingHours: newHours });
@@ -315,7 +315,7 @@ export default function StoreSettingsPage() {
                                                     type="time"
                                                     value={hours.close || "18:00"}
                                                     aria-label={`${day} closing time`}
-                                                    onChange={e => {
+                                                    onChange={(e: any) => {
                                                         const newHours = { ...profile.operatingHours };
                                                         newHours[day] = { ...hours, close: e.target.value };
                                                         setProfile({ ...profile, operatingHours: newHours });

@@ -42,7 +42,7 @@ export default function ReportsPage() {
                 if (!res.ok) throw new Error("Failed to fetch");
                 const json = await res.json();
                 setData(json);
-            } catch (e) {
+            } catch (e: any) {
                 toast.error("Failed to load report data");
             } finally {
                 setIsLoading(false);
@@ -85,7 +85,7 @@ export default function ReportsPage() {
                     <p className="text-gray-500 mt-1">Deep dive into your store's performance metrics.</p>
                 </div>
                 <div className="flex bg-gray-100 p-1 rounded-full">
-                    {["7d", "30d", "90d"].map((r) => (
+                    {["7d", "30d", "90d"].map((r: any) => (
                         <Button
                             key={r}
                             variant="ghost"
@@ -103,21 +103,21 @@ export default function ReportsPage() {
                     title="Gross Revenue"
                     value={data ? `₦${data.totalSales.toLocaleString()}` : "₦0"}
                     trend="+12%"
-                    icon={DollarSign}
+                    icon={(DollarSign as any)}
                     loading={isLoading}
                 />
                 <MetricCard
                     title="Total Orders"
                     value={data ? data.totalOrders : "0"}
                     trend="+5%"
-                    icon={ShoppingBag}
+                    icon={(ShoppingBag as any)}
                     loading={isLoading}
                 />
                 <MetricCard
                     title="Avg. Ticket"
                     value={data ? `₦${Math.round(data.aov).toLocaleString()}` : "₦0"}
                     trend="-2%"
-                    icon={TrendingUp}
+                    icon={(TrendingUp as any)}
                     loading={isLoading}
                 />
             </div>
@@ -227,7 +227,7 @@ export default function ReportsPage() {
     );
 }
 
-function MetricCard({ title, value, trend, icon: Icon, loading }: { title: string, value: string | number, trend: string, icon: unknown, loading: boolean }) {
+function MetricCard({ title, value, trend, icon: Icon, loading }: { title: string, value: string | number, trend: string, icon: any, loading: boolean }) {
     return (
         <Card className="rounded-3xl border border-gray-100 shadow-sm overflow-hidden p-6 hover:shadow-md transition-shadow">
             <div className="flex items-center justify-between mb-4">

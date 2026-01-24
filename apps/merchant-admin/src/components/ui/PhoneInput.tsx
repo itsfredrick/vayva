@@ -60,7 +60,7 @@ export const PhoneInput: React.FC<PhoneInputProps> = ({
       <div className="relative">
         <input
           type="tel"
-          value={displayValue}
+          value={(displayValue as any)}
           onChange={handleChange}
           onFocus={() => setFocused(true)}
           onBlur={() => setFocused(false)}
@@ -72,7 +72,7 @@ export const PhoneInput: React.FC<PhoneInputProps> = ({
             error && "border-status-danger focus-visible:ring-status-danger",
             className,
           )}
-          {...props}
+          {...(props as any)}
         />
       </div>
       {helperText && (

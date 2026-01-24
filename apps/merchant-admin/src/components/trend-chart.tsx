@@ -42,7 +42,7 @@ export function TrendChart({
         <path
           d={`M0,100 L0,${100 - ((data[0] - min) / range) * 80} ${points
             .split(" ")
-            .map((p) => "L" + p)
+            .map((p: any) => "L" + p)
             .join(" ")} L100,100 Z`}
           fill={`url(#gradient-${color})`}
         />

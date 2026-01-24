@@ -1,7 +1,7 @@
 import Fastify from "fastify";
 import cors from "@fastify/cors";
 import { protectedRoutes, publicRoutes } from "./api/routes";
-import { prisma } from "@vayva/db";
+import { _prisma } from "@vayva/db";
 
 const server = Fastify({
   logger: true,
@@ -18,7 +18,6 @@ const start = async () => {
     await server.register(protectedRoutes, { prefix: "/v1" });
 
     await server.listen({ port: 3008, host: "0.0.0.0" });
-    console.log("Notifications Service running on port 3008");
   } catch (err) {
     (server.log as unknown).error(err);
     process.exit(1);

@@ -13,7 +13,7 @@ interface HomeListHomeProps {
 export default function HomeListHome({
     storeName: initialStoreName,
     storeSlug,
-}: HomeListHomeProps) {
+}: HomeListHomeProps): React.JSX.Element {
     const { store } = useStorefrontStore(storeSlug);
     const displayName = store?.name || initialStoreName || "HomeList Realty";
 

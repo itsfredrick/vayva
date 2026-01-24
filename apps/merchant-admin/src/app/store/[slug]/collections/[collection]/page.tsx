@@ -88,7 +88,7 @@ export default function CollectionPage({
           {/* Toolbar */}
           <div className="flex gap-3 w-full md:w-auto">
             <Button variant="outline" size="sm" className="hidden md:flex">
-              <Icon name={"Sliders" as unknown} size={14} className="mr-2" />
+              <Icon name={"Sliders" as any} size={14} className="mr-2" />
               Filter
             </Button>
             <Button
@@ -109,7 +109,7 @@ export default function CollectionPage({
 
         {/* Grid */}
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-x-6 gap-y-10">
-          {DEMO_PRODUCTS.map((product) => (
+          {DEMO_PRODUCTS.map((product: any) => (
             <ProductCard key={product.id} product={product} storeSlug={slug} />
           ))}
         </div>

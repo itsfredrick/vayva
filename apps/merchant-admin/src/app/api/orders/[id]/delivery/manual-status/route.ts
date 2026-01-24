@@ -7,7 +7,7 @@ const ALLOWED_TRANSITIONS = {
     PICKED_UP: ["IN_TRANSIT", "FAILED"],
     IN_TRANSIT: ["DELIVERED", "FAILED"],
 };
-export async function POST(request: unknown, context: unknown) {
+export async function POST(request: Request, context: any) {
     try {
         const { id: orderId } = await context.params;
         const session = await requireAuth();
@@ -29,7 +29,7 @@ export async function POST(request: unknown, context: unknown) {
         }
         // 3. Validate Transition
         const currentStatus = shipment.status;
-        const allowed = ALLOWED_TRANSITIONS[currentStatus];
+        const allowed = (ALLOWED_TRANSITIONS as any)[currentStatus];
         // Allow forcing if owner? No, strict state machine requested.
         // Exception: Maybe we allow correcting mistakes? Stick to strict for now.
         if (!allowed?.includes(toStatus)) {
@@ -64,7 +64,7 @@ export async function POST(request: unknown, context: unknown) {
         });
         return NextResponse.json({ success: true, shipment: updated });
     }
-    catch (error) {
+    catch (error: any) {
         return NextResponse.json({ error: error.message }, { status: 500 });
     }
 }

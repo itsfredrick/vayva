@@ -28,7 +28,7 @@ export default function AiAgentSettingsPage() {
             if (!res.ok) throw new Error("Failed to load settings");
             const data = await res.json();
             setSettings(data);
-        } catch (error) {
+        } catch (error: any) {
             console.error(error);
             toast.error("Could not load AI agent settings");
         } finally {
@@ -50,7 +50,7 @@ export default function AiAgentSettingsPage() {
             const updated = await res.json();
             setSettings(updated);
             toast.success("AI Agent settings updated and synced");
-        } catch (error) {
+        } catch (error: any) {
             console.error(error);
             toast.error("Failed to save settings");
         } finally {
@@ -104,7 +104,7 @@ export default function AiAgentSettingsPage() {
                                     title="Select Agent Tone"
                                     className="w-full p-2 border border-slate-200 rounded-lg text-sm bg-white"
                                     value={settings?.tone}
-                                    onChange={(e) => setSettings(s => s ? ({ ...s, tone: e.target.value }) : null)}
+                                    onChange={(e: any) => setSettings(s => s ? ({ ...s, tone: e.target.value }) : null)}
                                 >
                                     <option value="PROFESSIONAL">Professional / Corporate</option>
                                     <option value="FRIENDLY">Friendly / Warm</option>
@@ -121,7 +121,7 @@ export default function AiAgentSettingsPage() {
                                     placeholder="e.g. You are an assistant for Vayva Boutique. We specialize in luxury silk dresses. Deliveries take 3-5 days..."
                                     className="h-40"
                                     value={settings?.knowledgeBase}
-                                    onChange={(e) => setSettings(s => s ? ({ ...s, knowledgeBase: e.target.value }) : null)}
+                                    onChange={(e: any) => setSettings(s => s ? ({ ...s, knowledgeBase: e.target.value }) : null)}
                                 />
                                 <p className="text-xs text-slate-400">Give your agent specific knowledge about your products, policies, and brand.</p>
                             </div>
@@ -133,7 +133,7 @@ export default function AiAgentSettingsPage() {
                                     title="Select Automation Scope"
                                     className="w-full p-2 border border-slate-200 rounded-lg text-sm bg-white"
                                     value={settings?.automationScope}
-                                    onChange={(e) => setSettings(s => s ? ({ ...s, automationScope: e.target.value }) : null)}
+                                    onChange={(e: any) => setSettings(s => s ? ({ ...s, automationScope: e.target.value }) : null)}
                                 >
                                     <option value="NONE">Manual Only (AI Disabled)</option>
                                     <option value="SUPPORT">General Support Only</option>

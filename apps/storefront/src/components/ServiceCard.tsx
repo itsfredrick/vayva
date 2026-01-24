@@ -1,7 +1,7 @@
 
 import React from "react";
 import NextLink from "next/link";
-const Link = NextLink as unknown;
+const Link = NextLink;
 import { PublicProduct } from "@/types/storefront";
 import { Clock, Calendar } from "lucide-react";
 
@@ -10,8 +10,8 @@ interface ServiceCardProps {
     storeSlug: string;
 }
 
-export function ServiceCard({ product, storeSlug }: ServiceCardProps) {
-    const metadata = product.metadata as unknown;
+export function ServiceCard({ product, storeSlug }: ServiceCardProps): React.JSX.Element {
+    const metadata = product.metadata as any;
 
     return (
         <div className="border border-gray-200 rounded-xl p-6 hover:shadow-md transition-shadow">

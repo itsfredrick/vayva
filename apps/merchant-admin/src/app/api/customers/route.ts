@@ -11,7 +11,7 @@ export const GET = withVayvaAPI(PERMISSIONS.CUSTOMERS_VIEW, async (req: NextRequ
         const page = Number(searchParams.get("page")) || 1;
         const limit = Number(searchParams.get("limit")) || 50;
         const skip = (page - 1) * limit;
-        const where: unknown= { storeId };
+        const where: any= { storeId };
         if (search) {
             where.OR = [
                 { firstName: { contains: search, mode: "insensitive" } },
@@ -37,10 +37,10 @@ export const GET = withVayvaAPI(PERMISSIONS.CUSTOMERS_VIEW, async (req: NextRequ
             }),
             prisma.customer.count({ where }),
         ]);
-        const formattedCustomers = customers.map((c: unknown) => {
+        const formattedCustomers = customers.map((c: any) => {
             const totalOrders = c.orders.length;
-            const totalSpend = c.orders.reduce((sum: number, order: unknown) => sum + Number(order.total || 0), 0);
-            const lastOrder = [...c.orders].sort((a: unknown, b: unknown) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())[0];
+            const totalSpend = c.orders.reduce((sum: number, order: any) => sum + Number(order.total || 0), 0);
+            const lastOrder = [...c.orders].sort((a: any, b: any) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())[0];
             // Determine status based on activity
             let status = CustomerStatus.NEW;
             if (totalOrders > 5 && totalSpend > 100000)
@@ -69,7 +69,7 @@ export const GET = withVayvaAPI(PERMISSIONS.CUSTOMERS_VIEW, async (req: NextRequ
             },
         });
     }
-    catch (error) {
+    catch (error: any) {
         console.error("Fetch Customers Error:", error);
         return NextResponse.json({ error: "Failed to fetch customers" }, { status: 500 });
     }
@@ -92,7 +92,7 @@ export const POST = withVayvaAPI(PERMISSIONS.CUSTOMERS_MANAGE, async (req: NextR
         });
         return NextResponse.json(customer);
     }
-    catch (error) {
+    catch (error: any) {
         console.error("Create Customer Error:", error);
         return NextResponse.json({ error: "Failed to create customer" }, { status: 500 });
     }

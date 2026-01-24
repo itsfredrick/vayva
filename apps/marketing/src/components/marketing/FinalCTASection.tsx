@@ -6,7 +6,7 @@ import * as motion from "framer-motion/client";
 import { PremiumButton } from "@/components/marketing/PremiumButton";
 import { APP_URL } from "@/lib/constants";
 
-export function FinalCTASection() {
+export function FinalCTASection(): React.JSX.Element {
     return (
         <section className="py-32 px-4 bg-white relative overflow-hidden">
             <motion.div

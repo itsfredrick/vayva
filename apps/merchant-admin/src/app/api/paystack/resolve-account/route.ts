@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-export async function POST(req: unknown) {
+export async function POST(req: any) {
     try {
         const { accountNumber, bankCode } = await req.json();
         if (!accountNumber || !bankCode) {
@@ -26,7 +26,7 @@ export async function POST(req: unknown) {
             bank_id: data.data.bank_id
         });
     }
-    catch (error) {
+    catch (error: any) {
         console.error("Paystack resolve error:", error);
         return NextResponse.json({ error: "Internal server error" }, { status: 500 });
     }

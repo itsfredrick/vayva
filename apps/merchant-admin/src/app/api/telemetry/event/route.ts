@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { getSessionUser } from "@/lib/session";
-export async function POST(request: unknown) {
+export async function POST(request: Request) {
     try {
         const body = await request.json();
         const { eventName, properties } = body;
@@ -14,7 +14,7 @@ export async function POST(request: unknown) {
                 storeId = sessionUser.storeId;
             }
         }
-        catch (e) {
+        catch (e: any) {
             // Ignore auth, might be anon
         }
         // Extract canonical fields from props
@@ -51,7 +51,7 @@ export async function POST(request: unknown) {
         }
         return NextResponse.json({ success: true });
     }
-    catch (e) {
+    catch (e: any) {
         console.error("Telemetry ingest error:", e);
         // Return 200 even on error to not break client
         return NextResponse.json({ success: false }, { status: 200 });

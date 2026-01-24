@@ -39,7 +39,7 @@ export default function MarketProductPage() {
         if (!res.ok) throw new Error("Product not found");
         const data = await res.json();
         setProduct(data);
-      } catch (err) {
+      } catch (err: any) {
         setError("Failed to load product");
       } finally {
         setLoading(false);

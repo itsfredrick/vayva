@@ -1,8 +1,8 @@
-import { NextRequest, NextResponse } from "next/server";
+import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from "@vayva/db";
 import { withOpsAuth } from "@/lib/withOpsAuth";
 
-export const GET = withOpsAuth(async (req, { user }) => {
+export const GET = withOpsAuth(async (_req, { user }) => {
     try {
         // Get date ranges for last 6 months
         const now = new Date();
@@ -65,7 +65,7 @@ export const GET = withOpsAuth(async (req, { user }) => {
         );
 
         return NextResponse.json(historicalData);
-    } catch (error) {
+    } catch (error: any) {
         console.error("Historical revenue error:", error);
         return NextResponse.json(
             { error: "Failed to fetch historical data" },

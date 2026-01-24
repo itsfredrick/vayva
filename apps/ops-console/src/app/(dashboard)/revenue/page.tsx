@@ -1,8 +1,8 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { ArrowUpRight, ArrowDownRight, TrendingUp, DollarSign, Package, CreditCard } from "lucide-react";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { ArrowUpRight, ArrowDownRight, TrendingUp, DollarSign, Package, CreditCard } from 'lucide-react';
 import { Area, AreaChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
 
 interface RevenueSummary {
@@ -41,7 +41,7 @@ interface HistoricalRevenue {
     withdrawal: number;
 }
 
-export default function RevenueDashboardPage() {
+export default function RevenueDashboardPage(): React.JSX.Element {
     const [data, setData] = useState<RevenueSummary | null>(null);
     const [chartData, setChartData] = useState<HistoricalRevenue[]>([]);
     const [loading, setLoading] = useState(true);
@@ -127,7 +127,7 @@ export default function RevenueDashboardPage() {
 
             {/* Metric Cards */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-                {metrics.map((metric) => {
+                {metrics.map((metric: any) => {
                     const Icon = metric.icon;
                     return (
                         <Card key={metric.title}>

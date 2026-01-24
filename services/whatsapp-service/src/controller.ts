@@ -10,14 +10,14 @@ export const verifyWebhook = async (
   req: FastifyRequest,
   reply: FastifyReply,
 ) => {
-  const query = req.query as unknown;
+  const query = req.query as { "hub.mode": string; "hub.verify_token": string; "hub.challenge": string };
   const mode = query["hub.mode"];
   const token = query["hub.verify_token"];
   const challenge = query["hub.challenge"];
 
   const VERIFY_TOKEN = process.env.WHATSAPP_VERIFY_TOKEN;
   if (!VERIFY_TOKEN) {
-    (req.log as unknown).error("WHATSAPP_VERIFY_TOKEN not set");
+    req.log.error("WHATSAPP_VERIFY_TOKEN not set");
     return reply.status(500).send("Internal Server Configuration Error");
   }
 
@@ -40,15 +40,15 @@ export const webhookHandler = async (
 
   if (appSecret) {
     if (!signature) {
-      (req.log as unknown).warn("Missing x-hub-signature-256 header");
+      req.log.warn("Missing x-hub-signature-256 header");
       if (process.env.NODE_ENV === "production") return reply.status(403).send("Forbidden");
     } else {
       const crypto = await import("crypto");
       const hmac = crypto.createHmac("sha256", appSecret);
-      const rawBody = (req as unknown).rawBody;
+      const rawBody = (req as unknown as { rawBody?: Buffer | string }).rawBody;
 
       if (!rawBody) {
-        (req.log as unknown).error("Raw body missing for signature verification. Ensure content-type parser is set.");
+        req.log.error("Raw body missing for signature verification. Ensure content-type parser is set.");
         // If missing, we can't verify. Fail safe.
         return reply.status(500).send({ error: "Internal Error" });
       }
@@ -59,17 +59,29 @@ export const webhookHandler = async (
       const expectedSignature = `sha256=${digest}`;
 
       if (signature !== expectedSignature) {
-        (req.log as unknown).warn(`Invalid WhatsApp Signature. Expected ${expectedSignature}, got ${signature}`);
+        req.log.warn(`Invalid WhatsApp Signature. Expected ${expectedSignature}, got ${signature}`);
         if (process.env.NODE_ENV === "production" || process.env.VERIFY_WEBHOOKS === "true") {
           return reply.status(403).send("Forbidden");
         }
       }
     }
   } else {
-    (req.log as unknown).warn("WHATSAPP_APP_SECRET not set. Skipping signature verification.");
+    req.log.warn("WHATSAPP_APP_SECRET not set. Skipping signature verification.");
   }
 
-  const body = req.body as unknown;
+  const body = req.body as {
+    entry?: Array<{
+      changes: Array<{
+        value: {
+          metadata: { phone_number_id: string };
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          messages?: any[];
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          statuses?: any[];
+        };
+      }>;
+    }>;
+  };
   if (!body.entry) return reply.send({ status: "ignored" });
 
   for (const entry of body.entry) {
@@ -83,7 +95,7 @@ export const webhookHandler = async (
       });
 
       if (!channel) {
-        (req.log as unknown).error(`No channel found for phone_number_id ${metadata?.phone_number_id}`);
+        req.log.error(`No channel found for phone_number_id ${metadata?.phone_number_id}`);
         continue;
       }
       const storeId = channel.storeId;
@@ -105,28 +117,28 @@ export const webhookHandler = async (
 /**
  * Send Message from Merchant Dashboard
  */
-export const sendMessage = async (req: FastifyRequest, reply: FastifyReply) => {
+export const sendMessage = async (req: FastifyRequest, reply: FastifyReply): Promise<unknown> => {
   const storeId = req.headers["x-store-id"] as string;
   if (!storeId) return reply.status(400).send({ error: "Missing x-store-id header" });
 
-  const { conversationId, body, templateName } = req.body as unknown;
+  const { conversationId, body, templateName } = req.body as { conversationId: string; body?: string | null; templateName?: string | null };
 
   try {
     const message = await ConversationStore.sendMessage(
       storeId,
       conversationId,
-      { body, templateName },
+      { body: body ?? undefined, templateName: templateName ?? undefined },
     );
     return reply.send(message);
   } catch (e: unknown) {
-    return reply.status(500).send({ error: e.message });
+    return reply.status(500).send({ error: (e as Error).message });
   }
 };
 
 /**
  * List Threads for Inbox
  */
-export const listThreads = async (req: FastifyRequest, reply: FastifyReply) => {
+export const listThreads = async (req: FastifyRequest, reply: FastifyReply): Promise<unknown> => {
   const storeId = req.headers["x-store-id"] as string;
   if (!storeId) return reply.status(400).send({ error: "Missing x-store-id header" });
 
@@ -137,7 +149,7 @@ export const listThreads = async (req: FastifyRequest, reply: FastifyReply) => {
 /**
  * Get Full Thread History
  */
-export const getThread = async (req: FastifyRequest, reply: FastifyReply) => {
+export const getThread = async (req: FastifyRequest, reply: FastifyReply): Promise<unknown> => {
   const storeId = req.headers["x-store-id"] as string;
   if (!storeId) return reply.status(400).send({ error: "Missing x-store-id header" });
 
@@ -155,7 +167,7 @@ export const getThread = async (req: FastifyRequest, reply: FastifyReply) => {
 /**
  * Sync Agent Context for a store (Refreshes cache/LLM instructions)
  */
-export const syncAgentContext = async (req: FastifyRequest, reply: FastifyReply) => {
+export const syncAgentContext = async (req: FastifyRequest, reply: FastifyReply): Promise<unknown> => {
   const secret = req.headers["x-internal-secret"];
   const INTERNAL_SECRET = process.env.INTERNAL_API_SECRET;
 
@@ -172,11 +184,11 @@ export const syncAgentContext = async (req: FastifyRequest, reply: FastifyReply)
       select: { settings: true }
     });
 
-    const aiSettings = (store?.settings as unknown)?.aiAgent;
-    (req.log as unknown).info(`Refreshing AI Agent context for store ${storeId}. Enabled: ${aiSettings?.enabled}`);
+    const aiSettings = (store?.settings as { aiAgent?: { enabled?: boolean } })?.aiAgent;
+    req.log.info(`Refreshing AI Agent context for store ${storeId}. Enabled: ${aiSettings?.enabled}`);
 
     return reply.send({ success: true, syncedAt: new Date().toISOString() });
   } catch (e: unknown) {
-    return reply.status(500).send({ error: e.message });
+    return reply.status(500).send({ error: (e as Error).message });
   }
 };

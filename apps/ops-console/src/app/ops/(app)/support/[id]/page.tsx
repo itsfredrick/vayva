@@ -1,14 +1,14 @@
 "use client";
 
 import React, { useState } from "react";
-import { useParams, useRouter } from "next/navigation";
+import { useParams, useRouter } from 'next/navigation';
 import { useOpsQuery } from "@/hooks/useOpsQuery";
-import { ArrowLeft, User, Send, CheckCircle, Smartphone } from "lucide-react";
-import { toast } from "sonner";
+import { ArrowLeft, User, Send, CheckCircle, Smartphone } from 'lucide-react';
+import { toast } from 'sonner';
 import Link from "next/link";
 import { Button } from "@vayva/ui";
 
-export default function SupportDetailPage() {
+export default function SupportDetailPage(): React.JSX.Element {
     const { id } = useParams() as { id: string };
     const _router = useRouter();
     const [reply, setReply] = useState("");
@@ -36,7 +36,7 @@ export default function SupportDetailPage() {
     };
 
     const handleSendReply = async (e: React.FormEvent) => {
-        e.preventDefault();
+        (e as any).preventDefault();
         if (!reply.trim()) return;
 
         // Currently APIs don't support message threads on SupportCase, assuming single thread or placeholder for now.
@@ -114,8 +114,8 @@ export default function SupportDetailPage() {
                     <div className="p-4 bg-white border-t border-gray-200">
                         <form onSubmit={handleSendReply} className="relative">
                             <textarea
-                                value={reply}
-                                onChange={e => setReply(e.target.value)}
+                                value={(reply as any)}
+                                onChange={(e: any) => setReply((e as any).target.value)}
                                 placeholder="Type your reply..."
                                 className="w-full p-4 pr-12 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-indigo-500 outline-none resize-none h-24 text-sm"
                             />

@@ -47,8 +47,8 @@ export function QuickBitesFood({
   const [selectedCategory, setSelectedCategory] = useState("All");
 
   // Generate categories from products
-  const categories = useMemo(() => {
-    const unique = new Set(products.map((p) => p.category || "Popular"));
+  const categories = useMemo((): string[] => {
+    const unique = new Set(products.map((p: { category?: string }) => p.category || "Popular"));
     return ["All", ...Array.from(unique)];
   }, [products]);
 
@@ -87,7 +87,7 @@ export function QuickBitesFood({
             <div className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-4 px-2">
               Menu
             </div>
-            {categories.map((cat) => (
+            {categories.map((cat: string) => (
               <Button
                 key={cat}
                 onClick={() => setSelectedCategory(cat)}
@@ -171,7 +171,7 @@ export function QuickBitesFood({
             <div className="py-20 text-center">Loading menu...</div>
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 pb-20">
-              {filteredProducts.map((p) => (
+              {filteredProducts.map((p: { id: string; name: string; price: number; description?: string; image?: string }) => (
                 <div
                   key={p.id}
                   className="bg-white p-4 rounded-2xl border border-gray-100 hover:shadow-lg transition-all group cursor-pointer"
@@ -227,7 +227,7 @@ export function QuickBitesFood({
                 🥣 Empty Plate
               </div>
             ) : (
-              cart.map((item) => (
+              cart.map((item: { id: string; name: string; price: number; quantity: number; image?: string }) => (
                 <div key={item.id} className="flex gap-4 items-center">
                   <div className="w-12 h-12 bg-gray-100 rounded-lg overflow-hidden flex-shrink-0">
                     {item.image && (

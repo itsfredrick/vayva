@@ -13,7 +13,6 @@ export const startWorker = () => {
     const worker = new Worker(
         QUEUE_NAME,
         async (job) => {
-            console.log(`[WORKER] Processing job ${job.id} type ${job.name}`);
             try {
                 if (job.data.provider === "PAYSTACK") {
                     await processPaystackEvent(job);
@@ -34,14 +33,12 @@ export const startWorker = () => {
         }
     );
 
-    worker.on("completed", (job) => {
-        console.log(`[WORKER] Job ${job.id} completed`);
+    worker.on("completed", (_job) => {
     });
 
     worker.on("failed", (job, err) => {
         console.error(`[WORKER] Job ${job?.id} failed: ${err.message}`);
     });
 
-    console.log(`[WORKER] Started listening on ${QUEUE_NAME}`);
     return worker;
 };

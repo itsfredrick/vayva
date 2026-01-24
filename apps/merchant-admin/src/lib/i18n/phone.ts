@@ -2,7 +2,7 @@
  * Normalizes a Nigerian phone number to E.164 format (+234...)
  * Handles 080..., 80..., +234...
  */
-export function normalizePhone(phone: unknown) {
+export function normalizePhone(phone: any) {
     if (!phone)
         return null;
     // Remove all non-digits (preserving + at start if exists, but regex easier to just strip all)
@@ -26,7 +26,7 @@ export function normalizePhone(phone: unknown) {
         return null; // +234 + 10 digits = 14 chars
     return clean;
 }
-export function displayPhone(phone: unknown) {
+export function displayPhone(phone: any) {
     if (!phone)
         return "";
     // If +2348012345678 -> 0801 234 5678 for readability?

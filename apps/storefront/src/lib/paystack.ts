@@ -5,7 +5,7 @@ export interface InitializePaymentPayload {
   amount: number; // in kobo
   reference?: string;
   callback_url?: string;
-  metadata?: unknown;
+  metadata?: any;
   currency?: string;
   channels?: string[];
 }
@@ -24,7 +24,7 @@ export const PaystackService = {
   initializeTransaction: async (
     payload: InitializePaymentPayload,
   ): Promise<PaystackInitializeResponse> => {
-    const secretKey =
+    const _secretKey =
       process.env.PAYSTACK_SECRET_KEY || process.env.PAYSTACK_LIVE_SECRET_KEY; // Fallback to live if testing is not available? Logic check.
     // Actually, usually test key is default for dev.
     // Let's use strict env check.
@@ -58,8 +58,8 @@ export const PaystackService = {
       }
 
       return await response.json();
-    } catch (error) {
-      console.error("[Paystack] Init Error:", error.message);
+    } catch (error: any) {
+      console.error("[Paystack] Init Error:", (error as any).message);
       throw error;
     }
   },

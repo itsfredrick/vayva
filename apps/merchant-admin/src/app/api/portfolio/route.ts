@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import { getSessionUser } from "@/lib/session";
 import { prisma } from "@/lib/prisma";
 // GET /api/portfolio
-export async function GET(request: unknown) {
+export async function GET(request: Request) {
     try {
         const sessionUser = await getSessionUser();
         if (!sessionUser)
@@ -13,13 +13,13 @@ export async function GET(request: unknown) {
         });
         return NextResponse.json({ projects });
     }
-    catch (e) {
+    catch (e: any) {
         console.error("Fetch portfolio error:", e);
         return NextResponse.json({ error: "Internal Error" }, { status: 500 });
     }
 }
 // POST /api/portfolio
-export async function POST(request: unknown) {
+export async function POST(request: Request) {
     try {
         const sessionUser = await getSessionUser();
         if (!sessionUser)
@@ -40,7 +40,7 @@ export async function POST(request: unknown) {
         });
         return NextResponse.json({ project });
     }
-    catch (e) {
+    catch (e: any) {
         console.error("Create project error:", e);
         return NextResponse.json({ error: "Internal Error" }, { status: 500 });
     }

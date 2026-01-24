@@ -34,7 +34,7 @@ const ResetPasswordContent = () => {
     try {
       await AuthService.resetPassword({ token, password });
       router.push("/signin?reset=success");
-    } catch (err) {
+    } catch (err: any) {
       console.error(err);
       const message = err instanceof Error ? err.message : "Failed to reset password";
       setError(message);
@@ -95,8 +95,8 @@ const ResetPasswordContent = () => {
               label="New Password"
               type={showPassword ? "text" : "password"}
               placeholder="Create a strong password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
+              value={(password as any)}
+              onChange={(e: any) => setPassword(e.target.value)}
               required
             />
             <Button
@@ -120,8 +120,8 @@ const ResetPasswordContent = () => {
             label="Confirm Password"
             type={showConfirmPassword ? "text" : "password"}
             placeholder="Re-enter your password"
-            value={confirmPassword}
-            onChange={(e) => setConfirmPassword(e.target.value)}
+            value={(confirmPassword as any)}
+            onChange={(e: any) => setConfirmPassword(e.target.value)}
             required
           />
           <Button

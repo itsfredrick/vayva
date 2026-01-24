@@ -42,7 +42,7 @@ export function KitchenTicket({ order, onStatusChange }: KitchenTicketProps) {
             if (!res.ok) throw new Error("Failed to update status");
             toast.success(`Order marked as ${status}`);
             onStatusChange();
-        } catch (e) {
+        } catch (e: any) {
             toast.error("Error updating order");
         } finally {
             setIsLoading(false);
@@ -67,7 +67,7 @@ export function KitchenTicket({ order, onStatusChange }: KitchenTicketProps) {
 
             {/* Items */}
             <div className="p-4 flex-1 space-y-3">
-                {order.items.map((item) => (
+                {order.items.map((item: any) => (
                     <div key={item.id} className="flex justify-between items-start">
                         <div className="flex gap-2">
                             <span className="font-bold text-gray-900 w-6">{item.quantity}x</span>

@@ -13,7 +13,7 @@ export const GET = withVayvaAPI(PERMISSIONS.PRODUCTS_VIEW, async (req, { storeId
             },
             orderBy: { updatedAt: "desc" },
         });
-        const formatted = collections.map((col: unknown) => ({
+        const formatted = collections.map((col: any) => ({
             id: col.id,
             name: col.title,
             handle: col.handle,
@@ -26,7 +26,7 @@ export const GET = withVayvaAPI(PERMISSIONS.PRODUCTS_VIEW, async (req, { storeId
             data: formatted,
         });
     }
-    catch (error) {
+    catch (error: any) {
         console.error("Collections API Error:", error);
         return NextResponse.json({ error: "Failed to fetch collections" }, { status: 500 });
     }
@@ -59,7 +59,7 @@ export const POST = withVayvaAPI(PERMISSIONS.PRODUCTS_EDIT, async (req, { storeI
             data: collection,
         });
     }
-    catch (error) {
+    catch (error: any) {
         console.error("Collection Create Error:", error);
         return NextResponse.json({ error: error.message || "Failed to create collection" }, { status: 500 });
     }

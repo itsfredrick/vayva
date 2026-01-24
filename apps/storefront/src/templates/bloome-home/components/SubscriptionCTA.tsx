@@ -1,7 +1,7 @@
 import React from "react";
 import { Button } from "@vayva/ui";
 
-export const SubscriptionCTA = () => {
+export const SubscriptionCTA = (): React.JSX.Element => {
   return (
     <section className="bg-[#2E2E2E] text-white py-24 px-8 text-center">
       <h3 className="font-serif text-3xl md:text-4xl mb-6">

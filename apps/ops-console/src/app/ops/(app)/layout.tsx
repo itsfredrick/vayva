@@ -1,7 +1,7 @@
 import React from "react";
-import { OpsShell } from "@/components/OpsShell";
+import { OpsShell } from '@/components/OpsShell';
 import { OpsAuthService } from "@/lib/ops-auth";
-import { redirect } from "next/navigation";
+import { redirect } from 'next/navigation';
 
 export default async function OpsAppLayout({
     children,

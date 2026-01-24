@@ -8,7 +8,7 @@ interface FoodItemCardProps {
   onClick: () => void;
 }
 
-export const FoodItemCard = ({ item, onClick }: FoodItemCardProps) => {
+export const FoodItemCard = ({ item, onClick }: FoodItemCardProps): React.JSX.Element => {
   return (
     <div
       onClick={onClick}

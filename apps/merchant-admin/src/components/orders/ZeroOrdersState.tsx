@@ -14,14 +14,14 @@ export const ZeroOrdersState = () => {
         if (navigator.share) {
             try {
                 await navigator.share(shareData);
-            } catch (err) {
+            } catch (err: any) {
                 // Share cancelled
             }
         } else {
             try {
                 await navigator.clipboard.writeText(`${text} ${url}`);
                 toast.success("Store link copied!");
-            } catch (e) {
+            } catch (e: any) {
                 toast.error("Failed to copy link");
             }
         }

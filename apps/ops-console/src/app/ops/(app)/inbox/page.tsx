@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams } from 'next/navigation';
 import {
     Search,
     Filter,
@@ -10,13 +10,9 @@ import {
     MessageSquare,
     Clock,
     CheckCircle2,
-    AlertCircle,
-    MoreHorizontal,
-    MessageCircle,
-    Heart
-} from "lucide-react";
-import { formatDistanceToNow } from "date-fns";
-import { MerchantHappinessWidget } from "@/components/analytics/csat-widget";
+    AlertCircle, MoreHorizontal, MessageCircle, Heart} from 'lucide-react';
+import { formatDistanceToNow } from 'date-fns';
+import { MerchantHappinessWidget } from '@/components/analytics/csat-widget';
 import { cn } from "@/lib/utils";
 import { Button } from "@vayva/ui";
 
@@ -40,7 +36,7 @@ interface Meta {
     totalPages: number;
 }
 
-export default function SupportInboxPage() {
+export default function SupportInboxPage(): React.JSX.Element {
     const router = useRouter();
     const searchParams = useSearchParams();
 
@@ -80,7 +76,7 @@ export default function SupportInboxPage() {
             const result = await res.json();
             setData(result.data || []);
             setMeta(result.meta || null);
-        } catch (error) {
+        } catch (error: any) {
             console.error("Failed to fetch tickets:", error);
         } finally {
             setLoading(false);
@@ -88,7 +84,7 @@ export default function SupportInboxPage() {
     };
 
     const handleSearch = (e: React.FormEvent) => {
-        e.preventDefault();
+        (e as any).preventDefault();
         const params = new URLSearchParams(searchParams);
         if (searchInput) {
             params.set("q", searchInput);
@@ -138,7 +134,7 @@ export default function SupportInboxPage() {
                         <div className="h-8 w-px bg-gray-200" />
                         <div className="flex flex-col">
                             <span className="text-2xl font-bold text-green-600">
-                                {data.filter(t => t.status === 'open').length}
+                                {data.filter(t => (t as any).status === 'open').length}
                             </span>
                             <span className="text-xs font-bold text-gray-400 uppercase tracking-widest">Active Now</span>
                         </div>
@@ -158,8 +154,8 @@ export default function SupportInboxPage() {
                             type="text"
                             placeholder="Search subject, ticket ID, or merchant..."
                             className="w-full pl-10 pr-4 py-2.5 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
-                            value={searchInput}
-                            onChange={(e) => setSearchInput(e.target.value)}
+                            value={(searchInput as any)}
+                            onChange={(e: any) => setSearchInput((e as any).target.value)}
                         />
                     </form>
 
@@ -197,8 +193,8 @@ export default function SupportInboxPage() {
                         <div>
                             <label className="block text-xs font-medium text-gray-700 mb-2">Status</label>
                             <select
-                                value={status}
-                                onChange={(e) => handleFilterChange("status", e.target.value)}
+                                value={(status as any)}
+                                onChange={(e: any) => handleFilterChange("status", (e as any).target.value)}
                                 className="w-full px-3 py-2 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
                                 aria-label="Filter by ticket status"
                             >
@@ -210,8 +206,8 @@ export default function SupportInboxPage() {
                         <div>
                             <label className="block text-xs font-medium text-gray-700 mb-2">Priority</label>
                             <select
-                                value={priority}
-                                onChange={(e) => handleFilterChange("priority", e.target.value)}
+                                value={(priority as any)}
+                                onChange={(e: any) => handleFilterChange("priority", (e as any).target.value)}
                                 className="w-full px-3 py-2 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
                                 aria-label="Filter by ticket priority"
                             >
@@ -240,7 +236,7 @@ export default function SupportInboxPage() {
                     </div>
                 ) : (
                     <div className="divide-y divide-gray-100">
-                        {data.map((ticket) => (
+                        {data.map((ticket: any) => (
                             <Link
                                 href={`/ops/inbox/${ticket.id}`}
                                 key={ticket.id}

@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { Button, cn } from "@vayva/ui";
-import { useToast } from "@/components/ui/use-toast";
+import { useToast } from '@/components/ui/use-toast';
 
 type KycRecord = {
   id: string;
@@ -30,7 +30,7 @@ type KycRecord = {
   } | null;
 };
 
-export default function KycQueuePage() {
+export default function KycQueuePage(): React.JSX.Element {
   const { toast } = useToast();
   const [records, setRecords] = useState<KycRecord[]>([]);
   const [loading, setLoading] = useState(true);
@@ -49,7 +49,7 @@ export default function KycQueuePage() {
       }
       const data = await res.json();
       setRecords(data.data || []);
-    } catch (e: unknown) {
+    } catch (e: any) {
       setError(e?.message || "Failed to load KYC queue");
     } finally {
       setLoading(false);
@@ -77,8 +77,8 @@ export default function KycQueuePage() {
         throw new Error(await res.text());
       }
       await load();
-    } catch (e) {
-      toast({ title: "Error", description: e instanceof Error ? e.message : "Failed to update", variant: "destructive" });
+    } catch (e: any) {
+      toast({ title: "Error", description: e instanceof Error ? (e as any).message : "Failed to update", variant: "destructive" });
     } finally {
       setActionLoading(null);
     }
@@ -89,7 +89,7 @@ export default function KycQueuePage() {
       <div className="p-8">
         <div className="h-8 w-40 bg-gray-200 rounded mb-4 animate-pulse" />
         <div className="space-y-3">
-          {[1, 2, 3].map((i) => (
+          {[1, 2, 3].map((i: any) => (
             <div key={i} className="h-24 bg-gray-100 rounded-xl animate-pulse" />
           ))}
         </div>
@@ -119,7 +119,7 @@ export default function KycQueuePage() {
         </div>
       ) : (
         <div className="space-y-4">
-          {records.map((rec) => (
+          {records.map((rec: any) => (
             <div
               key={rec.id}
               className="rounded-2xl border border-gray-200 bg-white p-5 shadow-sm flex flex-col gap-3"
@@ -170,7 +170,7 @@ export default function KycQueuePage() {
                     className="w-full rounded-xl border border-gray-200 p-2 text-sm"
                     rows={2}
                     value={note[rec.id] || ""}
-                    onChange={(e) => setNote((prev) => ({ ...prev, [rec.id]: e.target.value }))}
+                    onChange={(e: any) => setNote((prev) => ({ ...prev, [rec.id]: (e as any).target.value }))}
                     placeholder="Internal notes"
                   />
                 </div>
@@ -180,7 +180,7 @@ export default function KycQueuePage() {
                     className="w-full rounded-xl border border-gray-200 p-2 text-sm"
                     rows={2}
                     value={rejectReason[rec.id] || ""}
-                    onChange={(e) => setRejectReason((prev) => ({ ...prev, [rec.id]: e.target.value }))}
+                    onChange={(e: any) => setRejectReason((prev) => ({ ...prev, [rec.id]: (e as any).target.value }))}
                     placeholder="Why rejecting?"
                   />
                 </div>

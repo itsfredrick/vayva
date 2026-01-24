@@ -6,7 +6,7 @@
  * Sanitize HTML content to prevent XSS attacks
  * Removes script tags, event handlers, and dangerous attributes
  */
-export function sanitizeHtml(input: unknown): string {
+export function sanitizeHtml(input: any): string {
     if (!input)
         return '';
     return input
@@ -26,7 +26,7 @@ export function sanitizeHtml(input: unknown): string {
  * Sanitize plain text input
  * Removes all HTML tags and special characters that could be used for XSS
  */
-export function sanitizeText(input: unknown): string {
+export function sanitizeText(input: any): string {
     if (!input)
         return '';
     return input
@@ -42,7 +42,7 @@ export function sanitizeText(input: unknown): string {
  * Sanitize email address
  * Validates and normalizes email format
  */
-export function sanitizeEmail(email: unknown): string {
+export function sanitizeEmail(email: any): string {
     if (!email)
         return '';
     return email
@@ -54,7 +54,7 @@ export function sanitizeEmail(email: unknown): string {
  * Sanitize URL
  * Ensures URL is safe and uses allowed protocols
  */
-export function sanitizeUrl(url: unknown, allowedProtocols: string[] = ['http', 'https']): string {
+export function sanitizeUrl(url: any, allowedProtocols: string[] = ['http', 'https']): string {
     if (!url)
         return '';
     try {
@@ -75,7 +75,7 @@ export function sanitizeUrl(url: unknown, allowedProtocols: string[] = ['http', 
  * Sanitize phone number
  * Removes all non-numeric characters except + at the start
  */
-export function sanitizePhoneNumber(phone: unknown): string {
+export function sanitizePhoneNumber(phone: any): string {
     if (!phone)
         return '';
     // Keep only digits and + at the start
@@ -90,7 +90,7 @@ export function sanitizePhoneNumber(phone: unknown): string {
  * Sanitize numeric input
  * Ensures input is a valid number within optional bounds
  */
-export function sanitizeNumber(input: unknown, options?: unknown): number | null {
+export function sanitizeNumber(input: any, options?: any): number | null {
     const num = typeof input === 'string' ? parseFloat(input) : input;
     if (isNaN(num) || !isFinite(num)) {
         return null;
@@ -113,8 +113,8 @@ export function sanitizeNumber(input: unknown, options?: unknown): number | null
  * Sanitize object keys and string values
  * Recursively sanitizes all string values in an object
  */
-export function sanitizeObject(obj: unknown, sanitizer: unknown= sanitizeText): any {
-    const sanitized: unknown= {};
+export function sanitizeObject(obj: any, sanitizer: any= sanitizeText): any {
+    const sanitized: any= {};
     for (const [key, value] of Object.entries(obj)) {
         if (typeof value === 'string') {
             sanitized[key] = sanitizer(value);
@@ -135,7 +135,7 @@ export function sanitizeObject(obj: unknown, sanitizer: unknown= sanitizeText): 
  * Sanitize filename
  * Removes path traversal attempts and dangerous characters
  */
-export function sanitizeFilename(filename: unknown): string {
+export function sanitizeFilename(filename: any): string {
     if (!filename)
         return '';
     return filename
@@ -154,7 +154,7 @@ export function sanitizeFilename(filename: unknown): string {
  * Sanitize SQL-like input (for search queries, etc.)
  * Prevents SQL injection attempts
  */
-export function sanitizeSqlInput(input: unknown): string {
+export function sanitizeSqlInput(input: any): string {
     if (!input)
         return '';
     return input
@@ -172,7 +172,7 @@ export function sanitizeSqlInput(input: unknown): string {
  * Validate and sanitize JSON input
  * Safely parses JSON and sanitizes string values
  */
-export function sanitizeJson(input: unknown, sanitizer: unknown= sanitizeText): any {
+export function sanitizeJson(input: any, sanitizer: any= sanitizeText): any {
     try {
         const parsed = JSON.parse(input);
         if (typeof parsed === 'object' && parsed !== null) {
@@ -188,8 +188,8 @@ export function sanitizeJson(input: unknown, sanitizer: unknown= sanitizeText): 
  * Comprehensive sanitization for form data
  * Applies appropriate sanitization based on field type
  */
-export function sanitizeFormData(data: unknown): any {
-    const sanitized: unknown= {};
+export function sanitizeFormData(data: any): any {
+    const sanitized: any= {};
     for (const [key, value] of Object.entries(data)) {
         if (value === null || value === undefined) {
             sanitized[key] = value;
@@ -230,10 +230,10 @@ export function sanitizeFormData(data: unknown): any {
  * Escape HTML entities for safe display
  * Use this when displaying user content in HTML
  */
-export function escapeHtml(input: unknown): string {
+export function escapeHtml(input: any): string {
     if (!input)
         return '';
-    const htmlEntities: unknown= {
+    const htmlEntities: any= {
         '&': '&amp;',
         '<': '&lt;',
         '>': '&gt;',
@@ -241,5 +241,5 @@ export function escapeHtml(input: unknown): string {
         "'": '&#x27;',
         '/': '&#x2F;'
     };
-    return input.replace(/[&<>"'\/]/g, (char: unknown) => htmlEntities[char]);
+    return input.replace(/[&<>"'\/]/g, (char: any) => htmlEntities[char]);
 }

@@ -36,7 +36,8 @@ export class JobWrapper {
         },
       });
     } catch (error) {
-      const errorType = JobWrapper.classifyError(error);
+      const err = error instanceof Error ? error : new Error(String(error));
+      const errorType = JobWrapper.classifyError(err);
       const completedAt = new Date();
 
       await prisma.jobRun.update({
@@ -44,7 +45,7 @@ export class JobWrapper {
         data: {
           status: "FAILED",
           errorType,
-          errorMessage: error.message,
+          errorMessage: err.message,
           completedAt,
           duration: completedAt.getTime() - startedAt.getTime(),
         },
@@ -57,7 +58,7 @@ export class JobWrapper {
             storeId,
             jobType: jobName,
             payload: {},
-            lastError: error.message,
+            lastError: err.message,
             status: "DEAD",
           },
         });
@@ -68,14 +69,16 @@ export class JobWrapper {
   }
 
   static classifyError(error: unknown): "transient" | "permanent" {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const err = error as any;
     // Network timeouts, 429, 5xx = transient
-    if (error.code === "ETIMEDOUT" || error.code === "ECONNRESET")
+    if (err.code === "ETIMEDOUT" || err.code === "ECONNRESET")
       return "transient";
-    if (error.response?.status === 429 || error.response?.status >= 500)
+    if (err.response?.status === 429 || err.response?.status >= 500)
       return "transient";
 
     // Invalid credentials, 4xx = permanent
-    if (error.response?.status >= 400 && error.response?.status < 500)
+    if (err.response?.status >= 400 && err.response?.status < 500)
       return "permanent";
 
     return "transient";

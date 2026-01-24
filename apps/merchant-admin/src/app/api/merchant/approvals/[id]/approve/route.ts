@@ -49,12 +49,12 @@ export const POST = withVayvaAPI(PERMISSIONS.COMMERCE_MANAGE, async (req, { stor
         try {
             await executeApproval(id, user.id, request.correlationId || `req_${id}`);
         }
-        catch (err) {
+        catch (err: any) {
             console.error("Execution Failed Immediately", err);
         }
         return NextResponse.json({ ok: true, status: "approved" });
     }
-    catch (error) {
+    catch (error: any) {
         console.error("Approve Action Error:", error);
         return NextResponse.json({ error: "Internal Error" }, { status: 500 });
     }

@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 import Link from "next/link";
-import Image from "next/image";
+import _Image from "next/image";
 import { Button } from "@vayva/ui";
 import { APP_URL } from "@/lib/constants";
 import { useUserPlan } from "@/hooks/useUserPlan";
@@ -16,7 +16,7 @@ const NAV_LINKS = [
   { href: "/help", label: "Help" },
 ];
 
-export function MarketingHeader() {
+export function MarketingHeader(): React.JSX.Element {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   return (
@@ -27,7 +27,7 @@ export function MarketingHeader() {
 
         {/* Desktop Nav */}
         <nav className="hidden lg:flex items-center gap-8">
-          {NAV_LINKS.map((link) => (
+          {NAV_LINKS.map((link: any) => (
             <Link
               key={link.href}
               href={link.href}
@@ -65,7 +65,7 @@ export function MarketingHeader() {
       {mobileMenuOpen && (
         <div className="lg:hidden absolute top-full left-0 w-full bg-white border-b border-gray-200 shadow-xl py-6 px-4 flex flex-col gap-4 animate-in slide-in-from-top-2 duration-200">
           <nav className="flex flex-col gap-2">
-            {NAV_LINKS.map((link) => (
+            {NAV_LINKS.map((link: any) => (
               <Link
                 key={link.href}
                 href={link.href}
@@ -92,7 +92,7 @@ export function MarketingHeader() {
   );
 }
 
-function HeaderActions() {
+function HeaderActions(): React.JSX.Element {
   const { isAuthenticated, loading } = useUserPlan();
 
   if (loading) {

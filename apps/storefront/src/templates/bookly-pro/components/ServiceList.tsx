@@ -8,7 +8,7 @@ interface ServiceListProps {
   onBook: (service: PublicProduct) => void;
 }
 
-export const ServiceList = ({ services, onBook }: ServiceListProps) => {
+export const ServiceList = ({ services, onBook }: ServiceListProps): React.JSX.Element => {
   return (
     <section className="max-w-4xl mx-auto py-16 px-6" id="services">
       <h2 className="text-3xl font-bold text-gray-900 mb-10 text-center">
@@ -16,7 +16,7 @@ export const ServiceList = ({ services, onBook }: ServiceListProps) => {
       </h2>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        {services.map((service) => (
+        {services.map((service: any) => (
           <div
             key={service.id}
             className="bg-white border border-gray-200 rounded-xl p-6 hover:shadow-lg transition-shadow flex flex-col justify-between"

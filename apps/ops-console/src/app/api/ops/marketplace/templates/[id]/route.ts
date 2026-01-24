@@ -1,4 +1,4 @@
-import { NextResponse } from "next/server";
+import { NextResponse } from 'next/server';
 import { prisma } from "@vayva/db";
 import { OpsAuthService } from "@/lib/ops-auth";
 
@@ -20,7 +20,7 @@ export async function PATCH(request: Request, { params }: { params: Promise<{ id
         await OpsAuthService.logEvent(user.id, "TEMPLATE_UPDATE", { templateId: id, updates: body });
 
         return NextResponse.json({ data: updated });
-    } catch (e) {
+    } catch {
         return NextResponse.json({ error: "Update failed" }, { status: 500 });
     }
 }

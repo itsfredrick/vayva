@@ -99,7 +99,7 @@ export function BookingCalendar({ storeSlug, onSelectDate, onSelectTime, classNa
 
             {/* Calendar Grid */}
             <div className="grid grid-cols-7 gap-2 mb-6 text-center">
-                {["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"].map((day) => (
+                {["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"].map((day: any) => (
                     <div key={day} className="text-xs font-bold text-gray-400 uppercase tracking-wide">
                         {day}
                     </div>
@@ -142,7 +142,7 @@ export function BookingCalendar({ storeSlug, onSelectDate, onSelectTime, classNa
                         </div>
                     ) : (
                         <div className="grid grid-cols-3 gap-2 max-h-48 overflow-y-auto custom-scrollbar">
-                            {availableSlots.map((time) => (
+                            {availableSlots.map((time: any) => (
                                 <Button
                                     key={time}
                                     onClick={() => handleTimeClick(time)}

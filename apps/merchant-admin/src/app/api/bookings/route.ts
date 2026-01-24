@@ -10,10 +10,10 @@ export const GET = withVayvaAPI(PERMISSIONS.ORDERS_VIEW, async (request, { store
         const endParam = searchParams.get("end");
         const start = startParam ? new Date(startParam) : undefined;
         const end = endParam ? new Date(endParam) : undefined;
-        const bookings = await BookingService.getBookings(storeId, start, end);
+        const bookings = await BookingService.getBookings(storeId, start as any, end as any);
         return NextResponse.json(bookings);
     }
-    catch (error) {
+    catch (error: any) {
         return NextResponse.json({ error: error.message }, { status: 500 });
     }
 });
@@ -28,7 +28,7 @@ export const POST = withVayvaAPI(PERMISSIONS.ORDERS_MANAGE, async (request, { st
         });
         return NextResponse.json(booking);
     }
-    catch (error) {
+    catch (error: any) {
         return NextResponse.json({ error: error.message }, { status: 400 });
     }
 });

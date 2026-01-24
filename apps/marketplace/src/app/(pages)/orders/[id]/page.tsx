@@ -1,3 +1,4 @@
+import React from "react";
 import { prisma, Prisma } from "@vayva/db";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
@@ -33,7 +34,7 @@ type OrderWithRelations = Prisma.OrderGetPayload<{
     }
 }>;
 
-export default async function OrderDetailsPage({ params }: { params: { id: string } }) {
+export default async function OrderDetailsPage({ params }: { params: { id: string } }): Promise<React.JSX.Element> {
     const session = await getServerSession(authOptions);
     if (!session?.user) return redirect("/api/auth/signin");
 
@@ -70,7 +71,7 @@ export default async function OrderDetailsPage({ params }: { params: { id: strin
     if (typedOrder.customerId !== session.user?.id) return notFound(); // Basic security
 
     // Helper to get items for a group
-    const getItemsForGroup = (groupId: string) => {
+    const getItemsForGroup = (groupId: string): typeof typedOrder.items => {
         return typedOrder.items.filter(item => item.fulfillmentGroupId === groupId);
     };
 
@@ -260,7 +261,7 @@ export default async function OrderDetailsPage({ params }: { params: { id: strin
 }
 
 // Icon for Store
-function Store(props: React.SVGProps<SVGSVGElement>) {
+function Store(props: React.SVGProps<SVGSVGElement>): React.JSX.Element {
     return (
         <svg
             {...props}

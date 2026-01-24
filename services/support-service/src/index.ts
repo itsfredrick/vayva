@@ -24,7 +24,6 @@ const start = async () => {
 
     const port = process.env.PORT ? parseInt(process.env.PORT) : 3014;
     await server.listen({ port, host: "0.0.0.0" });
-    console.log(`Support Service running on port ${port}`);
   } catch (err) {
     (server.log as unknown).error(err);
     process.exit(1);

@@ -10,7 +10,7 @@ export const GET = withVayvaAPI(PERMISSIONS.METRICS_VIEW, async (req, { storeId 
         const data = await ReportsService.getReconciliation(storeId, limit, cursor);
         return NextResponse.json(data);
     }
-    catch (error) {
+    catch (error: any) {
         console.error("Reconciliation Report Error:", error);
         return NextResponse.json({ error: "Internal Error" }, { status: 500 });
     }

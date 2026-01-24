@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import { requireAuth } from "@/lib/auth/session";
 import { prisma } from "@/lib/prisma";
 import { verifyDomainDns } from "@/lib/jobs/domain-verification";
-export async function POST(req: unknown) {
+export async function POST(req: any) {
     try {
         const session = await requireAuth();
         const storeId = session.user.storeId;
@@ -24,7 +24,7 @@ export async function POST(req: unknown) {
         // Trigger verification "asynchronously"
         // In a real production env, this would be a BullMQ queue.add() call.
         // For this finalization, we trigger it immediately and detach the promise.
-        verifyDomainDns(domainMappingId).catch((err: unknown) => {
+        verifyDomainDns(domainMappingId).catch((err: any) => {
             console.error(`[VerifyRoute] Detached job failure for ${domainMappingId}:`, err);
         });
         return NextResponse.json({
@@ -32,7 +32,7 @@ export async function POST(req: unknown) {
             status: "pending",
         });
     }
-    catch (error) {
+    catch (error: any) {
         console.error("Domain verify trigger error:", error);
         return NextResponse.json({ error: "Failed to trigger verification" }, { status: 500 });
     }

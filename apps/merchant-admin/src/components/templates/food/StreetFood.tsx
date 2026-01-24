@@ -54,7 +54,7 @@ export const StreetFoodTemplate: React.FC<TemplateProps> = ({
     ]
     : products
       .filter((p) => p.type === "food")
-      .map((p) => ({
+      .map((p: any) => ({
         ...p,
         detail: p.category || "Delicious",
         isSpicy: !!p.isTodaysSpecial,
@@ -105,7 +105,7 @@ export const StreetFoodTemplate: React.FC<TemplateProps> = ({
 
       {/* Menu List - Simple & Bold */}
       <div className="p-4 space-y-4 max-w-md mx-auto">
-        {foodItems.map((item) => (
+        {foodItems.map((item: any) => (
           <div
             key={item.id}
             onClick={() =>

@@ -1,7 +1,7 @@
 import dns from "node:dns/promises";
 import { prisma } from "@vayva/db";
 import { logAuditEvent as logAudit } from "@/lib/audit";
-export async function verifyDomainDns(domainMappingId: unknown) {
+export async function verifyDomainDns(domainMappingId: string) {
     const mapping = await prisma.domainMapping.findUnique({
         where: { id: domainMappingId },
         include: { store: true },
@@ -13,13 +13,13 @@ export async function verifyDomainDns(domainMappingId: unknown) {
     const domain = mapping.domain;
     const token = mapping.verificationToken;
     let status = "pending";
-    let error = null;
+    let error: string | null = null;
     console.log(`[DomainJob] Starting verification for ${domain} (${domainMappingId})`);
     try {
         // We check for a TXT record: vayva-verification=[token]
         const txtRecords = await dns.resolveTxt(domain);
         const flattened = txtRecords.flat();
-        const isVerified = flattened.some((record: unknown) => record.includes(`vayva-verification=${token}`));
+        const isVerified = flattened.some((record: any) => (record as string).includes(`vayva-verification=${token}`));
         if (isVerified) {
             status = "verified";
         }
@@ -29,10 +29,10 @@ export async function verifyDomainDns(domainMappingId: unknown) {
             console.warn(`[DomainJob] ${domain} verification failed: TXT record missing or incorrect.`);
         }
     }
-    catch (err) {
+    catch (err: any) {
         status = "failed";
-        error = err.code === "ENOTFOUND" ? "Domain not found" : err.message;
-        console.error(`[DomainJob] DNS error for ${domain}:`, err.message);
+        error = (err as any).code === "ENOTFOUND" ? "Domain not found" : (err as any).message;
+        console.error(`[DomainJob] DNS error for ${domain}:`, (err as any).message);
     }
     // Update status and metadata
     await prisma.domainMapping.update({
@@ -40,7 +40,7 @@ export async function verifyDomainDns(domainMappingId: unknown) {
         data: {
             status,
             provider: {
-                ...(mapping.provider || {}),
+                ...(((mapping.provider as any) as any) || {}),
                 lastCheckedAt: new Date().toISOString(),
                 lastError: error,
             },

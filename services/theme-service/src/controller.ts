@@ -4,7 +4,7 @@ const DEFAULT_TEMPLATE_SLUG = "vayva-default";
 
 export const ThemeController = {
   // --- Template Gallery ---
-  listTemplates: async (filters?: unknown) => {
+  listTemplates: async (filters?: { category?: string }): Promise<unknown[]> => {
     const templates = await prisma.template.findMany({
       where: {
         isActive: true,
@@ -28,7 +28,7 @@ export const ThemeController = {
     return enriched;
   },
 
-  getTemplate: async (slug: string) => {
+  getTemplate: async (slug: string): Promise<unknown | null> => {
     const template = await prisma.template.findUnique({
       where: { slug },
     });
@@ -46,7 +46,7 @@ export const ThemeController = {
   },
 
   // --- Merchant Theme Management ---
-  getMerchantTheme: async (storeId: string) => {
+  getMerchantTheme: async (storeId: string): Promise<unknown | null> => {
     const theme = await prisma.merchantTheme.findFirst({
       where: { storeId, status: "PUBLISHED" },
     });
@@ -63,8 +63,8 @@ export const ThemeController = {
   applyTemplate: async (
     storeId: string,
     templateSlug: string,
-    userId?: string,
-  ) => {
+    _userId?: string,
+  ): Promise<unknown> => {
     const template = await prisma.template.findUnique({
       where: { slug: templateSlug },
     });
@@ -81,7 +81,7 @@ export const ThemeController = {
     });
   },
 
-  updateSettings: async (storeId: string, config: unknown) => {
+  updateSettings: async (storeId: string, config: Record<string, unknown>): Promise<unknown> => {
     const theme = await prisma.merchantTheme.findFirst({
       where: { storeId, status: "DRAFT" }, // Assume editing draft
     });
@@ -91,12 +91,13 @@ export const ThemeController = {
     return await prisma.merchantTheme.update({
       where: { id: theme.id },
       data: {
-        config,
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        config: config as any,
       },
     });
   },
 
-  publishTheme: async (storeId: string, userId?: string) => {
+  publishTheme: async (storeId: string, userId?: string): Promise<unknown> => {
     // Archive current published theme
     await prisma.merchantTheme.updateMany({
       where: { storeId, status: "PUBLISHED" },
@@ -133,7 +134,7 @@ export const ThemeController = {
   },
 
   // --- Auto-assign Default Template ---
-  assignDefaultTemplate: async (storeId: string) => {
+  assignDefaultTemplate: async (storeId: string): Promise<unknown | null> => {
     const template = await prisma.template.findUnique({
       where: { slug: DEFAULT_TEMPLATE_SLUG },
     });

@@ -18,11 +18,11 @@ declare module "next-auth" {
   }
 
   interface AuthOptions {
-    adapter?: unknown;
-    session?: unknown;
-    pages?: unknown;
+    adapter?: any;
+    session?: any;
+    pages?: any;
     providers: any[];
-    callbacks?: unknown;
+    callbacks?: any;
     secret?: string;
   }
 }

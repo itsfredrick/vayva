@@ -35,7 +35,7 @@ export function RescueOverlay({ error, reset }: RescueOverlayProps) {
                     setStatus("RUNNING");
                     setStatusMessage("Collecting diagnostics...");
                 }
-            } catch (err) {
+            } catch (err: any) {
                 console.error("Failed to report to rescue service", err);
                 // Fallback to manual mode if API fails
                 setStatus("NEEDS_ENGINEERING");
@@ -65,7 +65,7 @@ export function RescueOverlay({ error, reset }: RescueOverlayProps) {
                     // Still running
                     setStatusMessage("Analyzing safe fixes...");
                 }
-            } catch (err) {
+            } catch (err: any) {
                 console.error("Poll fail", err);
             }
         }, 2000);

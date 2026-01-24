@@ -8,9 +8,9 @@ import { useStore } from "@/context/StoreContext";
 import { StorefrontService } from "@/services/storefront.service";
 import { PublicProduct } from "@/types/storefront";
 import NextLink from "next/link";
-const Link = NextLink as unknown;
+const Link = NextLink;
 import { ArrowRight as ArrowRightIcon } from "lucide-react";
-const ArrowRight = ArrowRightIcon as unknown;
+const ArrowRight = ArrowRightIcon;
 
 // Template Imports
 import dynamic from "next/dynamic";
@@ -65,11 +65,21 @@ const OneProductLayout = dynamic(() =>
     (m) => m.OneProductLayout,
   ),
 );
+const AutoDealerHome = dynamic(() =>
+  import("@/templates/automotive/AutoDealerHome").then((m) => m.default),
+);
+const StaycationHome = dynamic(() =>
+  import("@/templates/travel/StaycationHome").then((m) => m.default),
+);
+// Blog Template (Editorial) - We register it but it's mainly for specific blog-only stores
+const EditorialHome = dynamic(() =>
+  import("@/templates/blog/EditorialHome").then((m) => m.default),
+);
 
 import { TEMPLATE_REGISTRY } from "@/lib/templates-registry";
 
 // Map registry layout keys to components
-const LAYOUT_COMPONENTS: Record<string, React.ComponentType<unknown>> = {
+const LAYOUT_COMPONENTS: Record<string, React.ComponentType<any>> = {
   AAFashionHome: AAFashionHome,
   GizmoTechHome: GizmoTechHome,
   BloomeHomeLayout: BloomeHomeLayout,
@@ -83,10 +93,13 @@ const LAYOUT_COMPONENTS: Record<string, React.ComponentType<unknown>> = {
   GiveFlowLayout: GiveFlowLayout,
   HomeListLayout: HomeListLayout,
   OneProductLayout: OneProductLayout,
+  AutoDealerHome: AutoDealerHome,
+  StaycationHome: StaycationHome,
+  EditorialHome: EditorialHome,
   StoreShell: StoreShell, // Fallback/Standard
 };
 
-export default function StoreHome() {
+export default function StoreHome(): React.JSX.Element {
   const { store } = useStore();
   const [products, setProducts] = useState<PublicProduct[]>([]);
   const [loadingProducts, setLoadingProducts] = useState(true);
@@ -102,11 +115,11 @@ export default function StoreHome() {
     }
   }, [store]);
 
-  if (!store) return null;
+  if (!store) return <></>;
 
   // Resolve Template ID from Store (Theme or Slug)
   // Priority: 1. store.theme.templateId (if valid), 2. Look up by store slug in registry
-  let activeTemplateId = (store.theme as unknown).templateId;
+  let activeTemplateId = (store.theme as any).templateId;
 
   if (!activeTemplateId || !TEMPLATE_REGISTRY[activeTemplateId]) {
     // Fallback: check if the slug implies a demo template
@@ -144,6 +157,15 @@ export default function StoreHome() {
     return <ActiveLayout store={store} products={products} />;
   }
 
+  // Terminology Mapping
+  const industryConfig = (store as any).industrySlug ? ({} as any) : null; // In real app, we'd import the config or use a helper
+  const primaryObjectLabel = store.industry === "food" ? "Menu Items" :
+    store.industry === "education" ? "Courses" :
+      store.industry === "automotive" ? "Vehicles" :
+        store.industry === "travel_hospitality" ? "Stays" :
+          store.industry === "real_estate" ? "Properties" :
+            store.industry === "blog_media" ? "Articles" : "Products";
+
   // DEFAULT STANDARD TEMPLATE (Fallback / StoreShell)
   // This is technically `vayva-standard`
   return (
@@ -156,11 +178,11 @@ export default function StoreHome() {
           </h1>
           <p className="text-lg md:text-xl text-gray-500 max-w-2xl mb-10 leading-relaxed">
             {store.tagline ||
-              "Explore our varied collection of premium products."}
+              `Explore our varied collection of premium ${primaryObjectLabel.toLowerCase()}.`}
           </p>
           <Link href={`/collections/all?store=${store.slug}`}>
             <Button className="bg-black text-white px-8 py-4 rounded-full font-bold text-sm tracking-wide hover:bg-gray-900 transition-colors">
-              Shop All Products
+              Shop All {primaryObjectLabel}
             </Button>
           </Link>
         </div>
@@ -169,7 +191,7 @@ export default function StoreHome() {
       {/* Featured Products */}
       <section className="max-w-7xl mx-auto px-4 mb-24">
         <div className="flex items-center justify-between mb-8">
-          <h2 className="text-2xl font-bold">Featured</h2>
+          <h2 className="text-2xl font-bold">Featured {primaryObjectLabel}</h2>
           <Link
             href={`/collections/all?store=${store.slug}`}
             className="flex items-center gap-2 text-sm font-medium hover:text-gray-600"
@@ -180,7 +202,7 @@ export default function StoreHome() {
 
         {loadingProducts ? (
           <div className="grid grid-cols-2 md:grid-cols-4 gap-x-6 gap-y-10">
-            {[1, 2, 3, 4].map((i) => (
+            {[1, 2, 3, 4].map((i: any) => (
               <div key={i} className="animate-pulse">
                 <div className="bg-gray-100 aspect-[4/5] rounded-xl mb-4"></div>
                 <div className="h-4 bg-gray-100 w-2/3 rounded mb-2"></div>
@@ -190,7 +212,7 @@ export default function StoreHome() {
           </div>
         ) : products.length > 0 ? (
           <div className="grid grid-cols-2 md:grid-cols-4 gap-x-6 gap-y-10">
-            {products.slice(0, 4).map((product) => (
+            {products.slice(0, 4).map((product: any) => (
               <ProductCard
                 key={product.id}
                 product={product}

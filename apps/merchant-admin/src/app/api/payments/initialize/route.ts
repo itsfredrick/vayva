@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { PaystackService } from "@/services/PaystackService";
 // Public: Customer checkout flow
-export async function POST(request: unknown) {
+export async function POST(request: Request) {
     try {
         const { orderId, callbackUrl } = await request.json();
         if (!orderId) {
@@ -28,7 +28,7 @@ export async function POST(request: unknown) {
         const initResponse = await PaystackService.initializeTransaction(email, amountKobo, order.refCode || order.id, callbackUrl || `${origin}/order/confirmation`);
         return NextResponse.json(initResponse);
     }
-    catch (error) {
+    catch (error: any) {
         console.error("Payment Init Error:", error);
         return NextResponse.json({ error: error.message }, { status: 500 });
     }

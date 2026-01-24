@@ -1,1 +1,2 @@
-export const StorefrontSEO = (props: unknown) => null;
+import React from "react";
+export const StorefrontSEO = (props: any): React.ReactNode => null;

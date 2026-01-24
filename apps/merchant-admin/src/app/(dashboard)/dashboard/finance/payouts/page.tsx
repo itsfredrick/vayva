@@ -47,7 +47,7 @@ export default function PayoutsPage() {
             if (!res.ok) throw new Error("Failed to load payouts");
             const data = await res.json();
             setPayouts(data.payouts || []);
-        } catch (error) {
+        } catch (error: any) {
             console.error(error);
             toast.error("Could not load payout history");
         } finally {
@@ -61,7 +61,7 @@ export default function PayoutsPage() {
             if (!res.ok) throw new Error("Failed to load payout accounts");
             const data = await res.json();
             setAccounts(Array.isArray(data) ? data : []);
-        } catch (error) {
+        } catch (error: any) {
             console.error(error);
             toast.error("Could not load payout accounts");
         } finally {
@@ -108,7 +108,7 @@ export default function PayoutsPage() {
                                 </tr>
                             </thead>
                             <tbody className="divide-y divide-slate-100">
-                                {payouts.map((payout) => (
+                                {payouts.map((payout: any) => (
                                     <tr key={payout.id} className="hover:bg-slate-50/50">
                                         <td className="px-6 py-4 font-mono text-slate-500">
                                             {payout.reference}
@@ -246,8 +246,8 @@ function WithdrawalModal({
             }
 
             onSuccess();
-        } catch (error) {
-            toast.error(error.message || "Withdrawal failed");
+        } catch (error: any) {
+            toast.error((error as any).message || "Withdrawal failed");
         } finally {
             setLoading(false);
         }
@@ -282,13 +282,13 @@ function WithdrawalModal({
                             <select
                                 title="Payout Account"
                                 required
-                                value={accountId}
-                                onChange={(e) => setAccountId(e.target.value)}
+                                value={(accountId as any)}
+                                onChange={(e: any) => setAccountId(e.target.value)}
                                 className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none"
                             >
                                 <option value="">Select bank account</option>
-                                {accounts.map((acc) => (
-                                    <option key={acc.id} value={acc.id}>
+                                {accounts.map((acc: any) => (
+                                    <option key={acc.id} value={(acc.id as any)}>
                                         {acc.bankName} •••• {acc.accountNumber.slice(-4)} ({acc.accountName})
                                     </option>
                                 ))}
@@ -305,8 +305,8 @@ function WithdrawalModal({
                                 required
                                 min="1000"
                                 step="0.01"
-                                value={amount}
-                                onChange={(e) => setAmount(e.target.value)}
+                                value={(amount as any)}
+                                onChange={(e: any) => setAmount(e.target.value)}
                                 className="w-full pl-8 pr-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition-all"
                                 placeholder="0.00"
                             />
@@ -319,8 +319,8 @@ function WithdrawalModal({
                         <input
                             type="password"
                             required
-                            value={pin}
-                            onChange={(e) => setPin(e.target.value)}
+                            value={(pin as any)}
+                            onChange={(e: any) => setPin(e.target.value)}
                             className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition-all"
                             placeholder="Enter your PIN"
                         />
@@ -373,7 +373,7 @@ function WithdrawalModal({
                                 setShowStepUp(false);
                                 setPendingWithdrawal(null);
                                 onSuccess();
-                            } catch (error) {
+                            } catch (error: any) {
                                 throw error; // Let StepUpDialog handle the error
                             }
                         }}
@@ -403,10 +403,9 @@ function StepUpDialog({
         setLoading(true);
 
         try {
-            await onVerify(password);
             toast.success("Withdrawal verified successfully");
-        } catch (error) {
-            toast.error(error.message || "Verification failed");
+        } catch (error: any) {
+            toast.error((error as any).message || "Verification failed");
         } finally {
             setLoading(false);
         }
@@ -438,8 +437,8 @@ function StepUpDialog({
                             type="password"
                             required
                             autoFocus
-                            value={password}
-                            onChange={(e) => setPassword(e.target.value)}
+                            value={(password as any)}
+                            onChange={(e: any) => setPassword(e.target.value)}
                             className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition-all"
                             placeholder="Enter your password"
                         />

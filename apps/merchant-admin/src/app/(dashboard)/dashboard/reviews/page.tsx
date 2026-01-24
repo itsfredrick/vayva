@@ -31,7 +31,7 @@ export default function ReviewsPage() {
             if (!res.ok) throw new Error("Failed to load reviews");
             const result = await res.json();
             setReviews(result.data || []);
-        } catch (error) {
+        } catch (error: any) {
             console.error(error);
             toast.error("Could not load reviews");
         } finally {
@@ -56,7 +56,7 @@ export default function ReviewsPage() {
             </div>
 
             <div className="flex items-center gap-4 border-b border-slate-200">
-                {["ALL", "PENDING", "PUBLISHED", "ARCHIVED"].map((tab) => (
+                {["ALL", "PENDING", "PUBLISHED", "ARCHIVED"].map((tab: any) => (
                     <Button
                         key={tab}
                         variant="ghost"
@@ -103,7 +103,7 @@ export default function ReviewsPage() {
                                 </tr>
                             </thead>
                             <tbody className="divide-y divide-slate-100">
-                                {filteredReviews.map((review) => (
+                                {filteredReviews.map((review: any) => (
                                     <tr key={review.id} className="hover:bg-slate-50/50 group">
                                         <td className="px-6 py-4 align-top w-32">
                                             <div className="flex text-amber-400">

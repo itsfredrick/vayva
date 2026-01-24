@@ -1,5 +1,5 @@
 import { FastifyRequest, FastifyReply } from "fastify";
-import { prisma } from "@vayva/db";
+import { prisma, Prisma } from "@vayva/db";
 import { NotificationService } from "../services/notification-engine";
 
 interface SendNotificationBody {
@@ -23,7 +23,7 @@ export const NotificationController = {
 
   getTemplates: async (
     req: FastifyRequest<{ Querystring: { storeId: string } }>,
-    reply: FastifyReply,
+    _reply: FastifyReply,
   ) => {
     const { storeId } = req.query;
     const templates = await prisma.notificationTemplate.findMany({
@@ -33,13 +33,14 @@ export const NotificationController = {
   },
 
   updateTemplate: async (
-    req: FastifyRequest<{ Params: { id: string }; Body: unknown }>,
-    reply: FastifyReply,
+    req: FastifyRequest<{ Params: { id: string }; Body: Record<string, unknown> }>,
+    _reply: FastifyReply,
   ) => {
     const { id } = req.params;
     const template = await prisma.notificationTemplate.update({
       where: { id },
-      data: req.body as unknown,
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      data: req.body as any,
     });
     return template;
   },

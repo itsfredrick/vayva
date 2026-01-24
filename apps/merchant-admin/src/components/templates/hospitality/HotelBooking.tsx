@@ -78,11 +78,11 @@ export const HotelBookingTemplate: React.FC<TemplateProps> = ({
                     </div>
 
                     <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-                        {stayItems.map((item) => (
+                        {stayItems.map((item: any) => (
                             <div key={item.id} className="group rounded-2xl overflow-hidden border border-gray-100 hover:shadow-xl transition-all bg-white">
                                 <div className="aspect-[4/3] overflow-hidden relative">
                                     <img
-                                        src={item.image || (item as unknown).images?.[0] || ""}
+                                        src={item.image || (item as any).images?.[0] || ""}
                                         alt={item.name}
                                         className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                                     />
@@ -113,7 +113,7 @@ export const HotelBookingTemplate: React.FC<TemplateProps> = ({
 
                                     {item.stay?.amenities && (
                                         <div className="flex flex-wrap gap-2 mb-6">
-                                            {item.stay.amenities.map((amenity: string) => (
+                                            {item.stay.amenities.map((amenity: any) => (
                                                 <span key={amenity} className="text-[10px] uppercase font-bold tracking-wider px-2 py-0.5 bg-gray-50 text-gray-400 rounded-md border border-gray-100">
                                                     {amenity}
                                                 </span>

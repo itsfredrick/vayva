@@ -1,12 +1,12 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import { AlertCircle, RefreshCw, Play, Trash2, ShieldAlert } from "lucide-react";
+import { AlertCircle, RefreshCw, Play, Trash2, ShieldAlert } from 'lucide-react';
 import { useOpsQuery } from "@/hooks/useOpsQuery";
-import { toast } from "sonner";
+import { toast } from 'sonner';
 import { cn, Button } from "@vayva/ui";
 
-export default function DLQPage() {
+export default function DLQPage(): React.JSX.Element {
     const [filter, setFilter] = useState("DEAD");
 
     const { data: entries, isLoading, refetch } = useOpsQuery(
@@ -23,7 +23,7 @@ export default function DLQPage() {
             } else {
                 toast.error("Failed to initiate replay");
             }
-        } catch (e) {
+        } catch {
             toast.error("An error occurred");
         }
     };
@@ -82,32 +82,32 @@ export default function DLQPage() {
                         ) : !entries?.length ? (
                             <tr><td colSpan={5} className="p-12 text-center text-gray-400">Queue is empty.</td></tr>
                         ) : (
-                            entries.map((e: unknown) => (
-                                <tr key={e.id} className="hover:bg-gray-50">
+                            entries.map((e: any) => (
+                                <tr key={(e as any).id} className="hover:bg-gray-50">
                                     <td className="px-6 py-4">
-                                        <div className="font-medium text-gray-900">{e.jobType}</div>
-                                        <div className="text-[10px] text-gray-400 font-mono">#{e.id.slice(0, 8)}</div>
+                                        <div className="font-medium text-gray-900">{(e as any).jobType}</div>
+                                        <div className="text-[10px] text-gray-400 font-mono">#{(e as any).id.slice(0, 8)}</div>
                                     </td>
                                     <td className="px-6 py-4">
-                                        <div className="text-red-600 max-w-xs truncate" title={e.lastError}>
-                                            {e.lastError}
+                                        <div className="text-red-600 max-w-xs truncate" title={(e as any).lastError}>
+                                            {(e as any).lastError}
                                         </div>
                                     </td>
-                                    <td className="px-6 py-4 text-gray-500">{new Date(e.failedAt).toLocaleString()}</td>
+                                    <td className="px-6 py-4 text-gray-500">{new Date((e as any).failedAt).toLocaleString()}</td>
                                     <td className="px-6 py-4">
                                         <span className={cn(
                                             "px-2 py-0.5 rounded text-[10px] font-bold",
-                                            e.status === "DEAD" ? "bg-red-100 text-red-700" :
-                                                e.status === "REPLAYING" ? "bg-blue-100 text-blue-700" :
+                                            (e as any).status === "DEAD" ? "bg-red-100 text-red-700" :
+                                                (e as any).status === "REPLAYING" ? "bg-blue-100 text-blue-700" :
                                                     "bg-green-100 text-green-700"
                                         )}>
-                                            {e.status}
+                                            {(e as any).status}
                                         </span>
                                     </td>
                                     <td className="px-6 py-4 text-right">
-                                        {e.status === "DEAD" && (
+                                        {(e as any).status === "DEAD" && (
                                             <Button
-                                                onClick={() => handleReplay(e.id)}
+                                                onClick={() => handleReplay((e as any).id)}
                                                 variant="ghost"
                                                 size="icon"
                                                 className="h-8 w-8 text-indigo-600 hover:bg-indigo-50 rounded"

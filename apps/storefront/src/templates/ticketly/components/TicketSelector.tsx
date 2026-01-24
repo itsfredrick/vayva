@@ -8,10 +8,10 @@ interface TicketSelectorProps {
   onSelect: (ticketTypeId: string, qty: number, total: number) => void;
 }
 
-export const TicketSelector = ({ event, onSelect }: TicketSelectorProps) => {
+export const TicketSelector = ({ event, onSelect }: TicketSelectorProps): React.JSX.Element => {
   const [quantities, setQuantities] = useState<Record<string, number>>({});
 
-  const handleQtyChange = (id: string, delta: number) => {
+  const handleQtyChange = (id: string, delta: number): void => {
     setQuantities((prev) => {
       const current = prev[id] || 0;
       const newVal = Math.max(0, current + delta);
@@ -38,7 +38,7 @@ export const TicketSelector = ({ event, onSelect }: TicketSelectorProps) => {
         </div>
 
         <div className="space-y-4">
-          {event.eventDetails?.ticketTypes.map((type) => (
+          {event.eventDetails?.ticketTypes.map((type: { id: string; name: string; price: number; capacity?: number }) => (
             <div
               key={type.id}
               className="border border-gray-200 rounded-xl p-6 flex flex-col sm:flex-row items-center justify-between gap-4"

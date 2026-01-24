@@ -46,7 +46,7 @@ export const GET = withVayvaAPI(PERMISSIONS.CUSTOMERS_VIEW, async (req, { params
         ].sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
         return NextResponse.json(history);
     }
-    catch (error) {
+    catch (error: any) {
         console.error("Fetch Customer History Error:", error);
         return NextResponse.json({ error: "Failed to fetch history" }, { status: 500 });
     }

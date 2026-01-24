@@ -66,7 +66,7 @@ export async function GET() {
             },
         });
     }
-    catch (error) {
+    catch (error: any) {
         console.error("Usage fetch error:", error);
         if (error.message === "Unauthorized") {
             return NextResponse.json({ error: "Unauthorized" }, { status: 401 });

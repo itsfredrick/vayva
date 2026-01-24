@@ -10,7 +10,7 @@ export class AIService {
     /**
      * Get AI response for customer message
      */
-    static async chat(messages, context) {
+    static async chat(messages: any, context: any) {
         try {
             // Build system prompt with business context
             const systemPrompt = this.buildSystemPrompt(context);
@@ -33,7 +33,7 @@ export class AIService {
                 suggestedActions: this.getSuggestedActions(intent),
             };
         }
-        catch (error) {
+        catch (error: any) {
             console.error("AI Service Error:", error);
             return {
                 message: "I apologize, but I'm having trouble processing your request right now. A human agent will assist you shortly.",
@@ -45,7 +45,7 @@ export class AIService {
     /**
      * Build system prompt with business context
      */
-    static buildSystemPrompt(context) {
+    static buildSystemPrompt(context: any) {
         const storeName = context?.storeName || "our store";
         const customerName = context?.customerName || "there";
         let prompt = `You are a helpful AI assistant for ${storeName}, an e-commerce business in Nigeria. 
@@ -69,7 +69,7 @@ Guidelines:
         // Add product catalog if available
         if (context?.products && context.products.length > 0) {
             prompt += `\nAvailable Products:\n`;
-            context.products.forEach((p: unknown) => {
+            context.products.forEach((p: any) => {
                 prompt += `- ${p.name}: ₦${p.price.toLocaleString()} ${p.available ? "(In Stock)" : "(Out of Stock)"}\n`;
             });
         }
@@ -79,7 +79,7 @@ Guidelines:
     /**
      * Detect customer intent from message
      */
-    static detectIntent(message) {
+    static detectIntent(message: any) {
         const lowerMessage = message.toLowerCase();
         if (lowerMessage.includes("order") &&
             (lowerMessage.includes("status") ||
@@ -110,7 +110,7 @@ Guidelines:
     /**
      * Get suggested actions based on intent
      */
-    static getSuggestedActions(intent) {
+    static getSuggestedActions(intent: any) {
         switch (intent) {
             case "order_inquiry":
                 return ["Check order status", "View order details", "Contact support"];
@@ -135,9 +135,9 @@ Guidelines:
     /**
      * Generate order confirmation message
      */
-    static generateOrderConfirmation(orderDetails) {
+    static generateOrderConfirmation(orderDetails: any) {
         const itemsList = orderDetails.items
-            .map((item: unknown) => `- ${item.quantity}x ${item.name} @ ₦${item.price.toLocaleString()}`)
+            .map((item: any) => `- ${item.quantity}x ${item.name} @ ₦${item.price.toLocaleString()}`)
             .join("\n");
         return `✅ Order Confirmed!
 

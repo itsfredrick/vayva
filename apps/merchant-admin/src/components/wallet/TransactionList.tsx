@@ -18,7 +18,7 @@ export const TransactionList = ({
   if (isLoading) {
     return (
       <div className="space-y-4">
-        {[1, 2, 3].map((i) => (
+        {[1, 2, 3].map((i: any) => (
           <div key={i} className="h-20 bg-gray-50 rounded-xl animate-pulse" />
         ))}
       </div>
@@ -97,7 +97,7 @@ export const TransactionList = ({
       </div>
 
       <div className="space-y-3">
-        {transactions.map((txn) => {
+        {transactions.map((txn: any) => {
           const isPositive = txn.amount > 0;
 
           return (

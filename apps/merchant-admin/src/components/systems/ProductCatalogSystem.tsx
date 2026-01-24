@@ -84,8 +84,8 @@ export function ProductCatalogSystem({
               </label>
               <Input
                 placeholder="e.g. Classic White Tee"
-                value={product.name}
-                onChange={(e) =>
+                value={(product.name as any)}
+                onChange={(e: any) =>
                   setProduct({ ...product, name: e.target.value })
                 }
                 autoFocus
@@ -97,7 +97,7 @@ export function ProductCatalogSystem({
                 Product Type
               </label>
               <div className="grid grid-cols-3 gap-2">
-                {(["physical", "digital", "service"] as const).map((t) => (
+                {(["physical", "digital", "service"] as const).map((t: any) => (
                   <Button
                     key={t}
                     onClick={() => setProduct({ ...product, type: t })}
@@ -150,8 +150,8 @@ export function ProductCatalogSystem({
                   </Button>
                 </div>
                 <Input
-                  value={variant.group}
-                  onChange={(e) => {
+                  value={(variant.group as any)}
+                  onChange={(e: any) => {
                     const newV = [...product.variants];
                     newV[idx].group = e.target.value;
                     setProduct({ ...product, variants: newV });
@@ -164,11 +164,11 @@ export function ProductCatalogSystem({
                   <Input
                     placeholder="Small, Medium, Large"
                     value={variant.options.join(", ")}
-                    onChange={(e) => {
+                    onChange={(e: any) => {
                       const newV = [...product.variants];
                       newV[idx].options = e.target.value
                         .split(",")
-                        .map((s) => s.trim());
+                        .map((s: any) => s.trim());
                       setProduct({ ...product, variants: newV });
                     }}
                   />
@@ -206,8 +206,8 @@ export function ProductCatalogSystem({
                 <Input
                   className="pl-8 text-lg font-mono"
                   placeholder="0.00"
-                  value={product.basePrice}
-                  onChange={(e) =>
+                  value={(product.basePrice as any)}
+                  onChange={(e: any) =>
                     setProduct({ ...product, basePrice: e.target.value })
                   }
                   autoFocus
@@ -281,7 +281,7 @@ export function ProductCatalogSystem({
 
             {product.hasVariants && (
               <div className="flex gap-1 flex-wrap pt-2">
-                {product.variants[0]?.options.slice(0, 3).map((opt) => (
+                {product.variants[0]?.options.slice(0, 3).map((opt: any) => (
                   <span
                     key={opt}
                     className="text-[10px] border border-gray-200 px-1.5 py-0.5 rounded text-gray-600"

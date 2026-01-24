@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import { useParams, useRouter } from "next/navigation";
+import { useParams, useRouter } from 'next/navigation';
 import Link from "next/link";
 import { Button } from "@vayva/ui";
 import {
@@ -11,14 +11,14 @@ import {
     Package,
     Navigation,
     ExternalLink
-} from "lucide-react";
-import { useToast } from "@/components/ui/use-toast";
+} from 'lucide-react';
+import { useToast } from '@/components/ui/use-toast';
 
-export default function DeliveryDetailPage() {
+export default function DeliveryDetailPage(): React.JSX.Element {
     const { id } = useParams() as { id: string };
     const { toast } = useToast();
     const router = useRouter();
-    const [shipment, setShipment] = useState<unknown>(null);
+    const [shipment, setShipment] = useState<any>(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState("");
 
@@ -36,8 +36,8 @@ export default function DeliveryDetailPage() {
             if (!res.ok) throw new Error("Failed to load shipment");
             const json = await res.json();
             setShipment(json.data);
-        } catch (err: unknown) {
-            setError(err.message);
+        } catch (err: any) {
+            setError(err.message || "An unknown error occurred");
         } finally {
             setLoading(false);
         }
@@ -146,15 +146,15 @@ export default function DeliveryDetailPage() {
                         <Navigation size={18} /> Dispatch History
                     </h3>
                     <div className="space-y-4">
-                        {shipment.DispatchJob?.map((job: unknown) => (
-                            <div key={job.id} className="bg-white p-4 rounded-lg border border-gray-200 shadow-sm">
+                        {shipment.DispatchJob?.map((job: any) => (
+                            <div key={(job as any).id} className="bg-white p-4 rounded-lg border border-gray-200 shadow-sm">
                                 <div className="flex justify-between mb-2">
-                                    <span className="font-medium text-gray-800">{job.carrier}</span>
-                                    <span className="text-xs text-gray-500">{new Date(job.createdAt).toLocaleString()}</span>
+                                    <span className="font-medium text-gray-800">{(job as any).carrier}</span>
+                                    <span className="text-xs text-gray-500">{new Date((job as any).createdAt).toLocaleString()}</span>
                                 </div>
                                 <div className="flex justify-between text-sm">
-                                    <span className="text-gray-500">Vehicle: {job.vehicleType}</span>
-                                    <span className="px-2 py-0.5 rounded text-xs bg-gray-100 text-gray-700">{job.status}</span>
+                                    <span className="text-gray-500">Vehicle: {(job as any).vehicleType}</span>
+                                    <span className="px-2 py-0.5 rounded text-xs bg-gray-100 text-gray-700">{(job as any).status}</span>
                                 </div>
                             </div>
                         ))}
@@ -182,7 +182,7 @@ export default function DeliveryDetailPage() {
                                 toast({ title: "Success", description: "Dispatch retry initiated successfully." });
                                 window.location.reload();
                             }
-                        } catch (e) {
+                        } catch {
                             toast({ title: "Error", description: "Failed to retry dispatch.", variant: "destructive" });
                         }
                     }}

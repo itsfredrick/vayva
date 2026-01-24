@@ -2,7 +2,7 @@ export const Permissions = {
   // Store & General
   STORE_UPDATE: "store.update",
   STORE_DESIGN: "store.design",
-  STORE_SETTINGS: "store.settings",
+  STORE_SETTINGS: "(store.settings as any)",
 
   // Auth & Staff
   STAFF_INVITE: "staff.invite",

@@ -2,20 +2,20 @@
 const DB_NAME = "vayva-offline";
 const DB_VERSION = 1;
 class OfflineStorage {
-    db: unknown;
+    db: any;
 
     constructor() {
         this.db = null;
     }
     async init() {
-        return new Promise((resolve: unknown, reject: unknown) => {
+        return new Promise((resolve: any, reject: any) => {
             const request = indexedDB.open(DB_NAME, DB_VERSION);
             request.onerror = () => reject(request.error);
             request.onsuccess = () => {
                 this.db = request.result;
                 resolve();
             };
-            request.onupgradeneeded = (event: unknown) => {
+            request.onupgradeneeded = (event: any) => {
                 const db = event.target.result;
                 // Action queue store
                 if (!db.objectStoreNames.contains("actions")) {
@@ -35,7 +35,7 @@ class OfflineStorage {
             };
         });
     }
-    async queueAction(type: unknown, payload: unknown) {
+    async queueAction(type: any, payload: any) {
         const action = {
             id: crypto.randomUUID(),
             type,
@@ -44,7 +44,7 @@ class OfflineStorage {
             createdAt: Date.now(),
             synced: false,
         };
-        return new Promise((resolve: unknown, reject: unknown) => {
+        return new Promise((resolve: any, reject: any) => {
             const tx = this.db.transaction("actions", "readwrite");
             const store = tx.objectStore("actions");
             const request = store.add(action);
@@ -53,7 +53,7 @@ class OfflineStorage {
         });
     }
     async getPendingActions() {
-        return new Promise((resolve: unknown, reject: unknown) => {
+        return new Promise((resolve: any, reject: any) => {
             const tx = this.db.transaction("actions", "readonly");
             const store = tx.objectStore("actions");
             const index = store.index("synced");
@@ -62,8 +62,8 @@ class OfflineStorage {
             request.onerror = () => reject(request.error);
         });
     }
-    async markSynced(id: unknown) {
-        return new Promise((resolve: unknown, reject: unknown) => {
+    async markSynced(id: any) {
+        return new Promise((resolve: any, reject: any) => {
             const tx = this.db.transaction("actions", "readwrite");
             const store = tx.objectStore("actions");
             const request = store.get(id);
@@ -78,18 +78,18 @@ class OfflineStorage {
             request.onerror = () => reject(request.error);
         });
     }
-    async cacheData(storeName: unknown, data: unknown) {
-        return new Promise((resolve: unknown, reject: unknown) => {
+    async cacheData(storeName: any, data: any) {
+        return new Promise((resolve: any, reject: any) => {
             const tx = this.db.transaction(storeName, "readwrite");
             const store = tx.objectStore(storeName);
             store.clear();
-            data.forEach((item: unknown) => store.put(item));
+            data.forEach((item: any) => store.put(item));
             tx.oncomplete = () => resolve();
             tx.onerror = () => reject(tx.error);
         });
     }
-    async getCachedData(storeName: unknown) {
-        return new Promise((resolve: unknown, reject: unknown) => {
+    async getCachedData(storeName: any) {
+        return new Promise((resolve: any, reject: any) => {
             const tx = this.db.transaction(storeName, "readonly");
             const store = tx.objectStore(storeName);
             const request = store.getAll();

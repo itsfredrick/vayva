@@ -6,7 +6,7 @@ import { useParams } from "next/navigation";
 import { ChevronDown, Mail, Phone, Plus } from "lucide-react";
 import { LocaleKey, LOCALES } from "@/data/locales";
 
-export default function HelpPage({ params }: unknown) {
+export default function HelpPage({ params: _params }: any): React.JSX.Element {
   const { lang: rawLang } = useParams() as { lang: string };
   const lang = (rawLang === "tr" ? "tr" : "en") as LocaleKey;
   const t = LOCALES[lang].account.help;

@@ -3,7 +3,7 @@ import { wrapEmail, renderButton } from "./layout";
 import { FEATURES } from "../env-validation";
 import { BRAND, getCanonicalUrl } from "@vayva/shared";
 export class ResendEmailService {
-    static resendClient: unknown= null;
+    static resendClient: any= null;
     static fromEmail: string = process.env.RESEND_FROM_EMAIL || `No-reply@${BRAND.domain}`;
     static billingEmail: string = process.env.EMAIL_BILLING || `Billing@${BRAND.domain}`;
     static helloEmail: string = process.env.EMAIL_HELLO || `Hello@${BRAND.domain}`;
@@ -32,7 +32,7 @@ export class ResendEmailService {
         }
     }
     // --- 1. OTP Verification ---
-    static async sendOTPEmail(to: unknown, code: unknown, firstName: unknown) {
+    static async sendOTPEmail(to: any, code: any, firstName: any) {
         this.assertConfigured();
         try {
             const { data, error } = await this.client.emails.send({
@@ -47,13 +47,13 @@ export class ResendEmailService {
             }
             return { success: true, messageId: data?.id };
         }
-        catch (error) {
+        catch (error: any) {
             console.error("[Resend] OTP Error:", error);
             throw error;
         }
     }
     // --- 2. Welcome Email ---
-    static async sendWelcomeEmail(to: unknown, firstName: unknown, storeName: unknown) {
+    static async sendWelcomeEmail(to: any, firstName: any, storeName: any) {
         this.assertConfigured();
         try {
             const { data, error } = await this.client.emails.send({
@@ -68,13 +68,13 @@ export class ResendEmailService {
             }
             return { success: true, messageId: data?.id };
         }
-        catch (error) {
+        catch (error: any) {
             console.error("[Resend] Welcome Error:", error);
             throw error;
         }
     }
     // --- 3. Password Changed ---
-    static async sendPasswordChangedEmail(to: unknown) {
+    static async sendPasswordChangedEmail(to: any) {
         this.assertConfigured();
         try {
             const { data, error } = await this.client.emails.send({
@@ -89,13 +89,13 @@ export class ResendEmailService {
             }
             return { success: true, messageId: data?.id };
         }
-        catch (error) {
+        catch (error: any) {
             console.error("[Resend] Password Change Error:", error);
             throw error;
         }
     }
     // --- 4. Payment Receipt ---
-    static async sendPaymentReceiptEmail(to: unknown, amountNgn: unknown, invoiceNumber: unknown, storeName: unknown) {
+    static async sendPaymentReceiptEmail(to: any, amountNgn: any, invoiceNumber: any, storeName: any) {
         this.assertConfigured();
         try {
             const { data, error } = await this.client.emails.send({
@@ -110,13 +110,13 @@ export class ResendEmailService {
             }
             return { success: true, messageId: data?.id };
         }
-        catch (error) {
+        catch (error: any) {
             console.error("[Resend] Receipt Error:", error);
             throw error;
         }
     }
     // --- 5. Subscription Expiry Reminder ---
-    static async sendSubscriptionExpiryReminder(to: unknown, storeName: unknown, planName: unknown, expiryDate: unknown) {
+    static async sendSubscriptionExpiryReminder(to: any, storeName: any, planName: any, expiryDate: any) {
         this.assertConfigured();
         try {
             const { billingSubscriptionExpiryReminder } = await import("./templates/core");
@@ -138,13 +138,13 @@ export class ResendEmailService {
             }
             return { success: true, messageId: data?.id };
         }
-        catch (error) {
+        catch (error: any) {
             console.error("[Resend] Subscription Expiry Error:", error);
             throw error;
         }
     }
     // --- 6. Order Shipped ---
-    static async sendOrderShippedEmail(to: unknown, orderNumber: unknown, trackingUrl: unknown, storeName: unknown) {
+    static async sendOrderShippedEmail(to: any, orderNumber: any, trackingUrl: any, storeName: any) {
         this.assertConfigured();
         try {
             const { data, error } = await this.client.emails.send({
@@ -159,7 +159,7 @@ export class ResendEmailService {
             }
             return { success: true, messageId: data?.id };
         }
-        catch (error) {
+        catch (error: any) {
             console.error("[Resend] Shipped Error:", error);
             throw error;
         }
@@ -167,7 +167,7 @@ export class ResendEmailService {
     /**
      * Internal Template Generators (Content Body Only)
      */
-    static getOTPTemplate(code: unknown, firstName: unknown) {
+    static getOTPTemplate(code: any, firstName: any) {
         return `
             <h1 style="margin:0 0 12px; font-size:22px; font-weight:600;">
                 ${firstName ? `Hi ${firstName}` : "Hello"}
@@ -183,7 +183,7 @@ export class ResendEmailService {
             </p>
         `;
     }
-    static getWelcomeTemplate(firstName: unknown, storeName: unknown) {
+    static getWelcomeTemplate(firstName: any, storeName: any) {
         const dashboardUrl = getCanonicalUrl("/onboarding");
         return `
             <h1 style="margin:0 0 12px; font-size:22px; font-weight:600;">
@@ -222,7 +222,7 @@ export class ResendEmailService {
             </div>
         `;
     }
-    static getReceiptTemplate(amount: unknown, invoiceRef: unknown, storeName: unknown) {
+    static getReceiptTemplate(amount: any, invoiceRef: any, storeName: any) {
         const formattedAmount = new Intl.NumberFormat("en-NG", {
             style: "currency",
             currency: "NGN",
@@ -259,7 +259,7 @@ export class ResendEmailService {
             </p>
         `;
     }
-    static getShippedTemplate(orderNumber: unknown, trackingUrl: unknown, storeName: unknown) {
+    static getShippedTemplate(orderNumber: any, trackingUrl: any, storeName: any) {
         return `
             <h1 style="margin:0 0 12px; font-size:22px; font-weight:600;">Good news!</h1>
             <p style="margin:0 0 16px; font-size:16px; line-height:1.6; color:#444444;">

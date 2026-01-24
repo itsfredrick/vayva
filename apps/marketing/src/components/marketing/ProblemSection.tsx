@@ -4,7 +4,7 @@ import React from "react";
 import Image from "next/image";
 import * as motion from "framer-motion/client";
 
-export function ProblemSection() {
+export function ProblemSection(): React.JSX.Element {
     return (
         <section className="py-24 px-4 bg-gray-50/50">
             <motion.div
@@ -34,7 +34,7 @@ export function ProblemSection() {
                             "Prices change mid-conversation",
                             "No records of what was sold",
                             "No accountability or audit trail",
-                        ].map((item) => (
+                        ].map((item: any) => (
                             <div key={item} className="flex items-center gap-4 text-[#64748B] text-lg font-medium">
                                 <div className="w-6 h-6 rounded-full bg-red-50 flex items-center justify-center text-red-500">×</div>
                                 {item}

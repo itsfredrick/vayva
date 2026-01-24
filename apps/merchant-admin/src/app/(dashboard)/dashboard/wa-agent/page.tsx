@@ -47,7 +47,7 @@ export default function WhatsappSettingsPage() {
             if (data.base64 || data.qrcode) {
                 setQrCode(data.base64 || data.qrcode);
             }
-        } catch (error) {
+        } catch (error: any) {
             console.error("Connect failed", error);
             setStatus("disconnected");
         }
@@ -77,13 +77,13 @@ export default function WhatsappSettingsPage() {
 
         // Simulate API call
         setTimeout(() => {
-            const responses: unknown = {
+            const responses: any = {
                 friendly: `Hey there! 🌟 I'm ${persona.name}. Thanks for reaching out! How can I help you today?`,
                 professional: `Hello. This is ${persona.name}. How may I assist you with your inquiry?`,
                 urgent: `${persona.name} here. State your request.`,
                 luxurious: `Greetings. ${persona.name} at your service. Indulge in our collection.`
             };
-            setTestResponse(responses[persona.tone] || responses.friendly);
+            setTestResponse((responses as any)[persona.tone] || (responses as any).friendly);
             setIsTesting(false);
         }, 1200);
     };
@@ -140,29 +140,29 @@ export default function WhatsappSettingsPage() {
 
                         <div className="space-y-2">
                             <Label>Agent Name</Label>
-                            <Input value={persona.name} onChange={(e: React.ChangeEvent<HTMLInputElement>) => setPersona({ ...persona, name: e.target.value })} />
+                            <Input value={(persona.name as any)} onChange={(e: React.ChangeEvent<HTMLInputElement>) => setPersona({ ...persona, name: e.target.value })} />
                         </div>
 
                         <div className="space-y-2">
                             <Label>Tone</Label>
-                            <Select value={persona.tone} onValueChange={(v: string) => setPersona({ ...persona, tone: v })}>
+                            <Select value={(persona.tone as any)} onValueChange={(v: string) => setPersona({ ...persona, tone: v })}>
                                 <SelectTrigger>
                                     <SelectValue />
                                 </SelectTrigger>
                                 <SelectContent>
-                                    {TONES.map(t => <SelectItem key={t.value} value={t.value}>{t.label}</SelectItem>)}
+                                    {TONES.map(t => <SelectItem key={t.value} value={(t.value as any)}>{t.label}</SelectItem>)}
                                 </SelectContent>
                             </Select>
                         </div>
 
                         <div className="space-y-2">
                             <Label>Language</Label>
-                            <Select value={persona.language} onValueChange={(v: string) => setPersona({ ...persona, language: v })}>
+                            <Select value={(persona.language as any)} onValueChange={(v: string) => setPersona({ ...persona, language: v })}>
                                 <SelectTrigger>
                                     <SelectValue />
                                 </SelectTrigger>
                                 <SelectContent>
-                                    {LANGUAGES.map(l => <SelectItem key={l.value} value={l.value}>{l.label}</SelectItem>)}
+                                    {LANGUAGES.map(l => <SelectItem key={l.value} value={(l.value as any)}>{l.label}</SelectItem>)}
                                 </SelectContent>
                             </Select>
                         </div>
@@ -226,7 +226,7 @@ export default function WhatsappSettingsPage() {
                         <div className="p-4 bg-white border-t flex gap-2">
                             <Input
                                 placeholder="Type a message to test..."
-                                value={testInput}
+                                value={(testInput as any)}
                                 onChange={(e: React.ChangeEvent<HTMLInputElement>) => setTestInput(e.target.value)}
                                 onKeyDown={(e: React.KeyboardEvent<HTMLInputElement>) => e.key === 'Enter' && handleTestSend()}
                             />

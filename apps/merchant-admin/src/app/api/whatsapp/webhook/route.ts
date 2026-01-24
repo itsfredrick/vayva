@@ -4,7 +4,7 @@ import { WhatsappManager } from "@/services/whatsapp";
 import { NotificationService } from "@/services/notifications";
 // Evolution API Webhook Handler
 // Handles incoming messages and routes them to the AI Sales Agent
-export async function POST(req: unknown) {
+export async function POST(req: any) {
     try {
         const body = await req.json();
         // Log basic heartbeat (remove in prod high volume)
@@ -76,7 +76,7 @@ export async function POST(req: unknown) {
         }
         return NextResponse.json({ status: "processed", reply: !!aiResponse.message });
     }
-    catch (error) {
+    catch (error: any) {
         console.error("[Webhook] Critical Error:", error);
         return NextResponse.json({ error: "Internal Error" }, { status: 500 });
     }

@@ -95,7 +95,7 @@ export function WellnessBooking({
                   No treatments selected.
                 </div>
               ) : (
-                cart.map((item) => (
+                cart.map((item: any) => (
                   <div
                     key={item.id}
                     className="bg-white p-4 rounded-xl shadow-sm flex flex-col gap-2"
@@ -192,7 +192,7 @@ export function WellnessBooking({
           </div>
         ) : (
           <div className="grid md:grid-cols-3 gap-8">
-            {products.map((service) => (
+            {products.map((service: any) => (
               <div
                 key={service.id}
                 className="bg-white rounded-2xl overflow-hidden hover:shadow-xl transition-shadow duration-300 group border border-[#F0EBE5]"

@@ -4,7 +4,7 @@ import { prisma } from "@/lib/prisma";
 import bcrypt from "bcryptjs";
 import { logAuditEvent as logAudit, AuditEventType } from "@/lib/audit";
 import { checkRateLimit } from "@/lib/rate-limit";
-export async function POST(req: unknown) {
+export async function POST(req: any) {
     try {
         const session = await requireAuth();
         const userId = session.user.id;
@@ -13,7 +13,7 @@ export async function POST(req: unknown) {
         try {
             await checkRateLimit(userId, "password_change", 5, 3600, storeId);
         }
-        catch (error) {
+        catch (error: any) {
             return NextResponse.json({ error: "Too many attempts. Please try again later." }, { status: 429 });
         }
         const { currentPassword, newPassword, confirmPassword } = await req.json();
@@ -59,7 +59,7 @@ export async function POST(req: unknown) {
         await ResendEmailService.sendPasswordChangedEmail(user.email);
         return NextResponse.json({ message: "Password updated successfully" });
     }
-    catch (error) {
+    catch (error: any) {
         console.error("Password change error:", error);
         if (error.message === "Unauthorized") {
             return NextResponse.json({ error: "Unauthorized" }, { status: 401 });

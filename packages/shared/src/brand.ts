@@ -11,7 +11,7 @@ export const BRAND = {
 } as const;
 
 
-export function getCanonicalUrl(path: string = "") {
+export function getCanonicalUrl(path: string = ""): string {
     const base = BRAND.canonicalOrigin.endsWith("/")
         ? BRAND.canonicalOrigin.slice(0, -1)
         : BRAND.canonicalOrigin;

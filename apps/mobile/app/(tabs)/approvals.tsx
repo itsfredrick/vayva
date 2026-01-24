@@ -1,8 +1,8 @@
 import React from "react";
-import { View, Text, ScrollView, TouchableOpacity, Image } from "react-native";
+import { View, Text, ScrollView, TouchableOpacity, _Image } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { ShoppingBag, Check, X, MessageCircle, LucideIcon } from "lucide-react-native";
-import { BlurView } from "expo-blur";
+import { _BlurView } from "expo-blur";
 
 const Icon = ({
   name: Component,
@@ -39,7 +39,7 @@ const APPROVALS = [
   },
 ];
 
-export default function ApprovalsScreen() {
+export default function ApprovalsScreen(): React.JSX.Element {
   return (
     <SafeAreaView className="flex-1 bg-[#142210]">
       <View className="px-6 py-4">

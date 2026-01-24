@@ -23,7 +23,7 @@ export async function POST(req: NextRequest) {
         try {
             jwt.verify(token, secret);
         }
-        catch (e) {
+        catch (e: any) {
             return NextResponse.json({ error: "Invalid or expired token" }, { status: 400 });
         }
         // 3. Hash New Password
@@ -37,7 +37,7 @@ export async function POST(req: NextRequest) {
         });
         return NextResponse.json({ success: true });
     }
-    catch (error) {
+    catch (error: any) {
         console.error("[RESET_PASSWORD_ERROR]", error);
         return NextResponse.json({ error: "Internal Error" }, { status: 500 });
     }

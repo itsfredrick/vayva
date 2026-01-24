@@ -13,7 +13,7 @@ export class RateLimitService {
      */
     async check(key: string, config: RateLimitConfig = { windowMs: 60000, max: 10 }) {
         const now = Date.now();
-        const windowStart = now - config.windowMs;
+        const _windowStart = now - config.windowMs;
         const redisKey = `ratelimit:marketplace:${key}`; // Namespace for marketplace
 
         try {

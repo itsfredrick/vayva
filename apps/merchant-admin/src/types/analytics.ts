@@ -16,3 +16,23 @@ export interface AnalyticInsight {
     type: "positive" | "negative" | "neutral";
     text: string;
 }
+
+export interface ActivePerformance {
+    // Define properties based on usage
+    [key: string]: any;
+}
+
+export interface ComparisonData {
+    // Define properties based on usage
+    [key: string]: any;
+}
+
+export interface Insight {
+    // Define properties based on usage
+    [key: string]: any;
+}
+
+export interface Recommendation {
+    // Define properties based on usage
+    [key: string]: any;
+}

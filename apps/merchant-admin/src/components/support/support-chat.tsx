@@ -62,7 +62,7 @@ export const SupportChat: React.FC = () => {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           query: input,
-          history: messages.map((m) => ({
+          history: messages.map((m: any) => ({
             role: m.role === "bot" ? "assistant" : "user",
             content: m.text,
           })),
@@ -81,7 +81,7 @@ export const SupportChat: React.FC = () => {
         messageId: data.messageId,
       };
       setMessages((prev) => [...prev, botMsg]);
-    } catch (_error) {
+    } catch (_error: any) {
       setMessages((prev) => [
         ...prev,
         {
@@ -102,7 +102,7 @@ export const SupportChat: React.FC = () => {
     rating: "SOLVED" | "NOT_SOLVED",
   ) => {
     setMessages((prev) =>
-      prev.map((m) => (m.id === msgLocalId ? { ...m, feedback: rating } : m)),
+      prev.map((m: any) => (m.id === msgLocalId ? { ...m, feedback: rating } : m)),
     );
     try {
       await fetch("/api/support/feedback", {
@@ -114,7 +114,7 @@ export const SupportChat: React.FC = () => {
           conversationId: "session_1",
         }),
       });
-    } catch (e) {
+    } catch (e: any) {
       console.error("Feedback failed", e);
     }
   };
@@ -193,7 +193,7 @@ export const SupportChat: React.FC = () => {
               ref={scrollRef}
               className="flex-1 overflow-y-auto p-4 space-y-4 bg-gray-50/50"
             >
-              {messages.map((msg) => (
+              {messages.map((msg: any) => (
                 <div
                   key={msg.id}
                   className={`flex flex-col ${msg.role === "user" ? "items-end" : "items-start"}`}
@@ -209,9 +209,9 @@ export const SupportChat: React.FC = () => {
                   </div>
 
                   {/* Action Chips */}
-                  {msg.role === "bot" && (msg as unknown).actions && (
+                  {msg.role === "bot" && (msg as any).actions && (
                     <div className="mt-2 flex flex-wrap gap-2">
-                      {(msg as unknown).actions.map((action: string, i: number) => (
+                      {(msg as any).actions.map((action: string, i: number) => (
                         <Button
                           key={i}
                           onClick={() =>
@@ -290,7 +290,7 @@ export const SupportChat: React.FC = () => {
                   "Billing Help",
                   "Connect WhatsApp",
                   "Talk to Human",
-                ].map((chip) => (
+                ].map((chip: any) => (
                   <Button
                     key={chip}
                     onClick={() => {
@@ -313,8 +313,8 @@ export const SupportChat: React.FC = () => {
                 <div className="flex items-center gap-2 bg-gray-50 rounded-xl px-3 py-2 border border-gray-200 focus-within:border-indigo-300 focus-within:ring-2 focus-within:ring-indigo-100 transition-all">
                   <input
                     type="text"
-                    value={input}
-                    onChange={(e) => setInput(e.target.value)}
+                    value={(input as any)}
+                    onChange={(e: any) => setInput(e.target.value)}
                     onKeyDown={(e) => e.key === "Enter" && handleSendMessage()}
                     placeholder="Ask for help..."
                     className="flex-1 bg-transparent border-none focus:ring-0 text-sm py-1 placeholder:text-gray-400"

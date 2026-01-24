@@ -35,7 +35,7 @@ export async function POST(request: NextRequest) {
             timestamp: new Date().toISOString(),
         });
     }
-    catch (error) {
+    catch (error: any) {
         console.error("AI Chat API Error:", error);
         return NextResponse.json({
             error: "Failed to process AI request",

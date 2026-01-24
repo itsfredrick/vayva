@@ -22,7 +22,7 @@ export async function GET(req: NextRequest) {
             orderBy: { merchantRiskScore: "desc" },
             take: 50,
         });
-        const flaggedMerchants = highRiskProfiles.map((profile) => ({
+        const flaggedMerchants = highRiskProfiles.map((profile: any) => ({
             merchantId: profile.merchantId,
             storeName: (profile as any).store.name,
             riskScore: profile.merchantRiskScore,
@@ -36,7 +36,7 @@ export async function GET(req: NextRequest) {
             items: flaggedMerchants,
         });
     }
-    catch (error) {
+    catch (error: any) {
         console.error("Audit AML Error:", error);
         return NextResponse.json({ error: "Failed to fetch AML data" }, { status: 500 });
     }

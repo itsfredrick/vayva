@@ -38,7 +38,7 @@ export const SeasonalBanner = ({
           </p>
 
           <div className="flex flex-wrap gap-2 text-xs">
-            {suggestion.changes.map((change: unknown, i: unknown) => (
+            {suggestion.changes.map((change: any, i: any) => (
               <span
                 key={i}
                 className="bg-black/20 px-2 py-1 rounded flex items-center gap-1"

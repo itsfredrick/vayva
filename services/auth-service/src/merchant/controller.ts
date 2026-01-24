@@ -19,7 +19,7 @@ const verifyPassword = async (password: string, hash: string) => {
 // But I need to view the file first to append properly or overwrite safely.
 // I'll replace the file content with the updated full content.
 
-const registerSchema = z.object({
+const _registerSchema = z.object({
   email: z.string().email(),
   password: z.string().min(8),
   firstName: z.string(),
@@ -27,32 +27,49 @@ const registerSchema = z.object({
   phone: z.string().optional(),
 });
 
-const loginSchema = z.object({
+const _loginSchema = z.object({
   email: z.string().email(),
   password: z.string(),
 });
 
-const verifyOtpSchema = z.object({
+const _verifyOtpSchema = z.object({
   email: z.string().email(),
   code: z.string().length(6),
 });
 
-const forgotPasswordSchema = z.object({
+const _forgotPasswordSchema = z.object({
   email: z.string().email(),
 });
 
-const resetPasswordSchema = z.object({
+const _resetPasswordSchema = z.object({
   email: z.string().email(),
   code: z.string().length(6),
   newPassword: z.string().min(8),
 });
 
+interface RegisterBody {
+  email: string;
+  password: string;
+  firstName: string;
+  lastName: string;
+  phone?: string;
+}
+
+interface LoginBody {
+  email: string;
+  password: string;
+}
+
+interface VerifyOtpBody {
+  email: string;
+  code: string;
+}
+
 export const registerHandler = async (
-  req: FastifyRequest,
+  req: FastifyRequest<{ Body: RegisterBody }>,
   reply: FastifyReply,
 ) => {
-  const { email, password, firstName, lastName, phone } =
-    (req.body as unknown) || {};
+  const { email, password, firstName, lastName, phone } = req.body;
 
   const existing = await prisma.user.findUnique({ where: { email } });
   if (existing)
@@ -60,7 +77,7 @@ export const registerHandler = async (
 
   const hashedPassword = await hashPassword(password);
 
-  const user = await prisma.user.create({
+  const _user = await prisma.user.create({
     data: {
       email,
       password: hashedPassword,
@@ -81,10 +98,10 @@ export const registerHandler = async (
 };
 
 export const loginHandler = async (
-  req: FastifyRequest,
+  req: FastifyRequest<{ Body: LoginBody }>,
   reply: FastifyReply,
 ) => {
-  const { email, password } = (req.body as unknown) || {};
+  const { email, password } = req.body;
   const user = await prisma.user.findUnique({
     where: { email },
     include: { memberships: { include: { store: true } } },
@@ -139,10 +156,10 @@ export const loginHandler = async (
 };
 
 export const verifyOtpHandler = async (
-  req: FastifyRequest,
+  req: FastifyRequest<{ Body: VerifyOtpBody }>,
   reply: FastifyReply,
 ) => {
-  const { email, code } = (req.body as unknown) || {};
+  const { email, code } = req.body;
 
   const otp = await prisma.otpCode.findFirst({
     where: {
@@ -171,10 +188,10 @@ export const verifyOtpHandler = async (
 };
 
 export const resendOtpHandler = async (
-  req: FastifyRequest,
+  req: FastifyRequest<{ Body: { email: string } }>,
   reply: FastifyReply,
 ) => {
-  const { email } = (req.body as unknown) || {};
+  const { email } = req.body;
 
   // Create new OTP
   await storeOtp(email, "VERIFY");
@@ -232,10 +249,10 @@ export const getMeHandler = async (
 };
 
 export const forgotPasswordHandler = async (
-  req: FastifyRequest,
+  req: FastifyRequest<{ Body: { email: string } }>,
   reply: FastifyReply,
 ) => {
-  const { email } = (req.body as unknown) || {};
+  const { email } = req.body;
   const user = await prisma.user.findUnique({ where: { email } });
 
   if (user) {
@@ -248,7 +265,6 @@ export const forgotPasswordHandler = async (
         expiresAt: new Date(Date.now() + 15 * 60 * 1000),
       },
     });
-    console.log(`[AUTH] Reset OTP for ${email}: ${otp}`);
   }
 
   // Always return success to avoid email enumeration
@@ -258,10 +274,10 @@ export const forgotPasswordHandler = async (
 };
 
 export const resetPasswordHandler = async (
-  req: FastifyRequest,
+  req: FastifyRequest<{ Body: { email: string; code: string; newPassword: string } }>,
   reply: FastifyReply,
 ) => {
-  const { email, code, newPassword } = (req.body as unknown) || {};
+  const { email, code, newPassword } = req.body;
 
   const otp = await prisma.otpCode.findFirst({
     where: {

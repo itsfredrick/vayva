@@ -3,7 +3,7 @@
 import React, { useState } from "react";
 import { Button } from "@vayva/ui";
 import NextLink from "next/link";
-const Link = NextLink as unknown;
+const Link = NextLink;
 import { useStore } from "@/context/StoreContext";
 import {
   ShoppingBag as ShoppingBagIcon,
@@ -13,17 +13,18 @@ import {
   ChevronRight as ChevronRightIcon,
   User as UserIcon,
 } from "lucide-react";
-const ShoppingBag = ShoppingBagIcon as unknown;
-const Menu = MenuIcon as unknown;
-const X = XIcon as unknown;
-const Search = SearchIcon as unknown;
-const ChevronRight = ChevronRightIcon as unknown;
-const User = UserIcon as unknown;
+const ShoppingBag = ShoppingBagIcon;
+const Menu = MenuIcon;
+const X = XIcon;
+const Search = SearchIcon;
+const ChevronRight = ChevronRightIcon;
+const User = UserIcon;
 import { useParams } from "next/navigation";
 
 import { FlashSaleBanner } from "@/components/FlashSaleBanner";
+import { VayvaLogo } from "./VayvaLogo";
 
-export function StoreShell({ children }: { children: React.ReactNode }) {
+export function StoreShell({ children }: { children: React.ReactNode }): React.JSX.Element {
   const { store, isLoading, error } = useStore();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const params = useParams();
@@ -255,10 +256,14 @@ export function StoreShell({ children }: { children: React.ReactNode }) {
             <p>
               © {new Date().getFullYear()} {store?.name}. All rights reserved.
             </p>
-            <div className="flex items-center gap-1">
-              <span>Powered by</span>
-              <span className="font-bold text-black">Vayva</span>
-            </div>
+            {store?.plan !== "PRO" && (
+              <div className="flex items-center gap-2">
+                <span className="text-gray-400">Powered by</span>
+                <div className="opacity-40 hover:opacity-100 transition-opacity">
+                  <VayvaLogo variant="official" width={64} height={20} />
+                </div>
+              </div>
+            )}
           </div>
         </div>
       </footer>

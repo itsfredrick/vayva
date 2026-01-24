@@ -9,7 +9,7 @@ interface BreadcrumbProps {
     items: BreadcrumbItem[];
 }
 
-export function BreadcrumbSchema({ items }: BreadcrumbProps) {
+export function BreadcrumbSchema({ items }: BreadcrumbProps): React.JSX.Element {
     const schema = {
         "@context": "https://schema.org",
         "@type": "BreadcrumbList",

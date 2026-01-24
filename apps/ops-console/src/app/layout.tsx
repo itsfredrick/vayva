@@ -1,9 +1,9 @@
 import "./globals.css";
 
 import type { Metadata } from "next";
-import { OpsShell } from "@/components/OpsShell";
+import { OpsShell } from '@/components/OpsShell';
 import QueryProvider from "@/providers/QueryProvider";
-import { Toaster } from "sonner";
+import { Toaster } from 'sonner';
 
 
 export const metadata: Metadata = {

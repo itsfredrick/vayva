@@ -1,5 +1,5 @@
 import { prisma } from "@vayva/db";
-export async function checkFeatureAccess(storeId: unknown, feature: unknown) {
+export async function checkFeatureAccess(storeId: string, feature: string): Promise<{ allowed: boolean; reason?: string; message?: string }> {
     const store = await prisma.store.findUnique({
         where: { id: storeId },
         include: {
@@ -10,7 +10,19 @@ export async function checkFeatureAccess(storeId: unknown, feature: unknown) {
         throw new Error("Store not found");
     }
     const subscription = store.aiSubscription;
-    const plan = store.plan || "STARTER";
+    const plan = (store.plan as string) || "STARTER";
+
+    // 0. Compliance & KYC Gating
+    if (feature === "payouts" || feature === "withdrawals") {
+        if (store.kycStatus !== "VERIFIED") {
+            return {
+                allowed: false,
+                reason: "kyc_required",
+                message: "Identity verification (BVN/NIN) is required to withdraw funds.",
+            };
+        }
+    }
+
     // 1. Check Trial Expiry
     if (plan === "STARTER" && subscription?.trialExpiresAt) {
         if (new Date() > subscription.trialExpiresAt) {
@@ -117,7 +129,7 @@ export async function checkFeatureAccess(storeId: unknown, feature: unknown) {
     }
     return { allowed: true };
 }
-async function getWhatsAppMessageCount(storeId: unknown) {
+async function getWhatsAppMessageCount(storeId: any) {
     return prisma.notification.count({
         where: {
             storeId,

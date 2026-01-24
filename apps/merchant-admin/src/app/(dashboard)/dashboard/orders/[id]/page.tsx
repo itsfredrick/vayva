@@ -13,7 +13,7 @@ interface OrderItem {
     productName: string;
     quantity: number;
     price: number;
-    productVariant?: unknown;
+    productVariant?: any;
 }
 
 interface Order {
@@ -40,7 +40,7 @@ interface Order {
         city: string;
         state: string;
     };
-    metadata?: unknown;
+    metadata?: any;
     shipment?: {
         status: string;
         trackingCode?: string;
@@ -62,7 +62,7 @@ export default function OrderDetailPage() {
             const data = await res.json();
             if (data.error) throw new Error(data.error);
             setOrder(data);
-        } catch (err) {
+        } catch (err: any) {
             toast.error("Failed to load order");
             router.push("/dashboard/orders");
         } finally {
@@ -110,7 +110,7 @@ export default function OrderDetailPage() {
                         <Card className="p-6">
                             <Skeleton className="h-8 w-40 mb-6" />
                             <div className="space-y-4">
-                                {[1, 2, 3].map((i) => (
+                                {[1, 2, 3].map((i: any) => (
                                     <div key={i} className="flex gap-4">
                                         <Skeleton className="h-16 w-16" />
                                         <div className="flex-1 space-y-2">
@@ -234,11 +234,11 @@ export default function OrderDetailPage() {
                             </h2>
                         </div>
                         <div className="divide-y divide-gray-50">
-                            {order.items.map((item) => (
+                            {order.items.map((item: any) => (
                                 <div key={item.id} className="p-6 flex gap-4 hover:bg-gray-50/30 transition-colors">
                                     <div className="h-16 w-16 bg-gray-100 rounded-xl flex-shrink-0 overflow-hidden border border-gray-100">
-                                        {item.productVariant?.image && (
-                                            <img src={item.productVariant.image} alt="" className="h-full w-full object-cover" />
+                                        {(item as any).productVariant?.image && (
+                                            <img src={(item as any).productVariant.image} alt="" className="h-full w-full object-cover" />
                                         )}
                                     </div>
                                     <div className="flex-1 flex flex-col justify-center">
@@ -283,7 +283,7 @@ export default function OrderDetailPage() {
                     {/* Prep Time Card */}
                     <PrepTimeCard
                         orderId={order.id}
-                        currentPrepTime={order.metadata?.prepTimeMinutes}
+                        currentPrepTime={(order as any).metadata?.prepTimeMinutes}
                         onUpdate={fetchOrder}
                     />
 

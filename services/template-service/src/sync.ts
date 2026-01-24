@@ -1,7 +1,7 @@
 import { Octokit } from "@octokit/rest";
 import { prisma } from "@vayva/db";
 import { TemplateManifestSchema, SyncResult } from "./types";
-import { z } from "zod";
+import { _z } from "zod";
 
 // const prisma = new PrismaClient(); // Removed local instantiation
 const octokit = new Octokit({ auth: process.env.GITHUB_TOKEN });
@@ -125,11 +125,11 @@ export class TemplateSyncService {
         } catch (err: unknown) {
           console.error(`Failed to sync pack ${pack.name}:`, err);
           result.rejected++;
-          result.errors.push(`${pack.name}: ${err.message}`);
+          result.errors.push(`${pack.name}: ${(err as Error).message}`);
         }
       }
-    } catch (error) {
-      result.errors.push(`Fatal: ${error.message}`);
+    } catch (error: unknown) {
+      result.errors.push(`Fatal: ${(error as Error).message}`);
     }
 
     return result;
@@ -151,7 +151,7 @@ export class TemplateSyncService {
       const rawUrl = `https://raw.githubusercontent.com/${pathInfo.owner}/${pathInfo.repo}/main/packs/${pathInfo.pack}/${pathInfo.filename}`;
       const response = await fetch(rawUrl);
       if (!response.ok) throw new Error(`Failed to fetch ${rawUrl}`);
-      const buffer = await response.arrayBuffer();
+      const _buffer = await response.arrayBuffer();
 
       // 2. Upload to Storage (Pseudo-code as we lack aws-sdk in package.json)
       // Since we can't install packages freely, we assume a helper exists OR we expect the user to add one.
@@ -221,7 +221,7 @@ export class TemplateSyncService {
         result.imported++;
       }
     } catch (e: unknown) {
-      result.errors.push(e.message);
+      result.errors.push((e as Error).message);
     }
 
     return result;

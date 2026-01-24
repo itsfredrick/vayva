@@ -2,11 +2,11 @@
 
 import React from "react";
 import { useOpsQuery } from "@/hooks/useOpsQuery";
-import { MessageSquare, PauseCircle, CheckCircle, AlertTriangle } from "lucide-react";
-import { toast } from "sonner";
+import { MessageSquare, PauseCircle, CheckCircle, AlertTriangle } from 'lucide-react';
+import { toast } from 'sonner';
 import { Button } from "@vayva/ui";
 
-export default function LiveChatPage() {
+export default function LiveChatPage(): React.JSX.Element {
     const { data: handoffs, isLoading } = useOpsQuery(
         ["ai-handoffs"],
         () => fetch("/api/ops/ai/handoffs").then(res => res.json().then(j => j.data))
@@ -22,7 +22,7 @@ export default function LiveChatPage() {
             toast.info("Pausing AI Agent...");
             await new Promise(r => setTimeout(r, 1000)); // Sim delay
             toast.success("AI Agent Paused for " + phone);
-        } catch (e) {
+        } catch {
             toast.error("Failed to pause AI");
         }
     };
@@ -57,18 +57,18 @@ export default function LiveChatPage() {
                         ) : !handoffs?.length ? (
                             <tr><td colSpan={6} className="p-12 text-center text-gray-400">No active handoff requests. AI is handling everything!</td></tr>
                         ) : (
-                            handoffs.map((h: unknown) => (
-                                <tr key={h.id} className="hover:bg-gray-50">
-                                    <td className="px-6 py-4 font-medium text-gray-900">{h.storeName}</td>
-                                    <td className="px-6 py-4 font-mono text-gray-600">{h.customerPhone}</td>
+                            handoffs.map((h: any) => (
+                                <tr key={(h as any).id} className="hover:bg-gray-50">
+                                    <td className="px-6 py-4 font-medium text-gray-900">{(h as any).storeName}</td>
+                                    <td className="px-6 py-4 font-mono text-gray-600">{(h as any).customerPhone}</td>
                                     <td className="px-6 py-4">
-                                        <span className="bg-indigo-50 text-indigo-700 px-2 py-1 rounded text-xs font-bold">{h.trigger}</span>
+                                        <span className="bg-indigo-50 text-indigo-700 px-2 py-1 rounded text-xs font-bold">{(h as any).trigger}</span>
                                     </td>
-                                    <td className="px-6 py-4 text-gray-600 max-w-xs truncate" title={h.aiSummary}>
-                                        {h.aiSummary || "No summary available"}
+                                    <td className="px-6 py-4 text-gray-600 max-w-xs truncate" title={(h as any).aiSummary}>
+                                        {(h as any).aiSummary || "No summary available"}
                                     </td>
                                     <td className="px-6 py-4">
-                                        {h.ticketStatus === "OPEN" ?
+                                        {(h as any).ticketStatus === "OPEN" ?
                                             <span className="bg-yellow-100 text-yellow-800 px-2 py-0.5 rounded text-xs font-bold flex items-center gap-1 w-fit"><AlertTriangle size={12} /> Needs Action</span>
                                             :
                                             <span className="bg-green-100 text-green-800 px-2 py-0.5 rounded text-xs font-bold flex items-center gap-1 w-fit"><CheckCircle size={12} /> Resolved</span>
@@ -77,9 +77,9 @@ export default function LiveChatPage() {
                                     <td className="px-6 py-4 text-right">
                                         <Button
                                             variant="ghost"
-                                            onClick={() => handlePauseAi(h.id, h.customerPhone)}
+                                            onClick={() => handlePauseAi((h as any).id, (h as any).customerPhone)}
                                             className="text-red-600 hover:text-red-700 font-medium text-xs flex items-center gap-1 justify-end w-full h-auto p-0 hover:bg-transparent"
-                                            aria-label={`Pause AI agent for customer ${h.customerPhone}`}
+                                            aria-label={`Pause AI agent for customer ${(h as any).customerPhone}`}
                                         >
                                             <PauseCircle size={14} /> Pause AI
                                         </Button>

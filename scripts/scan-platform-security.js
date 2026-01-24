@@ -1,3 +1,4 @@
+/* eslint-disable */
 const fs = require('fs');
 const path = require('path');
 const { execSync } = require('child_process');
@@ -32,7 +33,7 @@ FORBIDDEN_PATTERNS.forEach(({ name, pattern }) => {
             console.error(output);
             hasError = true;
         }
-    } catch (e) {
+    } catch {
         // grep returns 1 if no matches
     }
 });
@@ -50,7 +51,7 @@ FORBIDDEN_WORDS.forEach(word => {
             console.error(output);
             hasError = true;
         }
-    } catch (e) { }
+    } catch { }
 });
 
 // 3. Scan Ops API routes for Auth Enforcement
@@ -98,7 +99,7 @@ try {
             // We set warning but don't fail yet unless critical routes are missed
         }
     });
-} catch (e) { }
+} catch { }
 
 if (hasError) {
     console.log('---------------------------------------------------');

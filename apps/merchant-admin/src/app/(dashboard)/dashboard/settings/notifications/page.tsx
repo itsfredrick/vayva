@@ -24,7 +24,7 @@ export default function NotificationsPage() {
                     const data = await res.json();
                     setPreferences(data);
                 }
-            } catch (error) {
+            } catch (error: any) {
                 console.error(error);
             } finally {
                 setLoading(false);
@@ -45,7 +45,7 @@ export default function NotificationsPage() {
             });
             if (!res.ok) throw new Error("Failed to save");
             toast.success("Preferences saved");
-        } catch (error) {
+        } catch (error: any) {
             toast.error("Failed to save preferences");
             setPreferences(preferences); // Revert
         }
@@ -69,16 +69,20 @@ export default function NotificationsPage() {
                         <p className="text-sm text-slate-500 mb-4">Get notified when a customer places an order.</p>
                         <div className="flex gap-6">
                             <Toggle
-                                label="Email"
-                                icon={Mail}
-                                checked={preferences.orders_email}
-                                onChange={() => toggle('orders_email')}
+                                {...({
+                                    label: "Email",
+                                    icon: Mail,
+                                    checked: preferences.orders_email,
+                                    onChange: () => toggle('orders_email')
+                                } as any)}
                             />
                             <Toggle
-                                label="Push"
-                                icon={Smartphone}
-                                checked={preferences.orders_push}
-                                onChange={() => toggle('orders_push')}
+                                {...({
+                                    label: "Push",
+                                    icon: Smartphone,
+                                    checked: preferences.orders_push,
+                                    onChange: () => toggle('orders_push')
+                                } as any)}
                             />
                         </div>
                     </div>
@@ -94,16 +98,20 @@ export default function NotificationsPage() {
                         <p className="text-sm text-slate-500 mb-4">Updates on withdrawal requests and deposits.</p>
                         <div className="flex gap-6">
                             <Toggle
-                                label="Email"
-                                icon={Mail}
-                                checked={preferences.payouts_email}
-                                onChange={() => toggle('payouts_email')}
+                                {...({
+                                    label: "Email",
+                                    icon: Mail,
+                                    checked: preferences.payouts_email,
+                                    onChange: () => toggle('payouts_email')
+                                } as any)}
                             />
                             <Toggle
-                                label="Push"
-                                icon={Smartphone}
-                                checked={preferences.payouts_push}
-                                onChange={() => toggle('payouts_push')}
+                                {...({
+                                    label: "Push",
+                                    icon: Smartphone,
+                                    checked: preferences.payouts_push,
+                                    onChange: () => toggle('payouts_push')
+                                } as any)}
                             />
                         </div>
                     </div>
@@ -119,18 +127,22 @@ export default function NotificationsPage() {
                         <p className="text-sm text-slate-500 mb-4">Critical security alerts and login attempts.</p>
                         <div className="flex gap-6">
                             <Toggle
-                                label="Email"
-                                icon={Mail}
-                                checked={preferences.security_email}
-                                onChange={() => toggle('security_email')}
-                                disabled
+                                {...({
+                                    label: "Email",
+                                    icon: Mail,
+                                    checked: preferences.security_email,
+                                    onChange: () => toggle('security_email'),
+                                    disabled: true
+                                } as any)}
                             />
                             <Toggle
-                                label="Push"
-                                icon={Smartphone}
-                                checked={preferences.security_push}
-                                onChange={() => toggle('security_push')}
-                                disabled
+                                {...({
+                                    label: "Push",
+                                    icon: Smartphone,
+                                    checked: preferences.security_push,
+                                    onChange: () => toggle('security_push'),
+                                    disabled: true
+                                } as any)}
                             />
                         </div>
                         <p className="text-xs text-slate-400 mt-2">Security notifications cannot be disabled.</p>
@@ -141,25 +153,25 @@ export default function NotificationsPage() {
     );
 }
 
-function Toggle({ label, icon: Icon, checked, onChange, disabled }: unknown) {
+function Toggle({ label, icon: Icon, checked, onChange, disabled }: any) {
     return (
         <label className={`flex items-center gap-2 cursor-pointer ${disabled ? 'opacity-50 cursor-not-allowed' : ''}`}>
             <div className={`w-10 h-6 rounded-full p-1 transition-colors ${checked ? 'bg-indigo-600' : 'bg-slate-200'}`}>
                 <div className={`bg-white w-4 h-4 rounded-full shadow-sm transform transition-transform ${checked ? 'translate-x-4' : ''}`} />
             </div>
-            <input type="checkbox" className="hidden" checked={checked} onChange={onChange} disabled={disabled} />
+            <input type="checkbox" className="hidden" checked={(checked as any)} onChange={(onChange as any)} disabled={(disabled as any)} />
             <div className="flex items-center gap-1.5 text-sm font-medium text-slate-700">
                 <Icon className="h-3.5 w-3.5" />
-                {label}
+                {(label as any)}
             </div>
         </label>
     );
 }
 
-function ShieldAlert(props: unknown) {
+function ShieldAlert(props: any) {
     return (
         <svg
-            {...props}
+            {...(props as any)}
             xmlns="http://www.w3.org/2000/svg"
             width="24"
             height="24"

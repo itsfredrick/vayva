@@ -8,9 +8,9 @@ interface ListingCardProps {
   onViewClick?: () => void;
 }
 
-export const ListingCard = ({ product, onViewClick }: ListingCardProps) => {
-  const details = product.propertyDetails;
-  if (!details) return null;
+export const ListingCard = ({ product, onViewClick }: ListingCardProps): React.JSX.Element => {
+  const details = (product as any).propertyDetails;
+  if (!details) return <></>;
 
   return (
     <div className="bg-white border border-gray-100 rounded-xl overflow-hidden hover:shadow-xl hover:-translate-y-1 transition-all duration-300 group cursor-pointer relative">
@@ -37,7 +37,7 @@ export const ListingCard = ({ product, onViewClick }: ListingCardProps) => {
         </div>
 
         <Button className="absolute top-4 right-4 w-8 h-8 rounded-full bg-white/90 backdrop-blur-sm flex items-center justify-center text-gray-400 hover:text-red-500 hover:scale-110 transition-all">
-          <Heart size={16} fill={false ? "currentColor" : "none"} />
+          <Heart size={16} fill="none" />
         </Button>
 
         <div className="absolute bottom-0 left-0 w-full bg-gradient-to-t from-black/60 to-transparent p-4 text-white">

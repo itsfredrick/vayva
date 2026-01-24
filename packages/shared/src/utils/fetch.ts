@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 /// <reference lib="dom" />
 
 /**
@@ -18,7 +19,7 @@ export async function safeFetch(
     });
     clearTimeout(id);
     return response;
-  } catch (error) {
+  } catch (error: unknown) {
     clearTimeout(id);
     const err = error as Error;
     if (err.name === "AbortError") {

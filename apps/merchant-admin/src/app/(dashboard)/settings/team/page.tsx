@@ -47,7 +47,7 @@ export default function TeamPage() {
             setIsInviting(false);
             setInviteForm({ email: "", role: "STAFF" });
             mutate("/api/settings/team");
-        } catch (err) {
+        } catch (err: any) {
             toast.error((err as any).message || "Failed to invite");
         } finally {
             setSending(false);
@@ -60,7 +60,7 @@ export default function TeamPage() {
             await fetch(`/api/settings/team?id=${id}`, { method: "DELETE" });
             toast.success("Member removed");
             mutate("/api/settings/team");
-        } catch (e) {
+        } catch (e: any) {
             toast.error("Failed to remove member");
         }
     };
@@ -71,7 +71,7 @@ export default function TeamPage() {
             await fetch(`/api/settings/team/invite?email=${encodeURIComponent(email)}`, { method: "DELETE" });
             toast.success("Invitation cancelled");
             mutate("/api/settings/team");
-        } catch (e) {
+        } catch (e: any) {
             toast.error("Failed to cancel invite");
         }
     };
@@ -107,14 +107,14 @@ export default function TeamPage() {
                                 <Input
                                     placeholder="colleague@example.com"
                                     type="email"
-                                    value={inviteForm.email}
+                                    value={(inviteForm.email as any)}
                                     onChange={(e: React.ChangeEvent<HTMLInputElement>) => setInviteForm({ ...inviteForm, email: e.target.value })}
                                 />
                             </div>
                             <div className="grid gap-2">
                                 <Label>Role</Label>
                                 <Select
-                                    value={inviteForm.role}
+                                    value={(inviteForm.role as any)}
                                     onValueChange={(val) => setInviteForm({ ...inviteForm, role: val })}
                                 >
                                     <SelectTrigger>
@@ -154,7 +154,7 @@ export default function TeamPage() {
                             </TableRow>
                         </TableHeader>
                         <TableBody>
-                            {members.map((m: unknown) => (
+                            {members.map((m: any) => (
                                 <TableRow key={m.id}>
                                     <TableCell className="flex items-center gap-3">
                                         <Avatar className="h-9 w-9">
@@ -204,7 +204,7 @@ export default function TeamPage() {
                                 </TableRow>
                             </TableHeader>
                             <TableBody>
-                                {invites.map((inv: unknown) => (
+                                {invites.map((inv: any) => (
                                     <TableRow key={inv.email}>
                                         <TableCell>
                                             <div className="flex items-center gap-2">

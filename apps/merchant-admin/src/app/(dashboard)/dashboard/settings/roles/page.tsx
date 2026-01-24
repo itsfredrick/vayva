@@ -21,7 +21,7 @@ export default function RolesSettingsPage() {
             const res = await fetch("/api/settings/roles");
             const data = await res.json();
             setRoles(data);
-        } catch (err) {
+        } catch (err: any) {
             toast.error("Failed to load roles");
         } finally {
             setIsLoading(false);
@@ -45,7 +45,7 @@ export default function RolesSettingsPage() {
                 setIsEditing(false);
                 fetchRoles();
             }
-        } catch (err) {
+        } catch (err: any) {
             toast.error("Failed to save role");
         }
     };
@@ -77,16 +77,16 @@ export default function RolesSettingsPage() {
                         <label className="text-sm font-bold">Role Name</label>
                         <Input
                             placeholder="e.g. Content Manager"
-                            value={currentRole.name}
-                            onChange={e => setCurrentRole({ ...currentRole, name: e.target.value })}
+                            value={(currentRole.name as any)}
+                            onChange={(e: any) => setCurrentRole({ ...currentRole, name: e.target.value })}
                         />
                     </div>
                     <div className="space-y-1">
                         <label className="text-sm font-bold">Description</label>
                         <Input
                             placeholder="Short summary of what this role can do"
-                            value={currentRole.description}
-                            onChange={e => setCurrentRole({ ...currentRole, description: e.target.value })}
+                            value={(currentRole.description as any)}
+                            onChange={(e: any) => setCurrentRole({ ...currentRole, description: e.target.value })}
                         />
                     </div>
                 </Card>
@@ -187,7 +187,7 @@ export default function RolesSettingsPage() {
                                             id: role.id,
                                             name: role.name,
                                             description: role.description,
-                                            permissionIds: role.RolePermission.map((rp: unknown) => rp.Permission.name)
+                                            permissionIds: role.RolePermission.map((rp: any) => (rp as any).Permission.name)
                                         });
                                         setIsEditing(true);
                                     }}>Edit</Button>

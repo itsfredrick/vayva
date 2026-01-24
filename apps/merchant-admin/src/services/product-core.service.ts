@@ -13,7 +13,7 @@ export class ProductCoreService {
     /**
      * Create a product with full business logic (Quotas, Inventory, Variants)
      */
-    static async createProduct(storeId: string, payload: unknown) {
+    static async createProduct(storeId: string, payload: any) {
         // 1. Fetch Merchant to know Category & Plan
         const store = await prisma.store.findUnique({
             where: { id: storeId },
@@ -54,7 +54,7 @@ export class ProductCoreService {
         // 4. Gather industry-specific attributes into metadata
         const attributes = payload.metadata || payload.attributes || {};
         const industryFields = ["digital", "realEstate", "automotive", "stay", "event", "isTodaysSpecial"];
-        industryFields.forEach(field => {
+        industryFields.forEach((field: any) => {
             if (payload[field] !== undefined) {
                 attributes[field] = payload[field];
             }

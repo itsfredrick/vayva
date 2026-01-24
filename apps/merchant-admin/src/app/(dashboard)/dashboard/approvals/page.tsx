@@ -9,7 +9,7 @@ type ApprovalRequest = {
   actionType: string;
   requestedByLabel: string;
   createdAt: string;
-  payload: unknown;
+  payload: any;
   status: "pending" | "approved" | "rejected" | "executed" | "failed";
   reason?: string;
   decisionReason?: string;
@@ -42,7 +42,7 @@ export default function ApprovalsPage() {
       );
       const data = await res.json();
       setItems(data.items || []);
-    } catch (err) {
+    } catch (err: any) {
       console.error(err);
     } finally {
       setLoading(false);
@@ -73,7 +73,7 @@ export default function ApprovalsPage() {
       setSelectedItem(null);
       setDecisionReason("");
       fetchItems();
-    } catch (err) {
+    } catch (err: any) {
       console.error(err);
       alert("Error");
     } finally {
@@ -128,7 +128,7 @@ export default function ApprovalsPage() {
         )}
 
         {!loading &&
-          items.map((item) => (
+          items.map((item: any) => (
             <motion.div
               layoutId={item.id}
               key={item.id}
@@ -322,8 +322,8 @@ export default function ApprovalsPage() {
                   <textarea
                     placeholder="Add a note (optional)..."
                     className="w-full border border-gray-200 rounded-lg p-3 text-sm focus:ring-2 focus:ring-black/5 outline-none resize-none h-20"
-                    value={decisionReason}
-                    onChange={(e) => setDecisionReason(e.target.value)}
+                    value={(decisionReason as any)}
+                    onChange={(e: any) => setDecisionReason(e.target.value)}
                   />
                   <div className="flex gap-3">
                     <Button

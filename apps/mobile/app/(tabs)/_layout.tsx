@@ -23,7 +23,7 @@ const Icon = ({
   return <Component size={size} color={color} />;
 };
 
-export default function TabLayout() {
+export default function TabLayout(): React.JSX.Element {
   return (
     <Tabs
       screenOptions={{

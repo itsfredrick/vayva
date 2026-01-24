@@ -11,7 +11,7 @@ export default function Loading() {
 
             {/* Stat Grid */}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                {[1, 2, 3].map((i) => (
+                {[1, 2, 3].map((i: any) => (
                     <div key={i} className="bg-white p-6 rounded-xl border border-gray-100 shadow-sm h-32 flex flex-col justify-between animate-pulse">
                         <div className="h-4 bg-gray-200 rounded w-24"></div>
                         <div className="h-8 bg-gray-200 rounded w-1/2"></div>
@@ -24,7 +24,7 @@ export default function Loading() {
                 <div className="lg:col-span-2 bg-white rounded-xl border border-gray-100 shadow-sm p-6 animate-pulse">
                     <div className="h-6 bg-gray-200 rounded w-32 mb-6"></div>
                     <div className="space-y-4">
-                        {[1, 2, 3, 4, 5].map((j) => (
+                        {[1, 2, 3, 4, 5].map((j: any) => (
                             <div key={j} className="h-12 bg-gray-100 rounded-lg w-full"></div>
                         ))}
                     </div>

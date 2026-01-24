@@ -10,7 +10,7 @@ interface DisputeDialogProps {
     totalAmount: number;
 }
 
-export function DisputeDialog({ orderId, orderNumber, totalAmount }: DisputeDialogProps) {
+export function DisputeDialog({ orderId, orderNumber, totalAmount }: DisputeDialogProps): React.JSX.Element {
     const [isOpen, setIsOpen] = useState(false);
     const [reason, setReason] = useState("");
     const [description, setDescription] = useState("");
@@ -46,7 +46,7 @@ export function DisputeDialog({ orderId, orderNumber, totalAmount }: DisputeDial
                 const data = await res.json();
                 setError(data.error || "Failed to open dispute");
             }
-        } catch (e) {
+        } catch {
             setError("Something went wrong. Please try again.");
         } finally {
             setLoading(false);

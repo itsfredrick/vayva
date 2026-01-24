@@ -30,8 +30,8 @@ export default function SetupChecklistPage() {
   // Test view if data fetch fails (since we didn't explicitly create /api/merchant/readiness in plan but it's implied by UI needs)
   // Actually, let's create the route or just inline the data structure for the page to compile.
 
-  const issues = readiness?.issues || [];
-  const isReady = readiness?.level === "ready";
+  const issues = (readiness as any)?.issues || [];
+  const isReady = (readiness as any)?.level === "ready";
 
   return (
     <div className="max-w-3xl mx-auto py-12 px-6">
@@ -43,7 +43,7 @@ export default function SetupChecklistPage() {
       {isReady ? (
         <div className="bg-green-50 border border-green-100 rounded-xl p-8 text-center">
           <div className="w-16 h-16 bg-green-100 text-green-600 rounded-full flex items-center justify-center mx-auto mb-4">
-            <Icon name={"Check" as unknown} size={32} />
+            <Icon name={"Check" as any} size={32} />
           </div>
           <h2 className="text-xl font-bold text-green-800">
             You are ready to go live!
@@ -54,51 +54,48 @@ export default function SetupChecklistPage() {
         </div>
       ) : (
         <div className="space-y-4">
-          {issues.map((issue: unknown) => (
+          {(issues as any[]).map((issue: any) => (
             <div
-              key={issue.code}
-              className={`p-6 rounded-xl border flex gap-4 ${
-                issue.severity === "blocker"
-                  ? "bg-red-50 border-red-100"
-                  : "bg-yellow-50 border-yellow-100"
-              }`}
+              key={(issue as any).code}
+              className={`p-6 rounded-xl border flex gap-4 ${(issue as any).severity === "blocker"
+                ? "bg-red-50 border-red-100"
+                : "bg-yellow-50 border-yellow-100"
+                }`}
             >
               <div
-                className={`mt-1 ${issue.severity === "blocker" ? "text-red-500" : "text-yellow-500"}`}
+                className={`mt-1 ${(issue as any).severity === "blocker" ? "text-red-500" : "text-yellow-500"}`}
               >
                 <Icon
                   name={
-                    (issue.severity === "blocker"
+                    (((issue as any).severity === "blocker"
                       ? "AlertOctagon"
-                      : "AlertTriangle") as unknown
+                      : "AlertTriangle") as any)
                   }
                   size={24}
                 />
               </div>
               <div className="flex-1">
                 <h3
-                  className={`font-bold ${
-                    issue.severity === "blocker"
-                      ? "text-red-900"
-                      : "text-yellow-900"
-                  }`}
+                  className={`font-bold ${(issue as any).severity === "blocker"
+                    ? "text-red-900"
+                    : "text-yellow-900"
+                    }`}
                 >
-                  {issue.title}
+                  {(issue as any).title}
                 </h3>
                 <p
-                  className={`text-sm mt-1 ${
-                    issue.severity === "blocker"
-                      ? "text-red-700"
-                      : "text-yellow-700"
-                  }`}
+                  className={`text-sm mt-1 ${(issue as any).severity === "blocker"
+                    ? "text-red-700"
+                    : "text-yellow-700"
+                    }`}
                 >
-                  {issue.description}
+                  {(issue as any).description}
                 </p>
               </div>
               <div className="flex items-center">
-                {issue.actionUrl && (
+                {(issue as any).actionUrl && (
                   <a
-                    href={issue.actionUrl}
+                    href={(issue as any).actionUrl}
                     className="px-4 py-2 bg-white border border-gray-200 shadow-sm rounded-lg text-sm font-bold hover:bg-gray-50"
                   >
                     Fix Now

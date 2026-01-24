@@ -24,7 +24,7 @@ export function DiscountList() {
             await fetch(`/api/marketing/discounts/${id}`, { method: "DELETE" });
             toast.success("Discount deleted");
             mutate("/api/marketing/discounts");
-        } catch (err) {
+        } catch (err: any) {
             toast.error("Failed to delete");
         }
     };
@@ -60,7 +60,7 @@ export function DiscountList() {
                     </TableRow>
                 </TableHeader>
                 <TableBody>
-                    {discounts.map((d: unknown) => {
+                    {discounts.map((d: any) => {
                         const status = (!d.endsAt || new Date(d.endsAt) > new Date()) ? "Active" : "Expired";
                         return (
                             <TableRow key={d.id}>

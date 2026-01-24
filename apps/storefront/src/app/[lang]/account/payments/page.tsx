@@ -15,7 +15,7 @@ import {
   CheckCircle,
 } from "lucide-react";
 
-export default function PaymentsPage({ params }: unknown) {
+export default function PaymentsPage({ params: _params }: any): React.JSX.Element {
   const { lang: rawLang } = useParams() as { lang: string };
   const lang = (rawLang === "tr" ? "tr" : "en") as LocaleKey;
   const t = LOCALES[lang].account.payments;
@@ -29,7 +29,7 @@ export default function PaymentsPage({ params }: unknown) {
 
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  if (!isLoaded) return null;
+  if (!isLoaded) return <></>;
 
   return (
     <div className="space-y-6">
@@ -51,7 +51,7 @@ export default function PaymentsPage({ params }: unknown) {
         </div>
       ) : (
         <div className="grid gap-4">
-          {paymentMethods.map((pm) => (
+          {paymentMethods.map((pm: any) => (
             <div
               key={pm.id}
               className={`bg-white p-6 rounded-2xl border transition-all ${pm.isDefault ? "border-green-500 shadow-sm ring-1 ring-green-100" : "border-gray-100"}`}

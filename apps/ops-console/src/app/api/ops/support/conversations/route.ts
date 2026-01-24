@@ -1,5 +1,5 @@
 
-import { NextResponse } from "next/server";
+import { NextResponse } from 'next/server';
 import { prisma } from "@vayva/db";
 import { OpsAuthService } from "@/lib/ops-auth";
 
@@ -18,7 +18,7 @@ export async function GET(request: Request) {
         const limit = parseInt(searchParams.get("limit") || "20");
         const skip = (page - 1) * limit;
 
-        const where: unknown = {
+        const where: any = {
             status,
             // Fetch conversations tagged with SUPPORT or any conversation for support staff
             // In a real system, we might filter by a specific tag
@@ -41,12 +41,12 @@ export async function GET(request: Request) {
 
         return NextResponse.json({
             data: conversations.map(c => ({
-                id: c.id,
-                storeName: c.store.name,
-                customerName: c.contact.displayName || c.contact.phoneE164,
-                lastMessageAt: c.lastMessageAt,
-                status: c.status,
-                unreadCount: c.unreadCount
+                id: (c as any).id,
+                storeName: (c as any).store.name,
+                customerName: (c as any).contact.displayName || (c as any).contact.phoneE164,
+                lastMessageAt: (c as any).lastMessageAt,
+                status: (c as any).status,
+                unreadCount: (c as any).unreadCount
             })),
             meta: {
                 total,
@@ -56,7 +56,7 @@ export async function GET(request: Request) {
             }
         });
 
-    } catch (error) {
+    } catch (error: any) {
         if (error.message === "Unauthorized") {
             return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
         }

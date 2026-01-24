@@ -7,7 +7,7 @@ export const GET = withVayvaAPI(PERMISSIONS.SUPPORT_VIEW, async (req, { storeId 
         const { searchParams } = new URL(req.url);
         const status = searchParams.get("status") || "OPEN";
         const limit = parseInt(searchParams.get("limit") || "20");
-        const where = { merchantId: storeId };
+        const where: any = { merchantId: storeId };
         if (status !== "ALL")
             where.status = status;
         const items = await prisma.conversation.findMany({
@@ -24,7 +24,7 @@ export const GET = withVayvaAPI(PERMISSIONS.SUPPORT_VIEW, async (req, { storeId 
             },
         });
         const now = new Date();
-        const result = items.map((c) => {
+        const result = items.map((c: any) => {
             let slaStatus = "active";
             if (c.unreadCount > 0 && c.lastInboundAt) {
                 const diff = now.getTime() - new Date(c.lastInboundAt).getTime();
@@ -41,7 +41,7 @@ export const GET = withVayvaAPI(PERMISSIONS.SUPPORT_VIEW, async (req, { storeId 
         });
         return NextResponse.json({ items: result });
     }
-    catch (error) {
+    catch (error: any) {
         console.error("Inbox Conversations API Error:", error);
         return NextResponse.json({ error: "Internal Error" }, { status: 500 });
     }

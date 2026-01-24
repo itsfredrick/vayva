@@ -2,7 +2,7 @@ import * as Sentry from "@sentry/nextjs";
 /**
  * Capture exceptions in Sentry
  */
-export function captureException(error: unknown, context: unknown) {
+export function captureException(error: any, context: any) {
     // Always log to console for local visibility (handled by logger, but safety net)
     if (process.env.NEXT_PUBLIC_SENTRY_DSN) {
         Sentry.captureException(error, {
@@ -13,7 +13,7 @@ export function captureException(error: unknown, context: unknown) {
 /**
  * Set User Context safely (Avoid PII)
  */
-export function setUserContext(user: unknown) {
+export function setUserContext(user: any) {
     if (process.env.NEXT_PUBLIC_SENTRY_DSN) {
         Sentry.setUser({
             id: user.id,

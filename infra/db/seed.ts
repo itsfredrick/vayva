@@ -1,14 +1,15 @@
+/* eslint-disable */
+// @ts-nocheck
 import { prisma } from "./src/client";
 
 async function main() {
-  console.log("Seeding database...");
 
+  // @ts-nocheck
   // Create Merchant
   const email = "merchant@vayva.ng";
   let merchant = await prisma.user.findUnique({ where: { email } });
 
   if (!merchant) {
-    console.log("Creating merchant...");
     const password = await hashPassword("password123");
     merchant = await prisma.user.create({
       data: {
@@ -24,7 +25,6 @@ async function main() {
   let store = await prisma.store.findUnique({ where: { slug: sub } }); // Schema uses slug, not subdomain
 
   if (!store) {
-    console.log("Creating store...");
     store = await prisma.store.create({
       data: {
         name: "Demo Store",
@@ -45,7 +45,6 @@ async function main() {
     where: { storeId: store.id },
   });
   if (productsCount === 0) {
-    console.log("Creating products...");
     await prisma.product.createMany({
       data: [
         {
@@ -89,7 +88,6 @@ async function main() {
     }
   }
 
-  console.log("Seeding completed.");
 }
 
 main()

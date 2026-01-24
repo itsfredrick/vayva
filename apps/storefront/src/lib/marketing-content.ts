@@ -47,6 +47,22 @@ export const CATEGORY_MARKETING: Record<
     headline: "Professional listings for real estate and property.",
     subheadline: "Showcase rentals, sales, and land with map-based discovery.",
   },
+  [TemplateCategory.AUTOMOTIVE]: {
+    headline: "High-spec showrooom for vehicle dealerships.",
+    subheadline: "Manage inventory, VIN specs, and lead generation for auto sales.",
+  },
+  [TemplateCategory.TRAVEL]: {
+    headline: "Elegant booking experience for hospitality.",
+    subheadline: "Showcase rooms, manage availability, and take direct reservations.",
+  },
+  [TemplateCategory.BLOG]: {
+    headline: "Content-first layout for publishers and bloggers.",
+    subheadline: "A minimalist editorial experience for high-impact writing.",
+  },
+  [TemplateCategory.ONE_PRODUCT]: {
+    headline: "High-conversion single product landing page.",
+    subheadline: "Focus all traffic on one hero product with an optimized funnel.",
+  },
 };
 
 export const TEMPLATE_MARKETING: Record<string, { oneLiner: string }> = {
@@ -91,5 +107,14 @@ export const TEMPLATE_MARKETING: Record<string, { oneLiner: string }> = {
   },
   "vayva-oneproduct": {
     oneLiner: "Single-product funnel optimized for maximum conversion.",
+  },
+  "vayva-automotive": {
+    oneLiner: "Vehicle showroom with search, VIN specs, and lead capture.",
+  },
+  "vayva-travel": {
+    oneLiner: "Staycation-style booking with room galleries and calendars.",
+  },
+  "vayva-blog": {
+    oneLiner: "Minimalist editorial layout for news, blogs, and articles.",
   },
 };

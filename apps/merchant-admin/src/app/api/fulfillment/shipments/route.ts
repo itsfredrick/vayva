@@ -7,7 +7,7 @@ export const GET = withVayvaAPI(PERMISSIONS.FULFILLMENT_VIEW, async (req, { stor
         const { searchParams } = new URL(req.url);
         const statusFilter = searchParams.get("status");
         const isIssue = searchParams.get("issue") === "true";
-        const where = { storeId };
+        const where: any = { storeId };
         if (isIssue) {
             where.status = { in: ["FAILED", "EXCEPTION", "RETURNED", "RETURN_REQUESTED"] };
         }
@@ -24,7 +24,7 @@ export const GET = withVayvaAPI(PERMISSIONS.FULFILLMENT_VIEW, async (req, { stor
             orderBy: { updatedAt: "desc" },
             take: 50
         });
-        const formatted = shipments.map((shipment) => ({
+        const formatted = shipments.map((shipment: any) => ({
             id: shipment.id,
             orderId: shipment.orderId,
             orderNumber: shipment.order?.orderNumber || "Unknown",
@@ -38,7 +38,7 @@ export const GET = withVayvaAPI(PERMISSIONS.FULFILLMENT_VIEW, async (req, { stor
         }));
         return NextResponse.json({ success: true, data: formatted });
     }
-    catch (error) {
+    catch (error: any) {
         console.error("Shipments API Error:", error);
         return NextResponse.json({ error: "Failed to fetch shipments" }, { status: 500 });
     }

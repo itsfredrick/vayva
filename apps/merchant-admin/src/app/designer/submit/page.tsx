@@ -29,7 +29,7 @@ export default function SubmitTemplatePage() {
       setTimeout(() => {
         router.push("/designer");
       }, 1000);
-    } catch (e) {
+    } catch (e: any) {
       console.error(e);
       setLoading(false);
     }
@@ -58,8 +58,8 @@ export default function SubmitTemplatePage() {
                 <input
                   id="template-name"
                   type="text"
-                  value={formData.name}
-                  onChange={(e) =>
+                  value={(formData.name as any)}
+                  onChange={(e: any) =>
                     setFormData({ ...formData, name: e.target.value })
                   }
                   className="w-full border-gray-300 rounded-lg p-3 text-sm focus:ring-black focus:border-black"
@@ -74,8 +74,8 @@ export default function SubmitTemplatePage() {
                   <select
                     id="category"
                     className="w-full border-gray-300 rounded-lg p-3 text-sm"
-                    value={formData.category}
-                    onChange={(e) =>
+                    value={(formData.category as any)}
+                    onChange={(e: any) =>
                       setFormData({ ...formData, category: e.target.value })
                     }
                   >
@@ -91,8 +91,8 @@ export default function SubmitTemplatePage() {
                   <select
                     id="plan-level"
                     className="w-full border-gray-300 rounded-lg p-3 text-sm"
-                    value={formData.plan}
-                    onChange={(e) =>
+                    value={(formData.plan as any)}
+                    onChange={(e: any) =>
                       setFormData({ ...formData, plan: e.target.value })
                     }
                   >

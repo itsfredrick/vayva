@@ -22,7 +22,7 @@ const formSchema = z.object({
 type FormValues = z.infer<typeof formSchema>;
 
 interface PickupLocationFormProps {
-    initialData?: unknown;
+    initialData?: any;
     onSubmit: (data: FormValues) => Promise<void>;
     isSubmitting: boolean;
 }

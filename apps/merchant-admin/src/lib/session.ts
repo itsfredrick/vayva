@@ -9,20 +9,20 @@ export const COOKIE_NAME = "vayva_session";
 /**
  * Generate JWT token for user session
  */
-export function generateToken(payload: unknown) {
-    return jwt.sign({ ...payload }, JWT_SECRET, {
+export function generateToken(payload: any) {
+    return jwt.sign({ ...payload }, JWT_SECRET as jwt.Secret, {
         expiresIn: JWT_EXPIRES_IN,
-    });
+    } as jwt.SignOptions);
 }
 /**
  * Verify and decode JWT token
  */
-export function verifyToken(token: unknown) {
+export function verifyToken(token: any) {
     try {
-        const decoded = jwt.verify(token, JWT_SECRET);
-        return decoded;
+        const decoded = jwt.verify(token, JWT_SECRET as jwt.Secret);
+        return decoded as any;
     }
-    catch (error) {
+    catch (error: any) {
         console.error("Token verification failed:", error);
         return null;
     }
@@ -30,8 +30,8 @@ export function verifyToken(token: unknown) {
 /**
  * Create session in database and set cookie
  */
-export async function createSession(user: unknown, device: unknown, ipAddress: unknown, rememberMe = false) {
-    const payload = {
+export async function createSession(user: any, device: any, ipAddress: any, rememberMe = false) {
+    const payload: any = {
         userId: user.id,
         email: user.email,
         storeId: user.storeId,
@@ -140,7 +140,7 @@ export async function clearSession() {
                 where: { token },
             });
         }
-        catch (error) {
+        catch (error: any) {
             // Session might not exist, ignore error
             console.warn("Session deletion failed:", error);
         }

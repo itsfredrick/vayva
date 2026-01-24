@@ -5,7 +5,7 @@ export class StorageService {
     /**
      * Generates a safe, namespaced path for uploads.
      */
-    static getNamespacedKey(ctx, filename) {
+    static getNamespacedKey(ctx: any, filename: any) {
         const safeName = filename.replace(/[^a-zA-Z0-9.-]/g, "_");
         const random = SecurityUtils.generateToken(4);
         // merchants/{merchantId}/stores/{storeId?}/file.ext
@@ -17,7 +17,7 @@ export class StorageService {
     /**
      * Upload a file to Vercel Blob storage
      */
-    static async upload(ctx, filename, file) {
+    static async upload(ctx: any, filename: any, file: any) {
         if (!FEATURES.STORAGE_ENABLED) {
             throw new Error("Storage feature is not configured");
         }
@@ -29,7 +29,7 @@ export class StorageService {
             });
             return blob.url;
         }
-        catch (error) {
+        catch (error: any) {
             console.error("Storage upload failed:", error);
             throw new Error("Failed to upload file");
         }
@@ -39,7 +39,7 @@ export class StorageService {
      * For Vercel Blob, public URLs are already accessible
      * This validates access before returning the URL
      */
-    static async generateSignedUrl(ctx, key) {
+    static async generateSignedUrl(ctx: any, key: any) {
         if (!FEATURES.STORAGE_ENABLED) {
             throw new Error("Storage feature is not configured");
         }
@@ -52,7 +52,7 @@ export class StorageService {
         try {
             await head(key);
         }
-        catch (_error) {
+        catch (_error: any) {
             throw new Error("File not found");
         }
         // 3. For Vercel Blob, construct the public URL
@@ -63,7 +63,7 @@ export class StorageService {
     /**
      * Delete a file from storage
      */
-    static async delete(ctx, key) {
+    static async delete(ctx: any, key: any) {
         if (!FEATURES.STORAGE_ENABLED) {
             throw new Error("Storage feature is not configured");
         }
@@ -75,7 +75,7 @@ export class StorageService {
         try {
             await del(key);
         }
-        catch (error) {
+        catch (error: any) {
             console.error("Storage delete failed:", error);
             throw new Error("Failed to delete file");
         }

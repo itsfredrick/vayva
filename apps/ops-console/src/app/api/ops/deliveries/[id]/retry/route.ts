@@ -1,5 +1,5 @@
 
-import { NextResponse } from "next/server";
+import { NextResponse } from 'next/server';
 import { prisma } from "@vayva/db";
 import { OpsAuthService } from "@/lib/ops-auth";
 
@@ -46,7 +46,7 @@ export async function POST(
 
         return NextResponse.json({ success: true, message: "Dispatch retry initiated" });
 
-    } catch (error) {
+    } catch (error: any) {
         if (error.message === "Unauthorized") {
             return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
         }

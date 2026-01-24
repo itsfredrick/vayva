@@ -21,6 +21,12 @@
     "paths": {
       "@/*": [
         "./src/*"
+      ],
+      "@vayva/ui": [
+        "../../packages/ui/src/index.ts"
+      ],
+      "@vayva/ui/*": [
+        "../../packages/ui/src/*"
       ]
     }
   },

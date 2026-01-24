@@ -61,10 +61,10 @@ export async function POST(request: NextRequest) {
         });
         // 4. Establish secure PIN session
         const { createPinSession } = await import("@/lib/auth/gating");
-        await createPinSession(session.user.storeId, wallet.pinVersion);
+        await createPinSession(session.user.storeId);
         return NextResponse.json({ success: true });
     }
-    catch (e: unknown) {
+    catch (e: any) {
         console.error(e);
         return NextResponse.json({ error: "Server error" }, { status: 500 });
     }

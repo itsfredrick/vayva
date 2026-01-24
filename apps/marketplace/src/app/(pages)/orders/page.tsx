@@ -1,3 +1,4 @@
+import React from "react";
 import { prisma } from "@/lib/prisma";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
@@ -5,7 +6,7 @@ import Link from "next/link";
 import { Package, ChevronRight, Clock, HelpCircle } from "lucide-react";
 import { redirect } from "next/navigation";
 
-export default async function OrdersPage({ searchParams }: { searchParams: { tab?: string } }) {
+export default async function OrdersPage({ searchParams }: { searchParams: { tab?: string } }): Promise<React.JSX.Element> {
     const session = await getServerSession(authOptions);
     if (!session?.user) return redirect("/api/auth/signin");
 
@@ -29,14 +30,14 @@ export default async function OrdersPage({ searchParams }: { searchParams: { tab
             <h1 className="text-2xl font-bold mb-6">Activity</h1>
 
             <div className="flex gap-4 border-b mb-6">
-                <Link 
-                    href="/orders?tab=orders" 
+                <Link
+                    href="/orders?tab=orders"
                     className={`pb-2 px-1 text-sm font-medium border-b-2 transition-colors ${tab === "orders" ? "border-black text-black" : "border-transparent text-gray-500 hover:text-black"}`}
                 >
                     My Orders
                 </Link>
-                <Link 
-                    href="/orders?tab=requests" 
+                <Link
+                    href="/orders?tab=requests"
                     className={`pb-2 px-1 text-sm font-medium border-b-2 transition-colors ${tab === "requests" ? "border-black text-black" : "border-transparent text-gray-500 hover:text-black"}`}
                 >
                     Sourcing Requests
@@ -116,12 +117,11 @@ export default async function OrdersPage({ searchParams }: { searchParams: { tab
                                         <div className="flex-1">
                                             <div className="flex items-center gap-2 mb-1">
                                                 <span className="font-semibold">{request.productName}</span>
-                                                <span className={`text-[10px] px-2 py-0.5 rounded-full font-bold uppercase ${
-                                                    request.status === 'PENDING' ? 'bg-yellow-100 text-yellow-700' :
-                                                    request.status === 'QUOTED' ? 'bg-green-100 text-green-700' :
-                                                    request.status === 'REJECTED' ? 'bg-red-100 text-red-700' :
-                                                    'bg-blue-100 text-blue-700'
-                                                }`}>
+                                                <span className={`text-[10px] px-2 py-0.5 rounded-full font-bold uppercase ${request.status === 'PENDING' ? 'bg-yellow-100 text-yellow-700' :
+                                                        request.status === 'QUOTED' ? 'bg-green-100 text-green-700' :
+                                                            request.status === 'REJECTED' ? 'bg-red-100 text-red-700' :
+                                                                'bg-blue-100 text-blue-700'
+                                                    }`}>
                                                     {request.status}
                                                 </span>
                                             </div>
@@ -136,7 +136,7 @@ export default async function OrdersPage({ searchParams }: { searchParams: { tab
                                             </div>
                                         </div>
                                         {request.status === 'QUOTED' && (
-                                            <Link 
+                                            <Link
                                                 href={`/sourcing/request/${request.id}`}
                                                 className="text-sm font-bold text-blue-600 hover:underline"
                                             >
@@ -151,7 +151,7 @@ export default async function OrdersPage({ searchParams }: { searchParams: { tab
                                     )}
                                 </div>
                             ))}
-                            
+
                             <div className="pt-6 border-t mt-8 text-center">
                                 <Link href="/sourcing/request" className="text-sm font-medium text-primary hover:underline">
                                     + Submit another request

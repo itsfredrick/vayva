@@ -2,7 +2,7 @@ import React from "react";
 import { ShieldCheck, Zap } from "lucide-react";
 import { Button } from "@vayva/ui";
 
-export const DigitalHero = () => {
+export const DigitalHero = (): React.JSX.Element => {
   return (
     <section className="bg-[#0B0F19] pt-20 pb-24 px-6 border-b border-gray-900">
       <div className="max-w-4xl mx-auto text-center">

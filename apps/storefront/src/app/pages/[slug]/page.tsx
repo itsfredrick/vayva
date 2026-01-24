@@ -5,11 +5,11 @@ import { StoreShell } from "@/components/StoreShell";
 import { useStore } from "@/context/StoreContext";
 import { useParams } from "next/navigation";
 
-export default function PolicyPage({ params }: unknown) {
+export default function PolicyPage({ params: _params }: any): React.JSX.Element {
   const { store } = useStore();
   const { slug } = useParams() as { slug: string };
 
-  if (!store) return null;
+  if (!store) return <></>;
 
   let title = "";
   let content = "";

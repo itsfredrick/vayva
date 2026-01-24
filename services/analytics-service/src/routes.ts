@@ -11,18 +11,18 @@ export async function analyticsRoutes(server: FastifyInstance) {
   });
 
   // --- Reports ---
-  server.get("/reports/sales", async (req: unknown, reply) => {
+  server.get("/reports/sales", async (req: unknown, _reply) => {
     const storeId = req.headers["x-store-id"];
     return await AnalyticsController.getSalesReport(storeId, req.query);
   });
 
   // --- Goals ---
-  server.get("/goals", async (req: unknown, reply) => {
+  server.get("/goals", async (req: unknown, _reply) => {
     const storeId = req.headers["x-store-id"];
     return await AnalyticsController.listGoals(storeId);
   });
 
-  server.post("/goals", async (req: unknown, reply) => {
+  server.post("/goals", async (req: unknown, _reply) => {
     const storeId = req.headers["x-store-id"];
     return await AnalyticsController.createGoal(storeId, req.body);
   });

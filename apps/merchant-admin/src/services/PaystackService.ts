@@ -8,7 +8,7 @@ import {
 const PAYSTACK_SECRET_KEY = process.env.PAYSTACK_SECRET_KEY;
 export const PaystackService = {
     async initializeTransaction(email: string, amount: number, // in kobo
-        reference: string, callbackUrl: string, metadata: unknown= {}): Promise<PaystackTransactionInitialize> {
+        reference: string, callbackUrl: string, metadata: any= {}): Promise<PaystackTransactionInitialize> {
         if (!PAYSTACK_SECRET_KEY) {
             throw new Error("PAYSTACK_SECRET_KEY is not configured");
         }

@@ -38,7 +38,7 @@ export default function MarketHomePage() {
         if (sellRes.ok) {
           setSellers(await sellRes.json());
         }
-      } catch (err) {
+      } catch (err: any) {
         console.error("Market Load Error", err);
       } finally {
         setLoading(false);
@@ -75,8 +75,7 @@ export default function MarketHomePage() {
           </div>
 
           <div className="flex flex-wrap justify-center gap-2">
-            {["Fashion", "Sneakers", "iPhone 15", "Skincare", "Lagos"].map(
-              (tag) => (
+            {["Fashion", "Sneakers", "iPhone 15", "Skincare", "Lagos"].map((tag: any) => (
                 <Link
                   href="/market/search"
                   key={tag}
@@ -103,14 +102,14 @@ export default function MarketHomePage() {
             </Link>
           </div>
           <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-8 gap-4">
-            {CATEGORIES.map((cat) => (
+            {CATEGORIES.map((cat: any) => (
               <Link
                 href={`/market/categories/${cat.name.toLowerCase()}`}
                 key={cat.name}
               >
                 <div className="group bg-white/5 rounded-xl p-4 border border-white/5 hover:border-primary/50 hover:bg-white/10 transition-all text-center h-full flex flex-col items-center justify-center gap-3">
                   <Icon
-                    name={cat.icon as unknown}
+                    name={cat.icon as any}
                     size={32}
                     className="text-text-secondary group-hover:text-primary transition-colors"
                   />
@@ -139,7 +138,7 @@ export default function MarketHomePage() {
             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6">
               {products.length === 0 ? (
                 <div className="col-span-full text-center text-white/50 py-10">No products found. Be the first to list!</div>
-              ) : products.map((product) => (
+              ) : products.map((product: any) => (
                 <MarketProductCard key={product.id} product={product} />
               ))}
             </div>
@@ -152,7 +151,7 @@ export default function MarketHomePage() {
             <h2 className="text-2xl font-bold text-white">Top Sellers</h2>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-            {sellers.map((seller) => (
+            {sellers.map((seller: any) => (
               <Link
                 href={`/market/sellers/${seller.slug}`}
                 key={seller.name}
@@ -207,7 +206,7 @@ export default function MarketHomePage() {
           ].map((item, i) => (
             <div key={i} className="flex items-center gap-4">
               <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center text-primary">
-                <Icon name={item.icon as unknown} size={24} />
+                <Icon name={item.icon as any} size={24} />
               </div>
               <div>
                 <h3 className="font-bold text-white">{item.title}</h3>

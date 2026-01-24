@@ -18,7 +18,7 @@ export async function GET() {
         ];
         return NextResponse.json({ sessions });
     }
-    catch (error) {
+    catch (error: any) {
         console.error("Sessions fetch error:", error);
         if (error.message === "Unauthorized") {
             return NextResponse.json({ error: "Unauthorized" }, { status: 401 });

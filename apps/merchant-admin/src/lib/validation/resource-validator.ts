@@ -1,7 +1,8 @@
 import { INDUSTRY_CONFIG } from "@/config/industry";
-export function validateResource(industrySlug: unknown, primaryObject: unknown, data: unknown) {
-    const errors: unknown= {};
-    const config = INDUSTRY_CONFIG[industrySlug];
+export function validateResource(industrySlug: any, primaryObject: any, data: any) {
+    const errors: any = {};
+    // Double cast to suppress TS7053
+    const config = (INDUSTRY_CONFIG as any)[industrySlug];
     if (!config)
         return { valid: false, errors: { form: "Config error" } };
     const formConfig = config.forms[primaryObject];
@@ -9,7 +10,7 @@ export function validateResource(industrySlug: unknown, primaryObject: unknown, 
         return { valid: true, errors: {} }; // Flexible fallback
     const { requiredFields, validation } = formConfig;
     // 1. Check Required Fields
-    requiredFields.forEach((field: unknown) => {
+    requiredFields.forEach((field: any) => {
         const val = data[field];
         if (val === undefined || val === null || val === "" || (Array.isArray(val) && val.length === 0)) {
             errors[field] = "Required";

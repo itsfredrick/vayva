@@ -61,7 +61,7 @@ export function getRedis(config: RedisConfig = {}): Redis {
         });
 
         return redisInstance;
-    } catch (error) {
+    } catch (error: unknown) {
         console.error("❌ Failed to initialize Redis:", error);
         throw error;
     }

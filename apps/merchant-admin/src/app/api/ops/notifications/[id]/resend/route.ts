@@ -30,7 +30,7 @@ export async function POST(req: NextRequest, { params }: { params: Promise<{ id:
         });
         return NextResponse.json({ success: true });
     }
-    catch (error) {
+    catch (error: any) {
         console.error("Notification resend error:", error);
         return NextResponse.json({ error: "Failed to resend notification" }, { status: 500 });
     }

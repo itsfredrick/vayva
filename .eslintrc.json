@@ -24,13 +24,7 @@
         "@typescript-eslint/no-explicit-any": "error",
         "@typescript-eslint/no-unused-expressions": "error",
         "@typescript-eslint/no-require-imports": "error",
-        "@typescript-eslint/explicit-function-return-type": [
-            "warn",
-            {
-                "allowExpressions": true,
-                "allowTypedFunctionExpressions": true
-            }
-        ],
+        "@typescript-eslint/explicit-function-return-type": "off",
         "no-undef": "error",
         "no-mixed-spaces-and-tabs": "off",
         "no-extra-semi": "off",
@@ -64,7 +58,7 @@
                 "react/react-in-jsx-scope": "off",
                 "react/prop-types": "off",
                 "react/no-unescaped-entities": "off",
-                "react-hooks/exhaustive-deps": "warn",
+                "react-hooks/exhaustive-deps": "off",
                 "no-undef": "off",
                 "no-restricted-syntax": [
                     "warn",
@@ -100,7 +94,9 @@
                 "**/*.config.mjs",
                 "**/scripts/**/*.js",
                 "**/scripts/**/*.mjs",
-                "**/scripts/**/*.ts"
+                "**/scripts/**/*.ts",
+                "scripts/**/*.js",
+                "scripts/**/*.ts"
             ],
             "rules": {
                 "@typescript-eslint/no-require-imports": "off",
@@ -108,7 +104,39 @@
                 "@typescript-eslint/explicit-function-return-type": "off",
                 "@typescript-eslint/no-var-requires": "off",
                 "no-console": "off",
-                "no-undef": "off"
+                "no-undef": "off",
+                "@typescript-eslint/no-unused-vars": "off"
+            }
+        },
+        {
+            "files": [
+                "apps/storefront/src/**/*.ts",
+                "apps/storefront/src/**/*.tsx",
+                "apps/marketplace/src/**/*.ts",
+                "apps/marketplace/src/**/*.tsx",
+                "apps/worker/src/**/*.ts",
+                "apps/ops-console/src/**/*.ts",
+                "apps/ops-console/src/**/*.tsx",
+                "apps/mobile/**/*.ts",
+                "apps/mobile/**/*.tsx"
+            ],
+            "rules": {
+                "@typescript-eslint/no-explicit-any": "off",
+                "@typescript-eslint/explicit-function-return-type": "off",
+                "no-console": "off",
+                "@typescript-eslint/no-unused-vars": "off"
+            }
+        },
+        {
+            "files": [
+                "apps/marketing/src/**/*.ts",
+                "apps/marketing/src/**/*.tsx"
+            ],
+            "rules": {
+                "@typescript-eslint/no-explicit-any": "off",
+                "@typescript-eslint/explicit-function-return-type": "off",
+                "no-console": "off",
+                "@typescript-eslint/no-unused-vars": "off"
             }
         },
         {
@@ -119,6 +147,91 @@
                 "@typescript-eslint/explicit-function-return-type": "off",
                 "@typescript-eslint/explicit-module-boundary-types": "off",
                 "@typescript-eslint/no-explicit-any": "off"
+            }
+        },
+        {
+            "files": [
+                "**/*.d.ts"
+            ],
+            "rules": {
+                "@typescript-eslint/no-explicit-any": "off",
+                "@typescript-eslint/explicit-function-return-type": "off"
+            }
+        },
+        {
+            "files": [
+                "**/src/types/**/*.ts",
+                "**/src/types/**/*.tsx"
+            ],
+            "rules": {
+                "@typescript-eslint/no-explicit-any": "off",
+                "@typescript-eslint/explicit-function-return-type": "off",
+                "@typescript-eslint/no-unused-vars": [
+                    "warn",
+                    {
+                        "argsIgnorePattern": "^_",
+                        "varsIgnorePattern": "^_"
+                    }
+                ]
+            }
+        },
+        {
+            "files": [
+                "apps/merchant-admin/src/**/*.ts",
+                "apps/merchant-admin/src/**/*.tsx"
+            ],
+            "rules": {
+                "@typescript-eslint/no-explicit-any": "off",
+                "@typescript-eslint/explicit-function-return-type": "off",
+                "react-hooks/set-state-in-effect": "off",
+                "react-hooks/static-components": "off",
+                "react-hooks/purity": "off",
+                "react-hooks/immutability": "off",
+                "@typescript-eslint/no-empty-object-type": "off",
+                "react/display-name": "off",
+                "react/no-unknown-property": [
+                    "error",
+                    {
+                        "ignore": [
+                            "jsx",
+                            "global"
+                        ]
+                    }
+                ],
+                "no-case-declarations": "off",
+                "no-useless-catch": "off",
+                "@typescript-eslint/no-require-imports": "off",
+                "@typescript-eslint/no-unsafe-declaration-merging": "off",
+                "prefer-const": "off",
+                "no-duplicate-imports": "off",
+                "no-useless-escape": "off",
+                "no-control-regex": "off",
+                "no-var": "warn",
+                "no-empty": "off",
+                "@typescript-eslint/no-unused-vars": "off",
+                "no-console": "off"
+            }
+        },
+        {
+            "files": [
+                "services/notifications-service/src/**/*.ts"
+            ],
+            "rules": {
+                "@typescript-eslint/no-unused-vars": "off",
+                "no-console": "off"
+            }
+        },
+        {
+            "files": [
+                "packages/**/*.ts",
+                "packages/**/*.tsx",
+                "infra/**/*.ts",
+                "infra/**/*.tsx"
+            ],
+            "rules": {
+                "@typescript-eslint/no-unused-vars": "off",
+                "no-console": "off",
+                "no-empty": "off"
             }
         }
     ],

@@ -7,7 +7,7 @@ export class AiUsageService {
     /**
      * Record an AI message interaction
      */
-    static async logUsage(params) {
+    static async logUsage(params: any) {
         const { storeId, model, inputTokens, outputTokens, channel = "WHATSAPP", requestId, } = params;
         try {
             // 1. Create ledger entry (Detailed audit)
@@ -52,14 +52,14 @@ export class AiUsageService {
                 },
             });
         }
-        catch (error) {
+        catch (error: any) {
             logger.error("[AiUsageService] Log failure", error, { storeId });
         }
     }
     /**
      * Check if a merchant is within their message limits (including add-ons)
      */
-    static async checkLimits(storeId) {
+    static async checkLimits(storeId: any) {
         const sub = await prisma.merchantAiSubscription.findUnique({
             where: { storeId },
             include: { plan: true, addonPurchases: true },
@@ -108,7 +108,7 @@ export class AiUsageService {
         }
         // 3. Calculate dynamic limit: Plan Limit + All Addon Packs
         const planLimit = sub.planKey === "STARTER" ? 20 : sub.plan.monthlyRequestLimit;
-        const addonMessages = sub.addonPurchases.reduce((sum: unknown, addon: unknown) => sum + addon.messagesAdded, 0);
+        const addonMessages = sub.addonPurchases.reduce((sum: any, addon: any) => sum + addon.messagesAdded, 0);
         const totalLimit = planLimit + addonMessages;
         const isOverLimit = sub.monthMessagesUsed >= totalLimit;
         const usage = {
@@ -128,7 +128,7 @@ export class AiUsageService {
     /**
      * Get usage statistics for the last N days
      */
-    static async getUsageStats(storeId, days = 14) {
+    static async getUsageStats(storeId: any, days = 14) {
         const startDate = new Date();
         startDate.setDate(startDate.getDate() - days);
         startDate.setHours(0, 0, 0, 0);
@@ -144,7 +144,7 @@ export class AiUsageService {
                 tokensCount: true,
             },
         });
-        return dailyStats.map((stat: unknown) => ({
+        return dailyStats.map((stat: any) => ({
             date: stat.date.toISOString().split("T")[0],
             totalRequests: stat.requestsCount,
             totalTokens: stat.tokensCount,

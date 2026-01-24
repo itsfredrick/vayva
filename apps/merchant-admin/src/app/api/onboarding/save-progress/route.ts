@@ -56,7 +56,7 @@ export async function POST(request: NextRequest) {
             delete scrubbedData.kyc.cacNumber;
         }
         // Prepare upsert data
-        const updateData: unknown= {
+        const updateData: any= {
             currentStepKey: currentStep || undefined,
             data: scrubbedData || undefined,
             completedSteps: completedSteps || undefined,
@@ -84,7 +84,7 @@ export async function POST(request: NextRequest) {
             create: createData,
         });
         // 2. Update Store level fields (Resume Step, Category)
-        const storeUpdateData: unknown= {};
+        const storeUpdateData: any= {};
         if (currentStep) {
             storeUpdateData.onboardingLastStep = currentStep;
         }
@@ -103,7 +103,7 @@ export async function POST(request: NextRequest) {
         // 3. Handle KYC Data (identity/kyc) with simple encryption mocks
         const kycData = data?.kyc || data?.identity;
         if (kycData) {
-            const kycUpdate: unknown= {};
+            const kycUpdate: any= {};
             if (kycData.nin) {
                 kycUpdate.ninLast4 = kycData.nin.slice(-4);
                 kycUpdate.fullNinEncrypted = encrypt(kycData.nin);
@@ -166,7 +166,7 @@ export async function POST(request: NextRequest) {
             step: onboarding.currentStepKey
         });
     }
-    catch (error) {
+    catch (error: any) {
         console.error("Save progress error:", error);
         return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
     }

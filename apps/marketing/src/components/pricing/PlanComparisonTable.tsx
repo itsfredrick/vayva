@@ -38,7 +38,7 @@ const COMPARISON_DATA: FeatureRow[] = [
     },
 ];
 
-export const PlanComparisonTable = () => {
+export const PlanComparisonTable = (): React.JSX.Element => {
     return (
         <div className="hidden lg:block w-full overflow-hidden rounded-3xl border border-gray-100 bg-white shadow-2xl shadow-gray-200/50">
             <table className="w-full text-left border-collapse">
@@ -47,7 +47,7 @@ export const PlanComparisonTable = () => {
                         <th className="p-8 text-sm font-black text-gray-400 uppercase tracking-widest w-1/4">
                             Features
                         </th>
-                        {PLANS.map((plan) => (
+                        {PLANS.map((plan: any) => (
                             <th
                                 key={plan.key}
                                 className={`p-8 text-xl font-black text-[#0F172A] text-center ${plan.featured ? "bg-green-50/30" : ""}`}
@@ -58,7 +58,7 @@ export const PlanComparisonTable = () => {
                     </tr>
                 </thead>
                 <tbody className="divide-y divide-gray-50">
-                    {COMPARISON_DATA.map((row) => (
+                    {COMPARISON_DATA.map((row: any) => (
                         <tr
                             key={row.name}
                             className="hover:bg-gray-50/50 transition-colors"

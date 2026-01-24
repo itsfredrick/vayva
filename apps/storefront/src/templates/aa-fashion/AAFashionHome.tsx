@@ -12,7 +12,7 @@ interface AAFashionHomeProps {
   products: PublicProduct[];
 }
 
-export const AAFashionHome = ({ store, products }: AAFashionHomeProps) => {
+export const AAFashionHome = ({ store, products }: AAFashionHomeProps): React.JSX.Element => {
   const { cart } = useStore();
   const cartItemCount = cart.reduce((acc, item) => acc + item.quantity, 0);
 
@@ -44,7 +44,7 @@ export const AAFashionHome = ({ store, products }: AAFashionHomeProps) => {
     },
   ];
 
-  const bestSellers = products.slice(0, 4);
+  const _bestSellers = products.slice(0, 4);
 
   return (
     <div className="min-h-screen bg-white pb-20 font-sans text-[#111111]">

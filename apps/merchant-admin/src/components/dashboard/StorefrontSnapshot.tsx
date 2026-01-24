@@ -3,10 +3,10 @@
 import React from "react";
 import Link from "next/link";
 import { Icon, cn, Button } from "@vayva/ui";
-import { Store } from "@/types"; // Ensure this matches your types
+import { Store } from "@/lib/templates/types";
 
 interface StorefrontSnapshotProps {
-  store: Store | null;
+  store: any; // Relaxed type for display component
 }
 
 export const StorefrontSnapshot = ({ store }: StorefrontSnapshotProps) => {
@@ -34,8 +34,8 @@ export const StorefrontSnapshot = ({ store }: StorefrontSnapshotProps) => {
           <div
             className="w-16 h-16 rounded-xl border border-white/10 flex items-center justify-center overflow-hidden bg-white/5"
             style={{
-              backgroundColor: (store as unknown).brandColor
-                ? `${(store as unknown).brandColor}20`
+              backgroundColor: (store as any).brandColor
+                ? `${(store as any).brandColor}20`
                 : undefined,
             }}
           >
@@ -62,7 +62,7 @@ export const StorefrontSnapshot = ({ store }: StorefrontSnapshotProps) => {
               <Button
                 onClick={handleCopyLink}
                 className="text-text-secondary hover:text-white transition-colors"
-               variant="outline">
+                variant="outline">
                 <Icon name="Copy" size={14} />
               </Button>
             </div>
@@ -87,7 +87,7 @@ export const StorefrontSnapshot = ({ store }: StorefrontSnapshotProps) => {
         <div>
           <p className="text-xs text-text-secondary mb-1">Current Theme</p>
           <p className="text-sm font-bold text-white capitalize">
-            {((store as unknown).selectedTemplateId || "default").replace("-", " ")}
+            {((store as any).selectedTemplateId || "default").replace("-", " ")}
           </p>
         </div>
         <Link href="/dashboard/control-center/templates">

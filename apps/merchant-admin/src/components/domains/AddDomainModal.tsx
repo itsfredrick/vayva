@@ -36,7 +36,7 @@ export const AddDomainModal = ({
     try {
       await onAdd(domain);
       onClose();
-    } catch (err) {
+    } catch (err: any) {
       setError((err as any).message || "Failed to add domain");
     }
   };
@@ -73,8 +73,8 @@ export const AddDomainModal = ({
               id="domain"
               placeholder="e.g. mystore.com"
               className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-black focus:ring-0 outline-none transition-colors"
-              value={domain}
-              onChange={(e: unknown) => setDomain(e.target.value.toLowerCase())}
+              value={(domain as any)}
+              onChange={(e: any) => setDomain(e.target.value.toLowerCase())}
             />
             {error && <p className="text-red-500 text-sm mt-1">{error}</p>}
           </div>

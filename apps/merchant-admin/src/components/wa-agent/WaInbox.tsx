@@ -1,7 +1,9 @@
 "use client";
 
 import React from "react";
-import { WaThread, WaMessage } from "@/services/wa-agent";
+// import { WaThread, WaMessage } from "@/services/wa-agent";
+type WaThread = any;
+type WaMessage = any;
 import { useRouter, useParams } from "next/navigation";
 import { Button, Icon, cn } from "@vayva/ui";
 import { TimeDisplay } from "@/components/shared/TimeDisplay";
@@ -29,7 +31,7 @@ export const InboxSidebar = ({
         </div>
       </div>
       <div className="flex-1 overflow-y-auto">
-        {threads.map((thread: unknown) => (
+        {threads.map((thread: any) => (
           <div
             key={thread.id}
             onClick={() => router.push(`/admin/wa-agent/inbox/${thread.id}`)}
@@ -132,7 +134,7 @@ export const ChatWindow = ({ thread }: { thread?: WaThread | null }) => {
               timestamp: thread.lastMessageTime,
             },
           ]
-        ).map((msg: unknown) => (
+        ).map((msg: any) => (
           <div
             key={msg.id}
             className={cn(

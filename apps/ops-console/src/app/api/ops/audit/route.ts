@@ -1,4 +1,4 @@
-import { NextRequest, NextResponse } from "next/server";
+import { NextRequest, NextResponse } from 'next/server';
 import { OpsAuthService } from "@/lib/ops-auth";
 import { prisma } from "@vayva/db";
 
@@ -28,16 +28,16 @@ export async function GET(req: NextRequest) {
             prisma.opsAuditEvent.count(),
         ]);
 
-        const data = events.map((e) => ({
-            id: e.id,
-            eventType: e.eventType,
-            metadata: e.metadata,
-            createdAt: e.createdAt,
-            actor: e.opsUser
+        const data = events.map((e: any) => ({
+            id: (e as any).id,
+            eventType: (e as any).eventType,
+            metadata: (e as any).metadata,
+            createdAt: (e as any).createdAt,
+            actor: (e as any).opsUser
                 ? {
-                    name: e.opsUser.name,
-                    email: e.opsUser.email,
-                    role: e.opsUser.role,
+                    name: (e as any).opsUser.name,
+                    email: (e as any).opsUser.email,
+                    role: (e as any).opsUser.role,
                 }
                 : { name: "System", email: "system", role: "SYSTEM" },
         }));
@@ -51,7 +51,7 @@ export async function GET(req: NextRequest) {
                 totalPages: Math.ceil(total / limit),
             },
         });
-    } catch (error) {
+    } catch (error: any) {
         console.error("Audit Logs error:", error);
         return NextResponse.json(
             { error: "Internal Server Error" },

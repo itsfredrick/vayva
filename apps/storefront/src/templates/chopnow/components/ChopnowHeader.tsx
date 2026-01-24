@@ -4,7 +4,7 @@ import Link from "next/link";
 import { useStore } from "@/context/StoreContext";
 import { Button } from "@vayva/ui";
 
-export const ChopnowHeader = () => {
+export const ChopnowHeader = (): React.JSX.Element => {
   const { cart } = useStore();
   const cartCount = cart.reduce((acc, item) => acc + item.quantity, 0);
 

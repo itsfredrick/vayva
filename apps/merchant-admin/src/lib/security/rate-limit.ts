@@ -4,7 +4,7 @@ export class RateLimitService {
     /**
      * Check rate limit for a given key
      */
-    async check(key, config = { windowMs: 60000, max: 10 }) {
+    async check(key: any, config = { windowMs: 60000, max: 10 }) {
         const now = Date.now();
         const windowStart = now - config.windowMs;
         // Create a unique key for the rate limit bucket
@@ -27,7 +27,7 @@ export class RateLimitService {
                 reset,
             };
         }
-        catch (error) {
+        catch (error: any) {
             console.warn("Rate limit check failed (failing open):", error);
             // Fail open to avoid blocking legitimate traffic if Redis is down
             return {
@@ -41,7 +41,7 @@ export class RateLimitService {
     /**
      * Middleware-compatible rate limiter
      */
-    async middlewareCheck(req, keyPrefix = "global", config) {
+    async middlewareCheck(req: any, keyPrefix = "global", config: any) {
         const ip = req.headers.get("x-forwarded-for") || "unknown";
         const key = `${keyPrefix}:${ip}`;
         const result = await this.check(key, config);
@@ -59,7 +59,7 @@ export class RateLimitService {
                     meta: { limit: result.limit, remaining: result.remaining }
                 });
             }
-            catch (e) {
+            catch (e: any) {
                 console.error("Failed to log security event", e);
             }
             return NextResponse.json({ error: "Too many requests, please try again later." }, { status: 429, headers: { "Retry-After": String(result.reset) } });

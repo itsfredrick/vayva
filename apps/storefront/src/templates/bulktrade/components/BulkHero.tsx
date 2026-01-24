@@ -5,7 +5,7 @@ interface BulkHeroProps {
   storeName?: string;
 }
 
-export const BulkHero = ({ storeName }: BulkHeroProps) => {
+export const BulkHero = ({ storeName }: BulkHeroProps): React.JSX.Element => {
   return (
     <section className="bg-[#0F172A] text-white py-16 md:py-24 px-6 relative overflow-hidden">
       {/* Background Pattern */}

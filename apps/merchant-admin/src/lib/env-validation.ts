@@ -85,9 +85,9 @@ export const FEATURES = {
     STORAGE_ENABLED: Boolean(ENV.BLOB_READ_WRITE_TOKEN),
     /**
      * Control Center (Store Builder)
-     * Disabled until Prisma StoreConfig migration complete
+     * Enabled after branding and navigation foundation stabilization.
      */
-    CONTROL_CENTER_ENABLED: false,
+    CONTROL_CENTER_ENABLED: true,
     /**
      * Error Monitoring
      * Requires: SENTRY_DSN
@@ -156,15 +156,15 @@ export function validateProductionRequirements() {
  * {isFeatureEnabled('WHATSAPP') && <WhatsAppButton />}
  * ```
  */
-export function isFeatureEnabled(feature: unknown) {
-    return FEATURES[feature];
+export function isFeatureEnabled(feature: any) {
+    return FEATURES[feature as keyof typeof FEATURES];
 }
 /**
  * GET DISABLED FEATURE MESSAGE
  *
  * Returns user-friendly message for disabled features.
  */
-export function getDisabledFeatureMessage(feature: unknown) {
+export function getDisabledFeatureMessage(feature: any) {
     const messages = {
         PAYMENTS_ENABLED: "Payment processing is currently unavailable. Please contact support.",
         EMAIL_ENABLED: "Email notifications are currently unavailable.",
@@ -177,7 +177,7 @@ export function getDisabledFeatureMessage(feature: unknown) {
         AI_ASSISTANT_ENABLED: "The core AI assistant is currently disabled.",
         MARKETING_AI_ENABLED: "The marketing AI chat is currently disabled.",
     };
-    return messages[feature];
+    return messages[feature as keyof typeof messages];
 }
 /**
  * ASSERT FEATURE ENABLED
@@ -190,8 +190,8 @@ export function getDisabledFeatureMessage(feature: unknown) {
  * // Proceeds only if payments are enabled
  * ```
  */
-export function assertFeatureEnabled(feature: unknown) {
-    if (!FEATURES[feature]) {
+export function assertFeatureEnabled(feature: any) {
+    if (!FEATURES[feature as keyof typeof FEATURES]) {
         throw new Error(`Feature ${feature} is disabled. ${getDisabledFeatureMessage(feature)}`);
     }
 }
@@ -207,7 +207,7 @@ export function validateEnvironment() {
     const validation = validateProductionRequirements();
     if (!validation.valid) {
         console.error("❌ PRODUCTION VALIDATION FAILED:");
-        validation.errors.forEach((error: unknown) => console.error(`  - ${error}`));
+        validation.errors.forEach((error: any) => console.error(`  - ${error}`));
         if (ENV.NODE_ENV === "production") {
             console.error("");
             console.error("🚨 CRITICAL: Cannot start in production with missing required configuration.");

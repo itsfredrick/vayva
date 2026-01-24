@@ -109,7 +109,7 @@ export function withErrorBoundary<P extends object>(
   const componentName =
     WrappedComponent.displayName || WrappedComponent.name || "Component";
 
-  const WithErrorBoundary = (props: P) => {
+  const WithErrorBoundary = (props: P): React.JSX.Element => {
     return (
       <ErrorBoundary name={componentName} {...options}>
         <WrappedComponent {...props} />

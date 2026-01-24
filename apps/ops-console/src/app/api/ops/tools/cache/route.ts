@@ -1,5 +1,5 @@
 
-import { NextRequest, NextResponse } from "next/server";
+import { NextRequest, NextResponse } from 'next/server';
 import { OpsAuthService } from "@/lib/ops-auth";
 import { revalidatePath, revalidateTag } from "next/cache";
 
@@ -32,7 +32,7 @@ export async function POST(req: NextRequest) {
 
         return NextResponse.json({ success: true, message: `Cleared ${type}: ${target}` });
 
-    } catch (error) {
+    } catch {
         return NextResponse.json({ error: "Cache clear failed" }, { status: 500 });
     }
 }

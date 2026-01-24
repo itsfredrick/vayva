@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { requireAuth } from "@/lib/auth/session";
 import { prisma } from "@/lib/prisma";
+import { ACCOUNT_ROUTES } from "@/config/routes";
 export async function GET() {
     try {
         const session = await requireAuth();
@@ -41,8 +42,8 @@ export async function GET() {
             return NextResponse.json({ error: "Store context not found" }, { status: 404 });
         }
         const lastAudit = recentLogs[0];
-        const storeSettings = store.settings || {};
-        const data = {
+        const storeSettings = (store.settings as any) || {};
+        const data: any = {
             profile: {
                 name: store.name || "Unset",
                 category: store.category || "General",
@@ -91,26 +92,26 @@ export async function GET() {
             },
             security: {
                 mfaEnabled: security?.mfaRequired || false,
-                recentLogins: recentLogs.filter((l: unknown) => l.action.toLowerCase().includes("login")).length,
+                recentLogins: recentLogs.filter((l: any) => l.action.toLowerCase().includes("login")).length,
                 apiKeyStatus: storeSettings.api?.active ? "ACTIVE" : "INACTIVE",
             },
             alerts: buildAlerts(store, bankAccount, kyc),
         };
         return NextResponse.json(data);
     }
-    catch (error) {
+    catch (error: any) {
         console.error("Account overview fetch error:", error);
         return NextResponse.json({ error: "Failed to fetch account overview" }, { status: 500 });
     }
 }
-function buildAlerts(store: unknown, bankAccount: unknown, kyc: unknown) {
+function buildAlerts(store: any, bankAccount: any, kyc: any) {
     const alerts = [];
     if (!store.onboardingCompleted) {
         alerts.push({
             id: "onboarding",
             severity: "warning",
             message: "Onboarding Incomplete. Finish setting up your store to go live.",
-            action: ACCOUNT_ROUTES_PLACEHOLDER.ONBOARDING,
+            action: ACCOUNT_ROUTES.ONBOARDING,
         });
     }
     if (!bankAccount) {
@@ -131,6 +132,4 @@ function buildAlerts(store: unknown, bankAccount: unknown, kyc: unknown) {
     }
     return alerts;
 }
-const ACCOUNT_ROUTES_PLACEHOLDER = {
-    ONBOARDING: "/onboarding/resume",
-};
+// End of file

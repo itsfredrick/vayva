@@ -8,7 +8,9 @@ const PII_REGEX = {
     CARD: /\b(?:\d[ -]*?){13,16}\b/g, // Simplified card-like pattern
 };
 export class GroqClient {
-    constructor(context = "MERCHANT") {
+    context: string;
+    client: any;
+    constructor(context: string = "MERCHANT") {
         this.context = context;
         const apiKey = context === "MERCHANT"
             ? process.env.GROQ_API_KEY_MERCHANT
@@ -24,7 +26,7 @@ export class GroqClient {
     /**
      * Strip PII from input text
      */
-    sanitizeInput(text) {
+    sanitizeInput(text: string) {
         return text
             .replace(PII_REGEX.EMAIL, "[REDACTED_EMAIL]")
             .replace(PII_REGEX.PHONE, "[REDACTED_PHONE]")
@@ -33,21 +35,21 @@ export class GroqClient {
     /**
      * Generate a completion with safe handling
      */
-    async chatCompletion(messages, options = {}) {
+    async chatCompletion(messages: any[], options: any = {}) {
         if (!this.client.apiKey || this.client.apiKey === "placeholder-key") {
             logger.warn("[GroqClient] Call skipped due to missing API key");
             return null;
         }
         try {
             // 1. Sanitize user messages
-            const safeMessages = messages.map((m: unknown) => ({
+            const safeMessages = messages.map((m: any) => ({
                 ...m,
                 content: m.content ? this.sanitizeInput(m.content) : null,
             }));
             // 2. Call API with Timeout
             const controller = new AbortController();
             const timeoutId = setTimeout(() => controller.abort(), 15000); // 15s timeout
-            const response = await this.client.chat.completions.create({
+            const response = (await this.client.chat.completions.create({
                 messages: safeMessages,
                 model: options.model || "llama3-70b-8192",
                 temperature: options.temperature ?? 0.7,
@@ -55,26 +57,26 @@ export class GroqClient {
                 response_format: options.jsonMode ? { type: "json_object" } : undefined,
                 tools: options.tools,
                 tool_choice: options.tool_choice,
-            }, { signal: controller.signal });
+            }, { signal: controller.signal })) as any;
             clearTimeout(timeoutId);
             // 3. Real Audit Logging (No secrets)
             if (options.storeId) {
                 await prisma.aiUsageEvent.create({
                     data: {
-                        storeId: options.storeId,
+                        storeId: options.storeId as string,
                         model: response.model,
                         inputTokens: response.usage?.prompt_tokens ?? 0,
                         outputTokens: response.usage?.completion_tokens ?? 0,
                         toolCallsCount: response.choices[0]?.message.tool_calls?.length ?? 0,
-                        requestId: options.requestId,
+                        requestId: (options.requestId as string) || "",
                         success: true,
                         channel: this.context === "MERCHANT" ? "INAPP" : "WHATSAPP",
                     }
-                }).catch((e: unknown) => logger.warn("[GroqClient] Audit log failed", undefined, { error: e }));
+                } as any).catch((e: any) => logger.warn("[GroqClient] Audit log failed", undefined, { error: e }));
             }
             return response;
         }
-        catch (error) {
+        catch (error: any) {
             logger.error("[GroqClient] API call failed", { error });
             return null; // Graceful degradation
         }

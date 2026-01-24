@@ -3,7 +3,7 @@ import { prisma } from "@/lib/prisma";
 import { hash } from "bcryptjs";
 // Only allow in development or test env
 const IS_TEST_ENV = process.env.NODE_ENV !== "production";
-export async function POST(req: unknown) {
+export async function POST(req: any) {
     if (!IS_TEST_ENV) {
         return new NextResponse("Not Allowed", { status: 403 });
     }
@@ -50,7 +50,7 @@ export async function POST(req: unknown) {
             slug: store.slug,
         });
     }
-    catch (e) {
+    catch (e: any) {
         return new NextResponse(e.message, { status: 500 });
     }
 }

@@ -29,7 +29,7 @@ export function AAFashionHome({
   showTimer = false,
   timerDate,
   heroVideo = "https://cdn.coverr.co/videos/coverr-fashion-photoshoot-with-a-model-5343/1080p.mp4",
-}: AAFashionHomeProps) {
+}: AAFashionHomeProps): React.JSX.Element {
   const { store } = useStorefrontStore(storeSlug);
   const { products, isLoading } = useStorefrontProducts(storeSlug, {
     limit: 12,
@@ -54,14 +54,14 @@ export function AAFashionHome({
 
   const [raffleItem, setRaffleItem] = useState<unknown>(null);
 
-  const handleRaffleEntry = async (data: unknown) => {
+  const handleRaffleEntry = async (data: any) => {
     // Data contains { customer: { ... } }
     await fetch(`/api/storefront/${storeSlug}/raffles/enter`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
-        raffleId: raffleItem.id, // The product ID acting as raffle ID
-        customerEmail: data.customer.email,
+        raffleId: (raffleItem as any).id, // The product ID acting as raffle ID
+        customerEmail: (data as any).customer.email,
         metadata: {
           name: data.customer.name,
           phone: data.customer.phone
@@ -81,7 +81,7 @@ export function AAFashionHome({
           setIsCheckoutOpen(false);
           setRaffleItem(null);
         }}
-        cart={raffleItem ? [raffleItem] : cart}
+        cart={raffleItem ? [raffleItem as any] : cart}
         total={raffleItem ? 0 : total}
         storeSlug={storeSlug || ""}
         onSuccess={clearCart}
@@ -140,7 +140,7 @@ export function AAFashionHome({
                   <p>Your bag is empty.</p>
                 </div>
               ) : (
-                cart.map((item) => (
+                cart.map((item: any) => (
                   <div key={item.id} className="flex gap-4 group">
                     <div className="w-20 h-24 bg-gray-900 rounded overflow-hidden flex-shrink-0">
                       {item.image && (
@@ -275,7 +275,7 @@ export function AAFashionHome({
           </div>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-x-6 gap-y-16">
-            {products.map((product) => (
+            {products.map((product: any) => (
               <div key={product.id} className="group cursor-pointer">
                 <div className="aspect-[3/4] bg-gray-900 mb-6 overflow-hidden relative">
                   <img

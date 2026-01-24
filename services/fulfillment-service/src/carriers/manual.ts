@@ -1,7 +1,7 @@
 import { ICarrierProvider, CreateJobParams, JobResult } from "./types";
 
 export class ManualProvider implements ICarrierProvider {
-  async createJob(params: CreateJobParams): Promise<JobResult> {
+  async createJob(_params: CreateJobParams): Promise<JobResult> {
     // For Manual dispatch, we just confirm creation.
     // The ID is internal or generated here.
     return {
@@ -11,7 +11,7 @@ export class ManualProvider implements ICarrierProvider {
     };
   }
 
-  async cancelJob(providerJobId: string): Promise<boolean> {
+  async cancelJob(_providerJobId: string): Promise<boolean> {
     return true;
   }
 }

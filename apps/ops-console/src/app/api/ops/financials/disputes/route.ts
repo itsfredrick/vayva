@@ -1,5 +1,5 @@
 
-import { NextRequest, NextResponse } from "next/server";
+import { NextRequest, NextResponse } from 'next/server';
 import { OpsAuthService } from "@/lib/ops-auth";
 import { prisma } from "@vayva/db";
 
@@ -16,7 +16,7 @@ export async function GET(req: NextRequest) {
 
         const search = searchParams.get("q") || "";
 
-        const where: unknown = {};
+        const where: any = {};
         if (status) {
             where.status = status;
         }
@@ -74,7 +74,7 @@ export async function GET(req: NextRequest) {
             }
         });
 
-    } catch (error) {
+    } catch (error: any) {
         console.error("Fetch Disputes Error:", error);
         return NextResponse.json({ error: "Failed to fetch disputes" }, { status: 500 });
     }
@@ -95,7 +95,7 @@ export async function PATCH(req: NextRequest) {
         const dispute = await prisma.dispute.findUnique({ where: { id: disputeId } });
         if (!dispute) return NextResponse.json({ error: "Dispute not found" }, { status: 404 });
 
-        let updateData: unknown = {};
+        let updateData: any = {};
         let logAction = "";
 
         switch (action) {
@@ -150,7 +150,7 @@ export async function PATCH(req: NextRequest) {
 
         return NextResponse.json({ success: true, dispute: updated });
 
-    } catch (error) {
+    } catch (error: any) {
         console.error("Update Dispute Error:", error);
         return NextResponse.json({ error: "Failed to update dispute" }, { status: 500 });
     }

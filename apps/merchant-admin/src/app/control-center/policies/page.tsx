@@ -10,7 +10,7 @@ const fetchPolicies = async () => {
   return res.json();
 };
 
-const savePolicies = async (data: unknown) => {
+const savePolicies = async (data: any) => {
   await fetch("/api/store/policies", {
     method: "PATCH",
     body: JSON.stringify(data),
@@ -20,11 +20,11 @@ const savePolicies = async (data: unknown) => {
 function PoliciesContent() {
   const searchParams = useSearchParams();
   const tab = searchParams.get("tab") || "returns"; // default to returns
-  const [storeData, setStoreData] = useState<unknown>(null);
+  const [storeData, setStoreData] = useState<any>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetchPolicies().then((data: unknown) => {
+    fetchPolicies().then((data: any) => {
       setStoreData(data);
       setLoading(false);
     });
@@ -62,7 +62,7 @@ function PoliciesContent() {
   return (
     <PolicyEditor
       key={tab} // Force re-mount on tab change to reset state
-      type={tab as unknown}
+      type={tab as any}
       initialContent={content}
       onSave={handleSave}
       storeSlug={storeData.slug || "demo-store"}

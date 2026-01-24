@@ -1,8 +1,8 @@
-import { NextResponse } from "next/server";
+import { NextResponse } from 'next/server';
 import { prisma } from "@vayva/db";
 import { OpsAuthService } from "@/lib/ops-auth";
 
-export async function GET(request: Request) {
+export async function GET(_request: Request) {
     const { user } = await OpsAuthService.requireSession();
     if (!["OPS_OWNER", "OPS_ADMIN"].includes(user.role)) {
         return NextResponse.json({ error: "Unauthorized" }, { status: 403 });
@@ -30,7 +30,7 @@ export async function GET(request: Request) {
                 target: 85
             }
         });
-    } catch (error) {
+    } catch (error: any) {
         console.error("CSAT aggregate error:", error);
         return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
     }

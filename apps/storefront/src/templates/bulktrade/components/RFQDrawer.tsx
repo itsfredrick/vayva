@@ -113,7 +113,7 @@ export const RFQDrawer = ({
                           id={`qty-${product.id}`}
                           type="number"
                           value={qty}
-                          onChange={(e) =>
+                          onChange={(e: any) =>
                             onUpdateQty(
                               product.id,
                               parseInt(e.target.value) || 0,
@@ -154,7 +154,7 @@ export const RFQDrawer = ({
               <textarea
                 id="rfq-notes"
                 value={notes}
-                onChange={(e) => setNotes(e.target.value)}
+                onChange={(e: any) => setNotes(e.target.value)}
                 className="w-full h-32 p-3 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-600"
                 placeholder="E.g., Special packaging requirements, specific delivery date..."
               ></textarea>

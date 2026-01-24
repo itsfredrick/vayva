@@ -2,7 +2,7 @@ import { prisma } from "@vayva/db";
 /**
  * P11.2: Log integration events for health monitoring
  */
-export async function logIntegrationEvent(storeId: unknown, integrationKey: unknown, eventType: unknown, status: unknown) {
+export async function logIntegrationEvent(storeId: any, integrationKey: any, eventType: any, status: any) {
     // Feature flag check
     const isEnabled = process.env.OPS_INTEGRATION_HEALTH_ENABLED === "true";
     if (!isEnabled)
@@ -17,7 +17,7 @@ export async function logIntegrationEvent(storeId: unknown, integrationKey: unkn
             },
         });
     }
-    catch (error) {
+    catch (error: any) {
         // Silent fail
         console.error("[Integration Health] Failed to log event:", error);
     }
@@ -25,9 +25,9 @@ export async function logIntegrationEvent(storeId: unknown, integrationKey: unkn
 /**
  * Get integration health status for ops dashboard
  */
-export async function getIntegrationHealth(storeId: unknown) {
+export async function getIntegrationHealth(storeId: any) {
     const integrations = ["whatsapp", "paystack", "delivery"];
-    const health = {};
+    const health: any = {};
     const now = Date.now();
     const day24h = 24 * 60 * 60 * 1000;
     const hours2 = 2 * 60 * 60 * 1000;

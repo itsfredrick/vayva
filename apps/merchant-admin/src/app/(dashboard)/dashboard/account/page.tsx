@@ -28,7 +28,7 @@ export default function AccountOverviewPage() {
       if (!res.ok) throw new Error("Failed");
       toast.success("Signed out of all devices");
       signOut({ callbackUrl: "/login" });
-    } catch (err) {
+    } catch (err: any) {
       toast.error("Failed to sign out all devices");
     }
   };
@@ -240,7 +240,7 @@ function AccountSkeleton() {
         <Skeleton className="h-10 w-32" />
       </div>
       <div className="grid gap-6 md:grid-cols-2">
-        {[1, 2, 3, 4].map((i) => (
+        {[1, 2, 3, 4].map((i: any) => (
           <Skeleton key={i} className="h-64 w-full" />
         ))}
       </div>

@@ -2,7 +2,7 @@
 "use client";
 
 import React, { useState } from "react";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams } from 'next/navigation';
 import {
     Users,
     UserPlus,
@@ -11,12 +11,11 @@ import {
     Mail,
     CheckCircle,
     X,
-    Loader2,
-    Copy,
+    Loader2, Copy,
     AlertTriangle,
     Search
-} from "lucide-react";
-import { toast } from "sonner";
+} from 'lucide-react';
+import { toast } from 'sonner';
 import { useOpsQuery } from "@/hooks/useOpsQuery";
 import { useQueryClient } from "@tanstack/react-query";
 import { Button } from "@vayva/ui";
@@ -31,7 +30,7 @@ interface OpsUser {
     createdAt: string;
 }
 
-export default function UsersPage() {
+export default function UsersPage(): React.JSX.Element {
     const queryClient = useQueryClient();
     const router = useRouter();
     const searchParams = useSearchParams();
@@ -67,9 +66,9 @@ export default function UsersPage() {
                         <input
                             placeholder="Search team..."
                             className="pl-10 pr-4 py-2 bg-white border border-gray-200 rounded-lg text-sm focus:ring-2 focus:ring-indigo-500 outline-none w-64"
-                            defaultValue={q}
-                            onChange={(e) => {
-                                const val = e.target.value;
+                            defaultValue={(q as any)}
+                            onChange={(e: any) => {
+                                const val = (e as any).target.value;
                                 const params = new URLSearchParams(window.location.search);
                                 if (val) params.set("q", val); else params.delete("q");
                                 router.push(`?${params.toString()}`);
@@ -114,7 +113,7 @@ export default function UsersPage() {
                                 </td>
                             </tr>
                         ) : (
-                            users?.map((user: OpsUser) => (
+                            users?.map((user: any) => (
                                 <UserRow key={user.id} user={user} refresh={() => queryClient.invalidateQueries({ queryKey: ["ops-users"] })} />
                             ))
                         )}
@@ -139,7 +138,7 @@ export default function UsersPage() {
     );
 }
 
-function UserRow({ user, refresh }: { user: OpsUser; refresh: () => void }) {
+function UserRow({ user, refresh }: { user: OpsUser; refresh: () => void }): React.JSX.Element {
     const [deleting, setDeleting] = useState(false);
 
     const handleDelete = async () => {
@@ -154,8 +153,8 @@ function UserRow({ user, refresh }: { user: OpsUser; refresh: () => void }) {
             }
             toast.success("User removed");
             refresh();
-        } catch (e: unknown) {
-            toast.error(e.message);
+        } catch (e: any) {
+            toast.error((e as any).message);
         } finally {
             setDeleting(false);
         }
@@ -181,8 +180,8 @@ function UserRow({ user, refresh }: { user: OpsUser; refresh: () => void }) {
             }
             toast.success("User updated");
             refresh();
-        } catch (e: unknown) {
-            toast.error(e.message);
+        } catch (e: any) {
+            toast.error((e as any).message);
         } finally {
             setDeleting(false);
         }
@@ -273,17 +272,17 @@ function UserRow({ user, refresh }: { user: OpsUser; refresh: () => void }) {
     );
 }
 
-function InviteUserModal({ isOpen, onClose, onSuccess }: unknown) {
+function InviteUserModal({ isOpen, onClose, onSuccess }: any): React.JSX.Element {
     const [loading, setLoading] = useState(false);
     const [role, setRole] = useState("OPS_SUPPORT");
 
-    if (!isOpen) return null;
+    if (!isOpen) return <></>;
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-        e.preventDefault();
+        (e as any).preventDefault();
         setLoading(true);
-        const formData = new FormData(e.currentTarget);
-        const data = {
+        const formData = new FormData((e as any).currentTarget);
+        const data: any = {
             name: formData.get("name"),
             email: formData.get("email"),
             role: formData.get("role"),
@@ -301,8 +300,8 @@ function InviteUserModal({ isOpen, onClose, onSuccess }: unknown) {
             toast.success("Invitation sent");
             onSuccess({ email: json.user.email, tempPass: json.tempPassword });
             onClose();
-        } catch (e: unknown) {
-            toast.error(e.message);
+        } catch (e: any) {
+            toast.error((e as any).message);
         } finally {
             setLoading(false);
         }
@@ -335,7 +334,7 @@ function InviteUserModal({ isOpen, onClose, onSuccess }: unknown) {
                     <div>
                         <label className="block text-sm font-medium text-gray-700 mb-1">Role</label>
                         <div className="grid grid-cols-3 gap-2">
-                            {["OPS_ADMIN", "OPS_SUPPORT", "OPERATOR"].map((r) => (
+                            {["OPS_ADMIN", "OPS_SUPPORT", "OPERATOR"].map((r: any) => (
                                 <Button
                                     key={r}
                                     type="button"
@@ -349,7 +348,7 @@ function InviteUserModal({ isOpen, onClose, onSuccess }: unknown) {
                                 </Button>
                             ))}
                         </div>
-                        <input type="hidden" name="role" value={role} />
+                        <input type="hidden" name="role" value={(role as any)} />
                     </div>
 
                     <div className="pt-2">
@@ -370,8 +369,8 @@ function InviteUserModal({ isOpen, onClose, onSuccess }: unknown) {
     );
 }
 
-function CredentialsDialog({ creds, onClose }: { creds: { email: string; tempPass: string } | null; onClose: () => void }) {
-    if (!creds) return null;
+function CredentialsDialog({ creds, onClose }: { creds: { email: string; tempPass: string } | null; onClose: () => void }): React.JSX.Element {
+    if (!creds) return <></>;
 
     return (
         <div className="fixed inset-0 z-[60] flex items-center justify-center bg-black/60 p-4">

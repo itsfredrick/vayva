@@ -12,7 +12,7 @@ import {
 import { Button, Card } from "@vayva/ui";
 import Link from "next/link";
 
-export default function KycSafetyPage() {
+export default function KycSafetyPage(): React.JSX.Element {
   return (
     <div className="min-h-screen bg-slate-50/50 dark:bg-slate-950 p-6 md:p-12">
       <div className="max-w-3xl mx-auto space-y-12">

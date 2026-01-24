@@ -33,7 +33,7 @@ export function ProductPicker({ selectedIds, onSelectionChange }: ProductPickerP
             if (!res.ok) throw new Error("Failed to load products");
             const data = await res.json();
             setProducts(data);
-        } catch (error) {
+        } catch (error: any) {
             console.error(error);
         } finally {
             setLoading(false);
@@ -58,7 +58,7 @@ export function ProductPicker({ selectedIds, onSelectionChange }: ProductPickerP
                 <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400" />
                 <Input
                     placeholder="Search products..."
-                    value={search}
+                    value={(search as any)}
                     onChange={(e: React.ChangeEvent<HTMLInputElement>) => setSearch(e.target.value)}
                     className="pl-9"
                 />
@@ -76,7 +76,7 @@ export function ProductPicker({ selectedIds, onSelectionChange }: ProductPickerP
                     </div>
                 ) : (
                     <div className="divide-y divide-slate-100">
-                        {filteredProducts.map((product) => (
+                        {filteredProducts.map((product: any) => (
                             <label
                                 key={product.id}
                                 className="flex items-center gap-3 p-3 hover:bg-slate-50 cursor-pointer transition-colors"

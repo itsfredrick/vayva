@@ -19,14 +19,14 @@ export const OneProductLayout = ({
 }: OneProductLayoutProps) => {
   // Determine main product and upsell
   // Logic: Look for the first product as main, and the upsellProductId as secondary
-  const config = (store.theme as unknown).oneProductConfig || {};
+  const config = (store.theme as any).oneProductConfig || {};
 
   // Find main product (first one)
   const activeProduct = products[0];
 
   // Find upsell product
-  const upsellProduct = config.upsellProductId
-    ? products.find((p: PublicProduct) => p.id === config.upsellProductId)
+  const upsellProduct = (config as any).upsellProductId
+    ? products.find((p: PublicProduct) => p.id === (config as any).upsellProductId)
     : undefined;
 
   const [isCheckoutOpen, setIsCheckoutOpen] = useState(false);
@@ -46,8 +46,8 @@ export const OneProductLayout = ({
       <main>
         <HeroLanding
           product={activeProduct}
-          headline={config.heroHeadline || activeProduct.name}
-          subHeadline={config.subHeadline || activeProduct.description}
+          headline={(config as any).heroHeadline || activeProduct.name}
+          subHeadline={(config as any).subHeadline || activeProduct.description}
           onBuy={handleBuy}
         />
 
@@ -60,11 +60,11 @@ export const OneProductLayout = ({
         {config.faqs && <FAQAccordion faqs={config.faqs} />}
 
         {/* Guarantee Banner */}
-        {config.guaranteeText && (
+        {(config as any).guaranteeText && (
           <section className="bg-gray-900 text-white py-12 text-center">
             <div className="max-w-4xl mx-auto px-6">
               <h3 className="text-xl font-bold mb-2">Our Promise</h3>
-              <p className="opacity-80">{config.guaranteeText}</p>
+              <p className="opacity-80">{(config as any).guaranteeText}</p>
             </div>
           </section>
         )}

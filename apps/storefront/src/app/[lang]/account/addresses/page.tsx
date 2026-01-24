@@ -8,7 +8,7 @@ import { useUserInteractions } from "@/hooks/useUserInteractions";
 import { AddressModal } from "@/components/account/AddressModal";
 import { MapPin, Plus, Trash2, CheckCircle } from "lucide-react";
 
-export default function AddressesPage({ params }: unknown) {
+export default function AddressesPage({ params: _params }: any): React.JSX.Element {
   const { lang: rawLang } = useParams() as { lang: string };
   const lang = (rawLang === "tr" ? "tr" : "en") as LocaleKey;
   const t = LOCALES[lang].account.addresses;
@@ -17,7 +17,7 @@ export default function AddressesPage({ params }: unknown) {
 
   const [isNavOpen, setIsNavOpen] = useState(false); // for modal
 
-  if (!isLoaded) return null;
+  if (!isLoaded) return <></>;
 
   return (
     <div className="space-y-6">
@@ -39,7 +39,7 @@ export default function AddressesPage({ params }: unknown) {
         </div>
       ) : (
         <div className="grid gap-4">
-          {addresses.map((addr) => (
+          {addresses.map((addr: any) => (
             <div
               key={addr.id}
               className={`bg-white p-6 rounded-2xl border transition-all ${addr.isDefault ? "border-green-500 shadow-sm ring-1 ring-green-100" : "border-gray-100"}`}

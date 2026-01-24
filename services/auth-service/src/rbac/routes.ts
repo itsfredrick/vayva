@@ -29,14 +29,14 @@ export async function rbacRoutes(server: FastifyInstance) {
   };
 
   // --- ROLES ---
-  server.get("/roles", { preHandler: ensurePermission("roles:view") }, async (req: unknown, reply) => {
+  server.get("/roles", { preHandler: ensurePermission("roles:view") }, async (req: unknown, _reply) => {
     const storeId = req.headers["x-store-id"];
     // Logic simplified as middleware handles auth
     const roles = await RbacService.listRoles(storeId);
     return roles;
   });
 
-  server.post("/roles", { preHandler: ensurePermission("roles:manage") }, async (req: unknown, reply) => {
+  server.post("/roles", { preHandler: ensurePermission("roles:manage") }, async (req: unknown, _reply) => {
     const storeId = req.headers["x-store-id"];
     const { name, permissions } = req.body;
     const role = await RbacService.createRole(storeId, name, permissions);
@@ -44,23 +44,23 @@ export async function rbacRoutes(server: FastifyInstance) {
   });
 
   // --- PERMISSIONS ---
-  server.get("/permissions", async (req, reply) => {
+  server.get("/permissions", async (_req, _reply) => {
     return await RbacService.listPermissions();
   });
 
   // --- TEAM ---
-  server.get("/team", { preHandler: ensurePermission("team:view") }, async (req: unknown, reply) => {
+  server.get("/team", { preHandler: ensurePermission("team:view") }, async (req: unknown, _reply) => {
     const storeId = req.headers["x-store-id"];
     return await TeamService.listMembers(storeId);
   });
 
-  server.post("/team/invite", { preHandler: ensurePermission("team:manage") }, async (req: unknown, reply) => {
+  server.post("/team/invite", { preHandler: ensurePermission("team:manage") }, async (req: unknown, _reply) => {
     const storeId = req.headers["x-store-id"];
     const { email } = req.body;
     return await TeamService.inviteMember(storeId, email);
   });
 
-  server.delete("/team/:userId", { preHandler: ensurePermission("team:manage") }, async (req: unknown, reply) => {
+  server.delete("/team/:userId", { preHandler: ensurePermission("team:manage") }, async (req: unknown, _reply) => {
     const storeId = req.headers["x-store-id"];
     const { userId } = req.params;
     return await TeamService.removeMember(storeId, userId);

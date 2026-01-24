@@ -2,7 +2,7 @@ import React from "react";
 import { Button } from "@vayva/ui";
 import { ArrowRight, BadgeCheck, Star } from "lucide-react";
 
-export const MarketHero = () => {
+export const MarketHero = (): React.JSX.Element => {
   return (
     <section className="bg-gray-100 py-8 px-4 sm:px-6">
       <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-12 gap-6 h-[400px] md:h-[350px]">
@@ -25,6 +25,29 @@ export const MarketHero = () => {
             <Button className="bg-white text-[#111827] hover:bg-gray-100 font-bold px-8 py-3 rounded-lg inline-flex items-center gap-2 transition-colors">
               Shop Now <ArrowRight size={18} />
             </Button>
+
+            {/* Floating Glassmorphism Stats */}
+            <div className="mt-12 flex flex-wrap gap-4">
+              <div className="bg-white/10 backdrop-blur-md border border-white/20 p-4 rounded-2xl flex items-center gap-3">
+                <div className="w-10 h-10 bg-[#10B981] rounded-xl flex items-center justify-center shadow-lg shadow-[#10B981]/20">
+                  <Star className="text-white" size={20} fill="currentColor" />
+                </div>
+                <div>
+                  <div className="text-2xl font-black">4.9/5</div>
+                  <div className="text-[10px] uppercase tracking-widest text-[#10B981] font-bold">Market Rating</div>
+                </div>
+              </div>
+
+              <div className="bg-white/10 backdrop-blur-md border border-white/20 p-4 rounded-2xl flex items-center gap-3">
+                <div className="w-10 h-10 bg-white/20 rounded-xl flex items-center justify-center">
+                  <BadgeCheck className="text-white" size={20} />
+                </div>
+                <div>
+                  <div className="text-2xl font-black">1.2k+</div>
+                  <div className="text-[10px] uppercase tracking-widest text-gray-400 font-bold">Verified Partners</div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
 

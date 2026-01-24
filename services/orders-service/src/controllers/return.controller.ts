@@ -25,7 +25,7 @@ export const createReturnHandler = async (
     const returnReq = await returnService.createReturnRequest(request.body);
     return reply.code(201).send(returnReq);
   } catch (error) {
-    (request.log as unknown).error(error);
+    request.log.error(error);
     return reply.code(500).send({ error: "Failed to create return request" });
   }
 };
@@ -44,7 +44,7 @@ export const updateReturnStatusHandler = async (
     );
     return reply.send(updated);
   } catch (error) {
-    (request.log as unknown).error(error);
+    request.log.error(error);
     return reply.code(500).send({ error: "Failed to update return status" });
   }
 };
@@ -64,7 +64,7 @@ export const listReturnsHandler = async (
     );
     return reply.send(returns);
   } catch (error) {
-    (request.log as unknown).error(error);
+    request.log.error(error);
     return reply.code(500).send({ error: "Failed to list returns" });
   }
 };

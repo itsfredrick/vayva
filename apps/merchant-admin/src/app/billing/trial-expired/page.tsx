@@ -22,7 +22,7 @@ export default function TrialExpiredPage() {
                     products: data.usage?.products || 0,
                     leads: data.usage?.leads || 0,
                 });
-            } catch (error) {
+            } catch (error: any) {
                 console.error("Failed to fetch trial stats", error);
             } finally {
                 setIsLoading(false);
@@ -45,7 +45,7 @@ export default function TrialExpiredPage() {
             } else {
                 toast.error("Failed to initiate upgrade");
             }
-        } catch (error) {
+        } catch (error: any) {
             toast.error("Error processing upgrade");
         } finally {
             setIsProcessing(null);
@@ -92,7 +92,7 @@ export default function TrialExpiredPage() {
 
                 {/* Pricing Bridge */}
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mt-12">
-                    {PLANS.filter(p => p.key !== 'STARTER').map((plan) => (
+                    {PLANS.filter(p => p.key !== 'STARTER').map((plan: any) => (
                         <Card key={plan.key} className={`p-8 bg-white flex flex-col relative ${plan.key === 'PRO' ? 'border-2 border-black scale-105 z-10' : 'border border-gray-200'}`}>
                             {plan.key === 'PRO' && (
                                 <div className="absolute -top-4 left-1/2 -translate-x-1/2 bg-black text-white px-4 py-1 rounded-full text-xs font-bold uppercase tracking-widest shadow-lg">
@@ -111,7 +111,7 @@ export default function TrialExpiredPage() {
                             </div>
 
                             <ul className="space-y-4 mb-10 text-left flex-grow">
-                                {plan.bullets.map((bullet, i) => (
+                                {plan.bullets.map((bullet: any, i: any) => (
                                     <li key={i} className="flex items-start gap-3 text-sm text-gray-600">
                                         <Icon name="CheckCircle2" size={18} className="text-green-500 flex-shrink-0 mt-0.5" />
                                         <span>{bullet}</span>

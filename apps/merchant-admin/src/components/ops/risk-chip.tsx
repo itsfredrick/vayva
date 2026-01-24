@@ -44,7 +44,7 @@ export function RiskChip({ level, showIcon = true }: RiskChipProps) {
     >
       {showIcon && (
         <Icon
-          name={config.icon as unknown}
+          name={config.icon as any}
           size={14}
           className={config.iconColor}
         />

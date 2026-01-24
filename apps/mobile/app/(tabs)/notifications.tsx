@@ -39,7 +39,7 @@ const NOTIFICATIONS = [
   },
 ];
 
-export default function NotificationsScreen() {
+export default function NotificationsScreen(): React.JSX.Element {
   return (
     <SafeAreaView className="flex-1 bg-[#142210]">
       <View className="px-6 py-4">

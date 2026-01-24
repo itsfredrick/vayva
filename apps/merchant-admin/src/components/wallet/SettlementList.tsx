@@ -22,7 +22,7 @@ export const SettlementList = ({
     return (
       <div className="text-center py-16 text-gray-400 border border-dashed border-gray-200 rounded-xl bg-gray-50/50">
         <Icon
-          name={"CheckCircle2" as unknown}
+          name={"CheckCircle2" as any}
           size={48}
           className="mx-auto mb-4 opacity-20"
         />
@@ -58,7 +58,7 @@ export const SettlementList = ({
             </tr>
           </thead>
           <tbody className="divide-y divide-gray-100">
-            {settlements.map((item) => (
+            {settlements.map((item: any) => (
               <tr key={item.id} className="hover:bg-gray-50/50">
                 <td className="px-4 py-3">
                   <div className="font-bold text-gray-900">

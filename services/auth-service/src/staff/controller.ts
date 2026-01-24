@@ -77,6 +77,7 @@ export const inviteStaffHandler = async (
     },
   });
 
+  // eslint-disable-next-line no-console
   console.log(
     `[STAFF] Invite sent to ${email} for store ${store.name}. Token: ${token}`,
   );

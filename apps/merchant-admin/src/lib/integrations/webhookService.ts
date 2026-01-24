@@ -2,14 +2,14 @@ import crypto from "crypto";
 import { prisma } from "@vayva/db";
 import { FlagService } from "../flags/flagService";
 export class WebhookService {
-    static signPayload(secret, payload, eventId, timestamp) {
+    static signPayload(secret: any, payload: any, eventId: any, timestamp: any) {
         const signaturePayload = `${timestamp}.${eventId}.${JSON.stringify(payload)}`;
         return crypto
             .createHmac("sha256", secret)
             .update(signaturePayload)
             .digest("hex");
     }
-    static async triggerEvent(merchantId, eventName, payload) {
+    static async triggerEvent(merchantId: any, eventName: any, payload: any) {
         // KILL SWITCH CHECK
         const enabled = await FlagService.isEnabled("webhooks.outbound.enabled", {
             merchantId,
@@ -42,7 +42,7 @@ export class WebhookService {
         }
     }
     // Testing the worker process
-    static async processDelivery(sub, eventId, payload, deliveryId) {
+    static async processDelivery(sub: any, eventId: any, payload: any, deliveryId: any) {
         const timestamp = Date.now();
         const signature = this.signPayload(sub.signingSecretHash, payload, eventId, timestamp);
         // Test update

@@ -2,22 +2,19 @@
 
 import React, { useState, useEffect, useRef } from "react";
 import Link from "next/link";
-import { useParams, useRouter } from "next/navigation";
+import { useParams, useRouter } from 'next/navigation';
 import {
     ArrowLeft,
     Send,
     User,
-    Bot,
-    MoreVertical,
-    CheckCircle2,
-    AlertCircle,
-    Clock,
-    Archive,
+    Bot, MoreVertical,
+    CheckCircle2, AlertCircle,
+    Clock, Archive,
     RefreshCw,
     Building2
-} from "lucide-react";
-import { formatDistanceToNow } from "date-fns";
-import { toast } from "sonner";
+} from 'lucide-react';
+import { formatDistanceToNow } from 'date-fns';
+import { toast } from 'sonner';
 import { cn, Button } from "@vayva/ui";
 
 interface TicketMessage {
@@ -26,7 +23,7 @@ interface TicketMessage {
     authorName: string;
     message: string;
     createdAt: string;
-    attachments: unknown[];
+    attachments: any[];
 }
 
 interface SupportTicket {
@@ -44,16 +41,16 @@ interface SupportTicket {
     createdAt: string;
 }
 
-export default function TicketDetailPage() {
+export default function TicketDetailPage(): React.JSX.Element {
     const { id } = useParams() as { id: string };
-    const router = useRouter();
+    const _router = useRouter();
     const messagesEndRef = useRef<HTMLDivElement>(null);
 
     const [ticket, setTicket] = useState<SupportTicket | null>(null);
     const [loading, setLoading] = useState(true);
     const [replyText, setReplyText] = useState("");
     const [sending, setSending] = useState(false);
-    const [updatingStatus, setUpdatingStatus] = useState(false);
+    const [_updatingStatus, _setUpdatingStatus] = useState(false);
     const [performingAction, setPerformingAction] = useState(false);
 
     useEffect(() => {
@@ -78,14 +75,14 @@ export default function TicketDetailPage() {
             if (!res.ok) throw new Error("Failed to load ticket");
             const json = await res.json();
             setTicket(json.data);
-        } catch (error) {
+        } catch {
             toast.error("Failed to load ticket details");
         } finally {
             setLoading(false);
         }
     };
 
-    const handleAction = async (action: string, data: unknown = {}) => {
+    const handleAction = async (action: string, data: any = {}): Promise<void> => {
         setPerformingAction(true);
         try {
             const res = await fetch(`/api/ops/support/${id}`, {
@@ -96,10 +93,10 @@ export default function TicketDetailPage() {
 
             if (!res.ok) throw new Error(`Failed to perform ${action}`);
 
-            const json = await res.json();
+            const _json = await res.json();
             setTicket(prev => prev ? ({ ...prev, ...data }) : null);
             toast.success(`${action} successful`);
-        } catch (error) {
+        } catch (error: any) {
             toast.error(error.message);
         } finally {
             setPerformingAction(false);
@@ -107,7 +104,7 @@ export default function TicketDetailPage() {
     };
 
     const handleReply = async (e: React.FormEvent) => {
-        e.preventDefault();
+        (e as any).preventDefault();
         if (!replyText.trim()) return;
 
         setSending(true);
@@ -120,13 +117,13 @@ export default function TicketDetailPage() {
 
             if (!res.ok) throw new Error("Failed to send reply");
 
-            const json = await res.json();
+            const _json = await res.json();
             setReplyText("");
 
             // Optimistic update or refresh
             fetchTicket();
             toast.success("Reply sent");
-        } catch (error) {
+        } catch {
             toast.error("Failed to send reply");
         } finally {
             setSending(false);
@@ -242,7 +239,7 @@ export default function TicketDetailPage() {
                         No messages yet. Start the conversation!
                     </div>
                 ) : (
-                    ticket.ticketMessages.map((msg) => {
+                    ticket.ticketMessages.map((msg: any) => {
                         const isOps = msg.authorType === "OPS";
                         const isAi = msg.authorType === "AI";
                         const isMe = isOps; // For now assuming all OPS are "me" or aligned right
@@ -312,14 +309,14 @@ export default function TicketDetailPage() {
                     <form onSubmit={handleReply} className="max-w-4xl mx-auto relative flex gap-3">
                         <div className="flex-1 relative">
                             <textarea
-                                value={replyText}
-                                onChange={(e) => setReplyText(e.target.value)}
+                                value={(replyText as any)}
+                                onChange={(e: any) => setReplyText((e as any).target.value)}
                                 placeholder="Type your reply..."
                                 className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:bg-white resize-none transition-all"
                                 rows={1}
                                 onKeyDown={(e) => {
-                                    if ((e.key === 'Enter' && !e.shiftKey) || ((e.metaKey || e.ctrlKey) && e.key === 'Enter')) {
-                                        e.preventDefault();
+                                    if (((e as any).key === 'Enter' && !(e as any).shiftKey) || (((e as any).metaKey || (e as any).ctrlKey) && (e as any).key === 'Enter')) {
+                                        (e as any).preventDefault();
                                         handleReply(e);
                                     }
                                 }}

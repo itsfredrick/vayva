@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth"; // Adjust import path as needed
 import { prisma } from "@/lib/prisma";
-export async function GET(req: unknown) {
+export async function GET(req: any) {
     const session = await getServerSession(authOptions);
     // Use storeId from session or header (depending on auth strategy)
     // Assuming session.user.storeId exists based on project patterns
@@ -26,14 +26,14 @@ export async function GET(req: unknown) {
         if (planKey === "GROWTH")
             limit = 500;
         if (planKey === "PRO")
-            limit = "unlimited";
+            limit = "unlimited" as any;
         return NextResponse.json({
             used,
             limit,
             plan: planKey.toLowerCase(),
         });
     }
-    catch (error) {
+    catch (error: any) {
         console.error("[PRODUCTS_LIMITS]", error);
         return new NextResponse("Internal Error", { status: 500 });
     }

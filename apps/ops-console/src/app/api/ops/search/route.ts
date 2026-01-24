@@ -1,5 +1,5 @@
 
-import { NextResponse } from "next/server";
+import { NextResponse } from 'next/server';
 import { prisma } from "@vayva/db";
 import { OpsAuthService } from "@/lib/ops-auth";
 
@@ -51,14 +51,14 @@ export async function GET(request: Request) {
         ]);
 
         const results = [
-            ...stores.map(s => ({ type: "store", label: s.name, subLabel: s.slug, url: `/ops/merchants/${s.id}` })),
+            ...stores.map(s => ({ type: "store", label: (s as any).name, subLabel: (s as any).slug, url: `/ops/merchants/${(s as any).id}` })),
             ...orders.map(o => ({ type: "order", label: `Order #${o.orderNumber}`, subLabel: `₦${o.total}`, url: `/ops/orders/${o.id}` })),
-            ...shipments.map(s => ({ type: "shipment", label: `Delivery ${s.trackingCode}`, subLabel: s.provider, url: `/ops/deliveries/${s.id}` }))
+            ...shipments.map(s => ({ type: "shipment", label: `Delivery ${(s as any).trackingCode}`, subLabel: (s as any).provider, url: `/ops/deliveries/${(s as any).id}` }))
         ];
 
         return NextResponse.json({ results });
 
-    } catch (error) {
+    } catch (error: any) {
         console.error("Search API Error:", error);
         return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
     }

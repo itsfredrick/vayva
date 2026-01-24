@@ -1,5 +1,5 @@
 
-import { NextRequest, NextResponse } from "next/server";
+import { NextRequest, NextResponse } from 'next/server';
 import { OpsAuthService } from "@/lib/ops-auth";
 import { prisma } from "@vayva/db";
 
@@ -92,7 +92,7 @@ export async function POST(req: NextRequest) {
             logs
         });
 
-    } catch (error) {
+    } catch (error: any) {
         return NextResponse.json({
             success: false,
             error: (error as Error).message || "Runbook execution failed"

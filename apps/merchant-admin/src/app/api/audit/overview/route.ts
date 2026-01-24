@@ -43,7 +43,7 @@ export async function GET() {
             },
         });
     }
-    catch (error) {
+    catch (error: any) {
         console.error("Audit Overview Error:", error);
         return NextResponse.json({ error: "Failed to fetch audit overview" }, { status: 500 });
     }

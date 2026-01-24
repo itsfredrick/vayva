@@ -1,19 +1,19 @@
 "use client";
+import React from "react";
 
 import { useOpsQuery } from "@/hooks/useOpsQuery";
 import {
     Users,
     DollarSign,
-    AlertCircle,
-    ShieldAlert,
+    AlertCircle, ShieldAlert,
     ArrowRight,
     Activity
-} from "lucide-react";
+} from 'lucide-react';
 import Link from "next/link";
 import { cn } from "@vayva/ui";
 // import { formatCurrency } from "@/lib/utils"; 
 
-const formatCurrency = (amount: number) => {
+const _formatCurrency = (amount: number) => {
     return new Intl.NumberFormat("en-NG", {
         style: "currency",
         currency: "NGN",
@@ -21,7 +21,7 @@ const formatCurrency = (amount: number) => {
     }).format(amount);
 };
 
-function GatewayHealthCard() {
+function GatewayHealthCard(): React.JSX.Element {
     const { data: health, isLoading } = useOpsQuery(["gateway-health"], () =>
         fetch("/api/ops/health/ping").then(res => res.json())
     );
@@ -64,7 +64,7 @@ function MetricCard({
     trend,
     trendUp,
     color = "bg-white"
-}: unknown) {
+}: any) {
     return (
         <div className={`${color} p-6 rounded-2xl border border-gray-100 shadow-sm`}>
             <div className="flex items-start justify-between mb-4">
@@ -84,7 +84,7 @@ function MetricCard({
     );
 }
 
-export default function OpsDashboardPage() {
+export default function OpsDashboardPage(): React.JSX.Element {
     const { data, isLoading: loading } = useOpsQuery(
         ["dashboard-stats"],
         () => fetch("/api/ops/dashboard/stats").then(res => res.json())
@@ -121,7 +121,7 @@ export default function OpsDashboardPage() {
                 <MetricCard
                     title="Total Revenue"
                     value={revenue ? `₦${(revenue.total).toLocaleString()}` : "₦0"}
-                    icon={DollarSign}
+                    icon={(DollarSign as any)}
                     trend="+12% vs last month"
                     trendUp={true}
                     color="bg-gradient-to-br from-green-50 to-emerald-50"
@@ -129,14 +129,14 @@ export default function OpsDashboardPage() {
                 <MetricCard
                     title="Active Merchants"
                     value={merchants?.total || 0}
-                    icon={Users}
+                    icon={(Users as any)}
                     trend={merchants?.delta}
                     trendUp={true}
                 />
                 <MetricCard
                     title="Open Tickets"
                     value={operations?.tickets || 0}
-                    icon={AlertCircle}
+                    icon={(AlertCircle as any)}
                     color="bg-orange-50"
                 />
                 <GatewayHealthCard />
@@ -158,14 +158,14 @@ export default function OpsDashboardPage() {
 
                     <div className="space-y-6">
                         {data?.recentActivity?.length > 0 ? (
-                            data.recentActivity.map((activity: unknown, i: number) => (
+                            data.recentActivity.map((activity: any, i: number) => (
                                 <div key={i} className="flex gap-4 items-start">
                                     <div className="h-2 w-2 mt-2 rounded-full bg-indigo-400 shrink-0"></div>
                                     <div>
                                         <p className="text-sm text-gray-900 font-medium">
-                                            {activity.message}
+                                            {(activity as any).message}
                                         </p>
-                                        <p className="text-xs text-gray-500">{activity.timestamp}</p>
+                                        <p className="text-xs text-gray-500">{(activity as any).timestamp}</p>
                                     </div>
                                 </div>
                             ))

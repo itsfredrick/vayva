@@ -52,7 +52,7 @@ export const NotificationItem = ({
             color,
           )}
         >
-          <Icon name={icon as unknown} size={14} />
+          <Icon name={icon as any} size={14} />
         </div>
 
         <div className="flex-1 min-w-0">

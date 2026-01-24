@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { User, MerchantContext, AuthMeResponse } from "../types";
+import { User } from "../types";
 
 /**
  * Standard API Response Structure

@@ -5,7 +5,7 @@ import { Button } from "@vayva/ui";
 import Link from "next/link";
 import { CheckCircle, AlertCircle, Clock } from "lucide-react";
 
-export default function SystemStatusPage() {
+export default function SystemStatusPage(): React.JSX.Element {
     const services = [
         {
             name: "Merchant Dashboard",
@@ -45,7 +45,7 @@ export default function SystemStatusPage() {
         },
     ];
 
-    const getStatusIcon = (status: string) => {
+    const getStatusIcon = (status: string): React.JSX.Element => {
         switch (status) {
             case "operational":
                 return <CheckCircle className="w-5 h-5 text-green-500" />;
@@ -58,7 +58,7 @@ export default function SystemStatusPage() {
         }
     };
 
-    const getStatusText = (status: string) => {
+    const getStatusText = (status: string): string => {
         switch (status) {
             case "operational":
                 return "Operational";
@@ -71,7 +71,7 @@ export default function SystemStatusPage() {
         }
     };
 
-    const getStatusColor = (status: string) => {
+    const getStatusColor = (status: string): string => {
         switch (status) {
             case "operational":
                 return "text-green-600";
@@ -103,7 +103,7 @@ export default function SystemStatusPage() {
 
                 {/* Services Status */}
                 <div className="space-y-4 mb-16">
-                    {services.map((service) => (
+                    {services.map((service: any) => (
                         <div
                             key={service.name}
                             className="bg-white border border-gray-200 rounded-2xl p-6 hover:shadow-lg transition-shadow"

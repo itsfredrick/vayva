@@ -15,7 +15,6 @@ server.register(aiRoutes, { prefix: "/v1/ai" });
 const start = async () => {
   try {
     await server.listen({ port: 3006, host: "0.0.0.0" });
-    console.log("AI Orchestrator running on port 3006");
   } catch (err) {
     (server.log as unknown).error(err);
     process.exit(1);

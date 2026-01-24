@@ -1,4 +1,5 @@
 "use client";
+import React from "react";
 
 import { LocaleKey, LOCALES } from "@/data/locales";
 import {
@@ -17,7 +18,7 @@ interface AccountNavProps {
   lang: LocaleKey;
 }
 
-export function AccountNav({ lang }: AccountNavProps) {
+export function AccountNav({ lang }: AccountNavProps): React.JSX.Element {
   const t = LOCALES[lang].account.nav;
   const pathname = usePathname();
 
@@ -30,7 +31,7 @@ export function AccountNav({ lang }: AccountNavProps) {
 
   return (
     <nav className="space-y-1">
-      {navItems.map((item) => {
+      {navItems.map((item: any) => {
         const isActive = pathname === item.href;
         const Icon = item.icon;
         return (

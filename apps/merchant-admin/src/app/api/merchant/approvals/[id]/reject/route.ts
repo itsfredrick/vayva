@@ -38,7 +38,7 @@ export const POST = withVayvaAPI(PERMISSIONS.COMMERCE_MANAGE, async (req, { stor
         });
         return NextResponse.json({ ok: true, status: "rejected" });
     }
-    catch (error) {
+    catch (error: any) {
         console.error("Reject Approval Error:", error);
         return NextResponse.json({ error: "Internal Error" }, { status: 500 });
     }

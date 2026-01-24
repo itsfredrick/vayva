@@ -1,5 +1,6 @@
-import { redirect } from "next/navigation";
+import React from "react";
+import { redirect } from 'next/navigation';
 
-export default function Home() {
+export default function Home(): React.JSX.Element {
   redirect("/ops");
 }

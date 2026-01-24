@@ -11,7 +11,7 @@ export async function GET() {
                 settings: true,
             },
         });
-        const settings = store?.settings || {};
+        const settings: any = store?.settings || {};
         const notificationSettings = settings.notifications || {};
         return NextResponse.json({
             email: {
@@ -33,7 +33,7 @@ export async function GET() {
             },
         });
     }
-    catch (error) {
+    catch (error: any) {
         console.error("Notification settings fetch error:", error);
         if (error.message === "Unauthorized") {
             return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
@@ -41,7 +41,7 @@ export async function GET() {
         return NextResponse.json({ error: "Failed to fetch notification settings" }, { status: 500 });
     }
 }
-export async function PUT(request: unknown) {
+export async function PUT(request: Request) {
     try {
         const session = await requireAuth();
         const storeId = session.user.storeId;
@@ -56,7 +56,7 @@ export async function PUT(request: unknown) {
             where: { id: storeId },
             data: {
                 settings: {
-                    ...currentSettings,
+                    ...(currentSettings as any),
                     notifications: {
                         email,
                         whatsapp,
@@ -70,7 +70,7 @@ export async function PUT(request: unknown) {
             message: "Notification settings updated",
         });
     }
-    catch (error) {
+    catch (error: any) {
         console.error("Notification settings update error:", error);
         if (error.message === "Unauthorized") {
             return NextResponse.json({ error: "Unauthorized" }, { status: 401 });

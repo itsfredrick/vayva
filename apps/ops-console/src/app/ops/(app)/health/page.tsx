@@ -10,7 +10,7 @@ import {
     CheckCircle2,
     XCircle,
     AlertTriangle
-} from "lucide-react";
+} from 'lucide-react';
 import { Button } from "@vayva/ui";
 
 interface HealthStatus {
@@ -31,7 +31,7 @@ interface HealthStatus {
     };
 }
 
-export default function SystemHealthPage() {
+export default function SystemHealthPage(): React.JSX.Element {
     const [data, setData] = useState<HealthStatus | null>(null);
     const [loading, setLoading] = useState(true);
 
@@ -46,7 +46,7 @@ export default function SystemHealthPage() {
             if (res.ok) {
                 setData(await res.json());
             }
-        } catch (error) {
+        } catch (error: any) {
             console.error("Health check failed", error);
         } finally {
             setLoading(false);

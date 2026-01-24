@@ -61,8 +61,8 @@ export const PinSetupScreen = () => {
           maxLength={4}
           placeholder="0000"
           className="text-center text-3xl tracking-[1em] font-bold border-b-2 border-gray-200 py-2 focus:border-black focus:outline-none bg-transparent"
-          value={pin}
-          onChange={(e) => setPinValue(e.target.value.replace(/\D/g, ""))}
+          value={(pin as any)}
+          onChange={(e: any) => setPinValue(e.target.value.replace(/\D/g, ""))}
         />
         <Button
           type="submit"
@@ -112,8 +112,8 @@ export const UnlockScreen = () => {
           placeholder="••••"
           className={`text-center text-3xl tracking-[1em] font-bold border-b-2 py-2 focus:outline-none bg-transparent transition-colors
                         ${error ? "border-red-500 text-red-500" : "border-gray-200 focus:border-black"}`}
-          value={pin}
-          onChange={(e) => {
+          value={(pin as any)}
+          onChange={(e: any) => {
             setPinValue(e.target.value.replace(/\D/g, ""));
             setError(false);
           }}

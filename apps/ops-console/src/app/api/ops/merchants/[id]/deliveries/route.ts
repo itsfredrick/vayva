@@ -1,5 +1,5 @@
 
-import { NextResponse } from "next/server";
+import { NextResponse } from 'next/server';
 import { prisma } from "@vayva/db";
 import { OpsAuthService } from "@/lib/ops-auth";
 
@@ -42,13 +42,13 @@ export async function GET(
 
         return NextResponse.json({
             data: dispatchJobs.map(job => ({
-                id: job.id,
-                orderId: job.shipment.order.orderNumber,
-                carrier: job.carrier,
-                status: job.status,
-                rider: job.assignedRiderName,
-                riderPhone: job.assignedRiderPhone,
-                createdAt: job.createdAt
+                id: (job as any).id,
+                orderId: (job as any).shipment.order.orderNumber,
+                carrier: (job as any).carrier,
+                status: (job as any).status,
+                rider: (job as any).assignedRiderName,
+                riderPhone: (job as any).assignedRiderPhone,
+                createdAt: (job as any).createdAt
             })),
             meta: {
                 total,
@@ -58,7 +58,7 @@ export async function GET(
             }
         });
 
-    } catch (error) {
+    } catch (error: any) {
         if (error.message === "Unauthorized") {
             return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
         }

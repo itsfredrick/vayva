@@ -1,7 +1,7 @@
 import { FastifyInstance } from "fastify";
 import { SupportController } from "./controller";
 
-export async function publicRoutes(server: FastifyInstance) {
+export async function publicRoutes(_server: FastifyInstance) {
   // None for now, tickets are internal/authed
 }
 

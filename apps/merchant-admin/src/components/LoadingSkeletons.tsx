@@ -25,7 +25,7 @@ export function Skeleton({
         "relative overflow-hidden rounded-lg bg-gray-100 before:absolute before:inset-0 before:-translate-x-full before:animate-[shimmer_2s_infinite] before:bg-gradient-to-r before:from-transparent before:via-white/60 before:to-transparent",
         className,
       )}
-      {...props}
+      {...(props as any)}
     />
   );
 }
@@ -145,9 +145,9 @@ export function PageSkeleton() {
       <div className="flex items-center justify-center py-12">
         <div className="relative w-16 h-16 animate-pulse">
           <img
-            src="/brand-logo.png"
-            alt="Loading..."
-            className="w-full h-full object-contain opacity-50"
+            src="/vayva-logo-official.svg"
+            alt="Vayva Logo"
+            className="h-12 w-12 animate-pulse"
           />
         </div>
       </div>

@@ -12,7 +12,7 @@ interface CustomerDrawerProps {
 
 interface CustomerStats {
   aov: number;
-  [key: string]: unknown;
+  [key: string]: any;
 }
 
 export const CustomerDrawer = ({
@@ -52,7 +52,7 @@ export const CustomerDrawer = ({
       setInsights(profileRes.insights);
       setStats(profileRes.stats);
       setHistory(historyRes);
-    } catch (e) {
+    } catch (e: any) {
       console.error(e);
     } finally {
       setLoading(false);
@@ -73,7 +73,7 @@ export const CustomerDrawer = ({
         return;
       }
       onClose();
-    } catch (e) {
+    } catch (e: any) {
       console.error(e);
       alert("An error occurred while deleting the customer");
     } finally {
@@ -189,7 +189,7 @@ export const CustomerDrawer = ({
                 Smart Insights
               </h3>
               <div className="flex gap-3 overflow-x-auto pb-2 no-scrollbar">
-                {insights.map((insight: CustomerInsight) => (
+                {insights.map((insight: any) => (
                   <div
                     key={insight.id}
                     className="min-w-[200px] p-3 bg-indigo-50/50 border border-indigo-100 rounded-xl"

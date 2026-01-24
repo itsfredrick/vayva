@@ -55,7 +55,7 @@ export default function StorePoliciesPage() {
       const res = await fetch("/api/merchant/policies");
       const data = await res.json();
       setPolicies(data.policies || []);
-    } catch (error) {
+    } catch (error: any) {
       console.error("Error loading policies:", error);
     }
   }
@@ -74,7 +74,7 @@ export default function StorePoliciesPage() {
         setTitle("");
         setContent("");
       }
-    } catch (error) {
+    } catch (error: any) {
       console.error("Error loading policy:", error);
     } finally {
       setLoading(false);
@@ -99,7 +99,7 @@ export default function StorePoliciesPage() {
         await loadPolicy(selectedType);
         alert("Policies generated successfully!");
       }
-    } catch (error) {
+    } catch (error: any) {
       console.error("Error generating policies:", error);
       alert("Failed to generate policies");
     } finally {
@@ -121,7 +121,7 @@ export default function StorePoliciesPage() {
         await loadPolicy(selectedType);
         alert("Policy saved!");
       }
-    } catch (error) {
+    } catch (error: any) {
       console.error("Error saving policy:", error);
       alert("Failed to save policy");
     } finally {
@@ -144,7 +144,7 @@ export default function StorePoliciesPage() {
         await loadPolicy(selectedType);
         alert("Policy published!");
       }
-    } catch (error) {
+    } catch (error: any) {
       console.error("Error publishing policy:", error);
       alert("Failed to publish policy");
     } finally {
@@ -191,8 +191,8 @@ export default function StorePoliciesPage() {
                 variant="ghost"
                 onClick={() => setSelectedType(type)}
                 className={`w-full justify-start h-auto px-4 py-3 rounded-lg transition-colors font-normal hover:bg-slate-100 text-slate-700 ${isSelected
-                    ? "bg-[#22C55E]/10 text-[#22C55E] font-medium hover:bg-[#22C55E]/20 hover:text-[#22C55E]"
-                    : ""
+                  ? "bg-[#22C55E]/10 text-[#22C55E] font-medium hover:bg-[#22C55E]/20 hover:text-[#22C55E]"
+                  : ""
                   }`}
               >
                 <div className="flex items-center justify-between w-full">
@@ -200,9 +200,9 @@ export default function StorePoliciesPage() {
                   {policy && (
                     <Badge
                       variant={
-                        (policy.status === "PUBLISHED"
+                        ((policy as any).status === "PUBLISHED"
                           ? "default"
-                          : "secondary") as unknown
+                          : "secondary") as any
                       }
                     >
                       {policy.status === "PUBLISHED" ? "Published" : "Draft"}
@@ -225,8 +225,8 @@ export default function StorePoliciesPage() {
                   Title
                 </label>
                 <Input
-                  value={title}
-                  onChange={(e: unknown) => setTitle(e.target.value)}
+                  value={(title as any)}
+                  onChange={(e: any) => setTitle((e.target as any).value)}
                   placeholder="Policy Title"
                 />
               </div>
@@ -236,8 +236,8 @@ export default function StorePoliciesPage() {
                   Content (Markdown)
                 </label>
                 <Textarea
-                  value={content}
-                  onChange={(e: unknown) => setContent(e.target.value)}
+                  value={(content as any)}
+                  onChange={(e: any) => setContent((e.target as any).value)}
                   placeholder="Policy content in markdown..."
                   rows={20}
                   className="font-mono text-sm"

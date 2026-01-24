@@ -51,7 +51,7 @@ export function GlobalHeader() {
               </Button>
               {activeDropdown === "product" && (
                 <div className="absolute top-full left-0 mt-2 w-56 bg-white border border-gray-200 rounded-lg shadow-lg py-2">
-                  {productLinks.map((link) => (
+                  {productLinks.map((link: any) => (
                     <Link
                       key={link.href}
                       href={link.href}
@@ -75,7 +75,7 @@ export function GlobalHeader() {
               </Button>
               {activeDropdown === "company" && (
                 <div className="absolute top-full left-0 mt-2 w-48 bg-white border border-gray-200 rounded-lg shadow-lg py-2">
-                  {companyLinks.map((link) => (
+                  {companyLinks.map((link: any) => (
                     <Link
                       key={link.href}
                       href={link.href}
@@ -99,7 +99,7 @@ export function GlobalHeader() {
               </Button>
               {activeDropdown === "support" && (
                 <div className="absolute top-full left-0 mt-2 w-48 bg-white border border-gray-200 rounded-lg shadow-lg py-2">
-                  {supportLinks.map((link) => (
+                  {supportLinks.map((link: any) => (
                     <Link
                       key={link.href}
                       href={link.href}
@@ -171,7 +171,7 @@ export function GlobalHeader() {
                 Product
               </p>
               <div className="space-y-2">
-                {productLinks.map((link) => (
+                {productLinks.map((link: any) => (
                   <Link
                     key={link.href}
                     href={link.href}
@@ -190,7 +190,7 @@ export function GlobalHeader() {
                 Company
               </p>
               <div className="space-y-2">
-                {companyLinks.map((link) => (
+                {companyLinks.map((link: any) => (
                   <Link
                     key={link.href}
                     href={link.href}
@@ -209,7 +209,7 @@ export function GlobalHeader() {
                 Support
               </p>
               <div className="space-y-2">
-                {supportLinks.map((link) => (
+                {supportLinks.map((link: any) => (
                   <Link
                     key={link.href}
                     href={link.href}

@@ -2,8 +2,8 @@ import { UserRole } from "@vayva/shared";
 
 export function hasPermission(
   role: UserRole,
-  resource: string,
-  action: string,
+  _resource: string,
+  _action: string,
 ) {
   // Pending implementation
   if (role === UserRole.OWNER) return true;

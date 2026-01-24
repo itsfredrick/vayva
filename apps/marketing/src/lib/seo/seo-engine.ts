@@ -69,16 +69,16 @@ function computeTitle(path: string, ctx?: Record<string, unknown>) {
   }
 }
 
-function computeDescription(path: string, ctx?: Record<string, unknown>) {
+function computeDescription(path: string, ctx?: Record<string, unknown>): string {
   const pt = pageTypeFor(path);
   switch (pt) {
     case "home":
       return "Build, sell, and scale with Vayva—Nigeria's #1 AI-powered commerce platform. Professional storefronts, WhatsApp ordering, and automated payments for modern vendors.";
     case "blog_post":
-      return ctx?.postDescription ?? "Read the latest from Vayva.";
+      return (ctx?.postDescription as string) ?? "Read the latest from Vayva.";
     default:
       return (
-        ctx?.pageDescription ??
+        (ctx?.pageDescription as string) ??
         "Build, sell, and grow with Vayva—Nigeria-first ecommerce infrastructure."
       );
   }

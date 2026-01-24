@@ -6,7 +6,7 @@ import { Truck, MapPin } from "lucide-react";
 import { useToast } from "@/components/ui/use-toast";
 
 interface FulfillmentDrawerProps {
-  order: unknown;
+  order: any;
   isOpen: boolean;
   onClose: () => void;
   onUpdate: () => void;
@@ -67,7 +67,7 @@ export function FulfillmentDrawer({
   const handleManualStatus = async (status: string) => {
     setLoading(true);
     try {
-      const payload = {
+      const payload: any = {
         status,
         courierName: courierName || undefined,
         courierPhone: courierPhone || undefined,
@@ -225,14 +225,14 @@ export function FulfillmentDrawer({
                     <div className="space-y-3">
                       <Input
                         placeholder="Courier Name"
-                        value={courierName}
-                        onChange={(e) => setCourierName(e.target.value)}
+                        value={(courierName as any)}
+                        onChange={(e: any) => setCourierName(e.target.value)}
                         className="h-11 rounded-xl"
                       />
                       <Input
                         placeholder="Courier Phone"
-                        value={courierPhone}
-                        onChange={(e) => setCourierPhone(e.target.value)}
+                        value={(courierPhone as any)}
+                        onChange={(e: any) => setCourierPhone(e.target.value)}
                         className="h-11 rounded-xl"
                       />
                       <Button

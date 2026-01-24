@@ -21,16 +21,6 @@ export function CountdownTimer({
         return d.getTime();
     });
 
-    const [timeLeft, setTimeLeft] = useState(calculateTimeLeft(target));
-
-    useEffect(() => {
-        const timer = setInterval(() => {
-            setTimeLeft(calculateTimeLeft(target));
-        }, 1000);
-
-        return () => clearInterval(timer);
-    }, [target]);
-
     function calculateTimeLeft(targetTime: number) {
         const difference = targetTime - new Date().getTime();
 
@@ -45,6 +35,8 @@ export function CountdownTimer({
             seconds: Math.floor((difference / 1000) % 60),
         };
     }
+
+    const [timeLeft, setTimeLeft] = useState(calculateTimeLeft(target));
 
     return (
         <div className={`flex gap-4 md:gap-8 justify-center ${className}`}>

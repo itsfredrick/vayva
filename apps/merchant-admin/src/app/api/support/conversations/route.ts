@@ -17,7 +17,7 @@ export const GET = withVayvaAPI(PERMISSIONS.SUPPORT_MANAGE, async (req, { storeI
             orderBy: { lastMessageAt: "desc" },
             take: 30
         });
-        const formatted = conversations.map((c) => ({
+        const formatted = conversations.map((c: any) => ({
             id: c.id,
             contactName: c.contact?.displayName || c.contact?.phoneE164 || "Unknown Contact",
             subtitle: c.contact?.phoneE164 || c.contact?.externalId,
@@ -29,7 +29,7 @@ export const GET = withVayvaAPI(PERMISSIONS.SUPPORT_MANAGE, async (req, { storeI
         }));
         return NextResponse.json({ success: true, data: formatted });
     }
-    catch (error) {
+    catch (error: any) {
         console.error("Conversations API Error:", error);
         return NextResponse.json({ error: "Failed to fetch conversations" }, { status: 500 });
     }

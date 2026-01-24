@@ -11,7 +11,7 @@ export const UsageAndSystem = ({
   usage,
   systemStatus,
 }: UsageAndSystemProps) => {
-  const renderProgressBar = (metric: unknown) => {
+  const renderProgressBar = (metric: any) => {
     const percentage =
       (metric as any).limit === "unlimited" ? 0 : ((metric as any).used / (metric as any).limit) * 100;
     const isNearLimit = typeof (metric as any).limit === "number" && percentage > 80;
@@ -78,7 +78,7 @@ export const UsageAndSystem = ({
           </div>
         ) : (
           <div className="space-y-3">
-            {systemStatus.issues.map((issue) => (
+            {systemStatus.issues.map((issue: any) => (
               <div
                 key={issue.id}
                 className={cn(

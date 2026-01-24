@@ -2,22 +2,18 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import Link from "next/link";
-import {
-    Activity,
+import _Link from "next/link";
+import { Activity,
     AlertTriangle,
     CheckCircle2,
-    Clock,
-    DollarSign,
-    Filter,
+    Clock, DollarSign, Filter,
     RefreshCw,
-    Search,
-    ShieldAlert,
+    Search, ShieldAlert,
     XCircle,
     Gavel
-} from "lucide-react";
-import { toast } from "sonner";
-import { useRouter, useSearchParams } from "next/navigation";
+} from 'lucide-react';
+import { toast } from 'sonner';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { Button } from "@vayva/ui";
 
 interface Dispute {
@@ -32,7 +28,7 @@ interface Dispute {
     evidenceDueAt: string | null;
 }
 
-export default function DisputesPage() {
+export default function DisputesPage(): React.JSX.Element {
     const router = useRouter();
     const searchParams = useSearchParams();
 
@@ -56,7 +52,7 @@ export default function DisputesPage() {
             if (res.ok) {
                 setData(json.data || []);
             }
-        } catch (e) {
+        } catch (e: any) {
             console.error(e);
         } finally {
             setLoading(false);
@@ -77,7 +73,7 @@ export default function DisputesPage() {
 
             toast.success("Dispute Updated");
             fetchDisputes();
-        } catch (e) {
+        } catch {
             toast.error("Failed to update dispute");
         } finally {
             setActionLoading(null);
@@ -111,8 +107,8 @@ export default function DisputesPage() {
                             placeholder="Search disputes..."
                             className="pl-10 pr-4 py-2 bg-white border border-gray-200 rounded-lg text-sm focus:ring-2 focus:ring-indigo-500 outline-none w-64"
                             defaultValue={searchParams.get("q") || ""}
-                            onChange={(e) => {
-                                const q = e.target.value;
+                            onChange={(e: any) => {
+                                const q = (e as any).target.value;
                                 const params = new URLSearchParams(window.location.search);
                                 if (q) params.set("q", q); else params.delete("q");
                                 router.push(`?${params.toString()}`);
@@ -140,9 +136,9 @@ export default function DisputesPage() {
                         onClick={() => router.push(`?status=${s}`)}
                         className={`px-4 py-2 text-sm font-medium border-b-2 rounded-none transition-colors h-auto ${status === s ? "border-indigo-600 text-indigo-600 bg-transparent hover:bg-transparent" : "border-transparent text-gray-500 hover:text-gray-700 bg-transparent hover:bg-transparent"
                             }`}
-                        aria-label={`Filter by ${s.replace("_", " ")} status`}
+                        aria-label={`Filter by ${(s as any).replace("_", " ")} status`}
                     >
-                        {s.replace("_", " ")}
+                        {(s as any).replace("_", " ")}
                     </Button>
                 ))}
             </div>

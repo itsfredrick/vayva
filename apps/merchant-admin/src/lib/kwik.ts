@@ -5,7 +5,7 @@ const KWIK_BASE_URL = process.env.KWIK_BASE_URL || "https://staging-api-test.kwi
 // Defaults to provided Staging Creds if env missing (for immediate verification)
 const KWIK_EMAIL = process.env.KWIK_EMAIL;
 const KWIK_PASSWORD = process.env.KWIK_PASSWORD;
-let cachedToken = null;
+let cachedToken: string | null | undefined = null;
 async function getKwikToken() {
     if (cachedToken)
         return cachedToken;
@@ -29,19 +29,19 @@ async function getKwikToken() {
         cachedToken = data.data?.token;
         return cachedToken;
     }
-    catch (error) {
+    catch (error: any) {
         console.error("Kwik Token Error:", error);
         throw error;
     }
 }
 export const KwikService = {
     // 1. Get Delivery Quote
-    async getQuote(data) {
+    async getQuote(data: any) {
         const token = await getKwikToken();
         const vehicleMap = { bike: 1, car: 2, van: 3 };
-        const vehicleId = vehicleMap[data.vehicleType || "bike"] || 1;
+        const vehicleId = (vehicleMap as any)[data.vehicleType || "bike"] || 1;
         // Payload strictly per Kwik V2
-        const payload = {
+        const payload: any = {
             pickup_address: data.pickupAddress,
             delivery_address: data.deliveryAddress,
             parcel_size: vehicleId,
@@ -73,10 +73,10 @@ export const KwikService = {
         };
     },
     // 2. Create Delivery Task (Book Rider)
-    async requestPickup(data) {
+    async requestPickup(data: any) {
         const token = await getKwikToken();
         // Construct V2 Payload
-        const payload = {
+        const payload: any = {
             domain_name: "staging-client-panel.kwik.delivery", // Required by some implementations
             pickup_delivery_relationship: 0, // 0 = Standard
             vehicle_id: 1, // Default Bike

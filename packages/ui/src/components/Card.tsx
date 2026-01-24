@@ -6,7 +6,7 @@ export interface CardProps extends React.HTMLAttributes<HTMLDivElement> {
   className?: string;
 }
 
-export function Card({ children, className, ...props }: CardProps) {
+export function Card({ children, className, ...props }: CardProps): React.JSX.Element {
   return (
     <div
       className={cn(

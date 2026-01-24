@@ -1,7 +1,7 @@
 
 import React from "react";
 import { Button } from "@vayva/ui";
-import { ChevronLeft, ChevronRight } from "lucide-react";
+import { ChevronLeft, ChevronRight } from 'lucide-react';
 
 interface OpsPaginationProps {
     currentPage: number;

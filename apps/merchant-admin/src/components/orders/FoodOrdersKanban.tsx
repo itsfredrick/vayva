@@ -37,7 +37,7 @@ export const FoodOrdersKanban = ({
 
   return (
     <div className="flex gap-4 overflow-x-auto pb-4 h-[calc(100vh-320px)] min-h-[500px]">
-      {columns.map((col) => {
+      {columns.map((col: any) => {
         const colOrders = orders.filter((o) => o.status === col.id);
 
         return (
@@ -67,7 +67,7 @@ export const FoodOrdersKanban = ({
                   Empty
                 </div>
               ) : (
-                colOrders.map((order) => (
+                colOrders.map((order: any) => (
                   <OrderCard
                     key={order.id}
                     order={order}

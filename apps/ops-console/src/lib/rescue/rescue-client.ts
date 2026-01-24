@@ -66,7 +66,7 @@ export class RescueGroqClient {
         }
 
         try {
-            const safeMessages = messages.map((m) => ({
+            const safeMessages = messages.map((m: any) => ({
                 ...m,
                 content: this.sanitizeInput(m.content),
             }));
@@ -85,7 +85,7 @@ export class RescueGroqClient {
             });
 
             return response.choices[0]?.message?.content || null;
-        } catch (error) {
+        } catch (error: any) {
             logger.error("[RescueGroqClient] API call failed", { error });
             return null;
         }

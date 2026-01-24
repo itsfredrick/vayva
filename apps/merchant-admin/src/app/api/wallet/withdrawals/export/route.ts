@@ -3,7 +3,7 @@ import { getSessionUser } from "@/lib/session";
 import { prisma } from "@/lib/prisma";
 import { authorizeAction, AppRole } from "@/lib/permissions";
 import { logAuditEvent, AuditEventType } from "@/lib/audit";
-export async function GET(request: unknown) {
+export async function GET(request: Request) {
     try {
         const user = await getSessionUser();
         // Permission Check (Exports are sensitive, ADMIN only for Withdrawals)
@@ -16,7 +16,7 @@ export async function GET(request: unknown) {
         const status = searchParams.get("status");
         const startDate = searchParams.get("startDate");
         const endDate = searchParams.get("endDate");
-        const where = {
+        const where: any = {
             storeId: user.storeId,
         };
         if (status && status !== "ALL")
@@ -41,7 +41,7 @@ export async function GET(request: unknown) {
             "Fee (NGN)",
             "Net (NGN)",
         ];
-        const rows = withdrawals.map((w: unknown) => [
+        const rows = withdrawals.map((w: any) => [
             new Date(w.createdAt).toISOString(),
             w.referenceCode,
             w.status,
@@ -51,7 +51,7 @@ export async function GET(request: unknown) {
         ]);
         const csvContent = [
             header.join(","),
-            ...rows.map((row: unknown) => row.map((field: unknown) => `"${String(field).replace(/"/g, '""')}"`).join(",")),
+            ...rows.map((row: any) => row.map((field: any) => `"${String(field).replace(/"/g, '""')}"`).join(",")),
         ].join("\n");
         // Audit Log (P8.1 Requirement)
         await logAuditEvent(user.storeId, user.id, AuditEventType.WITHDRAWAL_EXPORTED, {
@@ -69,7 +69,7 @@ export async function GET(request: unknown) {
             },
         });
     }
-    catch (error) {
+    catch (error: any) {
         console.error("Export Error:", error);
         return NextResponse.json({ error: "Failed to export data" }, { status: 500 });
     }

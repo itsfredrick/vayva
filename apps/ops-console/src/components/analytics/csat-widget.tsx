@@ -1,10 +1,10 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import { Heart, TrendingUp, AlertTriangle, Smile, Meh, Frown } from "lucide-react";
+import { Heart, TrendingUp, AlertTriangle, Smile, Meh, Frown } from 'lucide-react';
 
-export function MerchantHappinessWidget() {
-    const [data, setData] = useState<unknown>(null);
+export function MerchantHappinessWidget(): React.JSX.Element {
+    const [data, setData] = useState<any>(null);
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
@@ -16,7 +16,7 @@ export function MerchantHappinessWidget() {
             const res = await fetch("/api/ops/analytics/csat");
             const json = await res.json();
             setData(json.data);
-        } catch (e) {
+        } catch (e: any) {
             console.error(e);
         } finally {
             setLoading(false);
@@ -31,7 +31,7 @@ export function MerchantHappinessWidget() {
         </div>
     );
 
-    if (!data) return null;
+    if (!data) return <></>;
 
     const isHighGrowthStandard = data.csatScore >= data.target;
 

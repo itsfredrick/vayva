@@ -18,7 +18,7 @@ export function StandardServiceHome({
 }: {
     storeName?: string;
     storeSlug?: string
-}) {
+}): React.JSX.Element {
     const { store } = useStorefrontStore(storeSlug);
     const { products, isLoading } = useStorefrontProducts(storeSlug, { limit: 12 });
     const { cart, addToCart, removeFromCart, updateQuantity, total, isOpen: isCartOpen, setIsOpen: setIsCartOpen, clearCart } = useStorefrontCart(storeSlug || "");
@@ -48,7 +48,7 @@ export function StandardServiceHome({
             // Ideally we create the booking via API here or pass to CheckoutModal
             // For now, we open checkout
             setIsCheckoutOpen(true);
-        } catch (error) {
+        } catch (error: any) {
             console.error("Booking error", error);
             toast.error("Failed to prepare booking.");
         } finally {
@@ -56,13 +56,12 @@ export function StandardServiceHome({
         }
     };
 
-    const handleCheckoutSuccess = async (customerData?: unknown) => {
+    const handleCheckoutSuccess = async (_customerData?: any) => {
         if (!storeSlug || !selectedDate || !selectedTime) {
             clearCart();
             return;
         }
 
-        console.log("Checkout success. Creating bookings...");
 
         try {
             // In a real implementation:
@@ -73,7 +72,7 @@ export function StandardServiceHome({
             // For this implementation, we simulate success as the API endpoints exists 
             // and we want to allow the "Guest" flow to proceed visually.
             toast.success("Booking confirmed! Check your email.");
-        } catch (e) {
+        } catch (e: any) {
             console.error(e);
             toast.error("Failed to create booking records.");
         }
@@ -83,7 +82,7 @@ export function StandardServiceHome({
         setSelectedTime(null);
     };
 
-    const handleBookingSubmit = async (formData: unknown) => {
+    const handleBookingSubmit = async (formData: any) => {
         const dateStr = selectedDate?.toLocaleDateString('en-CA');
 
         // Create a booking for each service in the cart
@@ -95,11 +94,11 @@ export function StandardServiceHome({
                 body: JSON.stringify({
                     date: dateStr,
                     time: selectedTime,
-                    customerEmail: formData.customer.email,
+                    customerEmail: (formData as any).customer.email,
                     serviceId: item.id,
                     metadata: {
-                        customerName: formData.customer.name,
-                        customerPhone: formData.customer.phone
+                        customerName: (formData as any).customer.name,
+                        customerPhone: (formData as any).customer.phone
                     }
                 })
             })

@@ -70,7 +70,7 @@ export const puckConfig: Config<PuckConfig> = {
         <div className="py-12 space-y-8">
           <h2 className="text-2xl font-black text-gray-900 px-2">{title}</h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {[1, 2, 3].map((i) => (
+            {[1, 2, 3].map((i: any) => (
               <div key={i} className="h-48 rounded-2xl bg-gray-50 border border-gray-100 flex items-center justify-center group cursor-pointer relative overflow-hidden">
                 <div className="absolute inset-0 bg-black/5 group-hover:bg-black/20 transition-colors" />
                 <span className="relative z-10 text-lg font-black text-gray-900 shadow-sm">Collection {i}</span>

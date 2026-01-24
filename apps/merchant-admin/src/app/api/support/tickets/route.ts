@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
-export async function GET(req: unknown) {
+export async function GET(req: any) {
     try {
         const session = await getServerSession(authOptions);
         const user = session?.user;
@@ -22,12 +22,12 @@ export async function GET(req: unknown) {
         });
         return NextResponse.json({ tickets });
     }
-    catch (error) {
+    catch (error: any) {
         console.error("Fetch Tickets Error:", error);
         return NextResponse.json({ error: "Failed to fetch tickets" }, { status: 500 });
     }
 }
-export async function POST(req: unknown) {
+export async function POST(req: any) {
     try {
         const session = await getServerSession(authOptions);
         const user = session?.user;
@@ -61,7 +61,7 @@ export async function POST(req: unknown) {
         });
         return NextResponse.json(ticket);
     }
-    catch (error) {
+    catch (error: any) {
         console.error("Create Ticket Error:", error);
         return NextResponse.json({ error: "Failed to create ticket" }, { status: 500 });
     }

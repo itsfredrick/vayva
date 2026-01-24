@@ -1,5 +1,5 @@
 const fs = require('fs');
-const path = require('path');
+const _path = require('path');
 
 function consolidateImports(filePath) {
   const content = fs.readFileSync(filePath, 'utf8');
@@ -13,7 +13,7 @@ function consolidateImports(filePath) {
   // Also handles: import { Button } from "@vayva/ui";
   const importRegex = /^import\s+\{(.*)\}\s+from\s+["']@vayva\/ui["'];?$/;
 
-  lines.forEach((line, index) => {
+  lines.forEach((line, _index) => {
     const match = line.match(importRegex);
     if (match) {
       if (firstUiImportIndex === -1) {

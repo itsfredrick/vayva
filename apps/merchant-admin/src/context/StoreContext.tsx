@@ -111,7 +111,7 @@ export const StoreProvider = ({
             setStore(null);
           }
         }
-      } catch (e) {
+      } catch (e: any) {
         console.error("Store Init Failed", e);
       } finally {
         setIsLoading(false);

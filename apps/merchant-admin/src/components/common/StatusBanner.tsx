@@ -16,11 +16,11 @@ export function StatusBanner() {
         const data = await res.json();
         const health = data.health;
 
-        const values = Object.values(health || {}).map((v: unknown) => v.status);
+        const values = Object.values(health || {}).map((v: any) => v.status);
         if (values.includes("FAIL")) setStatus("DOWN");
         else if (values.includes("WARNING")) setStatus("DEGRADED");
         else setStatus("IDLE");
-      } catch (e) {
+      } catch (e: any) {
         // Silent fail
       }
     };

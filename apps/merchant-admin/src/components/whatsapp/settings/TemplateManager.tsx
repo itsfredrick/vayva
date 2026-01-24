@@ -24,7 +24,8 @@ interface TemplateManagerProps {
     onRefresh: () => void;
 }
 
-export function TemplateManager({ templates: unknown, onRefresh }: TemplateManagerProps) {
+export function TemplateManager(props: TemplateManagerProps) {
+    const { templates, onRefresh } = props;
     const [isOpen, setIsOpen] = useState(false);
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [newTemplate, setNewTemplate] = useState({
@@ -66,7 +67,7 @@ export function TemplateManager({ templates: unknown, onRefresh }: TemplateManag
             setIsOpen(false);
             setNewTemplate({ name: "", language: "en", category: "UTILITY", bodyText: "" });
             onRefresh();
-        } catch (error) {
+        } catch (error: any) {
             toast.error("Error creating template");
         } finally {
             setIsSubmitting(false);
@@ -82,7 +83,7 @@ export function TemplateManager({ templates: unknown, onRefresh }: TemplateManag
             if (!res.ok) throw new Error("Failed");
             toast.success("Template deleted");
             onRefresh();
-        } catch (error) {
+        } catch (error: any) {
             toast.error("Error deleting template");
         }
     };
@@ -120,7 +121,7 @@ export function TemplateManager({ templates: unknown, onRefresh }: TemplateManag
                                 <Label>Template Name</Label>
                                 <Input
                                     placeholder="order_update_v1"
-                                    value={newTemplate.name}
+                                    value={(newTemplate.name as any)}
                                     onChange={(e: React.ChangeEvent<HTMLInputElement>) => setNewTemplate({ ...newTemplate, name: e.target.value.toLowerCase().replace(/\s/g, '_') })}
                                 />
                                 <span className="text-xs text-muted-foreground">LowerCase, underscores only.</span>
@@ -129,8 +130,8 @@ export function TemplateManager({ templates: unknown, onRefresh }: TemplateManag
                                 <div className="grid gap-2">
                                     <Label>Category</Label>
                                     <Select
-                                        value={newTemplate.category}
-                                        onValueChange={(val: unknown) => setNewTemplate({ ...newTemplate, category: val })}
+                                        value={(newTemplate.category as any)}
+                                        onValueChange={(val: any) => setNewTemplate({ ...newTemplate, category: val })}
                                     >
                                         <SelectTrigger>
                                             <SelectValue />
@@ -145,8 +146,8 @@ export function TemplateManager({ templates: unknown, onRefresh }: TemplateManag
                                 <div className="grid gap-2">
                                     <Label>Language</Label>
                                     <Select
-                                        value={newTemplate.language}
-                                        onValueChange={(val: unknown) => setNewTemplate({ ...newTemplate, language: val })}
+                                        value={(newTemplate.language as any)}
+                                        onValueChange={(val: any) => setNewTemplate({ ...newTemplate, language: val })}
                                     >
                                         <SelectTrigger>
                                             <SelectValue />
@@ -163,7 +164,7 @@ export function TemplateManager({ templates: unknown, onRefresh }: TemplateManag
                                 <Textarea
                                     rows={4}
                                     placeholder="Hello {{1}}, your order {{2}} has been shipped!"
-                                    value={newTemplate.bodyText}
+                                    value={(newTemplate.bodyText as any)}
                                     onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => setNewTemplate({ ...newTemplate, bodyText: e.target.value })}
                                 />
                                 <span className="text-xs text-muted-foreground">Use {"{{1}}"}, {"{{2}}"} for variables.</span>
@@ -196,7 +197,7 @@ export function TemplateManager({ templates: unknown, onRefresh }: TemplateManag
                         </TableRow>
                     </TableHeader>
                     <TableBody>
-                        {templates?.map((t: unknown) => (
+                        {templates?.map((t: any) => (
                             <TableRow key={t.id}>
                                 <TableCell className="font-medium font-mono text-xs">{t.name}</TableCell>
                                 <TableCell>{t.category}</TableCell>

@@ -9,7 +9,7 @@ interface Message {
   content: string;
 }
 
-export function MarketingAIAssistant() {
+export function MarketingAIAssistant(): React.JSX.Element {
   const [isOpen, setIsOpen] = useState(false);
   const [messages, setMessages] = useState<Message[]>([
     {
@@ -66,7 +66,7 @@ export function MarketingAIAssistant() {
           },
         ]);
       }
-    } catch (error) {
+    } catch {
       setMessages([
         ...newMessages,
         {
@@ -128,11 +128,10 @@ export function MarketingAIAssistant() {
                 className={`flex ${m.role === "user" ? "justify-end" : "justify-start"}`}
               >
                 <div
-                  className={`max-w-[85%] p-4 rounded-2xl text-[14px] leading-relaxed shadow-sm ${
-                    m.role === "user"
+                  className={`max-w-[85%] p-4 rounded-2xl text-[14px] leading-relaxed shadow-sm ${m.role === "user"
                       ? "bg-[#22C55E] text-white rounded-tr-none"
                       : "bg-white text-[#1E293B] border border-gray-100 rounded-tl-none"
-                  }`}
+                    }`}
                 >
                   {m.content}
                 </div>
@@ -158,7 +157,7 @@ export function MarketingAIAssistant() {
               <input
                 type="text"
                 value={input}
-                onChange={(e) => setInput(e.target.value)}
+                onChange={(e: any) => setInput(e.target.value)}
                 onKeyDown={(e) => e.key === "Enter" && handleSend()}
                 placeholder="Ask us anything..."
                 className="w-full pl-4 pr-12 py-3.5 bg-gray-50 border-none rounded-xl text-sm focus:ring-2 focus:ring-[#22C55E]/20 transition-all text-gray-900 placeholder:text-gray-400"
@@ -181,9 +180,8 @@ export function MarketingAIAssistant() {
       {/* Toggle Button */}
       <Button
         onClick={() => setIsOpen(!isOpen)}
-        className={`group relative flex items-center justify-center w-16 h-16 rounded-full shadow-2xl transition-all duration-500 scale-100 hover:scale-105 active:scale-95 ${
-          isOpen ? "bg-[#0F172A] rotate-90" : "bg-[#22C55E]"
-        }`}
+        className={`group relative flex items-center justify-center w-16 h-16 rounded-full shadow-2xl transition-all duration-500 scale-100 hover:scale-105 active:scale-95 ${isOpen ? "bg-[#0F172A] rotate-90" : "bg-[#22C55E]"
+          }`}
       >
         <div className="absolute -top-1 -right-1 w-5 h-5 bg-red-500 rounded-full border-2 border-white flex items-center justify-center animate-bounce">
           <span className="text-[10px] text-white font-bold">1</span>

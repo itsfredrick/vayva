@@ -21,7 +21,7 @@ export async function POST(request: NextRequest) {
 
         return NextResponse.json({ error: "Invalid OTP" }, { status: 400 });
 
-    } catch (error) {
+    } catch (error: any) {
         return NextResponse.json({ error: "Internal Error" }, { status: 500 });
     }
 }

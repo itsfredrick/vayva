@@ -17,10 +17,10 @@ export function EducationProductForm({ productId }: { productId?: string }) {
         name: "curriculum" // Expecting [{ moduleTitle: string, lessons: string }]
     });
 
-    const onSubmit = async (data: unknown) => {
+    const onSubmit = async (data: any) => {
         setIsSubmitting(true);
         try {
-            const payload = {
+            const payload: any = {
                 title: data.title,
                 description: data.description,
                 price: Number(data.price),
@@ -29,7 +29,7 @@ export function EducationProductForm({ productId }: { productId?: string }) {
                     difficulty: data.difficulty,
                     duration: data.duration,
                     instructor: data.instructor,
-                    curriculum: data.curriculum?.map((c: unknown) => ({
+                    curriculum: data.curriculum?.map((c: any) => ({
                         moduleTitle: c.moduleTitle,
                         lessons: c.lessons ? c.lessons.split("\n").filter(Boolean) : []
                     })) || []
@@ -48,7 +48,7 @@ export function EducationProductForm({ productId }: { productId?: string }) {
             if (!res.ok) throw new Error("Failed to save course");
             toast.success(productId ? "Course updated" : "Course created");
             router.push("/dashboard/products");
-        } catch (e) {
+        } catch (e: any) {
             toast.error("Something went wrong");
         } finally {
             setIsSubmitting(false);
@@ -120,7 +120,7 @@ export function EducationProductForm({ productId }: { productId?: string }) {
                 </div>
 
                 <div className="space-y-6">
-                    {fields.map((field: unknown, index: unknown) => (
+                    {fields.map((field: any, index: any) => (
                         <div key={field.id} className="bg-gray-50 p-4 rounded-lg border space-y-3 relative">
                             <Button
                                 type="button"

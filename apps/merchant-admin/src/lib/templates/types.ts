@@ -29,7 +29,10 @@ export type IndustrySlug =
     | "travel_hospitality"
     | "blog_media"
     | "creative_portfolio"
-    | "nonprofit";
+    | "nonprofit"
+    | "education"
+    | "marketplace"
+    | "one_product";
 
 export interface IndustryConfig {
     displayName: string;
@@ -48,10 +51,21 @@ export interface Store {
     slug: string;
     industrySlug: IndustrySlug;
     currency: string;
-    themeConfig?: unknown;
+    themeConfig?: any;
 }
 
 export interface ExtendedMerchant extends Omit<MerchantContext, "industrySlug"> {
     industrySlug?: IndustrySlug;
     enabledExtensionIds?: string[];
+}
+
+export interface SidebarItem {
+    name: string;
+    href: string;
+    icon: string;
+}
+
+export interface SidebarGroup {
+    name: string;
+    items: SidebarItem[];
 }

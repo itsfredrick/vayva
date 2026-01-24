@@ -45,7 +45,7 @@ export const PolicyEditor: React.FC<PolicyEditorProps> = ({
     try {
       await onSave(content);
       setIsDirty(false);
-    } catch (error) {
+    } catch (error: any) {
       console.error("Failed to save", error);
     } finally {
       setIsSaving(false);
@@ -68,7 +68,7 @@ export const PolicyEditor: React.FC<PolicyEditorProps> = ({
       // This is a simplification; ideally we'd have a 'raw' export or similar
       // For now, let's just use a placeholder or try to reconstruct
       const text = defaultDoc.sections
-        .map((s) => `## ${s.heading}\n\n${s.content.join("\n\n")}`)
+        .map((s: any) => `## ${s.heading}\n\n${s.content.join("\n\n")}`)
         .join("\n\n");
       setContent(text);
       setIsDirty(true);
@@ -129,7 +129,7 @@ export const PolicyEditor: React.FC<PolicyEditorProps> = ({
           </div>
           <textarea
             className="flex-1 w-full p-6 border border-gray-200 rounded-xl resize-none focus:outline-none focus:ring-2 focus:ring-black/5 font-mono text-sm leading-relaxed"
-            value={content}
+            value={(content as any)}
             onChange={handleChange}
             placeholder={`Enter your ${type} policy here...`}
           />

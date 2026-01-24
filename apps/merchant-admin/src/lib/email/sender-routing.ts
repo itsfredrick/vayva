@@ -32,9 +32,9 @@ const TEMPLATE_ROUTING = {
     // System -> SECURITY
     system_maintenance: "SECURITY",
 };
-export function getRouteForTemplate(templateKey: unknown) {
-    const senderKey = TEMPLATE_ROUTING[templateKey] || "SECURITY"; // Fallback to SECURITY
-    const sender = SENDER_IDENTITIES[senderKey];
+export function getRouteForTemplate(templateKey: any) {
+    const senderKey = TEMPLATE_ROUTING[templateKey as keyof typeof TEMPLATE_ROUTING] || "SECURITY"; // Fallback to SECURITY
+    const sender = SENDER_IDENTITIES[senderKey as keyof typeof SENDER_IDENTITIES];
     return {
         sender,
         replyTo: getReplyTo(sender.email),
@@ -44,7 +44,7 @@ export function getRouteForTemplate(templateKey: unknown) {
  * Returns the full Routing Table for Audit purposes
  */
 export function getFullRoutingTable() {
-    return Object.keys(TEMPLATE_ROUTING).map((key: unknown) => ({
+    return Object.keys(TEMPLATE_ROUTING).map((key: any) => ({
         template_key: key,
         ...getRouteForTemplate(key),
     }));

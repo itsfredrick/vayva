@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import { getSessionUser } from "@/lib/session";
 import { prisma } from "@/lib/prisma";
 import bcrypt from "bcryptjs";
-export async function POST(request: unknown) {
+export async function POST(request: Request) {
     try {
         const user = await getSessionUser();
         if (!user) {
@@ -33,7 +33,7 @@ export async function POST(request: unknown) {
         });
         return NextResponse.json({ success: true, message: "PIN set successfully" });
     }
-    catch (error) {
+    catch (error: any) {
         console.error("Set PIN error:", error);
         return NextResponse.json({ error: "Failed to set PIN" }, { status: 500 });
     }

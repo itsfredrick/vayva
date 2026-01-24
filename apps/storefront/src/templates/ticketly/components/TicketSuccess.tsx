@@ -6,7 +6,7 @@ import { PublicProduct } from "@/types/storefront";
 interface TicketSuccessProps {
   event: PublicProduct;
   attendee: { name: string; email: string };
-  bankDetails?: unknown;
+  bankDetails?: any;
   storeName?: string;
   orderNumber?: string;
   onClose: () => void;
@@ -20,6 +20,8 @@ export const TicketSuccess = ({
   orderNumber,
   onClose,
 }: TicketSuccessProps) => {
+  const ticketId = React.useMemo(() => Math.random().toString(36).substr(2, 9).toUpperCase(), []);
+
   return (
     <div className="fixed inset-0 z-[110] flex items-center justify-center bg-purple-900/90 backdrop-blur-sm p-4">
       <div className="bg-white rounded-3xl w-full max-w-sm overflow-hidden shadow-2xl animate-in zoom-in-95 duration-500 relative">
@@ -50,13 +52,13 @@ export const TicketSuccess = ({
             Order sent to {attendee.email}
           </p>
 
-          {bankDetails && (
+          {(bankDetails as any) && (
             <div className="bg-purple-50 p-4 rounded-xl text-left border border-purple-100 mb-6">
               <p className="text-xs font-bold uppercase text-purple-600 mb-2">Payment Required</p>
               <div className="text-sm space-y-1 text-gray-800">
-                <div className="flex justify-between"><span>Bank:</span> <span className="font-semibold">{bankDetails.bankName}</span></div>
-                <div className="flex justify-between"><span>Account:</span> <span className="font-semibold text-lg">{bankDetails.accountNumber}</span></div>
-                <div className="flex justify-between"><span>Name:</span> <span className="font-semibold">{bankDetails.accountName}</span></div>
+                <div className="flex justify-between"><span>Bank:</span> <span className="font-semibold">{(bankDetails as any).bankName}</span></div>
+                <div className="flex justify-between"><span>Account:</span> <span className="font-semibold text-lg">{(bankDetails as any).accountNumber}</span></div>
+                <div className="flex justify-between"><span>Name:</span> <span className="font-semibold">{(bankDetails as any).accountName}</span></div>
               </div>
               <div className="mt-3 text-xs text-center text-purple-400">
                 Paying to <b>{storeName}</b>
@@ -90,7 +92,7 @@ export const TicketSuccess = ({
               />
             </div>
             <p className="text-[10px] font-mono text-gray-400 mt-2">
-              ID: {Math.random().toString(36).substr(2, 9).toUpperCase()}
+              ID: {ticketId}
             </p>
           </div>
 

@@ -24,7 +24,7 @@ export const GlobalBanner = () => {
         );
 
         setBanners(activeBanners);
-      } catch (err) {
+      } catch (err: any) {
         console.error("Failed to load banners", err);
       }
     };

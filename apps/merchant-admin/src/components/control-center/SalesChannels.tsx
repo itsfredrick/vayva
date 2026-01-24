@@ -19,7 +19,7 @@ export const SalesChannels = ({ channels }: SalesChannelsProps) => {
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        {channels.map((channel) => (
+        {channels.map((channel: any) => (
           <div
             key={channel.id}
             className="bg-white rounded-2xl border border-gray-200 p-5 flex items-center justify-between hover:border-gray-300 transition-colors"

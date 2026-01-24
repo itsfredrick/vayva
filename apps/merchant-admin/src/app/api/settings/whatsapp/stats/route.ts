@@ -55,7 +55,7 @@ export const GET = withVayvaAPI(PERMISSIONS.SETTINGS_VIEW, async (req, { storeId
             }))
         });
     }
-    catch (error) {
+    catch (error: any) {
         console.error("WhatsApp Stats Error:", error);
         return NextResponse.json({ error: "Failed to fetch stats" }, { status: 500 });
     }

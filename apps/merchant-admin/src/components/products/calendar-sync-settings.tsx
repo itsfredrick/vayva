@@ -47,7 +47,7 @@ export const CalendarSyncSettings = ({ productId, initialSyncs = [] }: CalendarS
             setNewName("");
             setNewUrl("");
             router.refresh();
-        } catch (err) {
+        } catch (err: any) {
             console.error(err);
             // alert("Error adding sync"); // Or toast
         } finally {
@@ -67,7 +67,7 @@ export const CalendarSyncSettings = ({ productId, initialSyncs = [] }: CalendarS
             });
             if (!res.ok) throw new Error("Failed to delete");
             router.refresh();
-        } catch (err) {
+        } catch (err: any) {
             console.error(err);
             // Revert if needed, or just refresh
             router.refresh();
@@ -113,14 +113,14 @@ export const CalendarSyncSettings = ({ productId, initialSyncs = [] }: CalendarS
                     <div className="flex flex-col gap-3">
                         <Input
                             placeholder="Label (e.g. Airbnb)"
-                            value={newName}
-                            onChange={(e) => setNewName(e.target.value)}
+                            value={(newName as any)}
+                            onChange={(e: any) => setNewName(e.target.value)}
                             className="bg-black/20"
                         />
                         <Input
                             placeholder="iCal URL (https://...)"
-                            value={newUrl}
-                            onChange={(e) => setNewUrl(e.target.value)}
+                            value={(newUrl as any)}
+                            onChange={(e: any) => setNewUrl(e.target.value)}
                             className="bg-black/20"
                         />
                         <div className="flex gap-2 justify-end">

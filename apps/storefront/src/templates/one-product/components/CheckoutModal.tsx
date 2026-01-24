@@ -105,7 +105,7 @@ export const CheckoutModal = ({
       } else {
         alert("Failed to place order. Please try again.");
       }
-    } catch (err) {
+    } catch (err: any) {
       console.error(err);
       alert("Something went wrong.");
     } finally {
@@ -240,7 +240,7 @@ export const CheckoutModal = ({
                 placeholder="Email Address"
                 required
                 value={email}
-                onChange={(e) => setEmail(e.target.value)}
+                onChange={(e: any) => setEmail(e.target.value)}
                 className="w-full border border-gray-300 rounded-lg px-4 py-3 text-sm focus:ring-2 focus:ring-black focus:outline-none"
               />
             </div>
@@ -257,7 +257,7 @@ export const CheckoutModal = ({
                 placeholder="Full Name"
                 required
                 value={fullName}
-                onChange={(e) => setFullName(e.target.value)}
+                onChange={(e: any) => setFullName(e.target.value)}
                 className="w-full border border-gray-300 rounded-lg px-4 py-3 text-sm focus:ring-2 focus:ring-black focus:outline-none mb-2"
                 aria-label="Full Name"
               />
@@ -267,7 +267,7 @@ export const CheckoutModal = ({
                 placeholder="Street Address"
                 required
                 value={address}
-                onChange={(e) => setAddress(e.target.value)}
+                onChange={(e: any) => setAddress(e.target.value)}
                 className="w-full border border-gray-300 rounded-lg px-4 py-3 text-sm focus:ring-2 focus:ring-black focus:outline-none mb-2"
                 aria-label="Street Address"
               />
@@ -278,7 +278,7 @@ export const CheckoutModal = ({
                   placeholder="City"
                   required
                   value={city}
-                  onChange={(e) => setCity(e.target.value)}
+                  onChange={(e: any) => setCity(e.target.value)}
                   className="w-1/2 border border-gray-300 rounded-lg px-4 py-3 text-sm focus:ring-2 focus:ring-black focus:outline-none"
                   aria-label="City"
                 />
@@ -288,7 +288,7 @@ export const CheckoutModal = ({
                   placeholder="State"
                   required
                   value={state}
-                  onChange={(e) => setState(e.target.value)}
+                  onChange={(e: any) => setState(e.target.value)}
                   className="w-1/2 border border-gray-300 rounded-lg px-4 py-3 text-sm focus:ring-2 focus:ring-black focus:outline-none"
                   aria-label="State"
                 />

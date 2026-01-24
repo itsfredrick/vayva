@@ -7,7 +7,7 @@ export const GET = withVayvaAPI(PERMISSIONS.MARKETING_VIEW, async (request: Next
         const discounts = await DiscountService.listDiscounts(storeId);
         return NextResponse.json(discounts);
     }
-    catch (error) {
+    catch (error: any) {
         console.error("List Discounts Error", error);
         return NextResponse.json({ error: "Internal Error" }, { status: 500 });
     }
@@ -17,7 +17,7 @@ export const POST = withVayvaAPI(PERMISSIONS.MARKETING_MANAGE, async (request: N
         const body = await request.json();
         // Basic validation could happen here or in service
         // Ensure dates are dates
-        const payload = {
+        const payload: any = {
             ...body,
             startsAt: new Date(body.startsAt),
             endsAt: body.endsAt ? new Date(body.endsAt) : undefined,
@@ -28,7 +28,7 @@ export const POST = withVayvaAPI(PERMISSIONS.MARKETING_MANAGE, async (request: N
         const result = await DiscountService.createDiscount(storeId, payload);
         return NextResponse.json({ success: true, result });
     }
-    catch (error) {
+    catch (error: any) {
         console.error("Create Discount Error", error);
         return NextResponse.json({ error: error.message || "Internal Error" }, { status: 400 });
     }

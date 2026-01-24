@@ -36,8 +36,21 @@ export const SecurityProvider = ({
   const router = useRouter();
   const { user } = useAuth(); // Assume we can get pin status from user/wallet eventually
 
-  // Reset verification on hard refresh or long timeout?
-  // For now, simple state is enough (per session).
+  // 1. Sync PIN status from server/session
+  useEffect(() => {
+    const checkPinStatus = async () => {
+      try {
+        const res = await fetch("/api/account/security/status");
+        if (res.ok) {
+          const data = await res.json();
+          setHasPinSet(data.pinSet);
+        }
+      } catch (e) {
+        console.warn("Failed to check PIN status");
+      }
+    };
+    if (user) checkPinStatus();
+  }, [user]);
 
   const requirePin = (onSuccess: () => void) => {
     if (isPinVerified) {
@@ -83,7 +96,7 @@ export const SecurityProvider = ({
       <PinEntryModal
         isOpen={showPinModal}
         onSuccess={handleSuccess}
-        isSetupMode={false} // Todo: Detect if needs setup from User context
+        isSetupMode={!hasPinSet} // Real check from wallet state
         // If on protected route, cannot close without going back?
         onClose={() => {
           setShowPinModal(false);

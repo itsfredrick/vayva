@@ -30,7 +30,7 @@ export function proxy(request: NextRequest) {
   // Clean hostname to get subdomain
   // logic: if hostname is "freds-shop.vayva.ng", subdomain is "freds-shop"
   const isVercelDomain = hostname.includes("vercel.app"); // fallback
-  const rootDomain = isVercelDomain ? "vercel.app" : "vayva.ng"; // Adjust validation as needed
+  const _rootDomain = isVercelDomain ? "vercel.app" : "vayva.ng"; // Adjust validation as needed
 
   // Extract subdomain
   // const subdomain = hostname.split('.')[0]; -- Reference logic
@@ -50,7 +50,6 @@ export function proxy(request: NextRequest) {
   ) {
     const subdomain = hostname.split(".")[0];
     // Rewrite to the dynamic route
-    console.log(`[Middleware] Rewriting ${hostname}${path} to /_sites/${subdomain}${path}`);
     return NextResponse.rewrite(new URL(`/_sites/${subdomain}${path}`, request.url));
   }
 

@@ -10,7 +10,7 @@ import { PublicProduct } from "@/types/storefront";
 import { ProductGridSkeleton } from "@/components/Skeletons";
 
 
-export default function ProductsPage() {
+export default function ProductsPage(): React.JSX.Element {
   const { store } = useStore();
   const [products, setProducts] = useState<PublicProduct[]>([]);
   const [loading, setLoading] = useState(true);
@@ -31,7 +31,7 @@ export default function ProductsPage() {
     "all",
     ...Array.from(
       new Set(
-        products.map((p) => p.category).filter((cat): cat is string => !!cat),
+        products.map((p: any) => p.category).filter((cat): cat is string => !!cat),
       ),
     ),
   ];
@@ -41,7 +41,7 @@ export default function ProductsPage() {
       ? products
       : products.filter((p) => p.category === selectedCategory);
 
-  if (!store) return null;
+  if (!store) return <></>;
 
   return (
     <StoreShell>
@@ -58,7 +58,7 @@ export default function ProductsPage() {
 
           {/* Simple Category Filter */}
           <div className="flex flex-wrap gap-2">
-            {categories.map((cat) => (
+            {categories.map((cat: any) => (
               <Button
                 key={cat}
                 onClick={() => setSelectedCategory(cat as string)}
@@ -78,7 +78,7 @@ export default function ProductsPage() {
         ) : filteredProducts.length > 0 ? (
 
           <div className="grid grid-cols-2 md:grid-cols-4 gap-x-6 gap-y-10">
-            {filteredProducts.map((product) => (
+            {filteredProducts.map((product: any) => (
               <ProductCard
                 key={product.id}
                 product={product}

@@ -1,9 +1,9 @@
 import React from "react";
 import NextLink from "next/link";
-const Link = NextLink as unknown;
+const Link = NextLink;
 import { Button, Icon } from "@vayva/ui";
 
-export default function NotFoundPage() {
+export default function NotFoundPage(): React.JSX.Element {
   return (
     <div className="min-h-[80vh] flex items-center justify-center px-6">
       <div className="max-w-md w-full text-center">

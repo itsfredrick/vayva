@@ -4,7 +4,7 @@ import Groq from "groq-sdk";
 const groq = new Groq({
     apiKey: process.env.GROQ_ADMIN_KEY || "",
 });
-export async function GET(req: unknown) {
+export async function GET(req: any) {
     // Basic auth check for cron (e.g., Vercel Cron Secret)
     const authHeader = req.headers.get('authorization');
     if (process.env.NODE_ENV === 'production' && authHeader !== `Bearer ${process.env.CRON_SECRET}`) {
@@ -76,12 +76,12 @@ export async function GET(req: unknown) {
             results
         });
     }
-    catch (error) {
+    catch (error: any) {
         console.error("Trial reminder job error:", error);
         return NextResponse.json({ error: error.message }, { status: 500 });
     }
 }
-async function dispatchWhatsApp(phone: unknown, text: unknown) {
+async function dispatchWhatsApp(phone: any, text: any) {
     const EVOLUTION_API_URL = process.env.EVOLUTION_API_URL;
     const EVOLUTION_API_KEY = process.env.EVOLUTION_API_KEY;
     const instanceName = process.env.EVOLUTION_INSTANCE_NAME || "vayva_global";
@@ -103,7 +103,7 @@ async function dispatchWhatsApp(phone: unknown, text: unknown) {
         });
         return { success: response.ok };
     }
-    catch (e) {
+    catch (e: any) {
         console.error("Evolution API Error", e);
         return { success: false };
     }

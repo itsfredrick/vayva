@@ -66,7 +66,7 @@ export function SelectionSummary({
 
       {/* Selected List Preview */}
       <div className="space-y-3 mb-6 max-h-[300px] overflow-y-auto pr-2 custom-scrollbar">
-        {selectedMeals.map((meal) => (
+        {selectedMeals.map((meal: any) => (
           <div key={meal.id} className="flex gap-3 items-start">
             <img
               src={meal.image}

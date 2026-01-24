@@ -2,13 +2,13 @@
 
 import React, { useState } from "react";
 import Link from "next/link";
-import { useParams } from "next/navigation";
+import { useParams } from 'next/navigation';
 import { useOpsQuery } from "@/hooks/useOpsQuery";
-import { ArrowLeft, RefreshCw, AlertCircle, CheckCircle, Clock } from "lucide-react";
-import { toast } from "sonner";
+import { ArrowLeft, RefreshCw, AlertCircle, CheckCircle, Clock } from 'lucide-react';
+import { toast } from 'sonner';
 import { Button } from "@vayva/ui";
 
-export default function WebhookDetailPage() {
+export default function WebhookDetailPage(): React.JSX.Element {
     const { id } = useParams() as { id: string };
     const [replaying, setReplaying] = useState(false);
 
@@ -42,7 +42,7 @@ export default function WebhookDetailPage() {
             } else {
                 toast.error("Replay Failed", { description: json.error || "Unknown error" });
             }
-        } catch (e) {
+        } catch {
             toast.error("Network Error");
         } finally {
             setReplaying(false);

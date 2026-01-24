@@ -6,8 +6,9 @@ import { useState } from "react";
 
 export default function IdentityStep() {
     const { nextStep, updateData, state, isSaving } = useOnboarding();
-    const [name, setName] = useState(state.identity?.fullName || "");
-    const [phone, setPhone] = useState(state.identity?.phone || "");
+    const currentState = state as any;
+    const [name, setName] = useState(currentState.identity?.fullName || "");
+    const [phone, setPhone] = useState(currentState.identity?.phone || "");
 
     const handleContinue = () => {
         if (!name || !phone) return;
@@ -37,8 +38,8 @@ export default function IdentityStep() {
                     <Input
                         id="fullName"
                         placeholder="e.g. Adeola Johnson"
-                        value={name}
-                        onChange={(e) => setName(e.target.value)}
+                        value={(name as any)}
+                        onChange={(e: any) => setName(e.target.value)}
                         className="h-12"
                     />
                 </div>
@@ -52,8 +53,8 @@ export default function IdentityStep() {
                         <Input
                             id="phone"
                             placeholder="801 234 5678"
-                            value={phone}
-                            onChange={(e) => setPhone(e.target.value)}
+                            value={(phone as any)}
+                            onChange={(e: any) => setPhone(e.target.value)}
                             className="h-12 pl-16 font-medium"
                         />
                     </div>

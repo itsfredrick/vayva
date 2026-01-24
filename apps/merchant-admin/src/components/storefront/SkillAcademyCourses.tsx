@@ -109,7 +109,7 @@ export function SkillAcademyCourses({
                   Your cart is empty. Keep learning!
                 </div>
               ) : (
-                cart.map((item) => (
+                cart.map((item: any) => (
                   <div
                     key={item.id}
                     className="flex gap-3 border-b border-gray-100 pb-4"
@@ -230,7 +230,7 @@ export function SkillAcademyCourses({
           </div>
         ) : (
           <div className="grid md:grid-cols-4 gap-6">
-            {products.map((course) => (
+            {products.map((course: any) => (
               <div
                 key={course.id}
                 className="bg-white border border-gray-200 rounded-lg overflow-hidden hover:shadow-lg transition-shadow group flex flex-col h-full cursor-pointer"

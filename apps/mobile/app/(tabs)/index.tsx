@@ -86,7 +86,7 @@ const RECENT_ORDERS = [
   },
 ];
 
-export default function HomeScreen() {
+export default function HomeScreen(): React.JSX.Element {
   return (
     <SafeAreaView className="flex-1 bg-[#142210]">
       <ScrollView contentContainerStyle={{ paddingBottom: 100 }}>

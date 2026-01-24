@@ -8,7 +8,7 @@ interface CheckoutOverlayProps {
   total: number;
   count: number;
   onClose: () => void;
-  onComplete: (data: unknown) => void;
+  onComplete: (data: any) => void;
 }
 
 export const CheckoutOverlay = ({
@@ -54,7 +54,7 @@ export const CheckoutOverlay = ({
         alert("Failed to create ticket order.");
         setIsProcessing(false);
       }
-    } catch (err) {
+    } catch (err: any) {
       console.error(err);
       setIsProcessing(false);
       alert("Something went wrong");
@@ -98,7 +98,7 @@ export const CheckoutOverlay = ({
                 required
                 type="text"
                 value={name}
-                onChange={(e) => setName(e.target.value)}
+                onChange={(e: any) => setName(e.target.value)}
                 className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-purple-600 focus:border-transparent"
                 placeholder="E.g. John Doe"
               />
@@ -111,7 +111,7 @@ export const CheckoutOverlay = ({
                 required
                 type="email"
                 value={email}
-                onChange={(e) => setEmail(e.target.value)}
+                onChange={(e: any) => setEmail(e.target.value)}
                 className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-purple-600 focus:border-transparent"
                 placeholder="john@example.com"
               />

@@ -3,7 +3,6 @@ import {
   ICarrierProvider,
   CreateJobParams,
   JobResult,
-  WebhookResult,
 } from "./types";
 
 export class KwikProvider implements ICarrierProvider {
@@ -34,14 +33,15 @@ export class KwikProvider implements ICarrierProvider {
         trackingCode: response.data.data.unique_delivery_code
       };
     } catch (error) {
-      console.error("KWIK: Create Job Failed", error.response?.data || error.message);
+      const errorMessage = error instanceof Error ? error.message : "Unknown error";
+      const errorData = (error as { response?: { data?: unknown } })?.response?.data || errorMessage;
+      console.error("KWIK: Create Job Failed", errorData);
       // Fallback or rethrow - strict mode means we fail if calls fail in Prod
-      throw new Error(`Kwik Create Job Failed: ${error.message}`);
+      throw new Error(`Kwik Create Job Failed: ${errorMessage}`);
     }
   }
 
-  async cancelJob(providerJobId: string): Promise<boolean> {
-    console.log("KWIK: Cancelling job", providerJobId);
+  async cancelJob(_providerJobId: string): Promise<boolean> {
     return true;
   }
 

@@ -7,7 +7,7 @@ interface OneHeaderProps {
   storeName?: string;
 }
 
-export const OneHeader = ({ storeName }: OneHeaderProps) => {
+export const OneHeader = ({ storeName }: OneHeaderProps): React.JSX.Element => {
   return (
     <header className="sticky top-0 z-50 bg-white/90 backdrop-blur-md border-b border-gray-100">
       <div className="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">

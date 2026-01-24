@@ -10,7 +10,7 @@ export const logger = {
     },
     debug: (message: string, meta?: unknown) => {
         if (process.env.DEBUG) {
-            console.log(`[DEBUG] ${message}`, meta || "");
+            console.debug(`[DEBUG] ${message}`, meta || "");
         }
     },
 };

@@ -1,4 +1,4 @@
-import { NextRequest, NextResponse } from "next/server";
+import { NextRequest, NextResponse } from 'next/server';
 import { RescueService } from "@/lib/rescue/rescue-service";
 import { OpsAuthService } from "@/lib/ops-auth";
 
@@ -18,7 +18,7 @@ export async function POST(
         const result = await RescueService.performAction(id, actionType, user.id);
 
         return NextResponse.json(result);
-    } catch (error) {
+    } catch (error: any) {
         return NextResponse.json({ error: error.message }, { status: 500 });
     }
 }

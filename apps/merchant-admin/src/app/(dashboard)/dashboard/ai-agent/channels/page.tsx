@@ -46,7 +46,7 @@ export default function AgentChannelsPage() {
                 email: { enabled: false, greeting: "", ...source.channels?.email },
                 web: { enabled: false, greeting: "", ...source.channels?.web }
             });
-        } catch (error) {
+        } catch (error: any) {
             toast.error("Failed to load channel settings");
         } finally {
             setIsLoading(false);
@@ -77,14 +77,14 @@ export default function AgentChannelsPage() {
 
             if (!res.ok) throw new Error("Failed to save");
             toast.success("Channel settings saved to draft");
-        } catch (error) {
+        } catch (error: any) {
             toast.error("Failed to save settings");
         } finally {
             setIsSaving(false);
         }
     };
 
-    const updateChannel = (channel: keyof AgentChannels, key: keyof ChannelConfig, value: unknown) => {
+    const updateChannel = (channel: keyof AgentChannels, key: keyof ChannelConfig, value: any) => {
         setChannels(prev => ({
             ...prev,
             [channel]: {

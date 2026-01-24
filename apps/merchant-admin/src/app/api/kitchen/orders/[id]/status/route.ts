@@ -21,7 +21,7 @@ export async function PATCH(request: NextRequest, { params }: { params: Promise<
         });
         return NextResponse.json({ success: true, order });
     }
-    catch (e) {
+    catch (e: any) {
         console.error("Update kitchen status error:", e);
         return NextResponse.json({ error: "Internal Error" }, { status: 500 });
     }

@@ -1,5 +1,5 @@
 
-import { NextResponse } from "next/server";
+import { NextResponse } from 'next/server';
 import { prisma } from "@vayva/db";
 import { OpsAuthService } from "@/lib/ops-auth";
 
@@ -26,7 +26,7 @@ export async function GET(
 
         return NextResponse.json({ success: true, data: profile });
 
-    } catch (error) {
+    } catch (error: any) {
         console.error("Fetch Merchant AI Error:", error);
         return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
     }
@@ -53,7 +53,7 @@ export async function PATCH(
             agentName,
             tonePreset,
             greetingTemplate,
-            botEnabled // Hypothetical, schema might not have this yet but useful to track
+            _botEnabled // Hypothetical, schema might not have this yet but useful to track
         } = body;
 
         const updated = await prisma.merchantAiProfile.update({
@@ -72,7 +72,7 @@ export async function PATCH(
 
         return NextResponse.json({ success: true, data: updated });
 
-    } catch (error) {
+    } catch (error: any) {
         console.error("Update Merchant AI Error:", error);
         return NextResponse.json({ error: "Update failed" }, { status: 500 });
     }

@@ -26,7 +26,7 @@ export function WhatsAppTemplateSystem() {
 
   const updateTemplate = (updates: Partial<Template>) => {
     setTemplates(
-      templates.map((t) => (t.id === selectedId ? { ...t, ...updates } : t)),
+      templates.map((t: any) => (t.id === selectedId ? { ...t, ...updates } : t)),
     );
   };
 
@@ -43,7 +43,7 @@ export function WhatsAppTemplateSystem() {
         <h3 className="text-xs font-bold text-gray-400 uppercase mb-4">
           Order States
         </h3>
-        {templates.map((t) => (
+        {templates.map((t: any) => (
           <Button
             key={t.id}
             variant="ghost"
@@ -93,12 +93,12 @@ export function WhatsAppTemplateSystem() {
         <div className="flex-1 bg-gray-50 rounded-2xl border border-gray-200 p-4 mb-4 relative">
           <textarea
             className="w-full h-full bg-transparent border-none outline-none resize-none text-sm leading-relaxed p-2"
-            value={activeTemplate.defaultMessage}
-            onChange={(e) => updateTemplate({ defaultMessage: e.target.value })}
+            value={(activeTemplate.defaultMessage as any)}
+            onChange={(e: any) => updateTemplate({ defaultMessage: e.target.value })}
             aria-label="Template message content"
           />
           <div className="absolute bottom-4 left-4 flex gap-2">
-            {activeTemplate.variables.map((v) => (
+            {activeTemplate.variables.map((v: any) => (
               <Button
                 key={v}
                 variant="outline"

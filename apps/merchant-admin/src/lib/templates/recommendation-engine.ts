@@ -1,5 +1,5 @@
 import { TEMPLATE_REGISTRY } from "@/lib/templates-registry";
-export function recommendTemplate(state: unknown) {
+export function recommendTemplate(state: any) {
     if (!state.business)
         return null;
     // 1. Direct Category Match (if industry mapping exists)
@@ -32,8 +32,8 @@ export function recommendTemplate(state: unknown) {
     const industryKey = state.business.category?.toLowerCase() || "";
     let matchedCategorySlug;
     // Try direct map
-    if (industryMap[industryKey]) {
-        matchedCategorySlug = industryMap[industryKey];
+    if ((industryMap as any)[industryKey]) {
+        matchedCategorySlug = (industryMap as any)[industryKey];
     }
     // Try simple subset match
     else if (industryKey.includes("food") || industryKey.includes("kitchen"))
@@ -51,7 +51,7 @@ export function recommendTemplate(state: unknown) {
         return null;
     }
     // Verify it exists in enum
-    // (c: unknown) => c === matchedCategorySlug,
+    // (c: any) => c === matchedCategorySlug,
     // );
     // Temporary fix: If we can't look up config, just return null or basic result
     if (!matchedCategorySlug)

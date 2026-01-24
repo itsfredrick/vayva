@@ -10,7 +10,7 @@ const CreateTemplateSchema = z.object({
     status: z.string().default("APPROVED"), // Mocking approval for internal templates
     components: z.array(z.any()).optional(),
 });
-export async function POST(req: unknown) {
+export async function POST(req: any) {
     const session = await getServerSession(authOptions);
     if (!session?.user?.storeId) {
         return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
@@ -25,12 +25,12 @@ export async function POST(req: unknown) {
         const template = await WhatsAppAgentService.createTemplate(storeId, validation.data);
         return NextResponse.json(template);
     }
-    catch (error) {
+    catch (error: any) {
         console.error("Create Template Error:", error);
         return NextResponse.json({ error: "Failed to create template" }, { status: 500 });
     }
 }
-export async function DELETE(req: unknown) {
+export async function DELETE(req: any) {
     const session = await getServerSession(authOptions);
     if (!session?.user?.storeId) {
         return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
@@ -44,7 +44,7 @@ export async function DELETE(req: unknown) {
         await WhatsAppAgentService.deleteTemplate(session.user.storeId, id);
         return NextResponse.json({ success: true });
     }
-    catch (error) {
+    catch (error: any) {
         return NextResponse.json({ error: "Failed to delete template" }, { status: 500 });
     }
 }

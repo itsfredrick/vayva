@@ -11,7 +11,7 @@ export const GET = withVayvaAPI(PERMISSIONS.SUPPORT_MANAGE, async (req, { storeI
             },
             orderBy: { evidenceDueAt: "asc" }
         });
-        const formatted = disputes.map((d) => ({
+        const formatted = disputes.map((d: any) => ({
             id: d.id,
             amount: Number(d.amount),
             currency: d.currency,
@@ -24,7 +24,7 @@ export const GET = withVayvaAPI(PERMISSIONS.SUPPORT_MANAGE, async (req, { storeI
         }));
         return NextResponse.json({ success: true, data: formatted });
     }
-    catch (error) {
+    catch (error: any) {
         console.error("Disputes API Error:", error);
         return NextResponse.json({ error: "Failed to fetch disputes" }, { status: 500 });
     }

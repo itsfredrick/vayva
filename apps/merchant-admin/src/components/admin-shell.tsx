@@ -2,7 +2,6 @@
 
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
-import Image from "next/image";
 import { usePathname, useRouter } from "next/navigation";
 import { Avatar, Button, Icon, IconName, cn } from "@vayva/ui";
 import { useAuth } from "@/context/AuthContext";
@@ -15,32 +14,31 @@ import { Logo } from "./Logo";
 import { SupportChat } from "./support/support-chat";
 import { CommandPalette } from "./ai/CommandPalette";
 import { extensionRegistry } from "@/lib/extensions/registry";
-import { FEATURES } from "@/lib/env-validation";
 
 import { getSidebar, SIDEBAR_GROUPS } from "@/config/sidebar";
-import { IndustrySlug, SidebarGroup, SidebarItem } from "@/lib/templates/types";
+import { IndustrySlug, SidebarGroup } from "@/lib/templates/types";
 
 // ... (other imports)
 
 const ACCOUNT_DROPDOWN_ITEMS: { name: string; href: string; icon: IconName }[] = [
-  { name: "My Profile", href: "/dashboard/settings/profile", icon: "User" },
-  { name: "Store Settings", href: "/dashboard/settings/store", icon: "Settings" },
+  { name: "Account", href: "/dashboard/settings/profile", icon: "User" },
+  { name: "Settings", href: "/dashboard/settings/store", icon: "Settings" },
   { name: "Billing", href: "/dashboard/settings/billing", icon: "CreditCard" },
 ];
 
 export interface AdminShellProps {
   children: React.ReactNode;
-  title?: string;
-  breadcrumb?: { label: string; href?: string }[];
+  _title?: string;
+  _breadcrumb?: { label: string; href?: string }[];
   mode?: "admin" | "onboarding";
 }
 
 export const AdminShell = ({
   children,
-  title,
-  breadcrumb,
+  _title,
+  _breadcrumb,
   mode = "admin",
-}: AdminShellProps) => {
+}: AdminShellProps): React.JSX.Element => {
   const pathname = usePathname();
   const router = useRouter();
   const { user, merchant, logout } = useAuth();
@@ -48,7 +46,7 @@ export const AdminShell = ({
   const [isSidebarExpanded, setIsSidebarExpanded] = useState(false);
   const [industrySlug, setIndustrySlug] = useState<IndustrySlug | null>(null);
   const [enabledExtensionIds, setEnabledExtensionIds] = useState<string[]>([]);
-  const [isLoadingIndustry, setIsLoadingIndustry] = useState(true);
+  const [_isLoadingIndustry, setIsLoadingIndustry] = useState(true);
 
   // Mobile State
   const [isMobile, setIsMobile] = useState(false);
@@ -59,12 +57,12 @@ export const AdminShell = ({
 
   // Initial logic for "FD" avatar
   // Cast to any as the session types might be generic
-  const initials = user ? `${(user as unknown).firstName?.[0] || ""}${(user as unknown).lastName?.[0] || ""}` : "FD";
+  const initials = user ? `${(user as any).firstName?.[0] || ""}${(user as any).lastName?.[0] || ""}` : "FD";
 
   // Fallback Merchant Details
   const merchantName =
-    (merchant as unknown)?.firstName || (user as unknown)?.firstName || "Merchant";
-  const storeName = (merchant as unknown)?.businessName || "My Store";
+    (merchant as any)?.firstName || (user as any)?.firstName || "Merchant";
+  const _storeName = (merchant as any)?.businessName || "My Store";
 
   // Store URL logic
   const [storeLink, setStoreLink] = useState<string>("");
@@ -110,12 +108,12 @@ export const AdminShell = ({
         }
 
         if (merchantData.externalManifests) {
-          merchantData.externalManifests.forEach((manifest: unknown) => {
+          merchantData.externalManifests.forEach((manifest: any) => {
             extensionRegistry.register(manifest);
           });
         }
       })
-      .catch((err) => console.error("Failed to load store settings", err))
+      .catch((err) => console.error("Failed to load (store.settings as any)", err))
       .finally(() => setIsLoadingIndustry(false));
 
     // Fetch real store status and URL from API
@@ -254,7 +252,7 @@ export const AdminShell = ({
                   {group.name}
                 </div>
               )}
-              {group.items.map((item: SidebarItem) => {
+              {group.items.map((item: any) => {
                 const isActive =
                   pathname === item.href ||
                   (item.href !== "/dashboard" && pathname.startsWith(item.href));
@@ -339,7 +337,7 @@ export const AdminShell = ({
               variant="ghost"
               size="icon"
               className="text-gray-400 hover:text-gray-900"
-              onClick={() => (window as unknown).triggerCommandPalette?.()}
+              onClick={() => (window as any).triggerCommandPalette?.()}
             >
               <Icon name="Search" size={20} />
             </Button>
@@ -396,14 +394,14 @@ export const AdminShell = ({
                       </p>
                     </div>
                     <div className="p-1">
-                      {ACCOUNT_DROPDOWN_ITEMS.map((item) => (
+                      {ACCOUNT_DROPDOWN_ITEMS.map((item: any) => (
                         <Link key={item.href} href={item.href}>
                           <Button
                             variant="ghost"
                             onClick={() => setShowUserMenu(false)}
                             className="w-full justify-start items-center gap-2 px-3 py-2 text-sm text-gray-500 hover:text-black hover:bg-studio-gray rounded-lg transition-colors text-left font-bold h-auto"
                           >
-                            <Icon name={item.icon as unknown} size={16} />
+                            <Icon name={item.icon as any} size={16} />
                             {item.name}
                           </Button>
                         </Link>
@@ -445,7 +443,7 @@ export const AdminShell = ({
 
         {/* BOTTOM NAVIGATION (Mobile Only) */}
         <div className="md:hidden fixed bottom-0 left-0 right-0 bg-white border-t border-gray-100 px-6 py-3 pb-safe z-40 flex justify-between items-center shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.05)]">
-          {bottomNavItems.map((item) => {
+          {bottomNavItems.map((item: any) => {
             const isActive = pathname === item.href;
             return (
               <Link
@@ -462,7 +460,7 @@ export const AdminShell = ({
                       : "text-gray-400 hover:text-gray-600",
                   )}
                 >
-                  <Icon name={item.icon as unknown} size={22} />
+                  <Icon name={item.icon as any} size={22} />
                 </div>
                 <span
                   className={cn(

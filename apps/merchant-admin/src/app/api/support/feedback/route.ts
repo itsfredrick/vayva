@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
-export async function GET(request: unknown) {
+export async function GET(request: Request) {
     const { searchParams } = new URL(request.url);
     const ticketId = searchParams.get("ticketId");
     const rating = searchParams.get("rating");
@@ -62,7 +62,7 @@ export async function GET(request: unknown) {
             </html>
             `, { headers: { "Content-Type": "text/html" } });
     }
-    catch (error) {
+    catch (error: any) {
         console.error("Feedback error:", error);
         return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
     }

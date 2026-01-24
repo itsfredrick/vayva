@@ -1,11 +1,11 @@
 "use client";
 
 import React, { useState } from "react";
-import { Users, Filter, Calculator, Search, Mail, Send } from "lucide-react";
+import { Users, Filter, Calculator, Search, Mail, Send } from 'lucide-react';
 import { useOpsQuery } from "@/hooks/useOpsQuery";
 import { cn, Button } from "@vayva/ui";
 
-export default function SegmentsPage() {
+export default function SegmentsPage(): React.JSX.Element {
     const [minSpend, setMinSpend] = useState(0);
     const [minOrders, setMinOrders] = useState(0);
 
@@ -34,8 +34,8 @@ export default function SegmentsPage() {
                     </label>
                     <input
                         type="number"
-                        value={minSpend}
-                        onChange={(e) => setMinSpend(Number(e.target.value))}
+                        value={(minSpend as any)}
+                        onChange={(e: any) => setMinSpend(Number((e as any).target.value))}
                         className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 transition-all"
                         placeholder="e.g. 5000"
                     />
@@ -46,8 +46,8 @@ export default function SegmentsPage() {
                     </label>
                     <input
                         type="number"
-                        value={minOrders}
-                        onChange={(e) => setMinOrders(Number(e.target.value))}
+                        value={(minOrders as any)}
+                        onChange={(e: any) => setMinOrders(Number((e as any).target.value))}
                         className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 transition-all"
                         placeholder="e.g. 5"
                     />
@@ -88,13 +88,13 @@ export default function SegmentsPage() {
                         ) : !customers?.length ? (
                             <tr><td colSpan={5} className="p-12 text-center text-gray-400 font-medium">No customers match these criteria.</td></tr>
                         ) : (
-                            customers.map((c: unknown) => (
-                                <tr key={c.id} className="hover:bg-indigo-50/30 transition-colors">
-                                    <td className="px-6 py-4 font-bold text-gray-900">{c.firstName} {c.lastName}</td>
-                                    <td className="px-6 py-4 text-gray-500">{c.email || c.phone}</td>
-                                    <td className="px-6 py-4 font-black">{c.orderCount}</td>
-                                    <td className="px-6 py-4 font-black text-indigo-700">₦{Number(c.totalSpend).toLocaleString()}</td>
-                                    <td className="px-6 py-4 text-gray-500">{new Date(c.createdAt).toLocaleDateString()}</td>
+                            customers.map((c: any) => (
+                                <tr key={(c as any).id} className="hover:bg-indigo-50/30 transition-colors">
+                                    <td className="px-6 py-4 font-bold text-gray-900">{(c as any).firstName} {(c as any).lastName}</td>
+                                    <td className="px-6 py-4 text-gray-500">{(c as any).email || (c as any).phone}</td>
+                                    <td className="px-6 py-4 font-black">{(c as any).orderCount}</td>
+                                    <td className="px-6 py-4 font-black text-indigo-700">₦{Number((c as any).totalSpend).toLocaleString()}</td>
+                                    <td className="px-6 py-4 text-gray-500">{new Date((c as any).createdAt).toLocaleDateString()}</td>
                                 </tr>
                             ))
                         )}

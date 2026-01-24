@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
-export async function GET(req: unknown) {
+export async function GET(req: any) {
     try {
         const session = await getServerSession(authOptions);
         // In real app, check for ADMIN/OPS role here
@@ -21,7 +21,7 @@ export async function GET(req: unknown) {
         });
         return NextResponse.json(tickets);
     }
-    catch (error) {
+    catch (error: any) {
         return NextResponse.json({ error: "Internal Error" }, { status: 500 });
     }
 }

@@ -12,10 +12,10 @@ interface FoodPDPProps {
     product: PublicProduct;
 }
 
-export function FoodPDP({ product }: FoodPDPProps) {
+export function FoodPDP({ product }: FoodPDPProps): React.JSX.Element {
     const { addToCart } = useStore();
     const [quantity, setQuantity] = useState(1);
-    const metadata = product.metadata as unknown;
+    const metadata = product.metadata as any;
 
     const handleAddToCart = () => {
         addToCart({

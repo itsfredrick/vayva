@@ -3,12 +3,12 @@
 import { useState } from "react";
 import { Button, Input, Textarea, Label } from "@vayva/ui";
 import { useRouter } from "next/navigation";
-import Image from "next/image";
+import _Image from "next/image";
 
-export default function SourcingRequestForm() {
+export default function SourcingRequestForm(): React.JSX.Element {
     const router = useRouter();
     const [isLoading, setIsLoading] = useState(false);
-    const [images, setImages] = useState<string[]>([]);
+    const [images, _setImages] = useState<string[]>([]);
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();

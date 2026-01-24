@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { getSessionUser } from "@/lib/session";
 import { prisma } from "@/lib/prisma";
-export async function POST(request: unknown) {
+export async function POST(request: Request) {
     try {
         const user = await getSessionUser();
         if (!user)
@@ -22,7 +22,7 @@ export async function POST(request: unknown) {
         });
         return NextResponse.json(post);
     }
-    catch (e) {
+    catch (e: any) {
         console.error("Create Post Error:", e);
         return NextResponse.json({ error: "Internal Error" }, { status: 500 });
     }

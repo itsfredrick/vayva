@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { OpsAuthService } from "@/lib/ops-auth";
-export async function GET(request: unknown) {
+export async function GET(request: Request) {
     const session = await OpsAuthService.getSession();
     if (!session) {
         return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
@@ -24,19 +24,22 @@ export async function GET(request: unknown) {
             orderBy: { createdAt: "desc" },
             take: 50,
         });
-        const formatted = merchants.map((m: unknown) => ({
+        const formatted = merchants.map((m: any) => ({
             id: m.id,
             name: m.name,
             slug: m.slug,
             ownerEmail: "Unknown", // Placeholder, field missing in Store model
-            plan: m.aiSubscription?.plan || "FREE",
-            kycStatus: m.kycRecord?.status || "PENDING",
+            plan: m.plan || "STARTER",
+            kycStatus: m.kycStatus || "PENDING",
+            onboardingStatus: m.onboardingStatus,
+            industrySlug: m.industrySlug,
+            isActive: m.isActive,
             createdAt: m.createdAt,
-            lastActive: m.updatedAt, // Placeholder
+            lastActive: m.updatedAt,
         }));
         return NextResponse.json(formatted);
     }
-    catch (err) {
+    catch (err: any) {
         console.error(err);
         return NextResponse.json({ error: "Internal server error" }, { status: 500 });
     }

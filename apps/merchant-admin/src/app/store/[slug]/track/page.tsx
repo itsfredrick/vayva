@@ -96,7 +96,7 @@ export default function TrackOrderPage({
 
           <div className="mt-8 text-center text-sm text-gray-500">
             <p className="flex items-center justify-center gap-2">
-              <Icon name={"HelpCircle" as unknown} size={16} />
+              <Icon name={"HelpCircle" as any} size={16} />
               Need help with this order?{" "}
               <a href="#" className="underline">
                 Contact Support

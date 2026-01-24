@@ -13,7 +13,7 @@ export const IntegrationsPanel = ({
 }: IntegrationsPanelProps) => {
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-      {integrations.map((integration) => {
+      {integrations.map((integration: any) => {
         const isConnected = integration.status === "connected";
         return (
           <div

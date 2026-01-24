@@ -2,11 +2,11 @@ import Fastify from "fastify";
 import cors from "@fastify/cors";
 import { config } from "./lib/config";
 import authPlugin from "./plugins/auth";
-import signupRoute from "./routes/auth/signup";
-import loginRoute from "./routes/auth/login";
-import forgotPasswordRoute from "./routes/auth/forgot-password";
-import resetPasswordRoute from "./routes/auth/reset-password";
-import onboardingRoute from "./routes/onboarding";
+import _signupRoute from "./routes/auth/signup";
+import _loginRoute from "./routes/auth/login";
+import _forgotPasswordRoute from "./routes/auth/forgot-password";
+import _resetPasswordRoute from "./routes/auth/reset-password";
+import _onboardingRoute from "./routes/onboarding";
 
 import proxy from "@fastify/http-proxy";
 
@@ -262,8 +262,6 @@ const start = async () => {
       port: parseInt(config.PORT) || 4000,
       host: "0.0.0.0",
     });
-    console.log(`API Gateway running on port ${parseInt(config.PORT) || 4000}`);
-    console.log(`Service Registry Loaded: ${Object.keys(config.services).length} services`);
   } catch (err) {
     (server.log as unknown).error(err);
     process.exit(1);

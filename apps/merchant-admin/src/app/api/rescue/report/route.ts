@@ -2,8 +2,8 @@ import { NextResponse } from "next/server";
 import { getServerSession } from "next-auth/next";
 import { authOptions } from "@/lib/auth";
 import { MerchantRescueService } from "@/lib/rescue/merchant-rescue-service";
-export async function POST(req: unknown) {
-    const session = await getServerSession(authOptions);
+export async function POST(req: any) {
+    const session: any = await getServerSession(authOptions);
     if (!session?.user) {
         // We allow anonymous reporting for critical UI crashes where session might be lost/unavailable
         // BUT ideally we prefer auth. For now, let's proceed but mark user as anonymous.
@@ -28,7 +28,7 @@ export async function POST(req: unknown) {
             message: "Rescue initiated"
         });
     }
-    catch (error) {
+    catch (error: any) {
         console.error("Rescue Report API Error:", error);
         return NextResponse.json({ error: "Failed to report" }, { status: 500 });
     }

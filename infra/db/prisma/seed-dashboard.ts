@@ -4,7 +4,6 @@ import bcrypt from "bcryptjs";
 const prisma = new PrismaClient();
 
 async function main() {
-  console.log("🌱 Starting Dashboard Seed for Tolu (TS)...");
 
   const email = "demo+e2e@vayva.test";
   const password = "TestPass123!";
@@ -13,31 +12,22 @@ async function main() {
   const userId = "user_tolu_01";
 
   // 1. Clean up existing data for this test user
-  console.log("Cleaning old data...");
   try {
-    console.log("Deleting orders...");
     if (!prisma.order) console.log("prisma.order is missing!");
     await prisma.order.deleteMany({ where: { storeId } });
 
-    console.log("Deleting wallets...");
     await prisma.wallet.deleteMany({ where: { storeId } });
 
-    console.log("Deleting memberships...");
     await prisma.membership.deleteMany({ where: { storeId } });
 
-    console.log("Deleting subscriptions...");
     await prisma.merchantSubscription.deleteMany({ where: { storeId } });
 
-    console.log("Deleting whatsapp channels...");
     await prisma.whatsappChannel.deleteMany({ where: { storeId } });
 
-    console.log("Deleting bank beneficiaries...");
     await prisma.bankBeneficiary.deleteMany({ where: { storeId } });
 
-    console.log("Deleting stores...");
     await prisma.store.deleteMany({ where: { id: storeId } });
 
-    console.log("Deleting user & sessions...");
     const existingUser = await prisma.user.findUnique({ where: { email } });
     if (existingUser) {
       await prisma.merchantSession.deleteMany({
@@ -54,7 +44,6 @@ async function main() {
   }
 
   // 2. Create User
-  console.log("Creating User Tolu...");
   const user = await prisma.user.create({
     data: {
       id: userId,
@@ -67,7 +56,6 @@ async function main() {
   });
 
   // 3. Create Store
-  console.log("Creating Store...");
   const store = await prisma.store.create({
     data: {
       id: storeId,
@@ -133,7 +121,6 @@ async function main() {
   });
 
   // 9. Seed Orders for Analytics
-  console.log("Seeding Orders...");
   const statuses: any[] = ["DELIVERED", "PROCESSING", "CANCELLED"];
   const paymentStatuses: any[] = ["SUCCESS", "PENDING", "FAILED"];
 
@@ -168,7 +155,6 @@ async function main() {
     });
   }
 
-  console.log("✅ Dashboard Seed Complete! Login as demo+e2e@vayva.test");
 }
 
 main()

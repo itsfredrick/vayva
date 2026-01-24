@@ -10,7 +10,7 @@ export async function GET() {
             where: { id: storeId },
             select: { settings: true },
         });
-        let code = store?.settings?.referralCode;
+        let code = (store?.settings as any)?.referralCode;
         if (!code) {
             code = await ReferralService.generateCode(storeId);
         }
@@ -32,7 +32,7 @@ export async function GET() {
                 conversions: stats.filter((s) => !!s.firstPaymentAt).length,
             },
             pendingDiscount,
-            rewards: rewards.map((r) => ({
+            rewards: rewards.map((r: any) => ({
                 id: r.id,
                 amount: r.amount,
                 createdAt: r.createdAt,
@@ -40,7 +40,7 @@ export async function GET() {
             })),
         });
     }
-    catch (e) {
+    catch (e: any) {
         console.error(e);
         return NextResponse.json({ error: "Failed to fetch referral data" }, { status: 500 });
     }

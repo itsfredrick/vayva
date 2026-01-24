@@ -2,23 +2,20 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import { formatDistanceToNow } from "date-fns";
+import { formatDistanceToNow } from 'date-fns';
 import {
     ShieldCheck,
     Search,
-    AlertTriangle,
-    User,
+    AlertTriangle, User,
     Lock,
     RefreshCw,
-    Terminal,
-    Eye
-} from "lucide-react";
+    Terminal, Eye} from 'lucide-react';
 import { Button } from "@vayva/ui";
 
 interface AuditEvent {
     id: string;
     eventType: string;
-    metadata: unknown;
+    metadata: any;
     createdAt: string;
     opsUser: {
         name: string;
@@ -27,7 +24,7 @@ interface AuditEvent {
     } | null;
 }
 
-export default function SecurityPage() {
+export default function SecurityPage(): React.JSX.Element {
     const [events, setEvents] = useState<AuditEvent[]>([]);
     const [loading, setLoading] = useState(true);
     const [filterType, setFilterType] = useState("");
@@ -45,7 +42,7 @@ export default function SecurityPage() {
             if (res.ok) {
                 setEvents(json.data || []);
             }
-        } catch (e) {
+        } catch (e: any) {
             console.error(e);
         } finally {
             setLoading(false);
@@ -132,20 +129,20 @@ export default function SecurityPage() {
                             <tr><td colSpan={4} className="p-12 text-center text-gray-400">No security events found.</td></tr>
                         ) : (
                             events.map(e => (
-                                <tr key={e.id} className="hover:bg-gray-50">
+                                <tr key={(e as any).id} className="hover:bg-gray-50">
                                     <td className="px-6 py-4">
                                         <div className="flex items-center gap-3">
                                             <div className="p-2 bg-gray-50 rounded-lg">
-                                                {getIcon(e.eventType)}
+                                                {getIcon((e as any).eventType)}
                                             </div>
-                                            <span className="font-mono text-xs font-bold text-gray-700">{e.eventType}</span>
+                                            <span className="font-mono text-xs font-bold text-gray-700">{(e as any).eventType}</span>
                                         </div>
                                     </td>
                                     <td className="px-6 py-4">
-                                        {e.opsUser ? (
+                                        {(e as any).opsUser ? (
                                             <div>
-                                                <div className="font-medium text-gray-900">{e.opsUser.name}</div>
-                                                <div className="text-xs text-gray-500">{e.opsUser.role}</div>
+                                                <div className="font-medium text-gray-900">{(e as any).opsUser.name}</div>
+                                                <div className="text-xs text-gray-500">{(e as any).opsUser.role}</div>
                                             </div>
                                         ) : (
                                             <div className="text-gray-400 italic">System / Unknown</div>
@@ -153,12 +150,12 @@ export default function SecurityPage() {
                                     </td>
                                     <td className="px-6 py-4">
                                         <code className="text-xs text-gray-600 bg-gray-50 px-2 py-1 rounded">
-                                            {JSON.stringify(e.metadata).slice(0, 60)}
-                                            {JSON.stringify(e.metadata).length > 60 && "..."}
+                                            {JSON.stringify((e as any).metadata).slice(0, 60)}
+                                            {JSON.stringify((e as any).metadata).length > 60 && "..."}
                                         </code>
                                     </td>
                                     <td className="px-6 py-4 text-right text-gray-500 text-xs">
-                                        {formatDistanceToNow(new Date(e.createdAt), { addSuffix: true })}
+                                        {formatDistanceToNow(new Date((e as any).createdAt), { addSuffix: true })}
                                     </td>
                                 </tr>
                             ))

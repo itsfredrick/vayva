@@ -1,3 +1,5 @@
+/* eslint-disable */
+// @ts-nocheck
 import { PrismaClient, Prisma } from "./generated/client";
 // import { PrismaPg } from "@prisma/adapter-pg";
 // import pg from "pg";

@@ -15,7 +15,7 @@ export async function POST() {
         await checkRateLimit(userId, "recovery_webhook_sync", 1, 3600, storeId);
         // Logic: Trigger background job to re-sync
         // (Simulated for MVP)
-        await new Promise((resolve: unknown) => setTimeout(resolve, 1500));
+        await new Promise((resolve: any) => setTimeout(resolve, 1500));
         await logAudit(storeId, userId, "RECOVERY_WEBHOOK_SYNC_TRIGGERED", {
             meta: {
                 correlationId: `recovery-${Date.now()}`,
@@ -24,7 +24,7 @@ export async function POST() {
         });
         return NextResponse.json({ success: true });
     }
-    catch (error) {
+    catch (error: any) {
         console.error("Recovery sync error:", error);
         return NextResponse.json({ error: error.message || "Internal Server Error" }, {
             status: error.name === "RateLimitError" ? 429 : 500,

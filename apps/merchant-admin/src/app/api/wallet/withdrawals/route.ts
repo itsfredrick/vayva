@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { getSessionUser } from "@/lib/session";
 import { prisma } from "@/lib/prisma";
-export async function GET(request: unknown) {
+export async function GET(request: Request) {
     try {
         const user = await getSessionUser();
         if (!user) {
@@ -13,7 +13,7 @@ export async function GET(request: unknown) {
         const endDate = searchParams.get("endDate");
         const page = parseInt(searchParams.get("page") || "1");
         const limit = parseInt(searchParams.get("limit") || "25");
-        const where = {
+        const where: any = {
             storeId: user.storeId,
         };
         if (status && status !== "ALL") {
@@ -35,7 +35,7 @@ export async function GET(request: unknown) {
             prisma.withdrawal.count({ where }),
         ]);
         // Convert BigInt to Number for JSON response
-        const serialized = withdrawals.map((w: unknown) => ({
+        const serialized = withdrawals.map((w: any) => ({
             ...w,
             amountKobo: Number(w.amountKobo),
             feeKobo: Number(w.feeKobo),
@@ -55,7 +55,7 @@ export async function GET(request: unknown) {
             },
         });
     }
-    catch (error) {
+    catch (error: any) {
         console.error("Fetch withdrawals error:", error);
         return NextResponse.json({ error: "Failed to fetch withdrawals" }, { status: 500 });
     }

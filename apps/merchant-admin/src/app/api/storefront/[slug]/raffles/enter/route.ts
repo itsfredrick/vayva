@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
-export async function POST(req: unknown, { params }: unknown) {
+export async function POST(req: any, { params }: any) {
     try {
         const { slug } = await params;
         const body = await req.json();
@@ -42,7 +42,7 @@ export async function POST(req: unknown, { params }: unknown) {
         });
         return NextResponse.json({ success: true, entryId: entry.id });
     }
-    catch (error) {
+    catch (error: any) {
         console.error("Raffle entry error:", error);
         return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
     }

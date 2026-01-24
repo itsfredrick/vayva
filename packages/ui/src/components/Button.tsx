@@ -51,7 +51,7 @@ const BaseButton = React.forwardRef<HTMLButtonElement, ButtonProps>(
       className,
       variant,
       size,
-      asChild = false,
+      asChild: _asChild = false,
       isLoading = false,
       children,
       ...props

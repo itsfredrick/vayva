@@ -49,7 +49,7 @@ export const ProductOverview = ({ items }: ProductOverviewProps) => {
 
   return (
     <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
-      {stats.map((stat) => (
+      {stats.map((stat: any) => (
         <div
           key={stat.label}
           className="bg-white border border-gray-200 rounded-xl p-4 flex items-center gap-3 shadow-sm"

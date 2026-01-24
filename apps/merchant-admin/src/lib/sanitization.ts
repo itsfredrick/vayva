@@ -13,7 +13,7 @@ const DEFAULT_CONFIG = {
  * Sanitizes a string containing HTML to prevent XSS.
  * Use this for product descriptions, messaging templates, and policies.
  */
-export function sanitizeHTML(html: unknown, options = DEFAULT_CONFIG) {
+export function sanitizeHTML(html: any, options = DEFAULT_CONFIG) {
     if (!html)
         return '';
     return DOMPurify.sanitize(html, options);
@@ -21,7 +21,7 @@ export function sanitizeHTML(html: unknown, options = DEFAULT_CONFIG) {
 /**
  * Normalizes and whitelists user-supplied URLs to prevent SSRF and Open Redirects.
  */
-export function validateRedirectURL(url: unknown, allowedDomains: unknown= ['vayva.ng', 'vayva.com']) {
+export function validateRedirectURL(url: any, allowedDomains: any= ['vayva.ng', 'vayva.com']) {
     if (!url)
         return null;
     try {
@@ -30,7 +30,7 @@ export function validateRedirectURL(url: unknown, allowedDomains: unknown= ['vay
         if (!['http:', 'https:'].includes(parsed.protocol))
             return null;
         // Check against whitelist or allow relative paths
-        const isAllowedDomain = allowedDomains.some((domain: unknown) => parsed.hostname === domain || parsed.hostname.endsWith(`.${domain}`));
+        const isAllowedDomain = allowedDomains.some((domain: any) => parsed.hostname === domain || parsed.hostname.endsWith(`.${domain}`));
         if (isAllowedDomain)
             return url;
         return null;

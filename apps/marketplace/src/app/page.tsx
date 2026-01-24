@@ -6,7 +6,7 @@ import { useRouter } from "next/navigation"; // Import useRouter
 import { Search, MapPin, ShoppingBag } from "lucide-react";
 import { Button } from "@vayva/ui";
 
-export default function MarketplaceHome() {
+export default function MarketplaceHome(): React.JSX.Element {
     const router = useRouter(); // Initialize useRouter
 
     return (

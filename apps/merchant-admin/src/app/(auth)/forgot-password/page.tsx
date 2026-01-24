@@ -20,7 +20,7 @@ export default function ForgotPasswordPage() {
     try {
       await AuthService.forgotPassword({ email });
       setSuccess(true);
-    } catch (err) {
+    } catch (err: any) {
       console.error(err);
       const message = err instanceof Error ? err.message : "Failed to send reset instructions";
       setError(message);
@@ -94,8 +94,8 @@ export default function ForgotPasswordPage() {
               id="email"
               type="email"
               placeholder="you@business.com"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
+              value={(email as any)}
+              onChange={(e: any) => setEmail(e.target.value)}
               required
               className="w-full h-12 px-4 border border-gray-300 rounded-lg text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#22C55E] focus:border-transparent"
             />

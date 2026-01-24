@@ -1,11 +1,11 @@
 "use client";
 
 import { useState, Suspense } from "react";
-import { useRouter, useSearchParams } from "next/navigation";
-import { ShieldCheck, Loader2, Eye, EyeOff, AlertCircle } from "lucide-react";
+import { useRouter, useSearchParams } from 'next/navigation';
+import { ShieldCheck, Loader2, Eye, EyeOff, AlertCircle } from 'lucide-react';
 import { Button } from "@vayva/ui";
 
-function LoginContent() {
+function LoginContent(): React.JSX.Element {
   const router = useRouter();
   const searchParams = useSearchParams();
   const [email, setEmail] = useState("");
@@ -19,7 +19,7 @@ function LoginContent() {
   const envLabel = isProd ? "PRODUCTION" : "STAGING";
 
   const handleLogin = async (e: React.FormEvent) => {
-    e.preventDefault();
+    (e as any).preventDefault();
     setLoading(true);
     setError(null);
 
@@ -49,7 +49,7 @@ function LoginContent() {
 
       router.push(destination);
       router.refresh(); // Refresh to update server components/middleware state
-    } catch (err: unknown) {
+    } catch (err: any) {
       setError(err.message);
       setLoading(false);
     }
@@ -99,8 +99,8 @@ function LoginContent() {
             <label className="block text-xs font-semibold text-gray-700 mb-1.5 uppercase">Email</label>
             <input
               type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
+              value={(email as any)}
+              onChange={(e: any) => setEmail((e as any).target.value)}
               disabled={loading}
               className="w-full px-4 py-2.5 border border-gray-200 rounded-lg text-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition-all disabled:opacity-50 disabled:bg-gray-50"
               placeholder="ops@vayva.ng"
@@ -113,8 +113,8 @@ function LoginContent() {
             <div className="relative">
               <input
                 type={showPassword ? "text" : "password"}
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
+                value={(password as any)}
+                onChange={(e: any) => setPassword((e as any).target.value)}
                 disabled={loading}
                 className="w-full px-4 py-2.5 border border-gray-200 rounded-lg text-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition-all pr-10 disabled:opacity-50 disabled:bg-gray-50"
                 placeholder="••••••••"
@@ -157,7 +157,7 @@ function LoginContent() {
   );
 }
 
-export default function OpsLoginPage() {
+export default function OpsLoginPage(): React.JSX.Element {
   return (
     <Suspense fallback={<div className="flex h-screen w-full items-center justify-center"><Loader2 className="h-8 w-8 animate-spin text-indigo-600" /></div>}>
       <LoginContent />

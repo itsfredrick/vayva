@@ -1,10 +1,10 @@
-import { NextResponse } from "next/server";
+import { NextResponse } from 'next/server';
 import { prisma } from "@vayva/db";
 import { OpsAuthService } from "@/lib/ops-auth";
 
 export const dynamic = "force-dynamic";
 
-export async function GET(request: Request) {
+export async function GET(_request: Request) {
     const { user } = await OpsAuthService.requireSession();
     // Only Viewable by Owner/Admin
     if (!["OPS_OWNER", "OPS_ADMIN"].includes(user.role)) {
@@ -54,8 +54,8 @@ export async function POST(request: Request) {
             data: newUser,
             tempPassword
         });
-    } catch (e: unknown) {
+    } catch (e: any) {
         console.error(e);
-        return NextResponse.json({ error: e.message || "Failed to create user" }, { status: 500 });
+        return NextResponse.json({ error: (e as any).message || "Failed to create user" }, { status: 500 });
     }
 }

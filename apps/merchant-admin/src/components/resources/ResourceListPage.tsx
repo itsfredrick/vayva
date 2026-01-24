@@ -56,7 +56,7 @@ export const ResourceListPage = ({ primaryObject, title }: ResourceListPageProps
                 </Card>
             ) : (
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                    {items.map((item) => (
+                    {items.map((item: any) => (
                         <Link key={item.id} href={`${pathname}/${item.id}`}>
                             <Card className="p-4 hover:border-black transition-colors cursor-pointer group">
                                 <div className="aspect-square bg-gray-100 rounded-lg mb-3 overflow-hidden relative">

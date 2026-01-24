@@ -9,7 +9,7 @@ import { Icon, cn, Button } from "@vayva/ui";
 interface ChatWindowProps {
   conversation: WhatsAppConversation | null;
   messages: WhatsAppMessage[];
-  onSendMessage: (content: string, linkedType?: unknown, linkedId?: unknown) => void;
+  onSendMessage: (content: string, linkedType?: any, linkedId?: any) => void;
   isLoadingMessages: boolean;
 }
 
@@ -44,7 +44,7 @@ export const ChatWindow = ({
 
     try {
       await onSendMessage(messageToSend);
-    } catch (error) {
+    } catch (error: any) {
       console.error("Failed to send", error);
       setInputValue(messageToSend); // Restore on failure
     }
@@ -105,7 +105,7 @@ export const ChatWindow = ({
       </header>
       {/* Messages Area */}
       <div className="flex-1 overflow-y-auto p-4 space-y-4">
-        {messages.map((msg) => {
+        {messages.map((msg: any) => {
           const isMe = msg.sender === WhatsAppMessageSender.MERCHANT;
           const isSystem = msg.sender === WhatsAppMessageSender.SYSTEM;
 
@@ -158,7 +158,7 @@ export const ChatWindow = ({
       </div>
       {/* QUICK REPLY BAR */}
       <div className="bg-white border-t border-gray-200 p-2 overflow-x-auto whitespace-nowrap flex gap-2 custom-scrollbar shrink-0">
-        {QUICK_REPLIES.map((qr) => (
+        {QUICK_REPLIES.map((qr: any) => (
           <Button
             key={qr}
             variant="outline"
@@ -179,8 +179,8 @@ export const ChatWindow = ({
           <input
             className="w-full bg-transparent border-none outline-none text-sm text-gray-900 placeholder:text-gray-400"
             placeholder="Type a message..."
-            value={inputValue}
-            onChange={(e) => setInputValue(e.target.value)}
+            value={(inputValue as any)}
+            onChange={(e: any) => setInputValue(e.target.value)}
             onKeyDown={(e) => {
               if (e.key === "Enter" && !e.shiftKey) {
                 e.preventDefault();

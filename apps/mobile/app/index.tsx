@@ -1,8 +1,9 @@
+import React from "react";
 import { View, Text } from "react-native";
 import { Link } from "expo-router";
 import { tokens } from "@vayva/theme";
 
-export default function Home() {
+export default function Home(): React.JSX.Element {
   return (
     <View
       style={{

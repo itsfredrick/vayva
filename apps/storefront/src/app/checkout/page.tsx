@@ -6,16 +6,16 @@ import { useStore } from "@/context/StoreContext";
 import { StorefrontService } from "@/services/storefront.service";
 import { StoreShell } from "@/components/StoreShell";
 import NextLink from "next/link";
-const Link = NextLink as unknown;
+const Link = NextLink;
 import {
   ChevronRight as ChevronRightIcon,
   AlertCircle as AlertCircleIcon,
 } from "lucide-react";
-const ChevronRight = ChevronRightIcon as unknown;
-const AlertCircle = AlertCircleIcon as unknown;
+const ChevronRight = ChevronRightIcon;
+const AlertCircle = AlertCircleIcon;
 import { useRouter } from "next/navigation";
 
-export default function CheckoutPage() {
+export default function CheckoutPage(): React.JSX.Element {
   const { store, cart, clearCart } = useStore();
   const router = useRouter();
   const [submitting, setSubmitting] = useState(false);
@@ -41,7 +41,7 @@ export default function CheckoutPage() {
   const shipping = deliveryMethod === "DELIVERY" ? 1500 : 0; // Flat rate for demo
   const total = subtotal + shipping;
 
-  if (!store) return null;
+  if (!store) return <></>;
 
   const handlePlaceOrder = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -56,7 +56,7 @@ export default function CheckoutPage() {
       // 1. Create Order
       const orderData = {
         storeId: store.id,
-        items: cart.map((item) => ({
+        items: cart.map((item: any) => ({
           productId: item.productId,
           variantId: item.variantId || "default",
           quantity: item.quantity,
@@ -77,7 +77,7 @@ export default function CheckoutPage() {
       const order = await StorefrontService.createOrder(orderData);
 
       // 2. Initialize Payment
-      const payment = await StorefrontService.initializePayment({
+      const payment: any = await StorefrontService.initializePayment({
         orderId: order.orderId!, // Assert existence as createOrder succeeded
         email: email,
         callbackUrl: `${window.location.origin}/order/confirmation?store=${store.slug}&orderId=${order.orderId}`,
@@ -94,7 +94,7 @@ export default function CheckoutPage() {
       } else {
         throw new Error("Payment initialization failed: No URL returned");
       }
-    } catch (err: unknown) {
+    } catch (err: any) {
       console.error("Checkout error:", err);
       setError(
         err.message || "An error occurred during checkout. Please try again.",
@@ -140,7 +140,7 @@ export default function CheckoutPage() {
                 placeholder="Email"
                 aria-label="Email address"
                 value={email}
-                onChange={(e) => setEmail(e.target.value)}
+                onChange={(e: any) => setEmail(e.target.value)}
                 className="w-full p-3 border border-gray-200 rounded-lg mb-2 focus:ring-1 focus:ring-black outline-none"
                 required
               />
@@ -194,7 +194,7 @@ export default function CheckoutPage() {
                     placeholder="First name"
                     aria-label="First name"
                     value={firstName}
-                    onChange={(e) => setFirstName(e.target.value)}
+                    onChange={(e: any) => setFirstName(e.target.value)}
                     className="w-full p-3 border border-gray-200 rounded-lg focus:ring-1 focus:ring-black outline-none"
                     required
                   />
@@ -204,7 +204,7 @@ export default function CheckoutPage() {
                     placeholder="Last name"
                     aria-label="Last name"
                     value={lastName}
-                    onChange={(e) => setLastName(e.target.value)}
+                    onChange={(e: any) => setLastName(e.target.value)}
                     className="w-full p-3 border border-gray-200 rounded-lg focus:ring-1 focus:ring-black outline-none"
                     required
                   />
@@ -215,7 +215,7 @@ export default function CheckoutPage() {
                   placeholder="Address"
                   aria-label="Shipping address"
                   value={address}
-                  onChange={(e) => setAddress(e.target.value)}
+                  onChange={(e: any) => setAddress(e.target.value)}
                   className="w-full p-3 border border-gray-200 rounded-lg mt-4 focus:ring-1 focus:ring-black outline-none"
                   required
                 />
@@ -226,7 +226,7 @@ export default function CheckoutPage() {
                     placeholder="City"
                     aria-label="City"
                     value={city}
-                    onChange={(e) => setCity(e.target.value)}
+                    onChange={(e: any) => setCity(e.target.value)}
                     className="w-full p-3 border border-gray-200 rounded-lg focus:ring-1 focus:ring-black outline-none"
                     required
                   />
@@ -236,7 +236,7 @@ export default function CheckoutPage() {
                     placeholder="State"
                     aria-label="State"
                     value={state}
-                    onChange={(e) => setState(e.target.value)}
+                    onChange={(e: any) => setState(e.target.value)}
                     className="w-full p-3 border border-gray-200 rounded-lg focus:ring-1 focus:ring-black outline-none"
                     required
                   />
@@ -247,7 +247,7 @@ export default function CheckoutPage() {
                   placeholder="Phone (e.g. 08031234567)"
                   aria-label="Phone number"
                   value={phone}
-                  onChange={(e) => setPhone(e.target.value)}
+                  onChange={(e: any) => setPhone(e.target.value)}
                   className="w-full p-3 border border-gray-200 rounded-lg mt-4 focus:ring-1 focus:ring-black outline-none"
                   required
                 />
@@ -260,7 +260,7 @@ export default function CheckoutPage() {
                   type="checkbox"
                   id="agreed"
                   checked={agreed}
-                  onChange={(e) => setAgreed(e.target.checked)}
+                  onChange={(e: any) => setAgreed(e.target.checked)}
                   className="mt-1 w-4 h-4 rounded border-gray-300 text-black focus:ring-black accent-black"
                 />
                 <label htmlFor="agreed" className="text-sm text-gray-500 cursor-pointer select-none">

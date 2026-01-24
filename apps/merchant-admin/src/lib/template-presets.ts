@@ -425,7 +425,7 @@ export const MICRO_TEMPLATES = {
         },
     },
 };
-export const getDefaultConfig = (templateId: unknown) => {
+export const getDefaultConfig = (templateId: any) => {
     let microId = "retail_fashion";
     if (templateId === "food")
         microId = "food_restaurant";
@@ -436,6 +436,6 @@ export const getDefaultConfig = (templateId: unknown) => {
         microTemplateId: microId,
         theme: "minimal",
         branding: { color: "#000000" },
-        content: MICRO_TEMPLATES[microId].defaultContent,
+        content: (MICRO_TEMPLATES as any)[microId].defaultContent,
     };
 };

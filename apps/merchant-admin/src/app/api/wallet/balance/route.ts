@@ -64,7 +64,7 @@ export async function GET(req: NextRequest) {
             lastUpdated: wallet.updatedAt.toISOString(),
         });
     }
-    catch (error) {
+    catch (error: any) {
         console.error("Fetch Balance Error:", error);
         return NextResponse.json({ error: "Failed to fetch balance" }, { status: 500 });
     }

@@ -1,8 +1,9 @@
 export class EscalationPolicy {
+    static SENSITIVE_KEYWORDS: any;
     /**
      * Evaluates whether a user query requires human intervention.
      */
-    static evaluate(query, confidence = 1.0, historyCount = 0) {
+    static evaluate(query: any, confidence = 1.0, historyCount = 0) {
         const lowerQuery = query.toLowerCase();
         // 1. Critical Keywords (Deterministic)
         for (const kw of this.SENSITIVE_KEYWORDS.PAYMENT_DISPUTE) {

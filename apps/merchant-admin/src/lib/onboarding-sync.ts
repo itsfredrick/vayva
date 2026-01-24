@@ -1,5 +1,5 @@
 import { prisma } from "@vayva/db";
-export async function syncOnboardingData(storeId: unknown, state: unknown) {
+export async function syncOnboardingData(storeId: any, state: any) {
     if (!storeId || !state)
         return;
     // Schema Version Guardrail
@@ -8,7 +8,7 @@ export async function syncOnboardingData(storeId: unknown, state: unknown) {
         console.warn(`[Sync][Drift Alarm] Schema version mismatch! Expected ${EXPECTED_SCHEMA_VERSION}, got ${state.schemaVersion}. Sync logic may be outdated.`);
     }
     try {
-        await prisma.$transaction(async (tx: unknown) => {
+        await prisma.$transaction(async (tx: any) => {
             // 1. Update Core Store Details
             await tx.store.update({
                 where: { id: storeId },
@@ -165,7 +165,7 @@ export async function syncOnboardingData(storeId: unknown, state: unknown) {
             }
         });
     }
-    catch (error) {
+    catch (error: any) {
         console.error("[Sync] Failed to sync onboarding data:", error);
         // We log but maybe allow completion logic to proceed or fail?
         // Throwing allows caller to handle it.

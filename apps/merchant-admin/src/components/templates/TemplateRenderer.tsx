@@ -9,7 +9,7 @@ import { SimpleRetailTemplate } from "@/components/templates/retail/SimpleRetail
 
 interface TemplateRendererProps {
   templateId: string;
-  config?: unknown;
+  config?: any;
   storeName: string;
   isDemo?: boolean;
 }

@@ -13,7 +13,7 @@ interface StepperProps {
   className?: string;
 }
 
-export function Stepper({ steps, currentStep, className }: StepperProps) {
+export function Stepper({ steps, currentStep, className }: StepperProps): React.JSX.Element {
   return (
     <div className={cn("flex items-center justify-between w-full", className)}>
       {steps.map((step, index) => {

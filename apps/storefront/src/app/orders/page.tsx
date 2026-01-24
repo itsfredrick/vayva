@@ -7,7 +7,7 @@ import { useStore } from "@/context/StoreContext";
 import { StorefrontService } from "@/services/storefront.service";
 import { PublicOrder } from "@/types/storefront";
 
-export default function OrderStatusPage() {
+export default function OrderStatusPage(): React.JSX.Element {
   const { store } = useStore();
   const [ref, setRef] = useState("");
   const [phone, setPhone] = useState("");
@@ -15,7 +15,7 @@ export default function OrderStatusPage() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
-  if (!store) return null;
+  if (!store) return <></>;
 
   const handleSearch = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -32,7 +32,7 @@ export default function OrderStatusPage() {
           "Order not found. Please check your reference and phone number.",
         );
       }
-    } catch (err) {
+    } catch {
       setError("An error occurred. Please try again.");
     }
     setLoading(false);
@@ -55,7 +55,7 @@ export default function OrderStatusPage() {
               <input
                 type="text"
                 value={ref}
-                onChange={(e) => setRef(e.target.value)}
+                onChange={(e: any) => setRef(e.target.value)}
                 placeholder="e.g. ORD-12345"
                 className="w-full p-3 border border-gray-200 rounded-lg outline-none focus:ring-1 focus:ring-black"
                 required
@@ -68,7 +68,7 @@ export default function OrderStatusPage() {
               <input
                 type="tel"
                 value={phone}
-                onChange={(e) => setPhone(e.target.value)}
+                onChange={(e: any) => setPhone(e.target.value)}
                 placeholder="e.g. +234..."
                 className="w-full p-3 border border-gray-200 rounded-lg outline-none focus:ring-1 focus:ring-black"
                 required

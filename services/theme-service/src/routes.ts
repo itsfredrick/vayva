@@ -3,34 +3,34 @@ import { ThemeController } from "./controller";
 
 export async function themeRoutes(server: FastifyInstance) {
   // --- Template Gallery ---
-  server.get("/templates", async (req: unknown, reply) => {
+  server.get("/templates", async (req: unknown, _reply) => {
     return await ThemeController.listTemplates(req.query);
   });
 
-  server.get("/templates/:key", async (req: unknown, reply) => {
+  server.get("/templates/:key", async (req: unknown, _reply) => {
     const { key } = req.params;
     return await ThemeController.getTemplate(key);
   });
 
   // --- Merchant Theme ---
-  server.get("/theme", async (req: unknown, reply) => {
+  server.get("/theme", async (req: unknown, _reply) => {
     const storeId = req.headers["x-store-id"];
     return await ThemeController.getMerchantTheme(storeId);
   });
 
-  server.post("/theme/apply", async (req: unknown, reply) => {
+  server.post("/theme/apply", async (req: unknown, _reply) => {
     const storeId = req.headers["x-store-id"];
     const userId = req.headers["x-user-id"];
     const { templateKey } = req.body;
     return await ThemeController.applyTemplate(storeId, templateKey, userId);
   });
 
-  server.put("/theme/settings", async (req: unknown, reply) => {
+  server.put("/theme/settings", async (req: unknown, _reply) => {
     const storeId = req.headers["x-store-id"];
     return await ThemeController.updateSettings(storeId, req.body);
   });
 
-  server.post("/theme/publish", async (req: unknown, reply) => {
+  server.post("/theme/publish", async (req: unknown, _reply) => {
     const storeId = req.headers["x-store-id"];
     const userId = req.headers["x-user-id"];
     return await ThemeController.publishTheme(storeId, userId);

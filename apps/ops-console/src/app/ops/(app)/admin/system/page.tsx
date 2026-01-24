@@ -1,11 +1,11 @@
 "use client";
 
 import React from "react";
-import { Terminal, Server, CheckCircle2, ShieldCheck, RefreshCw } from "lucide-react";
+import { Terminal, Server, CheckCircle2, ShieldCheck, RefreshCw } from 'lucide-react';
 import { useOpsQuery } from "@/hooks/useOpsQuery";
 import { Button } from "@vayva/ui";
 
-export default function SystemPage() {
+export default function SystemPage(): React.JSX.Element {
     const { data: system, isLoading, refetch } = useOpsQuery(
         ["system-env"],
         () => fetch("/api/ops/admin/system").then(res => res.json().then(j => j.data))

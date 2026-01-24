@@ -1,3 +1,4 @@
+import React from "react";
 import "./globals.css";
 
 // Remote fonts disabled to avoid network dependency during build
@@ -51,7 +52,7 @@ interface RootLayoutProps {
 
 export default function RootLayout({
     children,
-}: RootLayoutProps) {
+}: RootLayoutProps): React.JSX.Element {
     const jsonLd = {
         "@context": "https://schema.org",
         "@type": "Organization",

@@ -27,7 +27,7 @@ export default async function ActivityLogsPage() {
                 </div>
             </div>
 
-            <ActivityLogTable logs={logs as unknown} />
+            <ActivityLogTable logs={logs as any} />
         </div>
     );
 }

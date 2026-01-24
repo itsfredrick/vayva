@@ -16,7 +16,7 @@ export function StandardDigitalHome({
 }: {
     storeName?: string;
     storeSlug?: string
-}) {
+}): React.JSX.Element {
     const { store } = useStorefrontStore(storeSlug);
     const { products, isLoading } = useStorefrontProducts(storeSlug, { limit: 8 });
     const { cart, addToCart, removeFromCart, total, isOpen: isCartOpen, setIsOpen: setIsCartOpen, clearCart } = useStorefrontCart(storeSlug || "");

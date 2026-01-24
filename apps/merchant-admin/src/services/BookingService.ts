@@ -36,7 +36,7 @@ export const BookingService = {
                 startsAt: "asc"
             }
         });
-        return bookings as unknown as BookingWithDetails[];
+        return bookings as any as BookingWithDetails[];
     },
     async createBooking(storeId: string, data: CreateBookingData) {
         const service = await db.product.findUnique({ where: { id: data.serviceId } });

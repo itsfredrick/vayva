@@ -25,7 +25,7 @@ export function Logo({
   const content = (
     <div className={`flex items-center gap-2 ${className}`}>
       <Image
-        src="/icons/icon-512.png"
+        src="/vayva-logo-official.svg"
         alt="Vayva Logo"
         width={width}
         height={height}

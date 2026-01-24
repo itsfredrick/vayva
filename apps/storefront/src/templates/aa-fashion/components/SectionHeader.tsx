@@ -7,7 +7,7 @@ interface SectionHeaderProps {
   actionHref?: string;
 }
 
-export const SectionHeader = ({ title, actionHref }: SectionHeaderProps) => {
+export const SectionHeader = ({ title, actionHref }: SectionHeaderProps): React.JSX.Element => {
   return (
     <div className="flex items-center justify-between px-4 py-4 mt-4">
       <h3 className="text-lg font-bold text-[#111111] capitalize">{title}</h3>

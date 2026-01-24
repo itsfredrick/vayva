@@ -28,7 +28,7 @@ export const GET = withVayvaAPI(PERMISSIONS.COMMERCE_VIEW, async (request, { sto
             inventory: product.productVariants.reduce((acc, v) => acc + (v.inventoryItems[0]?.available || 0), 0),
             category: product.productType,
             images: [],
-            variants: product.productVariants.map((v) => ({
+            variants: product.productVariants.map((v: any) => ({
                 id: v.id,
                 name: v.title,
                 price: Number(v.price),
@@ -39,7 +39,7 @@ export const GET = withVayvaAPI(PERMISSIONS.COMMERCE_VIEW, async (request, { sto
         };
         return NextResponse.json(formatted);
     }
-    catch (error) {
+    catch (error: any) {
         console.error("GET Product Error:", error);
         return NextResponse.json({ error: "Failed to fetch product" }, { status: 500 });
     }
@@ -102,7 +102,7 @@ export const PUT = withVayvaAPI(PERMISSIONS.COMMERCE_MANAGE, async (request, { s
         }
         return NextResponse.json(updated);
     }
-    catch (error) {
+    catch (error: any) {
         console.error("Update Product Error:", error);
         return NextResponse.json({ error: "Update failed" }, { status: 500 });
     }
@@ -118,7 +118,7 @@ export const DELETE = withVayvaAPI(PERMISSIONS.COMMERCE_MANAGE, async (request, 
         });
         return NextResponse.json({ success: true });
     }
-    catch (error) {
+    catch (error: any) {
         console.error("Delete Product Error:", error);
         return NextResponse.json({ error: "Delete failed" }, { status: 500 });
     }

@@ -17,7 +17,7 @@ export const CustomerGrid = ({
   if (isLoading) {
     return (
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-        {[1, 2, 3, 4, 5, 6].map((i) => (
+        {[1, 2, 3, 4, 5, 6].map((i: any) => (
           <div key={i} className="h-48 bg-gray-50 rounded-xl animate-pulse" />
         ))}
       </div>
@@ -46,7 +46,7 @@ export const CustomerGrid = ({
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-      {customers.map((customer) => (
+      {customers.map((customer: any) => (
         <CustomerCard
           key={customer.id}
           customer={customer}

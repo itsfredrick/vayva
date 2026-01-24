@@ -5,7 +5,7 @@ import { Button, Icon } from "@vayva/ui";
 import { motion } from "framer-motion";
 import { Twitter, Linkedin, Instagram } from "lucide-react";
 
-export default function ContactPage() {
+export default function ContactPage(): React.JSX.Element {
   const [status, setStatus] = useState<"idle" | "submitting" | "success" | "error">(
     "idle"
   );
@@ -19,12 +19,12 @@ export default function ContactPage() {
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-  ) => {
+  ): void => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent): Promise<void> => {
     e.preventDefault();
     setStatus("submitting");
 
@@ -45,7 +45,7 @@ export default function ContactPage() {
         subject: "",
         message: "",
       });
-    } catch (error) {
+    } catch (error: any) {
       console.error(error);
       setStatus("error");
     }

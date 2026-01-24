@@ -10,7 +10,7 @@ interface ProductGridDigitalProps {
   onSelect: (product: PublicProduct) => void;
 }
 
-const FileIcon = ({ type }: { type?: string }) => {
+const FileIcon = ({ type }: { type?: string }): React.JSX.Element => {
   if (type === "PDF" || type === "DOCX")
     return <FileText size={20} className="text-red-400" />;
   if (type === "FIG" || type === "ZIP")
@@ -33,7 +33,7 @@ export const ProductGridDigital = ({
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {products.map((product) => (
+          {products.map((product: any) => (
             <div
               key={product.id}
               onClick={() => onSelect(product)}

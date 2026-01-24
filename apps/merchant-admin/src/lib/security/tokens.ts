@@ -9,13 +9,13 @@ export class SecurityUtils {
     /**
      * Hashes a token using SHA-256 for secure storage.
      */
-    static hashToken(token) {
+    static hashToken(token: any) {
         return crypto.createHash("sha256").update(token).digest("hex");
     }
     /**
      * Compares two strings using constant-time algorithm to prevent timing attacks.
      */
-    static constantTimeCompare(a, b) {
+    static constantTimeCompare(a: any, b: any) {
         return crypto.timingSafeEqual(Buffer.from(a, "utf8"), Buffer.from(b, "utf8"));
     }
 }

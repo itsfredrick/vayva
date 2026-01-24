@@ -1,6 +1,6 @@
 import React from "react";
 
-export const RecentDonations = () => {
+export const RecentDonations = (): React.JSX.Element => {
   const donations = [
     { name: "Anonymous", amount: 5000, time: "2 mins ago" },
     {

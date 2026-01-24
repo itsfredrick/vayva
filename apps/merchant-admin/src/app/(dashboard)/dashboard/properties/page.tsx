@@ -61,7 +61,7 @@ export default async function PropertiesPage() {
                 </div>
             ) : (
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                    {properties.map((prop) => (
+                    {properties.map((prop: any) => (
                         <div key={prop.id} className="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden hover:shadow-md transition-shadow group">
                             <div className="aspect-video bg-gray-100 relative">
                                 {prop.product.productImages && prop.product.productImages.length > 0 ? (

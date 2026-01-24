@@ -56,7 +56,7 @@ export default function ProjectEditorPage() {
                     setPassword(p.password || "");
                     setImages(Array.isArray(p.images) ? p.images : []);
                 }
-            } catch (e) {
+            } catch (e: any) {
                 toast.error("Failed to load project");
                 router.push("/dashboard/portfolio");
             } finally {
@@ -85,7 +85,7 @@ export default function ProjectEditorPage() {
             } else {
                 throw new Error("Failed to save");
             }
-        } catch (e) {
+        } catch (e: any) {
             toast.error("Error saving changes");
         } finally {
             setIsSaving(false);
@@ -94,7 +94,7 @@ export default function ProjectEditorPage() {
 
     const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
         if (e.target.files) {
-            Array.from(e.target.files).forEach(file => {
+            Array.from(e.target.files).forEach((file: any) => {
                 const reader = new FileReader();
                 reader.onloadend = () => {
                     setImages(prev => [...prev, {
@@ -185,11 +185,11 @@ export default function ProjectEditorPage() {
                         <div className="space-y-4">
                             <div>
                                 <Label htmlFor="title">Title</Label>
-                                <Input id="title" value={title} onChange={e => setTitle(e.target.value)} />
+                                <Input id="title" value={(title as any)} onChange={(e: any) => setTitle(e.target.value)} />
                             </div>
                             <div>
                                 <Label htmlFor="desc">Description</Label>
-                                <Textarea id="desc" value={description} onChange={e => setDescription(e.target.value)} rows={3} />
+                                <Textarea id="desc" value={(description as any)} onChange={(e: any) => setDescription(e.target.value)} rows={3} />
                             </div>
                         </div>
                     </div>
@@ -213,8 +213,8 @@ export default function ProjectEditorPage() {
                                     <Input
                                         id="pwd"
                                         type="text"
-                                        value={password}
-                                        onChange={e => setPassword(e.target.value)}
+                                        value={(password as any)}
+                                        onChange={(e: any) => setPassword(e.target.value)}
                                         className="bg-white"
                                         placeholder="Optional"
                                     />
@@ -232,6 +232,6 @@ export default function ProjectEditorPage() {
     );
 }
 
-function Loader2(props: unknown) {
-    return <svg {...props} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 12a9 9 0 1 1-6.219-8.56" /></svg>;
+function Loader2(props: any) {
+    return <svg {...(props as any)} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 12a9 9 0 1 1-6.219-8.56" /></svg>;
 }

@@ -79,7 +79,7 @@ export class TemplateSyncService {
                 });
                 synced++;
             }
-            catch (e) {
+            catch (e: any) {
                 console.error(`Failed to sync template ${source.id}`, e);
                 errors++;
             }

@@ -19,7 +19,7 @@ interface PlanResolution {
  * @param testOverride - Optional override for testing/demos.
  */
 export async function getUserPlan(
-  store?: unknown,
+  store?: any,
   testOverride?: TemplatePlanTier,
 ): Promise<PlanResolution> {
   // 1. Dev/Demo Override
@@ -29,10 +29,10 @@ export async function getUserPlan(
 
   // 2. Store Context (Runtime)
   // If the store object has a 'plan' field, use it.
-  if (store && store.plan) {
+  if (store && (store as any).plan) {
     // Map string to enum if necessary
     const tier =
-      Object.values(TemplatePlanTier).find((t) => t === store.plan) ||
+      Object.values(TemplatePlanTier).find((t) => t === (store as any).plan) ||
       TemplatePlanTier.FREE;
     return { tier, source: "store" };
   }

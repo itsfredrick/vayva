@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { requireAuth } from "@/lib/auth/session";
 import { prisma } from "@/lib/prisma";
-export async function GET(request: unknown) {
+export async function GET(request: Request) {
     try {
         const session = await requireAuth();
         const storeId = session.user.storeId;
@@ -12,11 +12,11 @@ export async function GET(request: unknown) {
         });
         return NextResponse.json({ success: true, data: settings });
     }
-    catch (error) {
+    catch (error: any) {
         return NextResponse.json({ error: "Failed to fetch WhatsApp settings" }, { status: 500 });
     }
 }
-export async function PUT(request: unknown) {
+export async function PUT(request: Request) {
     try {
         const session = await requireAuth();
         const storeId = session.user.storeId;
@@ -36,7 +36,7 @@ export async function PUT(request: unknown) {
         });
         return NextResponse.json({ success: true, data: settings });
     }
-    catch (error) {
+    catch (error: any) {
         return NextResponse.json({ error: "Failed to update WhatsApp settings" }, { status: 500 });
     }
 }

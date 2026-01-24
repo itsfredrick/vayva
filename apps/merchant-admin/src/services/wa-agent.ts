@@ -19,7 +19,7 @@ export const WaAgentService = {
             humanHandoffEnabled: true,
         });
     },
-    updateSettings: async (settings: unknown) => {
+    updateSettings: async (settings: any) => {
         if (!FEATURES.WHATSAPP_ENABLED) {
             throw new Error("WhatsApp integration is not configured");
         }
@@ -47,7 +47,7 @@ export const WaAgentService = {
             prohibitedClaims: [],
         });
     },
-    updateProfile: async (profile: unknown) => {
+    updateProfile: async (profile: any) => {
         if (!FEATURES.WHATSAPP_ENABLED) {
             throw new Error("WhatsApp integration is not configured");
         }
@@ -71,13 +71,13 @@ export const WaAgentService = {
             const json = await res.json();
             return json.data || [];
         }
-        catch (e) {
+        catch (e: any) {
             console.error("Failed to fetch conversations", e);
             return [];
         }
     },
     // 3. Test Message
-    sendTestMessage: async (text: unknown) => {
+    sendTestMessage: async (text: any) => {
         if (!FEATURES.WHATSAPP_ENABLED) {
             throw new Error("WhatsApp integration is not configured");
         }
@@ -99,11 +99,11 @@ export const WaAgentService = {
             const json = await res.json();
             return json.data || [];
         }
-        catch (e) {
+        catch (e: any) {
             return [];
         }
     },
-    actionApproval: async (id: unknown, action: unknown) => {
+    actionApproval: async (id: any, action: any) => {
         if (!FEATURES.WHATSAPP_ENABLED)
             throw new Error("Not configured");
         const res = await fetch(`/api/support/approvals/${id}/action`, {
@@ -114,7 +114,7 @@ export const WaAgentService = {
         return res.ok;
     },
     // 5. Inbox Pendings
-    getThread: async (threadId: unknown) => {
+    getThread: async (threadId: any) => {
         if (!FEATURES.WHATSAPP_ENABLED)
             return null;
         try {
@@ -124,7 +124,7 @@ export const WaAgentService = {
             const json = await res.json();
             return json.data;
         }
-        catch (e) {
+        catch (e: any) {
             return null;
         }
     },
@@ -138,7 +138,7 @@ export const WaAgentService = {
             const json = await res.json();
             const entries = json.data || [];
             // Map knowledge base entries to UI interface
-            return entries.map((e: unknown) => ({
+            return entries.map((e: any) => ({
                 id: e.id,
                 question: e.sourceType === "FILE" ? "Document Upload" : "Manual Entry",
                 answer: e.content.length > 100 ? e.content.substring(0, 100) + "..." : e.content,
@@ -148,7 +148,7 @@ export const WaAgentService = {
                 status: "ACTIVE"
             }));
         }
-        catch (e) {
+        catch (e: any) {
             console.error("Failed to load KB", e);
             return [];
         }

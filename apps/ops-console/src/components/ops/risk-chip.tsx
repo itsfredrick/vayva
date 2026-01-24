@@ -35,7 +35,7 @@ const RISK_CONFIG: Record<
   },
 };
 
-export function RiskChip({ level, showIcon = true }: RiskChipProps) {
+export function RiskChip({ level, showIcon = true }: RiskChipProps): React.JSX.Element {
   const config = RISK_CONFIG[level];
 
   return (

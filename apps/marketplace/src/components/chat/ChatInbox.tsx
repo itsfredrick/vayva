@@ -14,12 +14,12 @@ interface Conversation {
     unreadCount: number;
 }
 
-export function ChatInbox() {
+export function ChatInbox(): React.JSX.Element {
     const [conversations, setConversations] = useState<Conversation[]>([]);
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        const fetchConversations = async () => {
+        const fetchConversations = async (): Promise<void> => {
             try {
                 const res = await fetch("/api/conversations");
                 const data = await res.json();

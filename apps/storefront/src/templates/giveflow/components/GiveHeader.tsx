@@ -7,7 +7,7 @@ interface GiveHeaderProps {
   storeName?: string;
 }
 
-export const GiveHeader = ({ storeName }: GiveHeaderProps) => {
+export const GiveHeader = ({ storeName }: GiveHeaderProps): React.JSX.Element => {
   return (
     <header className="sticky top-0 z-50 bg-white shadow-sm border-b border-gray-100">
       <div className="max-w-6xl mx-auto px-6 h-20 flex items-center justify-between">

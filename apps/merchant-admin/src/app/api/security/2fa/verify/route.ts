@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { requireAuth } from "@/lib/auth/session";
-export async function POST(request: unknown) {
+export async function POST(request: Request) {
     try {
         const session = await requireAuth();
         const userId = session.user.id;
@@ -48,7 +48,7 @@ export async function POST(request: unknown) {
             message: "2FA enabled successfully",
         });
     }
-    catch (error) {
+    catch (error: any) {
         console.error("2FA verify error:", error);
         if (error.message === "Unauthorized") {
             return NextResponse.json({ error: "Unauthorized" }, { status: 401 });

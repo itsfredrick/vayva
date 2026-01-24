@@ -126,6 +126,7 @@ export const StateTransitions = {
    * Check if transition is valid
    */
   isValid(from: EducationState, to: EducationState): boolean {
-    return (this.ALLOWED as unknown)[from]?.includes(to) || false;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    return (this.ALLOWED as any)[from]?.includes(to) || false;
   },
 };

@@ -22,7 +22,7 @@ export const authOptions: NextAuthOptions = {
                 email: { label: "Email", type: "text" },
                 password: { label: "Password", type: "password" }
             },
-            async authorize(credentials) {
+            async authorize(_credentials) {
                 // Real-time user table verification
                 // For Development Phase, returning a mock Buyer user
                 return {

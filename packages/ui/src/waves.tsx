@@ -1,6 +1,6 @@
 import React from "react";
 
-export const Wave = ({ className }: { className?: string }) => {
+export const Wave = ({ className }: { className?: string }): React.JSX.Element => {
   return (
     <svg
       className={className}

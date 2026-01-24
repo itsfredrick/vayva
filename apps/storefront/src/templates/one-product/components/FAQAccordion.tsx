@@ -6,7 +6,7 @@ interface FAQAccordionProps {
   faqs: { question: string; answer: string }[];
 }
 
-export const FAQAccordion = ({ faqs }: FAQAccordionProps) => {
+export const FAQAccordion = ({ faqs }: FAQAccordionProps): React.JSX.Element => {
   const [openIdx, setOpenIdx] = useState<number | null>(0);
 
   return (

@@ -9,10 +9,10 @@ import { Trash2, Plus, Upload } from "lucide-react";
 
 interface WholesaleProductFormProps {
     productId?: string;
-    initialData?: unknown;
+    initialData?: any;
 }
 
-export function WholesaleProductForm({ productId: unknown, initialData }: WholesaleProductFormProps) {
+export function WholesaleProductForm({ productId, initialData }: WholesaleProductFormProps) {
     const router = useRouter();
     const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -35,13 +35,13 @@ export function WholesaleProductForm({ productId: unknown, initialData }: Wholes
         name: "pricingTiers"
     });
 
-    const onSubmit = async (data: unknown) => {
+    const onSubmit = async (data: any) => {
         setIsSubmitting(true);
         try {
             // Base price is the price for the first tier (assumed highest price)
             const basePrice = data.pricingTiers[0]?.price || 0;
 
-            const payload = {
+            const payload: any = {
                 title: data.title,
                 description: data.description,
                 price: basePrice,
@@ -50,7 +50,7 @@ export function WholesaleProductForm({ productId: unknown, initialData }: Wholes
                     type: "wholesale",
                     moq: Number(data.moq),
                     unitOfMeasure: data.unitOfMeasure,
-                    pricingTiers: data.pricingTiers.map((t: unknown) => ({
+                    pricingTiers: data.pricingTiers.map((t: any) => ({
                         minQty: Number(t.minQty),
                         maxQty: Number(t.maxQty) || null, // null means unlimited
                         price: Number(t.price)
@@ -74,7 +74,7 @@ export function WholesaleProductForm({ productId: unknown, initialData }: Wholes
 
             toast.success(productId ? "Product updated" : "Product created");
             router.push("/dashboard/products");
-        } catch (e) {
+        } catch (e: any) {
             toast.error("Something went wrong");
         } finally {
             setIsSubmitting(false);
@@ -138,7 +138,7 @@ export function WholesaleProductForm({ productId: unknown, initialData }: Wholes
                 <p className="text-sm text-gray-500">Define price breaks based on quantity ordered.</p>
 
                 <div className="space-y-4">
-                    {fields.map((field: unknown, index: unknown) => (
+                    {fields.map((field: any, index: any) => (
                         <div key={field.id} className="flex gap-4 items-end bg-gray-50 p-4 rounded-lg border">
                             <div className="flex-1">
                                 <Label>Min Qty</Label>

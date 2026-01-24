@@ -24,7 +24,7 @@ export const FeaturedCollectionEditorial = ({
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto">
-        {products.map((product) => (
+        {products.map((product: any) => (
           <ProductCardEditorial
             key={product.id}
             product={product}

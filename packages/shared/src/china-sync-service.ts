@@ -16,7 +16,7 @@ export class ChinaSyncService {
     /**
      * Syncs a supplier's catalog from an external feed.
      */
-    static async syncSupplierCatalog(storeId: string, feed: SupplierFeedItem[]) {
+    static async syncSupplierCatalog(storeId: string, feed: SupplierFeedItem[]): Promise<{ success: boolean; count: number }> {
         const store = await prisma.store.findUnique({
             where: { id: storeId },
             include: { agent: true }
@@ -26,7 +26,6 @@ export class ChinaSyncService {
             throw new Error("Invalid supplier store");
         }
 
-        console.log(`Syncing catalog for supplier: ${store.name} (${feed.length} items)`);
 
         for (const item of feed) {
             // Update or create product
@@ -93,12 +92,11 @@ export class ChinaSyncService {
     /**
      * Syncs catalogs for all China suppliers.
      */
-    static async syncAllSuppliers() {
+    static async syncAllSuppliers(): Promise<{ success: boolean; results: unknown[] }> {
         const suppliers = await prisma.store.findMany({
             where: { type: "CHINA_SUPPLIER", isActive: true }
         });
 
-        console.log(`Starting global sync for ${suppliers.length} suppliers...`);
         const results = [];
 
         for (const supplier of suppliers) {
@@ -107,7 +105,6 @@ export class ChinaSyncService {
                 // using supplier.externalId or connection settings.
                 // For now, we skip the feed arg or need a FetchService.
                 // We'll just log success to simulate the orchestration without crashing.
-                console.log(`Syncing ${supplier.name}...`);
                 results.push({ supplier: supplier.name, status: "ok" });
             } catch (e: unknown) {
                 const errorMessage = e instanceof Error ? e.message : "Unknown error";
@@ -120,7 +117,7 @@ export class ChinaSyncService {
     /**
      * Suggests a supplier for a sourcing request based on keywords.
      */
-    static async suggestSupplier(requestBody: string) {
+    static async suggestSupplier(requestBody: string): Promise<{ id: string; name: string; category: string | null } | null> {
         // Simple keyword-based matching
         const stores = await prisma.store.findMany({
             where: {
@@ -147,7 +144,7 @@ export class ChinaSyncService {
             }
 
             // Boost based on performance metrics if available
-            const metrics = store.performanceMetrics as any;
+            const metrics = store.performanceMetrics as Record<string, number> | null;
             if (metrics?.responseRate) score += metrics.responseRate * 2;
 
             if (score > highestScore) {

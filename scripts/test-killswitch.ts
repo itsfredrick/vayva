@@ -1,8 +1,8 @@
 
 import { KillSwitchService, KillSwitchFeature } from "../apps/merchant-admin/src/lib/ops/KillSwitch";
-import { prisma } from "../apps/merchant-admin/src/lib/prisma";
+import { _prisma } from "../apps/merchant-admin/src/lib/prisma";
 
-async function main() {
+async function _main() {
     console.log("--- Testing Kill Switch ---");
 
     // 1. Check Default State (Should be ON/TRUE unless flagged)

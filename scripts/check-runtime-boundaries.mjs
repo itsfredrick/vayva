@@ -105,10 +105,19 @@ function walkDirectory(dir) {
 
 console.log('🔍 Checking Edge runtime boundaries...\n');
 
-// Check apps/web
-const webAppPath = join(process.cwd(), 'apps/web/src');
-if (statSync(webAppPath).isDirectory()) {
-    walkDirectory(webAppPath);
+// Check all apps
+const appsDir = join(process.cwd(), 'apps');
+const apps = readdirSync(appsDir);
+
+for (const app of apps) {
+    const appPath = join(appsDir, app, 'src');
+    try {
+        if (statSync(appPath).isDirectory()) {
+            walkDirectory(appPath);
+        }
+    } catch (e) {
+        // Skip apps without src directory
+    }
 }
 
 if (errors > 0) {

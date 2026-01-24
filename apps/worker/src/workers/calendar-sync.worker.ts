@@ -5,12 +5,13 @@ import { logger } from "../lib/logger";
 
 // Simple iCal Parser (Regex based for MVP avoidance of heavy deps, or use node-ical)
 // For robustness, we'd use a library. I'll write a minimal parser for the walkthrough.
-function parseIcal(icalData: string) {
+function _parseIcal(icalData: string) {
     const events: { start: Date, end: Date, summary: string, uid: string }[] = [];
     const lines = icalData.split(/\r\n|\n|\r/);
 
     let inEvent = false;
-    let currentEvent: unknown = {};
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    let currentEvent: any = {};
 
     for (const line of lines) {
         if (line.startsWith("BEGIN:VEVENT")) {
@@ -51,7 +52,7 @@ export const calendarSyncWorker = new Worker(
         /*
         try {
             // Fetch active syncs
-            const syncs = await (prisma as unknown).bookingCalendarSync.findMany({
+            const syncs = await (prisma as any).bookingCalendarSync.findMany({
                 where: {
                     // In real app, check frequency or lastSyncedAt
                 }
@@ -104,7 +105,7 @@ export const calendarSyncWorker = new Worker(
                         }
                     }
 
-                    await (prisma as unknown).bookingCalendarSync.update({
+                    await (prisma as any).bookingCalendarSync.update({
                         where: { id: sync.id },
                         data: {
                             lastSyncedAt: new Date(),
@@ -114,7 +115,7 @@ export const calendarSyncWorker = new Worker(
                     });
                     logger.info(`Imported ${createdCount} new bookings for ${sync.name}`);
 
-                } catch (err: unknown) {
+                } catch (err: any) {
                     logger.error(`Failed to sync calendar ${sync.id}`, err);
                 }
             }

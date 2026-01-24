@@ -14,7 +14,7 @@ export function ProductsHeader({ isBulkMode, onToggleBulkMode }: ProductsHeaderP
         <DashboardPageHeader
             title="Products"
             description="Manage your inventory, pricing, and product variants."
-            icon={Package}
+            icon={(Package as any)}
             primaryAction={{
                 label: "Add Product",
                 icon: Plus,

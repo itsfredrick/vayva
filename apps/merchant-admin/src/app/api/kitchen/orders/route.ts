@@ -7,7 +7,7 @@ export const GET = withVayvaAPI(PERMISSIONS.ORDERS_VIEW, async (request, { store
         const orders = await KitchenService.getOrders(storeId);
         return NextResponse.json(orders);
     }
-    catch (error) {
+    catch (error: any) {
         return NextResponse.json({ error: error.message }, { status: 500 });
     }
 });

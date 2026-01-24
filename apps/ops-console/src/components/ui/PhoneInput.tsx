@@ -43,7 +43,7 @@ export const PhoneInput: React.FC<PhoneInputProps> = ({
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const formatted = formatPhoneNumber(e.target.value);
+    const formatted = formatPhoneNumber((e as any).target.value);
     onChange(formatted);
   };
 
@@ -59,7 +59,7 @@ export const PhoneInput: React.FC<PhoneInputProps> = ({
       <div className="relative">
         <input
           type="tel"
-          value={displayValue}
+          value={(displayValue as any)}
           onChange={handleChange}
           placeholder="+234 8012345678"
           className={cn(
@@ -69,7 +69,7 @@ export const PhoneInput: React.FC<PhoneInputProps> = ({
             error && "border-status-danger focus-visible:ring-status-danger",
             className,
           )}
-          {...props}
+          {...(props as any)}
         />
       </div>
       {helperText && (

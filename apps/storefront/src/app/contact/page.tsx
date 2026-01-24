@@ -10,13 +10,13 @@ async function getContactDetails() {
       next: { revalidate: 0 },
     });
     if (res.ok) return await res.json();
-  } catch (e) {
+  } catch {
     return null;
   }
   return null;
 }
 
-export default async function ContactPage() {
+export default async function ContactPage(): Promise<React.JSX.Element> {
   const data = await getContactDetails();
   const contact = data?.policyContact;
 

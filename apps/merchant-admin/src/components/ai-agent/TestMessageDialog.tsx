@@ -7,7 +7,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { toast } from "sonner";
 import { Loader2 } from "lucide-react";
 
-export function TestMessageDialog({ open, onOpenChange }: { open: boolean, onOpenChange: (open: boolean) => void, draftConfig: unknown }) {
+export function TestMessageDialog({ open, onOpenChange }: { open: boolean, onOpenChange: (open: boolean) => void, draftConfig: any }) {
     const [channel, setChannel] = useState("whatsapp");
     const [target, setTarget] = useState("");
     const [isSending, setIsSending] = useState(false);
@@ -27,7 +27,7 @@ export function TestMessageDialog({ open, onOpenChange }: { open: boolean, onOpe
             if (!res.ok) throw new Error("Send failed");
             toast.success("Test message sent!");
             onOpenChange(false);
-        } catch (error) {
+        } catch (error: any) {
             toast.error("Failed to send test message");
         } finally {
             setIsSending(false);
@@ -47,7 +47,7 @@ export function TestMessageDialog({ open, onOpenChange }: { open: boolean, onOpe
                 <div className="space-y-4 py-4">
                     <div className="space-y-2">
                         <Label>Channel</Label>
-                        <Select value={channel} onValueChange={setChannel}>
+                        <Select value={(channel as any)} onValueChange={setChannel}>
                             <SelectTrigger>
                                 <SelectValue />
                             </SelectTrigger>
@@ -61,7 +61,7 @@ export function TestMessageDialog({ open, onOpenChange }: { open: boolean, onOpe
                     <div className="space-y-2">
                         <Label>{channel === "whatsapp" ? "Phone Number" : "Email Address"}</Label>
                         <Input
-                            value={target}
+                            value={(target as any)}
                             onChange={(e: React.ChangeEvent<HTMLInputElement>) => setTarget(e.target.value)}
                             placeholder={channel === "whatsapp" ? "+234..." : "test@example.com"}
                         />

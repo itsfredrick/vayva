@@ -13,7 +13,7 @@ export async function GET(request: NextRequest) {
         const offset = parseInt(searchParams.get("offset") || "0");
         const type = searchParams.get("type"); // PAYMENT, PAYOUT, REFUND, etc.
         // Get real transactions from ledger
-        const where: unknown= {
+        const where: any= {
             storeId: user.storeId,
         };
         if (type) {
@@ -26,7 +26,7 @@ export async function GET(request: NextRequest) {
             skip: offset,
         });
         // Transform to match expected format
-        const formattedTransactions = transactions.map((txn) => {
+        const formattedTransactions = transactions.map((txn: any) => {
             const amount = Number(txn.amount);
             const isDebit = txn.direction === "DEBIT";
             return {
@@ -44,7 +44,7 @@ export async function GET(request: NextRequest) {
         });
         return NextResponse.json(formattedTransactions);
     }
-    catch (error) {
+    catch (error: any) {
         console.error("Fetch Wallet History Error:", error);
         return NextResponse.json({ error: "Failed to fetch wallet history" }, { status: 500 });
     }

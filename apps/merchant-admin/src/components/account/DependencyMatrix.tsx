@@ -37,7 +37,7 @@ export const DependencyMatrix = ({ blockingIssues }: DependencyMatrixProps) => {
         Action Required
       </h3>
       <div className="bg-white rounded-2xl border border-gray-200 divide-y divide-gray-100 overflow-hidden">
-        {blockingIssues.map((issue) => (
+        {blockingIssues.map((issue: any) => (
           <div
             key={issue.id}
             className="p-4 flex flex-col md:flex-row md:items-center gap-4 group hover:bg-red-50/10 transition-colors"

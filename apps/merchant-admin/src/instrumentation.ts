@@ -13,7 +13,7 @@ export async function register() {
             { name: 'Storage', status: FEATURES.STORAGE_ENABLED },
         ];
         console.log('📊 Feature Status:');
-        critical.forEach(f => {
+        critical.forEach((f: any) => {
             console.log(`  - ${f.name}: ${f.status ? '✅' : '❌'}`);
         });
         // 3. Fail Fast Check (Production)

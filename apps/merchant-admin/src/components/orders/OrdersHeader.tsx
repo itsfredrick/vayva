@@ -9,7 +9,7 @@ export const OrdersHeader = () => {
         <DashboardPageHeader
             title="Orders"
             description="Track, fulfill, and manage your store sales."
-            icon={ShoppingBag}
+            icon={(ShoppingBag as any)}
             primaryAction={{
                 label: "New Order",
                 icon: Plus,

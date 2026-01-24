@@ -1,11 +1,11 @@
 "use client";
 
 import React from "react";
-import { Zap, Clock, TicketPercent, RefreshCw, ShoppingCart } from "lucide-react";
+import { Zap, Clock, TicketPercent, RefreshCw, ShoppingCart } from 'lucide-react';
 import { useOpsQuery } from "@/hooks/useOpsQuery";
 import { Button } from "@vayva/ui";
 
-export default function CampaignsPage() {
+export default function CampaignsPage(): React.JSX.Element {
     const { data: campaigns, isLoading, refetch } = useOpsQuery(
         ["active-campaigns"],
         () => fetch("/api/ops/growth/campaigns/active").then(res => res.json().then(j => j.data))
@@ -49,21 +49,21 @@ export default function CampaignsPage() {
                         ) : !campaigns?.length ? (
                             <tr><td colSpan={5} className="p-12 text-center text-gray-400">No active campaigns.</td></tr>
                         ) : (
-                            campaigns.map((c: unknown) => {
-                                const end = new Date(c.endTime);
+                            campaigns.map((c: any) => {
+                                const end = new Date((c as any).endTime);
                                 const now = new Date();
                                 const diff = Math.max(0, Math.ceil((end.getTime() - now.getTime()) / (1000 * 60 * 60))); // Hours
 
                                 return (
-                                    <tr key={c.id} className="hover:bg-gray-50">
-                                        <td className="px-6 py-4 font-medium text-gray-900">{c.name}</td>
-                                        <td className="px-6 py-4 text-gray-600">{c.store?.name}</td>
+                                    <tr key={(c as any).id} className="hover:bg-gray-50">
+                                        <td className="px-6 py-4 font-medium text-gray-900">{(c as any).name}</td>
+                                        <td className="px-6 py-4 text-gray-600">{(c as any).store?.name}</td>
                                         <td className="px-6 py-4">
                                             <span className="bg-red-100 text-red-700 px-2 py-0.5 rounded text-xs font-bold">
-                                                -{c.discount}%
+                                                -{(c as any).discount}%
                                             </span>
                                         </td>
-                                        <td className="px-6 py-4 text-xs font-mono text-gray-500">{c.targetType}</td>
+                                        <td className="px-6 py-4 text-xs font-mono text-gray-500">{(c as any).targetType}</td>
                                         <td className="px-6 py-4 flex items-center gap-1 text-amber-600 font-medium">
                                             <Clock size={14} />
                                             {diff} hours

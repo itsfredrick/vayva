@@ -1,9 +1,10 @@
 "use client";
+import React from "react";
 
-import { ArrowLeft, BookOpen, AlertTriangle, CheckCircle, Shield } from "lucide-react";
+import { ArrowLeft, BookOpen, AlertTriangle, CheckCircle, Shield } from 'lucide-react';
 import Link from "next/link";
 
-export default function RescueRunbookPage() {
+export default function RescueRunbookPage(): React.JSX.Element {
     return (
         <div className="max-w-4xl mx-auto py-8 px-4">
             <div className="mb-8">
@@ -103,7 +104,7 @@ export default function RescueRunbookPage() {
     );
 }
 
-function Section({ title, children }: { title: string; children: React.ReactNode }) {
+function Section({ title, children }: { title: string; children: React.ReactNode }): React.JSX.Element {
     return (
         <section>
             <h2 className="text-xl font-bold text-gray-900 border-b border-gray-100 pb-2 mb-4">
@@ -116,7 +117,7 @@ function Section({ title, children }: { title: string; children: React.ReactNode
     );
 }
 
-function TriageCard({ level, desc, response, color }: { level: string; desc: string; response: string; color: "red" | "amber" | "blue" }) {
+function TriageCard({ level, desc, response, color }: { level: string; desc: string; response: string; color: "red" | "amber" | "blue" }): React.JSX.Element {
     const colors = {
         red: "bg-red-50 border-red-100 text-red-900",
         amber: "bg-amber-50 border-amber-100 text-amber-900",

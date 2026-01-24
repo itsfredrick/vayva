@@ -3,7 +3,7 @@
 
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams } from 'next/navigation';
 import {
     Search,
     Filter,
@@ -13,12 +13,10 @@ import {
     CheckCircle2,
     XCircle,
     Clock,
-    MapPin,
-    AlertTriangle
-} from "lucide-react";
+    MapPin, AlertTriangle} from 'lucide-react';
 import { Button } from "@vayva/ui";
-import { OpsPagination } from "@/components/shared/OpsPagination";
-import { toast } from "sonner";
+import { OpsPagination } from '@/components/shared/OpsPagination';
+import { toast } from 'sonner';
 
 interface Shipment {
     id: string;
@@ -41,7 +39,7 @@ interface Meta {
     totalPages: number;
 }
 
-export default function DeliveriesPage() {
+export default function DeliveriesPage(): React.JSX.Element {
     const router = useRouter();
     const searchParams = useSearchParams();
 
@@ -69,7 +67,7 @@ export default function DeliveriesPage() {
                 const s = await res.json();
                 setStats(s);
             }
-        } catch (e) {
+        } catch (e: any) {
             console.error("Failed to fetch stats", e);
         }
     };
@@ -96,7 +94,7 @@ export default function DeliveriesPage() {
             const result = await resGet.json();
             setData(result.data || []);
             setMeta(result.meta || null);
-        } catch (error) {
+        } catch (error: any) {
             console.error("Failed to fetch deliveries:", error);
         } finally {
             setLoading(false);
@@ -114,13 +112,13 @@ export default function DeliveriesPage() {
             if (!res.ok) throw new Error("Update failed");
             toast.success("Shipment Updated");
             fetchDeliveries();
-        } catch (e) {
+        } catch {
             toast.error("Failed to update status");
         }
     };
 
     const handleSearch = (e: React.FormEvent) => {
-        e.preventDefault();
+        (e as any).preventDefault();
         const params = new URLSearchParams(searchParams);
         if (searchInput) {
             params.set("q", searchInput);
@@ -228,8 +226,8 @@ export default function DeliveriesPage() {
                             type="text"
                             placeholder="Search tracking #, recipient, or order #..."
                             className="w-full pl-10 pr-4 py-2.5 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
-                            value={searchInput}
-                            onChange={(e) => setSearchInput(e.target.value)}
+                            value={(searchInput as any)}
+                            onChange={(e: any) => setSearchInput((e as any).target.value)}
                         />
                     </form>
                     <Button
@@ -268,8 +266,8 @@ export default function DeliveriesPage() {
                             <select
                                 title="Filter by status"
                                 aria-label="Filter by delivery status"
-                                value={status}
-                                onChange={(e) => handleFilterChange("status", e.target.value)}
+                                value={(status as any)}
+                                onChange={(e: any) => handleFilterChange("status", (e as any).target.value)}
                                 className="w-full px-3 py-2 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
                             >
                                 <option value="">All Statuses</option>
@@ -285,8 +283,8 @@ export default function DeliveriesPage() {
                             <select
                                 title="Filter by provider"
                                 aria-label="Filter by delivery provider"
-                                value={provider}
-                                onChange={(e) => handleFilterChange("provider", e.target.value)}
+                                value={(provider as any)}
+                                onChange={(e: any) => handleFilterChange("provider", (e as any).target.value)}
                                 className="w-full px-3 py-2 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
                             >
                                 <option value="">All Providers</option>
@@ -331,7 +329,7 @@ export default function DeliveriesPage() {
                                     </td>
                                 </tr>
                             ) : (
-                                data.map((shipment) => (
+                                data.map((shipment: any) => (
                                     <tr key={shipment.id} className="hover:bg-gray-50 group transition-colors">
                                         <td className="px-6 py-4 font-mono font-medium text-indigo-600">
                                             <Link href={`/ops/orders/${shipment.orderNumber}`} className="hover:underline">

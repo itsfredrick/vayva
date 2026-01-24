@@ -91,7 +91,7 @@ export function StoreSwitcher() {
             Switch Store
           </div>
 
-          {stores.map((s) => (
+          {stores.map((s: any) => (
             <Button
               key={s.id}
               onClick={() => handleSwitch(s)}
@@ -134,8 +134,8 @@ export function StoreSwitcher() {
                 </label>
                 <input
                   required
-                  value={newName}
-                  onChange={(e) => setNewName(e.target.value)}
+                  value={(newName as any)}
+                  onChange={(e: any) => setNewName(e.target.value)}
                   className="w-full border p-2 rounded"
                   placeholder="My New Store"
                 />
@@ -150,8 +150,8 @@ export function StoreSwitcher() {
                   </span>
                   <input
                     required
-                    value={newSlug}
-                    onChange={(e) => setNewSlug(e.target.value)}
+                    value={(newSlug as any)}
+                    onChange={(e: any) => setNewSlug(e.target.value)}
                     className="flex-1 p-2 outline-none"
                     placeholder="new-store"
                   />

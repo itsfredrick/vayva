@@ -40,7 +40,7 @@ export const POST = withVayvaAPI(PERMISSIONS.SETTINGS_VIEW, async (req, { storeI
         }
         return NextResponse.json({ error: "Invalid request" }, { status: 400 });
     }
-    catch (error) {
+    catch (error: any) {
         console.error("Error marking notification read:", error);
         return NextResponse.json({ error: "Internal Error" }, { status: 500 });
     }

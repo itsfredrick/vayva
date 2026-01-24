@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { OpsAuthService } from "@/lib/ops-auth";
-export async function GET(req: unknown, { params }: unknown) {
+export async function GET(req: any, { params }: any) {
     try {
         await OpsAuthService.requireSession();
         const { id } = await params;
@@ -10,11 +10,11 @@ export async function GET(req: unknown, { params }: unknown) {
         });
         return NextResponse.json(prefs || { storeId: id, isMuted: false });
     }
-    catch (error) {
+    catch (error: any) {
         return NextResponse.json({ error: "Failed to fetch preferences" }, { status: 500 });
     }
 }
-export async function POST(req: unknown, { params }: unknown) {
+export async function POST(req: any, { params }: any) {
     try {
         const session = await OpsAuthService.requireSession();
         const { id } = await params;
@@ -41,7 +41,7 @@ export async function POST(req: unknown, { params }: unknown) {
         });
         return NextResponse.json(prefs);
     }
-    catch (error) {
+    catch (error: any) {
         return NextResponse.json({ error: "Failed to update preferences" }, { status: 500 });
     }
 }

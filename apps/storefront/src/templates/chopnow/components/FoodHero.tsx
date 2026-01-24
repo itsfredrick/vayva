@@ -1,6 +1,6 @@
 import React from "react";
 
-export const FoodHero = () => {
+export const FoodHero = (): React.JSX.Element => {
   return (
     <section className="relative h-64 bg-yellow-500 overflow-hidden">
       <img

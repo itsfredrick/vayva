@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 // Paystack standard transfer rate (simulated) -> 10 NGN if < 5000, 25 if < 50000, 50 otherwise
-const calculateFee = (amount: unknown) => {
+const calculateFee = (amount: any) => {
     if (amount <= 5000)
         return 10;
     if (amount <= 50000)
@@ -8,7 +8,7 @@ const calculateFee = (amount: unknown) => {
     return 50;
 };
 import { getSessionUser } from "@/lib/session";
-export async function POST(request: unknown) {
+export async function POST(request: Request) {
     const user = await getSessionUser();
     if (!user?.storeId) {
         return NextResponse.json({ error: "Unauthorized" }, { status: 401 });

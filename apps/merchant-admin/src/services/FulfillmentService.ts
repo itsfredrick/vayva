@@ -3,8 +3,8 @@ export class FulfillmentService {
     /**
      * Create a Shipment for an Order
      */
-    static async createShipment(input: unknown) {
-        return await prisma.$transaction(async (tx: unknown) => {
+    static async createShipment(input: any) {
+        return await prisma.$transaction(async (tx: any) => {
             // 1. Validate Order
             const order = await tx.order.findUnique({
                 where: { id: input.orderId },
@@ -47,8 +47,8 @@ export class FulfillmentService {
     /**
      * Update Shipment Status
      */
-    static async updateShipmentStatus(shipmentId: unknown, status: unknown) {
-        return await prisma.$transaction(async (tx: unknown) => {
+    static async updateShipmentStatus(shipmentId: any, status: any) {
+        return await prisma.$transaction(async (tx: any) => {
             const shipment = await tx.shipment.update({
                 where: { id: shipmentId },
                 data: { status },

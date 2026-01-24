@@ -2,7 +2,7 @@
 
 import React from "react";
 
-export const TrustVisual = () => {
+export const TrustVisual = (): React.JSX.Element => {
   return (
     <div className="relative w-full max-w-lg mx-auto aspect-square lg:aspect-video bg-white rounded-2xl border border-gray-100 shadow-2xl overflow-hidden p-8 flex flex-col items-center justify-center gap-8">
       <div className="flex items-center justify-between w-full h-full relative">

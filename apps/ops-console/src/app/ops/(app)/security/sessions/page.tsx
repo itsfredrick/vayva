@@ -1,12 +1,12 @@
 "use client";
 
 import React from "react";
-import { ShieldAlert, Monitor, Smartphone, Trash2, RefreshCw } from "lucide-react";
+import { ShieldAlert, Monitor, Smartphone, Trash2, RefreshCw } from 'lucide-react';
 import { useOpsQuery } from "@/hooks/useOpsQuery";
-import { toast } from "sonner";
+import { toast } from 'sonner';
 import { Button } from "@vayva/ui";
 
-export default function SessionManagerPage() {
+export default function SessionManagerPage(): React.JSX.Element {
     const { data: sessions, isLoading, refetch } = useOpsQuery(
         ["active-sessions"],
         () => fetch("/api/ops/security/sessions").then(res => res.json().then(j => j.data))
@@ -23,7 +23,7 @@ export default function SessionManagerPage() {
             } else {
                 toast.error("Failed to revoke");
             }
-        } catch (e) {
+        } catch {
             toast.error("Error revoking session");
         }
     };
@@ -60,26 +60,26 @@ export default function SessionManagerPage() {
                         ) : !sessions?.length ? (
                             <tr><td colSpan={5} className="p-12 text-center text-gray-400">No active sessions found.</td></tr>
                         ) : (
-                            sessions.map((s: unknown) => (
-                                <tr key={s.id} className="hover:bg-gray-50">
+                            sessions.map((s: any) => (
+                                <tr key={(s as any).id} className="hover:bg-gray-50">
                                     <td className="px-6 py-4">
-                                        <div className="font-medium text-gray-900">{s.User?.email}</div>
-                                        <div className="text-xs text-gray-500">{s.User?.firstName} {s.User?.lastName}</div>
+                                        <div className="font-medium text-gray-900">{(s as any).User?.email}</div>
+                                        <div className="text-xs text-gray-500">{(s as any).User?.firstName} {(s as any).User?.lastName}</div>
                                     </td>
                                     <td className="px-6 py-4">
                                         <div className="flex items-center gap-2 text-gray-700">
-                                            {s.device?.toLowerCase().includes("mobile") ? <Smartphone size={14} /> : <Monitor size={14} />}
-                                            <span className="truncate max-w-[150px]" title={s.device}>{s.device || "Unknown Device"}</span>
+                                            {(s as any).device?.toLowerCase().includes("mobile") ? <Smartphone size={14} /> : <Monitor size={14} />}
+                                            <span className="truncate max-w-[150px]" title={(s as any).device}>{(s as any).device || "Unknown Device"}</span>
                                         </div>
-                                        <div className="text-xs text-gray-400 font-mono mt-0.5">{s.ipAddress || "0.0.0.0"}</div>
+                                        <div className="text-xs text-gray-400 font-mono mt-0.5">{(s as any).ipAddress || "0.0.0.0"}</div>
                                     </td>
-                                    <td className="px-6 py-4 text-gray-500 text-xs">{new Date(s.createdAt).toLocaleString()}</td>
-                                    <td className="px-6 py-4 text-gray-500 text-xs">{new Date(s.expiresAt).toLocaleString()}</td>
+                                    <td className="px-6 py-4 text-gray-500 text-xs">{new Date((s as any).createdAt).toLocaleString()}</td>
+                                    <td className="px-6 py-4 text-gray-500 text-xs">{new Date((s as any).expiresAt).toLocaleString()}</td>
                                     <td className="px-6 py-4">
                                         <Button
                                             variant="ghost"
                                             size="icon"
-                                            onClick={() => handleRevoke(s.id, s.User?.email)}
+                                            onClick={() => handleRevoke((s as any).id, (s as any).User?.email)}
                                             className="text-red-600 hover:text-red-800 hover:bg-red-50"
                                             title="Revoke Session"
                                         >

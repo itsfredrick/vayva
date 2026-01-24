@@ -16,7 +16,7 @@ export default function Loading() {
                     <div className="h-4 w-32 bg-gray-100 rounded animate-pulse" />
                     <div className="h-4 w-16 bg-gray-100 rounded animate-pulse ml-auto" />
                 </div>
-                {[1, 2, 3, 4, 5].map((i) => (
+                {[1, 2, 3, 4, 5].map((i: any) => (
                     <div key={i} className="h-16 border-b border-gray-100 flex items-center px-6 gap-4">
                         <div className="h-4 w-4 bg-gray-100 rounded animate-pulse" />
                         <div className="h-4 w-24 bg-gray-100 rounded animate-pulse" />

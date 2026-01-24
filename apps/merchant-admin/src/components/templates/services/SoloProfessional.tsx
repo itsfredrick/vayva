@@ -54,11 +54,11 @@ export const SoloProfessionalTemplate: React.FC<TemplateProps> = ({
     ]
     : products
       .filter((p) => p.type === "service")
-      .map((p) => ({
+      .map((p: any) => ({
         ...p,
         desc: p.description,
-        duration: (p as unknown).durationMinutes
-          ? `${(p as unknown).durationMinutes} mins`
+        duration: (p as any).durationMinutes
+          ? `${(p as any).durationMinutes} mins`
           : "1 hr",
       }));
 
@@ -107,7 +107,7 @@ export const SoloProfessionalTemplate: React.FC<TemplateProps> = ({
             Services
           </h2>
           <div className="space-y-6">
-            {serviceItems.map((item) => (
+            {serviceItems.map((item: any) => (
               <div
                 key={item.id}
                 className="flex justify-between items-start group cursor-pointer hover:bg-neutral-50 p-2 rounded-lg transition-colors"
@@ -122,9 +122,9 @@ export const SoloProfessionalTemplate: React.FC<TemplateProps> = ({
                   <p className="text-sm text-neutral-500 leading-relaxed max-w-[200px]">
                     {item.desc}
                   </p>
-                  {(item as unknown).duration && (
+                  {(item as any).duration && (
                     <div className="text-xs font-medium text-neutral-400 bg-neutral-100 inline-block px-2 py-0.5 rounded">
-                      {(item as unknown).duration}
+                      {(item as any).duration}
                     </div>
                   )}
                 </div>

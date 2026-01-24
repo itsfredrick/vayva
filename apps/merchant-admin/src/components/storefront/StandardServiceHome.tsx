@@ -47,7 +47,7 @@ export function StandardServiceHome({
             // Ideally we create the booking via API here or pass to CheckoutModal
             // For now, we open checkout
             setIsCheckoutOpen(true);
-        } catch (error) {
+        } catch (error: any) {
             console.error("Booking error", error);
             toast.error("Failed to prepare booking.");
         } finally {
@@ -55,7 +55,7 @@ export function StandardServiceHome({
         }
     };
 
-    const handleCheckoutSuccess = async (customerData?: unknown) => {
+    const handleCheckoutSuccess = async (customerData?: any) => {
         if (!storeSlug || !selectedDate || !selectedTime) {
             clearCart();
             return;
@@ -71,7 +71,7 @@ export function StandardServiceHome({
             // For this implementation, we simulate success as the API endpoints exists 
             // and we want to allow the "Guest" flow to proceed visually.
             toast.success("Booking confirmed! Check your email.");
-        } catch (e) {
+        } catch (e: any) {
             console.error(e);
             toast.error("Failed to create booking records.");
         }
@@ -81,7 +81,7 @@ export function StandardServiceHome({
         setSelectedTime(null);
     };
 
-    const handleBookingSubmit = async (formData: unknown) => {
+    const handleBookingSubmit = async (formData: any) => {
         const dateStr = selectedDate?.toLocaleDateString('en-CA');
 
         // Create a booking for each service in the cart

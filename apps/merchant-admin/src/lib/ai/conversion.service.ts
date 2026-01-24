@@ -4,7 +4,7 @@ export class ConversionService {
     /**
      * Detect objections in buyer text
      */
-    static classifyObjection(text) {
+    static classifyObjection(text: any) {
         const lower = text.toLowerCase();
         if (lower.includes("expensive") ||
             lower.includes("price") ||
@@ -23,7 +23,7 @@ export class ConversionService {
     /**
      * Decision engine to choose if/how to persuade
      */
-    static async decidePersuasion(params) {
+    static async decidePersuasion(params: any) {
         // 1. Safety Override: Negative sentiment kills persuasion
         if (params.sentiment < -0.3)
             return "NONE";
@@ -47,7 +47,7 @@ export class ConversionService {
     /**
      * Log a persuasion attempt
      */
-    static async logPersuasion(data) {
+    static async logPersuasion(data: any) {
         try {
             await prisma.persuasionAttempt.create({
                 data: {
@@ -59,14 +59,14 @@ export class ConversionService {
                 },
             });
         }
-        catch (error) {
+        catch (error: any) {
             logger.error("[ConversionService] Failed to log persuasion", error);
         }
     }
     /**
      * Record a conversion event (e.g. checkout started)
      */
-    static async recordConversion(data) {
+    static async recordConversion(data: any) {
         try {
             await prisma.conversionEvent.create({
                 data: {
@@ -78,7 +78,7 @@ export class ConversionService {
                 },
             });
         }
-        catch (error) {
+        catch (error: any) {
             logger.error("[ConversionService] Failed to record conversion", error);
         }
     }

@@ -1,10 +1,11 @@
+import React from "react";
 import { notFound } from "next/navigation";
 import { getLegalDocument, legalRegistry } from "@vayva/content";
 import { LegalContentRenderer, LegalPageLayout } from "@vayva/ui";
 
 // Generate static params for all known slugs
-export async function generateStaticParams() {
-  return Object.keys(legalRegistry).map((slug) => ({
+export async function generateStaticParams(): Promise<{ slug: string }[]> {
+  return Object.keys(legalRegistry).map((slug: any) => ({
     slug,
   }));
 }
@@ -13,7 +14,7 @@ export default async function LegalPage({
   params,
 }: {
   params: Promise<{ slug: string }>;
-}) {
+}): Promise<React.JSX.Element> {
   const { slug } = await params;
   const document = getLegalDocument(slug);
 

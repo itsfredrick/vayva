@@ -1,7 +1,8 @@
 "use client";
 
 import React, { useState } from "react";
-import { PLANS, FEES, PlanKey } from "@/config/pricing";
+import { PLANS, FEES } from "@/config/pricing";
+type PlanKey = any;
 import { Button, cn } from "@vayva/ui";
 
 export const PlanComparisonMobile = () => {
@@ -13,7 +14,7 @@ export const PlanComparisonMobile = () => {
     <div className="space-y-8">
       {/* Plan Selector */}
       <div className="flex p-1 bg-gray-100 rounded-xl">
-        {PLANS.map((plan) => (
+        {PLANS.map((plan: any) => (
           <Button
             key={plan.key}
             onClick={() => setSelectedPlan(plan.key)}
@@ -68,7 +69,7 @@ export const PlanComparisonMobile = () => {
             { name: "Audit Logs", val: selectedPlan === "PRO" },
             { name: "Priority Support", val: selectedPlan === "PRO" },
             { name: "Withdrawal Fee", val: `${FEES.WITHDRAWAL_PERCENTAGE}%` },
-          ].map((feat) => (
+          ].map((feat: any) => (
             <div
               key={feat.name}
               className="flex justify-between items-center py-4 border-b border-gray-50 last:border-0"

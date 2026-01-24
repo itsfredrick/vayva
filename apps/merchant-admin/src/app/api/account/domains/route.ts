@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { requireAuth } from "@/lib/auth/session";
 import { prisma } from "@/lib/prisma";
+
 export async function GET() {
     try {
         const session = await requireAuth();
@@ -20,28 +21,31 @@ export async function GET() {
             customDomain: domainMapping?.domain || null,
             status: domainMapping?.status || "none",
             verificationToken: domainMapping?.verificationToken || null,
-            lastCheckedAt: domainMapping?.provider?.lastCheckedAt || null,
-            lastError: domainMapping?.provider?.lastError || null,
+            lastCheckedAt: (domainMapping?.provider as any)?.lastCheckedAt || null,
+            lastError: (domainMapping?.provider as any)?.lastError || null,
             sslEnabled: domainMapping?.status === "verified",
         });
     }
-    catch (error) {
-        console.error("Domains fetch error:", error);
+    catch (error: any) {
+        console.error("Domains fetch error:", (error as any).message);
         return NextResponse.json({ error: "Failed to fetch domain details" }, { status: 500 });
     }
 }
-export async function POST(request: unknown) {
+
+export async function POST(request: Request) {
     try {
+        const session = await requireAuth();
+        const storeId = session.user.storeId;
+
         const { checkFeatureAccess } = await import("@/lib/auth/gating");
-        const access = await checkFeatureAccess("custom_domain");
+        const access = await checkFeatureAccess(storeId, "custom_domain");
         if (!access.allowed) {
             return NextResponse.json({
                 error: access.reason,
-                requiredAction: access.requiredAction,
+                // requiredAction removed
             }, { status: 403 });
         }
-        const session = await requireAuth();
-        const storeId = session.user.storeId;
+
         const body = await request.json();
         const { domain } = body;
         if (!domain)
@@ -68,8 +72,8 @@ export async function POST(request: unknown) {
         });
         return NextResponse.json(mapping);
     }
-    catch (error) {
-        console.error("Add domain error:", error);
+    catch (error: any) {
+        console.error("Add domain error:", (error as any).message);
         return NextResponse.json({ error: "Failed to add domain" }, { status: 500 });
     }
 }

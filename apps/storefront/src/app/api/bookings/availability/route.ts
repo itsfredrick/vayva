@@ -48,7 +48,7 @@ export async function GET(request: NextRequest) {
             isAvailable: available > 0
         });
 
-    } catch (e) {
+    } catch (e: any) {
         console.error("Availability Check Error:", e);
         return NextResponse.json({ error: "Internal Error" }, { status: 500 });
     }

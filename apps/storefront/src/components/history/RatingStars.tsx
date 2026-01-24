@@ -10,12 +10,12 @@ interface RatingStarsProps {
   size?: number;
 }
 
-export function RatingStars({ rating, onRate, size = 18 }: RatingStarsProps) {
+export function RatingStars({ rating, onRate, size = 18 }: RatingStarsProps): React.JSX.Element {
   const [hover, setHover] = useState(0);
 
   return (
     <div className="flex gap-1" onMouseLeave={() => setHover(0)}>
-      {[1, 2, 3, 4, 5].map((star) => (
+      {[1, 2, 3, 4, 5].map((star: any) => (
         <Button
           key={star}
           type="button"

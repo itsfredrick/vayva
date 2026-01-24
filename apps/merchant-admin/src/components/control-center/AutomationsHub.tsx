@@ -44,7 +44,7 @@ export const AutomationsHub = () => {
 
   const toggleAutomation = (id: string) => {
     setAutomations((prev) =>
-      prev.map((a) => (a.id === id ? { ...a, enabled: !a.enabled } : a)),
+      prev.map((a: any) => (a.id === id ? { ...a, enabled: !a.enabled } : a)),
     );
     // In real app, call API here
   };

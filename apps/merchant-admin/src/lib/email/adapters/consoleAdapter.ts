@@ -1,5 +1,5 @@
 export class ConsoleAdapter {
-    async send(payload) {
+    async send(payload: any) {
         console.log(`
         [ConsoleEmailAdapter] Sending Email
         ------------------------------------------

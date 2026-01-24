@@ -3,7 +3,7 @@ import { Icon, cn } from "@vayva/ui";
 import { PaymentFunnel } from "@/types/checkout";
 
 export const PaymentFunnelCard = ({ funnel }: { funnel: PaymentFunnel }) => {
-  const maxCount = Math.max(...funnel.steps.map((s: unknown) => s.count));
+  const maxCount = Math.max(...funnel.steps.map((s: any) => s.count));
 
   return (
     <div className="bg-white border border-gray-200 rounded-2xl p-6 shadow-sm h-full">
@@ -15,7 +15,7 @@ export const PaymentFunnelCard = ({ funnel }: { funnel: PaymentFunnel }) => {
         {/* Connecting line */}
         <div className="absolute top-4 bottom-4 left-[15px] w-0.5 bg-gray-100 -z-10" />
 
-        {funnel.steps.map((step: unknown, index: unknown) => {
+        {funnel.steps.map((step: any, index: any) => {
           const widthPercent = (step.count / maxCount) * 100;
           return (
             <div key={index} className="relative">

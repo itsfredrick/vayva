@@ -12,7 +12,7 @@ export const GET = withVayvaAPI(PERMISSIONS.METRICS_VIEW, async (req, { storeId 
             data: stats
         });
     }
-    catch (error) {
+    catch (error: any) {
         console.error("[AFFILIATES_GET]", error);
         return NextResponse.json({ error: "Failed to fetch affiliate data" }, { status: 500 });
     }

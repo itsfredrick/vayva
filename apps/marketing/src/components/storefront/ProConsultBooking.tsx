@@ -23,7 +23,7 @@ export function ProConsultBooking({
 }: {
   storeName: string;
   storeSlug?: string;
-}) {
+}): React.JSX.Element {
   const { store } = useStorefrontStore(storeSlug);
   const { products, isLoading } = useStorefrontProducts(storeSlug, {
     limit: 12,
@@ -114,7 +114,7 @@ export function ProConsultBooking({
                   </p>
                 </div>
               ) : (
-                cart.map((item) => (
+                cart.map((item: any) => (
                   <div
                     key={item.id}
                     className="border border-slate-200 rounded-lg p-4 hover:border-blue-200 transition-colors"
@@ -266,7 +266,7 @@ export function ProConsultBooking({
           </div>
         ) : (
           <div className="grid md:grid-cols-3 gap-8">
-            {products.map((expert) => (
+            {products.map((expert: any) => (
               <div
                 key={expert.id}
                 className="border border-slate-200 rounded-xl hover:shadow-xl hover:border-blue-100 transition-all bg-white group cursor-pointer"

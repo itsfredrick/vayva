@@ -23,7 +23,7 @@ export const CustomerDetailPanel = ({
         const res = await fetch(`/api/customers/details?id=${customer.id}`);
         const data = await res.json();
         if (data.history) setHistory(data.history);
-      } catch (e) {
+      } catch (e: any) {
         console.error(e);
       } finally {
         setLoading(false);
@@ -118,7 +118,7 @@ export const CustomerDetailPanel = ({
             </div>
           ) : (
             <div className="space-y-4">
-              {history.map((item) => (
+              {history.map((item: any) => (
                 <div
                   key={item.id}
                   className="flex items-center justify-between py-2 border-b border-gray-50 last:border-0 hover:bg-gray-50 px-2 -mx-2 rounded transition-colors cursor-pointer"

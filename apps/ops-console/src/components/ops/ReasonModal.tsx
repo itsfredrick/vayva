@@ -9,9 +9,9 @@ import {
     DialogFooter,
     DialogHeader,
     DialogTitle,
-} from "@/components/ui/dialog";
+} from '@/components/ui/dialog';
 import { Button } from "@vayva/ui";
-import { Textarea } from "@/components/ui/textarea";
+import { Textarea } from '@/components/ui/textarea';
 
 interface ReasonModalProps {
     isOpen: boolean;
@@ -45,7 +45,7 @@ export function ReasonModal({
         try {
             await onConfirm(reason);
             onClose();
-        } catch (error) {
+        } catch (error: any) {
             console.error("Failed to confirm action", error);
         } finally {
             setIsSubmitting(false);
@@ -63,8 +63,8 @@ export function ReasonModal({
                 </DialogHeader>
                 <div className="grid gap-4 py-4">
                     <Textarea
-                        value={reason}
-                        onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => setReason(e.target.value)}
+                        value={(reason as any)}
+                        onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => setReason((e as any).target.value)}
                         placeholder={placeholder}
                         className="min-h-[100px] bg-slate-50/50 border-slate-200"
                         autoFocus

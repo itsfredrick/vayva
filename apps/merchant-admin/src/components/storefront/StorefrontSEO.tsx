@@ -1,1 +1,1 @@
-export const StorefrontSEO = (props: unknown) => null;
+export const StorefrontSEO = (props: any) => null;

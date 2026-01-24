@@ -10,7 +10,7 @@ export async function GET(req: NextRequest) {
             orderBy: { createdAt: "desc" },
             take: 20,
         });
-        const formatted = notifications.map((n) => ({
+        const formatted = notifications.map((n: any) => ({
             id: n.id,
             type: n.type.toLowerCase(), // Ensure lowercase for UI mapping (ORDER -> order)
             title: n.title,
@@ -19,7 +19,7 @@ export async function GET(req: NextRequest) {
         }));
         return NextResponse.json(formatted);
     }
-    catch (error) {
+    catch (error: any) {
         return NextResponse.json({ error: "Failed to fetch notifications" }, { status: 500 });
     }
 }

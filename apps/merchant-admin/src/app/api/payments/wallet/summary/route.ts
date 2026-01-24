@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { getSessionUser } from "@/lib/session";
 import { prisma } from "@/lib/prisma";
-export async function GET(request: unknown) {
+export async function GET(request: Request) {
     try {
         const user = await getSessionUser();
         if (!user) {
@@ -38,7 +38,7 @@ export async function GET(request: unknown) {
             },
         });
     }
-    catch (error) {
+    catch (error: any) {
         console.error("Wallet Summary error:", error);
         return NextResponse.json({ error: "Failed to fetch wallet summary" }, { status: 500 });
     }

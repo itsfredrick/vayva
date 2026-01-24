@@ -12,8 +12,8 @@ export default function MarketOrdersPage() {
 
     useEffect(() => {
         fetch("/api/market/orders")
-            .then((res: unknown) => res.json())
-            .then((data: unknown) => {
+            .then((res: any) => res.json())
+            .then((data: any) => {
                 if (Array.isArray(data)) setOrders(data);
             })
             .catch(console.error)
@@ -38,7 +38,7 @@ export default function MarketOrdersPage() {
             } else {
                 alert("Shipping Failed: " + (data.error || "Unknown"));
             }
-        } catch (err) {
+        } catch (err: any) {
             alert("Failed to connect to shipping service");
         } finally {
             setShippingId(null);
@@ -58,7 +58,7 @@ export default function MarketOrdersPage() {
                     </div>
                 ) : (
                     <div className="space-y-4">
-                        {orders.map((order: unknown) => (
+                        {orders.map((order: any) => (
                             <div key={order.id} className="bg-white/5 border border-white/10 p-6 rounded-xl flex flex-col md:flex-row gap-6 justify-between items-start">
                                 {/* Summary */}
                                 <div className="flex-1">
@@ -75,7 +75,7 @@ export default function MarketOrdersPage() {
 
                                     {/* Items */}
                                     <div className="space-y-2">
-                                        {order.items.map((item: unknown, i: number) => (
+                                        {order.items.map((item: any, i: number) => (
                                             <div key={i} className="flex justify-between text-sm text-gray-300 border-b border-white/5 pb-1">
                                                 <span>{item.qty}x {item.name}</span>
                                                 <span>₦ {Number(item.price).toLocaleString()}</span>

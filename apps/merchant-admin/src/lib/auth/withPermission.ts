@@ -1,37 +1,29 @@
-import { NextResponse } from "next/server";
 import { getSessionUser } from "@/lib/session";
-import { prisma } from "@/lib/prisma";
-export function withPermission(permission: unknown) {
-    return function (handler) {
-        return async (req: unknown, context: unknown) => {
-            const session = await getSessionUser();
-            if (!session) {
-                return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-            }
-            // Implement actual permission check using session.storeId/userId
-            const membership = await prisma.membership.findUnique({
-                where: {
-                    userId_storeId: {
-                        userId: session.id,
-                        storeId: session.storeId,
-                    },
-                },
-                include: {
-                    role: {
-                        include: {
-                            permissions: true,
-                        },
-                    },
-                },
-            });
-            if (!membership) {
-                return NextResponse.json({ error: "Forbidden" }, { status: 403 });
-            }
-            const hasPermission = membership.role?.permissions.some((p: unknown) => p.code === permission);
-            if (!hasPermission && membership.role_enum !== "OWNER") {
-                return NextResponse.json({ error: "Forbidden" }, { status: 403 });
-            }
-            return handler(req, context);
-        };
-    };
+import { redirect } from "next/navigation";
+
+// Define roles or use string
+type Role = "OWNER" | "ADMIN" | "EDITOR" | "VIEWER";
+
+const ROLE_HIERARCHY: Record<Role, number> = {
+    OWNER: 4,
+    ADMIN: 3,
+    EDITOR: 2,
+    VIEWER: 1,
+};
+
+export async function withPermission(requiredRole: Role) {
+    const user = await getSessionUser();
+    if (!user) {
+        redirect("/auth/login");
+    }
+
+    // Check role from session user
+    // Assuming user.role is the role Enum or string
+    const userRole = (user as any).role || "VIEWER";
+
+    if (ROLE_HIERARCHY[userRole as Role] < ROLE_HIERARCHY[requiredRole]) {
+        redirect("/dashboard"); // or 403 page
+    }
+
+    return user;
 }

@@ -56,7 +56,7 @@ const SelectTrigger = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTML
         "flex h-10 w-full items-center justify-between rounded-md border border-input bg-background px-3 py-2 text-sm",
         className,
       )}
-      {...props}
+      {...(props as any)}
     >
       {children}
     </div>
@@ -75,7 +75,7 @@ const SelectItem = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDiv
           "cursor-pointer px-3 py-2 text-sm hover:bg-accent hover:text-accent-foreground",
           className,
         )}
-        {...props}
+        {...(props as any)}
       >
         {children}
       </div>
@@ -108,15 +108,15 @@ export const SelectPrimitive = {
 } as const;
 
 // Exports matching shadcn pattern
-export const SelectGroup = ({ children }: { children: React.ReactNode }) => <div>{children}</div>;
+export const SelectGroup = ({ children }: { children: React.ReactNode }): React.JSX.Element => <div>{children}</div>;
 export { SelectValue, SelectTrigger, SelectContent, SelectItem };
 
-export const SelectLabel = ({ children, className }: { children: React.ReactNode; className?: string }) => (
+export const SelectLabel = ({ children, className }: { children: React.ReactNode; className?: string }): React.JSX.Element => (
   <div className={cn("px-2 py-1.5 text-sm font-semibold", className)}>
     {children}
   </div>
 );
 
-export const SelectSeparator = ({ className }: { className?: string }) => (
+export const SelectSeparator = ({ className }: { className?: string }): React.JSX.Element => (
   <div className={cn("-mx-1 my-1 h-px bg-muted", className)} />
 );

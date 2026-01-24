@@ -1,4 +1,4 @@
-import { NextRequest, NextResponse } from "next/server";
+import { NextRequest, NextResponse } from 'next/server';
 import { OpsAuthService } from "@/lib/ops-auth";
 import { prisma } from "@vayva/db";
 
@@ -18,7 +18,7 @@ export async function GET(req: NextRequest) {
 
         const skip = (page - 1) * limit;
 
-        const where: unknown = {
+        const where: any = {
             AND: [
                 provider
                     ? { provider: { equals: provider, mode: "insensitive" } }
@@ -53,16 +53,16 @@ export async function GET(req: NextRequest) {
             prisma.webhookEvent.count({ where }),
         ]);
 
-        const data = webhooks.map((w) => ({
-            id: w.id,
-            provider: w.provider,
-            eventType: w.eventType,
-            status: w.status.toUpperCase(),
-            receivedAt: w.receivedAt,
-            processedAt: w.processedAt,
-            error: w.error,
-            storeName: w.store?.name || "Unknown Store",
-            storeSlug: w.store?.slug,
+        const data = webhooks.map((w: any) => ({
+            id: (w as any).id,
+            provider: (w as any).provider,
+            eventType: (w as any).eventType,
+            status: (w as any).status.toUpperCase(),
+            receivedAt: (w as any).receivedAt,
+            processedAt: (w as any).processedAt,
+            error: (w as any).error,
+            storeName: (w as any).store?.name || "Unknown Store",
+            storeSlug: (w as any).store?.slug,
         }));
 
         return NextResponse.json({
@@ -74,7 +74,7 @@ export async function GET(req: NextRequest) {
                 totalPages: Math.ceil(total / limit),
             },
         });
-    } catch (error) {
+    } catch (error: any) {
         console.error("Webhooks list error:", error);
         return NextResponse.json(
             { error: "Internal Server Error" },

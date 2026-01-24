@@ -7,10 +7,10 @@ import { redirect } from "next/navigation";
  * Higher-order function for API routes.
  *
  * Usage:
- * export const POST = withPermission("orders:manage", async (req: unknown, session: unknown) => { ... });
+ * export const POST = withPermission("orders:manage", async (req: any, session: any) => { ... });
  */
-export function withPermission(permission: unknown, handler: unknown) {
-    return async (req, ...args) => {
+export function withPermission(permission: any, handler: any) {
+    return async (req: any, ...args: any[]) => {
         try {
             const session = await requireAuth();
             const allowed = PermissionEngine.can({
@@ -22,7 +22,7 @@ export function withPermission(permission: unknown, handler: unknown) {
             }
             return await handler(req, session, ...args);
         }
-        catch (error) {
+        catch (error: any) {
             if (error.message === "Unauthorized") {
                 return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
             }
@@ -35,7 +35,7 @@ export function withPermission(permission: unknown, handler: unknown) {
  * requirePermission
  * Use this in Server Components.
  */
-export async function requirePermission(permission: unknown) {
+export async function requirePermission(permission: any) {
     const session = await requireAuth();
     const allowed = PermissionEngine.can({
         role: session.user.role,

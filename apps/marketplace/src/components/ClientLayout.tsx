@@ -7,7 +7,7 @@ import { BottomNav } from "./layout/BottomNav";
 import { PropsWithChildren } from "react";
 import { SessionProvider } from "next-auth/react";
 
-export function ClientLayout({ children }: PropsWithChildren) {
+export function ClientLayout({ children }: PropsWithChildren): React.JSX.Element {
     return (
         <SessionProvider>
             <CartProvider>

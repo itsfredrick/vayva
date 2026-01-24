@@ -35,7 +35,7 @@ const Textarea = React.forwardRef<HTMLTextAreaElement, React.ComponentProps<"tex
         <textarea
             ref={ref}
             className="w-full min-h-[100px] px-3 py-2 rounded-lg border border-gray-200 text-sm focus:border-black focus:ring-1 focus:ring-black outline-none transition-all placeholder:text-gray-400 resize-y"
-            {...props}
+            {...(props as any)}
         />
     )
 );
@@ -61,7 +61,7 @@ export function SeoSettingsForm({ initialData }: SeoSettingsFormProps) {
             const formattedData = {
                 seoTitle: data.seoTitle || null,
                 seoDescription: data.seoDescription || null,
-                // seoKeywords: data.seoKeywords ? data.seoKeywords.split(",").map((k) => k.trim()).filter(Boolean) : [],
+                // seoKeywords: data.seoKeywords ? data.seoKeywords.split(",").map((k: any) => k.trim()).filter(Boolean) : [],
                 socialImage: data.socialImage || null,
             };
 
@@ -72,7 +72,7 @@ export function SeoSettingsForm({ initialData }: SeoSettingsFormProps) {
             } else {
                 toast.error("Failed to update settings");
             }
-        } catch (error) {
+        } catch (error: any) {
             toast.error("An unexpected error occurred");
         }
     };

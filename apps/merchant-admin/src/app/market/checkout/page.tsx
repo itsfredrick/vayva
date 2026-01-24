@@ -56,7 +56,7 @@ export default function CheckoutPage() {
       });
       const data = await res.json();
       setQuote(data);
-    } catch (err) {
+    } catch (err: any) {
       toast({ title: "Error", description: "Failed to get delivery estimate", variant: "destructive" });
     } finally {
       setLoading(false);
@@ -87,7 +87,7 @@ export default function CheckoutPage() {
       } else {
         toast({ title: "Payment Failed", description: "Could not initialize payment.", variant: "destructive" });
       }
-    } catch (err) {
+    } catch (err: any) {
       console.error(err);
     } finally {
       setInitPayment(false);
@@ -125,8 +125,8 @@ export default function CheckoutPage() {
             <div className="flex gap-2">
               <Input
                 placeholder="Enter full address (Lagos only for Beta)"
-                value={address}
-                onChange={(e: unknown) => setAddress(e.target.value)}
+                value={(address as any)}
+                onChange={(e: any) => setAddress(e.target.value)}
                 className="bg-transparent border-white/20 text-white"
               />
               <Button onClick={handleGetQuote} disabled={loading} variant="secondary">

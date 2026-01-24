@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-export async function POST(request: unknown, { params }: unknown) {
+export async function POST(request: Request, { params }: any) {
     const { id } = await params;
     const body = await request.json();
     // In real app, save to DB

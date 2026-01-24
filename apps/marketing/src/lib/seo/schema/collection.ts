@@ -12,7 +12,7 @@ export function collectionSchema(path: string, ctx?: Record<string, unknown>) {
     url: `${SITE_ORIGIN}${path}`,
     mainEntity: {
       "@type": "ItemList",
-      itemListElement: (ctx?.items ?? []).map((item: unknown, index: number) => ({
+      itemListElement: (ctx?.items as any[] ?? []).map((item: any, index: number) => ({
         "@type": "ListItem",
         position: index + 1,
         name: item.name,

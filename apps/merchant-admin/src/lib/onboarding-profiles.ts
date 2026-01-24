@@ -1,8 +1,26 @@
-import { TEMPLATE_REGISTRY } from "./templates-registry";
-export const TEMPLATE_CONFIGS = Object.values(TEMPLATE_REGISTRY).reduce((acc, t) => {
-    if (t.onboardingProfile) {
-        acc[t.slug] = t.onboardingProfile;
+export const INDUSTRY_PROFILES = {
+    fashion: {
+        steps: ["basics", "branding", "collections", "shipping"],
+        requiredFields: ["brandColor", "logo"],
+    },
+    food: {
+        steps: ["basics", "menu", "delivery", "hours"],
+        requiredFields: ["menu_pdf", "hygiene_rating"],
+    },
+    services: {
+        steps: ["basics", "services", "availability", "booking_policy"],
+        requiredFields: ["service_list"],
+    },
+    digital: {
+        steps: ["basics", "file_setup", "delivery_email"],
+        requiredFields: ["download_limit"],
+    },
+    default: {
+        steps: ["basics", "branding", "products", "payments"],
+        requiredFields: [],
     }
-    return acc;
-}, {});
-export const ONBOARDING_PROFILES = TEMPLATE_CONFIGS;
+};
+
+export function getProfileForIndustry(industry: any) {
+    return (INDUSTRY_PROFILES as any)[industry] || INDUSTRY_PROFILES.default;
+}

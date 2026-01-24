@@ -1,4 +1,4 @@
-import { NextRequest, NextResponse } from "next/server";
+import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from "@vayva/db";
 import { withOpsAuth } from "@/lib/withOpsAuth";
 
@@ -13,7 +13,7 @@ export const GET = withOpsAuth(async (_req: NextRequest) => {
             negativeWallets: { storeId: string; storeName: string; balance: number }[];
             staleDrafts: number;
             orphanedItems: number;
-            discrepancies: unknown[];
+            discrepancies: any[];
         }
 
         const results: QualityResults = {
@@ -45,9 +45,9 @@ export const GET = withOpsAuth(async (_req: NextRequest) => {
             }
         });
         results.negativeWallets = negativeWallets.map(w => ({
-            storeId: w.storeId,
-            storeName: w.store.name,
-            balance: Number(w.availableKobo) / 100
+            storeId: (w as any).storeId,
+            storeName: (w as any).store.name,
+            balance: Number((w as any).availableKobo) / 100
         }));
 
         // 3. Scan for Stale Drafts (> 30 days)
@@ -65,7 +65,7 @@ export const GET = withOpsAuth(async (_req: NextRequest) => {
         // 4. Scan for Products without a Store
         const orphanedItems = await prisma.product.count({
             where: {
-                storeId: null as unknown as string
+                storeId: null as any as string
             }
         });
         results.orphanedItems = orphanedItems;
@@ -76,7 +76,7 @@ export const GET = withOpsAuth(async (_req: NextRequest) => {
             data: results
         });
 
-    } catch (error) {
+    } catch (error: any) {
         console.error("[DataQuality Job] Failed:", error);
         return NextResponse.json({
             success: false,
@@ -109,7 +109,7 @@ export const POST = withOpsAuth(async (req: NextRequest) => {
 
         return NextResponse.json({ error: "Unsupported remediation action" }, { status: 400 });
 
-    } catch (error) {
+    } catch (error: any) {
         const err = error as Error;
         return NextResponse.json({ error: err.message || "Internal server error" }, { status: 500 });
     }

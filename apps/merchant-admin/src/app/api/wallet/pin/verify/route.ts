@@ -3,7 +3,7 @@ import { getSessionUser } from "@/lib/session";
 import { prisma } from "@/lib/prisma";
 import bcrypt from "bcryptjs";
 // POST /api/wallet/pin/verify
-export async function POST(request: unknown) {
+export async function POST(request: Request) {
     try {
         const user = await getSessionUser();
         if (!user) {
@@ -36,7 +36,7 @@ export async function POST(request: unknown) {
             return NextResponse.json({ error: "Invalid PIN" }, { status: 401 });
         }
     }
-    catch (error) {
+    catch (error: any) {
         console.error("Wallet PIN Verify Error:", error);
         return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
     }

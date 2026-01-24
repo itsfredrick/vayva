@@ -11,7 +11,7 @@ export async function GET() {
         });
         if (!store)
             return NextResponse.json({ error: "Store not found" }, { status: 404 });
-        const settings = (store.settings as any) || {};
+        const settings = ((store.settings as any) as any) || {};
         const branding = settings.branding || {};
         return NextResponse.json({
             logoUrl: store.logoUrl || "",
@@ -19,7 +19,7 @@ export async function GET() {
             accentColor: branding.accentColor || "#16A34A",
         });
     }
-    catch (error) {
+    catch (error: any) {
         return NextResponse.json({ error: "Failed to fetch branding" }, { status: 500 });
     }
 }
@@ -64,7 +64,7 @@ export async function PUT(req: NextRequest) {
             branding: updatedSettings.branding,
         });
     }
-    catch (error) {
+    catch (error: any) {
         return NextResponse.json({ error: "Failed to save branding" }, { status: 500 });
     }
 }

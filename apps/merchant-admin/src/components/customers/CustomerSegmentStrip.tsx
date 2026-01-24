@@ -65,7 +65,7 @@ export const CustomerSegmentStrip = ({
 
   return (
     <div className="flex gap-4 overflow-x-auto pb-4 mb-2 no-scrollbar">
-      {segments.map((seg) => {
+      {segments.map((seg: any) => {
         const isActive = activeFilter === seg.id;
 
         return (

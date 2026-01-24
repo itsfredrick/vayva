@@ -4,7 +4,7 @@ import React from "react";
 import { MessageCircle } from "lucide-react";
 import * as motion from "framer-motion/client";
 
-export function WhatsAppSupportButton() {
+export function WhatsAppSupportButton(): React.JSX.Element {
     const WHATSAPP_NUMBER = "2348000000000"; // Replace with real support number
     const MESSAGE = "Hi Vayva Team! 🚀 I'm interested in using Vayva for my business and have a few questions.";
 

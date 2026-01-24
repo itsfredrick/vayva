@@ -5,7 +5,7 @@ export class OrderStateService {
     /**
      * Transition Order Status
      */
-    static async transition(orderId: unknown, toStatus: unknown, actorId: unknown, storeId: unknown) {
+    static async transition(orderId: any, toStatus: any, actorId: any, storeId: any) {
         // 1. Fetch current order
         const order = await prisma.order.findUnique({
             where: { id: orderId, storeId },

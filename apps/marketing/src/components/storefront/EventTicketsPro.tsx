@@ -14,7 +14,7 @@ export function EventTicketsPro({
 }: {
   storeName: string;
   storeSlug?: string;
-}) {
+}): React.JSX.Element {
   const { store } = useStorefrontStore(storeSlug);
   const { products, isLoading } = useStorefrontProducts(storeSlug, {
     limit: 12,
@@ -107,7 +107,7 @@ export function EventTicketsPro({
                   <p className="text-gray-500">No tickets selected.</p>
                 </div>
               ) : (
-                cart.map((item) => (
+                cart.map((item: any) => (
                   <div
                     key={item.id}
                     className="flex gap-4 border-b border-gray-100 pb-4"
@@ -229,7 +229,7 @@ export function EventTicketsPro({
           </div>
         ) : (
           <div className="grid md:grid-cols-4 gap-8">
-            {products.map((event) => (
+            {products.map((event: any) => (
               <div
                 key={event.id}
                 className="group bg-white rounded-xl shadow-sm hover:shadow-xl transition-shadow cursor-pointer border border-gray-100 overflow-hidden flex flex-col h-full"

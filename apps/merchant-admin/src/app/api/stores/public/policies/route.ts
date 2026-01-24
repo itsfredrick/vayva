@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
-export async function GET(request: unknown) {
+export async function GET(request: Request) {
     const { searchParams } = new URL(request.url);
     const slug = searchParams.get("slug");
     const storeId = searchParams.get("storeId");
@@ -17,7 +17,7 @@ export async function GET(request: unknown) {
         if (!store) {
             return NextResponse.json({ error: "Store not found" }, { status: 404 });
         }
-        const settings = store.settings || {};
+        const settings = (store.settings as any) || {};
         const policies = settings.policies || {
             refundPolicy: "",
             shippingPolicy: "",
@@ -29,7 +29,7 @@ export async function GET(request: unknown) {
             lastUpdated: new Date().toISOString(),
         });
     }
-    catch (error) {
+    catch (error: any) {
         return NextResponse.json({ error: "Failed to fetch policies" }, { status: 500 });
     }
 }

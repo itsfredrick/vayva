@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
-export async function GET(req: unknown, props: unknown) {
+export async function GET(req: any, props: any) {
     const params = await props.params;
     try {
         const session = await getServerSession(authOptions);
@@ -22,7 +22,7 @@ export async function GET(req: unknown, props: unknown) {
             return NextResponse.json({ error: "Not Found" }, { status: 404 });
         return NextResponse.json(ticket);
     }
-    catch (error) {
+    catch (error: any) {
         return NextResponse.json({ error: "Internal Error" }, { status: 500 });
     }
 }

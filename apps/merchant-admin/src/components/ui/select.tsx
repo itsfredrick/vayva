@@ -59,7 +59,7 @@ export const SelectPrimitive = {
           "flex h-10 w-full items-center justify-between rounded-md border border-input bg-background px-3 py-2 text-sm",
           className,
         )}
-        {...props}
+        {...(props as any)}
       >
         {children}
       </div>
@@ -89,7 +89,7 @@ export const SelectPrimitive = {
             "cursor-pointer px-3 py-2 text-sm hover:bg-accent hover:text-accent-foreground",
             className,
           )}
-          {...props}
+          {...(props as any)}
         >
           {children}
         </div>

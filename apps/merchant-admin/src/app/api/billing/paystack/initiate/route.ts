@@ -1,30 +1,34 @@
 import { NextResponse } from "next/server";
 import { requireAuth } from "@/lib/auth/session";
 import { PaystackService } from "@/lib/payment/paystack";
-export async function POST(request: unknown) {
+
+export async function POST(request: Request) {
     try {
-        const { checkFeatureAccess } = await import("@/lib/auth/gating");
-        const access = await checkFeatureAccess("template_upgrade");
-        if (!access.allowed) {
-            return NextResponse.json({
-                error: access.reason,
-                requiredAction: access.requiredAction,
-            }, { status: 403 });
-        }
         const session = await requireAuth();
-        const { templateId, amountNgn } = await request.json();
-        if (!templateId || !amountNgn) {
-            return NextResponse.json({ error: "Missing templateId or amount" }, { status: 400 });
+        const storeId = session.user.storeId;
+        const userEmail = session.user.email;
+
+        const body = await request.json();
+        const { planKey } = body;
+
+        if (!planKey) {
+            return NextResponse.json({ error: "Plan key required" }, { status: 400 });
         }
-        const payment = await PaystackService.initiateTemplatePurchase(session.user.email, templateId, session.user.storeId, amountNgn);
+
+        // 1. Initialize Paystack Transaction
+        const { authorization_url, reference } = await PaystackService.createPaymentForPlanChange(
+            userEmail,
+            planKey,
+            storeId
+        );
+
         return NextResponse.json({
-            success: true,
-            paymentUrl: payment.authorization_url,
-            reference: payment.reference,
+            authorization_url,
+            reference
         });
     }
-    catch (error) {
-        console.error("Template payment initiation error:", error);
-        return NextResponse.json({ error: "Failed to initiate payment" }, { status: 500 });
+    catch (error: any) {
+        console.error("Billing init error:", error);
+        return NextResponse.json({ error: error.message || "Payment initiation failed" }, { status: 500 });
     }
 }

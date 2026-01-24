@@ -31,7 +31,6 @@ export class KwikProvider {
     async createJob(params: CreateJobParams): Promise<JobResult> {
         // Stub implementation for now - fully mocking the external call
         // as per project constraints when API keys might be missing
-        console.log("[KwikProvider] Creating job:", JSON.stringify(params, null, 2));
 
         if (!this.apiKey) {
             console.warn("[KwikProvider] Missing API Key, using mock result.");

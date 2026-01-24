@@ -12,7 +12,7 @@ export type ToastActionElement = React.ReactElement;
 
 export const Toast = React.forwardRef<HTMLDivElement, ToastProps>(
   ({ className, ...props }, ref) => {
-    return <div ref={ref} className={cn("toast", className)} {...props} />;
+    return <div ref={ref} className={cn("toast", className)} {...(props as any)} />;
   },
 );
 Toast.displayName = "Toast";
@@ -23,7 +23,7 @@ export const ToastAction = React.forwardRef<
 >(({ className, ...props }, ref) => {
   return (
     // eslint-disable-next-line no-restricted-syntax
-    <button ref={ref} className={cn("toast-action", className)} {...props} />
+    <button ref={ref} className={cn("toast-action", className)} {...(props as any)} />
   );
 });
 ToastAction.displayName = "ToastAction";

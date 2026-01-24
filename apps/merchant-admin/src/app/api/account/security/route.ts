@@ -20,7 +20,7 @@ export async function GET() {
         const securitySetting = await prisma.securitySetting.findUnique({
             where: { storeId },
         });
-        const activeSessions = loginLogs.map((log) => ({
+        const activeSessions = loginLogs.map((log: any) => ({
             id: log.id,
             device: log.userAgent || "Unknown Device",
             location: log.ipAddress || "Unknown Location",
@@ -42,7 +42,7 @@ export async function GET() {
                 ],
         });
     }
-    catch (error) {
+    catch (error: any) {
         console.error("Security fetch error:", error);
         return NextResponse.json({ error: "Failed to fetch security settings" }, { status: 500 });
     }

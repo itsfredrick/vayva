@@ -1,14 +1,14 @@
 "use client";
 
 import React, { useState } from "react";
-import { useRouter } from "next/navigation";
-import { Landmark, ArrowUpRight, CheckCircle, Clock, AlertTriangle, RefreshCw, XCircle } from "lucide-react";
+import { useRouter } from 'next/navigation';
+import { Landmark, ArrowUpRight, CheckCircle, Clock, AlertTriangle, RefreshCw, XCircle } from 'lucide-react';
 import { useOpsQuery } from "@/hooks/useOpsQuery";
-import { toast } from "sonner";
+import { toast } from 'sonner';
 import { Button } from "@vayva/ui";
 
-export default function PayoutsPage() {
-    const router = useRouter();
+export default function PayoutsPage(): React.JSX.Element {
+    const _router = useRouter();
     const [filter, setFilter] = useState("PENDING");
 
     const { data: withdrawals, isLoading, refetch } = useOpsQuery(
@@ -85,27 +85,27 @@ export default function PayoutsPage() {
                         ) : !withdrawals?.length ? (
                             <tr><td colSpan={7} className="p-12 text-center text-gray-400">No withdrawal requests found.</td></tr>
                         ) : (
-                            withdrawals.map((w: unknown) => (
-                                <tr key={w.id} className="hover:bg-gray-50 group">
-                                    <td className="px-6 py-4 font-mono text-xs text-gray-500">{w.referenceCode}</td>
+                            withdrawals.map((w: any) => (
+                                <tr key={(w as any).id} className="hover:bg-gray-50 group">
+                                    <td className="px-6 py-4 font-mono text-xs text-gray-500">{(w as any).referenceCode}</td>
                                     <td className="px-6 py-4 font-medium text-gray-900">
                                         <div className="flex flex-col">
-                                            <span>{w.store?.name || "Unknown"}</span>
-                                            <span className="text-[10px] text-gray-400">{w.store?.slug}</span>
+                                            <span>{(w as any).store?.name || "Unknown"}</span>
+                                            <span className="text-[10px] text-gray-400">{(w as any).store?.slug}</span>
                                         </div>
                                     </td>
-                                    <td className="px-6 py-4 font-bold text-gray-900">{formatCurrency(w.amountNetKobo)}</td>
+                                    <td className="px-6 py-4 font-bold text-gray-900">{formatCurrency((w as any).amountNetKobo)}</td>
                                     <td className="px-6 py-4 text-gray-500 text-xs">
-                                        {formatCurrency(w.feeKobo)}
-                                        <span className="block text-[10px] text-gray-400">({w.feePercent}%)</span>
+                                        {formatCurrency((w as any).feeKobo)}
+                                        <span className="block text-[10px] text-gray-400">({(w as any).feePercent}%)</span>
                                     </td>
                                     <td className="px-6 py-4">
-                                        {(w as unknown).bankDetails ? (
+                                        {(w as any).bankDetails ? (
                                             <div className="flex flex-col text-xs">
-                                                <span className="font-bold text-gray-900">{(w as unknown).bankDetails.bankName}</span>
-                                                <span className="font-mono text-gray-600">{(w as unknown).bankDetails.accountNumber}</span>
-                                                <span className="text-gray-400 truncate max-w-[150px]" title={(w as unknown).bankDetails.accountName}>
-                                                    {(w as unknown).bankDetails.accountName}
+                                                <span className="font-bold text-gray-900">{(w as any).bankDetails.bankName}</span>
+                                                <span className="font-mono text-gray-600">{(w as any).bankDetails.accountNumber}</span>
+                                                <span className="text-gray-400 truncate max-w-[150px]" title={(w as any).bankDetails.accountName}>
+                                                    {(w as any).bankDetails.accountName}
                                                 </span>
                                             </div>
                                         ) : (
@@ -114,15 +114,15 @@ export default function PayoutsPage() {
                                                 <span className="text-xs font-bold">MISSING BENEFICIARY</span>
                                             </div>
                                         )}
-                                        {!(w as unknown).hasWalletPin && (
+                                        {(w as any).hasWalletPin && (
                                             <div className="mt-1 flex items-center gap-1 text-amber-600">
                                                 <AlertTriangle size={10} />
                                                 <span className="text-[10px]">No Security PIN</span>
                                             </div>
                                         )}
                                     </td>
-                                    <td className="px-6 py-4">{getStatusBadge(w.status)}</td>
-                                    <td className="px-6 py-4 text-gray-500 text-xs">{new Date(w.createdAt).toLocaleDateString()}</td>
+                                    <td className="px-6 py-4">{getStatusBadge((w as any).status)}</td>
+                                    <td className="px-6 py-4 text-gray-500 text-xs">{new Date((w as any).createdAt).toLocaleDateString()}</td>
                                 </tr>
                             ))
                         )}

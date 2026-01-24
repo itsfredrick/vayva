@@ -7,7 +7,7 @@ import crypto from "crypto";
 const patchSchema = z.object({
     action: z.enum(["DISABLE", "ENABLE", "RESET_PASSWORD"]),
 });
-export async function PATCH(req: unknown, { params }: unknown) {
+export async function PATCH(req: any, { params }: any) {
     const session = await OpsAuthService.getSession();
     if (!session || session.user.role !== "OPS_OWNER") {
         const ip = req.headers.get("x-forwarded-for")?.split(",")[0] || "unknown";
@@ -50,7 +50,7 @@ export async function PATCH(req: unknown, { params }: unknown) {
         }
         return NextResponse.json({ error: "Invalid action" }, { status: 400 });
     }
-    catch (e) {
+    catch (e: any) {
         return NextResponse.json({ error: e.message }, { status: 400 });
     }
 }

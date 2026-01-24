@@ -18,7 +18,7 @@ interface ChatRoomProps {
     conversationId: string;
 }
 
-export function ChatRoom({ conversationId }: ChatRoomProps) {
+export function ChatRoom({ conversationId }: ChatRoomProps): React.JSX.Element {
     const router = useRouter();
     const [messages, setMessages] = useState<Message[]>([]);
     const [storeName, setStoreName] = useState("");
@@ -27,7 +27,7 @@ export function ChatRoom({ conversationId }: ChatRoomProps) {
     const [inputText, setInputText] = useState("");
     const bottomRef = useRef<HTMLDivElement>(null);
 
-    const fetchMessages = async () => {
+    const fetchMessages = React.useCallback(async () => {
         try {
             const res = await fetch(`/api/conversations/${conversationId}`);
             if (!res.ok) {
@@ -42,13 +42,13 @@ export function ChatRoom({ conversationId }: ChatRoomProps) {
         } finally {
             setLoading(false);
         }
-    };
+    }, [conversationId, router]);
 
     useEffect(() => {
         fetchMessages();
         const interval = setInterval(fetchMessages, 5000); // Poll every 5s
         return () => clearInterval(interval);
-    }, [conversationId]);
+    }, [fetchMessages, conversationId]);
 
     useEffect(() => {
         bottomRef.current?.scrollIntoView({ behavior: "smooth" });

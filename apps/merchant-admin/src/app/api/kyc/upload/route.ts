@@ -1,13 +1,13 @@
 import { NextResponse } from "next/server";
 import { requireAuth } from "@/lib/auth/session";
 import { randomUUID } from "crypto";
-export async function POST(request: unknown) {
+export async function POST(request: Request) {
     try {
         const session = await requireAuth();
         const storeId = session.user.storeId;
         const formData = await request.formData();
-        const file = formData.get("file");
-        const documentType = formData.get("type"); // BVN, ID, CAC
+        const file = formData.get("file") as any;
+        const documentType = formData.get("type") as any; // BVN, ID, CAC
         if (!file || !documentType) {
             return NextResponse.json({ error: "File and document type are required" }, { status: 400 });
         }
@@ -61,25 +61,27 @@ export async function POST(request: unknown) {
                 status: "PENDING",
             };
             if (documentType === "BVN") {
-                updateData.bvnDocument = documentUrl;
+                (updateData as any).bvnDocument = documentUrl;
             }
             else if (documentType === "ID") {
-                updateData.idDocument = documentUrl;
+                (updateData as any).idDocument = documentUrl;
             }
             else if (documentType === "CAC") {
-                updateData.cacDocument = documentUrl;
+                (updateData as any).cacDocument = documentUrl;
             }
             await prisma.kycRecord.update({
                 where: { storeId },
-                data: updateData,
+                data: updateData as any,
             });
         }
         else {
             // Create new record
-            const createData = {
+            const createData: any = {
                 storeId,
                 status: "PENDING",
                 businessType: "INDIVIDUAL", // Default, can be updated
+                ninLast4: "",
+                bvnLast4: "",
             };
             if (documentType === "BVN") {
                 createData.bvnDocument = documentUrl;
@@ -101,7 +103,7 @@ export async function POST(request: unknown) {
             message: "Document uploaded successfully",
         });
     }
-    catch (error) {
+    catch (error: any) {
         console.error("KYC upload error:", error);
         if (error.message === "Unauthorized") {
             return NextResponse.json({ error: "Unauthorized" }, { status: 401 });

@@ -17,7 +17,7 @@ export class RescueService {
         route?: string;
         storeId?: string;
         userId?: string;
-        metadata?: unknown;
+        metadata?: any;
     }) {
         // 1. Redact PII from error message
         const redactedMessage = this.redactPII(data.errorMessage);
@@ -96,12 +96,12 @@ export class RescueService {
                 where: { id: incidentId },
                 data: {
                     diagnostics: {
-                        ...(incident.diagnostics as unknown),
+                        ...(incident.diagnostics as any),
                         aiAnalysis: analysis,
                     },
                 },
             });
-        } catch (error) {
+        } catch (error: any) {
             console.error("[RESCUE_AI_FAIL]", error);
         }
     }
@@ -166,7 +166,7 @@ export class RescueService {
             });
 
             return { success: true, summary: resultSummary };
-        } catch (_error) {
+        } catch (error: any) {
             await prisma.rescueFixAction.update({
                 where: { id: fixAction.id },
                 data: {

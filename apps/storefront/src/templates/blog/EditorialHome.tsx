@@ -1,7 +1,8 @@
+import React from "react";
 
 import { Button } from "@vayva/ui"; // Assuming generic UI
 
-export default function EditorialHome({ store }: { store: unknown }) {
+export default function EditorialHome({ store }: { store: any }): React.JSX.Element {
     // Mock Data
     const posts = [
         { id: 1, title: "The Future of Minimalist Design", excerpt: "Less is more. Discover how 2024 is shaping up to be the year of reduction.", image: "/images/blog-1.jpg" },
@@ -13,7 +14,7 @@ export default function EditorialHome({ store }: { store: unknown }) {
         <div className="bg-white min-h-screen font-serif text-gray-900">
             {/* Minimal Header */}
             <header className="py-8 border-b text-center">
-                <h1 className="text-4xl font-bold tracking-tighter uppercase">{store.name || " The Daily Edit"}</h1>
+                <h1 className="text-4xl font-bold tracking-tighter uppercase">{(store as any)?.name || " The Daily Edit"}</h1>
                 <nav className="mt-4 space-x-6 text-sm font-medium uppercase text-gray-500">
                     <a href="#" className="hover:text-black">Culture</a>
                     <a href="#" className="hover:text-black">Design</a>

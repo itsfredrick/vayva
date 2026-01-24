@@ -22,7 +22,7 @@ export async function POST(req: NextRequest) {
     // Cast to 'any' to allow access to passwordHash which might not be in the generated type yet
     const customer = (await prisma.customer.findUnique({
       where: { storeId_email: { storeId, email } },
-    })) as unknown;
+    })) as any;
 
     if (!customer || !customer.passwordHash) {
       return NextResponse.json(
@@ -50,7 +50,7 @@ export async function POST(req: NextRequest) {
         name: `${customer.firstName} ${customer.lastName}`,
       },
     });
-  } catch (error) {
+  } catch (error: any) {
     if (error instanceof z.ZodError) {
       return NextResponse.json(
         { error: "Invalid input data" },

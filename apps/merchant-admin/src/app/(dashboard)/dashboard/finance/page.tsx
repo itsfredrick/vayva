@@ -25,14 +25,14 @@ interface FinanceOverview {
     pendingBalance: number;
     availableBalance: number;
     currency: string;
-    dailySales?: unknown[];
+    dailySales?: any[];
 }
 
 interface Payout {
     id: string;
     amount: number;
     status: string;
-    destination: unknown;
+    destination: any;
     reference: string;
     createdAt: string;
 }
@@ -88,7 +88,7 @@ export default function FinancePage() {
             if (storeRes.ok) setStoreStatus(await storeRes.json());
             if (beneficiariesRes.ok) setBeneficiaries(await beneficiariesRes.json());
 
-        } catch (error) {
+        } catch (error: any) {
             toast.error("Failed to load finance data");
         } finally {
             setLoading(false);
@@ -140,8 +140,8 @@ export default function FinancePage() {
             setPassword("");
             setStep("DETAILS");
             fetchData();
-        } catch (error) {
-            toast.error(error.message || "Withdrawal failed");
+        } catch (error: any) {
+            toast.error((error as any).message || "Withdrawal failed");
         } finally {
             setIsWithdrawing(false);
         }
@@ -207,13 +207,13 @@ export default function FinancePage() {
                                     <div className="grid gap-4 py-4">
                                         <div className="grid gap-2">
                                             <Label htmlFor="bank">Destination Account</Label>
-                                            <Select value={selectedBankId} onValueChange={setSelectedBankId}>
+                                            <Select value={(selectedBankId as any)} onValueChange={setSelectedBankId}>
                                                 <SelectTrigger>
                                                     <SelectValue placeholder="Select bank account" />
                                                 </SelectTrigger>
                                                 <SelectContent>
                                                     {beneficiaries.map(b => (
-                                                        <SelectItem key={b.id} value={b.id}>
+                                                        <SelectItem key={b.id} value={(b.id as any)}>
                                                             {b.bankName} - {b.accountNumber}
                                                         </SelectItem>
                                                     ))}
@@ -228,7 +228,7 @@ export default function FinancePage() {
                                             <Input
                                                 id="amount"
                                                 type="number"
-                                                value={withdrawAmount}
+                                                value={(withdrawAmount as any)}
                                                 onChange={(e: React.ChangeEvent<HTMLInputElement>) => setWithdrawAmount(e.target.value)}
                                                 placeholder="0.00"
                                                 min={1000}
@@ -243,7 +243,7 @@ export default function FinancePage() {
                                             <Input
                                                 id="password"
                                                 type="password"
-                                                value={password}
+                                                value={(password as any)}
                                                 onChange={(e: React.ChangeEvent<HTMLInputElement>) => setPassword(e.target.value)}
                                                 placeholder="Enter your login password"
                                             />
@@ -384,7 +384,7 @@ export default function FinancePage() {
                                                         </TableCell>
                                                     </TableRow>
                                                 )}
-                                                {payouts.slice(0, 5).map((payout) => (
+                                                {payouts.slice(0, 5).map((payout: any) => (
                                                     <TableRow key={payout.id}>
                                                         <TableCell className="font-mono text-xs max-w-[80px] truncate" title={payout.reference}>
                                                             {payout.reference}

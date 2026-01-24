@@ -8,11 +8,11 @@ import { HELP_ARTICLES, HelpArticle } from "@/lib/help";
 
 import { HelpAIChat } from "@/components/marketing/HelpAIChat";
 
-export default function HelpCenterPage() {
+export default function HelpCenterPage(): React.JSX.Element {
   const [searchQuery, setSearchQuery] = useState("");
   const [isAiOpen, setIsAiOpen] = useState(false);
 
-  const categories = Array.from(new Set(HELP_ARTICLES.map((a: HelpArticle) => a.category)));
+  const categories = Array.from(new Set(HELP_ARTICLES.map((a: any) => a.category)));
 
   return (
     <div className="min-h-screen bg-white pt-32 pb-24 px-4 overflow-hidden">
@@ -36,7 +36,7 @@ export default function HelpCenterPage() {
                   type="text"
                   placeholder="Search for articles, features, or guides..."
                   value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
+                  onChange={(e: any) => setSearchQuery(e.target.value)}
                   className="w-full px-6 py-5 rounded-2xl border border-gray-200 shadow-sm focus:ring-2 focus:ring-[#22C55E] focus:border-transparent outline-none text-lg transition-all bg-gray-50/50"
                 />
                 <div className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400">
@@ -58,14 +58,13 @@ export default function HelpCenterPage() {
             </div>
 
             <div className="grid md:grid-cols-2 gap-8">
-              {categories.map((cat: unknown) => (
+              {categories.map((cat: any) => (
                 <div key={cat as string} className="space-y-4">
                   <h3 className="text-xs font-bold text-gray-400 uppercase tracking-widest px-2">
                     {cat as string}
                   </h3>
                   <div className="space-y-3">
-                    {HELP_ARTICLES.filter((a: HelpArticle) => a.category === cat).map(
-                      (article: HelpArticle) => (
+                    {HELP_ARTICLES.filter((a: HelpArticle) => a.category === cat).map((article: any) => (
                         <Link
                           key={article.id}
                           href={`/help/${article.slug}`}

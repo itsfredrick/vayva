@@ -3,7 +3,7 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 import { prisma } from "@vayva/db";
 import { revalidatePath } from "next/cache";
-export async function updateStoreSeo(data) {
+export async function updateStoreSeo(data: any) {
     const session = await getServerSession(authOptions);
     const user = session?.user;
     if (!user || !user.storeId) {
@@ -22,7 +22,7 @@ export async function updateStoreSeo(data) {
         revalidatePath("/dashboard/settings/seo");
         return { success: true };
     }
-    catch (error) {
+    catch (error: any) {
         console.error("Failed to update SEO settings:", error);
         return { success: false, error: "Failed to update settings" };
     }

@@ -1,4 +1,4 @@
-import { NextRequest, NextResponse } from "next/server";
+import { NextRequest, NextResponse } from 'next/server';
 import { OpsAuthService } from "@/lib/ops-auth";
 import { prisma } from "@vayva/db";
 
@@ -46,15 +46,15 @@ export async function GET(req: NextRequest) {
         const topMerchants = await Promise.all(topStores.map(async (s) => {
             const agg = await prisma.order.aggregate({
                 where: {
-                    storeId: s.id,
+                    storeId: (s as any).id,
                     status: "PAID", 
                     createdAt: { gte: startDate }
                 },
                 _sum: { total: true }
             });
             return {
-                id: s.id,
-                name: s.name,
+                id: (s as any).id,
+                name: (s as any).name,
                 gmv: Number(agg._sum.total || 0)
             };
         }));
@@ -78,7 +78,7 @@ export async function GET(req: NextRequest) {
             topMerchants,
             exceptions: []
         });
-    } catch (error) {
+    } catch (error: any) {
         console.error("Metrics/Summary API Error:", error);
         return NextResponse.json({ error: "Internal Error" }, { status: 500 });
     }

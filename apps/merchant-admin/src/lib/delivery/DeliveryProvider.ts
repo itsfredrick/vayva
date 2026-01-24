@@ -1,9 +1,18 @@
 import { FEATURES } from "../env-validation";
+
+export interface CustomProvider {
+    id: string;
+    type: "CUSTOM";
+    name: string;
+    rate: number;
+}
+
 export class CustomProvider {
+    name = "CUSTOM";
     constructor() {
         this.name = "CUSTOM";
     }
-    async dispatch(order, settings) {
+    async dispatch(order: any, settings: any) {
         return {
             success: true,
             providerJobId: `MANUAL-${Date.now()}`,
@@ -12,31 +21,46 @@ export class CustomProvider {
             deliveryStatus: "MANUAL_CONFIRMED",
         };
     }
-    async cancel(jobId) {
+    async cancel(jobId: any) {
         return { success: true };
     }
 }
-// --- Kwik Provider ---
+
+export interface KwikProvider {
+    id: string;
+    type: "KWIK";
+    name: string;
+    apiKey: string;
+    merchantId: string;
+    baseUrl: string;
+}
+
 export class KwikProvider {
+    name = "KWIK";
+    apiKey: string;
+    merchantId: string;
+    baseUrl: string;
+
     constructor() {
         this.name = "KWIK";
         if (!FEATURES.DELIVERY_ENABLED) {
             throw new Error("Delivery integration is not configured");
         }
-        this.apiKey = process.env.KWIK_API_KEY;
-        this.merchantId = process.env.KWIK_MERCHANT_ID;
-        this.baseUrl =
-            process.env.KWIK_BASE_URL || "https://api.kwik.delivery/api/v1";
+        this.apiKey = process.env.KWIK_API_KEY || "";
+        this.merchantId = process.env.KWIK_MERCHANT_ID || "";
+        this.baseUrl = process.env.KWIK_BASE_URL || "https://api.kwik.delivery/api/v1";
     }
+
     getHeaders() {
         return {
             "Content-Type": "application/json",
             Authorization: `Bearer ${this.apiKey}`,
         };
     }
-    async dispatch(order, settings) {
+
+    async dispatch(order: any, settings: any) {
         try {
-            const payload = {
+            const payload: any = {
                 merchant_id: this.merchantId,
                 pickup: {
                     name: settings.pickupName || "Merchant",
@@ -55,11 +79,13 @@ export class KwikProvider {
                     reference: order.id,
                 },
             };
+
             const response = await fetch(`${this.baseUrl}/deliveries`, {
                 method: "POST",
                 headers: this.getHeaders(),
                 body: JSON.stringify(payload),
             });
+
             if (!response.ok) {
                 const errorBody = await response.text();
                 return {
@@ -68,6 +94,7 @@ export class KwikProvider {
                     rawResponse: errorBody,
                 };
             }
+
             const data = await response.json();
             return {
                 success: true,
@@ -77,30 +104,32 @@ export class KwikProvider {
                 provider: "KWIK",
                 deliveryStatus: "TRACKING_AVAILABLE",
             };
-        }
-        catch (error) {
+        } catch (error: any) {
             return { success: false, error: error.message };
         }
     }
-    async cancel(jobId) {
+
+    async cancel(jobId: any) {
         try {
             const response = await fetch(`${this.baseUrl}/deliveries/${jobId}/cancel`, {
                 method: "POST",
                 headers: this.getHeaders(),
             });
+
             if (!response.ok) {
                 const errorBody = await response.text();
                 return { success: false, error: errorBody };
             }
+
             return { success: true, rawResponse: await response.json() };
-        }
-        catch (error) {
+        } catch (error: any) {
             return { success: false, error: error.message };
         }
     }
 }
+
 // --- Factory ---
-export function getDeliveryProvider(providerName: unknown) {
+export function getDeliveryProvider(providerName: any) {
     if (providerName === "KWIK") {
         if (!FEATURES.DELIVERY_ENABLED) {
             throw new Error("Kwik delivery is not configured");

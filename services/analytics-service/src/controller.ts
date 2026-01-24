@@ -37,8 +37,8 @@ export const AnalyticsController = {
     const paymentSuccessRate =
       payments._sum.successCount && payments._sum.failedCount
         ? (payments._sum.successCount /
-            (payments._sum.successCount + payments._sum.failedCount)) *
-          100
+          (payments._sum.successCount + payments._sum.failedCount)) *
+        100
         : 0;
 
     const refundRate =
@@ -61,7 +61,10 @@ export const AnalyticsController = {
   },
 
   // --- Reports ---
-  getSalesReport: async (storeId: string, filters: unknown) => {
+  getSalesReport: async (
+    storeId: string,
+    filters: { dateFrom?: string; dateTo?: string },
+  ) => {
     const { dateFrom, dateTo } = filters;
 
     return await prisma.analyticsDailySales.findMany({
@@ -77,12 +80,21 @@ export const AnalyticsController = {
   },
 
   // --- Goals ---
-  createGoal: async (storeId: string, data: unknown) => {
+  createGoal: async (
+    storeId: string,
+    data: {
+      metricKey: string;
+      period: string;
+      targetValue: number;
+      startDate: string | Date;
+    },
+  ) => {
     return await prisma.goal.create({
       data: {
         storeId,
         metricKey: data.metricKey,
-        period: data.period,
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        period: data.period as any,
         targetValue: data.targetValue,
         startDate: new Date(data.startDate),
       },

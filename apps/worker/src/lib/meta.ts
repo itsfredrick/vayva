@@ -28,7 +28,7 @@ export class MetaProvider {
 
         const url = `https://graph.facebook.com/${this.version}/${this.phoneNumberId}/messages`;
 
-        const payload: unknown = {
+        const payload: Record<string, unknown> = {
             messaging_product: "whatsapp",
             recipient_type: "individual",
             to: options.recipient,
@@ -55,10 +55,11 @@ export class MetaProvider {
             return {
                 providerMessageId: response.data.messages[0].id,
             };
-        } catch (error) {
+        } catch (error: unknown) {
+            const err = error as { response?: { data?: unknown }; message: string };
             console.error(
                 "[MetaProvider] Send failed:",
-                error.response?.data || error.message,
+                err.response?.data || err.message,
             );
             throw new Error("Failed to send WhatsApp message");
         }

@@ -60,7 +60,7 @@ export const OrderCard = ({
         </div>
 
         <h4 className="font-bold text-gray-900 mb-1 line-clamp-2">
-          {order.items.map((i) => `${i.quantity}x ${i.name}`).join(", ")}
+          {order.items.map((i: any) => `${i.quantity}x ${i.name}`).join(", ")}
         </h4>
 
         {order.items.some((i) => i.modifiers) && (
@@ -143,7 +143,7 @@ export const OrderCard = ({
           </p>
           <p
             className="text-sm font-medium text-gray-700 truncate max-w-[200px]"
-            title={order.items.map((i) => i.name).join(", ")}
+            title={order.items.map((i: any) => i.name).join(", ")}
           >
             {order.items.length} items &bull; {order.items[0]?.name}{" "}
             {order.items.length > 1 && `+${order.items.length - 1} more`}

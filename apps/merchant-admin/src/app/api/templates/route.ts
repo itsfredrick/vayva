@@ -8,7 +8,7 @@ export const GET = withVayvaAPI(PERMISSIONS.COMMERCE_VIEW, async (request, { sto
             where: { isActive: true },
             orderBy: { stars: "desc" },
         });
-        const formatted = templates.map((t) => ({
+        const formatted = templates.map((t: any) => ({
             id: t.id,
             key: t.slug,
             name: t.name,
@@ -17,7 +17,7 @@ export const GET = withVayvaAPI(PERMISSIONS.COMMERCE_VIEW, async (request, { sto
         }));
         return NextResponse.json(formatted);
     }
-    catch (error) {
+    catch (error: any) {
         console.error("Fetch Templates Error:", error);
         return NextResponse.json({ error: "Failed to fetch templates" }, { status: 500 });
     }

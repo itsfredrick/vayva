@@ -71,7 +71,7 @@ export default function ApiKeysPage() {
             toast.success("API Key created");
             mutate("/api/settings/api-keys");
             // Don't close dialog yet, user needs to copy key
-        } catch (err) {
+        } catch (err: any) {
             toast.error((err as any).message || "Failed to create key");
         }
     };
@@ -83,7 +83,7 @@ export default function ApiKeysPage() {
             if (!res.ok) throw new Error("Failed to revoke");
             toast.success("Key revoked");
             mutate("/api/settings/api-keys");
-        } catch (err) {
+        } catch (err: any) {
             toast.error((err as any).message || "Failed to revoke");
         }
     };
@@ -101,7 +101,7 @@ export default function ApiKeysPage() {
             prompt("Key Rotated! Copy your NEW key now. The old one is dead.", data.apiKey.key);
 
             mutate("/api/settings/api-keys");
-        } catch (err) {
+        } catch (err: any) {
             toast.error((err as any).message || "Failed to rotate key");
         }
     };
@@ -140,7 +140,7 @@ export default function ApiKeysPage() {
                                     <label>Key Name</label>
                                     <Input
                                         placeholder="e.g. Production Server, Zapier"
-                                        value={newKeyName}
+                                        value={(newKeyName as any)}
                                         onChange={(e: React.ChangeEvent<HTMLInputElement>) => setNewKeyName(e.target.value)}
                                     />
                                 </div>
@@ -149,7 +149,7 @@ export default function ApiKeysPage() {
                                     <select
                                         title="Key Expiration"
                                         className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
-                                        value={expiresIn}
+                                        value={(expiresIn as any)}
                                         onChange={(e: React.ChangeEvent<HTMLSelectElement>) => setExpiresIn(e.target.value)}
                                     >
                                         <option value="">Never</option>
@@ -162,7 +162,7 @@ export default function ApiKeysPage() {
                                     <label>IP Allowlist (Optional)</label>
                                     <Input
                                         placeholder="e.g. 1.2.3.4, 5.6.7.8"
-                                        value={ipAllowlist}
+                                        value={(ipAllowlist as any)}
                                         onChange={(e: React.ChangeEvent<HTMLInputElement>) => setIpAllowlist(e.target.value)}
                                     />
                                     <p className="text-xs text-muted-foreground">Comma separated IPv4 addresses. Leave empty to allow all.</p>
@@ -178,7 +178,7 @@ export default function ApiKeysPage() {
                                     </AlertDescription>
                                 </Alert>
                                 <div className="flex items-center space-x-2">
-                                    <Input value={createdKey} readOnly className="font-mono text-sm" />
+                                    <Input value={(createdKey as any)} readOnly className="font-mono text-sm" />
                                     <Button size="icon" variant="outline" onClick={() => {
                                         navigator.clipboard.writeText(createdKey);
                                         toast.success("Copied!");
@@ -221,44 +221,44 @@ export default function ApiKeysPage() {
                             </TableRow>
                         </TableHeader>
                         <TableBody>
-                            {keys?.map((key: unknown) => (
-                                <TableRow key={key.id}>
+                            {keys?.map((key: any) => (
+                                <TableRow key={(key as any).id}>
                                     <TableCell className="font-medium">
                                         <div className="flex flex-col">
-                                            <span>{key.name}</span>
+                                            <span>{(key as any).name}</span>
                                             <span className="text-xs text-muted-foreground font-mono">
                                                 sk_live_••••
                                             </span>
                                         </div>
                                     </TableCell>
                                     <TableCell>
-                                        <Badge variant={key.status === "ACTIVE" ? "default" : "destructive"}>
-                                            {key.status}
+                                        <Badge variant={(key as any).status === "ACTIVE" ? "default" : "destructive"}>
+                                            {(key as any).status}
                                         </Badge>
                                     </TableCell>
                                     <TableCell>
-                                        {key.lastUsedAt ? format(new Date(key.lastUsedAt), "MMM d, yyyy HH:mm") : "Never"}
+                                        {(key as any).lastUsedAt ? format(new Date((key as any).lastUsedAt), "MMM d, yyyy HH:mm") : "Never"}
                                     </TableCell>
                                     <TableCell>
-                                        {format(new Date(key.createdAt), "MMM d, yyyy")}
+                                        {format(new Date((key as any).createdAt), "MMM d, yyyy")}
                                     </TableCell>
                                     <TableCell>
-                                        {key.expiresAt ? format(new Date(key.expiresAt), "MMM d, yyyy") : "Never"}
+                                        {(key as any).expiresAt ? format(new Date((key as any).expiresAt), "MMM d, yyyy") : "Never"}
                                     </TableCell>
                                     <TableCell>
-                                        {key.ipAllowlist && key.ipAllowlist.length > 0 ? (
-                                            <span className="text-xs font-mono">{key.ipAllowlist.join(", ")}</span>
+                                        {(key as any).ipAllowlist && (key as any).ipAllowlist.length > 0 ? (
+                                            <span className="text-xs font-mono">{(key as any).ipAllowlist.join(", ")}</span>
                                         ) : (
                                             <span className="text-xs text-muted-foreground">Any</span>
                                         )}
                                     </TableCell>
                                     <TableCell className="text-right">
-                                        {key.status === "ACTIVE" && (
+                                        {(key as any).status === "ACTIVE" && (
                                             <div className="flex justify-end gap-2">
-                                                <Button variant="ghost" size="icon" onClick={() => rotateKey(key.id)} title="Rotate Key">
+                                                <Button variant="ghost" size="icon" onClick={() => rotateKey((key as any).id)} title="Rotate Key">
                                                     <RefreshCw className="h-4 w-4" />
                                                 </Button>
-                                                <Button variant="ghost" size="icon" className="text-red-500 hover:text-red-600" onClick={() => revokeKey(key.id)} title="Revoke Key">
+                                                <Button variant="ghost" size="icon" className="text-red-500 hover:text-red-600" onClick={() => revokeKey((key as any).id)} title="Revoke Key">
                                                     <Trash2 className="h-4 w-4" />
                                                 </Button>
                                             </div>

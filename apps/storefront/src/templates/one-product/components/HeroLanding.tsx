@@ -37,7 +37,7 @@ export const HeroLanding = ({
           <div className="order-2 md:order-1">
             <div className="aspect-square bg-gray-100 rounded-3xl overflow-hidden mb-4 relative shadow-2xl shadow-gray-200">
               <img
-                src={product.images?.[selectedImg]}
+                src={(product as any).images?.[selectedImg]}
                 alt={product.name}
                 className="w-full h-full object-cover"
               />
@@ -46,7 +46,7 @@ export const HeroLanding = ({
               </div>
             </div>
             <div className="flex gap-4 overflow-x-auto pb-2">
-              {product.images?.map((img, idx) => (
+              {(product as any).images?.map((img: any, idx: number) => (
                 <Button
                   key={idx}
                   onClick={() => setSelectedImg(idx)}
@@ -67,7 +67,7 @@ export const HeroLanding = ({
           <div className="order-1 md:order-2">
             <div className="flex items-center gap-2 mb-4">
               <div className="flex text-yellow-400">
-                {[1, 2, 3, 4, 5].map((i) => (
+                {[1, 2, 3, 4, 5].map((i: any) => (
                   <Star key={i} size={16} fill="currentColor" />
                 ))}
               </div>

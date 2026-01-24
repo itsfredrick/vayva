@@ -53,7 +53,7 @@ export const PerfumeLuxuryTemplate: React.FC<TemplateProps> = ({
     ]
     : products
       .filter((p) => p.type === "retail")
-      .map((p) => ({
+      .map((p: any) => ({
         ...p,
         img:
           p.images?.[0] ||
@@ -160,7 +160,7 @@ export const PerfumeLuxuryTemplate: React.FC<TemplateProps> = ({
       {/* Collection Grid */}
       <section className="py-24 px-4 md:px-12 bg-[#0a0a0a]">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12">
-          {perfumeItems.map((item) => (
+          {perfumeItems.map((item: any) => (
             <div key={item.id} className="group cursor-pointer">
               <div className="aspect-[3/4] overflow-hidden bg-[#111] mb-6 relative">
                 <img
@@ -180,7 +180,7 @@ export const PerfumeLuxuryTemplate: React.FC<TemplateProps> = ({
                     {item.name}
                   </h3>
                   <p className="text-xs text-amber-50/40 tracking-wider uppercase mt-1">
-                    {(item as unknown).notes}
+                    {(item as any).notes}
                   </p>
                 </div>
 

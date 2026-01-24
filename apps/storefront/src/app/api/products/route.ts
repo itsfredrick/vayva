@@ -22,7 +22,7 @@ export async function GET(request: NextRequest) {
     });
 
     // Transform to PublicProduct format with explicit typing
-    const publicProducts: PublicProduct[] = products.map((p: unknown) => ({
+    const publicProducts: PublicProduct[] = products.map((p: any) => ({
       id: p.id,
       storeId: p.storeId,
       name: p.title,
@@ -31,8 +31,7 @@ export async function GET(request: NextRequest) {
       compareAtPrice: p.compareAtPrice ? Number(p.compareAtPrice) : undefined,
       // Explicitly cast the image map to avoid implicit any errors on 'a', 'b', 'img'
       images:
-        p.productImages?.sort((a: unknown, b: unknown) => a.position - b.position).map(
-          (img: unknown) => img.url,
+        p.productImages?.sort((a: any, b: any) => a.position - b.position).map((img: any) => img.url,
         ) || [],
       variants: [],
       inStock: true,
@@ -41,7 +40,7 @@ export async function GET(request: NextRequest) {
     }));
 
     return NextResponse.json(publicProducts);
-  } catch (error) {
+  } catch (error: any) {
     console.error("Failed to fetch products:", error);
     return NextResponse.json(
       { error: "Failed to fetch products" },

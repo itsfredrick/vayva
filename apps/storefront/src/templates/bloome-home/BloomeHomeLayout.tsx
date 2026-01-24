@@ -21,7 +21,7 @@ export const BloomeHomeLayout = ({
 
   // Test Segmentation
   const featuredCollection = products.slice(0, 3);
-  const bestSellers = products.slice(0, 4);
+  const _bestSellers = products.slice(0, 4);
 
   return (
     <div className="min-h-screen bg-[#FAFAF9] font-sans text-[#2E2E2E]">

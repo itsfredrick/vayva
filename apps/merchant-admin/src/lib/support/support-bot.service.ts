@@ -6,7 +6,7 @@ import { MerchantSupportBot } from "@/lib/support/merchant-support-bot.service";
  * - DECIDES Escalate vs Reply
  */
 export class SupportBotService {
-    static async processMessage(storeId, message, history = []) {
+    static async processMessage(storeId: any, message: any, history = []) {
         // 1. Delegate to the Core Bot Logic (which already handles context fetching)
         const response = await MerchantSupportBot.handleQuery(storeId, message, history);
         // Note: The MerchantSupportBot.handleQuery already:

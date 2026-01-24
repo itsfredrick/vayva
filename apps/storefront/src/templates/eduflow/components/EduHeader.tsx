@@ -7,7 +7,7 @@ interface EduHeaderProps {
   storeName?: string;
 }
 
-export const EduHeader = ({ storeName }: EduHeaderProps) => {
+export const EduHeader = ({ storeName }: EduHeaderProps): React.JSX.Element => {
   return (
     <header className="sticky top-0 z-50 bg-white border-b border-gray-100">
       <div className="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">

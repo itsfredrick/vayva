@@ -8,10 +8,10 @@ export const GET = withVayvaAPI(PERMISSIONS.COMMERCE_VIEW, async (req, { user })
             where: { userId: user.id },
             include: { store: true },
         });
-        const stores = memberships.map((m: unknown) => m.store);
+        const stores = memberships.map((m: any) => m.store);
         return NextResponse.json({ stores });
     }
-    catch (error) {
+    catch (error: any) {
         console.error("Fetch Stores Error:", error);
         return NextResponse.json({ error: error.message || "Internal Error" }, { status: 500 });
     }
@@ -55,7 +55,7 @@ export const POST = withVayvaAPI(PERMISSIONS.COMMERCE_VIEW, async (req, { user }
         });
         return NextResponse.json({ store: newStore });
     }
-    catch (error) {
+    catch (error: any) {
         console.error("Create Store Error:", error);
         return NextResponse.json({ error: error.message || "Internal Error" }, { status: 500 });
     }

@@ -7,7 +7,7 @@ import { storeSchema } from "./store";
 import { articleSchema } from "./article";
 import { faqSchema } from "./faq";
 import { webPageSchema } from "./webpage";
-export function buildJsonLdFor(path: unknown, ctx: unknown) {
+export function buildJsonLdFor(path: any, ctx: any) {
     const pt = pageTypeFor(path);
     switch (pt) {
         case "home":

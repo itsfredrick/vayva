@@ -29,7 +29,7 @@ export async function GET() {
         };
         return NextResponse.json(health);
     }
-    catch (error) {
+    catch (error: any) {
         console.error("Integrations check error:", error);
         return NextResponse.json({ error: "Failed to check integrations" }, { status: 500 });
     }

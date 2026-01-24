@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import { getSessionUser } from "@/lib/session";
 import { NotificationService } from "@/services/notifications";
 import { prisma } from "@/lib/prisma";
-export async function POST(req: unknown) {
+export async function POST(req: any) {
     const user = await getSessionUser();
     if (!user)
         return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
@@ -22,7 +22,7 @@ export async function POST(req: unknown) {
             return NextResponse.json({ success: false, error: "User phone missing" });
         }
         const phone = fullUser.phone;
-        const merchantName = fullUser?.firstName || user.name || "Merchant";
+        const merchantName = fullUser?.firstName || (user as any).name || "Merchant";
         await NotificationService.sendMilestone(event, {
             name: merchantName,
             phone: phone,

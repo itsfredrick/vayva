@@ -58,7 +58,7 @@ export class AnalyticsService {
             map.set(key, { date: key, sales: 0, orders: 0 });
         }
         // Fill with data
-        orders.forEach(order => {
+        orders.forEach((order: any) => {
             const key = format(order.createdAt, "MMM dd");
             if (map.has(key)) {
                 const entry = map.get(key) as ChartDataItem;

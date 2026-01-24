@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { OpsAuthService } from "@/lib/ops-auth";
-export async function GET(request: unknown) {
+export async function GET(request: Request) {
     const session = await OpsAuthService.getSession();
     if (!session) {
         return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
@@ -21,7 +21,7 @@ export async function GET(request: unknown) {
             orderBy: { receivedAt: "desc" },
             take: 50,
         });
-        const formatted = events.map((e: unknown) => ({
+        const formatted = events.map((e: any) => ({
             id: e.id,
             provider: e.provider,
             storeId: e.merchantId,
@@ -35,7 +35,7 @@ export async function GET(request: unknown) {
         }));
         return NextResponse.json(formatted);
     }
-    catch (err) {
+    catch (err: any) {
         console.error(err);
         return NextResponse.json({ error: "Internal server error" }, { status: 500 });
     }

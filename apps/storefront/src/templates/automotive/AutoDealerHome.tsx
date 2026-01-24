@@ -1,10 +1,11 @@
+import React from "react";
 
 import { VehicleSearchWidget } from "@/components/automotive/VehicleSearchWidget";
 import { Button } from "@vayva/ui";
 // Removed missing Hero import
 
 
-export default function AutoDealerHome({ store }: { store: unknown }) {
+export default function AutoDealerHome({ store }: { store: any }): React.JSX.Element {
     return (
         <div className="bg-gray-50 min-h-screen font-sans">
             {/* Hero Section */}

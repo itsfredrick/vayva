@@ -67,7 +67,7 @@ const ORDERS = [
 
 const TABS = ["All", "Pending", "Paid", "Processing", "Delivered"];
 
-export default function OrdersScreen() {
+export default function OrdersScreen(): React.JSX.Element {
   const [activeTab, setActiveTab] = useState("All");
 
   return (

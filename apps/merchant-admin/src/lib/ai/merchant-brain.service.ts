@@ -5,7 +5,7 @@ export class MerchantBrainService {
      * Retrieve relevant knowledge for a query
      * Uses simple keyword search for now as vector extensions (pgvector) might not be configured on all envs yet.
      */
-    static async retrieveContext(storeId, query, limit = 3) {
+    static async retrieveContext(storeId: any, query: any, limit = 3) {
         try {
             // Fallback to keyword search on 'content'
             const embeddings = await prisma.knowledgeEmbedding.findMany({
@@ -15,7 +15,7 @@ export class MerchantBrainService {
                 },
                 take: limit,
             });
-            return embeddings.map((e: unknown) => ({
+            return embeddings.map((e: any) => ({
                 content: e.content,
                 sourceType: e.sourceType,
                 sourceId: e.sourceId,
@@ -23,7 +23,7 @@ export class MerchantBrainService {
                 metadata: e.metadata,
             }));
         }
-        catch (error) {
+        catch (error: any) {
             logger.error("[MerchantBrain] Retrieval failed", {
                 storeId,
                 query,
@@ -35,7 +35,7 @@ export class MerchantBrainService {
     /**
      * Tool: Get real-time inventory count
      */
-    static async getInventoryStatus(storeId, productId) {
+    static async getInventoryStatus(storeId: any, productId: any) {
         try {
             const product = await prisma.product.findUnique({
                 where: { id: productId },
@@ -59,7 +59,7 @@ export class MerchantBrainService {
                 available: product.trackInventory ? quantity : 999,
             };
         }
-        catch (e) {
+        catch (e: any) {
             logger.error("[MerchantBrain] Inventory check failed", { storeId, productId, error: e });
             return null; // Return null to indicate failure to retrieve (agent should handle this)
         }
@@ -68,15 +68,15 @@ export class MerchantBrainService {
      * Tool: Calculate delivery cost and ETA
      * Deterministic pending based on rules, not hardcoded single value.
      */
-    static async getDeliveryQuote(storeId, location) {
+    static async getDeliveryQuote(storeId: any, location: any) {
         try {
             // Find a zone that matches the location (simple check)
             const zones = await prisma.deliveryZone.findMany({
                 where: { storeId },
             });
-            const matchedZone = zones.find((z: unknown) => z.name.toLowerCase().includes(location.toLowerCase()) ||
-                z.states.some((s: unknown) => location.toLowerCase().includes(s.toLowerCase())) ||
-                z.cities.some((c: unknown) => location.toLowerCase().includes(c.toLowerCase())));
+            const matchedZone = zones.find((z: any) => z.name.toLowerCase().includes(location.toLowerCase()) ||
+                z.states.some((s: any) => location.toLowerCase().includes(s.toLowerCase())) ||
+                z.cities.some((c: any) => location.toLowerCase().includes(c.toLowerCase())));
             if (matchedZone) {
                 return {
                     location,
@@ -94,7 +94,7 @@ export class MerchantBrainService {
                 carrier: "Vayva standard",
             };
         }
-        catch (e) {
+        catch (e: any) {
             logger.error("[MerchantBrain] Delivery quote failed", { storeId, location, error: e });
             return null;
         }
@@ -102,7 +102,7 @@ export class MerchantBrainService {
     /**
      * Tool: Get active promotions for a store
      */
-    static async getActivePromotions(storeId) {
+    static async getActivePromotions(storeId: any) {
         try {
             const now = new Date();
             const promos = await prisma.discountRule.findMany({
@@ -116,7 +116,7 @@ export class MerchantBrainService {
                 },
                 take: 5
             });
-            return promos.map((p: unknown) => ({
+            return promos.map((p: any) => ({
                 id: p.id,
                 name: p.name,
                 type: p.type,
@@ -124,7 +124,7 @@ export class MerchantBrainService {
                 description: p.requiresCoupon ? "Requires coupon code" : "Automatic discount",
             }));
         }
-        catch (e) {
+        catch (e: any) {
             logger.error("[MerchantBrain] Promo fetch failed", { storeId, error: e });
             return [];
         }
@@ -132,7 +132,7 @@ export class MerchantBrainService {
     /**
      * Admin: Index store catalog for RAG
      */
-    static async indexStoreCatalog(storeId) {
+    static async indexStoreCatalog(storeId: any) {
         // Keep pending as this is a write-action (indexing), 
         // but ensure it doesn't return fake success numbers unless it actually did work.
         return { indexed: 0, skipped: 0, count: 0 };

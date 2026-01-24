@@ -24,7 +24,7 @@ export const TemplatePreview = ({
   const planLevels = ["starter", "growth", "pro"];
   const userLevelIndex = planLevels.indexOf(userPlan);
   const requiredLevelIndex = planLevels.indexOf(
-    (template as unknown).tier || (template as unknown).planLevel,
+    (template as any).tier || (template as any).planLevel,
   );
   const isLocked = requiredLevelIndex > userLevelIndex;
 
@@ -78,7 +78,7 @@ export const TemplatePreview = ({
           {isLocked ? (
             <div className="flex items-center gap-2 text-sm font-bold text-gray-500 bg-gray-100 px-3 py-1.5 rounded-lg">
               <Icon name="Lock" size={14} /> Available on{" "}
-              {(template as unknown).tier || (template as unknown).planLevel}
+              {(template as any).tier || (template as any).planLevel}
             </div>
           ) : (
             <Button onClick={() => onUse(template)} variant="primary" className="px-6 py-2.5 text-sm shadow-lg">

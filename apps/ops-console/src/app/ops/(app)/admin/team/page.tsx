@@ -1,12 +1,12 @@
 "use client";
 
 import React, { useState } from "react";
-import { Users, Shield, Plus, Lock, Copy, Check } from "lucide-react";
+import { Users, Shield, Plus, Lock, Copy, Check } from 'lucide-react';
 import { useOpsQuery } from "@/hooks/useOpsQuery";
-import { toast } from "sonner";
+import { toast } from 'sonner';
 import { Button } from "@vayva/ui";
 
-export default function TeamPage() {
+export default function TeamPage(): React.JSX.Element {
     const { data: team, isLoading, refetch } = useOpsQuery(
         ["ops-team"],
         () => fetch("/api/ops/admin/team").then(res => res.json().then(j => j.data))
@@ -17,7 +17,7 @@ export default function TeamPage() {
     const [createdCreds, setCreatedCreds] = useState<{ email: string, tempPassword: string } | null>(null);
 
     const handleInvite = async (e: React.FormEvent) => {
-        e.preventDefault();
+        (e as any).preventDefault();
         try {
             const res = await fetch("/api/ops/admin/team", {
                 method: "POST",
@@ -34,7 +34,7 @@ export default function TeamPage() {
             } else {
                 toast.error(json.error || "Failed to invite");
             }
-        } catch (err) {
+        } catch {
             toast.error("Network error");
         }
     };
@@ -110,8 +110,8 @@ export default function TeamPage() {
                             <input
                                 required
                                 className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
-                                value={formData.name}
-                                onChange={e => setFormData({ ...formData, name: e.target.value })}
+                                value={(formData.name as any)}
+                                onChange={(e: any) => setFormData({ ...formData, name: (e as any).target.value })}
                                 placeholder="e.g. Jane Doe"
                             />
                         </div>
@@ -121,8 +121,8 @@ export default function TeamPage() {
                                 required
                                 type="email"
                                 className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
-                                value={formData.email}
-                                onChange={e => setFormData({ ...formData, email: e.target.value })}
+                                value={(formData.email as any)}
+                                onChange={(e: any) => setFormData({ ...formData, email: (e as any).target.value })}
                                 placeholder="jane@vayva.ng"
                             />
                         </div>
@@ -130,8 +130,8 @@ export default function TeamPage() {
                             <label className="block text-sm font-medium text-gray-700 mb-1">Role</label>
                             <select
                                 className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
-                                value={formData.role}
-                                onChange={e => setFormData({ ...formData, role: e.target.value })}
+                                value={(formData.role as any)}
+                                onChange={(e: any) => setFormData({ ...formData, role: (e as any).target.value })}
                                 aria-label="Select member role"
                             >
                                 <option value="OPS_SUPPORT">Support Agent (L1)</option>
@@ -177,27 +177,27 @@ export default function TeamPage() {
                         ) : !team?.length ? (
                             <tr><td colSpan={4} className="p-12 text-center text-gray-400">No team members found.</td></tr>
                         ) : (
-                            team.map((u: unknown) => (
-                                <tr key={u.id} className="hover:bg-gray-50">
+                            team.map((u: any) => (
+                                <tr key={(u as any).id} className="hover:bg-gray-50">
                                     <td className="px-6 py-4">
-                                        <div className="font-medium text-gray-900">{u.name}</div>
-                                        <div className="text-xs text-gray-500">{u.email}</div>
+                                        <div className="font-medium text-gray-900">{(u as any).name}</div>
+                                        <div className="text-xs text-gray-500">{(u as any).email}</div>
                                     </td>
                                     <td className="px-6 py-4">
-                                        <span className={`px-2 py-0.5 rounded text-xs font-bold ${u.role === 'OPS_OWNER' ? 'bg-purple-100 text-purple-700' :
-                                            u.role === 'OPS_ADMIN' ? 'bg-indigo-100 text-indigo-700' :
+                                        <span className={`px-2 py-0.5 rounded text-xs font-bold ${(u as any).role === 'OPS_OWNER' ? 'bg-purple-100 text-purple-700' :
+                                            (u as any).role === 'OPS_ADMIN' ? 'bg-indigo-100 text-indigo-700' :
                                                 'bg-blue-100 text-blue-700'
                                             }`}>
-                                            {u.role.replace("OPS_", "")}
+                                            {(u as any).role.replace("OPS_", "")}
                                         </span>
                                     </td>
                                     <td className="px-6 py-4">
-                                        <span className={`px-2 py-0.5 rounded text-xs font-bold ${u.isActive ? "bg-green-100 text-green-700" : "bg-red-100 text-red-700"}`}>
-                                            {u.isActive ? "Active" : "Disabled"}
+                                        <span className={`px-2 py-0.5 rounded text-xs font-bold ${(u as any).isActive ? "bg-green-100 text-green-700" : "bg-red-100 text-red-700"}`}>
+                                            {(u as any).isActive ? "Active" : "Disabled"}
                                         </span>
                                     </td>
                                     <td className="px-6 py-4 text-gray-500 text-xs">
-                                        {u.lastLoginAt ? new Date(u.lastLoginAt).toLocaleString() : "Never"}
+                                        {(u as any).lastLoginAt ? new Date((u as any).lastLoginAt).toLocaleString() : "Never"}
                                     </td>
                                 </tr>
                             ))

@@ -13,7 +13,7 @@ const legalDocuments = [
     { title: "End User License Agreement (EULA)", href: "/legal/eula", active: true },
 ];
 
-export default function EULAPage() {
+export default function EULAPage(): React.JSX.Element {
     return (
         <div className="min-h-screen bg-white">
             <div className="max-w-7xl mx-auto px-6 py-16">
@@ -25,7 +25,7 @@ export default function EULAPage() {
                                 Legal Documents
                             </h3>
                             <ul className="space-y-2">
-                                {legalDocuments.map((doc) => (
+                                {legalDocuments.map((doc: any) => (
                                     <li key={doc.href}>
                                         <Link
                                             href={doc.href}

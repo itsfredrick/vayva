@@ -5,7 +5,7 @@ const groq = new Groq({
     apiKey: process.env.GROQ_API_KEY_MARKETING || process.env.GROQ_API_KEY || "",
 });
 
-export async function POST(req: NextRequest) {
+export async function POST(req: NextRequest): Promise<NextResponse> {
     try {
         const { message } = await req.json();
 
@@ -45,10 +45,9 @@ export async function POST(req: NextRequest) {
         const reply = completion.choices[0]?.message?.content || "I apologize, but I couldn't process that request.";
 
         // Simple logging (no PII)
-        console.log(`[HELP_AI_ANALYTICS] Message received at ${new Date().toISOString()}`);
 
         return NextResponse.json({ message: reply });
-    } catch (error) {
+    } catch (error: any) {
         console.error("AI Chat Error:", error);
         return NextResponse.json(
             { error: "Failed to process AI request" },

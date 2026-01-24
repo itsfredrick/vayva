@@ -69,7 +69,7 @@ export class InventoryService {
                         onHand: 0,
                         available: 0
                     }
-                }) as unknown as InventoryItem;
+                }) as any as InventoryItem;
             }
             // 2. Update stock levels
             const newOnHand = item.onHand + quantityChange;
@@ -107,6 +107,6 @@ export class InventoryService {
                 inventoryLocation: true
             }
         });
-        return history as unknown as InventoryMovement[];
+        return history as any as InventoryMovement[];
     }
 }

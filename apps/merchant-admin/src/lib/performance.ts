@@ -1,12 +1,12 @@
 import { logAuditEvent, AuditEventType } from "./audit";
 const SLOW_THRESHOLD_MS = 3000; // 3 seconds
 // In-memory store for recent slow paths (rolling window)
-const recentSlowPaths = [];
+const recentSlowPaths: any[] = [];
 const MAX_SLOW_PATHS = 100;
 /**
  * Track API route performance
  */
-export async function trackPerformance(route: unknown, method: unknown, startTime: unknown, success: unknown, storeId: unknown, userId: unknown) {
+export async function trackPerformance(route: any, method: any, startTime: any, success: any, storeId: any, userId: any) {
     const durationMs = Date.now() - startTime;
     if (durationMs > SLOW_THRESHOLD_MS) {
         // Store in memory
@@ -40,19 +40,19 @@ export async function trackPerformance(route: unknown, method: unknown, startTim
  * Get recent slow paths
  */
 export function getRecentSlowPaths(limit = 50) {
-    return recentSlowPaths.slice(-limit).reverse();
+    return (recentSlowPaths as any).slice(-limit).reverse();
 }
 /**
  * Wrapper for timing async operations
  */
-export async function withTiming(operation: unknown, context: unknown) {
+export async function withTiming(operation: any, context: any) {
     const startTime = Date.now();
     let success = true;
     try {
         const result = await operation();
         return result;
     }
-    catch (error) {
+    catch (error: any) {
         success = false;
         throw error;
     }

@@ -10,14 +10,14 @@ export const GET = withVayvaAPI(PERMISSIONS.PRODUCTS_VIEW, async (req, { storeId
         });
         // Fetch basic product info manually since relation might not be established in schema
         const productIds = reviews
-            .map((r) => r.productId)
+            .map((r: any) => r.productId)
             .filter((id) => id !== null);
         const products = await prisma.product.findMany({
             where: { id: { in: productIds } },
             select: { id: true, title: true, handle: true },
         });
-        const productMap = new Map(products.map((p) => [p.id, p]));
-        const formatted = reviews.map((review) => ({
+        const productMap = new Map(products.map((p: any) => [p.id, p]));
+        const formatted = reviews.map((review: any) => ({
             id: review.id,
             rating: review.rating,
             title: review.title,
@@ -28,7 +28,7 @@ export const GET = withVayvaAPI(PERMISSIONS.PRODUCTS_VIEW, async (req, { storeId
         }));
         return NextResponse.json({ success: true, data: formatted });
     }
-    catch (error) {
+    catch (error: any) {
         console.error("Reviews API Error:", error);
         return NextResponse.json({ error: "Failed to fetch reviews" }, { status: 500 });
     }

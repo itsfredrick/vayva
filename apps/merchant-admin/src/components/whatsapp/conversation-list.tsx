@@ -42,7 +42,7 @@ export const ConversationList = ({
 
   return (
     <div className="flex flex-col h-full overflow-y-auto custom-scrollbar">
-      {sorted.map((conv) => {
+      {sorted.map((conv: any) => {
         const commonClassName = cn(
           "flex flex-col gap-1 p-4 border-b border-gray-100 hover:bg-gray-50 transition-colors text-left group relative",
           selectedId === conv.id && "bg-[#F3F4F6]",
@@ -80,7 +80,7 @@ export const ConversationList = ({
 
             {/* Badges Row */}
             <div className="flex items-center gap-2 mt-2">
-              {conv.tags?.map((tag) => (
+              {conv.tags?.map((tag: any) => (
                 <span
                   key={tag}
                   className={cn(

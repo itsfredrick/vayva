@@ -5,7 +5,7 @@ import Image from "next/image";
 import { Zap, ShieldCheck } from "lucide-react";
 import * as motion from "framer-motion/client";
 
-export default function TrustVisualSection() {
+export default function TrustVisualSection(): React.JSX.Element {
     return (
         <section className="pb-24 px-4">
             <motion.div
@@ -57,7 +57,7 @@ export default function TrustVisualSection() {
                                                 title: "Record eternally",
                                                 text: "Orders, payments, and delivery statuses are logged in clean records.",
                                             },
-                                        ].map((step) => (
+                                        ].map((step: any) => (
                                             <div
                                                 key={step.num}
                                                 className="flex items-start gap-6 group"

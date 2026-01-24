@@ -41,7 +41,7 @@ export async function GET(req: NextRequest, { params }: { params: Promise<{ slug
                     startsAt: true,
                 },
             });
-            bookedTimes = bookings.map((b) => {
+            bookedTimes = bookings.map((b: any) => {
                 const d = new Date(b.startsAt);
                 // Convert to HH:mm. Note: This assumes UTC or consistent timezone handling.
                 //Ideally we handle timezones better, but for MVP/V1 audit fix this is sufficient.
@@ -55,7 +55,7 @@ export async function GET(req: NextRequest, { params }: { params: Promise<{ slug
             availableSlots
         });
     }
-    catch (error) {
+    catch (error: any) {
         console.error("Availability error:", error);
         return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
     }

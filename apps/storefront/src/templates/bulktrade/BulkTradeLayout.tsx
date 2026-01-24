@@ -13,7 +13,7 @@ interface BulkTradeLayoutProps {
   products: PublicProduct[];
 }
 
-export const BulkTradeLayout = ({ store, products }: BulkTradeLayoutProps) => {
+export const BulkTradeLayout = ({ store, products }: BulkTradeLayoutProps): React.JSX.Element => {
   const [rfqItems, setRfqItems] = useState<
     { product: PublicProduct; qty: number }[]
   >([]);
@@ -33,7 +33,7 @@ export const BulkTradeLayout = ({ store, products }: BulkTradeLayoutProps) => {
     setRfqItems((prev) => {
       const existing = prev.find((i) => i.product.id === product.id);
       if (existing) {
-        return prev.map((i) =>
+        return prev.map((i: any) =>
           i.product.id === product.id ? { ...i, qty } : i,
         );
       }
@@ -48,7 +48,7 @@ export const BulkTradeLayout = ({ store, products }: BulkTradeLayoutProps) => {
 
   const updateRFQQty = (id: string, qty: number) => {
     setRfqItems((prev) =>
-      prev.map((i) => (i.product.id === id ? { ...i, qty } : i)),
+      prev.map((i: any) => (i.product.id === id ? { ...i, qty } : i)),
     );
   };
 
@@ -83,7 +83,7 @@ export const BulkTradeLayout = ({ store, products }: BulkTradeLayoutProps) => {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-            {products.map((product) => {
+            {products.map((product: any) => {
               const moq = product.wholesaleDetails?.moq || 1;
               const tiers = product.wholesaleDetails?.pricingTiers || [];
               const inputQty = inputQtys[product.id] || moq;
@@ -153,7 +153,7 @@ export const BulkTradeLayout = ({ store, products }: BulkTradeLayoutProps) => {
                           type="number"
                           min={moq}
                           value={inputQty}
-                          onChange={(e) =>
+                          onChange={(e: any) =>
                             handleInputQtyChange(
                               product.id,
                               parseInt(e.target.value) || 0,

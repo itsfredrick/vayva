@@ -1,7 +1,7 @@
 "use client";
 import { useState, useEffect } from "react";
 export function useUserPlan() {
-    const [data, setData] = useState(null);
+    const [data, setData] = useState<any>(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     useEffect(() => {
@@ -13,7 +13,7 @@ export function useUserPlan() {
                 const json = await res.json();
                 setData(json);
             }
-            catch (err) {
+            catch (err: any) {
                 setError(err);
             }
             finally {

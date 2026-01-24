@@ -16,10 +16,10 @@ export function StandardEventsHome({
 }: {
     storeName?: string;
     storeSlug?: string
-}) {
+}): React.JSX.Element {
     const { store } = useStorefrontStore(storeSlug);
     const { products, isLoading } = useStorefrontProducts(storeSlug, { limit: 6 });
-    const { cart, addToCart, removeFromCart, total, isOpen: isCartOpen, setIsOpen: setIsCartOpen, clearCart } = useStorefrontCart(storeSlug || "");
+    const { cart, addToCart, removeFromCart, total, isOpen: _isCartOpen, setIsOpen: _setIsCartOpen, clearCart } = useStorefrontCart(storeSlug || "");
     const [isCheckoutOpen, setIsCheckoutOpen] = useState(false);
 
     const displayName = store?.name || initialStoreName || "Event Hub";
@@ -84,7 +84,7 @@ export function StandardEventsHome({
                     </div>
                 ) : (
                     <div className="grid md:grid-cols-1 lg:grid-cols-2 gap-8">
-                        {products.map((event) => (
+                        {products.map((event: any) => (
                             <div key={event.id} className="bg-white rounded-2xl shadow-xl shadow-slate-200/50 border border-slate-100 overflow-hidden flex flex-col md:flex-row hover:-translate-y-1 transition-transform duration-300 group">
                                 <div className="w-full md:w-56 bg-slate-200 relative">
                                     <img src={event.image || `https://via.placeholder.com/300x400?text=${event.name}`} alt={event.name} className="w-full h-full object-cover opacity-90 group-hover:opacity-100 transition-opacity" />

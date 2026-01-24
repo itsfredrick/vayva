@@ -44,7 +44,7 @@ export default function AnalyticsPage() {
       if (!res.ok) throw new Error("Failed");
       const json = await res.json();
       setData(json);
-    } catch (error) {
+    } catch (error: any) {
       toast.error("Failed to load analytics");
     } finally {
       setIsLoading(false);
@@ -58,7 +58,7 @@ export default function AnalyticsPage() {
         const json = await res.json();
         setInsights(json.insights || []);
       }
-    } catch (e) {
+    } catch (e: any) {
       // silent fail
     }
   };
@@ -71,7 +71,7 @@ export default function AnalyticsPage() {
           <p className="text-gray-500 mt-1">Real-time performance summary of your store.</p>
         </div>
         <div className="flex items-center space-x-2">
-          <Select value={range} onValueChange={setRange}>
+          <Select value={(range as any)} onValueChange={setRange}>
             <SelectTrigger className="w-[180px] rounded-xl border-gray-200 shadow-sm bg-white font-medium">
               <SelectValue placeholder="Select Range" />
             </SelectTrigger>
@@ -89,7 +89,7 @@ export default function AnalyticsPage() {
           <MetricCard
             title="Total Revenue"
             value={data ? `₦${data.totalSales.toLocaleString()}` : "₦0"}
-            icon={DollarSign}
+            icon={(DollarSign as any)}
             loading={isLoading}
             status="success"
           />
@@ -97,20 +97,20 @@ export default function AnalyticsPage() {
         <MetricCard
           title="Orders"
           value={data ? data.totalOrders : "0"}
-          icon={ShoppingBag}
+          icon={(ShoppingBag as any)}
           loading={isLoading}
         />
         <MetricCard
           title="Active Customers"
           value={data ? data.activeCustomers : "0"}
-          icon={Users}
+          icon={(Users as any)}
           loading={isLoading}
         />
         <PermissionGate permission={PERMISSIONS.FINANCE_VIEW}>
           <MetricCard
             title="Avg Order Value"
             value={data ? `₦${Math.round(data.aov).toLocaleString()}` : "₦0"}
-            icon={ArrowUpRight}
+            icon={(ArrowUpRight as any)}
             subtext="Average per transaction"
             loading={isLoading}
           />

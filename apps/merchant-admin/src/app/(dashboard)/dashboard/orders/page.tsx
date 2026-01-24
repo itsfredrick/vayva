@@ -5,12 +5,12 @@ import useSWR from "swr";
 import { useRouter } from "next/navigation";
 import { useDebounce } from "@/hooks/use-debounce";
 import { toast } from "sonner";
-import { ShoppingBag, Plus, Loader2 } from "lucide-react";
+import { Loader2 } from "lucide-react";
 
-import { Button, Icon } from "@vayva/ui";
+import { Icon } from "@vayva/ui";
 import { useAuth } from "@/context/AuthContext";
 import { useStore } from "@/context/StoreContext";
-import { IndustrySlug } from "@/lib/templates/types";
+// import { IndustrySlug } from "@/lib/templates/types";
 import { UnifiedOrder } from "@vayva/shared";
 
 import { FilterBar } from "@/components/orders/FilterBar";
@@ -39,7 +39,7 @@ export default function OrdersPage() {
     if (filters.paymentStatus && filters.paymentStatus !== "ALL") queryParams.append("paymentStatus", filters.paymentStatus);
     if (debouncedSearch) queryParams.append("q", debouncedSearch);
 
-    const { data: response, error, mutate, isLoading } = useSWR(
+    const { data: response, error: _error, mutate, isLoading } = useSWR(
         `/api/orders?${queryParams.toString()}`,
         fetcher
     );

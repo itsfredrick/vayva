@@ -49,8 +49,8 @@ export const OTPInput: React.FC<OTPInputProps> = ({
   const handleKeyDown = (index: number, e: KeyboardEvent<HTMLInputElement>) => {
     if (disabled) return;
 
-    if (e.key === "Backspace") {
-      e.preventDefault();
+    if ((e as any).key === "Backspace") {
+      (e as any).preventDefault();
       const newValue = value.split("");
 
       if (newValue[index]) {
@@ -63,18 +63,18 @@ export const OTPInput: React.FC<OTPInputProps> = ({
         onChange(newValue.join(""));
         inputRefs.current[index - 1]?.focus();
       }
-    } else if (e.key === "ArrowLeft" && index > 0) {
+    } else if ((e as any).key === "ArrowLeft" && index > 0) {
       inputRefs.current[index - 1]?.focus();
-    } else if (e.key === "ArrowRight" && index < length - 1) {
+    } else if ((e as any).key === "ArrowRight" && index < length - 1) {
       inputRefs.current[index + 1]?.focus();
     }
   };
 
   const handlePaste = (e: ClipboardEvent<HTMLInputElement>) => {
-    e.preventDefault();
+    (e as any).preventDefault();
     if (disabled) return;
 
-    const pastedData = e.clipboardData
+    const pastedData = (e as any).clipboardData
       .getData("text/plain")
       .replace(/\D/g, "")
       .slice(0, length);
@@ -101,7 +101,7 @@ export const OTPInput: React.FC<OTPInputProps> = ({
           inputMode="numeric"
           maxLength={1}
           value={value[index] || ""}
-          onChange={(e) => handleChange(index, e.target.value)}
+          onChange={(e: any) => handleChange(index, (e as any).target.value)}
           onKeyDown={(e) => handleKeyDown(index, e)}
           onPaste={handlePaste}
           onFocus={() => setFocusedIndex(index)}

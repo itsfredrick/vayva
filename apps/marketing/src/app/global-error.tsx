@@ -9,7 +9,7 @@ export default function GlobalError({
 }: {
     error: Error & { digest?: string };
     reset: () => void;
-}) {
+}): React.JSX.Element {
     useEffect(() => {
         console.error("Marketing Global Error:", error);
     }, [error]);

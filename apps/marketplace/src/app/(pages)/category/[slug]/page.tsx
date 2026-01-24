@@ -1,3 +1,4 @@
+import React from "react";
 
 import { prisma } from "@/lib/prisma";
 import { MobileCategoryHeader } from "@/components/mobile/MobileCategoryHeader";
@@ -19,7 +20,7 @@ interface Store {
 }
 
 
-export default async function CategoryPage({ params }: CategoryPageProps) {
+export default async function CategoryPage({ params }: CategoryPageProps): Promise<React.JSX.Element> {
     const slug = params.slug;
     const isFood = slug === "food";
     const title = slug.charAt(0).toUpperCase() + slug.slice(1);

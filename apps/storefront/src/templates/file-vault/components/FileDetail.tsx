@@ -88,19 +88,19 @@ export const FileDetail = ({
               <div className="flex justify-between border-b border-gray-800 pb-2">
                 <span className="text-gray-500">Format</span>
                 <span className="text-white font-medium">
-                  {product.fileDetails?.fileType}
+                  {(product as any).fileDetails?.fileType}
                 </span>
               </div>
               <div className="flex justify-between border-b border-gray-800 pb-2">
                 <span className="text-gray-500">Size</span>
                 <span className="text-white font-medium">
-                  {product.fileDetails?.fileSize}
+                  {(product as any).fileDetails?.fileSize}
                 </span>
               </div>
               <div className="flex justify-between border-b border-gray-800 pb-2">
                 <span className="text-gray-500">License</span>
                 <span className="text-white font-medium capitalize">
-                  {product.licenseType || "Standard"}
+                  {(product as any).licenseType || "Standard"}
                 </span>
               </div>
             </div>

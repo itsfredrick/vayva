@@ -1,5 +1,4 @@
 import { User, PrismaClient, prisma } from "./src/client";
 
-const u: User | null = null;
-const p = new PrismaClient();
-console.log(prisma);
+const _u: User | null = null;
+const _p = new PrismaClient();

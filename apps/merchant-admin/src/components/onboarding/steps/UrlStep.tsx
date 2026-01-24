@@ -30,7 +30,7 @@ export default function UrlStep() {
                 if (!data.available) {
                     setError("This URL is already taken. Please choose another.");
                 }
-            } catch (err) {
+            } catch (err: any) {
                 setError("Failed to check availability. Please try again.");
                 setAvailable(null);
             } finally {
@@ -45,7 +45,7 @@ export default function UrlStep() {
         if (!slug || !available) return;
         updateData({
             business: {
-                ...(state.business as unknown),
+                ...(state.business as any),
                 slug
             }
         });
@@ -70,8 +70,8 @@ export default function UrlStep() {
                             id="slug"
                             className="rounded-l-none pr-10"
                             placeholder="my-store"
-                            value={slug}
-                            onChange={(e) => setSlug(e.target.value.toLowerCase().replace(/[^a-z0-9-]/g, ""))}
+                            value={(slug as any)}
+                            onChange={(e: any) => setSlug(e.target.value.toLowerCase().replace(/[^a-z0-9-]/g, ""))}
                         />
                         <div className="absolute right-3 top-1/2 -translate-y-1/2">
                             {checking && <Loader2 className="h-4 w-4 animate-spin text-gray-400" />}

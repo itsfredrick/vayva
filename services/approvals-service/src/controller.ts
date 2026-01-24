@@ -2,19 +2,20 @@ import { FastifyRequest, FastifyReply } from "fastify";
 import { prisma } from "@vayva/db";
 
 export const listApprovalsHandler = async (
-  req: FastifyRequest,
+  req: FastifyRequest<{ Querystring: { storeId: string; status?: string } }>,
   reply: FastifyReply,
 ) => {
-  const { storeId, status } = req.query as { storeId: string; status?: string };
+  const { storeId, status } = req.query;
   if (!storeId) {
-    (req.log as unknown).error("storeId required for listApprovalsHandler");
+    req.log.error("storeId required for listApprovalsHandler");
     return reply.status(400).send({ error: "storeId required" });
   }
 
   const approvals = await prisma.approval.findMany({
     where: {
       storeId,
-      status: (status as unknown) || undefined,
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      status: (status as any) || undefined,
     },
     orderBy: { createdAt: "desc" },
   });
@@ -23,11 +24,11 @@ export const listApprovalsHandler = async (
 };
 
 export const approveHandler = async (
-  req: FastifyRequest,
+  req: FastifyRequest<{ Params: { id: string }; Body: { approverId: string } }>,
   reply: FastifyReply,
 ) => {
-  const { id } = req.params as { id: string };
-  const { approverId } = req.body as { approverId: string }; // In real app, from Token
+  const { id } = req.params;
+  const { approverId } = req.body; // In real app, from Token
 
   const approval = await prisma.approval.update({
     where: { id },
@@ -40,7 +41,6 @@ export const approveHandler = async (
 
   // Execute Hook (Placeholder)
   // e.g. Trigger downstream notification flow via shared service
-  console.log(`[Approval] ${id} approved. Triggering downstream actions...`);
 
 
   return reply.send(approval);

@@ -16,7 +16,7 @@ export async function GET() {
             take: 50,
         });
         return NextResponse.json({
-            invoices: invoices.map((inv: unknown) => ({
+            invoices: invoices.map((inv: any) => ({
                 id: inv.id,
                 invoiceNumber: inv.invoiceNumber,
                 date: inv.createdAt,
@@ -27,7 +27,7 @@ export async function GET() {
             })),
         });
     }
-    catch (error) {
+    catch (error: any) {
         console.error("Invoices fetch error:", error);
         if (error.message === "Unauthorized") {
             return NextResponse.json({ error: "Unauthorized" }, { status: 401 });

@@ -1,10 +1,11 @@
 import { prisma } from "@vayva/db";
 import { logger } from "@/lib/logger";
+
 export class EscalationService {
     /**
      * Trigger a handoff from AI to Human Support
      */
-    static async triggerHandoff(params) {
+    static async triggerHandoff(params: any) {
         try {
             // 1. Create Support Ticket
             const ticket = await prisma.supportTicket.create({
@@ -14,37 +15,38 @@ export class EscalationService {
                     category: this.mapTriggerToCategory(params.trigger),
                     status: "OPEN",
                     priority: this.mapTriggerToPriority(params.trigger),
-                    subject: `AI Escalation: ${params.trigger} - ${params.reason.substring(0, 30)}...`,
+                    subject: `AI Escalation: ${params.trigger} - ${(params.reason || "").substring(0, 30)}...`,
                     summary: params.aiSummary,
                     lastMessageAt: new Date(),
-                    // Optional: Link to conversation if schema allows
-                    // conversationId: params.conversationId
                 },
             });
+
             // 2. Create Audit Event
             await prisma.handoffEvent.create({
                 data: {
                     storeId: params.storeId,
                     conversationId: params.conversationId,
                     ticketId: ticket.id,
-                    trigger: params.trigger,
-                    reason: params.reason,
+                    triggerType: params.trigger, // Mapped to triggerType
                     aiSummary: params.aiSummary,
-                    metadata: params.metadata || {},
+                    // reason/metadata omitted if not in schema
                 },
             });
+
             logger.info("[EscalationService] Handoff triggered", {
                 ticketId: ticket.id,
                 ...params,
             });
+
             return ticket;
         }
-        catch (error) {
+        catch (error: any) {
             logger.error("[EscalationService] Failed to trigger handoff", error);
             throw error; // Rethrow so the bot knows it failed
         }
     }
-    static mapTriggerToPriority(trigger) {
+
+    static mapTriggerToPriority(trigger: any) {
         switch (trigger) {
             case "PAYMENT_DISPUTE":
                 return "URGENT";
@@ -58,7 +60,8 @@ export class EscalationService {
                 return "MEDIUM";
         }
     }
-    static mapTriggerToCategory(trigger) {
+
+    static mapTriggerToCategory(trigger: any) {
         switch (trigger) {
             case "PAYMENT_DISPUTE":
                 return "PAYMENT";
@@ -72,7 +75,8 @@ export class EscalationService {
                 return "GENERAL";
         }
     }
-    static mapTriggerToType(trigger) {
+
+    static mapTriggerToType(trigger: any) {
         switch (trigger) {
             case "BILLING_ERROR":
                 return "BILLING";

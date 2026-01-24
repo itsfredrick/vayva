@@ -18,7 +18,7 @@ export default function PaymentsSettingsPage() {
                     const data = await res.json();
                     setSettlementAccount(data); // null if not set
                 }
-            } catch (e) {
+            } catch (e: any) {
                 console.error(e);
             } finally {
                 setLoading(false);
@@ -61,13 +61,13 @@ export default function PaymentsSettingsPage() {
                             ) : settlementAccount ? (
                                 <div className="bg-slate-50 rounded-lg border border-slate-100 p-4 max-w-md">
                                     <div className="flex justify-between items-center mb-1">
-                                        <span className="text-sm font-medium text-slate-900">{settlementAccount.bankName}</span>
-                                        {settlementAccount.isVerified && (
+                                        <span className="text-sm font-medium text-slate-900">{(settlementAccount as any).bankName}</span>
+                                        {(settlementAccount as any).isVerified && (
                                             <span className="text-xs font-mono text-slate-500 bg-white px-2 py-0.5 rounded border border-slate-200">VERIFIED</span>
                                         )}
                                     </div>
-                                    <div className="text-lg font-mono text-slate-700 tracking-wide mb-1">{settlementAccount.accountNumber}</div>
-                                    <div className="text-sm text-slate-500">{settlementAccount.accountName}</div>
+                                    <div className="text-lg font-mono text-slate-700 tracking-wide mb-1">{(settlementAccount as any).accountNumber}</div>
+                                    <div className="text-sm text-slate-500">{(settlementAccount as any).accountName}</div>
                                 </div>
                             ) : (
                                 <div className="bg-amber-50 rounded-lg border border-amber-100 p-4 flex gap-3 text-amber-900">

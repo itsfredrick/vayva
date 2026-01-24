@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { getSessionUser } from "@/lib/session";
 // POST /api/integrations/whatsapp/connect
-export async function POST(request: unknown) {
+export async function POST(request: Request) {
     try {
         const user = await getSessionUser();
         if (!user)
@@ -42,7 +42,7 @@ export async function POST(request: unknown) {
         }
         return NextResponse.json({ error: "Provider Error" }, { status: 502 });
     }
-    catch (error) {
+    catch (error: any) {
         console.error("WhatsApp Integration Error:", error);
         return NextResponse.json({ error: "Internal Error" }, { status: 500 });
     }

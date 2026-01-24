@@ -50,7 +50,7 @@ export function KYCVerification({ onSuccess, onCancel }: KYCVerificationProps) {
 
       setStep("SUCCESS");
       if (onSuccess) onSuccess();
-    } catch (err) {
+    } catch (err: any) {
       setError((err as any).message || "Verification failed");
     } finally {
       setLoading(false);
@@ -144,8 +144,8 @@ export function KYCVerification({ onSuccess, onCancel }: KYCVerificationProps) {
             <Input
               label={`${method} Number`}
               placeholder={`Enter your ${method}`}
-              value={formData.idNumber}
-              onChange={(e: unknown) =>
+              value={(formData.idNumber as any)}
+              onChange={(e: any) =>
                 setFormData({ ...formData, idNumber: e.target.value })
               }
               required
@@ -154,8 +154,8 @@ export function KYCVerification({ onSuccess, onCancel }: KYCVerificationProps) {
               <Input
                 label="First Name"
                 placeholder="As on ID"
-                value={formData.firstName}
-                onChange={(e: unknown) =>
+                value={(formData.firstName as any)}
+                onChange={(e: any) =>
                   setFormData({ ...formData, firstName: e.target.value })
                 }
                 required
@@ -163,8 +163,8 @@ export function KYCVerification({ onSuccess, onCancel }: KYCVerificationProps) {
               <Input
                 label="Last Name"
                 placeholder="As on ID"
-                value={formData.lastName}
-                onChange={(e: unknown) =>
+                value={(formData.lastName as any)}
+                onChange={(e: any) =>
                   setFormData({ ...formData, lastName: e.target.value })
                 }
                 required
@@ -173,8 +173,8 @@ export function KYCVerification({ onSuccess, onCancel }: KYCVerificationProps) {
             <Input
               label="Date of Birth"
               type="date"
-              value={formData.dob}
-              onChange={(e: unknown) =>
+              value={(formData.dob as any)}
+              onChange={(e: any) =>
                 setFormData({ ...formData, dob: e.target.value })
               }
               required
@@ -185,7 +185,7 @@ export function KYCVerification({ onSuccess, onCancel }: KYCVerificationProps) {
             <input
               type="checkbox"
               checked={consent}
-              onChange={(e: unknown) => setConsent(e.target.checked)}
+              onChange={(e: any) => setConsent(e.target.checked)}
               className="mt-1 accent-primary"
               id="consent-check"
             />

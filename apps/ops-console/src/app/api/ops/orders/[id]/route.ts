@@ -1,4 +1,4 @@
-import { NextRequest, NextResponse } from "next/server";
+import { NextRequest, NextResponse } from 'next/server';
 import { OpsAuthService } from "@/lib/ops-auth";
 import { prisma } from "@vayva/db";
 
@@ -28,7 +28,7 @@ export async function GET(
         if (!order) return NextResponse.json({ error: "Order not found" }, { status: 404 });
 
         return NextResponse.json({ data: order });
-    } catch (error) {
+    } catch (error: any) {
         if (error.message === "Unauthorized") return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
         console.error("Order detail error:", error);
         return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });

@@ -129,7 +129,7 @@ export default function CheckoutPage({
         <div className="bg-white/5 rounded-2xl p-6 h-fit border border-white/5">
           <h3 className="font-bold text-white mb-6">Order Summary</h3>
           <div className="space-y-4 mb-6 border-b border-white/10 pb-6 max-h-[300px] overflow-y-auto">
-            {[1, 2].map((item) => (
+            {[1, 2].map((item: any) => (
               <div key={item} className="flex gap-4">
                 <div className="w-16 h-16 bg-white/5 rounded-lg border border-white/5 relative">
                   <span className="absolute -top-2 -right-2 w-5 h-5 bg-white/20 rounded-full flex items-center justify-center text-[10px] font-bold text-white">

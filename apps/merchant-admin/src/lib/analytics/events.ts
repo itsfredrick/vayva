@@ -47,7 +47,7 @@ export const ENGAGEMENT_EVENTS = {
     INVITE_TEAM_MEMBER: "invite_team_member",
 };
 // Helper to create event payload
-export function createEventPayload(category: unknown, action: unknown, metadata = {}, userId: unknown, storeId: unknown) {
+export function createEventPayload(category: any, action: any, metadata = {}, userId: any, storeId: any) {
     return {
         category,
         action,

@@ -1,4 +1,5 @@
 
+/* eslint-disable no-console */
 import { PrismaClient } from '@vayva/db';
 const prisma = new PrismaClient();
 

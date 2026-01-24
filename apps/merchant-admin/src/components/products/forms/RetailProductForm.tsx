@@ -6,15 +6,8 @@ import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { X, Plus, Trash2 } from "lucide-react";
+import { useVariantManager, GeneratedVariant, ProductOption } from "./hooks/useVariantManager";
 
-interface GeneratedVariant {
-    id: string; // internal temp id
-    title: string;
-    options: Record<string, string>;
-    price: number;
-    sku: string;
-    stock: number;
-}
 
 interface RetailProductFormValues {
     title: string;
@@ -47,113 +40,25 @@ interface RetailProductFormProps {
     storeCategory?: string;
 }
 
-interface ProductOption {
-    id: string;
-    name: string;
-    values: string[];
-}
 
 export function RetailProductForm({ productId, initialData, storeCategory }: RetailProductFormProps) {
     const router = useRouter();
     const [isSubmitting, setIsSubmitting] = useState(false);
 
-    // Variant State
-    const [options, setOptions] = useState<ProductOption[]>([]);
-    const [variants, setVariants] = useState<GeneratedVariant[]>([]);
-
-    // Helper to add a new empty option
-    const addOption = () => {
-        setOptions([...options, { id: crypto.randomUUID(), name: "", values: [] }]);
-    };
-
-    // Helper to remove an option
-    const removeOption = (index: number) => {
-        const newOptions = [...options];
-        newOptions.splice(index, 1);
-        setOptions(newOptions);
-    };
-
-    // Helper to update option name
-    const updateOptionName = (index: number, name: string) => {
-        const newOptions = [...options];
-        newOptions[index].name = name;
-        setOptions(newOptions);
-    };
-
-    // Helper to add a value to an option
-    const addValueToOption = (index: number, value: string) => {
-        if (!value.trim()) return;
-        const newOptions = [...options];
-        if (!newOptions[index].values.includes(value)) {
-            newOptions[index].values.push(value);
-            setOptions(newOptions);
-        }
-    };
-
-    // Helper to remove a value
-    const removeValueFromOption = (optionIndex: number, valueIndex: number) => {
-        const newOptions = [...options];
-        newOptions[optionIndex].values.splice(valueIndex, 1);
-        setOptions(newOptions);
-    };
-
-    // Cartesian Product Generator
-    useEffect(() => {
-        if (options.length === 0) {
-            setVariants([]);
-            return;
-        }
-
-        // Filter out incomplete options
-        const validOptions = options.filter(o => o.name && o.values.length > 0);
-        if (validOptions.length === 0) {
-            setVariants([]);
-            return;
-        }
-
-        const cartesian = (args: ProductOption[]): Record<string, string>[][] => {
-            const r: Record<string, string>[][] = [];
-            const max = args.length - 1;
-            function helper(arr: Record<string, string>[], i: number) {
-                for (let j = 0, l = args[i].values.length; j < l; j++) {
-                    const a = arr.slice(0); // clone arr
-                    a.push({ [args[i].name]: args[i].values[j] });
-                    if (i === max) r.push(a);
-                    else helper(a, i + 1);
-                }
-            }
-            helper([], 0);
-            return r;
-        };
-
-        const combinations = cartesian(validOptions);
-
-        // Map combinations to flat variant objects
-        const newVariants = combinations.map((combo: unknown[]) => {
-            // Merge array of objects into single object: [{Color: Red}, {Size: L}] -> {Color: Red, Size: L}
-            const optionsMap = combo.reduce((acc, curr) => ({ ...acc, ...curr }), {});
-            const title = Object.values(optionsMap).join(" / ");
-
-            // Try to preserve existing variant data (sku/stock) if title matches
-            // This is a naive heuristic; ideally use ID but these are dynamically generated
-            const existing = variants.find(v => v.title === title);
-
-            return {
-                id: existing?.id || crypto.randomUUID(),
-                title,
-                options: optionsMap,
-                price: Number(existing?.price || getValues("price") || 0),
-                sku: existing?.sku || "",
-                stock: existing?.stock || 0
-            };
-        });
-
-        setVariants(newVariants);
-
-    }, [options]); // Depend only on options structure changing
+    // Variant Logic extracted to hook
+    const {
+        options,
+        variants,
+        addOption,
+        removeOption,
+        updateOptionName,
+        addValueToOption,
+        removeValueFromOption,
+        updateVariantField
+    } = useVariantManager();
 
     const { register, handleSubmit, getValues, formState: { errors } } = useForm<RetailProductFormValues>({
-        defaultValues: (initialData as unknown) || {
+        defaultValues: (initialData as any) || {
             title: "",
             description: "",
             price: 0,
@@ -173,7 +78,7 @@ export function RetailProductForm({ productId, initialData, storeCategory }: Ret
             const method = productId ? "PATCH" : "POST";
 
             // Payload Construction
-            const payload = {
+            const payload: any = {
                 ...data,
                 // If variants exist, we send them. 
                 // Note: The API must handle this.
@@ -190,7 +95,7 @@ export function RetailProductForm({ productId, initialData, storeCategory }: Ret
 
             toast.success(productId ? "Product updated" : "Product created");
             router.push("/dashboard/products");
-        } catch (e) {
+        } catch (e: any) {
             toast.error("Something went wrong");
         } finally {
             setIsSubmitting(false);
@@ -202,13 +107,6 @@ export function RetailProductForm({ productId, initialData, storeCategory }: Ret
         return variants.map((v, i) => updateVariantField(i, 'sku', `${getValues('sku')}-${i + 1}`));
     }
 
-    const updateVariantField = <K extends keyof GeneratedVariant>(index: number, field: K, value: GeneratedVariant[K]) => {
-        const newVariants = [...variants];
-        if (field === 'options' || field === 'id' || field === 'title') return; // protect readonly/structural fields
-
-        newVariants[index] = { ...newVariants[index], [field]: value };
-        setVariants(newVariants);
-    }
 
     return (
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-8">
@@ -442,8 +340,8 @@ export function RetailProductForm({ productId, initialData, storeCategory }: Ret
                                 <div>
                                     <Label className="mb-2 block text-xs uppercase tracking-wider text-gray-500">Option Name</Label>
                                     <Input
-                                        value={option.name}
-                                        onChange={(e) => updateOptionName(idx, e.target.value)}
+                                        value={(option.name as any)}
+                                        onChange={(e: any) => updateOptionName(idx, e.target.value)}
                                         placeholder="e.g. Color"
                                         className="h-9"
                                     />
@@ -516,8 +414,8 @@ export function RetailProductForm({ productId, initialData, storeCategory }: Ret
                                                 <td className="px-4 py-2">
                                                     <Input
                                                         type="number"
-                                                        value={variant.price}
-                                                        onChange={(e) => updateVariantField(i, 'price', parseFloat(e.target.value))}
+                                                        value={(variant.price as any)}
+                                                        onChange={(e: any) => updateVariantField(i, 'price', parseFloat(e.target.value))}
                                                         className="h-9"
                                                         prefix="₦"
                                                     />
@@ -525,15 +423,15 @@ export function RetailProductForm({ productId, initialData, storeCategory }: Ret
                                                 <td className="px-4 py-2">
                                                     <Input
                                                         type="number"
-                                                        value={variant.stock}
-                                                        onChange={(e) => updateVariantField(i, 'stock', parseInt(e.target.value))}
+                                                        value={(variant.stock as any)}
+                                                        onChange={(e: any) => updateVariantField(i, 'stock', parseInt(e.target.value))}
                                                         className="h-9"
                                                     />
                                                 </td>
                                                 <td className="px-4 py-2">
                                                     <Input
-                                                        value={variant.sku}
-                                                        onChange={(e) => updateVariantField(i, 'sku', e.target.value)}
+                                                        value={(variant.sku as any)}
+                                                        onChange={(e: any) => updateVariantField(i, 'sku', e.target.value)}
                                                         className="h-9"
                                                         placeholder="SKU"
                                                     />

@@ -25,7 +25,7 @@ export async function logIntegrationEvent(
         status,
       },
     });
-  } catch (error) {
+  } catch (error: any) {
     // Silent fail
     console.error("[Integration Health] Failed to log event:", error);
   }

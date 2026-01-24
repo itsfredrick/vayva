@@ -11,7 +11,7 @@ interface BooklyLayoutProps {
   products: PublicProduct[];
 }
 
-export const BooklyLayout = ({ store, products }: BooklyLayoutProps) => {
+export const BooklyLayout = ({ store, products }: BooklyLayoutProps): React.JSX.Element => {
   const [selectedService, setSelectedService] = useState<PublicProduct | null>(
     null,
   );
@@ -21,7 +21,7 @@ export const BooklyLayout = ({ store, products }: BooklyLayoutProps) => {
     setSelectedService(service);
   };
 
-  const handleBookingComplete = (details: unknown) => {
+  const handleBookingComplete = (details: any) => {
     setBookingSuccess(details as BookingDetails);
     setSelectedService(null);
   };

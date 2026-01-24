@@ -64,7 +64,7 @@ export default function MarketSearchPage() {
                   "Phones",
                   "Gaming",
                   "Accessories",
-                ].map((c) => (
+                ].map((c: any) => (
                   <div key={c} className="flex items-center gap-2">
                     <input
                       type="checkbox"
@@ -114,7 +114,7 @@ export default function MarketSearchPage() {
                 <Icon name="MapPin" size={18} /> Location
               </h3>
               <div className="space-y-2">
-                {["Lagos", "Abuja", "Port Harcourt"].map((c) => (
+                {["Lagos", "Abuja", "Port Harcourt"].map((c: any) => (
                   <div key={c} className="flex items-center gap-2">
                     <input
                       type="checkbox"
@@ -136,7 +136,7 @@ export default function MarketSearchPage() {
           {/* Results */}
           <div className="col-span-1 lg:col-span-3">
             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-              {DEMO_RESULTS.map((product) => (
+              {DEMO_RESULTS.map((product: any) => (
                 <MarketProductCard key={product.id} product={product} />
               ))}
             </div>

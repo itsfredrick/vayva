@@ -4,7 +4,7 @@
 import React from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { usePathname } from "next/navigation";
+import { usePathname } from 'next/navigation';
 import { Button } from "@vayva/ui";
 import {
   LayoutDashboard,
@@ -20,7 +20,7 @@ import {
   Terminal,
   DollarSign,
   BadgeCheck,
-} from "lucide-react";
+} from 'lucide-react';
 
 const MENU_ITEMS = [
   {
@@ -72,7 +72,7 @@ interface OpsSidebarProps {
   onToggle: () => void;
 }
 
-export function OpsSidebar({ isCollapsed, onToggle }: OpsSidebarProps) {
+export function OpsSidebar({ isCollapsed, onToggle }: OpsSidebarProps): React.JSX.Element {
   const pathname = usePathname();
 
   return (
@@ -114,23 +114,23 @@ export function OpsSidebar({ isCollapsed, onToggle }: OpsSidebarProps) {
               </div>
             )}
             <div className="space-y-1">
-              {section.items.map((item) => {
+              {section.items.map((item: any) => {
                 const isActive =
-                  pathname === item.href ||
-                  (item.href !== "/ops" && pathname.startsWith(item.href));
-                const Icon = item.icon;
+                  pathname === (item as any).href ||
+                  ((item as any).href !== "/ops" && pathname.startsWith((item as any).href));
+                const Icon = (item as any).icon;
                 return (
                   <Link
-                    key={item.href}
-                    href={item.href}
-                    title={isCollapsed ? item.label : ""}
+                    key={(item as any).href}
+                    href={(item as any).href}
+                    title={isCollapsed ? (item as any).label : ""}
                     className={`flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium transition-colors ${isActive
                       ? "bg-black text-white"
                       : "text-gray-600 hover:bg-gray-50 hover:text-black"
                       } ${isCollapsed ? "justify-center px-0" : ""}`}
                   >
                     <Icon size={18} className="shrink-0" />
-                    {!isCollapsed && <span className="whitespace-nowrap">{item.label}</span>}
+                    {!isCollapsed && <span className="whitespace-nowrap">{(item as any).label}</span>}
                   </Link>
                 );
               })}

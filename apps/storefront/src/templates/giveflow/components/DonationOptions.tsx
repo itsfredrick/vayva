@@ -106,7 +106,7 @@ export const DonationOptions = ({
             Choose an amount
           </label>
           <div className="grid grid-cols-3 gap-3 mb-6">
-            {presetAmounts.map((val) => (
+            {presetAmounts.map((val: any) => (
               <Button
                 key={val}
                 variant="outline"
@@ -134,7 +134,7 @@ export const DonationOptions = ({
                 id="custom-donation-amount"
                 type="number"
                 value={amount}
-                onChange={(e) => setAmount(parseInt(e.target.value) || 0)}
+                onChange={(e: any) => setAmount(parseInt(e.target.value) || 0)}
                 className="w-full border border-gray-300 rounded-xl py-4 pl-10 pr-4 font-bold text-lg focus:outline-none focus:ring-2 focus:ring-[#16A34A]"
               />
             </div>

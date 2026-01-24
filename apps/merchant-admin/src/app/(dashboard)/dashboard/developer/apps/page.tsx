@@ -16,7 +16,7 @@ export default function DeveloperHubPage() {
             const res = await fetch("/api/developer/apps");
             const data = await res.json();
             setApps(data);
-        } catch (err) {
+        } catch (err: any) {
             console.error(err);
         } finally {
             setIsLoading(false);
@@ -43,7 +43,7 @@ export default function DeveloperHubPage() {
             } else {
                 toast.error(data.error);
             }
-        } catch (err) {
+        } catch (err: any) {
             toast.error("Failed to register");
         }
     };
@@ -71,8 +71,8 @@ export default function DeveloperHubPage() {
                     <div className="flex gap-2">
                         <Input
                             placeholder="https://your-server.com/va-extension.json"
-                            value={manifestUrl}
-                            onChange={e => setManifestUrl(e.target.value)}
+                            value={(manifestUrl as any)}
+                            onChange={(e: any) => setManifestUrl(e.target.value)}
                         />
                         <Button onClick={handleRegister}>Fetch & Register</Button>
                         <Button variant="outline" onClick={() => setIsRegistering(false)}>Cancel</Button>

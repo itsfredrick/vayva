@@ -29,7 +29,7 @@ export const ExtensionsGallery = () => {
             const res = await fetch("/api/control-center/extensions");
             const data = await res.json();
             setExtensions(data);
-        } catch (e) {
+        } catch (e: any) {
             toast.error("Failed to load extensions");
         } finally {
             setLoading(false);
@@ -53,7 +53,7 @@ export const ExtensionsGallery = () => {
                 // In production, we'd use a state manager or router.refresh()
                 setTimeout(() => window.location.reload(), 1000);
             }
-        } catch (e) {
+        } catch (e: any) {
             toast.error("Failed to update extension");
         } finally {
             setToggling(null);
@@ -69,7 +69,7 @@ export const ExtensionsGallery = () => {
     return (
         <div className="space-y-6">
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {extensions.map((ext) => (
+                {extensions.map((ext: any) => (
                     <div
                         key={ext.id}
                         className={cn(

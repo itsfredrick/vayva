@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { clearSession } from "@/lib/session";
-export async function POST(request: unknown) {
+export async function POST(request: Request) {
     try {
         // Clear session and delete from database
         await clearSession();
@@ -8,7 +8,7 @@ export async function POST(request: unknown) {
             message: "Logged out successfully",
         });
     }
-    catch (error) {
+    catch (error: any) {
         console.error("Logout error:", error);
         return NextResponse.json({ error: "Logout failed" }, { status: 500 });
     }

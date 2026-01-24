@@ -8,7 +8,7 @@ import { Button } from "@vayva/ui";
 import { User, Lock, ArrowRight, Loader2 } from "lucide-react";
 import Link from "next/link";
 
-export default function LoginPage() {
+export default function LoginPage(): React.JSX.Element {
   const { store } = useStore();
   const router = useRouter();
   const params = useParams();
@@ -44,14 +44,14 @@ export default function LoginPage() {
       // Success: API sets httpOnly cookie. We just set local state for UI.
       localStorage.setItem("vayva_user", JSON.stringify(data.customer));
       router.push(`/${lang}/account`);
-    } catch (e: unknown) {
+    } catch (e: any) {
       setError(e.message || "Login failed");
     } finally {
       setIsLoading(false);
     }
   };
 
-  if (!store) return null;
+  if (!store) return <></>;
 
   return (
     <StoreShell>
@@ -101,7 +101,7 @@ export default function LoginPage() {
                     autoComplete="email"
                     required
                     value={email}
-                    onChange={(e) => setEmail(e.target.value)}
+                    onChange={(e: any) => setEmail(e.target.value)}
                     className="pl-10 block w-full border-gray-300 rounded-xl focus:ring-black focus:border-black sm:text-sm py-3 transition-shadow"
                     placeholder="you@example.com"
                   />
@@ -126,7 +126,7 @@ export default function LoginPage() {
                     autoComplete="current-password"
                     required
                     value={password}
-                    onChange={(e) => setPassword(e.target.value)}
+                    onChange={(e: any) => setPassword(e.target.value)}
                     className="pl-10 block w-full border-gray-300 rounded-xl focus:ring-black focus:border-black sm:text-sm py-3 transition-shadow"
                     placeholder="••••••••"
                   />

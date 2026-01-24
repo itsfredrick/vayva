@@ -2,7 +2,7 @@ import { prisma } from "@vayva/db";
 import { SecurityUtils } from "../security/tokens";
 // import { EmailService } from '../email/emailService'; // Verify path or test if unavailable in this context
 export class CustomerAuthService {
-    static async signup(storeId, data) {
+    static async signup(storeId: any, data: any) {
         // 1. Check Linkage
         // In V1 we create user. Unique constraint handles duplicates.
         // Test Hash
@@ -19,7 +19,7 @@ export class CustomerAuthService {
             },
         });
     }
-    static async login(storeId, data) {
+    static async login(storeId: any, data: any) {
         const user = await prisma.customerAccount.findFirst({
             where: { email: data.email },
         });
@@ -41,7 +41,7 @@ export class CustomerAuthService {
         });
         return { sessionToken: token, user };
     }
-    static async validateSession(token) {
+    static async validateSession(token: any) {
         const tokenHash = SecurityUtils.hashToken(token);
         const session = await prisma.customerSession.findUnique({
             where: { token: tokenHash },

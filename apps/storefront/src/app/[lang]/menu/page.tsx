@@ -20,7 +20,7 @@ import {
 import { StorefrontService } from "@/services/storefront.service";
 import { Button } from "@vayva/ui";
 
-export default function MenuPage({ params }: unknown) {
+export default function MenuPage({ params: _params }: any): React.JSX.Element {
   const { lang: rawLang } = useParams() as { lang: string };
   const lang = (rawLang === "tr" ? "tr" : "en") as LocaleKey;
   const { store } = useStore();
@@ -178,7 +178,7 @@ export default function MenuPage({ params }: unknown) {
           {/* Grid */}
           <div className="flex-1">
             <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
-              {filteredMeals.map((meal) => (
+              {filteredMeals.map((meal: any) => (
                 <MealCard
                   key={meal.id}
                   meal={meal}

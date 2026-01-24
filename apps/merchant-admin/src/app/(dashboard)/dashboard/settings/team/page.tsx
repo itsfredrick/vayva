@@ -56,7 +56,7 @@ export default function TeamSettingsPage() {
         const rolesData = await rolesRes.json();
         setCustomRoles(rolesData);
       }
-    } catch (err) {
+    } catch (err: any) {
       console.error(err);
     } finally {
       setLoading(false);
@@ -86,7 +86,7 @@ export default function TeamSettingsPage() {
       }
       setShowInviteModal(false);
       fetchData();
-    } catch (err) {
+    } catch (err: any) {
       console.error(err);
     }
   };
@@ -161,7 +161,7 @@ export default function TeamSettingsPage() {
             </tr>
           </thead>
           <tbody className="divide-y divide-gray-100">
-            {members.map((m) => (
+            {members.map((m: any) => (
               <tr key={m.id}>
                 <td className="px-4 py-3">
                   <div className="font-medium text-black">{m.name}</div>
@@ -170,8 +170,8 @@ export default function TeamSettingsPage() {
                 <td className="px-4 py-3">
                   <select
                     aria-label="Select Role"
-                    value={m.role}
-                    onChange={(e) => handleRoleChange(m.id, e.target.value)}
+                    value={(m.role as any)}
+                    onChange={(e: any) => handleRoleChange(m.id, e.target.value)}
                     disabled={m.role === "owner"} // Owner checks on server too
                     className="bg-gray-50 border-none rounded text-xs py-1 px-2"
                   >
@@ -180,7 +180,7 @@ export default function TeamSettingsPage() {
                     <option value="support">Support</option>
                     <option value="viewer">Viewer</option>
                     {customRoles.map(role => (
-                      <option key={role.id} value={role.id}>{role.name}</option>
+                      <option key={role.id} value={(role.id as any)}>{role.name}</option>
                     ))}
                     {m.role === "owner" && <option value="owner">Owner</option>}
                   </select>
@@ -204,7 +204,7 @@ export default function TeamSettingsPage() {
                 </td>
               </tr>
             ))}
-            {invites.map((i) => (
+            {invites.map((i: any) => (
               <tr key={i.id} className="bg-gray-50/50">
                 <td className="px-4 py-3">
                   <div className="text-gray-500 italic">{i.email}</div>
@@ -283,8 +283,8 @@ export default function TeamSettingsPage() {
                   <option value="support">Support</option>
                   <option value="finance">Finance</option>
                   <option value="admin">Admin</option>
-                  {customRoles.map((role: unknown) => (
-                    <option key={role.id} value={role.id}>{role.name}</option>
+                  {customRoles.map((role: any) => (
+                    <option key={(role as any).id} value={(role as any).id}>{(role as any).name}</option>
                   ))}
                 </select>
               </div>

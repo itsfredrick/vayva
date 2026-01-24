@@ -24,7 +24,7 @@ export default function NewServicePage() {
         durationMinutes: 60,
         bufferTimeMinutes: 0,
         location: "IN_STORE",
-    });
+    } as any);
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -47,8 +47,8 @@ export default function NewServicePage() {
 
             toast.success("Service created!");
             router.push("/dashboard/services");
-        } catch (error) {
-            toast.error(error.message);
+        } catch (error: any) {
+            toast.error((error as any).message);
         } finally {
             setLoading(false);
         }
@@ -77,7 +77,7 @@ export default function NewServicePage() {
                             <Input
                                 id="name"
                                 required
-                                value={formData.name}
+                                value={(formData.name as any)}
                                 onChange={(e: React.ChangeEvent<HTMLInputElement>) => setFormData({ ...formData, name: e.target.value })}
                                 placeholder="e.g. Premium Haircut"
                             />
@@ -88,7 +88,7 @@ export default function NewServicePage() {
                                 id="price"
                                 type="number"
                                 required
-                                value={formData.price}
+                                value={(formData.price as any)}
                                 onChange={(e: React.ChangeEvent<HTMLInputElement>) => setFormData({ ...formData, price: e.target.value })}
                                 placeholder="0.00"
                             />
@@ -97,7 +97,7 @@ export default function NewServicePage() {
                             <Label htmlFor="description">Description</Label>
                             <Textarea
                                 id="description"
-                                value={formData.description}
+                                value={(formData.description as any)}
                                 onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => setFormData({ ...formData, description: e.target.value })}
                                 placeholder="Describe the service..."
                             />
@@ -120,7 +120,7 @@ export default function NewServicePage() {
                                         id="duration"
                                         type="number"
                                         className="pl-9"
-                                        value={metadata.durationMinutes}
+                                        value={(metadata.durationMinutes as any)}
                                         onChange={(e: React.ChangeEvent<HTMLInputElement>) => setMetadata({ ...metadata, durationMinutes: parseInt(e.target.value) })}
                                     />
                                 </div>
@@ -130,7 +130,7 @@ export default function NewServicePage() {
                                 <Input
                                     id="buffer"
                                     type="number"
-                                    value={metadata.bufferTimeMinutes}
+                                    value={(metadata.bufferTimeMinutes as any)}
                                     onChange={(e: React.ChangeEvent<HTMLInputElement>) => setMetadata({ ...metadata, bufferTimeMinutes: parseInt(e.target.value) })}
                                     placeholder="Gap between appts"
                                 />
@@ -140,8 +140,8 @@ export default function NewServicePage() {
                         <div className="grid gap-2">
                             <Label>Location</Label>
                             <Select
-                                value={metadata.location}
-                                onValueChange={(val: unknown) => setMetadata({ ...metadata, location: val })}
+                                value={(metadata.location as any)}
+                                onValueChange={(val: any) => setMetadata({ ...metadata, location: val })}
                             >
                                 <SelectTrigger>
                                     <SelectValue placeholder="Select location" />

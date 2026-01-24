@@ -111,7 +111,7 @@ export function CreativeMarketStore({
                   <p className="text-gray-500">Your cart is empty.</p>
                 </div>
               ) : (
-                cart.map((item) => (
+                cart.map((item: any) => (
                   <div
                     key={item.id}
                     className="flex gap-4 border-b border-gray-100 pb-4"
@@ -215,7 +215,7 @@ export function CreativeMarketStore({
           </div>
         ) : (
           <div className="grid md:grid-cols-4 gap-6">
-            {products.map((product) => (
+            {products.map((product: any) => (
               <div
                 key={product.id}
                 className="group bg-white rounded-lg border border-gray-100 shadow-sm hover:shadow-lg transition-all overflow-hidden cursor-pointer"

@@ -3,7 +3,7 @@ import { PrismaAdapter } from "@auth/prisma-adapter";
 import { prisma } from "@vayva/db";
 import bcrypt from "bcryptjs";
 
-export const authOptions: unknown= {
+export const authOptions: any= {
     adapter: PrismaAdapter(prisma) as any, // Standard PrismaAdapter typing doesn't always match NextAuth 100%
     session: {
         strategy: "jwt",
@@ -71,7 +71,7 @@ export const authOptions: unknown= {
         }),
     ],
     callbacks: {
-        async jwt({ token, user, trigger, session }: { token: unknown; user?: unknown; trigger?: string; session?: any }) {
+        async jwt({ token, user, trigger, session }: { token: any; user?: any; trigger?: string; session?: any }) {
             // 1. Initial Sign In
             if (user) {
                 token.storeId = user.storeId;
@@ -114,7 +114,7 @@ export const authOptions: unknown= {
             }
             return token;
         },
-        async session({ session, token }: { session: unknown; token: any }) {
+        async session({ session, token }: { session: any; token: any }) {
             // Enforce Idle Revocation
             if (token.error === "RefreshAccessTokenError") {
                 return null as any; // Force sign out

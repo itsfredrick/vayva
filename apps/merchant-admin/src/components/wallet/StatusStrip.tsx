@@ -30,7 +30,7 @@ export const StatusStrip = () => {
 
   return (
     <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
-      {statuses.map((item) => (
+      {statuses.map((item: any) => (
         <div
           key={item.label}
           className="bg-white border border-gray-200 rounded-xl p-4 flex items-center gap-3 shadow-sm hover:shadow-md transition-shadow cursor-default"

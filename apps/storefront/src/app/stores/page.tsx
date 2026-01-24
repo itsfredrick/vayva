@@ -6,17 +6,17 @@ import axios from "axios";
 const API_URL = process.env.NEXT_PUBLIC_API_URL || "";
 
 
-export default function StoreDirectoryPage() {
+export default function StoreDirectoryPage(): React.JSX.Element {
   const [stores, setStores] = useState<any[]>([]);
   const [filters, setFilters] = useState({ state: "", city: "", category: "" });
   const [isLoading, setIsLoading] = useState(true);
 
   const fetchStores = async () => {
     try {
-      const params = new URLSearchParams(filters as unknown).toString();
+      const params = new URLSearchParams(filters as any).toString();
       const res = await axios.get(`${API_URL}/marketplace/stores?${params}`);
       setStores(res.data || []);
-    } catch (err) {
+    } catch (err: any) {
       console.error(err);
     } finally {
       setIsLoading(false);
@@ -44,7 +44,7 @@ export default function StoreDirectoryPage() {
             <select
               className="px-4 py-3 border border-gray-200 rounded-lg bg-white"
               value={filters.state}
-              onChange={(e) =>
+              onChange={(e: any) =>
                 setFilters({ ...filters, state: e.target.value })
               }
             >
@@ -56,7 +56,7 @@ export default function StoreDirectoryPage() {
             <select
               className="px-4 py-3 border border-gray-200 rounded-lg bg-white"
               value={filters.city}
-              onChange={(e) => setFilters({ ...filters, city: e.target.value })}
+              onChange={(e: any) => setFilters({ ...filters, city: e.target.value })}
             >
               <option value="">All Cities</option>
               <option value="Ikeja">Ikeja</option>
@@ -79,7 +79,7 @@ export default function StoreDirectoryPage() {
           </div>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {stores.map((store) => (
+            {stores.map((store: any) => (
               <div
                 key={store.id}
                 className="bg-white rounded-2xl border border-gray-100 shadow-sm p-6 hover:shadow-lg transition-all"

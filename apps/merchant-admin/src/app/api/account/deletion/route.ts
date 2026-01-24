@@ -32,7 +32,7 @@ export async function POST(req: NextRequest) {
             scheduledFor: result.scheduledFor,
         });
     }
-    catch (e: unknown) {
+    catch (e: any) {
         return NextResponse.json({ error: e.message }, { status: 500 });
     }
 }
@@ -47,7 +47,7 @@ export async function DELETE(req: NextRequest) {
         }
         return NextResponse.json({ success: true });
     }
-    catch (e: unknown) {
+    catch (e: any) {
         return NextResponse.json({ error: e.message }, { status: 500 });
     }
 }

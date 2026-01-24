@@ -19,7 +19,7 @@ export const NotificationBell = ({
         const res = await fetch("/api/notifications/unread-count");
         const data = await res.json();
         setUnreadCount(data.count);
-      } catch (err) {
+      } catch (err: any) {
         console.error("Failed to fetch notification count", err);
       }
     };

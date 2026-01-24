@@ -35,7 +35,7 @@ describe("RescueGroqClient", () => {
 
     it("should redact sensitive patterns in sanitizeInput", () => {
         const input = "Email: test@example.com, Phone: +234-803-123-4567, Key: sk-12345678901234567890, JWT: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoyNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c";
-        const sanitized = (client as unknown as { sanitizeInput: (text: string) => string }).sanitizeInput(input);
+        const sanitized = (client as any as { sanitizeInput: (text: string) => string }).sanitizeInput(input);
 
         expect(sanitized).toContain("[REDACTED_EMAIL]");
         expect(sanitized).toContain("[REDACTED_PHONE]");
@@ -46,7 +46,7 @@ describe("RescueGroqClient", () => {
 
     it("should redact private keys", () => {
         const input = "-----BEGIN RSA PRIVATE KEY-----\nMIIEpAIBAAKCAQEA75...\n-----END RSA PRIVATE KEY-----";
-        const sanitized = (client as unknown as { sanitizeInput: (text: string) => string }).sanitizeInput(input);
+        const sanitized = (client as any as { sanitizeInput: (text: string) => string }).sanitizeInput(input);
         expect(sanitized).toBe("[REDACTED_PRIVATE_KEY]");
     });
 

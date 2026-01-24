@@ -38,12 +38,12 @@ export async function GET() {
             auditLogs: recentAuditLogs,
         });
     }
-    catch (error) {
+    catch (error: any) {
         console.error("Security settings fetch error:", error);
         return NextResponse.json({ error: "Failed to fetch security settings" }, { status: 500 });
     }
 }
-export async function PATCH(req: unknown) {
+export async function PATCH(req: any) {
     try {
         const session = await requireAuth();
         const storeId = session.user.storeId;
@@ -73,7 +73,7 @@ export async function PATCH(req: unknown) {
         });
         return NextResponse.json({ success: true });
     }
-    catch (error) {
+    catch (error: any) {
         console.error("Security settings update error:", error);
         return NextResponse.json({ error: "Failed to update security settings" }, { status: 500 });
     }

@@ -13,11 +13,11 @@ export const PaymentService = {
         const response = await api.get("/payments/wallet/ledger");
         return response.data;
     },
-    setPin: async (pin: unknown) => {
+    setPin: async (pin: any) => {
         const response = await api.post("/payments/wallet/pin/set", { pin });
         return response.data;
     },
-    verifyPin: async (pin: unknown) => {
+    verifyPin: async (pin: any) => {
         const response = await api.post("/payments/wallet/pin/verify", { pin });
         return response.data;
     },
@@ -30,19 +30,19 @@ export const PaymentService = {
         const response = await api.get("/payments/wallet/banks");
         return response.data;
     },
-    addBank: async (bank: unknown) => {
+    addBank: async (bank: any) => {
         const response = await api.post("/payments/wallet/banks", bank);
         return response.data;
     },
-    deleteBank: async (id: unknown) => {
+    deleteBank: async (id: any) => {
         const response = await api.delete(`/payments/wallet/banks/${id}`);
         return response.data;
     },
-    initiateWithdrawal: async (payload: unknown) => {
+    initiateWithdrawal: async (payload: any) => {
         const response = await api.post("/payments/wallet/withdraw/initiate", payload);
         return response.data;
     },
-    confirmWithdrawal: async (withdrawalId: unknown, otpCode: unknown) => {
+    confirmWithdrawal: async (withdrawalId: any, otpCode: any) => {
         const response = await api.post("/payments/wallet/withdraw/confirm", {
             withdrawalId,
             otpCode,
@@ -50,7 +50,7 @@ export const PaymentService = {
         return response.data;
     },
     // KYC Integration 4
-    submitKyc: async (nin: unknown, bvn: unknown) => {
+    submitKyc: async (nin: any, bvn: any) => {
         const response = await api.post("/payments/kyc/submit", { nin, bvn });
         return response.data;
     },

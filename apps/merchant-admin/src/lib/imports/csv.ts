@@ -1,7 +1,7 @@
 // Basic Pending for CSV Parsing
 // Helper to parse currency "₦ 25,000" -> 25000
 // Helper to validate rows
-export function parseCurrency(input: unknown) {
+export function parseCurrency(input: any) {
     if (typeof input === "number")
         return input;
     if (!input)
@@ -11,7 +11,7 @@ export function parseCurrency(input: unknown) {
     const val = parseFloat(cleaned);
     return isNaN(val) ? null : val;
 }
-export function validateRow(row: unknown) {
+export function validateRow(row: any) {
     const errors = [];
     // Required Fields
     if (!row.Name && !row.name)
@@ -28,8 +28,8 @@ export function validateRow(row: unknown) {
     const images = imagesRaw
         ? imagesRaw
             .split(",")
-            .map((s: unknown) => s.trim())
-            .filter((s: unknown) => s.startsWith("http"))
+            .map((s: any) => s.trim())
+            .filter((s: any) => s.startsWith("http"))
         : [];
     if (errors.length > 0) {
         return { valid: false, errors, row: null };

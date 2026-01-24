@@ -1,11 +1,11 @@
 "use client";
 
 import React from "react";
-import { Users, CreditCard, RefreshCw, Link2 } from "lucide-react";
+import { Users, CreditCard, RefreshCw, Link2 } from 'lucide-react';
 import { useOpsQuery } from "@/hooks/useOpsQuery";
 import { Button } from "@vayva/ui";
 
-export default function PartnersPage() {
+export default function PartnersPage(): React.JSX.Element {
     const { data: partners, isLoading, refetch } = useOpsQuery(
         ["partners-list"],
         () => fetch("/api/ops/partners").then(res => res.json().then(j => j.data))
@@ -49,20 +49,20 @@ export default function PartnersPage() {
                         ) : !partners?.length ? (
                             <tr><td colSpan={5} className="p-12 text-center text-gray-400">No partners found.</td></tr>
                         ) : (
-                            partners.map((p: unknown) => (
-                                <tr key={p.id} className="hover:bg-gray-50">
-                                    <td className="px-6 py-4 font-medium text-gray-900">{p.name}</td>
-                                    <td className="px-6 py-4 text-gray-600 uppercase text-xs font-bold">{p.type}</td>
+                            partners.map((p: any) => (
+                                <tr key={(p as any).id} className="hover:bg-gray-50">
+                                    <td className="px-6 py-4 font-medium text-gray-900">{(p as any).name}</td>
+                                    <td className="px-6 py-4 text-gray-600 uppercase text-xs font-bold">{(p as any).type}</td>
                                     <td className="px-6 py-4">
-                                        <span className={`px-2 py-0.5 rounded text-xs font-bold ${p.status === "active" ? "bg-green-100 text-green-700" : "bg-gray-100 text-gray-600"}`}>
-                                            {p.status}
+                                        <span className={`px-2 py-0.5 rounded text-xs font-bold ${(p as any).status === "active" ? "bg-green-100 text-green-700" : "bg-gray-100 text-gray-600"}`}>
+                                            {(p as any).status}
                                         </span>
                                     </td>
                                     <td className="px-6 py-4 flex items-center gap-1 font-mono">
                                         <Link2 size={12} className="text-gray-400" />
-                                        {p._count?.referralAttributions || 0}
+                                        {(p as any)._count?.referralAttributions || 0}
                                     </td>
-                                    <td className="px-6 py-4 text-gray-500 text-xs">{new Date(p.createdAt).toLocaleDateString()}</td>
+                                    <td className="px-6 py-4 text-gray-500 text-xs">{new Date((p as any).createdAt).toLocaleDateString()}</td>
                                 </tr>
                             ))
                         )}

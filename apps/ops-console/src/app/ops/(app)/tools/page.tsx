@@ -13,12 +13,12 @@ import {
     Terminal,
     Globe,
     Activity
-} from "lucide-react";
+} from 'lucide-react';
 import Link from "next/link";
-import { toast } from "sonner";
+import { toast } from 'sonner';
 import { Button } from "@vayva/ui"; // Assuming UI lib exists, or use standard HTML
 
-export default function SystemToolsPage() {
+export default function SystemToolsPage(): React.JSX.Element {
     return (
         <div className="p-8 max-w-6xl mx-auto space-y-8">
             <div className="flex justify-between items-center">
@@ -60,7 +60,7 @@ export default function SystemToolsPage() {
     );
 }
 
-function AnnouncementCard() {
+function AnnouncementCard(): React.JSX.Element {
     const [message, setMessage] = useState("");
     const [loading, setLoading] = useState(false);
     const [current, setCurrent] = useState<unknown>(null);
@@ -82,7 +82,7 @@ function AnnouncementCard() {
             toast.success("Announcement Published");
             setCurrent({ message, active: true });
             setMessage("");
-        } catch (e) {
+        } catch {
             toast.error("Failed");
         } finally {
             setLoading(false);
@@ -95,7 +95,7 @@ function AnnouncementCard() {
             await fetch("/api/ops/config/announcements", { method: "DELETE" });
             toast.success("Announcement Cleared");
             setCurrent(null);
-        } catch (e) {
+        } catch {
             toast.error("Failed");
         } finally {
             setLoading(false);
@@ -117,7 +117,7 @@ function AnnouncementCard() {
             {current ? (
                 <div className="bg-pink-50 border border-pink-100 p-4 rounded-xl mb-4">
                     <div className="text-xs font-bold text-pink-600 uppercase mb-1">Live Now</div>
-                    <div className="text-sm font-medium text-gray-900">{current.message}</div>
+                    <div className="text-sm font-medium text-gray-900">{(current as any).message}</div>
                     <Button
                         variant="ghost"
                         onClick={clear}
@@ -134,8 +134,8 @@ function AnnouncementCard() {
 
             <div className="flex gap-2">
                 <input
-                    value={message}
-                    onChange={(e) => setMessage(e.target.value)}
+                    value={(message as any)}
+                    onChange={(e: any) => setMessage((e as any).target.value)}
                     placeholder="Enter alert message..."
                     className="flex-1 px-3 py-2 border rounded-lg text-sm"
                 />
@@ -153,7 +153,7 @@ function AnnouncementCard() {
     );
 }
 
-function CacheControlCard() {
+function CacheControlCard(): React.JSX.Element {
     const [path, setPath] = useState("/");
     const [loading, setLoading] = useState(false);
 
@@ -170,7 +170,7 @@ function CacheControlCard() {
             } else {
                 toast.error("Failed", { description: json.error });
             }
-        } catch (e) {
+        } catch {
             toast.error("Network Error");
         } finally {
             setLoading(false);
@@ -194,8 +194,8 @@ function CacheControlCard() {
                     <label className="block text-xs font-bold text-gray-500 uppercase mb-1">Target Path / Tag</label>
                     <input
                         type="text"
-                        value={path}
-                        onChange={(e) => setPath(e.target.value)}
+                        value={(path as any)}
+                        onChange={(e: any) => setPath((e as any).target.value)}
                         className="w-full px-3 py-2 border rounded-lg font-mono text-sm"
                         placeholder="/"
                     />
@@ -227,7 +227,7 @@ function CacheControlCard() {
     );
 }
 
-function FeatureFlagCard() {
+function FeatureFlagCard(): React.JSX.Element {
     const [maintenance, setMaintenance] = useState(false);
     // Real implementation would fetch initial state from API
 
@@ -282,7 +282,7 @@ function FeatureFlagCard() {
     );
 }
 
-function EnvInfoCard() {
+function EnvInfoCard(): React.JSX.Element {
     return (
         <div className="bg-white p-6 rounded-2xl border border-gray-200 shadow-sm">
             <div className="flex items-center gap-3 mb-6">

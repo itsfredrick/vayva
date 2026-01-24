@@ -32,7 +32,7 @@ export function VariantManager({ productId, variantLabel = "Variants" }: Variant
         stock: "0"
     });
 
-    const handleOpen = (variant?: unknown) => {
+    const handleOpen = (variant?: any) => {
         if (variant) {
             setEditingVariant(variant);
             setFormData({
@@ -50,7 +50,7 @@ export function VariantManager({ productId, variantLabel = "Variants" }: Variant
 
     const handleSave = async () => {
         try {
-            const payload = {
+            const payload: any = {
                 title: formData.name,
                 options: [{ name: variantLabel, value: formData.name }], // Simple 1-dim variant for now
                 price: formData.price,
@@ -75,7 +75,7 @@ export function VariantManager({ productId, variantLabel = "Variants" }: Variant
             toast.success(editingVariant ? "Variant updated" : "Variant added");
             setIsDialogOpen(false);
             mutate();
-        } catch (err) {
+        } catch (err: any) {
             toast.error("Error saving variant");
         }
     };
@@ -86,7 +86,7 @@ export function VariantManager({ productId, variantLabel = "Variants" }: Variant
             await fetch(`/api/products/${productId}/variants/${id}`, { method: "DELETE" });
             toast.success("Variant deleted");
             mutate();
-        } catch (err) {
+        } catch (err: any) {
             toast.error("Failed to delete");
         }
     };
@@ -119,7 +119,7 @@ export function VariantManager({ productId, variantLabel = "Variants" }: Variant
                                 </TableCell>
                             </TableRow>
                         )}
-                        {variants?.map((v: unknown) => (
+                        {variants?.map((v: any) => (
                             <TableRow key={v.id} className="hover:bg-gray-50">
                                 <TableCell className="p-3 font-medium">{v.title}</TableCell>
                                 <TableCell className="p-3">{v.price}</TableCell>
@@ -146,7 +146,7 @@ export function VariantManager({ productId, variantLabel = "Variants" }: Variant
                         <div>
                             <Label>Name / Value (e.g. Small, Red)</Label>
                             <Input
-                                value={formData.name}
+                                value={(formData.name as any)}
                                 onChange={(e: React.ChangeEvent<HTMLInputElement>) => setFormData({ ...formData, name: e.target.value })}
                                 placeholder="e.g. XL"
                             />
@@ -156,14 +156,14 @@ export function VariantManager({ productId, variantLabel = "Variants" }: Variant
                                 <Label>Price</Label>
                                 <Input
                                     type="number"
-                                    value={formData.price}
+                                    value={(formData.price as any)}
                                     onChange={(e: React.ChangeEvent<HTMLInputElement>) => setFormData({ ...formData, price: e.target.value })}
                                 />
                             </div>
                             <div>
                                 <Label>SKU</Label>
                                 <Input
-                                    value={formData.sku}
+                                    value={(formData.sku as any)}
                                     onChange={(e: React.ChangeEvent<HTMLInputElement>) => setFormData({ ...formData, sku: e.target.value })}
                                 />
                             </div>
@@ -172,7 +172,7 @@ export function VariantManager({ productId, variantLabel = "Variants" }: Variant
                             <Label>Stock On Hand</Label>
                             <Input
                                 type="number"
-                                value={formData.stock}
+                                value={(formData.stock as any)}
                                 onChange={(e: React.ChangeEvent<HTMLInputElement>) => setFormData({ ...formData, stock: e.target.value })}
                                 placeholder="0"
                             />

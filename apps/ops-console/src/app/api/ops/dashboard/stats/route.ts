@@ -1,8 +1,8 @@
-import { NextRequest, NextResponse } from "next/server";
+import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from "@vayva/db";
 import { withOpsAuth } from "@/lib/withOpsAuth";
 
-export const GET = withOpsAuth(async (req, { user }) => {
+export const GET = withOpsAuth(async (_req, { user }) => {
     try {
         // Aggregate platform-wide stats for ops dashboard
         const [merchantCount, recentActivity] = await Promise.all([
@@ -47,8 +47,8 @@ export const GET = withOpsAuth(async (req, { user }) => {
         };
 
         const formattedActivity = recentActivity.map(log => ({
-            message: `${log.eventType} performed`,
-            timestamp: new Date(log.createdAt).toLocaleString()
+            message: `${(log as any).eventType} performed`,
+            timestamp: new Date((log as any).createdAt).toLocaleString()
         }));
 
         return NextResponse.json({
@@ -57,7 +57,7 @@ export const GET = withOpsAuth(async (req, { user }) => {
             operations,
             recentActivity: formattedActivity
         });
-    } catch (error) {
+    } catch (error: any) {
         console.error("Dashboard Stats Error:", error);
         return NextResponse.json(
             { error: "Failed to fetch dashboard stats" },

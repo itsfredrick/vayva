@@ -4,14 +4,14 @@ import { getRedis, isBuildTime } from "@vayva/shared/redis";
  * LAZY QUEUE FACTORY
  * Prevents BullMQ from connecting during Next.js build.
  */
-function createQueue(name: unknown, options = {}) {
+function createQueue(name: any, options = {}) {
     // If we are in build time, return a minimal stub/proxy to prevent BullMQ internal connection logic
     // This is intentional to separate build/runtime environments and prevent hangs.
     // Build-time Stub: Prevents redis connection hangs
     if (isBuildTime()) {
         console.warn(`[Queue:Stub] Returning build-time proxy for ${name}`);
         return new Proxy({}, {
-            get: (_target: unknown, prop: unknown) => {
+            get: (_target: any, prop: any) => {
                 if (prop === "add")
                     return async () => { return null; };
                 if (prop === "close" || prop === "on" || prop === "obliterate")
@@ -32,16 +32,16 @@ function createQueue(name: unknown, options = {}) {
                 type: "exponential",
                 delay: 1000, // Wait 1s, 2s, 4s...
             },
-            ...options.defaultJobOptions,
+            ...(options as any).defaultJobOptions,
         }
     });
 }
 import { QUEUES } from "@vayva/shared/queues";
 // Lazy instances
-let _paymentsQueue = null;
-let _deliveryQueue = null;
-let _inboundWhatsappQueue = null;
-let _manifestSyncQueue = null;
+let _paymentsQueue: any = null;
+let _deliveryQueue: any = null;
+let _inboundWhatsappQueue: any = null;
+let _manifestSyncQueue: any = null;
 export const getPaymentsQueue = () => {
     if (!_paymentsQueue)
         _paymentsQueue = createQueue(QUEUES.PAYMENTS_WEBHOOKS);
@@ -62,10 +62,10 @@ export const getInboundWhatsappQueue = () => {
         _inboundWhatsappQueue = createQueue(QUEUES.WHATSAPP_INBOUND);
     return _inboundWhatsappQueue;
 };
-let _exportsQueue = null;
+let _exportsQueue: any = null;
 export const getExportsQueue = () => {
     if (!_exportsQueue)
-        _exportsQueue = createQueue(QUEUES.EXPORTS_JOBS || "exports.jobs");
+        _exportsQueue = createQueue((QUEUES as any).EXPORTS_JOBS || "exports.jobs");
     return _exportsQueue;
 };
 // Note: Do not export constants that execute the getters here, 

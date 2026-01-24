@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { OpsAuthService } from "@/lib/ops-auth";
-export async function GET(request: unknown) {
+export async function GET(request: Request) {
     const session = await OpsAuthService.getSession();
     if (!session) {
         return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
@@ -10,7 +10,7 @@ export async function GET(request: unknown) {
     const status = searchParams.get("status") || "PENDING";
     try {
         const records = await prisma.kycRecord.findMany({
-            where: { status: status },
+            where: { status: status as any },
             include: {
                 store: {
                     include: {},
@@ -19,7 +19,7 @@ export async function GET(request: unknown) {
             orderBy: { createdAt: "desc" },
             take: 100,
         });
-        const formatted = records.map((r: unknown) => {
+        const formatted = records.map((r: any) => {
             const auditData = r.audit || [];
             const latestAttempt = auditData.length > 0 ? auditData[auditData.length - 1] : {};
             return {
@@ -38,7 +38,7 @@ export async function GET(request: unknown) {
         });
         return NextResponse.json(formatted);
     }
-    catch (err) {
+    catch (err: any) {
         console.error(err);
         return NextResponse.json({ error: "Internal server error" }, { status: 500 });
     }

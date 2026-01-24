@@ -42,7 +42,6 @@ export class OpsAuthService {
         isActive: true,
       },
     });
-    console.log(`OPS_BOOTSTRAP: Created owner ${email}`);
   }
 
   /**
@@ -109,7 +108,7 @@ export class OpsAuthService {
       select: { metadata: true },
     });
 
-    const count = failures.filter((f) => (f.metadata as unknown)?.ip === ip).length;
+    const count = failures.filter((f) => (f.metadata as any)?.ip === ip).length;
     return count >= MAX_ATTEMPTS;
   }
 
@@ -153,7 +152,7 @@ export class OpsAuthService {
    * Require specific role or throw
    * Role hierarchy: OPS_OWNER > SUPERVISOR > OPERATOR > SUPPORT
    */
-  static requireRole(user: unknown, requiredRole: string) {
+  static requireRole(user: any, requiredRole: string) {
     const roleHierarchy: Record<string, number> = {
       OPS_OWNER: 4,
       SUPERVISOR: 3,
@@ -162,12 +161,12 @@ export class OpsAuthService {
       OPS_ADMIN: 3, // Alias for SUPERVISOR
     };
 
-    const userLevel = roleHierarchy[user.role] || 0;
+    const userLevel = roleHierarchy[(user as any).role] || 0;
     const requiredLevel = roleHierarchy[requiredRole] || 999;
 
     if (userLevel < requiredLevel) {
       throw new Error(
-        `Insufficient permissions. Required: ${requiredRole}, Current: ${user.role}`
+        `Insufficient permissions. Required: ${requiredRole}, Current: ${(user as any).role}`
       );
     }
   }
@@ -185,13 +184,13 @@ export class OpsAuthService {
   static async logEvent(
     userId: string | null,
     eventType: string,
-    metadata: unknown = {},
+    metadata: any = {},
   ) {
     await prisma.opsAuditEvent.create({
       data: {
         opsUserId: userId,
         eventType,
-        metadata,
+        metadata: metadata as any,
       },
     });
   }

@@ -1,34 +1,33 @@
-export var AppRole;
-(function (AppRole) {
-    AppRole["VIEWER"] = "viewer";
-    AppRole["STAFF"] = "staff";
-    AppRole["ADMIN"] = "admin";
-    AppRole["OWNER"] = "owner";
-})(AppRole || (AppRole = {}));
+export enum AppRole {
+    VIEWER = "viewer",
+    STAFF = "staff",
+    ADMIN = "admin",
+    OWNER = "owner"
+}
 const ROLE_PERMISSIONS = {
     [AppRole.VIEWER]: ["read"],
     [AppRole.STAFF]: ["read", "write"],
     [AppRole.ADMIN]: ["read", "write", "manage_team", "initiate_money_movement"],
     [AppRole.OWNER]: ["read", "write", "manage_team", "initiate_money_movement"],
 };
-export function hasPermission(role: unknown, permission: unknown) {
-    const perms = ROLE_PERMISSIONS[role] || [];
+export function hasPermission(role: AppRole, permission: string) {
+    const perms = ROLE_PERMISSIONS[role as keyof typeof ROLE_PERMISSIONS] || [];
     return perms.includes(permission);
 }
-export function isRoleAtLeast(userRole: unknown, requiredRole: unknown) {
+export function isRoleAtLeast(userRole: any, requiredRole: any) {
     const roles = [AppRole.VIEWER, AppRole.STAFF, AppRole.ADMIN, AppRole.OWNER];
     const userIndex = roles.indexOf(userRole);
     const requiredIndex = roles.indexOf(requiredRole);
     return userIndex >= requiredIndex;
 }
-export function requireRole(user: unknown, minimumRole: unknown) {
+export function requireRole(user: any, minimumRole: any) {
     if (!user)
         return false;
     // Assuming user.role contains the role string (e.g. 'staff')
     // If role is undefined, default to viewer or none
     return isRoleAtLeast(user.role || "viewer", minimumRole);
 }
-export async function authorizeAction(user: unknown, minimumRole: unknown) {
+export async function authorizeAction(user: any, minimumRole: any) {
     if (!user) {
         return Response.json({ error: "Unauthorized" }, { status: 401 });
     }

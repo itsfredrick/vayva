@@ -50,7 +50,7 @@ export default function BundlesPage() {
                 (d.appliesTo === "PRODUCTS" || d.appliesTo === "COLLECTIONS")
             );
             setBundles(bundleItems);
-        } catch (error) {
+        } catch (error: any) {
             console.error(error);
             toast.error("Could not load bundles");
         } finally {
@@ -88,8 +88,8 @@ export default function BundlesPage() {
             setIsOpen(false);
             setFormData({ id: "", name: "", discount: "10", productIds: [], startsAt: "", endsAt: "" });
             fetchBundles();
-        } catch (error) {
-            toast.error(error.message || "Failed to save bundle");
+        } catch (error: any) {
+            toast.error((error as any).message || "Failed to save bundle");
         } finally {
             setIsSubmitting(false);
         }
@@ -102,7 +102,7 @@ export default function BundlesPage() {
             if (!res.ok) throw new Error("Delete failed");
             toast.success("Bundle deleted");
             fetchBundles();
-        } catch (error) {
+        } catch (error: any) {
             toast.error("Failed to delete bundle");
         }
     };
@@ -171,7 +171,7 @@ export default function BundlesPage() {
                                 </tr>
                             </thead>
                             <tbody className="divide-y divide-slate-100">
-                                {bundles.map((bundle) => {
+                                {bundles.map((bundle: any) => {
                                     const isActive = !bundle.endsAt || new Date(bundle.endsAt) > new Date();
                                     return (
                                         <tr key={bundle.id} className="hover:bg-slate-50/50 group">
@@ -237,7 +237,7 @@ export default function BundlesPage() {
                             <Label htmlFor="name">Bundle Name</Label>
                             <Input
                                 id="name"
-                                value={formData.name}
+                                value={(formData.name as any)}
                                 onChange={(e: React.ChangeEvent<HTMLInputElement>) => setFormData({ ...formData, name: e.target.value })}
                                 placeholder="e.g. Summer Essentials"
                             />
@@ -249,7 +249,7 @@ export default function BundlesPage() {
                                 type="number"
                                 min="1"
                                 max="100"
-                                value={formData.discount}
+                                value={(formData.discount as any)}
                                 onChange={(e: React.ChangeEvent<HTMLInputElement>) => setFormData({ ...formData, discount: e.target.value })}
                             />
                         </div>
@@ -259,7 +259,7 @@ export default function BundlesPage() {
                                 <Input
                                     id="startsAt"
                                     type="datetime-local"
-                                    value={formData.startsAt}
+                                    value={(formData.startsAt as any)}
                                     onChange={(e: React.ChangeEvent<HTMLInputElement>) => setFormData({ ...formData, startsAt: e.target.value })}
                                 />
                             </div>
@@ -277,7 +277,7 @@ export default function BundlesPage() {
                             <Label>Products in Bundle</Label>
                             <ProductPicker
                                 selectedIds={formData.productIds}
-                                onSelectionChange={(ids) => setFormData({ ...formData, productIds: ids })}
+                                onSelectionChange={(e: any) => setFormData({ ...formData, productIds: e as any })}
                             />
                         </div>
                     </div>

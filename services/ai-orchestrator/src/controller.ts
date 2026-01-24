@@ -5,7 +5,7 @@ import axios from "axios";
 export const processHandler = async (
   req: FastifyRequest,
   reply: FastifyReply,
-) => {
+): Promise<unknown> => {
   const { messageId } = req.body as { messageId: string };
 
   const message = await prisma.message.findUnique({

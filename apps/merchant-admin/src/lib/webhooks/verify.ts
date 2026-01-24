@@ -1,11 +1,11 @@
 import { createHmac } from "crypto";
-export function verifyPaystackSignature(payload: unknown, signature: unknown, secret: unknown) {
+export function verifyPaystackSignature(payload: any, signature: any, secret: any) {
     const hash = createHmac("sha512", secret)
         .update(payload)
         .digest("hex");
     return hash === signature;
 }
-export function verifyWhatsappSignature(rawBody: unknown, signatureHeader: unknown, appSecret: unknown) {
+export function verifyWhatsappSignature(rawBody: any, signatureHeader: any, appSecret: any) {
     // Header often X-Hub-Signature-256: sha256=...
     if (!signatureHeader)
         return false;

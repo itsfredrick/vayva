@@ -3,7 +3,7 @@ import * as Sentry from "@sentry/nextjs";
 /**
  * Capture exceptions in Sentry
  */
-export function captureException(error: unknown, context?: Record<string, unknown>) {
+export function captureException(error: any, context?: Record<string, unknown>) {
   // Always log to console for local visibility (handled by logger, but safety net)
   if (process.env.NEXT_PUBLIC_SENTRY_DSN) {
     Sentry.captureException(error, {

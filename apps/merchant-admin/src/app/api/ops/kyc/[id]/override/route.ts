@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { OpsAuthService } from "@/lib/ops-auth";
 export const dynamic = "force-dynamic";
-export async function POST(request: unknown, { params }: unknown) {
+export async function POST(request: Request, { params }: any) {
     const session = await OpsAuthService.getSession();
     if (!session) {
         return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
@@ -47,7 +47,7 @@ export async function POST(request: unknown, { params }: unknown) {
         });
         return NextResponse.json({ success: true, record: updated });
     }
-    catch (err) {
+    catch (err: any) {
         console.error(err);
         return NextResponse.json({ error: "Internal server error" }, { status: 500 });
     }

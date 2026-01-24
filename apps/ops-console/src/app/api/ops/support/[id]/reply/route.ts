@@ -1,4 +1,4 @@
-import { NextRequest, NextResponse } from "next/server";
+import { NextRequest, NextResponse } from 'next/server';
 import { OpsAuthService } from "@/lib/ops-auth";
 import { prisma } from "@vayva/db";
 
@@ -50,7 +50,7 @@ export async function POST(
         });
 
         // Update ticket metadata
-        const updateData: unknown = {
+        const updateData: any = {
             lastMessageAt: new Date(),
             status: "open", // Re-open if closed? Usually yes for outgoing replies.
         };
@@ -74,7 +74,7 @@ export async function POST(
         });
 
         return NextResponse.json({ success: true, data: newMessage });
-    } catch (error) {
+    } catch (error: any) {
         if (error.message === "Unauthorized") return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
         if (error.message?.includes("permissions")) return NextResponse.json({ error: error.message }, { status: 403 });
 

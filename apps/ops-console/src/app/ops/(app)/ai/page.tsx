@@ -1,7 +1,8 @@
 "use client";
+import React from "react";
 
 import { useOpsQuery } from "@/hooks/useOpsQuery";
-import { OpsShell } from "@/components/OpsShell";
+import { OpsShell } from '@/components/OpsShell';
 import {
     BrainCircuit,
     Cpu,
@@ -10,7 +11,7 @@ import {
     MessageSquare,
     TrendingUp,
     Store
-} from "lucide-react";
+} from 'lucide-react';
 
 const formatCurrency = (amount: number) => {
     return new Intl.NumberFormat("en-NG", {
@@ -20,7 +21,7 @@ const formatCurrency = (amount: number) => {
     }).format(amount);
 };
 
-export default function AiDashboardPage() {
+export default function AiDashboardPage(): React.JSX.Element {
     const { data: stats, isLoading: loading } = useOpsQuery(
         ["ai-stats"],
         () => fetch("/api/ops/ai/stats").then(res => res.json())
@@ -56,25 +57,25 @@ export default function AiDashboardPage() {
                 <StatCard
                     label="Total Tokens Consumed"
                     value={totals?.tokens?.toLocaleString() || "0"}
-                    icon={Cpu}
+                    icon={(Cpu as any)}
                     color="bg-blue-50 text-blue-700"
                 />
                 <StatCard
                     label="Estimated Cost (All Time)"
                     value={formatCurrency((totals?.costKobo || 0) / 100)}
-                    icon={Coins}
+                    icon={(Coins as any)}
                     color="bg-green-50 text-green-700"
                 />
                 <StatCard
                     label="Total Requests"
                     value={totals?.requests?.toLocaleString() || "0"}
-                    icon={MessageSquare}
+                    icon={(MessageSquare as any)}
                     color="bg-indigo-50 text-indigo-700"
                 />
                 <StatCard
                     label="Images Generated"
                     value={totals?.images?.toLocaleString() || "0"}
-                    icon={Image}
+                    icon={(Image as any)}
                     color="bg-pink-50 text-pink-700"
                 />
             </div>
@@ -109,7 +110,7 @@ export default function AiDashboardPage() {
                                         </td>
                                     </tr>
                                 )}
-                                {topConsumers?.map((merchant: unknown) => (
+                                {topConsumers?.map((merchant: any) => (
                                     <tr key={merchant.storeId} className="hover:bg-gray-50 transition-colors">
                                         <td className="px-6 py-4">
                                             <div className="flex items-center gap-3">
@@ -117,7 +118,7 @@ export default function AiDashboardPage() {
                                                     {merchant.logoUrl ? (
                                                         <img src={merchant.logoUrl} className="h-full w-full object-cover rounded" />
                                                     ) : (
-                                                        merchant.name[0]
+                                                        merchant.name?.[0] || '?'
                                                     )}
                                                 </div>
                                                 <div>
@@ -126,12 +127,12 @@ export default function AiDashboardPage() {
                                                 </div>
                                             </div>
                                         </td>
-                                        <td className="px-6 py-4 text-gray-600">{merchant.totalRequests.toLocaleString()}</td>
+                                        <td className="px-6 py-4 text-gray-600">{merchant.totalRequests?.toLocaleString()}</td>
                                         <td className="px-6 py-4 font-mono text-xs text-blue-600 bg-blue-50 rounded px-2 w-fit">
-                                            {merchant.totalTokens.toLocaleString()}
+                                            {merchant.totalTokens?.toLocaleString()}
                                         </td>
                                         <td className="px-6 py-4 font-medium text-right text-gray-900">
-                                            {formatCurrency(merchant.totalCostKobo / 100)}
+                                            {formatCurrency((merchant.totalCostKobo || 0) / 100)}
                                         </td>
                                     </tr>
                                 ))}
@@ -171,7 +172,7 @@ export default function AiDashboardPage() {
     );
 }
 
-function StatCard({ label, value, icon: Icon, color }: unknown) {
+function StatCard({ label, value, icon: Icon, color }: any): React.JSX.Element {
     return (
         <div className="bg-white p-6 rounded-xl border border-gray-100 shadow-sm flex items-start gap-4">
             <div className={`p-3 rounded-lg ${color}`}>

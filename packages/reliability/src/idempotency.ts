@@ -9,7 +9,7 @@ export class IdempotencyService {
     fn: () => Promise<T>,
   ): Promise<T> {
     // Check if key exists
-    const existing = await prisma.idempotencyKey.findUnique({
+    const existing = await prisma.idempotencyKeyV2.findUnique({
       where: { storeId_scope_key: { storeId: storeId || "", scope, key } },
     });
 
@@ -28,7 +28,7 @@ export class IdempotencyService {
     }
 
     // Create or update key as STARTED
-    await prisma.idempotencyKey.upsert({
+    await prisma.idempotencyKeyV2.upsert({
       where: { storeId_scope_key: { storeId: storeId || "", scope, key } },
       create: { storeId, scope, key, status: "STARTED" },
       update: { status: "STARTED" },
@@ -43,19 +43,20 @@ export class IdempotencyService {
         .createHash("sha256")
         .update(JSON.stringify(result))
         .digest("hex");
-      await prisma.idempotencyKey.update({
+      await prisma.idempotencyKeyV2.update({
         where: { storeId_scope_key: { storeId: storeId || "", scope, key } },
         data: {
           status: "COMPLETED",
           responseHash,
-          responseJson: result as unknown,
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          responseJson: result as any,
         },
       });
 
       return result;
-    } catch (_error) {
+    } catch (error) {
       // Mark as FAILED
-      await prisma.idempotencyKey.update({
+      await prisma.idempotencyKeyV2.update({
         where: { storeId_scope_key: { storeId: storeId || "", scope, key } },
         data: { status: "FAILED" },
       });

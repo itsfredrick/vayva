@@ -1,5 +1,6 @@
 export class EmailProvider {
-    static async sendEmail(to, subject, html) {
+    static apiKey: string | undefined = process.env.RESEND_API_KEY;
+    static async sendEmail(to: any, subject: any, html: any) {
         if (!this.apiKey) {
             throw new Error("Missing Email configuration (RESEND_API_KEY)");
         }

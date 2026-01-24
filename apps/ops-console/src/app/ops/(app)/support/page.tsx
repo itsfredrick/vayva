@@ -1,13 +1,13 @@
 "use client";
 
 import React, { useState } from "react";
-import { useRouter } from "next/navigation";
-import { LifeBuoy, Search, Filter, MessageSquare, Clock, CheckCircle } from "lucide-react";
+import { useRouter } from 'next/navigation';
+import { LifeBuoy, Search, Filter, MessageSquare, Clock, CheckCircle} from 'lucide-react';
 import { useOpsQuery } from "@/hooks/useOpsQuery";
-import { toast } from "sonner";
+import { toast} from 'sonner';
 import { Button } from "@vayva/ui";
 
-export default function SupportPage() {
+export default function SupportPage(): React.JSX.Element {
     const router = useRouter();
     const [filter, setFilter] = useState("OPEN");
 
@@ -101,28 +101,28 @@ export default function SupportPage() {
                         ) : !tickets?.length ? (
                             <tr><td colSpan={5} className="p-12 text-center text-gray-400">No tickets found.</td></tr>
                         ) : (
-                            tickets.map((t: unknown) => (
+                            tickets.map((t: any) => (
                                 <tr
-                                    key={t.id}
-                                    onClick={() => router.push(`/ops/support/${t.id}`)}
+                                    key={(t as any).id}
+                                    onClick={() => router.push(`/ops/support/${(t as any).id}`)}
                                     className="hover:bg-gray-50 cursor-pointer transition-colors"
                                 >
-                                    <td className="px-6 py-4 font-mono text-xs text-gray-500">#{t.id.slice(0, 8)}</td>
-                                    <td className="px-6 py-4 font-medium text-gray-900">{t.summary}</td>
+                                    <td className="px-6 py-4 font-mono text-xs text-gray-500">#{(t as any).id.slice(0, 8)}</td>
+                                    <td className="px-6 py-4 font-medium text-gray-900">{(t as any).summary}</td>
                                     <td className="px-6 py-4">
                                         <div className="flex items-center gap-2">
-                                            {t.store?.logoUrl ? (
-                                                <img src={t.store.logoUrl} alt={t.store?.name || "Store logo"} className="w-5 h-5 rounded-full bg-gray-100" />
+                                            {(t as any).store?.logoUrl ? (
+                                                <img src={(t as any).store.logoUrl} alt={(t as any).store?.name || "Store logo"} className="w-5 h-5 rounded-full bg-gray-100" />
                                             ) : (
                                                 <div className="w-5 h-5 rounded-full bg-indigo-100 text-indigo-600 text-[10px] flex items-center justify-center font-bold">
-                                                    {t.store?.name?.[0] || "?"}
+                                                    {(t as any).store?.name?.[0] || "?"}
                                                 </div>
                                             )}
-                                            <span className="text-gray-700">{t.store?.name || "Unknown"}</span>
+                                            <span className="text-gray-700">{(t as any).store?.name || "Unknown"}</span>
                                         </div>
                                     </td>
-                                    <td className="px-6 py-4">{getStatusBadge(t.status)}</td>
-                                    <td className="px-6 py-4 text-gray-500">{new Date(t.createdAt).toLocaleDateString()}</td>
+                                    <td className="px-6 py-4">{getStatusBadge((t as any).status)}</td>
+                                    <td className="px-6 py-4 text-gray-500">{new Date((t as any).createdAt).toLocaleDateString()}</td>
                                 </tr>
                             ))
                         )}

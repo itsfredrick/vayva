@@ -12,10 +12,10 @@ interface ServicePDPProps {
     product: PublicProduct;
 }
 
-export function ServicePDP({ product }: ServicePDPProps) {
+export function ServicePDP({ product }: ServicePDPProps): React.JSX.Element {
     const { addToCart } = useStore(); // In reality, this would likely go to a Booking Flow, not Cart
     const [date, setDate] = useState<Date | undefined>(new Date());
-    const metadata = product.metadata as unknown;
+    const metadata = product.metadata as any;
 
     // Mock booking handler
     const handleBookNow = () => {
@@ -67,7 +67,7 @@ export function ServicePDP({ product }: ServicePDPProps) {
                                 id="service-booking-date"
                                 type="date"
                                 className="w-full text-sm outline-none"
-                                onChange={(e) => setDate(new Date(e.target.value))}
+                                onChange={(e: any) => setDate(new Date(e.target.value))}
                             />
                         </div>
 

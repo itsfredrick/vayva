@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { useRouter } from "next/navigation";
+import { useRouter } from 'next/navigation';
 import { Command } from "cmdk";
 import {
     LayoutDashboard,
@@ -22,7 +22,7 @@ import {
     Shield,
     History,
     Terminal
-} from "lucide-react";
+} from 'lucide-react';
 
 interface SearchResult {
     url: string;
@@ -31,7 +31,7 @@ interface SearchResult {
     subLabel: string;
 }
 
-export function CommandMenu() {
+export function CommandMenu(): React.JSX.Element {
     const router = useRouter();
     const [open, setOpen] = React.useState(false);
     const [query, setQuery] = React.useState("");
@@ -55,8 +55,8 @@ export function CommandMenu() {
 
     React.useEffect(() => {
         const down = (e: KeyboardEvent) => {
-            if (e.key === "k" && (e.metaKey || e.ctrlKey)) {
-                e.preventDefault();
+            if ((e as any).key === "k" && ((e as any).metaKey || (e as any).ctrlKey)) {
+                (e as any).preventDefault();
                 setOpen((open) => !open);
             }
         };
@@ -82,7 +82,7 @@ export function CommandMenu() {
                 <Search className="mr-2 h-5 w-5 shrink-0 text-gray-400" />
                 <Command.Input
                     placeholder="Type a command or search..."
-                    value={query}
+                    value={(query as any)}
                     onValueChange={setQuery}
                     className="flex h-14 w-full rounded-md bg-transparent py-3 text-sm outline-none placeholder:text-gray-400 disabled:cursor-not-allowed disabled:opacity-50"
                 />
@@ -96,31 +96,31 @@ export function CommandMenu() {
                 <Command.Group heading="Navigation" className="px-2 py-1.5 text-xs font-medium text-gray-500 uppercase">
                     <CommandItem
                         onSelect={() => runCommand(() => router.push("/ops"))}
-                        icon={LayoutDashboard}
+                        icon={(LayoutDashboard as any)}
                     >
                         Dashboard
                     </CommandItem>
                     <CommandItem
                         onSelect={() => runCommand(() => router.push("/ops/merchants"))}
-                        icon={Users}
+                        icon={(Users as any)}
                     >
                         Merchants
                     </CommandItem>
                     <CommandItem
                         onSelect={() => runCommand(() => router.push("/ops/orders"))}
-                        icon={ShoppingBag}
+                        icon={(ShoppingBag as any)}
                     >
                         Orders
                     </CommandItem>
                     <CommandItem
                         onSelect={() => runCommand(() => router.push("/ops/deliveries"))}
-                        icon={Truck}
+                        icon={(Truck as any)}
                     >
                         Deliveries
                     </CommandItem>
                     <CommandItem
                         onSelect={() => runCommand(() => router.push("/ops/financials/subscriptions"))}
-                        icon={CreditCard}
+                        icon={(CreditCard as any)}
                     >
                         Billing Monitor
                     </CommandItem>
@@ -129,19 +129,19 @@ export function CommandMenu() {
                 <Command.Group heading="Platform Admin">
                     <CommandItem
                         onSelect={() => runCommand(() => router.push("/ops/admin/team"))}
-                        icon={Shield}
+                        icon={(Shield as any)}
                     >
                         Team Management
                     </CommandItem>
                     <CommandItem
                         onSelect={() => runCommand(() => router.push("/ops/admin/audit"))}
-                        icon={History}
+                        icon={(History as any)}
                     >
                         System Audit
                     </CommandItem>
                     <CommandItem
                         onSelect={() => runCommand(() => router.push("/ops/admin/system"))}
-                        icon={Terminal}
+                        icon={(Terminal as any)}
                     >
                         Environment
                     </CommandItem>
@@ -150,73 +150,73 @@ export function CommandMenu() {
                 <Command.Group heading="Tools & Settings" className="px-2 py-1.5 text-xs font-medium text-gray-500 uppercase mt-2">
                     <CommandItem
                         onSelect={() => runCommand(() => router.push("/ops/rescue"))}
-                        icon={ShieldAlert}
+                        icon={(ShieldAlert as any)}
                     >
                         Rescue Dashboard
                     </CommandItem>
                     <CommandItem
                         onSelect={() => runCommand(() => router.push("/ops/tools"))}
-                        icon={Settings}
+                        icon={(Settings as any)}
                     >
                         System Tools
                     </CommandItem>
                     <CommandItem
                         onSelect={() => runCommand(() => router.push("/ops/support"))}
-                        icon={LifeBuoy}
+                        icon={(LifeBuoy as any)}
                     >
                         Support Tickets
                     </CommandItem>
                     <CommandItem
                         onSelect={() => runCommand(() => router.push("/ops/ai"))}
-                        icon={BrainCircuit}
+                        icon={(BrainCircuit as any)}
                     >
                         AI Intelligence
                     </CommandItem>
                     <CommandItem
                         onSelect={() => runCommand(() => router.push("/ops/approvals"))}
-                        icon={FileSignature}
+                        icon={(FileSignature as any)}
                     >
                         Approval Center
                     </CommandItem>
                     <CommandItem
                         onSelect={() => runCommand(() => router.push("/ops/payouts"))}
-                        icon={CreditCard}
+                        icon={(CreditCard as any)}
                     >
                         Payouts Operation
                     </CommandItem>
                     <CommandItem
                         onSelect={() => runCommand(() => router.push("/ops/communications"))}
-                        icon={MessageSquare}
+                        icon={(MessageSquare as any)}
                     >
                         Communications Logs
                     </CommandItem>
                     <CommandItem
                         onSelect={() => runCommand(() => router.push("/ops/webhooks"))}
-                        icon={Activity}
+                        icon={(Activity as any)}
                     >
                         Webhook Inspector
                     </CommandItem>
                     <CommandItem
                         onSelect={() => runCommand(() => router.push("/ops/security/sessions"))}
-                        icon={ShieldAlert}
+                        icon={(ShieldAlert as any)}
                     >
                         Session Manager
                     </CommandItem>
                     <CommandItem
                         onSelect={() => runCommand(() => router.push("/ops/ai/quality"))}
-                        icon={Bot}
+                        icon={(Bot as any)}
                     >
                         AI Quality Lab
                     </CommandItem>
                     <CommandItem
                         onSelect={() => runCommand(() => router.push("/ops/marketplace"))}
-                        icon={ShoppingBag}
+                        icon={(ShoppingBag as any)}
                     >
                         Marketplace Manager
                     </CommandItem>
                     <CommandItem
                         onSelect={() => runCommand(() => router.push("/ops/growth/campaigns"))}
-                        icon={Zap}
+                        icon={(Zap as any)}
                     >
                         Campaign Monitor
                     </CommandItem>
@@ -229,7 +229,7 @@ export function CommandMenu() {
                             <CommandItem
                                 key={i}
                                 onSelect={() => runCommand(() => router.push(res.url))}
-                                icon={Search}
+                                icon={(Search as any)}
                             >
                                 <div className="flex flex-col">
                                     <span>{res.label}</span>
@@ -249,7 +249,7 @@ export function CommandMenu() {
     );
 }
 
-function CommandItem({ children, onSelect, icon: Icon }: { children: React.ReactNode; onSelect: () => void; icon: React.ElementType }) {
+function CommandItem({ children, onSelect, icon: Icon }: { children: React.ReactNode; onSelect: () => void; icon: React.ElementType }): React.JSX.Element {
     return (
         <Command.Item
             onSelect={onSelect}

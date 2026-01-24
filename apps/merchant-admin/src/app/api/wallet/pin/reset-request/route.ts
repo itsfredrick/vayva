@@ -5,7 +5,7 @@ import { Resend } from "resend";
 import jwt from "jsonwebtoken";
 const JWT_SECRET = process.env.JWT_SECRET || "fallback-secret";
 // POST /api/wallet/pin/reset-request
-export async function POST(request: unknown) {
+export async function POST(request: Request) {
     try {
         const user = await getSessionUser();
         if (!user) {
@@ -41,7 +41,7 @@ export async function POST(request: unknown) {
                 `
                 });
             }
-            catch (emailError) {
+            catch (emailError: any) {
                 console.error("Failed to send PIN reset email:", emailError);
             }
         }
@@ -56,7 +56,7 @@ export async function POST(request: unknown) {
         });
         return NextResponse.json({ success: true, message: "Reset link sent to your email." });
     }
-    catch (error) {
+    catch (error: any) {
         console.error("PIN Reset Request Error:", error);
         return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
     }

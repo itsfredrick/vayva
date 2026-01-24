@@ -58,7 +58,7 @@ export default function NotificationsPage() {
       body: JSON.stringify({ ids: [id] }),
     });
     setNotifications(
-      notifications.map((n) => (n.id === id ? { ...n, isRead: true } : n)),
+      notifications.map((n: any) => (n.id === id ? { ...n, isRead: true } : n)),
     );
   };
 
@@ -67,7 +67,7 @@ export default function NotificationsPage() {
       method: "POST",
       body: JSON.stringify({ mark_all: true }),
     });
-    setNotifications(notifications.map((n) => ({ ...n, isRead: true })));
+    setNotifications(notifications.map((n: any) => ({ ...n, isRead: true })));
   };
 
   return (
@@ -129,11 +129,11 @@ export default function NotificationsPage() {
           <EmptyState
             title="No notifications"
             description="You're all caught up! New updates will appear here."
-            icon={Bell}
+            icon={(Bell as any)}
           />
         ) : (
           <div className="divide-y divide-gray-100">
-            {notifications.map((n) => (
+            {notifications.map((n: any) => (
               <div
                 key={n.id}
                 className={`p-4 hover:bg-gray-50/50 transition-colors flex gap-4 ${!n.isRead ? "bg-indigo-50/20" : ""}`}

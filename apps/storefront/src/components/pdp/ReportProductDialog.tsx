@@ -4,7 +4,7 @@ import { useState } from "react";
 import { Button } from "@vayva/ui";
 import { Flag } from "lucide-react";
 
-export function ReportProductDialog({ productId }: { productId: string }) {
+export function ReportProductDialog({ productId }: { productId: string }): React.JSX.Element {
     const [isOpen, setIsOpen] = useState(false);
     const [reason, setReason] = useState("");
     const [details, setDetails] = useState("");
@@ -65,7 +65,7 @@ export function ReportProductDialog({ productId }: { productId: string }) {
                                     id="report-reason"
                                     className="w-full p-2 border rounded"
                                     value={reason}
-                                    onChange={(e) => setReason(e.target.value)}
+                                    onChange={(e: any) => setReason(e.target.value)}
                                     required
                                 >
                                     <option value="">Select a reason</option>
@@ -82,7 +82,7 @@ export function ReportProductDialog({ productId }: { productId: string }) {
                                     className="w-full p-2 border rounded"
                                     rows={3}
                                     value={details}
-                                    onChange={(e) => setDetails(e.target.value)}
+                                    onChange={(e: any) => setDetails(e.target.value)}
                                 />
                             </div>
                             <div className="flex gap-2 justify-end pt-2">
@@ -97,7 +97,7 @@ export function ReportProductDialog({ productId }: { productId: string }) {
     );
 }
 
-function ReportTrigger({ onClick }: { onClick: () => void }) {
+function ReportTrigger({ onClick }: { onClick: () => void }): React.JSX.Element {
     return (
         <Button
             variant="ghost"

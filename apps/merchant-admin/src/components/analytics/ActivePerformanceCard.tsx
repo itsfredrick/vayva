@@ -82,7 +82,7 @@ export const ActivePerformanceCard = ({
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
         <Metric
           label="Conversion Rate"
-          value={data.metrics.conversion_rate}
+          value={(data.metrics.conversion_rate as any)}
           delta={data.delta.conversion_rate}
           suffix="%"
         />
@@ -94,7 +94,7 @@ export const ActivePerformanceCard = ({
         />
         <Metric
           label="Orders"
-          value={data.metrics.orders}
+          value={(data.metrics.orders as any)}
           delta={data.delta.orders}
         />
         <Metric

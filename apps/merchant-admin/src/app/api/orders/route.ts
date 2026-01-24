@@ -14,7 +14,7 @@ export const GET = withVayvaAPI(PERMISSIONS.ORDERS_VIEW, async (req: NextRequest
         const fromDate = searchParams.get("from");
         const toDate = searchParams.get("to");
         // Build where clause with proper typing
-        const where: unknown= { storeId };
+        const where: any= { storeId };
         if (status && status !== "ALL")
             where.status = status;
         if (paymentStatus && paymentStatus !== "ALL")
@@ -44,7 +44,7 @@ export const GET = withVayvaAPI(PERMISSIONS.ORDERS_VIEW, async (req: NextRequest
             }),
             prisma.order.count({ where })
         ]);
-        const transformedOrders = orders.map((order: unknown) => ({
+        const transformedOrders = orders.map((order: any) => ({
             id: order.id,
             merchantId: order.storeId,
             orderNumber: order.orderNumber,
@@ -81,7 +81,7 @@ export const GET = withVayvaAPI(PERMISSIONS.ORDERS_VIEW, async (req: NextRequest
             },
         });
     }
-    catch (error) {
+    catch (error: any) {
         console.error("Fetch Orders Error:", error);
         return NextResponse.json({ error: "Failed to fetch orders" }, { status: 500 });
     }
@@ -128,7 +128,7 @@ export const POST = withVayvaAPI(PERMISSIONS.ORDERS_MANAGE, async (req: NextRequ
                     customerEmail: body.customer?.email?.toLowerCase() || null,
                     customerPhone: body.customer?.phone || null,
                     items: body.items ? {
-                        create: body.items.map((item: unknown) => ({
+                        create: body.items.map((item: any) => ({
                             productId: item.productId,
                             productName: item.title || "Item",
                             quantity: Number(item.quantity) || 1,
@@ -141,7 +141,7 @@ export const POST = withVayvaAPI(PERMISSIONS.ORDERS_MANAGE, async (req: NextRequ
         });
         return NextResponse.json(result.order);
     }
-    catch (error) {
+    catch (error: any) {
         console.error("Create Order Error:", error);
         return NextResponse.json({ error: "Failed to create order" }, { status: 500 });
     }

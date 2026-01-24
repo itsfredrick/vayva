@@ -34,7 +34,7 @@ export class CompatibilityChecker {
     }
 
     // Check plan requirement
-    const planHierarchy = { free: 0, growth: 1, pro: 2 };
+    const _planHierarchy = { free: 0, growth: 1, pro: 2 };
     const requiredPlanUpgrade = this.getRequiredPlanUpgrade(
       userPlan,
       addon.requiredPlan,

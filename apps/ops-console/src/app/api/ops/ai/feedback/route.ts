@@ -1,4 +1,4 @@
-import { NextResponse } from "next/server";
+import { NextResponse } from 'next/server';
 import { prisma } from "@vayva/db";
 import { OpsAuthService } from "@/lib/ops-auth";
 
@@ -14,7 +14,7 @@ export async function GET(request: Request) {
     const limit = parseInt(searchParams.get("limit") || "50");
     const rating = searchParams.get("rating");
 
-    const where: unknown = {};
+    const where: any = {};
     if (rating && rating !== "ALL") {
         where.rating = rating;
     }

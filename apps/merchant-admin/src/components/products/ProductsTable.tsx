@@ -34,7 +34,7 @@ export function ProductsTable({ products, meta, page, limit, onPageChange }: Pro
                     </tr>
                 </thead>
                 <tbody className="divide-y divide-gray-100">
-                    {products.map((p) => (
+                    {products.map((p: any) => (
                         <tr
                             key={p.id}
                             className="hover:bg-studio-gray transition-colors cursor-pointer group border-b border-studio-border last:border-0"

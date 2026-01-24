@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import { getSessionUser } from "@/lib/session";
 import { prisma } from "@/lib/prisma";
 import bcrypt from "bcryptjs";
-export async function POST(request: unknown) {
+export async function POST(request: Request) {
     try {
         const user = await getSessionUser();
         if (!user) {
@@ -58,7 +58,7 @@ export async function POST(request: unknown) {
             message: "OTP sent"
         });
     }
-    catch (error) {
+    catch (error: any) {
         console.error("Withdraw Initiate Error:", error);
         return NextResponse.json({ error: "Failed to initiate withdrawal" }, { status: 500 });
     }

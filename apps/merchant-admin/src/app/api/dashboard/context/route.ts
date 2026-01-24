@@ -40,7 +40,7 @@ export async function GET(request: NextRequest) {
             whatsappStatus = "DISABLED"; // Feature flag off
         }
         // Real context data from database
-        const data = {
+        const data: any = {
             firstName: user.firstName || "User",
             initials: (user.firstName?.[0] || "U") + (user.lastName?.[0] || ""),
             businessType: store?.category || "UNKNOWN",
@@ -51,7 +51,7 @@ export async function GET(request: NextRequest) {
         };
         return NextResponse.json(data);
     }
-    catch (error) {
+    catch (error: any) {
         console.error("Dashboard Context Error:", error);
         return NextResponse.json({ error: "Failed to fetch context" }, { status: 500 });
     }

@@ -1,5 +1,5 @@
 import { TEMPLATE_REGISTRY } from "@/lib/templates-registry";
-export const TEMPLATES = Object.values(TEMPLATE_REGISTRY).map((t: unknown) => ({
+export const TEMPLATES = Object.values(TEMPLATE_REGISTRY).map((t: any) => ({
     id: t.templateId,
     name: t.displayName,
     slug: t.slug,
@@ -20,14 +20,14 @@ export const TEMPLATES = Object.values(TEMPLATE_REGISTRY).map((t: unknown) => ({
         objects: []
     }
 }));
-export function getTemplateBySlug(slug: unknown) {
-    return TEMPLATES.find((t: unknown) => t.slug === slug);
+export function getTemplateBySlug(slug: any) {
+    return TEMPLATES.find((t: any) => t.slug === slug);
 }
-export function isTierAccessible(userTier: unknown, requiredTier: unknown) {
+export function isTierAccessible(userTier: any, requiredTier: any) {
     const tierHierarchy = {
         free: 0,
         growth: 1,
         pro: 2,
     };
-    return tierHierarchy[userTier] >= tierHierarchy[requiredTier];
+    return (tierHierarchy as any)[userTier] >= (tierHierarchy as any)[requiredTier];
 }

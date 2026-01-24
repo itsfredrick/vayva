@@ -4,8 +4,7 @@ import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import { StoreShell } from "@/components/storefront/store-shell";
 import { ProductCard, Product } from "@/components/storefront/product-card";
-import { Button, Icon } from "@vayva/ui";
-import type { IconName } from "@vayva/ui";
+import { Button, Icon, type IconName } from "@vayva/ui";
 
 const CATEGORIES = [
   { name: "Men", image: "man" },
@@ -26,10 +25,10 @@ export default function StoreHomepage({
   useEffect(() => {
     // Fetch real products from API
     fetch("/api/products/items?status=ACTIVE&limit=4")
-      .then((res: unknown) => res.json())
-      .then((data: unknown) => {
+      .then((res: any) => res.json())
+      .then((data: any) => {
         // Transform API data to Product format
-        const transformedProducts = data.map((item: unknown) => ({
+        const transformedProducts = data.map((item: any) => ({
           id: item.id,
           name: item.name,
           price: `₦ ${item.price.toLocaleString()}`,
@@ -41,7 +40,7 @@ export default function StoreHomepage({
         setProducts(transformedProducts);
         setLoading(false);
       })
-      .catch((err: unknown) => {
+      .catch((err: any) => {
         console.error("Failed to fetch products:", err);
         setLoading(false);
       });
@@ -107,7 +106,7 @@ export default function StoreHomepage({
       <section className="py-12 border-b border-white/5">
         <div className="max-w-7xl mx-auto px-4 overflow-x-auto scrollbar-hide">
           <div className="flex gap-4 min-w-max">
-            {CATEGORIES.map((cat: unknown) => (
+            {CATEGORIES.map((cat: any) => (
               <Link
                 key={cat.name}
                 href={`/store/${slug}/collections/${cat.name.toLowerCase()}`}
@@ -148,7 +147,7 @@ export default function StoreHomepage({
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-6">
             {loading ? (
               // Loading skeleton
-              [1, 2, 3, 4].map((i: unknown) => (
+              [1, 2, 3, 4].map((i: any) => (
                 <div key={i} className="animate-pulse">
                   <div className="bg-white/5 h-64 rounded-2xl mb-4"></div>
                   <div className="bg-white/5 h-4 rounded w-3/4 mb-2"></div>
@@ -156,7 +155,7 @@ export default function StoreHomepage({
                 </div>
               ))
             ) : products.length > 0 ? (
-              products.map((product: Product) => (
+              products.map((product: any) => (
                 <ProductCard
                   key={product.id}
                   product={product}
@@ -193,7 +192,7 @@ export default function StoreHomepage({
               title: "WhatsApp Support",
               desc: "Chat with us anytime for help.",
             },
-          ].map((item: unknown, i: unknown) => (
+          ].map((item: any, i: any) => (
             <div
               key={i}
               className="flex flex-col items-center text-center p-6 rounded-2xl bg-white/5 border border-white/5"

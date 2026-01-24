@@ -9,7 +9,7 @@ export const GET = withVayvaAPI(PERMISSIONS.COMMERCE_VIEW, async (request, { sto
         const [totalOrders, paidOrders, refundedOrders, activeCustomers] = await Promise.all([
             prisma.order.count({ where: { storeId } }),
             prisma.order.count({
-                where: { storeId, paymentStatus: "PAID" },
+                where: { storeId, paymentStatus: "PAID" as any },
             }),
             prisma.order.count({ where: { storeId, status: "REFUNDED" } }),
             prisma.customer.count({ where: { storeId } }),
@@ -73,7 +73,7 @@ export const GET = withVayvaAPI(PERMISSIONS.COMMERCE_VIEW, async (request, { sto
             data: healthData,
         });
     }
-    catch (error) {
+    catch (error: any) {
         return NextResponse.json({
             success: false,
             error: "Failed to calculate health metrics",

@@ -1,5 +1,5 @@
 import { FastifyRequest, FastifyReply } from "fastify";
-import fp from "fastify-plugin";
+import _fp from "fastify-plugin";
 
 export interface AuthOptions {
   audience: "merchant" | "customer" | "ops" | "ops-pre-mfa";

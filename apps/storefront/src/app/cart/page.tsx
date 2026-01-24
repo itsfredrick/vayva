@@ -5,9 +5,9 @@ import { Button } from "@vayva/ui";
 import { StoreShell } from "@/components/StoreShell";
 import { useStore } from "@/context/StoreContext";
 import NextLink from "next/link";
-const Link = NextLink as unknown;
+const Link = NextLink;
 
-export default function CartPage() {
+export default function CartPage(): React.JSX.Element {
   const { store, cart, removeFromCart } = useStore();
 
   const subtotal = cart.reduce(
@@ -15,7 +15,7 @@ export default function CartPage() {
     0,
   );
 
-  if (!store) return null;
+  if (!store) return <></>;
 
   return (
     <StoreShell>

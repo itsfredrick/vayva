@@ -5,8 +5,8 @@ export class YouverifyService {
     /**
      * Verify Virtual NIN (vNIN)
      */
-    static async verifyVNIN(id, validationData, selfieImage) {
-        const payload = {
+    static async verifyVNIN(id: any, validationData: any, selfieImage: any) {
+        const payload: any = {
             id,
             isSubjectConsent: true,
         };
@@ -30,7 +30,7 @@ export class YouverifyService {
             });
             return response.data;
         }
-        catch (error) {
+        catch (error: any) {
             console.error("Youverify vNIN Error:", error.response?.data || error.message);
             throw new Error(error.response?.data?.message || "vNIN verification failed");
         }
@@ -38,8 +38,8 @@ export class YouverifyService {
     /**
      * Verify Bank Verification Number (BVN)
      */
-    static async verifyBVN(id, validationData, selfieImage, premium = true) {
-        const payload = {
+    static async verifyBVN(id: any, validationData: any, selfieImage: any, premium = true) {
+        const payload: any = {
             id,
             isSubjectConsent: true,
             premiumBVN: premium,
@@ -64,7 +64,7 @@ export class YouverifyService {
             });
             return response.data;
         }
-        catch (error) {
+        catch (error: any) {
             console.error("Youverify BVN Error:", error.response?.data || error.message);
             throw new Error(error.response?.data?.message || "BVN verification failed");
         }

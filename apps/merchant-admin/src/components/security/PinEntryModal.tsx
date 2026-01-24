@@ -127,7 +127,7 @@ export const PinEntryModal = ({
           setTimeout(() => inputsRef.current[0]?.focus(), 100);
         }
       }
-    } catch (err) {
+    } catch (err: any) {
       setError("Network error. Please try again.");
     } finally {
       setIsLoading(false);
@@ -180,8 +180,8 @@ export const PinEntryModal = ({
                   ref={(el) => {
                     inputsRef.current[step === "enter" ? i : i + 4] = el;
                   }}
-                  value={digit}
-                  onChange={(e) =>
+                  value={(digit as any)}
+                  onChange={(e: any) =>
                     handleInput(i, e.target.value, step === "confirm")
                   }
                   onKeyDown={(e) => handleKeyDown(i, e, step === "confirm")}

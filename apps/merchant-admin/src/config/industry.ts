@@ -99,7 +99,11 @@ export const INDUSTRY_CONFIG: Record<IndustrySlug, IndustryConfig> = {
             catalog: { index: "/dashboard/menu-items", create: "/dashboard/menu-items/new" },
             fulfillment: { index: "/dashboard/kitchen" }
         },
-        dashboardWidgets: COMMERCE_WIDGETS,
+        dashboardWidgets: [
+            { id: "active_orders", title: "Active Orders", dataSource: "real", type: "stat", w: 1 },
+            { id: "revenue_today", title: "Revenue Today", dataSource: "real", type: "stat", w: 1 },
+            ...COMMON_WIDGETS
+        ],
         forms: {
             menu_item: {
                 requiredFields: ["price", "prep_time", "veg_non_veg"],
@@ -117,7 +121,11 @@ export const INDUSTRY_CONFIG: Record<IndustrySlug, IndustryConfig> = {
         modules: ["dashboard", "bookings", "finance", "marketing", "content", "settings"],
         moduleLabels: { bookings: "Bookings" },
         moduleRoutes: { bookings: { index: "/dashboard/bookings", create: "/dashboard/bookings/new" } },
-        dashboardWidgets: COMMON_WIDGETS,
+        dashboardWidgets: [
+            { id: "upcoming_bookings", title: "Upcoming Bookings", dataSource: "real", type: "stat", w: 1 },
+            { id: "active_services", title: "Active Services", dataSource: "real", type: "stat", w: 1 },
+            ...COMMON_WIDGETS
+        ],
         forms: {
             service: {
                 requiredFields: ["price", "duration_min", "provider_id"],
@@ -135,7 +143,11 @@ export const INDUSTRY_CONFIG: Record<IndustrySlug, IndustryConfig> = {
         modules: ["dashboard", "catalog", "sales", "finance", "marketing", "settings"],
         moduleLabels: { catalog: "Digital Assets", sales: "Downloads" },
         moduleRoutes: { catalog: { index: "/dashboard/digital-assets", create: "/dashboard/digital-assets/new" } },
-        dashboardWidgets: COMMERCE_WIDGETS,
+        dashboardWidgets: [
+            { id: "total_downloads", title: "Total Downloads", dataSource: "real", type: "stat", w: 1 },
+            { id: "active_assets", title: "Active Assets", dataSource: "real", type: "stat", w: 1 },
+            ...COMMON_WIDGETS
+        ],
         forms: {
             digital_asset: {
                 requiredFields: ["price", "file_upload", "access_settings"],
@@ -156,7 +168,11 @@ export const INDUSTRY_CONFIG: Record<IndustrySlug, IndustryConfig> = {
             catalog: { index: "/dashboard/events", create: "/dashboard/events/new" },
             sales: { index: "/dashboard/check-in" }
         },
-        dashboardWidgets: COMMERCE_WIDGETS,
+        dashboardWidgets: [
+            { id: "tickets_sold", title: "Tickets Sold", dataSource: "real", type: "stat", w: 1 },
+            { id: "active_events", title: "Active Events", dataSource: "real", type: "stat", w: 1 },
+            ...COMMON_WIDGETS
+        ],
         forms: {
             event: {
                 requiredFields: ["price", "event_date", "venue", "ticket_quota"],
@@ -177,7 +193,11 @@ export const INDUSTRY_CONFIG: Record<IndustrySlug, IndustryConfig> = {
             catalog: { index: "/dashboard/wholesale-catalog" },
             sales: { index: "/dashboard/quotes" }
         },
-        dashboardWidgets: COMMERCE_WIDGETS,
+        dashboardWidgets: [
+            { id: "pending_quotes", title: "Pending Quotes", dataSource: "real", type: "stat", w: 1 },
+            { id: "total_orders", title: "Total Orders", dataSource: "real", type: "stat", w: 1 },
+            ...COMMON_WIDGETS
+        ],
         forms: {
             product: {
                 requiredFields: ["price", "sku", "moq", "tier_pricing"],
@@ -198,7 +218,11 @@ export const INDUSTRY_CONFIG: Record<IndustrySlug, IndustryConfig> = {
             catalog: { index: "/dashboard/properties", create: "/dashboard/properties/new" },
             bookings: { index: "/dashboard/viewings" }
         },
-        dashboardWidgets: COMMON_WIDGETS,
+        dashboardWidgets: [
+            { id: "active_listings", title: "Active Listings", dataSource: "real", type: "stat", w: 1 },
+            { id: "total_viewings", title: "Total Viewings", dataSource: "real", type: "stat", w: 1 },
+            ...COMMON_WIDGETS
+        ],
         forms: {
             listing: {
                 requiredFields: ["price", "location", "sqft", "rooms"],
@@ -218,7 +242,11 @@ export const INDUSTRY_CONFIG: Record<IndustrySlug, IndustryConfig> = {
             catalog: { index: "/dashboard/vehicles", create: "/dashboard/vehicles/new" },
             sales: { index: "/dashboard/leads" }
         },
-        dashboardWidgets: COMMON_WIDGETS,
+        dashboardWidgets: [
+            { id: "active_listings", title: "Active Listings", dataSource: "real", type: "stat", w: 1 },
+            { id: "total_leads", title: "Total Leads", dataSource: "real", type: "stat", w: 1 },
+            ...COMMON_WIDGETS
+        ],
         forms: {
             vehicle: {
                 requiredFields: ["price", "make", "model", "year", "vin"],
@@ -241,7 +269,11 @@ export const INDUSTRY_CONFIG: Record<IndustrySlug, IndustryConfig> = {
         modules: ["dashboard", "catalog", "bookings", "finance", "settings"],
         moduleLabels: { catalog: "Stays", bookings: "Reservations" },
         moduleRoutes: { catalog: { index: "/dashboard/stays", create: "/dashboard/stays/new" } },
-        dashboardWidgets: COMMON_WIDGETS,
+        dashboardWidgets: [
+            { id: "active_stays", title: "Active Stays", dataSource: "real", type: "stat", w: 1 },
+            { id: "upcoming_reservations", title: "Upcoming Bookings", dataSource: "real", type: "stat", w: 1 },
+            ...COMMON_WIDGETS
+        ],
         forms: {
             stay: {
                 requiredFields: ["price", "location", "dates", "amenities"],
@@ -258,8 +290,13 @@ export const INDUSTRY_CONFIG: Record<IndustrySlug, IndustryConfig> = {
         primaryObject: "post",
         modules: ["dashboard", "content", "marketing", "settings"],
         moduleLabels: { content: "Posts" },
-        moduleRoutes: { content: { index: "/dashboard/posts", create: "/dashboard/posts/new" } },
-        dashboardWidgets: COMMON_WIDGETS,
+        moduleRoutes: { content: { index: "/dashboard/blog", create: "/dashboard/blog/new" } },
+        dashboardWidgets: [
+            { id: "total_posts", title: "Total Posts", dataSource: "real", type: "stat", w: 1 },
+            { id: "total_reads", title: "Total Reads", dataSource: "real", type: "stat", w: 1 },
+            { id: "avg_read_time", title: "Avg. Read Time", dataSource: "real", type: "stat", w: 1 },
+            ...COMMON_WIDGETS
+        ],
         forms: {
             post: {
                 requiredFields: ["title", "content"],
@@ -275,7 +312,11 @@ export const INDUSTRY_CONFIG: Record<IndustrySlug, IndustryConfig> = {
         modules: ["dashboard", "content", "settings"],
         moduleLabels: { content: "Projects" },
         moduleRoutes: { content: { index: "/dashboard/projects", create: "/dashboard/projects/new" } },
-        dashboardWidgets: COMMON_WIDGETS,
+        dashboardWidgets: [
+            { id: "total_projects", title: "Total Projects", dataSource: "real", type: "stat", w: 1 },
+            { id: "total_views", title: "Total Views", dataSource: "real", type: "stat", w: 1 },
+            ...COMMON_WIDGETS
+        ],
         forms: {
             project: {
                 requiredFields: ["title", "media"],
@@ -291,7 +332,11 @@ export const INDUSTRY_CONFIG: Record<IndustrySlug, IndustryConfig> = {
         modules: ["dashboard", "marketing", "finance", "content", "settings"],
         moduleLabels: { marketing: "Campaigns" },
         moduleRoutes: { marketing: { index: "/dashboard/campaigns", create: "/dashboard/campaigns/new" } },
-        dashboardWidgets: COMMERCE_WIDGETS,
+        dashboardWidgets: [
+            { id: "total_donations", title: "Total Donations", dataSource: "real", type: "stat", w: 1 },
+            { id: "active_campaigns", title: "Active Campaigns", dataSource: "real", type: "stat", w: 1 },
+            ...COMMON_WIDGETS
+        ],
         forms: {
             campaign: {
                 requiredFields: ["cause", "goal"],
@@ -301,5 +346,73 @@ export const INDUSTRY_CONFIG: Record<IndustrySlug, IndustryConfig> = {
             }
         },
         onboardingSteps: ["org_profile", "campaign_setup"],
+    },
+    education: {
+        displayName: "Education & Courses",
+        primaryObject: "course",
+        modules: ["dashboard", "catalog", "sales", "finance", "content", "settings"],
+        moduleLabels: { catalog: "Courses", sales: "Enrollments" },
+        moduleRoutes: {
+            catalog: { index: "/dashboard/courses", create: "/dashboard/courses/new" },
+            sales: { index: "/dashboard/enrollments" }
+        },
+        dashboardWidgets: [
+            { id: "active_students", title: "Active Students", dataSource: "real", type: "stat", w: 1 },
+            { id: "active_courses", title: "Active Courses", dataSource: "real", type: "stat", w: 1 },
+            ...COMMON_WIDGETS
+        ],
+        forms: {
+            course: {
+                requiredFields: ["price", "curriculum", "description"],
+                optionalFields: ["tags", "instructor"],
+                variantLabel: "Modules",
+                validation: { minImages: 1 },
+            }
+        },
+        onboardingSteps: ["instructor_profile", "course_setup"],
+    },
+    marketplace: {
+        displayName: "Marketplace",
+        primaryObject: "vendor",
+        modules: ["dashboard", "ops_console", "finance", "settings"],
+        moduleLabels: { ops_console: "Ops Console", finance: "Payouts" },
+        moduleRoutes: {
+            ops_console: { index: "/dashboard/ops-console" },
+            finance: { index: "/dashboard/payouts" }
+        },
+        dashboardWidgets: [
+            { id: "total_vendors", title: "Total Vendors", dataSource: "real", type: "stat", w: 1 },
+            { id: "commission_earned", title: "Commission Earned", dataSource: "real", type: "stat", w: 1 },
+            ...COMMON_WIDGETS
+        ],
+        forms: {
+            vendor: {
+                requiredFields: ["name", "email", "category"],
+                optionalFields: ["tags"],
+                validation: { minImages: 1 },
+            }
+        },
+        onboardingSteps: ["marketplace_setup", "vendor_onboarding"],
+    },
+    one_product: {
+        displayName: "One Product Store",
+        primaryObject: "product",
+        modules: ["dashboard", "catalog", "sales", "marketing", "finance", "settings"],
+        moduleLabels: { catalog: "The Product" },
+        moduleRoutes: {
+            catalog: { index: "/dashboard/products" }
+        },
+        dashboardWidgets: [
+            { id: "conversion_rate", title: "Conversion Rate", dataSource: "real", type: "stat", w: 1 },
+            { id: "total_revenue", title: "Total Revenue", dataSource: "real", type: "stat", w: 1 },
+            ...COMMON_WIDGETS
+        ],
+        forms: {
+            product: {
+                ...BASE_PRODUCT_FORM,
+                requiredFields: ["price", "description", "images", "usp"],
+            }
+        },
+        onboardingSteps: ["product_setup", "funnel_design"],
     },
 };

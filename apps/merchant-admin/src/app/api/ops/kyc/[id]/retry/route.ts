@@ -4,7 +4,7 @@ import { OpsAuthService } from "@/lib/ops-auth";
 // Assuming we can use the KycService from merchant-admin or common
 import { kycService } from "@/services/kyc";
 export const dynamic = "force-dynamic";
-export async function POST(request: unknown, { params }: unknown) {
+export async function POST(request: Request, { params }: any) {
     const session = await OpsAuthService.getSession();
     if (!session) {
         return NextResponse.json({ error: "Unauthorized" }, { status: 401 });

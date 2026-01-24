@@ -4,7 +4,7 @@ import { kycService } from "@/services/kyc";
 import { checkRateLimit } from "@/lib/rate-limit";
 import { FlagService } from "@/lib/flags/flagService";
 export const dynamic = "force-dynamic";
-export async function POST(req: unknown) {
+export async function POST(req: any) {
     try {
         const session = await requireAuth();
         const storeId = session.user.storeId;
@@ -38,7 +38,7 @@ export async function POST(req: unknown) {
         }
         return NextResponse.json(result);
     }
-    catch (error) {
+    catch (error: any) {
         console.error("KYC verification error:", error);
         if (error.message === "Unauthorized") {
             return NextResponse.json({ error: "Unauthorized" }, { status: 401 });

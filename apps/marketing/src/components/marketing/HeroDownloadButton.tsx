@@ -5,7 +5,7 @@ import { Download, X, Smartphone, Globe } from "lucide-react";
 import { Button } from "@vayva/ui";
 import { useDownloadModal } from "@/context/DownloadModalContext";
 
-export function HeroDownloadButton() {
+export function HeroDownloadButton(): React.ReactNode {
     const [isStandalone, setIsStandalone] = useState(false);
     const { openDownloadModal } = useDownloadModal();
 

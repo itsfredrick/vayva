@@ -28,7 +28,7 @@ export const GET = withVayvaAPI(PERMISSIONS.PRODUCTS_VIEW, async (req, { params,
         if (!resource) {
             return NextResponse.json({ error: "Not found" }, { status: 404 });
         }
-        const metadata = resource.metadata || {};
+        const metadata: any = resource.metadata || {};
         const responseData = {
             ...metadata,
             id: resource.id,
@@ -41,7 +41,7 @@ export const GET = withVayvaAPI(PERMISSIONS.PRODUCTS_VIEW, async (req, { params,
         };
         return NextResponse.json(responseData);
     }
-    catch (error) {
+    catch (error: any) {
         console.error("[RESOURCE_GET]", error);
         return NextResponse.json({ error: "Internal Error" }, { status: 500 });
     }
@@ -62,7 +62,7 @@ export const PATCH = withVayvaAPI(PERMISSIONS.PRODUCTS_MANAGE, async (req, { par
         }
         const { name, title, description, price, ...otherFields } = body;
         // Merge metadata
-        const currentMetadata = existing.metadata || {};
+        const currentMetadata: any = existing.metadata || {};
         const newMetadata = { ...currentMetadata, ...otherFields };
         const updated = await prisma.product.update({
             where: { id },
@@ -75,7 +75,7 @@ export const PATCH = withVayvaAPI(PERMISSIONS.PRODUCTS_MANAGE, async (req, { par
         });
         return NextResponse.json({ success: true, id: updated.id });
     }
-    catch (error) {
+    catch (error: any) {
         console.error("[RESOURCE_PATCH]", error);
         return NextResponse.json({ error: "Internal Error" }, { status: 500 });
     }

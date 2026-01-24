@@ -3,22 +3,22 @@ import { EventBus } from "@/lib/events/eventBus";
 // Pendingbing external services for V1
 const Services = {
     Refund: {
-        issue: async (payload: unknown) => {
+        issue: async (payload: any) => {
             return { refundId: "ref_test_123" };
         },
     },
     Campaign: {
-        send: async (payload: unknown) => {
+        send: async (payload: any) => {
             return { jobId: "job_camp_123" };
         },
     },
     Policies: {
-        publish: async (payload: unknown) => {
+        publish: async (payload: any) => {
             return { version: "v2" };
         },
     },
 };
-export async function executeApproval(requestId: unknown, actorId: unknown, correlationId: unknown) {
+export async function executeApproval(requestId: any, actorId: any, correlationId: any) {
     const request = await prisma.approval.findUnique({
         where: { id: requestId },
     });
@@ -83,7 +83,7 @@ export async function executeApproval(requestId: unknown, actorId: unknown, corr
             },
         });
     }
-    catch (error) {
+    catch (error: any) {
         // Fail
         // Cannot update status to FAILED as it's not in enum. Log error.
         await prisma.approvalExecutionLog.create({

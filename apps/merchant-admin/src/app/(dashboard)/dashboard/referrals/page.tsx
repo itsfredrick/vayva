@@ -19,8 +19,8 @@ export default function ReferralsPage() {
   }, []);
 
   const copyCode = () => {
-    if (!data?.code) return;
-    navigator.clipboard.writeText(data.code);
+    if (!(data as any)?.code) return;
+    navigator.clipboard.writeText((data as any).code);
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
   };
@@ -47,7 +47,7 @@ export default function ReferralsPage() {
             Your Referral Code
           </p>
           <div className="flex items-center gap-3">
-            <code className="text-2xl font-mono font-bold">{data?.code}</code>
+            <code className="text-2xl font-mono font-bold">{(data as any)?.code}</code>
             <Button
               onClick={copyCode}
               className="p-2 hover:bg-white/10 rounded-lg transition-colors"
@@ -70,7 +70,7 @@ export default function ReferralsPage() {
           <p className="text-sm text-gray-500 uppercase font-bold tracking-wider">
             Total Referrals
           </p>
-          <h2 className="text-3xl font-bold mt-1">{data?.stats?.total || 0}</h2>
+          <h2 className="text-3xl font-bold mt-1">{(data as any)?.stats?.total || 0}</h2>
         </Card>
         <Card className="p-6 flex flex-col items-center text-center">
           <div className="w-12 h-12 bg-green-50 text-green-600 rounded-full flex items-center justify-center mb-4">
@@ -80,7 +80,7 @@ export default function ReferralsPage() {
             Converted
           </p>
           <h2 className="text-3xl font-bold mt-1">
-            {data?.stats?.conversions || 0}
+            {(data as any)?.stats?.conversions || 0}
           </h2>
         </Card>
         <Card className="p-6 flex flex-col items-center text-center">
@@ -91,7 +91,7 @@ export default function ReferralsPage() {
             Next Discount
           </p>
           <h2 className="text-3xl font-bold mt-1">
-            ₦{data?.pendingDiscount?.toLocaleString() || 0}
+            ₦{(data as any)?.pendingDiscount?.toLocaleString() || 0}
           </h2>
         </Card>
       </div>
@@ -101,9 +101,9 @@ export default function ReferralsPage() {
           <h3 className="font-bold text-gray-900">Reward History</h3>
           <Icon name="History" className="text-gray-300" />
         </div>
-        {data?.rewards?.length > 0 ? (
+        {(data as any)?.rewards?.length > 0 ? (
           <div className="divide-y divide-gray-50">
-            {data.rewards.map((reward: unknown) => (
+            {(data as any).rewards.map((reward: any) => (
               <div
                 key={reward.id}
                 className="p-6 flex items-center justify-between hover:bg-gray-50 transition-colors"
@@ -117,7 +117,7 @@ export default function ReferralsPage() {
                   </p>
                 </div>
                 <div className="text-green-600 font-bold">
-                  +₦{reward.amount?.toLocaleString()}
+                  +₦{(reward as any).amount?.toLocaleString()}
                 </div>
               </div>
             ))}

@@ -55,7 +55,7 @@ export const GET = withVayvaAPI(PERMISSIONS.METRICS_VIEW, async (request, { stor
             history
         });
     }
-    catch (error) {
+    catch (error: any) {
         console.error("Earnings Error:", error);
         return NextResponse.json({ error: "Failed to fetch earnings" }, { status: 500 });
     }

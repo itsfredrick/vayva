@@ -42,7 +42,7 @@ export default function InventoryPage() {
             });
             if (!res.ok) throw new Error("API error");
             toast.success(`${action} request logged with support.`, { id: toastId });
-        } catch (error) {
+        } catch (error: any) {
             toast.error(`Failed to initiate ${action}`, { id: toastId });
         }
     };
@@ -91,7 +91,7 @@ export default function InventoryPage() {
                     // Fallback for backward compatibility
                     setProducts(response);
                 }
-            } catch (e: unknown) {
+            } catch (e: any) {
                 console.error("Failed to load inventory", e);
             } finally {
                 setLoading(false);
@@ -156,7 +156,7 @@ export default function InventoryPage() {
                             </tr>
                         </thead>
                         <tbody className="divide-y divide-gray-100">
-                            {products.map((p) => {
+                            {products.map((p: any) => {
                                 const stock = p.inventory?.quantity || 0;
                                 const lowStock = stock < 5;
                                 const isSelected = selectedIds.includes(p.id);

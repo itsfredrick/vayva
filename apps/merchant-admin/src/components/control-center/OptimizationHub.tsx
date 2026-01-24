@@ -81,7 +81,7 @@ export const OptimizationHub = ({
             <p className="text-xs font-bold text-gray-500 uppercase">
               Active Rules Applied
             </p>
-            {status.applied_rules.map((rule: unknown) => (
+            {status.applied_rules.map((rule: any) => (
               <div
                 key={rule.id}
                 className="flex items-center justify-between p-3 bg-gray-50 rounded-lg border border-gray-100"

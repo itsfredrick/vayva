@@ -3,7 +3,7 @@
 import React from "react";
 import { Check, X, Minus } from "lucide-react";
 
-export function ComparisonTable() {
+export function ComparisonTable(): React.JSX.Element {
     return (
         <section className="py-24 px-4 bg-white">
             <div className="max-w-4xl mx-auto">

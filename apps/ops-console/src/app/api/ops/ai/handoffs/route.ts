@@ -1,8 +1,8 @@
-import { NextResponse } from "next/server";
+import { NextResponse } from 'next/server';
 import { prisma } from "@vayva/db";
 import { OpsAuthService } from "@/lib/ops-auth";
 
-export async function GET(request: Request) {
+export async function GET(_request: Request) {
     const { user } = await OpsAuthService.requireSession(); // Ensure auth
 
     // Fetch recent Handoff Events
@@ -42,13 +42,13 @@ export async function GET(request: Request) {
 
     // Transform for UI
     const data = handoffs.map(h => ({
-        id: h.id,
-        storeName: h.store.name,
-        customerPhone: h.conversation.contact.phoneE164,
-        trigger: h.triggerType, // SENTIMENT, etc
-        aiSummary: h.aiSummary,
-        ticketStatus: h.ticket.status,
-        timestamp: h.createdAt,
+        id: (h as any).id,
+        storeName: (h as any).store.name,
+        customerPhone: (h as any).conversation.contact.phoneE164,
+        trigger: (h as any).triggerType, // SENTIMENT, etc
+        aiSummary: (h as any).aiSummary,
+        ticketStatus: (h as any).ticket.status,
+        timestamp: (h as any).createdAt,
         // Mocking last message for now as extracting it from conversation relation might be heavy if not optimized
         lastMessagePreview: "Customer requested specific help..."
     }));

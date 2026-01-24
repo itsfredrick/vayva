@@ -9,7 +9,7 @@ export async function POST(req: Request) {
 
         // Allow Demo fallback if no session (for easy QA verification)
         const userId = (session?.user)?.id || "usr_buyer_demo_123";
-        const userEmail = session?.user?.email || "buyer@demo.com";
+        const _userEmail = session?.user?.email || "buyer@demo.com";
         const userName = session?.user?.name || "Demo Buyer";
 
         const { listingId, message } = await req.json();
@@ -112,7 +112,7 @@ export async function POST(req: Request) {
     }
 }
 
-export async function GET(req: Request) {
+export async function GET(_req: Request) {
     try {
         const session = await getServerSession(authOptions);
         const userId = (session?.user)?.id || "usr_buyer_demo_123";

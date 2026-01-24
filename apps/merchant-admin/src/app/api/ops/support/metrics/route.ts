@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
-export async function GET(req: unknown) {
+export async function GET(req: any) {
     try {
         const session = await getServerSession(authOptions);
         if (!session?.user?.id)
@@ -45,8 +45,8 @@ export async function GET(req: unknown) {
             where: { eventType: "BOT_ESCALATED", ...dateFilter },
             select: { payload: true },
         });
-        const triggerCounts = {};
-        rawEscalations.forEach((e: unknown) => {
+        const triggerCounts: Record<string, number> = {};
+        rawEscalations.forEach((e: any) => {
             const t = e.payload?.trigger || "UNKNOWN";
             triggerCounts[t] = (triggerCounts[t] || 0) + 1;
         });
@@ -58,7 +58,7 @@ export async function GET(req: unknown) {
         const feedback = await prisma.supportBotFeedback.findMany({
             where: dateFilter,
         });
-        const thumbsUp = feedback.filter((f: unknown) => f.rating === "SOLVED").length;
+        const thumbsUp = feedback.filter((f: any) => f.rating === "SOLVED").length;
         const totalFeedback = feedback.length;
         const thumbsUpRate = totalFeedback > 0 ? thumbsUp / totalFeedback : 0;
         // Deflection Rate Proxy
@@ -81,7 +81,7 @@ export async function GET(req: unknown) {
             debug: { totalConvos, ticketsCreated }, // Remove in prod
         });
     }
-    catch (error) {
+    catch (error: any) {
         console.error(error);
         return NextResponse.json({ error: "Internal Error" }, { status: 500 });
     }

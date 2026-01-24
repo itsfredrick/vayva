@@ -1,5 +1,6 @@
 export class WhatsAppProvider {
-    static async sendMessage(to, text) {
+    static baseUrl = "https://graph.facebook.com/v17.0";
+    static async sendMessage(to: any, text: any) {
         const token = process.env.WHATSAPP_ACCESS_TOKEN;
         const phoneId = process.env.WHATSAPP_PHONE_ID;
         if (!token || !phoneId) {

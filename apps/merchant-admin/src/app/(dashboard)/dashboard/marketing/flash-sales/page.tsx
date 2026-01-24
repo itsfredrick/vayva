@@ -43,7 +43,7 @@ export default function FlashSalesPage() {
             if (!res.ok) throw new Error("Failed to load flash sales");
             const data = await res.json();
             setSales(data.data || []);
-        } catch (error) {
+        } catch (error: any) {
             console.error(error);
             toast.error("Could not load flash sales");
         } finally {
@@ -83,8 +83,8 @@ export default function FlashSalesPage() {
             setIsOpen(false);
             setFormData({ name: "", discount: "20", durationHours: "24" }); // Reset
             fetchSales();
-        } catch (error) {
-            toast.error(error.message || "Failed to create flash sale");
+        } catch (error: any) {
+            toast.error((error as any).message || "Failed to create flash sale");
         } finally {
             setIsSubmitting(false);
         }
@@ -107,7 +107,7 @@ export default function FlashSalesPage() {
 
             toast.success("Sale ended successfully");
             fetchSales();
-        } catch (error) {
+        } catch (error: any) {
             toast.error("Could not end sale");
         }
     };
@@ -158,8 +158,8 @@ export default function FlashSalesPage() {
             setEditingSale(null);
             setFormData({ name: "", discount: "20", durationHours: "24" });
             fetchSales();
-        } catch (error) {
-            toast.error(error.message || "Failed to update flash sale");
+        } catch (error: any) {
+            toast.error((error as any).message || "Failed to update flash sale");
         } finally {
             setIsSubmitting(false);
         }
@@ -177,7 +177,7 @@ export default function FlashSalesPage() {
 
             toast.success("Flash sale deleted successfully");
             fetchSales();
-        } catch (error) {
+        } catch (error: any) {
             toast.error("Could not delete sale");
         }
     };
@@ -228,7 +228,7 @@ export default function FlashSalesPage() {
                     </div>
                 ) : (
                     <div className="grid gap-4 p-4 sm:grid-cols-2 lg:grid-cols-3">
-                        {sales.map((sale) => {
+                        {sales.map((sale: any) => {
                             const now = new Date();
                             const start = new Date(sale.startTime);
                             const end = new Date(sale.endTime);
@@ -313,7 +313,7 @@ export default function FlashSalesPage() {
                             <Label htmlFor="name">Sale Name</Label>
                             <Input
                                 id="name"
-                                value={formData.name}
+                                value={(formData.name as any)}
                                 onChange={(e: React.ChangeEvent<HTMLInputElement>) => setFormData({ ...formData, name: e.target.value })}
                                 placeholder="e.g. Midnight Madness"
                             />
@@ -326,7 +326,7 @@ export default function FlashSalesPage() {
                                     type="number"
                                     min="1"
                                     max="100"
-                                    value={formData.discount}
+                                    value={(formData.discount as any)}
                                     onChange={(e: React.ChangeEvent<HTMLInputElement>) => setFormData({ ...formData, discount: e.target.value })}
                                 />
                             </div>
@@ -336,7 +336,7 @@ export default function FlashSalesPage() {
                                     id="duration"
                                     type="number"
                                     min="1"
-                                    value={formData.durationHours}
+                                    value={(formData.durationHours as any)}
                                     onChange={(e: React.ChangeEvent<HTMLInputElement>) => setFormData({ ...formData, durationHours: e.target.value })}
                                 />
                             </div>

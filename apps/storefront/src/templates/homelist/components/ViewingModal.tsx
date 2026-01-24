@@ -83,7 +83,7 @@ export const ViewingModal = ({
               <Calendar size={14} /> Select Date
             </label>
             <div className="flex gap-2 overflow-x-auto pb-2">
-              {dates.map((date) => (
+              {dates.map((date: any) => (
                 <Button
                   key={date}
                   type="button"
@@ -101,7 +101,7 @@ export const ViewingModal = ({
               <Clock size={14} /> Select Time
             </label>
             <div className="grid grid-cols-2 gap-3">
-              {times.map((time) => (
+              {times.map((time: any) => (
                 <Button
                   key={time}
                   type="button"

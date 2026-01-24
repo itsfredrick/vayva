@@ -9,7 +9,7 @@ interface AddressModalProps {
   lang: LocaleKey;
   isOpen: boolean;
   onClose: () => void;
-  onSave: (address: unknown) => void;
+  onSave: (address: any) => void;
 }
 
 export function AddressModal({
@@ -86,7 +86,7 @@ export function AddressModal({
               required
               type="text"
               value={title}
-              onChange={(e) => setTitle(e.target.value)}
+              onChange={(e: any) => setTitle(e.target.value)}
               placeholder="Ev, İş, Annemler..."
               className="w-full p-3 bg-gray-50 border border-gray-100 rounded-xl"
             />
@@ -103,7 +103,7 @@ export function AddressModal({
               <select
                 id="address-city"
                 value={city}
-                onChange={(e) => setCity(e.target.value)}
+                onChange={(e: any) => setCity(e.target.value)}
                 className="w-full p-3 bg-gray-50 border border-gray-100 rounded-xl font-medium"
               >
                 <option value="İstanbul">İstanbul</option>
@@ -123,7 +123,7 @@ export function AddressModal({
                 required
                 type="text"
                 value={district}
-                onChange={(e) => setDistrict(e.target.value)}
+                onChange={(e: any) => setDistrict(e.target.value)}
                 className="w-full p-3 bg-gray-50 border border-gray-100 rounded-xl"
               />
             </div>
@@ -141,7 +141,7 @@ export function AddressModal({
               required
               type="text"
               value={neighborhood}
-              onChange={(e) => setNeighborhood(e.target.value)}
+              onChange={(e: any) => setNeighborhood(e.target.value)}
               className="w-full p-3 bg-gray-50 border border-gray-100 rounded-xl"
             />
           </div>
@@ -158,7 +158,7 @@ export function AddressModal({
               required
               rows={3}
               value={address}
-              onChange={(e) => setAddress(e.target.value)}
+              onChange={(e: any) => setAddress(e.target.value)}
               className="w-full p-3 bg-gray-50 border border-gray-100 rounded-xl resize-none"
             />
           </div>
@@ -174,7 +174,7 @@ export function AddressModal({
               id="address-notes"
               type="text"
               value={notes}
-              onChange={(e) => setNotes(e.target.value)}
+              onChange={(e: any) => setNotes(e.target.value)}
               className="w-full p-3 bg-gray-50 border border-gray-100 rounded-xl"
             />
           </div>

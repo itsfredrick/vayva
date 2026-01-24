@@ -28,6 +28,7 @@ export const PERMISSIONS = {
     CUSTOMERS_VIEW: "customers:view",
     CUSTOMERS_MANAGE: "customers:manage",
 };
+export type PermissionKey = string;
 export const ROLES = {
     OWNER: "owner",
     ADMIN: "admin",
@@ -90,7 +91,7 @@ const ROLE_PERMISSIONS = {
     ],
     [ROLES.VIEWER]: [PERMISSIONS.VIEWER, PERMISSIONS.COMMERCE_VIEW, PERMISSIONS.SETTINGS_VIEW],
 };
-export function can(role: unknown, action: unknown) {
+export function can(role: any, action: any) {
     const perms = ROLE_PERMISSIONS[role] || [];
     if (perms.includes("*"))
         return true;

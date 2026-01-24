@@ -24,7 +24,7 @@ export async function POST(req: NextRequest, { params }: { params: Promise<{ typ
         });
         return NextResponse.json({ policy });
     }
-    catch (error) {
+    catch (error: any) {
         console.error("Error publishing policy:", error);
         return NextResponse.json({ error: "Internal server error" }, { status: 500 });
     }

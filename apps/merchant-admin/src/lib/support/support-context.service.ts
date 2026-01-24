@@ -3,7 +3,7 @@ export class SupportContextService {
     /**
      * Get a comprehensive safe snapshot for the support bot
      */
-    static async getMerchantSnapshot(storeId) {
+    static async getMerchantSnapshot(storeId: any) {
         const [storeData, orders] = await Promise.all([
             prisma.store.findUnique({
                 where: { id: storeId },
@@ -22,14 +22,14 @@ export class SupportContextService {
                 name: storeData.name,
                 category: storeData.category,
                 verificationStatus: storeData.isLive ? "LIVE" : "DRAFT",
-                domain: storeData.customDomain || "vayva.shop",
+                domain: (storeData as any).customDomain || "vayva.shop",
             },
             plan: {
                 name: storeData.plan || "FREE",
-                status: storeData.aiSubscription?.status || "TRIAL",
-                expiresAt: storeData.aiSubscription?.trialEndsAt,
-                daysRemaining: storeData.aiSubscription?.trialEndsAt
-                    ? Math.max(0, Math.ceil((new Date(storeData.aiSubscription.trialEndsAt).getTime() - new Date().getTime()) / (1000 * 60 * 60 * 24)))
+                status: (storeData as any).aiSubscription?.status || "TRIAL",
+                expiresAt: (storeData as any).aiSubscription?.trialEndsAt,
+                daysRemaining: (storeData as any).aiSubscription?.trialEndsAt
+                    ? Math.max(0, Math.ceil((new Date((storeData as any).aiSubscription.trialEndsAt).getTime() - new Date().getTime()) / (1000 * 60 * 60 * 24)))
                     : null,
             },
             stats: {
@@ -38,11 +38,11 @@ export class SupportContextService {
                 totalLeads: await prisma.customer.count({ where: { storeId } }),
             },
             whatsapp: {
-                connected: !!storeData.agent,
+                connected: !!(storeData as any).agent,
                 status: "ACTIVE",
                 aiActive: true,
             },
-            recentOrders: orders.map((o: unknown) => ({
+            recentOrders: orders.map((o: any) => ({
                 id: o.id,
                 status: o.status,
                 amount: `₦${(Number(o.total) / 100).toFixed(2)}`,

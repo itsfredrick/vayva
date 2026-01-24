@@ -14,7 +14,8 @@ const VAYVA_PALETTE = [
 ];
 
 export default function BrandingStep() {
-    const { nextStep, prevStep, updateData, state, isSaving } = useOnboarding();
+    const { nextStep, prevStep, updateData, state: rawState, isSaving } = useOnboarding();
+    const state = rawState as any;
     const [brandColor, setBrandColor] = useState(state.branding?.brandColor || "#10B981");
 
     const handleContinue = () => {
@@ -23,7 +24,7 @@ export default function BrandingStep() {
                 ...state.branding,
                 brandColor
             }
-        });
+        } as any);
         nextStep();
     };
 
@@ -40,7 +41,7 @@ export default function BrandingStep() {
                     <div className="space-y-3">
                         <Label>Select Primary Brand Color</Label>
                         <div className="grid grid-cols-3 gap-3">
-                            {VAYVA_PALETTE.map((color) => (
+                            {VAYVA_PALETTE.map((color: any) => (
                                 <Button
                                     key={color.hex}
                                     variant="ghost"
@@ -71,8 +72,8 @@ export default function BrandingStep() {
                             <input
                                 type="color"
                                 aria-label="Brand Color"
-                                value={brandColor}
-                                onChange={(e) => setBrandColor(e.target.value)}
+                                value={(brandColor as any)}
+                                onChange={(e: any) => setBrandColor(e.target.value)}
                                 className="h-10 w-10 border-0 rounded-lg cursor-pointer bg-transparent"
                             />
                             <span className="text-sm font-mono font-medium text-gray-600 uppercase">

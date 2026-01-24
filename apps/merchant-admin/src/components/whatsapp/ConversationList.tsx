@@ -36,7 +36,7 @@ export function ConversationList({ conversations }: ConversationListProps) {
 
     return (
         <div className="divide-y divide-slate-100">
-            {conversations.map((conv) => (
+            {conversations.map((conv: any) => (
                 <div
                     key={conv.id}
                     className={`relative p-4 hover:bg-slate-50 transition-colors cursor-pointer group flex items-start justify-between gap-4 ${conv.unread ? 'bg-indigo-50/50' : ''}`}

@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import { getSessionUser } from "@/lib/session";
 import { prisma } from "@/lib/prisma";
 // PATCH /api/properties/viewings/[id]/status
-export async function PATCH(request: unknown, { params }: unknown) {
+export async function PATCH(request: Request, { params }: any) {
     try {
         const sessionUser = await getSessionUser();
         if (!sessionUser)
@@ -18,7 +18,7 @@ export async function PATCH(request: unknown, { params }: unknown) {
         });
         return NextResponse.json({ success: true, booking });
     }
-    catch (e) {
+    catch (e: any) {
         console.error("Update viewing status error:", e);
         return NextResponse.json({ error: "Internal Error" }, { status: 500 });
     }

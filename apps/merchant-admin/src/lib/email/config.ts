@@ -17,7 +17,7 @@ export const REPLY_TO_ADDRESSES = {
  * - SUPPORT -> Support
  * - BILLING -> Support (default)
  */
-export function getReplyTo(senderEmail: unknown) {
+export function getReplyTo(senderEmail: any) {
     switch (senderEmail) {
         case SENDER_IDENTITIES.SECURITY.email:
         case SENDER_IDENTITIES.TEAM.email:

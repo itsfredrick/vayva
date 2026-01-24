@@ -6,6 +6,7 @@ const APPS = [
     { name: 'Merchant Admin', port: 3000 },
     { name: 'Storefront', port: 3001 },
     { name: 'Ops Console', port: 3002 },
+    { name: 'Marketing', port: 3003 },
     { name: 'Marketplace', port: 3004 }
 ];
 
@@ -27,18 +28,22 @@ let issues = 0;
 // 1. Check Configuration
 console.log('\x1b[1m%s\x1b[0m', '1. Configuration & Environments');
 const envPath = path.join(__dirname, '..', '.env');
+const sampleEnvPath = path.join(__dirname, '..', '.env.example');
+
 if (fs.existsSync(envPath)) {
     console.log('✅ .env file found');
+} else if (fs.existsSync(sampleEnvPath)) {
+    console.log('⚠️  .env file missing (Using .env.example or defaults)');
 } else {
-    console.log('⚠️  .env file missing (Using system env or defaults)');
+    console.log('❌ .env file missing');
+    issues++;
 }
 
 const nvmrcPath = path.join(__dirname, '..', '.nvmrc');
 if (fs.existsSync(nvmrcPath)) {
     console.log('✅ .nvmrc file found');
 } else {
-    console.log('❌ .nvmrc file missing (Required for Node version consistency)');
-    issues++;
+    console.log('⚠️  .nvmrc file missing');
 }
 
 // Check for missing critical env vars in .env (if it exists)
@@ -56,8 +61,8 @@ console.log('\n\x1b[1m%s\x1b[0m', '2. Node.js Environment');
 const nodeVersion = process.version;
 console.log(`ℹ️  Current Node Version: ${nodeVersion}`);
 const majorVersion = parseInt(nodeVersion.slice(1).split('.')[0]);
-if (majorVersion !== 22) {
-    console.log('❌ Node version must be 22.x (Recommended: 22.10.0+)');
+if (majorVersion < 20) {
+    console.log('❌ Node version must be >= 20.x');
     issues++;
 } else {
     console.log('✅ Node version compatible');

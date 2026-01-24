@@ -41,7 +41,7 @@ export default function DisputesPage() {
             if (!res.ok) throw new Error("Failed to load disputes");
             const result = await res.json();
             setDisputes(result.data || []);
-        } catch (error) {
+        } catch (error: any) {
             console.error(error);
             toast.error("Could not load disputes");
         } finally {
@@ -72,7 +72,7 @@ export default function DisputesPage() {
             toast.success("Evidence submitted successfully");
             setEvidenceOpen(false);
             fetchDisputes(); // Refresh status
-        } catch (e) {
+        } catch (e: any) {
             toast.error("Failed to submit evidence");
         } finally {
             setSubmitting(false);
@@ -115,7 +115,7 @@ export default function DisputesPage() {
                                 </tr>
                             </thead>
                             <tbody className="divide-y divide-slate-100">
-                                {disputes.map((dispute) => (
+                                {disputes.map((dispute: any) => (
                                     <tr key={dispute.id} className="hover:bg-slate-50/50 group">
                                         <td className="px-6 py-4">
                                             <div className="font-medium text-slate-900">#{dispute.orderNumber}</div>
@@ -181,8 +181,8 @@ export default function DisputesPage() {
                             </label>
                             <Textarea
                                 placeholder="Describe the service/product provided, tracking details, and communication history..."
-                                value={evidenceText}
-                                onChange={(e: unknown) => setEvidenceText(e.target.value)}
+                                value={(evidenceText as any)}
+                                onChange={(e: any) => setEvidenceText((e.target as any).value)}
                                 className="min-h-[150px]"
                             />
                         </div>
@@ -192,7 +192,7 @@ export default function DisputesPage() {
                                 Supporting Documents
                             </label>
                             <FileUpload
-                                value={fileUrl}
+                                value={(fileUrl as any)}
                                 onChange={setFileUrl}
                                 label="Upload proof of service, tracking, or communication"
                                 accept="image/*,application/pdf"

@@ -1,3 +1,4 @@
+import React from "react";
 import { notFound } from "next/navigation";
 import PaystackTestClient from "./PaystackTestClient";
 import { Metadata } from "next";
@@ -10,7 +11,7 @@ export const metadata: Metadata = {
   },
 };
 
-export default function PaystackTestPage() {
+export default function PaystackTestPage(): React.JSX.Element {
   return (
     <div>
       <PaystackTestClient />

@@ -60,10 +60,10 @@ export default function MarketCategoryPage({
         </div>
 
         <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-6">
-          {DEMO_PRODUCTS.map((product) => (
+          {DEMO_PRODUCTS.map((product: any) => (
             <MarketProductCard key={product.id} product={product} />
           ))}
-          {DEMO_PRODUCTS.map((product) => (
+          {DEMO_PRODUCTS.map((product: any) => (
             <MarketProductCard key={product.id + "d"} product={product} />
           ))}
         </div>

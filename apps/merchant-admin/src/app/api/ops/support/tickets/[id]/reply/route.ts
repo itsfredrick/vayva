@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
-export async function POST(req: unknown, props: unknown) {
+export async function POST(req: any, props: any) {
     const params = await props.params;
     try {
         const session = await getServerSession(authOptions);
@@ -28,7 +28,10 @@ export async function POST(req: unknown, props: unknown) {
         const ticket = await prisma.supportTicket.findUnique({
             where: { id: params.id },
         });
-        const updateData = { lastMessageAt: new Date() };
+        if (!ticket) {
+            return NextResponse.json({ error: "Ticket not found" }, { status: 404 });
+        }
+        const updateData: any = { lastMessageAt: new Date() };
         if (!ticket.firstOpsReplyAt) {
             updateData.firstOpsReplyAt = new Date();
         }
@@ -39,7 +42,7 @@ export async function POST(req: unknown, props: unknown) {
         // 3. (Optional) Trigger Notification to Merchant via Email/Dashboard
         return NextResponse.json(reply);
     }
-    catch (error) {
+    catch (error: any) {
         return NextResponse.json({ error: "Internal Error" }, { status: 500 });
     }
 }

@@ -3,7 +3,7 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import crypto from "crypto";
-export async function POST(req: unknown) {
+export async function POST(req: any) {
     const session = await getServerSession(authOptions);
     if (!session?.user?.storeId) {
         return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
@@ -42,10 +42,10 @@ export async function POST(req: unknown) {
         else {
             // Invite
             const store = await prisma.store.findUnique({ where: { id: session.user.storeId }, select: { settings: true } });
-            const currentSettings = store?.settings || {};
+            const currentSettings: any = store?.settings || {};
             const currentInvites = currentSettings.invites || [];
             // Check if already invited
-            if (currentInvites.find((i: unknown) => i.email === email)) {
+            if (currentInvites.find((i: any) => i.email === email)) {
                 return NextResponse.json({ error: "User already invited" }, { status: 409 });
             }
             const newInvite = {
@@ -59,7 +59,7 @@ export async function POST(req: unknown) {
                 where: { id: session.user.storeId },
                 data: {
                     settings: {
-                        ...currentSettings,
+                        ...(currentSettings as any),
                         invites: [...currentInvites, newInvite]
                     }
                 }
@@ -73,7 +73,7 @@ export async function POST(req: unknown) {
                      <p><a href="${inviteUrl}">${inviteUrl}</a></p>
                      <p>This link expires in 7 days.</p>`);
             }
-            catch (e) {
+            catch (e: any) {
                 console.error("Email Dispatch Failed:", e);
                 // We still Return success for the invite record, but log the error.
                 // In production, we'd retry or notify the user.
@@ -81,12 +81,12 @@ export async function POST(req: unknown) {
             return NextResponse.json({ status: "invited", invite: newInvite });
         }
     }
-    catch (error) {
+    catch (error: any) {
         console.error("Invite Error:", error);
         return NextResponse.json({ error: "Failed to invite" }, { status: 500 });
     }
 }
-export async function DELETE(req: unknown) {
+export async function DELETE(req: any) {
     const session = await getServerSession(authOptions);
     if (!session?.user?.storeId) {
         return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
@@ -97,21 +97,21 @@ export async function DELETE(req: unknown) {
         if (!email)
             return NextResponse.json({ error: "Email required" }, { status: 400 });
         const store = await prisma.store.findUnique({ where: { id: session.user.storeId }, select: { settings: true } });
-        const currentSettings = store?.settings || {};
+        const currentSettings: any = store?.settings || {};
         const currentInvites = currentSettings.invites || [];
-        const newInvites = currentInvites.filter((i: unknown) => i.email !== email);
+        const newInvites = currentInvites.filter((i: any) => i.email !== email);
         await prisma.store.update({
             where: { id: session.user.storeId },
             data: {
                 settings: {
-                    ...currentSettings,
+                    ...(currentSettings as any),
                     invites: newInvites
                 }
             }
         });
         return NextResponse.json({ success: true });
     }
-    catch (error) {
+    catch (error: any) {
         return NextResponse.json({ error: "Failed to undo invite" }, { status: 500 });
     }
 }

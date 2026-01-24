@@ -4,7 +4,7 @@ import React, { useState, Suspense } from "react";
 import { Button } from "@vayva/ui";
 import { useSearchParams, useRouter } from "next/navigation";
 
-function PaystackTestContent() {
+function PaystackTestContent(): React.JSX.Element {
     const searchParams = useSearchParams();
     const router = useRouter();
     const reference = searchParams.get("reference");
@@ -33,7 +33,7 @@ function PaystackTestContent() {
                     }),
                 });
             }
-        } catch (e) {
+        } catch (e: any) {
             console.error("Webhook simulation failed", e);
         }
 
@@ -100,7 +100,7 @@ function PaystackTestContent() {
     );
 }
 
-export default function PaystackTestClient() {
+export default function PaystackTestClient(): React.JSX.Element {
     return (
         <Suspense fallback={<div>Loading simulation...</div>}>
             <PaystackTestContent />

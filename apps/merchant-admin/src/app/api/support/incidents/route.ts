@@ -12,7 +12,7 @@ export async function GET() {
         });
         return NextResponse.json({ incidents });
     }
-    catch (error) {
+    catch (error: any) {
         console.error("Fetch Incidents Error:", error);
         return NextResponse.json({ error: "Failed to fetch incidents" }, { status: 500 });
     }

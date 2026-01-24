@@ -5,7 +5,7 @@ interface BenefitsProps {
   benefits: { icon: string; title: string; description: string }[];
 }
 
-const IconMap: Record<string, unknown> = {
+const IconMap: Record<string, any> = {
   battery: Battery,
   zap: Zap,
   "volume-x": VolumeX,
@@ -13,7 +13,7 @@ const IconMap: Record<string, unknown> = {
   check: CheckCircle,
 };
 
-export const BenefitsSection = ({ benefits }: BenefitsProps) => {
+export const BenefitsSection = ({ benefits }: BenefitsProps): React.JSX.Element => {
   return (
     <section id="features" className="py-20 bg-gray-50">
       <div className="max-w-6xl mx-auto px-6">

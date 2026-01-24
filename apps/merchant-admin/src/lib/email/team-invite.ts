@@ -1,6 +1,6 @@
 import { Resend } from "resend";
 import { wrapEmail, renderButton } from "./layout";
-export async function sendTeamInvite({ email, storeName, role, inviterName, }) {
+export async function sendTeamInvite({ email, storeName, role, inviterName }: { email: any; storeName: any; role: any; inviterName: any }) {
     const inviteUrl = `${process.env.NEXTAUTH_URL}/accept-invite?email=${encodeURIComponent(email)}`;
     // Role Descriptions
     let roleDesc = "";
@@ -60,7 +60,7 @@ export async function sendTeamInvite({ email, storeName, role, inviterName, }) {
         }
         return { success: true, data };
     }
-    catch (error) {
+    catch (error: any) {
         console.error("Email send error:", error);
         throw error;
     }

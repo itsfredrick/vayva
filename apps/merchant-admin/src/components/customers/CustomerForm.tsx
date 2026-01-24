@@ -5,7 +5,7 @@ import { Button, Input, Label, Icon } from "@vayva/ui";
 import { useRouter } from "next/navigation";
 
 interface CustomerFormProps {
-    initialData?: unknown;
+    initialData?: any;
     onSuccess: () => void;
 }
 
@@ -24,7 +24,7 @@ export function CustomerForm({ initialData, onSuccess }: CustomerFormProps) {
         setError(null);
 
         const formData = new FormData(e.currentTarget);
-        const data = {
+        const data: any = {
             firstName: formData.get("firstName"),
             lastName: formData.get("lastName"),
             email: formData.get("email"),
@@ -72,7 +72,7 @@ export function CustomerForm({ initialData, onSuccess }: CustomerFormProps) {
                     <Input
                         id="firstName"
                         name="firstName"
-                        defaultValue={initialFirstName}
+                        defaultValue={(initialFirstName as any)}
                         placeholder="e.g. Chioma"
                         required
                     />
@@ -82,7 +82,7 @@ export function CustomerForm({ initialData, onSuccess }: CustomerFormProps) {
                     <Input
                         id="lastName"
                         name="lastName"
-                        defaultValue={initialLastName}
+                        defaultValue={(initialLastName as any)}
                         placeholder="e.g. Okeke"
                         required
                     />

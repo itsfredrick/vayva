@@ -1,3 +1,4 @@
+import React from "react";
 import Link from "next/link";
 import { APP_URL } from "@/lib/constants";
 import {
@@ -18,7 +19,7 @@ export const metadata = {
     "Build a professional mobile-first online store without writing a single line of code. Choose a template, customize, and launch.",
 };
 
-export default function StoreBuilderPage() {
+export default function StoreBuilderPage(): React.JSX.Element {
   return (
     <div className="min-h-screen bg-white relative overflow-hidden text-[#0F172A]">
       {/* Background Orbs */}

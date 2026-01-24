@@ -113,11 +113,11 @@ interface SkeletonProps {
   className?: string;
 }
 
-export function Skeleton({ className }: SkeletonProps) {
+export function Skeleton({ className }: SkeletonProps): React.JSX.Element {
   return <div className={cn("animate-pulse bg-gray-100 rounded", className)} />;
 }
 
-export function CardSkeleton() {
+export function CardSkeleton(): React.JSX.Element {
   return (
     <div className="bg-white rounded-2xl border border-gray-100 p-6 space-y-4">
       <Skeleton className="h-4 w-1/3" />
@@ -127,7 +127,7 @@ export function CardSkeleton() {
   );
 }
 
-export function TableRowSkeleton() {
+export function TableRowSkeleton(): React.JSX.Element {
   return (
     <tr>
       <td className="px-6 py-4">
@@ -151,7 +151,7 @@ interface RetryBannerProps {
   onRetry?: () => void;
 }
 
-export function RetryBanner({ message, onRetry }: RetryBannerProps) {
+export function RetryBanner({ message, onRetry }: RetryBannerProps): React.JSX.Element {
   return (
     <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4 flex items-center justify-between">
       <div className="flex items-center gap-3">

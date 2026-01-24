@@ -1,4 +1,4 @@
-import { NextRequest, NextResponse } from "next/server";
+import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from "@vayva/db";
 import { OpsAuthService } from "@/lib/ops-auth";
 import { logger } from "@/lib/logger";
@@ -13,8 +13,8 @@ export async function POST(
 
         try {
             OpsAuthService.requireRole(user, "OPS_ADMIN");
-        } catch (e: unknown) {
-            return NextResponse.json({ error: e.message }, { status: 403 });
+        } catch (e: any) {
+            return NextResponse.json({ error: (e as any).message }, { status: 403 });
         }
 
         const disputeId = params.id;
@@ -60,7 +60,7 @@ export async function POST(
             dispute: updatedDispute,
             message: "Dispute escalated for senior review",
         });
-    } catch (error) {
+    } catch (error: any) {
         logger.error("Escalate dispute error", error);
         return NextResponse.json(
             { error: "Failed to escalate dispute" },

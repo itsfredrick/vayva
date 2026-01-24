@@ -1,11 +1,11 @@
 "use client";
 
 import React from "react";
-import { History, User, Search, RefreshCw } from "lucide-react";
+import { History, User, Search, RefreshCw } from 'lucide-react';
 import { useOpsQuery } from "@/hooks/useOpsQuery";
 import { Button } from "@vayva/ui";
 
-export default function AuditPage() {
+export default function AuditPage(): React.JSX.Element {
     const { data: logs, isLoading, refetch } = useOpsQuery(
         ["system-audit"],
         () => fetch("/api/ops/admin/audit").then(res => res.json().then(j => j.data))
@@ -48,19 +48,19 @@ export default function AuditPage() {
                         ) : !logs?.length ? (
                             <tr><td colSpan={4} className="p-12 text-center text-gray-400">No activity recorded.</td></tr>
                         ) : (
-                            logs.map((log: unknown) => (
-                                <tr key={log.id} className="hover:bg-gray-50">
-                                    <td className="px-6 py-4 font-mono text-xs text-indigo-700 font-bold">{log.eventType}</td>
+                            logs.map((log: any) => (
+                                <tr key={(log as any).id} className="hover:bg-gray-50">
+                                    <td className="px-6 py-4 font-mono text-xs text-indigo-700 font-bold">{(log as any).eventType}</td>
                                     <td className="px-6 py-4 flex items-center gap-2">
                                         <span className="bg-gray-100 p-1 rounded-full text-gray-500"><User size={12} /></span>
-                                        <span className="font-medium text-gray-900">{log.OpsUser?.name || "System"}</span>
+                                        <span className="font-medium text-gray-900">{(log as any).OpsUser?.name || "System"}</span>
                                     </td>
                                     <td className="px-6 py-4">
                                         <pre className="text-[10px] text-gray-500 bg-gray-50 rounded p-1 max-w-xs overflow-x-auto">
-                                            {JSON.stringify(log.metadata, null, 0)}
+                                            {JSON.stringify((log as any).metadata, null, 0)}
                                         </pre>
                                     </td>
-                                    <td className="px-6 py-4 text-gray-500 text-xs">{new Date(log.createdAt).toLocaleString()}</td>
+                                    <td className="px-6 py-4 text-gray-500 text-xs">{new Date((log as any).createdAt).toLocaleString()}</td>
                                 </tr>
                             ))
                         )}

@@ -9,7 +9,7 @@ export const POST = withVayvaAPI(PERMISSIONS.SETTINGS_EDIT, async (request, { st
         const product = await BookingService.createServiceProduct(storeId, data);
         return NextResponse.json(product);
     }
-    catch (error) {
+    catch (error: any) {
         return NextResponse.json({ error: error.message }, { status: 400 });
     }
 });

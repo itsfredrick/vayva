@@ -39,7 +39,7 @@ export async function POST(req: NextRequest) {
             success: true,
             message: completion.choices[0]?.message?.content || "I didn't catch that.",
         });
-    } catch (error) {
+    } catch (error: any) {
         console.error("Marketing AI Error:", error);
         return NextResponse.json({
             success: false,

@@ -24,7 +24,7 @@ export function WeekSelector({
     <div className="w-full bg-white border-b border-gray-100 shadow-sm sticky top-0 z-20">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center space-x-2 py-4 overflow-x-auto no-scrollbar">
-          {weeks.map((week) => {
+          {weeks.map((week: any) => {
             const isSelected = week.id === selectedWeekId;
             const isLocked = week.isLocked;
 

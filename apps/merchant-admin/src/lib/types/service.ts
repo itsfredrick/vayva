@@ -1,6 +1,6 @@
-
 export interface ServiceProductMetadata {
     durationMinutes: number;
-    location: "ONLINE" | "ON_SITE" | "CLIENT_LOCATION";
-    isBookingRequired: boolean;
+    bufferTimeMinutes?: number;
+    location: "IN_STORE" | "HOME_SERVICE" | "VIRTUAL" | "ONLINE" | "ON_SITE" | "CLIENT_LOCATION";
+    isBookingRequired?: boolean;
 }

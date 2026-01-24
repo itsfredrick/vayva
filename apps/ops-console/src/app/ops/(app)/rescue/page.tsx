@@ -15,9 +15,9 @@ import {
     Webhook,
     Play,
     Loader2
-} from "lucide-react";
+} from 'lucide-react';
 import Link from "next/link";
-import { toast } from "sonner";
+import { toast } from 'sonner';
 import { Button } from "@vayva/ui";
 
 interface RescueIncident {
@@ -42,7 +42,7 @@ interface RescueFix {
 
 type Tab = "incidents" | "history" | "runbook" | "settings";
 
-export default function RescueConsolePage() {
+export default function RescueConsolePage(): React.JSX.Element {
     const [activeTab, setActiveTab] = useState<Tab>("incidents");
     const [incidents, setIncidents] = useState<RescueIncident[]>([]);
     const [fixes, setFixes] = useState<RescueFix[]>([]);
@@ -59,7 +59,7 @@ export default function RescueConsolePage() {
                 const res = await fetch("/api/ops/rescue/fixes");
                 setFixes(await res.json());
             }
-        } catch (error) {
+        } catch (error: any) {
             console.error("Rescue fetch error:", error);
         } finally {
             setLoading(false);
@@ -136,7 +136,7 @@ export default function RescueConsolePage() {
                     { id: "history", label: "Fix History", icon: History },
                     { id: "runbook", label: "Runbooks", icon: Zap },
                     { id: "settings", label: "Settings", icon: Settings },
-                ].map((tab) => (
+                ].map((tab: any) => (
                     <Button
                         key={tab.id}
                         variant="ghost"
@@ -171,7 +171,7 @@ export default function RescueConsolePage() {
                                     <p className="text-gray-500">No open rescue incidents found.</p>
                                 </div>
                             ) : (
-                                incidents.map((incident) => (
+                                incidents.map((incident: any) => (
                                     <Link
                                         key={incident.id}
                                         href={`/ops/rescue/${incident.id}`}
@@ -226,7 +226,7 @@ export default function RescueConsolePage() {
                                     </tr>
                                 </thead>
                                 <tbody className="divide-y divide-gray-100">
-                                    {Array.isArray(fixes) && fixes.map((fix) => (
+                                    {Array.isArray(fixes) && fixes.map((fix: any) => (
                                         <tr key={fix.id} className="hover:bg-gray-50 transition-colors">
                                             <td className="px-6 py-4 font-bold text-sm text-[#0F172A]">{fix.actionType}</td>
                                             <td className="px-6 py-4 text-xs text-indigo-600 hover:underline">
@@ -258,7 +258,7 @@ export default function RescueConsolePage() {
                                 { id: "webhook-recovery", title: "Webhook Recovery", desc: "Common steps for Paystack/Kwik failures", icon: Webhook },
                                 { id: "job-stuck-mitigation", title: "Job Stuck Mitigation", desc: "Dealing with BullMQ congestion", icon: Zap },
                                 { id: "auth-sync-repair", title: "Auth Sync Repair", desc: "Resolving session inconsistencies", icon: ShieldCheck },
-                            ].map((rb) => (
+                            ].map((rb: any) => (
                                 <Button
                                     variant="ghost"
                                     key={rb.id}

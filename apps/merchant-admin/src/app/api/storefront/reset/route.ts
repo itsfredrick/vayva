@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
-export async function POST(req: unknown) {
+export async function POST(req: any) {
     try {
         const session = await getServerSession(authOptions);
         if (!session?.user) {
@@ -49,7 +49,7 @@ export async function POST(req: unknown) {
             if (!sectionId)
                 return NextResponse.json({ error: "Missing sectionId" }, { status: 400 });
             // Reset specific section config
-            const currentSectionConfig = draft.sectionConfig || {};
+            const currentSectionConfig: any = draft.sectionConfig || {};
             const newSectionConfig = { ...currentSectionConfig };
             delete newSectionConfig[sectionId]; // Removing it reverts to default
             await prisma.storefrontDraft.update({
@@ -62,7 +62,7 @@ export async function POST(req: unknown) {
         }
         return NextResponse.json({ success: true });
     }
-    catch (error) {
+    catch (error: any) {
         console.error("POST /api/storefront/reset error:", error);
         return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
     }

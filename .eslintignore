@@ -48,3 +48,20 @@ typecheck_results.txt
 **/src/**/*.jsx
 !**/src/**/*.ts
 !**/src/**/*.tsx
+
+# Legacy & One-off Fixes
+singularity_fix*.js
+SINGULARITY_RECOVERY*.js
+migrate-*.js
+cleanup-*.js
+test-*.js
+*.test.js
+*.spec.js
+analyze_lint.js
+lint_report.json
+mass_fix*.js
+mass-fix*.js
+health-*.js
+health_*.js
+**/prisma/seed*.ts
+**/prisma/seed*.js

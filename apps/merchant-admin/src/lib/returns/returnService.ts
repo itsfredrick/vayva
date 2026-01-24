@@ -1,6 +1,6 @@
 import { prisma } from "@vayva/db";
 export class ReturnService {
-    static async createRequest(storeId, orderId, customerPhone, payload) {
+    static async createRequest(storeId: any, orderId: any, customerPhone: any, payload: any) {
         // Check if exists
         const existing = await prisma.returnRequest.findFirst({
             where: { orderId: orderId, status: { not: "CANCELLED" } },
@@ -21,7 +21,7 @@ export class ReturnService {
                 // items and logistics removed as they do not exist in schema
                 /*
                         items: {
-                            create: payload.items.map((i: unknown) => ({
+                            create: payload.items.map((i: any) => ({
                                 qty: i.quantity || 1,
                             }))
                         },
@@ -35,16 +35,16 @@ export class ReturnService {
         });
         return request;
     }
-    static async getRequests(storeId) {
+    static async getRequests(storeId: any) {
         return prisma.returnRequest.findMany({
             where: { merchantId: storeId },
             orderBy: { createdAt: "desc" },
             // include: { items: true, logistics: true } // Removed
         });
     }
-    static async updateStatus(requestId, status, actorId, data) {
+    static async updateStatus(requestId: any, status: any, actorId: any, data: any) {
         // Logic for specific status transitions
-        await prisma.$transaction(async (tx: unknown) => {
+        await prisma.$transaction(async (tx: any) => {
             await tx.returnRequest.update({
                 where: { id: requestId },
                 data: {

@@ -1,5 +1,5 @@
 import { OpsAuthService } from "@/lib/ops-auth";
-import { NextResponse } from "next/server";
+import { NextResponse } from 'next/server';
 
 /**
  * Middleware/Higher-Order Function for Ops Console API Routes.
@@ -10,9 +10,9 @@ import { NextResponse } from "next/server";
  */
 export function withOpsRBAC(
     requiredRole: "OPS_OWNER" | "SUPERVISOR" | "OPERATOR" | "OPS_SUPPORT" | "OPS_ADMIN",
-    handler: (session: unknown, request: Request, ...args: unknown[]) => Promise<NextResponse> | NextResponse
+    handler: (session: any, request: Request, ...args: any[]) => Promise<NextResponse> | NextResponse
 ) {
-    return async (request: Request, ...args: unknown[]) => {
+    return async (request: Request, ...args: any[]) => {
         try {
             const session = await OpsAuthService.requireSession();
 
@@ -20,7 +20,7 @@ export function withOpsRBAC(
             OpsAuthService.requireRole(session.user, requiredRole);
 
             return await handler(session, request, ...args);
-        } catch (error) {
+        } catch (error: any) {
             console.error("[OpsRBAC Error]:", error.message);
 
             if (error.message.includes("Unauthorized")) {

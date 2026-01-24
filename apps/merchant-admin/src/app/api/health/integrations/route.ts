@@ -14,7 +14,7 @@ export async function GET() {
         const health = await getIntegrationHealth(storeId);
         return NextResponse.json({ health });
     }
-    catch (error) {
+    catch (error: any) {
         console.error("Integration health error:", error);
         return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
     }

@@ -13,7 +13,7 @@ interface TicketlyLayoutProps {
   products: PublicProduct[];
 }
 
-export const TicketlyLayout = ({ store, products }: TicketlyLayoutProps) => {
+export const TicketlyLayout = ({ store, products }: TicketlyLayoutProps): React.JSX.Element => {
   // For demo, we just pick the first event to show as "Main Event"
   // In real app, this would be an event detail page or a list
   const mainEvent = products[0];
@@ -26,7 +26,7 @@ export const TicketlyLayout = ({ store, products }: TicketlyLayoutProps) => {
   } | null>(null);
   const [successData, setSuccessData] = useState<{
     attendee: { name: string; email: string };
-    bankDetails?: unknown;
+    bankDetails?: any;
     storeName?: string;
     orderNumber?: string;
   } | null>(null);
@@ -41,7 +41,7 @@ export const TicketlyLayout = ({ store, products }: TicketlyLayoutProps) => {
     setIsCheckingOut(true);
   };
 
-  const handlePaymentComplete = (data: unknown) => {
+  const handlePaymentComplete = (data: any) => {
     setIsCheckingOut(false);
     setSuccessData(data);
   };
@@ -61,7 +61,7 @@ export const TicketlyLayout = ({ store, products }: TicketlyLayoutProps) => {
           <div className="max-w-6xl mx-auto">
             <h2 className="text-2xl font-bold mb-8">More from {store.name}</h2>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              {products.slice(1).map((evt) => (
+              {products.slice(1).map((evt: any) => (
                 <div
                   key={evt.id}
                   className="bg-white rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-shadow"

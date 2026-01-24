@@ -8,8 +8,7 @@ import { useStore } from "@/context/StoreContext";
 import { INDUSTRY_CONFIG } from "@/config/industry";
 import { IndustrySlug } from "@/lib/templates/types";
 import { formatCurrency } from "@/lib/i18n";
-import { Button, Card, Icon } from "@vayva/ui";
-import type { IconName } from "@vayva/ui";
+import { Button, Card, Icon, type IconName } from "@vayva/ui";
 import { DashboardSetupChecklist } from "@/components/dashboard/DashboardSetupChecklist";
 import { extensionRegistry } from "@/lib/extensions/registry";
 
@@ -61,7 +60,7 @@ export default function DashboardPage() {
       <div className="h-8 w-48 bg-gray-100 rounded-lg animate-pulse mb-2" />
       <div className="h-4 w-64 bg-gray-50 rounded-lg animate-pulse mb-8" />
       <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-        {[1, 2, 3, 4].map((i) => (
+        {[1, 2, 3, 4].map((i: any) => (
           <div key={i} className="h-32 bg-gray-50 rounded-2xl animate-pulse" />
         ))}
       </div>
@@ -136,32 +135,56 @@ export default function DashboardPage() {
 
       {/* Widgets Grid */}
       <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-        {config.dashboardWidgets.map((widget) => {
+        {config.dashboardWidgets.map((widget: any) => {
           if (widget.id === "setup_checklist") return null;
           if (widget.type === "stat") {
             let icon = "Activity";
             const title = widget.title;
             let value: string | number = "—";
 
-            if (widget.id === "sales_today") {
-              const amount = metrics.revenue?.value || 0;
+            if (widget.id === "sales_today" || widget.id === "revenue_today") {
+              const amount = metrics.revenue?.value || metrics[widget.id]?.value || 0;
               value = formatCurrency(amount, store?.currency || "NGN");
               icon = "DollarSign";
-            } else if (widget.id === "orders_pending") {
-              value = metrics.orders?.value || 0;
+            } else if (widget.id === "orders_pending" || widget.id === "active_orders" || widget.id === "total_orders") {
+              value = metrics.orders?.value || metrics[widget.id]?.value || 0;
               icon = "ShoppingBag";
-            } else if (widget.id === "customers_count") {
-              value = metrics.customers?.value || 0;
+            } else if (widget.id === "customers_count" || widget.id === "total_leads" || widget.id === "total_inquiries") {
+              value = metrics.customers?.value || metrics[widget.id]?.value || 0;
               icon = "Users";
+            } else if (
+              widget.id === "active_listings" ||
+              widget.id === "active_stays" ||
+              widget.id === "total_posts" ||
+              widget.id === "active_services" ||
+              widget.id === "active_assets" ||
+              widget.id === "active_events" ||
+              widget.id === "total_projects" ||
+              widget.id === "active_campaigns"
+            ) {
+              value = metrics[widget.id]?.value || 0;
+              icon = "FileText";
+            } else if (widget.id === "upcoming_bookings" || widget.id === "upcoming_reservations" || widget.id === "total_viewings") {
+              value = metrics[widget.id]?.value || 0;
+              icon = "Calendar";
+            } else if (widget.id === "tickets_sold" || widget.id === "total_downloads" || widget.id === "total_donations") {
+              value = metrics[widget.id]?.value || 0;
+              icon = "Activity";
+            } else if (widget.id === "total_reads" || widget.id === "total_views") {
+              value = metrics[widget.id]?.value || 0;
+              icon = "Eye";
+            } else if (widget.id === "avg_read_time") {
+              value = metrics.avg_read_time?.value ? `${metrics.avg_read_time.value}m` : "—";
+              icon = "Clock";
             }
 
             return (
               <div key={widget.id} className={`md:col-span-${widget.w || 1}`}>
                 <StatWidget
                   title={title}
-                  value={value}
+                  value={(value as any)}
                   loading={metricsLoading}
-                  icon={icon}
+                  icon={(icon as any)}
                 />
               </div>
             );

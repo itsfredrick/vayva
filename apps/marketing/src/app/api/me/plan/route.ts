@@ -5,7 +5,7 @@ import { NextResponse } from "next/server";
  * Returns the user's billing plan information
  * For the marketing app, users are not authenticated, so we return free tier
  */
-export async function GET() {
+export async function GET(): Promise<NextResponse> {
   try {
     // Marketing app doesn't have authenticated users
     // Always return free tier for marketing site visitors
@@ -14,7 +14,7 @@ export async function GET() {
       source: "marketing_default",
       isAuthenticated: false,
     });
-  } catch (error) {
+  } catch (error: any) {
     console.error("Error in /api/me/plan:", error);
     return NextResponse.json(
       {

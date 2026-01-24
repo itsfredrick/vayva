@@ -24,7 +24,7 @@ export default function ConversationPage({ params }: { params: Promise<{ id: str
     const fetchData = async () => {
         try {
             await Promise.all([fetchConversation(), fetchMessages()]);
-        } catch (error) {
+        } catch (error: any) {
             console.error(error);
             toast.error("Failed to load conversation");
         } finally {
@@ -58,7 +58,7 @@ export default function ConversationPage({ params }: { params: Promise<{ id: str
 
             // Refresh messages immediately
             fetchMessages();
-        } catch (error) {
+        } catch (error: any) {
             toast.error("Failed to send message");
             throw error;
         }

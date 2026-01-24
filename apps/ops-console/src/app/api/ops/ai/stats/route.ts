@@ -1,11 +1,11 @@
 
-import { NextResponse } from "next/server";
+import { NextResponse } from 'next/server';
 import { prisma } from "@vayva/db";
 import { OpsAuthService } from "@/lib/ops-auth";
 
 export const dynamic = "force-dynamic";
 
-export async function GET(request: Request) {
+export async function GET(_request: Request) {
     try {
         const { user } = await OpsAuthService.requireSession();
         // Any Ops role can view AI stats
@@ -57,24 +57,24 @@ export async function GET(request: Request) {
         });
 
         // Fetch store names for top consumers
-        const storeIds = topStores.map(s => s.storeId);
+        const storeIds = topStores.map(s => (s as any).storeId);
         const stores = await prisma.store.findMany({
             where: { id: { in: storeIds } },
             select: { id: true, name: true, slug: true, logoUrl: true }
         });
 
-        const storeMap = new Map(stores.map(s => [s.id, s]));
+        const storeMap = new Map(stores.map(s => [(s as any).id, s]));
 
         const consumersFormatted = topStores.map(s => {
-            const store = storeMap.get(s.storeId);
+            const store = storeMap.get((s as any).storeId);
             return {
-                storeId: s.storeId,
+                storeId: (s as any).storeId,
                 name: store?.name || "Unknown Store",
                 slug: store?.slug,
                 logoUrl: store?.logoUrl,
-                totalCostKobo: Number(s._sum.costKobo || 0),
-                totalTokens: s._sum.tokensCount || 0,
-                totalRequests: s._sum.requestsCount || 0
+                totalCostKobo: Number((s as any)._sum.costKobo || 0),
+                totalTokens: (s as any)._sum.tokensCount || 0,
+                totalRequests: (s as any)._sum.requestsCount || 0
             };
         });
 
@@ -93,7 +93,7 @@ export async function GET(request: Request) {
             topConsumers: consumersFormatted
         });
 
-    } catch (error) {
+    } catch (error: any) {
         console.error("Fetch AI Stats Error:", error);
         return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
     }

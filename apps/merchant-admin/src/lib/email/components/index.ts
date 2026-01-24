@@ -1,12 +1,12 @@
 import { Colors, Spacing, Typography, Borders, Shadows, } from "../design-system";
 import { BRAND } from "@vayva/shared";
-function style(s: unknown): string {
+function style(s: any): string {
     return Object.entries(s)
         .map(([k, v]) => `${k.replace(/[A-Z]/g, (m) => `-${m.toLowerCase()}`)}:${v}`)
         .join(";");
 }
 // --- Layout ---
-export function wrapEmail(contentHtml: unknown, title: unknown= "Vayva Notification"): string {
+export function wrapEmail(contentHtml: any, title: any= "Vayva Notification"): string {
     const bodyStyle = style({
         margin: 0,
         padding: 0,
@@ -71,7 +71,7 @@ export function wrapEmail(contentHtml: unknown, title: unknown= "Vayva Notificat
     `;
 }
 // --- Components ---
-export function Hero(type: unknown): string {
+export function Hero(type: any): string {
     // CATEGORY MAPPING
     const map = {
         hero_lock: "auth",
@@ -99,7 +99,7 @@ export function Hero(type: unknown): string {
     </div>
     `;
 }
-export function Button(url: unknown, label: unknown): string {
+export function Button(url: any, label: any): string {
     const btnStyle = style({
         display: "inline-block",
         backgroundColor: Colors.Brand.Primary, // Primary green
@@ -122,7 +122,7 @@ export function Button(url: unknown, label: unknown): string {
     </table>
     `;
 }
-export function Badge(text: unknown, color: unknown= "info"): string {
+export function Badge(text: any, color: any= "info"): string {
     const bgMap = {
         success: "#DCFCE7",
         warning: "#FEF3C7",
@@ -149,8 +149,8 @@ export function Badge(text: unknown, color: unknown= "info"): string {
     });
     return `<span style="${badgeStyle}">${text}</span>`;
 }
-export function Text(content: unknown, type: unknown= "body", align: unknown= "left"): string {
-    const styles: unknown= {
+export function Text(content: any, type: any= "body", align: any= "left"): string {
+    const styles: any= {
         margin: "0 0 16px",
         textAlign: align,
         color: Colors.Neutral.DarkGrey,
@@ -182,7 +182,7 @@ export function Text(content: unknown, type: unknown= "body", align: unknown= "l
     }
     return `<div style="${style(styles)}">${content}</div>`;
 }
-export function KeyValue(label: unknown, value: unknown): string {
+export function KeyValue(label: any, value: any): string {
     return `
     <table width="100%" cellpadding="0" cellspacing="0" style="padding: 8px 0; border-bottom: 1px solid ${Colors.Neutral.LightGrey};">
         <tr>

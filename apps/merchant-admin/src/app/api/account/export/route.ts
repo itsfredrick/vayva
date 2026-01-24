@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { withVayvaAPI } from "@/lib/api-handler";
 import { PERMISSIONS } from "@/lib/team/permissions";
-export const GET = withVayvaAPI(PERMISSIONS.SETTINGS_VIEW, async (req, { user: sessionUser }) => {
+export const GET = withVayvaAPI(PERMISSIONS.SETTINGS_VIEW, async (req: any, { user: sessionUser }: any) => {
     try {
         const user = await prisma.user.findUnique({
             where: { id: sessionUser.id },
@@ -22,9 +22,9 @@ export const GET = withVayvaAPI(PERMISSIONS.SETTINGS_VIEW, async (req, { user: s
             user: {
                 id: user.id,
                 email: user.email,
-                name: user.name || `${user.firstName || ""} ${user.lastName || ""}`.trim(),
+                name: (user as any).name || `${user.firstName || ""} ${user.lastName || ""}`.trim(),
                 createdAt: user.createdAt,
-                memberships: user.memberships.map((m) => ({
+                memberships: user.memberships.map((m: any) => ({
                     role: m.role,
                     store: {
                         id: m.store.id,
@@ -37,7 +37,7 @@ export const GET = withVayvaAPI(PERMISSIONS.SETTINGS_VIEW, async (req, { user: s
         };
         return NextResponse.json(exportData);
     }
-    catch (error) {
+    catch (error: any) {
         console.error("Export failed:", error);
         return NextResponse.json({ error: "Export failed" }, { status: 500 });
     }

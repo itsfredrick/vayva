@@ -17,7 +17,7 @@ export const metadata = {
     "Vayva is building tools that help businesses turn conversations into scalable commerce across Africa and beyond.",
 };
 
-export default function AboutPage() {
+export default function AboutPage(): React.JSX.Element {
   return (
     <div className="min-h-screen bg-white relative overflow-hidden">
       {/* Background Orbs */}

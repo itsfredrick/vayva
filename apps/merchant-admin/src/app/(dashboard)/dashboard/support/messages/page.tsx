@@ -33,7 +33,7 @@ export default function MessagesPage() {
             if (!res.ok) throw new Error("Failed to load messages");
             const result = await res.json();
             setConversations(result.data || []);
-        } catch (error) {
+        } catch (error: any) {
             console.error(error);
             toast.error("Could not load messages");
         } finally {

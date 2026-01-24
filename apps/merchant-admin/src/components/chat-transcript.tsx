@@ -20,7 +20,7 @@ export type Message = {
 export function ChatTranscript({ messages }: { messages: Message[] }) {
   return (
     <div className="flex flex-col gap-4 p-4">
-      {messages.map((msg) => {
+      {messages.map((msg: any) => {
         const isCustomer = msg.sender === "customer";
         return (
           <div

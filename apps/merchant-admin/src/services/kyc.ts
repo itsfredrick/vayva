@@ -1,9 +1,10 @@
 import { prisma } from "@vayva/db";
+import { NotificationManager } from "@vayva/shared/server";
 import { assertFeatureEnabled } from "@/lib/env-validation";
 import { YouverifyService } from "@/lib/kyc/youverify";
 // Name matching logic
-export function calculateNameMatch(provided: unknown, verified: unknown) {
-    const normalize = (s: unknown) => s
+export function calculateNameMatch(provided: any, verified: any) {
+    const normalize = (s: any) => s
         .toLowerCase()
         .trim()
         .replace(/[^a-z0-9]/g, "");
@@ -23,7 +24,7 @@ export function calculateNameMatch(provided: unknown, verified: unknown) {
 }
 // Youverify Adapter (Real Implementation)
 class YouverifyProvider {
-    async verify(request: unknown) {
+    async verify(request: any) {
         try {
             const validationData = {
                 firstName: request.firstName,
@@ -47,7 +48,7 @@ class YouverifyProvider {
                     : selfieMatch?.confidenceLevel || 0,
                 status: response.success && response.data.status === "found"
                     ? "VERIFIED"
-                    : "FAILED",
+                    : "REJECTED",
                 rawResponse: response.data,
                 error: response.data.validations?.validationMessages ||
                     (response.data.status === "not_found"
@@ -55,7 +56,7 @@ class YouverifyProvider {
                         : undefined),
             };
         }
-        catch (error) {
+        catch (error: any) {
             return {
                 success: false,
                 matchScore: 0,
@@ -66,13 +67,13 @@ class YouverifyProvider {
     }
 }
 export class KycService {
-    provider: unknown;
+    provider: any;
 
     constructor() {
         // Only real provider allowed - no tests
         this.provider = new YouverifyProvider();
     }
-    async verifyIdentity(storeId: unknown, request: unknown) {
+    async verifyIdentity(storeId: any, request: any) {
         // Enforce feature flag at runtime call, not build time
         assertFeatureEnabled("KYC_ENABLED");
         if (!request.consent) {
@@ -121,19 +122,31 @@ export class KycService {
                 },
             },
         });
+        // Update cache fields for quick access and Ops visibility
+        await Promise.all([
+            prisma.store.update({
+                where: { id: storeId },
+                data: { kycStatus: result.status as any }
+            }),
+            prisma.wallet.upsert({
+                where: { storeId },
+                create: { storeId, kycStatus: result.status as any },
+                update: { kycStatus: result.status as any }
+            })
+        ]);
+
         // Trigger Automated Notifications
         try {
-            const { NotificationManager } = require("@vayva/shared/server");
             if (result.status === "VERIFIED") {
                 await NotificationManager.trigger(storeId, "KYC_VERIFIED");
             }
-            else if (result.status === "FAILED") {
+            else if (result.status === "REJECTED") {
                 await NotificationManager.trigger(storeId, "KYC_FAILED", {
                     reason: result.error || "Identity mismatch",
                 });
             }
         }
-        catch (notifierErr) {
+        catch (notifierErr: any) {
             console.error("[KycService] Failed to trigger notification:", notifierErr);
         }
         // Log audit event

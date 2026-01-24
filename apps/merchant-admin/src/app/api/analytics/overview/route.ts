@@ -9,7 +9,7 @@ export const GET = withVayvaAPI(PERMISSIONS.FINANCE_VIEW, async (req: NextReques
         const data = await AnalyticsService.getOverview(storeId, range);
         return NextResponse.json(data);
     }
-    catch (error) {
+    catch (error: any) {
         return NextResponse.json({ error: error.message || "Failed to fetch analytics" }, { status: 500 });
     }
 });

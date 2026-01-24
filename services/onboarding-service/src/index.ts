@@ -15,7 +15,6 @@ server.register(onboardingRoutes, { prefix: "/v1/onboarding" });
 const start = async () => {
   try {
     await server.listen({ port: 3017, host: "0.0.0.0" });
-    console.log("Onboarding Service running on port 3017");
   } catch (err) {
     (server.log as unknown).error(err);
     process.exit(1);

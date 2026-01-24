@@ -16,7 +16,7 @@ export class SalesAgent {
     /**
      * Handle a message from a customer
      */
-    static async handleMessage(storeId, messages, options) {
+    static async handleMessage(storeId: string, messages: any[], options?: any) {
         try {
             // Safe access to last message content
             const lastMsg = messages[messages.length - 1];
@@ -78,12 +78,12 @@ export class SalesAgent {
             }
             // 3. Construct System Prompt (Enhanced with Persuasion Strategy & Store Meta)
             const contextString = context
-                .map((c: unknown) => `[${c.sourceType}]: ${c.content}`)
+                .map((c: any) => `[${c.sourceType}]: ${c.content}`)
                 .join("\n");
             const persuasionAdvice = strategy !== "NONE"
                 ? `STRATEGY: Use ${strategy}. Focus on benefits and trust. No pressure.`
                 : "STRATEGY: Be helpful but stay neutral. No active selling.";
-            const settings = store?.settings || {};
+            const settings: any = store?.settings || {};
             const storeMetadata = {
                 description: settings.description,
                 hours: settings.hours,
@@ -129,7 +129,7 @@ export class SalesAgent {
             // 5. LLM Execution
             const llmMessages = [
                 { role: "system", content: systemPrompt },
-                ...messages.map(m => ({
+                ...messages.map((m: any) => ({
                     role: m.role === "system" ? "system" : m.role === "assistant" ? "assistant" : m.role === "tool" ? "tool" : "user",
                     content: typeof m.content === "string" ? m.content : null
                 }))
@@ -206,8 +206,8 @@ export class SalesAgent {
                     conversationId: conversationId,
                     requestId: options?.requestId,
                     model: "llama-3.1-70b-versatile",
-                    toolsUsed: choice.tool_calls?.map((t: unknown) => t.function.name) || [],
-                    retrievedDocs: context.map((c: unknown) => c.sourceId),
+                    toolsUsed: choice.tool_calls?.map((t: any) => t.function.name) || [],
+                    retrievedDocs: context.map((c: any) => c.sourceId),
                     inputSummary: lastMessage,
                     outputSummary: choice.content || "",
                     guardrailFlags: [],
@@ -245,14 +245,14 @@ export class SalesAgent {
                 suggestedActions: this.deriveActions(choice.content),
             };
         }
-        catch (error) {
+        catch (error: any) {
             reportError(error, { context: "SalesAgent.handleMessage", storeId });
             return {
                 message: "I'm having a quiet moment to think. Please message back in 5 minutes!",
             };
         }
     }
-    static getSystemPrompt(storeName, category, profile, context, storeMetadata) {
+    static getSystemPrompt(storeName: string, category: string | null | undefined, profile: any, context: string, storeMetadata: any) {
         const tone = profile?.tonePreset || "Friendly";
         const brevity = profile?.brevityMode === "Short"
             ? "Keep replies under 3 sentences."
@@ -283,7 +283,7 @@ ${context || "No specific knowledge found."}
 
 Act like a helpful shop assistant, not a robot.`;
     }
-    static detectEscalationTrigger(text) {
+    static detectEscalationTrigger(text: string) {
         if (!text)
             return null;
         const lowerText = text.toLowerCase();
@@ -301,7 +301,7 @@ Act like a helpful shop assistant, not a robot.`;
             return "SENTIMENT";
         return null;
     }
-    static getHandoffCopy(trigger) {
+    static getHandoffCopy(trigger: string) {
         switch (trigger) {
             case "PAYMENT_DISPUTE":
                 return "I apologize for the confusion. I'm alerting our finance team now.";
@@ -311,7 +311,7 @@ Act like a helpful shop assistant, not a robot.`;
                 return "I've passed your request to our team. A person will continue from here.";
         }
     }
-    static deriveActions(content) {
+    static deriveActions(content: string | null | undefined) {
         if (!content)
             return [];
         const actions = [];

@@ -11,7 +11,7 @@ interface GiveFlowLayoutProps {
   products: PublicProduct[];
 }
 
-export const GiveFlowLayout = ({ store, products }: GiveFlowLayoutProps) => {
+export const GiveFlowLayout = ({ store, products }: GiveFlowLayoutProps): React.JSX.Element => {
   // Determine active campaign (for demo, just pick first or by slug if we had routing props)
   // Here we'll just show the first one as "featured"
   const featuredCampaign = products[0];
@@ -26,7 +26,7 @@ export const GiveFlowLayout = ({ store, products }: GiveFlowLayoutProps) => {
     setIsDonationOpen(true);
   };
 
-  const handleDonationComplete = (amount: number, isRecurring: boolean) => {
+  const handleDonationComplete = (_amount: number, _isRecurring: boolean) => {
     setIsDonationOpen(false);
     // Alert handled inside DonationOptions component for cleaner UX
   };
@@ -53,7 +53,7 @@ export const GiveFlowLayout = ({ store, products }: GiveFlowLayoutProps) => {
             </h2>
 
             <div className="grid md:grid-cols-3 gap-8">
-              {otherCampaigns.map((campaign) => {
+              {otherCampaigns.map((campaign: any) => {
                 const details = campaign.donationDetails;
                 if (!details) return null;
                 const percentage = Math.min(

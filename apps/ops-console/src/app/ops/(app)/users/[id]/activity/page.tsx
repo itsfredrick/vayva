@@ -2,24 +2,23 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import { formatDistanceToNow } from "date-fns";
+import { formatDistanceToNow } from 'date-fns';
 import {
     Activity,
     ArrowLeft,
     Shield,
     Lock,
-    AlertTriangle,
-    Terminal,
+    AlertTriangle, Terminal,
     Calendar,
     Mail
-} from "lucide-react";
+} from 'lucide-react';
 import Link from "next/link";
-import { useParams } from "next/navigation";
+import { useParams } from 'next/navigation';
 
 interface AuditEvent {
     id: string;
     eventType: string;
-    metadata: unknown;
+    metadata: any;
     createdAt: string;
 }
 
@@ -33,7 +32,7 @@ interface OpsUser {
     createdAt: string;
 }
 
-export default function UserActivityPage() {
+export default function UserActivityPage(): React.JSX.Element {
     const params = useParams();
     const userId = params.id as string;
 
@@ -66,7 +65,7 @@ export default function UserActivityPage() {
                 setEvents(logsData.data || []);
             }
 
-        } catch (e) {
+        } catch (e: any) {
             console.error("Failed to fetch activity", e);
         } finally {
             setLoading(false);
@@ -125,23 +124,23 @@ export default function UserActivityPage() {
                     ) : events.length === 0 ? (
                         <div className="pl-6 text-gray-400 italic">No activity recorded.</div>
                     ) : (
-                        events.map((e, i) => (
-                            <div key={e.id} className="relative pl-6">
+                        events.map((e, _i) => (
+                            <div key={(e as any).id} className="relative pl-6">
                                 <span className="absolute -left-[9px] top-1 h-4 w-4 rounded-full bg-white border-2 border-gray-200 flex items-center justify-center">
                                     <div className="w-1.5 h-1.5 rounded-full bg-indigo-500"></div>
                                 </span>
                                 <div className="bg-white border border-gray-100 p-4 rounded-lg shadow-sm hover:shadow-md transition-shadow">
                                     <div className="flex justify-between items-start">
                                         <div className="flex items-center gap-2 mb-1">
-                                            {getIcon(e.eventType)}
-                                            <span className="font-mono text-sm font-bold text-gray-800">{e.eventType}</span>
+                                            {getIcon((e as any).eventType)}
+                                            <span className="font-mono text-sm font-bold text-gray-800">{(e as any).eventType}</span>
                                         </div>
                                         <span className="text-xs text-gray-400 whitespace-nowrap">
-                                            {formatDistanceToNow(new Date(e.createdAt), { addSuffix: true })}
+                                            {formatDistanceToNow(new Date((e as any).createdAt), { addSuffix: true })}
                                         </span>
                                     </div>
                                     <p className="text-xs text-gray-500 bg-gray-50 p-2 rounded mt-2 font-mono break-all">
-                                        {JSON.stringify(e.metadata)}
+                                        {JSON.stringify((e as any).metadata)}
                                     </p>
                                 </div>
                             </div>

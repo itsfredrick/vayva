@@ -19,7 +19,7 @@ export function StandardDigitalHome({
 }) {
     const { store } = useStorefrontStore(storeSlug);
     const { products, isLoading } = useStorefrontProducts(storeSlug, { limit: 8 });
-    const { cart, addToCart, removeFromCart, total, isOpen: isCartOpen, setIsOpen: setIsCartOpen, clearCart } = useStorefrontCart(storeSlug || "");
+    const { cart, addToCart, removeFromCart, total, isOpen: isCartOpen, setIsOpen: setIsCartOpen, clearCart } = useStorefrontCart(storeSlug || "") as any;
     const [isCheckoutOpen, setIsCheckoutOpen] = useState(false);
 
     const displayName = store?.name || initialStoreName || "Digital Store";
@@ -56,12 +56,12 @@ export function StandardDigitalHome({
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 text-left">
                     {isLoading ? (
                         <div className="col-span-4 text-center text-gray-600 py-20">Loading assets...</div>
-                    ) : products.length === 0 ? (
+                    ) : (products as any[]).length === 0 ? (
                         <div className="col-span-4 text-center border border-dashed border-gray-800 rounded-xl py-20 text-gray-500">
                             No digital products found.
                         </div>
                     ) : (
-                        products.map(product => (
+                        (products as any[]).map(product => (
                             <div key={product.id} className="group bg-gray-900/50 border border-gray-800 rounded-xl p-6 hover:border-purple-500/50 transition-all hover:bg-gray-900 relative overflow-hidden">
                                 <div className="absolute top-0 right-0 p-4 opacity-0 group-hover:opacity-100 transition-opacity">
                                     <Download className="w-5 h-5 text-purple-400" />
@@ -123,7 +123,7 @@ export function StandardDigitalHome({
                         </div>
 
                         <div className="flex-1 space-y-4 overflow-y-auto custom-scrollbar">
-                            {cart.map(item => (
+                            {cart.map((item: any) => (
                                 <div key={item.id} className="bg-gray-900 p-4 rounded-lg flex justify-between items-center group border border-transparent hover:border-gray-700">
                                     <div>
                                         <div className="font-bold">{item.name}</div>

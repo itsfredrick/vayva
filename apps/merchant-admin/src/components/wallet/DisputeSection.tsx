@@ -28,7 +28,7 @@ export const DisputeSection = () => {
       </div>
 
       <div className="space-y-3">
-        {disputes.map((disp) => (
+        {disputes.map((disp: any) => (
           <div
             key={disp.id}
             className="bg-white border border-red-100 rounded-xl p-4 flex flex-col md:flex-row md:items-center justify-between gap-4 shadow-sm"

@@ -1,4 +1,5 @@
 "use client";
+import React from "react";
 
 import { usePathname, useRouter } from "next/navigation";
 import { ChevronDown, SlidersHorizontal, ArrowLeft } from "lucide-react";
@@ -13,7 +14,7 @@ const CATEGORIES = [
     { label: "Fashion", slug: "fashion" },
 ];
 
-export function MobileCategoryHeader({ title, activeSubcategory = "All" }: { title: string, activeSubcategory?: string }) {
+export function MobileCategoryHeader({ title, activeSubcategory = "All" }: { title: string, activeSubcategory?: string }): React.JSX.Element {
     const router = useRouter();
     const pathname = usePathname();
 

@@ -1,5 +1,5 @@
 
-import { NextRequest, NextResponse } from "next/server";
+import { NextRequest, NextResponse } from 'next/server';
 import { OpsAuthService } from "@/lib/ops-auth";
 import { prisma } from "@vayva/db";
 
@@ -19,7 +19,7 @@ export async function GET(req: NextRequest) {
 
         const skip = (page - 1) * limit;
 
-        const where: unknown = {};
+        const where: any = {};
         if (type) where.eventType = type;
         if (userId) where.opsUserId = userId;
 
@@ -48,7 +48,7 @@ export async function GET(req: NextRequest) {
             }
         });
 
-    } catch (error) {
+    } catch (error: any) {
         console.error("Fetch Security Logs Error:", error);
         return NextResponse.json({ error: "Failed to fetch logs" }, { status: 500 });
     }

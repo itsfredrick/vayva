@@ -27,7 +27,7 @@ export const GET = withVayvaAPI(PERMISSIONS.COMMERCE_VIEW, async (request, { sto
         if (!customer) {
             return NextResponse.json({ error: "Customer not found" }, { status: 404 });
         }
-        const history = customer.orders.map((o) => ({
+        const history = customer.orders.map((o: any) => ({
             id: o.id,
             type: "order",
             amount: Number(o.total),
@@ -48,7 +48,7 @@ export const GET = withVayvaAPI(PERMISSIONS.COMMERCE_VIEW, async (request, { sto
             }
         });
     }
-    catch (error) {
+    catch (error: any) {
         console.error("Customer Details Error:", error);
         return NextResponse.json({ error: "Failed to fetch customer details" }, { status: 500 });
     }

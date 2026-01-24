@@ -7,7 +7,7 @@ export const createMockRequest = (
     method: string,
     url: string,
     options?: {
-        body?: unknown;
+        body?: any;
         headers?: Record<string, string>;
         searchParams?: Record<string, string>;
     }

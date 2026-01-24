@@ -11,7 +11,7 @@ interface PrepTimeCardProps {
     onUpdate: () => void;
 }
 
-export function PrepTimeCard({ orderId: unknown, currentPrepTime: unknown, onUpdate }: PrepTimeCardProps) {
+export function PrepTimeCard({ orderId, currentPrepTime, onUpdate }: PrepTimeCardProps) {
     const [isEditing, setIsEditing] = useState(false);
     const [prepTime, setPrepTime] = useState(currentPrepTime?.toString() || "30");
     const [saving, setSaving] = useState(false);
@@ -39,7 +39,7 @@ export function PrepTimeCard({ orderId: unknown, currentPrepTime: unknown, onUpd
             toast.success("Preparation time updated");
             setIsEditing(false);
             onUpdate();
-        } catch (error) {
+        } catch (error: any) {
             toast.error(error.message);
         } finally {
             setSaving(false);
@@ -75,8 +75,8 @@ export function PrepTimeCard({ orderId: unknown, currentPrepTime: unknown, onUpd
                     <div className="flex items-center gap-2">
                         <Input
                             type="number"
-                            value={prepTime}
-                            onChange={(e: unknown) => setPrepTime(e.target.value)}
+                            value={(prepTime as any)}
+                            onChange={(e: any) => setPrepTime(e.target.value)}
                             min={5}
                             max={480}
                             className="w-24 text-center"

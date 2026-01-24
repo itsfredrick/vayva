@@ -99,7 +99,7 @@ export const updateProductHandler = async (
   reply: FastifyReply,
 ) => {
   const { id } = req.params as { id: string };
-  const { name, description, price, stock } = req.body as unknown;
+  const { name, description, price, _stock } = req.body as unknown;
 
   // Simple V1 Update: Update Product and Default Variant Price/Stock
   // Real world needs robust variant handling.

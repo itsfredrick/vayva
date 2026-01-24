@@ -12,12 +12,12 @@ export const DesignerDashboard = () => {
 
   useEffect(() => {
     fetch("/api/designer/templates")
-      .then((res: unknown) => res.json())
-      .then((data: unknown) => {
+      .then((res: any) => res.json())
+      .then((data: any) => {
         setTemplates(data);
         setLoading(false);
       })
-      .catch((err: unknown) => {
+      .catch((err: any) => {
         console.error(err);
         setLoading(false);
       });
@@ -112,7 +112,7 @@ export const DesignerDashboard = () => {
         </div>
       ) : (
         <div className="space-y-4">
-          {templates.map((tpl: unknown) => (
+          {templates.map((tpl: any) => (
             <div
               key={tpl.id}
               className="bg-white border border-gray-200 rounded-xl p-6 flex flex-col md:flex-row items-start md:items-center justify-between gap-6 hover:shadow-md transition-shadow"
@@ -121,8 +121,8 @@ export const DesignerDashboard = () => {
                 <div className="w-24 h-24 bg-gray-100 rounded-lg overflow-hidden shrink-0">
                   <img
                     src={
-                      (tpl as unknown).previewImageDesktop ||
-                      (tpl as unknown).previewImages?.cover ||
+                      (tpl as any).previewImageDesktop ||
+                      (tpl as any).previewImages?.cover ||
                       "/images/template-previews/default-desktop.png"
                     }
                     alt={tpl.name}
@@ -154,7 +154,7 @@ export const DesignerDashboard = () => {
                     <div className="bg-red-50 text-red-700 text-xs p-3 rounded-lg max-w-md">
                       <strong>AI Feedback:</strong>
                       <ul className="list-disc list-inside mt-1">
-                        {tpl.aiReviewResult.issues.map((issue: unknown, idx: unknown) => (
+                        {tpl.aiReviewResult.issues.map((issue: any, idx: any) => (
                           <li key={idx}>{issue}</li>
                         ))}
                       </ul>

@@ -8,7 +8,7 @@ export interface PublicStore {
     primaryColor: string;
     accentColor: string;
     templateId: string;
-    oneProductConfig?: unknown;
+    oneProductConfig?: any;
   };
   contact: {
     phone?: string;
@@ -21,6 +21,7 @@ export interface PublicStore {
     privacy: string;
   };
   industry?: string;
+  plan?: "FREE" | "STARTER" | "PRO";
 }
 
 export interface PublicProduct {
@@ -33,6 +34,7 @@ export interface PublicProduct {
   images: string[];
   variants: ProductVariant[];
   inStock: boolean;
+  inventory?: number;
   category?: string;
   specs?: { label: string; value: string }[];
   warrantyInfo?: string;
@@ -121,7 +123,7 @@ export interface PublicProduct {
   };
   licenseType?: "standard" | "extended";
   isAvailable?: boolean;
-  metadata?: unknown;
+  metadata?: any;
 }
 
 export interface ProductVariant {

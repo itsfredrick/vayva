@@ -29,13 +29,13 @@ export const AddBankModal = ({
     setLoading(true);
     setError(null);
     try {
-      await WalletService.addBank({
+      await (WalletService as any).addBank({
         bankName,
         accountNumber,
         accountName,
         bankCode: "000", // Test code
         isDefault: true,
-      } as unknown);
+      } as any);
       onSuccess();
       onClose();
     } catch (err: any) {
@@ -48,7 +48,7 @@ export const AddBankModal = ({
   return (
     <div
       className="fixed inset-0 z-[60] flex items-center justify-center bg-black/50 backdrop-blur-sm"
-      onClick={(e: unknown) => e.target === e.currentTarget && onClose()}
+      onClick={(e: any) => e.target === e.currentTarget && onClose()}
     >
       <motion.div
         initial={{ opacity: 0, scale: 0.95 }}
@@ -75,8 +75,8 @@ export const AddBankModal = ({
             <input
               required
               className="h-10 px-3 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-black/5"
-              value={bankName}
-              onChange={(e: unknown) => setBankName(e.target.value)}
+              value={(bankName as any)}
+              onChange={(e: any) => setBankName(e.target.value)}
               placeholder="e.g. GTBank"
             />
           </div>
@@ -88,8 +88,8 @@ export const AddBankModal = ({
               required
               maxLength={10}
               className="h-10 px-3 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-black/5"
-              value={accountNumber}
-              onChange={(e: unknown) =>
+              value={(accountNumber as any)}
+              onChange={(e: any) =>
                 setAccountNumber(e.target.value.replace(/\D/g, ""))
               }
               placeholder="0123456789"
@@ -102,8 +102,8 @@ export const AddBankModal = ({
             <input
               required
               className="h-10 px-3 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-black/5"
-              value={accountName}
-              onChange={(e: unknown) => setAccountName(e.target.value)}
+              value={(accountName as any)}
+              onChange={(e: any) => setAccountName(e.target.value)}
               placeholder="John Doe"
             />
           </div>

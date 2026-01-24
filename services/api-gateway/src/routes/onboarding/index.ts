@@ -1,6 +1,6 @@
 import { FastifyPluginAsync } from "fastify";
 import { prisma } from "@vayva/db";
-import { StoreSchema } from "@vayva/schemas";
+import { _StoreSchema } from "@vayva/schemas";
 import { z } from "zod";
 
 const onboardingRoute: FastifyPluginAsync = async (fastify) => {

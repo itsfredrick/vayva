@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { getSessionUser } from "@/lib/session";
 // POST /api/integrations/kyc/verify
-export async function POST(request: unknown) {
+export async function POST(request: Request) {
     try {
         const user = await getSessionUser();
         if (!user)
@@ -44,7 +44,7 @@ export async function POST(request: unknown) {
             details: data.data
         });
     }
-    catch (error) {
+    catch (error: any) {
         console.error("KYC Integration Error:", error);
         return NextResponse.json({ error: "Internal Error" }, { status: 500 });
     }

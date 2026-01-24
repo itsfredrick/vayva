@@ -3,7 +3,7 @@ import { getSessionUser } from "@/lib/session";
 import { authorizeAction, AppRole } from "@/lib/permissions";
 import { prisma } from "@/lib/prisma";
 import { logAuditEvent, AuditEventType } from "@/lib/audit";
-export async function POST(request: unknown) {
+export async function POST(request: Request) {
     try {
         const user = await getSessionUser();
         // Admin/Owner only
@@ -47,7 +47,7 @@ export async function POST(request: unknown) {
             expiresAt: job.expiresAt,
         });
     }
-    catch (error) {
+    catch (error: any) {
         console.error("Compliance Report Error:", error);
         return NextResponse.json({ error: "Failed to create report" }, { status: 500 });
     }

@@ -4,7 +4,7 @@ export const RETENTION_POLICIES = {
     SUPPORT_ATTACHMENT_DAYS: 180,
     MESSAGE_BODY_DAYS: 180,
 };
-export function shouldPurge(createdAt: unknown, policyDays: unknown) {
+export function shouldPurge(createdAt: any, policyDays: any) {
     const cutoff = new Date();
     cutoff.setDate(cutoff.getDate() - policyDays);
     return createdAt < cutoff;

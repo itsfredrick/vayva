@@ -3,7 +3,7 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 export const dynamic = "force-dynamic";
-export async function GET(req: unknown) {
+export async function GET(req: any) {
     try {
         const session = await getServerSession(authOptions);
         if (!session || !session.user) {
@@ -37,7 +37,7 @@ export async function GET(req: unknown) {
         let source = "store_fallback";
         if (store.plan) {
             dbPlan = store.plan.toLowerCase();
-            source = "store_settings";
+            source = "(store.settings as any)";
         }
         // Normalized to BillingPlan (free | growth | pro)
         // Note: DB values might still be 'business' etc if legacy, so we map them safely.
@@ -68,7 +68,7 @@ export async function GET(req: unknown) {
             isAuthenticated: true,
         });
     }
-    catch (error) {
+    catch (error: any) {
         console.error("API /me/plan error:", error);
         return NextResponse.json({ plan: "free", source: "error", isAuthenticated: false }, { status: 500 });
     }

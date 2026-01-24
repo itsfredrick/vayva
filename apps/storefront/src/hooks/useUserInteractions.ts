@@ -45,7 +45,7 @@ export function useUserInteractions() {
       if (savedBalance) setBalance(parseFloat(savedBalance));
       if (savedAddresses) setAddresses(JSON.parse(savedAddresses));
       if (savedPayments) setPaymentMethods(JSON.parse(savedPayments));
-    } catch (e) {
+    } catch (e: any) {
       console.error("Failed to load user interactions", e);
     } finally {
       setIsLoaded(true);
@@ -107,7 +107,7 @@ export function useUserInteractions() {
   };
 
   const setDefaultAddress = (id: string) => {
-    const newAddresses = addresses.map((a) => ({
+    const newAddresses = addresses.map((a: any) => ({
       ...a,
       isDefault: a.id === id,
     }));
@@ -132,7 +132,7 @@ export function useUserInteractions() {
   };
 
   const setDefaultPaymentMethod = (id: string) => {
-    const newMethods = paymentMethods.map((p) => ({
+    const newMethods = paymentMethods.map((p: any) => ({
       ...p,
       isDefault: p.id === id,
     }));

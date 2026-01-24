@@ -1,5 +1,5 @@
 export const telemetry = {
-    track: async (eventName: unknown, properties: unknown) => {
+    track: async (eventName: any, properties: any) => {
         try {
             await fetch("/api/telemetry/event", {
                 method: "POST",
@@ -17,7 +17,7 @@ export const telemetry = {
                 }),
             });
         }
-        catch (err) {
+        catch (err: any) {
             // fail silently
             console.warn("Telemetry error:", err);
         }

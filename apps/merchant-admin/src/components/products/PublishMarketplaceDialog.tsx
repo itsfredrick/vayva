@@ -40,7 +40,7 @@ export function PublishMarketplaceDialog({ isOpen, onClose, productId, productPr
             if (Array.isArray(data)) {
                 setCategories(data);
             }
-        } catch (err) {
+        } catch (err: any) {
             toast.error("Failed to load categories");
         } finally {
             setLoadingCats(false);
@@ -71,7 +71,7 @@ export function PublishMarketplaceDialog({ isOpen, onClose, productId, productPr
             toast.success("Product published to Marketplace!");
             onSuccess();
             onClose();
-        } catch (err) {
+        } catch (err: any) {
             toast.error((err as any).message || "Publish failed");
         } finally {
             setLoading(false);
@@ -124,15 +124,15 @@ export function PublishMarketplaceDialog({ isOpen, onClose, productId, productPr
                                 <Label>Category</Label>
                                 <select
                                     className="w-full h-10 px-3 rounded-md border border-gray-200 bg-white text-sm focus:outline-none focus:ring-2 focus:ring-black"
-                                    value={form.categoryId}
+                                    value={(form.categoryId as any)}
                                     aria-label="Category"
-                                    onChange={(e: unknown) => setForm({ ...form, categoryId: e.target.value })}
+                                    onChange={(e: any) => setForm({ ...form, categoryId: e.target.value })}
                                 >
                                     <option value="">Select a category...</option>
-                                    {categories.map((cat: unknown) => (
+                                    {categories.map((cat: any) => (
                                         <optgroup key={cat.id} label={cat.name}>
-                                            {cat.children?.map((child: unknown) => (
-                                                <option key={child.id} value={child.id}>
+                                            {cat.children?.map((child: any) => (
+                                                <option key={child.id} value={(child.id as any)}>
                                                     {child.name}
                                                 </option>
                                             ))}
@@ -145,8 +145,8 @@ export function PublishMarketplaceDialog({ isOpen, onClose, productId, productPr
                                 <Label>Listing Price (NGN)</Label>
                                 <Input
                                     type="number"
-                                    value={form.price}
-                                    onChange={(e: unknown) => setForm({ ...form, price: e.target.value })}
+                                    value={(form.price as any)}
+                                    onChange={(e: any) => setForm({ ...form, price: e.target.value })}
                                 />
                                 <p className="text-xs text-gray-500">You can set a different price for the marketplace.</p>
                             </div>

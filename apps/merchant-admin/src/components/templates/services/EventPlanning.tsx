@@ -91,7 +91,7 @@ export const EventPlanningTemplate: React.FC<TemplateProps> = ({
                   Starting at {pkg.price}
                 </div>
                 <ul className="space-y-4 mb-8">
-                  {pkg.features.map((f) => (
+                  {pkg.features.map((f: any) => (
                     <li
                       key={f}
                       className="flex items-center gap-3 text-sm text-gray-600"

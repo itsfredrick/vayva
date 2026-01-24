@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-export async function POST(request: unknown) {
+export async function POST(request: Request) {
     const body = await request.json();
     const { notificationId, markAll } = body;
     // In a real app, update DB

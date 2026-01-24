@@ -59,7 +59,7 @@ export async function GET(request: NextRequest) {
 
         return NextResponse.json({ error: "Invalid type" }, { status: 400 });
 
-    } catch (e) {
+    } catch (e: any) {
         console.error("Vehicle API Error:", e);
         return NextResponse.json({ error: "Internal Error" }, { status: 500 });
     }

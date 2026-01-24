@@ -44,7 +44,7 @@ export function DeleteAccountCard() {
             // For now, redirect to public home
             window.location.href = "/";
 
-        } catch (error) {
+        } catch (error: any) {
             console.error(error);
             alert("Failed to schedule deletion. Please try again.");
         } finally {
@@ -88,8 +88,8 @@ export function DeleteAccountCard() {
                                     <textarea
                                         className="w-full p-2 border rounded-md text-sm"
                                         rows={3}
-                                        value={reason}
-                                        onChange={(e) => setReason(e.target.value)}
+                                        value={(reason as any)}
+                                        onChange={(e: any) => setReason(e.target.value)}
                                         placeholder="Optional feedback..."
                                     />
                                 </div>
@@ -99,7 +99,7 @@ export function DeleteAccountCard() {
                                         type="checkbox"
                                         id="confirm-delete"
                                         checked={confirmed}
-                                        onChange={(e) => setConfirmed(e.target.checked)}
+                                        onChange={(e: any) => setConfirmed(e.target.checked)}
                                         className="rounded border-gray-300"
                                     />
                                     <label htmlFor="confirm-delete" className="text-sm">

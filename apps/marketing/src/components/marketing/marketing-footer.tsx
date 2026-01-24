@@ -4,7 +4,7 @@ import React from "react";
 import { Button, cn } from "@vayva/ui";
 import Link from "next/link";
 
-export function MarketingFooter() {
+export function MarketingFooter(): React.JSX.Element {
   return (
     <footer className="bg-white text-[#0F172A] border-t border-slate-100">
       {/* Main Navigation Grid - Compact */}
@@ -31,7 +31,7 @@ export function MarketingFooter() {
                 { label: "Pricing Plans", href: "/pricing" },
                 { label: "Store Builder", href: "/store-builder" },
                 { label: "Marketplace", href: "/marketplace" }
-              ].map((link) => (
+              ].map((link: any) => (
                 <li key={link.label}>
                   <Link href={link.href} className="text-xs font-semibold text-slate-500 hover:text-[#22C55E] transition-colors">
                     {link.label}
@@ -49,7 +49,7 @@ export function MarketingFooter() {
                 { label: "About Vayva", href: "/about" },
                 { label: "Our Blog", href: "/blog" },
                 { label: "Contact Us", href: "/contact" }
-              ].map((link) => (
+              ].map((link: any) => (
                 <li key={link.label}>
                   <Link href={link.href} className="text-xs font-semibold text-slate-500 hover:text-[#22C55E] transition-colors">
                     {link.label}
@@ -67,7 +67,7 @@ export function MarketingFooter() {
                 { label: "Help Center", href: "/help" },
                 { label: "System Status", href: "/system-status" },
                 { label: "Trust & Security", href: "/trust" }
-              ].map((link) => (
+              ].map((link: any) => (
                 <li key={link.label}>
                   <Link href={link.href} className="text-xs font-semibold text-slate-500 hover:text-[#22C55E] transition-colors">
                     {link.label}
@@ -85,7 +85,7 @@ export function MarketingFooter() {
                 { label: "Legal Hub", href: "/legal" },
                 { label: "Privacy Policy", href: "/legal/privacy" },
                 { label: "Terms of Service", href: "/legal/terms" }
-              ].map((link) => (
+              ].map((link: any) => (
                 <li key={link.label}>
                   <Link href={link.href} className="text-xs font-semibold text-slate-500 hover:text-[#22C55E] transition-colors">
                     {link.label}
@@ -123,7 +123,7 @@ export function MarketingFooter() {
 
             {/* Minimal Social Icons */}
             <div className="flex gap-4">
-              {["Twitter", "LinkedIn", "Instagram"].map((social) => (
+              {["Twitter", "LinkedIn", "Instagram"].map((social: any) => (
                 <Button
                   key={social}
                   className="text-slate-300 hover:text-black transition-colors"

@@ -1,11 +1,11 @@
 "use client";
 
 import React, { useState } from "react";
-import { Megaphone, Plus, Search, Calendar, MoreVertical, Send, Eye } from "lucide-react";
+import { Megaphone, Plus, Search, Calendar, MoreVertical, Send, Eye } from 'lucide-react';
 import { useOpsQuery } from "@/hooks/useOpsQuery";
 import { cn, Button } from "@vayva/ui";
 
-export default function CampaignManagerPage() {
+export default function CampaignManagerPage(): React.JSX.Element {
     const [filter, setFilter] = useState("ALL");
 
     const { data: campaigns, isLoading } = useOpsQuery(
@@ -61,29 +61,29 @@ export default function CampaignManagerPage() {
                         ) : !campaigns?.length ? (
                             <tr><td colSpan={5} className="p-12 text-center text-gray-400 font-medium">No campaigns found.</td></tr>
                         ) : (
-                            campaigns.map((c: unknown) => (
-                                <tr key={c.id} className="hover:bg-gray-50/50 transition-colors group">
+                            campaigns.map((c: any) => (
+                                <tr key={(c as any).id} className="hover:bg-gray-50/50 transition-colors group">
                                     <td className="px-6 py-4">
-                                        <div className="font-bold text-gray-900">{c.name}</div>
-                                        <div className="text-[10px] text-gray-400 font-mono">#{c.id.slice(0, 8)}</div>
+                                        <div className="font-bold text-gray-900">{(c as any).name}</div>
+                                        <div className="text-[10px] text-gray-400 font-mono">#{(c as any).id.slice(0, 8)}</div>
                                     </td>
                                     <td className="px-6 py-4">
                                         <span className="text-xs font-bold bg-gray-100 px-2 py-1 rounded text-gray-600 uppercase">
-                                            {c.channel}
+                                            {(c as any).channel}
                                         </span>
                                     </td>
                                     <td className="px-6 py-4">
                                         <span className={cn(
                                             "px-2 py-0.5 rounded text-[10px] font-black uppercase",
-                                            c.status === "SENT" ? "bg-green-100 text-green-700" :
-                                                c.status === "SCHEDULED" ? "bg-blue-100 text-blue-700" :
+                                            (c as any).status === "SENT" ? "bg-green-100 text-green-700" :
+                                                (c as any).status === "SCHEDULED" ? "bg-blue-100 text-blue-700" :
                                                     "bg-amber-100 text-amber-700"
                                         )}>
-                                            {c.status}
+                                            {(c as any).status}
                                         </span>
                                     </td>
                                     <td className="px-6 py-4 text-gray-500 text-xs font-medium">
-                                        {c.scheduledAt ? new Date(c.scheduledAt).toLocaleString() : "Manual only"}
+                                        {(c as any).scheduledAt ? new Date((c as any).scheduledAt).toLocaleString() : "Manual only"}
                                     </td>
                                     <td className="px-6 py-4 text-right">
                                         <div className="flex justify-end gap-2 opacity-0 group-hover:opacity-100 transition-opacity">

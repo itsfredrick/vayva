@@ -2,7 +2,7 @@
 
 import React from "react";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname } from 'next/navigation';
 import { Button, Icon, IconName } from "@vayva/ui";
 
 interface OpsShellProps {
@@ -44,21 +44,21 @@ export function OpsShell({
         </div>
 
         <nav className="flex-1 p-4 space-y-1 overflow-y-auto">
-          {NAV_ITEMS.map((item) => {
-            const isActive = pathname.startsWith(item.path);
+          {NAV_ITEMS.map((item: any) => {
+            const isActive = pathname.startsWith((item as any).path);
             return (
-              <Link key={item.path} href={item.path}>
+              <Link key={(item as any).path} href={(item as any).path}>
                 <div
                   className={`flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium transition-colors
                                     ${isActive ? "bg-white/10 text-white" : "text-text-secondary hover:text-white hover:bg-white/5"}
                                 `}
                 >
                   <Icon
-                    name={item.icon}
+                    name={(item as any).icon}
                     size={20}
                     className={isActive ? "text-white" : "text-text-secondary"}
                   />
-                  {item.name}
+                  {(item as any).name}
                 </div>
               </Link>
             );

@@ -4,7 +4,7 @@
 import React, { useEffect, useState } from "react";
 // Assuming Ops Console has a Shell or Layout
 // I'll build a standalone page content
-import { useToast } from "@/components/ui/use-toast";
+import { useToast } from '@/components/ui/use-toast';
 import { Button } from "@vayva/ui";
 
 interface Seller {
@@ -16,7 +16,7 @@ interface Seller {
     StoreProfile?: { city?: string };
 }
 
-export default function MarketOpsPage() {
+export default function MarketOpsPage(): React.JSX.Element {
     const { toast } = useToast();
     const [sellers, setSellers] = useState<Seller[]>([]);
     const [loading, setLoading] = useState(true);
@@ -48,7 +48,7 @@ export default function MarketOpsPage() {
             } else {
                 toast({ title: "Error", description: "Update failed.", variant: "destructive" });
             }
-        } catch (e) { console.error(e); }
+        } catch (e: any) { console.error(e); }
     };
 
     return (

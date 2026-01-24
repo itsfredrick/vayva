@@ -35,7 +35,7 @@ export const OrderDetailsDrawer = ({
       });
       // Ideally trigger a refresh of the parent list here
       onClose();
-    } catch (e: unknown) {
+    } catch (e: any) {
       console.error(e);
     } finally {
       setIsLoading(false);
@@ -50,7 +50,7 @@ export const OrderDetailsDrawer = ({
         body: JSON.stringify({ reason: actionNote || "Merchant cancelled" }),
       });
       onClose();
-    } catch (e: unknown) {
+    } catch (e: any) {
       console.error(e);
     } finally {
       setIsLoading(false);
@@ -68,7 +68,7 @@ export const OrderDetailsDrawer = ({
         }),
       });
       onClose();
-    } catch (e: unknown) {
+    } catch (e: any) {
       console.error(e);
     } finally {
       setIsLoading(false);
@@ -85,8 +85,8 @@ export const OrderDetailsDrawer = ({
           <input
             className="w-full border border-gray-300 rounded-lg p-2 text-sm"
             placeholder="Reason for cancellation..."
-            value={actionNote}
-            onChange={(e) => setActionNote(e.target.value)}
+            value={(actionNote as any)}
+            onChange={(e: any) => setActionNote(e.target.value)}
           />
           <div className="flex gap-2">
             <Button
@@ -118,8 +118,8 @@ export const OrderDetailsDrawer = ({
           <input
             className="w-full border border-gray-300 rounded-lg p-2 text-sm"
             placeholder="Reason for refund..."
-            value={actionNote}
-            onChange={(e) => setActionNote(e.target.value)}
+            value={(actionNote as any)}
+            onChange={(e: any) => setActionNote(e.target.value)}
           />
           <div className="flex gap-2">
             <Button

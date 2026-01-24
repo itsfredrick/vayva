@@ -3,7 +3,7 @@ import DOMPurify from "isomorphic-dompurify";
  * Sanitizes HTML content to prevent XSS.
  * Safe for use on both server and client.
  */
-export function sanitizeHtml(dirty: unknown) {
+export function sanitizeHtml(dirty: any) {
     if (!dirty)
         return "";
     return DOMPurify.sanitize(dirty, {
@@ -20,7 +20,7 @@ export function sanitizeHtml(dirty: unknown) {
  * Validates if a string contains potentially malicious HTML.
  * Returns true if safe, false if it required cleaning (meaning it had bad stuff).
  */
-export function isSafeHtml(input: unknown) {
+export function isSafeHtml(input: any) {
     const clean = sanitizeHtml(input);
     // Simple check: if sanitization changed the length significantly or implementation details,
     // it might be flagged. But simpler: if input equals clean, it's 100% safe.

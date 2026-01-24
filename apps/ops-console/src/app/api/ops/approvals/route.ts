@@ -1,5 +1,5 @@
 
-import { NextResponse } from "next/server";
+import { NextResponse } from 'next/server';
 import { prisma, ApprovalStatus } from "@vayva/db";
 import { OpsAuthService } from "@/lib/ops-auth";
 
@@ -34,17 +34,17 @@ export async function GET(request: Request) {
         ]);
 
         // Fetch store names if storeId is present
-        const storeIds = [...new Set(approvals.map(a => a.storeId).filter(Boolean) as string[])];
+        const storeIds = [...new Set(approvals.map(a => (a as any).storeId).filter(Boolean) as string[])];
         const stores = await prisma.store.findMany({
             where: { id: { in: storeIds } },
             select: { id: true, name: true, slug: true }
         });
 
-        const storeMap = new Map(stores.map(s => [s.id, s]));
+        const storeMap = new Map(stores.map(s => [(s as any).id, s]));
 
         const data = approvals.map(a => ({
             ...a,
-            store: a.storeId ? storeMap.get(a.storeId) : null
+            store: (a as any).storeId ? storeMap.get((a as any).storeId) : null
         }));
 
         return NextResponse.json({
@@ -57,7 +57,7 @@ export async function GET(request: Request) {
             }
         });
 
-    } catch (error) {
+    } catch (error: any) {
         console.error("Fetch Approvals Error:", error);
         return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
     }

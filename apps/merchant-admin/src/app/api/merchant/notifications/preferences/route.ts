@@ -7,7 +7,7 @@ const DEFAULT_PREFS = {
     categories: { orders: true, payments: true, account: true, system: true },
     quietHours: { enabled: false, start: "22:00", end: "08:00" },
 };
-export async function GET(req: unknown) {
+export async function GET(req: any) {
     const session = await getServerSession(authOptions);
     if (!session?.user?.storeId) {
         return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
@@ -28,7 +28,7 @@ export async function GET(req: unknown) {
         quietHours: prefs.quietHours,
     });
 }
-export async function POST(req: unknown) {
+export async function POST(req: any) {
     const session = await getServerSession(authOptions);
     if (!session?.user?.storeId) {
         return NextResponse.json({ error: "Unauthorized" }, { status: 401 });

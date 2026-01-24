@@ -44,8 +44,8 @@ export async function GET(req: NextRequest) {
     });
 
     const weeks: PublicWeek[] = collections
-      .filter((c: unknown) => c.handle.startsWith("week-"))
-      .map((c: unknown) => {
+      .filter((c) => c.handle.startsWith("week-"))
+      .map((c: any) => {
         const datePart = c.handle.replace("week-", "");
         const deliveryDate = new Date(datePart);
         const cutoffDate = new Date(deliveryDate);
@@ -61,8 +61,8 @@ export async function GET(req: NextRequest) {
       })
       .sort((a, b) => a.deliveryDate.localeCompare(b.deliveryDate));
 
-    const meals: PublicProduct[] = products.map((p: unknown) => {
-      const tagsObj: unknown = {};
+    const meals: PublicProduct[] = products.map((p: any) => {
+      const tagsObj: any = {};
       // Parse tags... logic remains same but typed output
       p.tags.forEach((tag: string) => {
         const [key, val] = tag.split(":");
@@ -84,7 +84,7 @@ export async function GET(req: NextRequest) {
         name: p.title,
         description: p.description || "",
         price: Number(p.price) || 0,
-        images: p.productImages?.map((img: unknown) => img.url) || [],
+        images: p.productImages?.map((img: any) => img.url) || [],
         variants: [],
         inStock: true,
         category: tagsObj.category,
@@ -100,7 +100,7 @@ export async function GET(req: NextRequest) {
     };
 
     return NextResponse.json(response);
-  } catch (error) {
+  } catch (error: any) {
     console.error(error);
     return NextResponse.json(
       { error: "Failed to fetch menu" },

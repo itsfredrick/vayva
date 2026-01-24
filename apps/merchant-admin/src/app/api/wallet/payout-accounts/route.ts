@@ -18,11 +18,11 @@ export async function GET() {
         });
         return NextResponse.json(accounts);
     }
-    catch (error) {
+    catch (error: any) {
         return NextResponse.json({ error: "Failed to fetch payout accounts" }, { status: 500 });
     }
 }
-export async function POST(req: unknown) {
+export async function POST(req: any) {
     const session = await getServerSession(authOptions);
     if (!session?.user?.storeId)
         return new NextResponse("Unauthorized", { status: 401 });
@@ -59,7 +59,7 @@ export async function POST(req: unknown) {
         });
         return NextResponse.json(account);
     }
-    catch (error) {
+    catch (error: any) {
         console.error("Payout accounts error:", error);
         return NextResponse.json({ error: error.message || "Failed to save payout account" }, { status: 500 });
     }

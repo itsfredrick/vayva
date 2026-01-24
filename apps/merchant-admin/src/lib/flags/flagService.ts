@@ -3,7 +3,7 @@ import crypto from "crypto";
 export class FlagService {
     // In a real app, use Redis or robust in-memory caching.
     // For V1, we fetch or use a short-lived simplistic cache concept.
-    static async isEnabled(key, context = {}) {
+    static async isEnabled(key: string, context: any = {}) {
         try {
             const flag = await prisma.featureFlag.findUnique({
                 where: { key },
@@ -14,7 +14,7 @@ export class FlagService {
             // Actually, usually 'enabled' means "Global ON unless rules restrict" or "Off unless rules enable".
             // Let's define: enabled = BASE STATE. Rules = OVERRIDES.
             // Allowlist overrides everything (Specific Turn ON)
-            const rules = flag.rules;
+            const rules = (flag.rules as any);
             if (context.merchantId) {
                 if (rules.merchant_blocklist?.includes(context.merchantId))
                     return false;
@@ -34,12 +34,12 @@ export class FlagService {
             }
             return flag.enabled;
         }
-        catch (e) {
+        catch (e: any) {
             console.error(`[FlagService] Error evaluating ${key}`, e);
             return false; // Fail safe
         }
     }
-    static async isKillSwitchActive(key, merchantId) {
+    static async isKillSwitchActive(key: string, merchantId: string) {
         // Semantic helper: "Active" means "The Kill Switch is ENGAGED (Blocking)"?
         // Or "Is the FEATURE enabled?"
         // Usually boolean questions should be "isFeatureXEnabled?".

@@ -1,10 +1,10 @@
 import { FastifyRequest, FastifyReply } from "fastify";
-import { prisma } from "@vayva/db";
+import { _prisma } from "@vayva/db";
 
 // const prisma = new PrismaClient(); // Removed
 
 // Only for POST/PUT/PATCH
-export const idempotency = async (req: FastifyRequest, reply: FastifyReply) => {
+export const idempotency = async (req: FastifyRequest, _reply: FastifyReply) => {
   const key = req.headers["idempotency-key"] as string;
   if (!key) return; // Skip if header not present, or enforce strictness depending on route
 

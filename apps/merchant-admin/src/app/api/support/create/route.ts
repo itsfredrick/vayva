@@ -3,7 +3,7 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth"; // Assumed path based on convention
 import { prisma } from "@/lib/prisma";
 import { Resend } from "resend";
-export async function POST(request: unknown) {
+export async function POST(request: Request) {
     const session = await getServerSession(authOptions);
     if (!session || !session.user) {
         return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
@@ -50,7 +50,7 @@ export async function POST(request: unknown) {
                 finalPriority = aiPriority;
             }
         }
-        catch (e) {
+        catch (e: any) {
             console.error("AI Classification Error:", e);
             // Fallback to simple logic if Groq fails
             const lowerDesc = description.toLowerCase();
@@ -86,13 +86,13 @@ export async function POST(request: unknown) {
                            <p>Best,<br/>Vayva Support Team</p>`
                 });
             }
-            catch (emailError) {
+            catch (emailError: any) {
                 console.error("Failed to send support email:", emailError);
             }
         }
         return NextResponse.json({ success: true, ticket });
     }
-    catch (error) {
+    catch (error: any) {
         console.error("Support Ticket Create Error:", error);
         return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
     }

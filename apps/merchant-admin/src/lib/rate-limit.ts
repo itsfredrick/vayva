@@ -1,7 +1,7 @@
 import { prisma } from "@vayva/db";
 import { logAuditEvent, AuditEventType } from "@/lib/audit";
 export class RateLimitError extends Error {
-    constructor(message) {
+    constructor(message: any) {
         super(message);
         this.name = "RateLimitError";
     }
@@ -10,7 +10,7 @@ export class RateLimitError extends Error {
  * Checks if the action is rate limited using the database.
  * Throws RateLimitError if limit exceeded.
  */
-export async function checkRateLimit(userId: unknown, routeKey: unknown, limit: unknown, durationSeconds: unknown, storeId: unknown) {
+export async function checkRateLimit(userId: any, routeKey: any, limit: any, durationSeconds: any, storeId: any) {
     const key = `rl:${routeKey}:${userId}`;
     const now = new Date();
     // 1. Clean expired (optional, but keeps DB clean)

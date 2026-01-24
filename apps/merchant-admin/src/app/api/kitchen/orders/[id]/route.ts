@@ -9,7 +9,7 @@ export const PUT = withVayvaAPI(PERMISSIONS.ORDERS_MANAGE, async (request, { sto
         const updatedOrder = await KitchenService.updateStatus(id, status);
         return NextResponse.json(updatedOrder);
     }
-    catch (error) {
+    catch (error: any) {
         return NextResponse.json({ error: error.message }, { status: 400 });
     }
 });

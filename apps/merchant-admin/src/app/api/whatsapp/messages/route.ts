@@ -3,7 +3,7 @@ import { WhatsAppMessageSender, WhatsAppLinkedEntityType, } from "@vayva/shared"
 import { prisma } from "@/lib/prisma";
 import { MessageType, Direction, MessageStatus } from "@vayva/db";
 import { getSessionUser } from "@/lib/session";
-export async function GET(request: unknown) {
+export async function GET(request: Request) {
     const { searchParams } = new URL(request.url);
     const conversationId = searchParams.get("conversationId");
     if (!conversationId) {
@@ -26,7 +26,7 @@ export async function GET(request: unknown) {
             orderBy: { createdAt: "asc" },
             take: 100,
         });
-        const mappedMessages = messages.map((m: unknown) => ({
+        const mappedMessages = messages.map((m: any) => ({
             id: m.id,
             conversationId: m.conversationId,
             sender: m.direction === Direction.OUTBOUND
@@ -39,12 +39,12 @@ export async function GET(request: unknown) {
         }));
         return NextResponse.json(mappedMessages);
     }
-    catch (error) {
+    catch (error: any) {
         console.error("Fetch Messages Error", error);
         return NextResponse.json({ error: "Failed to fetch messages" }, { status: 500 });
     }
 }
-export async function POST(request: unknown) {
+export async function POST(request: Request) {
     const body = await request.json();
     // Validate body briefly
     if (!body.conversationId || !body.content) {
@@ -86,7 +86,7 @@ export async function POST(request: unknown) {
         };
         return NextResponse.json(newMessage);
     }
-    catch (error) {
+    catch (error: any) {
         console.error("Create Message Error", error);
         return NextResponse.json({ error: "Failed to send message" }, { status: 500 });
     }

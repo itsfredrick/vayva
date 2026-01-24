@@ -100,16 +100,16 @@ const ROLE_PERMISSIONS = {
 /**
  * Checks if a role has a specific permission.
  */
-export function hasRolePermission(role: unknown, permission: unknown) {
-    if (!role || !ROLE_PERMISSIONS[role])
+export function hasRolePermission(role: any, permission: any) {
+    if (!role || !ROLE_PERMISSIONS[role as keyof typeof ROLE_PERMISSIONS])
         return false;
-    return ROLE_PERMISSIONS[role].includes(permission);
+    return ROLE_PERMISSIONS[role as keyof typeof ROLE_PERMISSIONS].includes(permission);
 }
 /**
  * Server-side check: verifying if a specific user has permission in a store.
  * Requires fetching the membership role and its associated permissions.
  */
-export async function hasPermission(userId: unknown, storeId: unknown, permission: unknown) {
+export async function hasPermission(userId: any, storeId: any, permission: any) {
     const membership = await prisma.membership.findUnique({
         where: {
             userId_storeId: {
@@ -147,7 +147,7 @@ export const PLAN_SEAT_LIMITS = {
     PRO: 5,
     ENTERPRISE: 20,
 };
-export async function getPlanSeatLimit(storeId: unknown) {
+export async function getPlanSeatLimit(storeId: any) {
     const store = await prisma.store.findUnique({
         where: { id: storeId },
         select: { plan: true },
@@ -157,9 +157,9 @@ export async function getPlanSeatLimit(storeId: unknown) {
     // Map schema plan enum to limits. Assuming Schema has SubscriptionPlan enum.
     // We'll trust the keys match or map them safely.
     const plan = store.plan;
-    return PLAN_SEAT_LIMITS[plan] || 1;
+    return PLAN_SEAT_LIMITS[plan as keyof typeof PLAN_SEAT_LIMITS] || 1;
 }
-export async function canInviteMember(storeId: unknown) {
+export async function canInviteMember(storeId: any) {
     const limit = await getPlanSeatLimit(storeId);
     const current = await prisma.membership.count({
         where: {

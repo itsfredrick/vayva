@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { ReturnTokenService } from "@/lib/returns/returnToken";
 import { ReturnService } from "@/lib/returns/returnService";
-export async function POST(req: unknown) {
+export async function POST(req: any) {
     try {
         const body = await req.json();
         const { token, items, reason, notes, preferredMethod } = body;
@@ -18,7 +18,7 @@ export async function POST(req: unknown) {
         const request = await ReturnService.createRequest(storeId, claims.orderId, claims.customerPhone, { items, reason, notes, preferredMethod });
         return NextResponse.json({ success: true, id: request.id });
     }
-    catch (e) {
+    catch (e: any) {
         console.error(e);
         return new NextResponse(e.message || "Error", { status: 500 });
     }

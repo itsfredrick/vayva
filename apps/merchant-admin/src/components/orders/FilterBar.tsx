@@ -3,7 +3,7 @@ import { Search, Filter, CreditCard, RefreshCw, Calendar } from "lucide-react";
 import { Button, Icon } from "@vayva/ui";
 
 interface FilterBarProps {
-  onFilterChange: (filters: unknown) => void;
+  onFilterChange: (filters: any) => void;
   onSearch: (query: string) => void;
   onRefresh: () => void;
 }
@@ -27,8 +27,8 @@ export const FilterBar = ({
           type="text"
           placeholder="Search by order ID, customer or ref..."
           className="w-full pl-10 pr-4 py-2.5 border border-gray-200 rounded-xl focus:ring-4 focus:ring-vayva-green/10 focus:border-vayva-green transition-all font-medium text-sm placeholder:text-gray-400"
-          value={search}
-          onChange={(e) => {
+          value={(search as any)}
+          onChange={(e: any) => {
             setSearch(e.target.value);
             onSearch(e.target.value);
           }}
@@ -41,8 +41,8 @@ export const FilterBar = ({
           <select
             aria-label="Filter by Status"
             className="pl-9 pr-8 py-2.5 border border-gray-200 rounded-xl bg-white focus:ring-4 focus:ring-vayva-green/10 focus:border-vayva-green appearance-none font-bold text-gray-700 cursor-pointer min-w-[120px]"
-            value={status}
-            onChange={(e) => {
+            value={(status as any)}
+            onChange={(e: any) => {
               setStatus(e.target.value);
               onFilterChange({ status: e.target.value });
             }}
@@ -73,7 +73,7 @@ export const FilterBar = ({
           <select
             aria-label="Filter by Payment"
             className="pl-9 pr-8 py-2.5 border border-gray-200 rounded-xl bg-white focus:ring-4 focus:ring-vayva-green/10 focus:border-vayva-green appearance-none font-bold text-gray-700 cursor-pointer min-w-[120px]"
-            onChange={(e) => onFilterChange({ paymentStatus: e.target.value })}
+            onChange={(e: any) => onFilterChange({ paymentStatus: e.target.value })}
           >
             <option value="ALL">Payment</option>
             <option value="PAID">Paid</option>

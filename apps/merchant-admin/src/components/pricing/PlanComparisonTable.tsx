@@ -46,7 +46,7 @@ export const PlanComparisonTable = () => {
             <th className="p-8 text-sm font-black text-gray-400 uppercase tracking-widest w-1/4">
               Features
             </th>
-            {PLANS.map((plan) => (
+            {PLANS.map((plan: any) => (
               <th
                 key={plan.key}
                 className={`p-8 text-xl font-black text-black text-center ${plan.featured ? "bg-green-50/30" : ""}`}
@@ -57,7 +57,7 @@ export const PlanComparisonTable = () => {
           </tr>
         </thead>
         <tbody className="divide-y divide-gray-50">
-          {COMPARISON_DATA.map((row) => (
+          {COMPARISON_DATA.map((row: any) => (
             <tr
               key={row.name}
               className="hover:bg-gray-50/50 transition-colors"

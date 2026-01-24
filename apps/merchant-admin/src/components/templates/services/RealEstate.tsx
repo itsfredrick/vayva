@@ -63,7 +63,7 @@ export const RealEstateTemplate: React.FC<TemplateProps> = ({
             className="absolute inset-0 w-full h-full object-cover"
           />
           <div className="absolute bottom-8 left-8 right-8 flex gap-2 overflow-x-auto pb-2">
-            {[1, 2, 3].map((i) => (
+            {[1, 2, 3].map((i: any) => (
               <div
                 key={i}
                 className="min-w-[200px] bg-white p-3 rounded shadow-lg cursor-pointer hover:-translate-y-1 transition-transform"

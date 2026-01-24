@@ -1,20 +1,19 @@
 "use client";
 
 import { useOpsQuery } from "@/hooks/useOpsQuery";
-import { OpsShell } from "@/components/OpsShell";
+import { OpsShell} from '@/components/OpsShell';
 import { useState } from "react";
-import { toast } from "sonner";
+import { toast } from 'sonner';
 import { Button } from "@vayva/ui";
 import {
     CheckCircle2,
     XCircle,
-    Clock,
-    AlertCircle,
+    Clock, AlertCircle,
     FileSignature
-} from "lucide-react";
-import { useRouter, useSearchParams } from "next/navigation";
+} from 'lucide-react';
+import { useRouter, useSearchParams } from 'next/navigation';
 
-export default function ApprovalsPage() {
+export default function ApprovalsPage(): React.JSX.Element {
     const [tab, setTab] = useState<"PENDING" | "HISTORY">("PENDING");
     const router = useRouter();
     const searchParams = useSearchParams();
@@ -46,7 +45,7 @@ export default function ApprovalsPage() {
             } else {
                 toast.error("Action failed");
             }
-        } catch (e) {
+        } catch {
             toast.error("Network error");
         } finally {
             setProcessingId(null);
@@ -73,7 +72,7 @@ export default function ApprovalsPage() {
             toast.success(`${successful}/${selectedIds.length} requests ${decision}`);
             setSelectedIds([]);
             refetch();
-        } catch (e) {
+        } catch {
             toast.error("Batch action failed");
         } finally {
             setBatchProcessing(false);
@@ -90,7 +89,7 @@ export default function ApprovalsPage() {
         if (selectedIds.length === approvals.length) {
             setSelectedIds([]);
         } else {
-            setSelectedIds(approvals.map((a: unknown) => a.id));
+            setSelectedIds(approvals.map((a: any) => (a as any).id));
         }
     };
 
@@ -221,7 +220,7 @@ export default function ApprovalsPage() {
                                     </td>
                                 </tr>
                             )}
-                            {approvals.map((req: ApprovalRequest) => (
+                            {approvals.map((req: any) => (
                                 <tr key={req.id} className="hover:bg-gray-50 transition-colors">
                                     {tab === "PENDING" && (
                                         <td className="px-4 py-4">

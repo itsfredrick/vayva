@@ -12,7 +12,7 @@ export function CountdownTimer({
     targetDate,
     labels = ["Days", "Hours", "Mins", "Secs"],
     className = ""
-}: CountdownTimerProps) {
+}: CountdownTimerProps): React.JSX.Element {
     // Default to 3 days from now if no date provided
     const [target] = useState(() => {
         if (targetDate) return new Date(targetDate).getTime();

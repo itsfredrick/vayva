@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
-export function useStorefrontStore(slug: unknown) {
-    const [store, setStore] = useState(null);
+export function useStorefrontStore(slug: any) {
+    const [store, setStore] = useState<any>(null);
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState(null);
     useEffect(() => {
@@ -9,37 +9,37 @@ export function useStorefrontStore(slug: unknown) {
         let isMounted = true;
         setIsLoading(true);
         fetch(`/api/storefront/${slug}/store`)
-            .then((res: unknown) => {
-            if (!res.ok) {
-                if (res.status === 404)
-                    throw new Error("Store not found");
-                throw new Error("Failed to fetch store");
-            }
-            return res.json();
-        })
-            .then((data: unknown) => {
-            if (isMounted)
-                setStore(data);
-        })
-            .catch((err: unknown) => {
-            if (isMounted)
-                setError(err);
-            if (err.message !== "Store not found") {
-                console.error("Store fetch error:", err);
-            }
-        })
+            .then((res: any) => {
+                if (!res.ok) {
+                    if (res.status === 404)
+                        throw new Error("Store not found");
+                    throw new Error("Failed to fetch store");
+                }
+                return res.json();
+            })
+            .then((data: any) => {
+                if (isMounted)
+                    setStore(data);
+            })
+            .catch((err: any) => {
+                if (isMounted)
+                    setError(err);
+                if (err.message !== "Store not found") {
+                    console.error("Store fetch error:", err);
+                }
+            })
             .finally(() => {
-            if (isMounted)
-                setIsLoading(false);
-        });
+                if (isMounted)
+                    setIsLoading(false);
+            });
         return () => {
             isMounted = false;
         };
     }, [slug]);
     return { store, isLoading, error };
 }
-export function useStorefrontProducts(slug: unknown, options: unknown) {
-    const [products, setProducts] = useState([]);
+export function useStorefrontProducts(slug: any, options: any = {}): { products: any[]; isLoading: boolean; error: any } {
+    const [products, setProducts] = useState<any[]>([]);
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState(null);
     // Destructure options to avoid dependency loop if object is unstable
@@ -59,29 +59,29 @@ export function useStorefrontProducts(slug: unknown, options: unknown) {
         if (limit)
             query.append("limit", limit.toString());
         fetch(`/api/storefront/${slug}/products?${query.toString()}`)
-            .then((res: unknown) => {
-            if (!res.ok) {
-                if (res.status === 404)
-                    throw new Error("Store not found");
-                throw new Error("Failed to fetch products");
-            }
-            return res.json();
-        })
-            .then((data: unknown) => {
-            if (isMounted)
-                setProducts(data);
-        })
-            .catch((err: unknown) => {
-            if (isMounted)
-                setError(err);
-            if (err.message !== "Store not found") {
-                console.error("Products fetch error:", err);
-            }
-        })
+            .then((res: any) => {
+                if (!res.ok) {
+                    if (res.status === 404)
+                        throw new Error("Store not found");
+                    throw new Error("Failed to fetch products");
+                }
+                return res.json();
+            })
+            .then((data: any) => {
+                if (isMounted)
+                    setProducts(data);
+            })
+            .catch((err: any) => {
+                if (isMounted)
+                    setError(err);
+                if (err.message !== "Store not found") {
+                    console.error("Products fetch error:", err);
+                }
+            })
             .finally(() => {
-            if (isMounted)
-                setIsLoading(false);
-        });
+                if (isMounted)
+                    setIsLoading(false);
+            });
         return () => {
             isMounted = false;
         };

@@ -5,7 +5,7 @@ import { createMockProduct, createMockProducts } from '../factories';
 
 // Mock the API handler wrapper
 vi.mock('@/lib/api-handler', () => ({
-    withVayvaAPI: (permission: unknown, handler: unknown) => handler,
+    withVayvaAPI: (permission: any, handler: any) => handler,
     PERMISSIONS: {
         COMMERCE_VIEW: 'COMMERCE_VIEW',
         COMMERCE_MANAGE: 'COMMERCE_MANAGE',
@@ -40,7 +40,7 @@ vi.mock('@/lib/audit', () => ({
 vi.mock('@/lib/input-sanitization', () => ({
     sanitizeText: (text: string) => text?.trim() || '',
     sanitizeHtml: (html: string) => html?.replace(/<script[^>]*>.*?<\/script>/gi, '') || '',
-    sanitizeNumber: (num: unknown, options?: unknown) => {
+    sanitizeNumber: (num: any, options?: any) => {
         const parsed = typeof num === 'string' ? parseFloat(num) : num;
         if (isNaN(parsed)) return null;
         if (options?.min !== undefined && parsed < options.min) return null;

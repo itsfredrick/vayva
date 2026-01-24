@@ -1,5 +1,6 @@
-
 "use client";
+
+import React from "react";
 
 import { useCart } from "@/context/CartContext";
 import { Drawer, Button } from "@vayva/ui";
@@ -8,16 +9,16 @@ import { ShoppingBag, Store, Truck } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { SplitCartGroup, CartWithRelations } from "@vayva/shared/cart-service";
 
-export function CartDrawer() {
-    const { isOpen, setIsOpen, cart, isLoading } = useCart();
+export function CartDrawer(): React.JSX.Element {
+    const { isOpen, setIsOpen, cart } = useCart();
     const router = useRouter();
 
-    const handleCheckout = () => {
+    const handleCheckout = (): void => {
         setIsOpen(false);
         router.push("/checkout");
     };
 
-    const formatCurrency = (amount: number) => {
+    const formatCurrency = (amount: number): string => {
         return new Intl.NumberFormat("en-NG", {
             style: "currency",
             currency: "NGN",

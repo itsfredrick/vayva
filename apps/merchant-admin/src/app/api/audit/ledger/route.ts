@@ -16,7 +16,7 @@ export async function GET(req: NextRequest) {
                 },
             },
         });
-        const formattedLedger = ledgerEntries.map((entry) => ({
+        const formattedLedger = ledgerEntries.map((entry: any) => ({
             id: entry.id,
             storeName: (entry as any).store.name,
             date: entry.occurredAt,
@@ -33,7 +33,7 @@ export async function GET(req: NextRequest) {
             integrityCheck: "VALID", // Tested integrity check
         });
     }
-    catch (error) {
+    catch (error: any) {
         console.error("Audit Ledger Error:", error);
         return NextResponse.json({ error: "Failed to fetch ledger" }, { status: 500 });
     }

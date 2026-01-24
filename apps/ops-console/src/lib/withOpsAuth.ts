@@ -1,4 +1,4 @@
-import { NextRequest, NextResponse } from "next/server";
+import { NextRequest, NextResponse } from 'next/server';
 import { OpsAuthService } from "./ops-auth";
 
 /**
@@ -28,8 +28,8 @@ import { OpsAuthService } from "./ops-auth";
  */
 
 export interface OpsAuthContext {
-    user: unknown; // OpsUser from Prisma
-    session: unknown; // OpsSession from Prisma
+    user: any; // OpsUser from Prisma
+    session: any; // OpsSession from Prisma
 }
 
 export interface WithOpsAuthOptions {
@@ -56,7 +56,7 @@ export function withOpsAuth(
             // Skip auth for whitelisted endpoints
             if (options.skipAuth) {
                 // Still provide empty context for type safety
-                return handler(req, { user: null, session: null } as unknown);
+                return handler(req, { user: null, session: null } as any);
             }
 
             // Require session
@@ -69,7 +69,7 @@ export function withOpsAuth(
 
             // Call handler with authenticated context
             return handler(req, authContext);
-        } catch (error) {
+        } catch (error: any) {
             // Handle auth errors
             if (error.message === "Unauthorized" || error.message.includes("Insufficient permissions")) {
                 return NextResponse.json(
@@ -88,9 +88,9 @@ export function withOpsAuth(
  * Validation helper to ensure all Ops routes use withOpsAuth
  * This can be run in CI to catch missing auth
  */
-export function validateOpsRouteAuth(routePath: string, handler: unknown): boolean {
+export function validateOpsRouteAuth(routePath: string, handler: any): boolean {
     // Check if handler is wrapped by withOpsAuth
     // This is a simple check - in production you'd use AST analysis
-    const handlerString = handler.toString();
+    const handlerString = (handler as any).toString();
     return handlerString.includes("withOpsAuth") || handlerString.includes("requireSession");
 }

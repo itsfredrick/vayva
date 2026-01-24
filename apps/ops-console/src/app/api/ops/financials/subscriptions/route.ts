@@ -1,4 +1,4 @@
-import { NextResponse } from "next/server";
+import { NextResponse } from 'next/server';
 import { prisma } from "@vayva/db";
 import { OpsAuthService } from "@/lib/ops-auth";
 
@@ -22,16 +22,16 @@ export async function GET(request: Request) {
     });
 
     // Manual join for Store names since schema might not have back-relation accessible easily or for perf
-    const storeIds = subs.map(s => s.storeId);
+    const storeIds = subs.map(s => (s as any).storeId);
     const stores = await prisma.store.findMany({
         where: { id: { in: storeIds } },
         select: { id: true, name: true, slug: true }
     });
-    const storeMap = new Map(stores.map(s => [s.id, s]));
+    const storeMap = new Map(stores.map(s => [(s as any).id, s]));
 
     const data = subs.map(s => ({
         ...s,
-        store: storeMap.get(s.storeId)
+        store: storeMap.get((s as any).storeId)
     }));
 
     return NextResponse.json({ data });

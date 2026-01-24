@@ -21,7 +21,7 @@ const resetPasswordRoute: FastifyPluginAsync = async (fastify) => {
     // This is circular: we need user to get secret, we need secret to verify token to get user?
     // Use `jwt.decode` to get payload { id }, find user, generate secret, verify.
 
-    const decoded = jwt.decode(body.token) as unknown;
+    const decoded = jwt.decode(body.token) as { id?: string } | null;
     if (!decoded || !decoded.id) {
       return reply.status(400).send({ error: "Invalid token" });
     }
@@ -40,7 +40,8 @@ const resetPasswordRoute: FastifyPluginAsync = async (fastify) => {
 
     try {
       jwt.verify(body.token, secret);
-    } catch (e) {
+    } catch (// eslint-disable-next-line @typescript-eslint/no-unused-vars
+    _e) {
       return reply.status(400).send({
         error: "Invalid or expired token",
         code: "TOKEN_INVALID"

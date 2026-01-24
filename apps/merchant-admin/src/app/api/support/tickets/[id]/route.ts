@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
-export async function GET(req: unknown, { params }: unknown) {
+export async function GET(req: any, { params }: any) {
     const { id } = await params;
     try {
         const ticket = await prisma.supportTicket.findUnique({
@@ -16,7 +16,7 @@ export async function GET(req: unknown, { params }: unknown) {
         }
         return NextResponse.json(ticket);
     }
-    catch (error) {
+    catch (error: any) {
         console.error("Fetch Ticket Detail Error:", error);
         return NextResponse.json({ error: "Failed to fetch ticket" }, { status: 500 });
     }

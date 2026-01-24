@@ -4,7 +4,7 @@ import React from "react";
 import * as motion from "framer-motion/client";
 import { Smartphone, Users, Wifi, ShieldCheck } from "lucide-react";
 
-export function InfrastructureSection() {
+export function InfrastructureSection(): React.JSX.Element {
     return (
         <section className="py-24 px-4 bg-white">
             <motion.div
@@ -25,7 +25,7 @@ export function InfrastructureSection() {
                         { title: "Informal selling norms", Icon: Users, color: "text-orange-600", bg: "bg-orange-100" },
                         { title: "Network constraints", Icon: Wifi, color: "text-blue-600", bg: "bg-blue-100" },
                         { title: "Regulatory awareness", Icon: ShieldCheck, color: "text-purple-600", bg: "bg-purple-100" },
-                    ].map((item) => (
+                    ].map((item: any) => (
                         <div key={item.title} className="bg-gray-50 rounded-2xl p-8 border border-gray-100 hover:bg-white hover:shadow-xl transition-all group">
                             <div className={`w-12 h-12 rounded-xl ${item.bg} flex items-center justify-center mb-4 group-hover:scale-110 transition-transform`}>
                                 <item.Icon className={`w-6 h-6 ${item.color}`} />

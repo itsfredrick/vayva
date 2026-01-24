@@ -1,5 +1,5 @@
 import React from "react";
-import { CheckCircle, AlertCircle, XCircle, Info } from "lucide-react";
+import { CheckCircle, AlertCircle, XCircle, Info } from 'lucide-react';
 
 interface ComplianceReportProps {
   report: {
@@ -19,7 +19,7 @@ interface ComplianceReportProps {
   };
 }
 
-export function ComplianceReport({ report }: ComplianceReportProps) {
+export function ComplianceReport({ report }: ComplianceReportProps): React.JSX.Element {
   const { checks, details, isValid } = report;
 
   return (
@@ -86,7 +86,7 @@ export function ComplianceReport({ report }: ComplianceReportProps) {
   );
 }
 
-function CheckItem({ label, status }: { label: string; status: boolean }) {
+function CheckItem({ label, status }: { label: string; status: boolean }): React.JSX.Element {
   return (
     <div className="flex items-center gap-2">
       {status ? (

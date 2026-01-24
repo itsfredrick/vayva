@@ -7,7 +7,9 @@ import { cn } from "../utils";
 import { Button } from "../components/Button";
 
 // Fix for LucideIcon type mismatch in this specific environment setup
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const AlertCircle = AlertCircleIcon as any;
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const RefreshCw = RefreshCwIcon as any;
 
 interface ErrorStateProps {

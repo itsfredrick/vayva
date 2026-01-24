@@ -9,7 +9,7 @@ export default function Error({
 }: {
     error: Error & { digest?: string };
     reset: () => void;
-}) {
+}): React.JSX.Element {
     useEffect(() => {
         console.error("Marketing Client Error:", error);
     }, [error]);

@@ -31,7 +31,7 @@ export default function InsightsPage() {
         const res = await fetch("/api/customers/insights");
         const json = await res.json();
         if (json.stats) setData(json);
-      } catch (e) {
+      } catch (e: any) {
         logger.error("Failed to load customer insights", ErrorCategory.API, e as Error, {});
       } finally {
         setLoading(false);
@@ -115,7 +115,7 @@ export default function InsightsPage() {
 
       {/* Segments Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        {segments.map((s) => {
+        {segments.map((s: any) => {
           const segData = data?.segments?.[s.id] || { count: 0, revenue: 0 };
           return (
             <Card

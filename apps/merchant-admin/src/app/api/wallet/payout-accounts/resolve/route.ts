@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-export async function POST(request: unknown) {
+export async function POST(request: Request) {
     const { accountNumber, bankCode } = await request.json();
     if (accountNumber.length !== 10) {
         return NextResponse.json({ error: "Invalid account number" }, { status: 400 });

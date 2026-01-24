@@ -32,7 +32,7 @@ interface RequestConfig extends RequestInit {
 interface ApiError extends Error {
   status?: number;
   code?: string;
-  details?: unknown;
+  details?: any;
   correlationId?: string;
 }
 
@@ -75,7 +75,7 @@ class ApiClient {
    */
   async post<T = unknown>(
     url: string,
-    data?: unknown,
+    data?: any,
     config?: RequestConfig,
   ): Promise<T> {
     return this.request<T>(url, {
@@ -90,7 +90,7 @@ class ApiClient {
    */
   async put<T = unknown>(
     url: string,
-    data?: unknown,
+    data?: any,
     config?: RequestConfig,
   ): Promise<T> {
     return this.request<T>(url, {
@@ -172,7 +172,7 @@ class ApiClient {
         // Parse response
         const data = await this.parseResponse<T>(response);
         return data;
-      } catch (err: unknown) {
+      } catch (err: any) {
         // Handle abort/timeout
         const error = err as Error;
         if (error.name === "AbortError") {
@@ -207,17 +207,17 @@ class ApiClient {
     }
 
     if (contentType?.includes("text/")) {
-      return (await response.text()) as unknown as T;
+      return (await response.text()) as any as T;
     }
 
-    return (await response.blob()) as unknown as T;
+    return (await response.blob()) as any as T;
   }
 
   /**
    * Handle error responses
    */
   private async handleErrorResponse(response: Response): Promise<ApiError> {
-    let errorData: unknown = {};
+    let errorData: any = {};
 
     try {
       errorData = await response.json();

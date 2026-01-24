@@ -17,7 +17,6 @@ server.get("/health", async () => {
 const start = async () => {
   try {
     await server.listen({ port: 3007, host: "0.0.0.0" });
-    console.log("Fulfillment Service running on port 3007");
   } catch (err) {
     (server.log as unknown).error(err);
     process.exit(1);

@@ -21,7 +21,7 @@ export function useStorefrontCart(storeSlug: string) {
     if (saved) {
       try {
         setCart(JSON.parse(saved));
-      } catch (e) {
+      } catch (e: any) {
         console.error("Failed to parse cart", e);
       }
     }
@@ -53,11 +53,11 @@ export function useStorefrontCart(storeSlug: string) {
     }
   }, [storeSlug]);
 
-  const addToCart = (product: unknown, quantity = 1) => {
+  const addToCart = (product: any, quantity = 1) => {
     setCart((prev) => {
       const existing = prev.find((item) => item.id === product.id);
       if (existing) {
-        return prev.map((item) =>
+        return prev.map((item: any) =>
           item.id === product.id
             ? { ...item, quantity: item.quantity + quantity }
             : item,
@@ -84,7 +84,7 @@ export function useStorefrontCart(storeSlug: string) {
   const updateQuantity = (productId: string, delta: number) => {
     setCart((prev) =>
       prev
-        .map((item) => {
+        .map((item: any) => {
           if (item.id === productId) {
             const newQty = Math.max(0, item.quantity + delta);
             return { ...item, quantity: newQty };

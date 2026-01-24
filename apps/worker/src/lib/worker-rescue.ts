@@ -30,7 +30,6 @@ export class WorkerRescueService {
             },
         });
 
-        console.log(`[RESCUE] Captured worker failure on ${queueName} job ${jobId}`);
     }
 
     private static generateFingerprint(queueName: string, msg: string) {

@@ -39,7 +39,7 @@ export function MenuFilterBar({
             <input
               type="text"
               value={searchQuery}
-              onChange={(e) => onSearchChange(e.target.value)}
+              onChange={(e: any) => onSearchChange(e.target.value)}
               className="block w-full pl-10 pr-3 py-2 border border-gray-200 rounded-full leading-5 bg-gray-50 placeholder-gray-500 focus:outline-none focus:bg-white focus:ring-1 focus:ring-[#22C55E] focus:border-[#22C55E] sm:text-sm transition-colors"
               placeholder={t.searchPlaceholder}
             />
@@ -56,7 +56,7 @@ export function MenuFilterBar({
               {t.preferences}
             </Button>
             <div className="h-6 w-px bg-gray-200 mx-2" />
-            {FILTERS.map((f) => (
+            {FILTERS.map((f: any) => (
               <Button
                 key={f.key}
                 variant="ghost"

@@ -1,4 +1,4 @@
-import { prisma } from "@/lib/prisma";
+import { prisma, OnboardingStatus } from "@/lib/prisma";
 import { OnboardingState, OnboardingUpdatePayload } from "@/types/onboarding";
 
 export class OnboardingService {
@@ -28,13 +28,19 @@ export class OnboardingService {
         return await prisma.$transaction(async (tx) => {
             const { step, data, isComplete } = payload;
             // 1. Prepare Onboarding Update
-            const updateData: unknown= {
+            const updateData: {
+                updatedAt: Date;
+                currentStepKey?: string;
+                status?: OnboardingStatus;
+                completedAt?: Date;
+                data?: any;
+            } = {
                 updatedAt: new Date(),
             };
             if (step)
                 updateData.currentStepKey = step;
             if (payload.status)
-                updateData.status = payload.status;
+                updateData.status = payload.status as OnboardingStatus;
             // Merge data logic:
             // For now, we assume the frontend sends what it wants to persist for 'data'.
             // In a partial update scenario, we might need to fetch->merge->save if 'data' is partial.
@@ -70,7 +76,7 @@ export class OnboardingService {
                 if (!hasFinance || !hasKyc) {
                     throw new Error("Cannot complete onboarding: Missing Finance or KYC data");
                 }
-                updateData.status = "COMPLETED";
+                updateData.status = "COMPLETE";
                 updateData.completedAt = new Date();
             }
             const updatedOnboarding = await tx.merchantOnboarding.update({
@@ -78,7 +84,13 @@ export class OnboardingService {
                 data: updateData
             });
             // 2. Sync Store Fields
-            const storeUpdate: unknown= {};
+            const storeUpdate: {
+                onboardingLastStep?: string;
+                onboardingCompleted?: boolean;
+                isLive?: boolean;
+                category?: string;
+                industrySlug?: string;
+            } = {};
             if (step)
                 storeUpdate.onboardingLastStep = step;
             if (isComplete) {
@@ -98,9 +110,14 @@ export class OnboardingService {
                 });
             }
             // 3. Sync KYC Data
-            const kycData = data?.kyc || data?.identity;
+            const kycData = (data as any)?.kyc || (data as any)?.identity;
             if (kycData) {
-                const kycUpdate: unknown= {};
+                const kycUpdate: {
+                    ninLast4?: string;
+                    fullNinEncrypted?: string;
+                    bvnLast4?: string;
+                    fullBvnEncrypted?: string;
+                } = {};
                 if (kycData.nin) {
                     kycUpdate.ninLast4 = kycData.nin.slice(-4);
                     kycUpdate.fullNinEncrypted = `ENCRYPTED_${kycData.nin}`; // START MOCK ENCRYPTION

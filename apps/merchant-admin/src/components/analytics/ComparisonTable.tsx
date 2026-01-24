@@ -20,7 +20,7 @@ export const ComparisonTable = ({ data }: { data: ComparisonData[] }) => {
             </tr>
           </thead>
           <tbody className="divide-y divide-gray-100">
-            {data.map((item) => (
+            {data.map((item: any) => (
               <tr
                 key={item.template_id}
                 className={cn(

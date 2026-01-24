@@ -51,8 +51,8 @@ export default function NewMenuItemPage() {
 
             toast.success("Menu item created!");
             router.push("/dashboard/menu-items");
-        } catch (error) {
-            toast.error(error.message || "Failed to create menu item");
+        } catch (error: any) {
+            toast.error((error as any).message || "Failed to create menu item");
         } finally {
             setLoading(false);
         }
@@ -81,7 +81,7 @@ export default function NewMenuItemPage() {
                             <Input
                                 id="name"
                                 required
-                                value={formData.name}
+                                value={(formData.name as any)}
                                 onChange={(e: React.ChangeEvent<HTMLInputElement>) => setFormData({ ...formData, name: e.target.value })}
                                 placeholder="e.g. Spicy Chicken Burger"
                             />
@@ -92,7 +92,7 @@ export default function NewMenuItemPage() {
                                 id="price"
                                 type="number"
                                 required
-                                value={formData.price}
+                                value={(formData.price as any)}
                                 onChange={(e: React.ChangeEvent<HTMLInputElement>) => setFormData({ ...formData, price: e.target.value })}
                                 placeholder="0.00"
                             />
@@ -101,7 +101,7 @@ export default function NewMenuItemPage() {
                             <Label htmlFor="description">Description</Label>
                             <Textarea
                                 id="description"
-                                value={formData.description}
+                                value={(formData.description as any)}
                                 onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => setFormData({ ...formData, description: e.target.value })}
                                 placeholder="Describe the dish..."
                             />
@@ -132,14 +132,14 @@ export default function NewMenuItemPage() {
                                 <Input
                                     id="prepTime"
                                     type="number"
-                                    value={metadata.prepTimeMinutes}
+                                    value={(metadata.prepTimeMinutes as any)}
                                     onChange={(e: React.ChangeEvent<HTMLInputElement>) => setMetadata({ ...metadata, prepTimeMinutes: parseInt(e.target.value) })}
                                 />
                             </div>
                             <div className="grid gap-2">
                                 <Label>Spice Level</Label>
                                 <Select
-                                    value={metadata.spiceLevel}
+                                    value={(metadata.spiceLevel as any)}
                                     onValueChange={(val) => setMetadata({ ...metadata, spiceLevel: val as any })}
                                 >
                                     <SelectTrigger>
@@ -159,7 +159,7 @@ export default function NewMenuItemPage() {
                             <Input
                                 id="calories"
                                 type="number"
-                                value={metadata.calories}
+                                value={(metadata.calories as any)}
                                 onChange={(e: React.ChangeEvent<HTMLInputElement>) => setMetadata({ ...metadata, calories: parseInt(e.target.value) })}
                             />
                         </div>

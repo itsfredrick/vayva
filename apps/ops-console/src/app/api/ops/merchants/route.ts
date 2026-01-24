@@ -1,4 +1,4 @@
-import { NextRequest, NextResponse } from "next/server";
+import { NextRequest, NextResponse } from 'next/server';
 import { prisma, Prisma } from "@vayva/db";
 import { withOpsAuth } from "@/lib/withOpsAuth";
 
@@ -90,15 +90,15 @@ export const GET = withOpsAuth(async (request: NextRequest) => {
     prisma.store.count({ where }),
   ]);
 
-  const data = stores.map((store) => {
+  const data = stores.map((store: any) => {
     // Find owner
     const members = store.tenant?.tenantMemberships || [];
-    const ownerMember = members.find((m) => m.role === "OWNER") || members[0];
+    const ownerMember = members.find((m: any) => m.role === "OWNER") || members[0];
     const owner = ownerMember?.user;
     const ownerName = owner ? `${owner.firstName || ""} ${owner.lastName || ""}`.trim() : "Unknown";
 
     // Calculate GMV
-    const gmv30d = store.orders.reduce((sum: number, o) => sum + Number(o.total), 0);
+    const gmv30d = store.orders.reduce((sum: number, o: any) => sum + Number(o.total), 0);
 
     // Determine Risk
     const riskFlags = [];
@@ -112,8 +112,8 @@ export const GET = withOpsAuth(async (request: NextRequest) => {
       ownerEmail: owner?.email || "Unknown",
       status: "ACTIVE",
       plan: store.plan || "FREE",
-      trialEndsAt: store.aiSubscription?.trialEndsAt
-        ? store.aiSubscription.trialEndsAt.toISOString()
+      trialEndsAt: (store as any).aiSubscription?.trialEndsAt
+        ? (store as any).aiSubscription.trialEndsAt.toISOString()
         : null,
       kycStatus: store.wallet?.kycStatus || "NOT_SUBMITTED",
       riskFlags,

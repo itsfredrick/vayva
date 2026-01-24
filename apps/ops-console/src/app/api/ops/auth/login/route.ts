@@ -1,6 +1,6 @@
 
 import { OpsAuthService } from "@/lib/ops-auth";
-import { type NextRequest, NextResponse } from "next/server";
+import { type NextRequest, NextResponse } from 'next/server';
 
 export async function POST(req: NextRequest) {
     try {
@@ -41,7 +41,7 @@ export async function POST(req: NextRequest) {
         // Success event is logged inside OpsAuthService.login
 
         return NextResponse.json({ success: true, user: { email: user.email, name: user.name, role: user.role } });
-    } catch (error) {
+    } catch (error: any) {
         console.error("Login Error:", error);
         return NextResponse.json(
             { error: "Internal Server Error" },

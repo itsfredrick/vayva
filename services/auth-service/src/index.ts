@@ -24,7 +24,7 @@ server.register(jwt, {
   secret: process.env.JWT_SECRET || "supersecret",
 });
 
-server.decorate("authenticate", async (request: unknown, reply: unknown) => {
+server.decorate("authenticate", async (request: FastifyRequest, reply: FastifyReply) => {
   try {
     await request.jwtVerify();
   } catch (err) {
@@ -46,9 +46,8 @@ server.register(rbacRoutes, { prefix: "/v1/rbac" });
 const start = async () => {
   try {
     await server.listen({ port: 3011, host: "0.0.0.0" });
-    console.log("Auth Service running on port 3011");
   } catch (err) {
-    (server.log as unknown).error(err);
+    server.log.error(err);
     process.exit(1);
   }
 };

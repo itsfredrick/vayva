@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import { getSessionUser } from "@/lib/session";
 import { prisma } from "@/lib/prisma";
 import { logAuditEvent, AuditEventType } from "@/lib/audit";
-export async function GET(request: unknown, { params }: unknown) {
+export async function GET(request: Request, { params }: any) {
     try {
         const { id } = await params;
         const user = await getSessionUser();
@@ -44,8 +44,8 @@ export async function GET(request: unknown, { params }: unknown) {
         let csvContent = "";
         let filename = "export.csv";
         if (job.type === "withdrawals") {
-            const filters = job.filters || {};
-            const where = { storeId: user.storeId };
+            const filters = (job.filters as any) || {};
+            const where: any = { storeId: user.storeId };
             if (filters.status && filters.status !== "ALL")
                 where.status = filters.status;
             // Add date range if in filters (assuming JSON holds startDate/endDate)
@@ -63,7 +63,7 @@ export async function GET(request: unknown, { params }: unknown) {
                 "Fee (NGN)",
                 "Net (NGN)",
             ];
-            const rows = withdrawals.map((w: unknown) => [
+            const rows = withdrawals.map((w: any) => [
                 new Date(w.createdAt).toISOString(),
                 w.referenceCode,
                 w.status,
@@ -73,15 +73,15 @@ export async function GET(request: unknown, { params }: unknown) {
             ]);
             csvContent = [
                 header.join(","),
-                ...rows.map((row: unknown) => row
-                    .map((field: unknown) => `"${String(field).replace(/"/g, '""')}"`)
+                ...rows.map((row: any) => row
+                    .map((field: any) => `"${String(field).replace(/"/g, '""')}"`)
                     .join(",")),
             ].join("\n");
             filename = `withdrawals_${new Date().toISOString().split("T")[0]}.csv`;
         }
         else if (job.type === "orders") {
-            const filters = job.filters || {};
-            const where = { storeId: user.storeId };
+            const filters = (job.filters as any) || {};
+            const where: any = { storeId: user.storeId };
             // simplified filter reconstruction from job
             if (filters.status && filters.status !== "ALL")
                 where.status = filters.status;
@@ -99,7 +99,7 @@ export async function GET(request: unknown, { params }: unknown) {
                 "Payment",
                 "Customer",
             ];
-            const rows = orders.map((o: unknown) => [
+            const rows = orders.map((o: any) => [
                 o.refCode || o.id,
                 new Date(o.createdAt).toISOString(),
                 o.status,
@@ -109,15 +109,15 @@ export async function GET(request: unknown, { params }: unknown) {
             ]);
             csvContent = [
                 header.join(","),
-                ...rows.map((row: unknown) => row
-                    .map((field: unknown) => `"${String(field).replace(/"/g, '""')}"`)
+                ...rows.map((row: any) => row
+                    .map((field: any) => `"${String(field).replace(/"/g, '""')}"`)
                     .join(",")),
             ].join("\n");
             filename = `orders_export_${new Date().toISOString().split("T")[0]}.csv`;
         }
         else if (job.type === "compliance_withdrawals") {
-            const filters = job.filters || {};
-            const where = { storeId: user.storeId };
+            const filters = (job.filters as any) || {};
+            const where: any = { storeId: user.storeId };
             if (filters.dateFrom) {
                 where.createdAt = {
                     ...where.createdAt,
@@ -140,7 +140,7 @@ export async function GET(request: unknown, { params }: unknown) {
                 "Net (NGN)",
                 "Status",
             ];
-            const rows = withdrawals.map((w: unknown) => [
+            const rows = withdrawals.map((w: any) => [
                 new Date(w.createdAt).toISOString(),
                 w.referenceCode,
                 (Number(w.amountKobo) / 100).toFixed(2),
@@ -150,8 +150,8 @@ export async function GET(request: unknown, { params }: unknown) {
             ]);
             csvContent = [
                 header.join(","),
-                ...rows.map((row: unknown) => row
-                    .map((field: unknown) => `"${String(field).replace(/"/g, '""')}"`)
+                ...rows.map((row: any) => row
+                    .map((field: any) => `"${String(field).replace(/"/g, '""')}"`)
                     .join(",")),
             ].join("\n");
             filename = `compliance_withdrawals_${new Date().toISOString().split("T")[0]}.csv`;
@@ -163,8 +163,8 @@ export async function GET(request: unknown, { params }: unknown) {
             });
         }
         else if (job.type === "compliance_activity") {
-            const filters = job.filters || {};
-            const where = { storeId: user.storeId };
+            const filters = (job.filters as any) || {};
+            const where: any = { storeId: user.storeId };
             if (filters.dateFrom) {
                 where.createdAt = {
                     ...where.createdAt,
@@ -187,8 +187,8 @@ export async function GET(request: unknown, { params }: unknown) {
                 },
             });
             const header = ["Date", "Action", "Actor Role", "Reference", "Summary"];
-            const rows = events.map((e: unknown) => {
-                const metadata = e.afterState || {};
+            const rows = events.map((e: any) => {
+                const metadata = (e.afterState as any) || {};
                 return [
                     new Date(e.createdAt).toISOString(),
                     e.action,
@@ -199,8 +199,8 @@ export async function GET(request: unknown, { params }: unknown) {
             });
             csvContent = [
                 header.join(","),
-                ...rows.map((row: unknown) => row
-                    .map((field: unknown) => `"${String(field).replace(/"/g, '""')}"`)
+                ...rows.map((row: any) => row
+                    .map((field: any) => `"${String(field).replace(/"/g, '""')}"`)
                     .join(",")),
             ].join("\n");
             filename = `compliance_activity_${new Date().toISOString().split("T")[0]}.csv`;
@@ -234,7 +234,7 @@ export async function GET(request: unknown, { params }: unknown) {
             },
         });
     }
-    catch (error) {
+    catch (error: any) {
         console.error("Download Error:", error);
         return NextResponse.json({ error: "Download failed" }, { status: 500 });
     }

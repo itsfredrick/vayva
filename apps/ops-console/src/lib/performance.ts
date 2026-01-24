@@ -81,7 +81,7 @@ export async function withTiming<T>(
   try {
     const result = await operation();
     return result;
-  } catch (error) {
+  } catch (error: any) {
     success = false;
     throw error;
   } finally {

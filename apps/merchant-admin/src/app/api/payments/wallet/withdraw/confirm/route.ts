@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import { getSessionUser } from "@/lib/session";
 import { prisma } from "@/lib/prisma";
 import { Prisma } from "@vayva/db";
-export async function POST(request: unknown) {
+export async function POST(request: Request) {
     try {
         const user = await getSessionUser();
         if (!user) {
@@ -34,7 +34,7 @@ export async function POST(request: unknown) {
         // - Deduct Balance
         // - Update Withdrawal Status
         // - Create Ledger Entry
-        await prisma.$transaction(async (tx: unknown) => {
+        await prisma.$transaction(async (tx: any) => {
             // Re-fetch wallet with lock in production, simpler here
             const w = await tx.wallet.findUniqueOrThrow({ where: { storeId: user.storeId } });
             if (w.availableKobo < withdrawal.amountKobo) {
@@ -75,7 +75,7 @@ export async function POST(request: unknown) {
             message: "Withdrawal processing"
         });
     }
-    catch (error) {
+    catch (error: any) {
         console.error("Withdraw Confirm Error:", error);
         return NextResponse.json({ error: error.message || "Failed to confirm withdrawal" }, { status: 500 });
     }

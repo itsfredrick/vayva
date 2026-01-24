@@ -1,11 +1,11 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import { Activity, RefreshCw, Filter, AlertCircle, CheckCircle, Clock } from "lucide-react";
+import { Activity, RefreshCw, Filter, AlertCircle, CheckCircle, Clock } from 'lucide-react';
 import { useOpsQuery } from "@/hooks/useOpsQuery";
 import { Button } from "@vayva/ui";
 
-export default function WebhookInspectorPage() {
+export default function WebhookInspectorPage(): React.JSX.Element {
     const [statusFilter, setStatusFilter] = useState("ALL");
 
     // Auto-refresh every 10 seconds for live monitoring
@@ -77,25 +77,25 @@ export default function WebhookInspectorPage() {
                     ) : logs?.length === 0 ? (
                         <div className="p-12 text-center text-gray-600">No events found in this window.</div>
                     ) : (
-                        logs?.map((log: unknown) => (
-                            <div key={log.id} className="flex p-3 hover:bg-gray-800/50 transition-colors items-center group">
+                        logs?.map((log: any) => (
+                            <div key={(log as any).id} className="flex p-3 hover:bg-gray-800/50 transition-colors items-center group">
                                 <div className="w-24 flex items-center gap-2">
-                                    {getStatusIcon(log.status)}
-                                    <span className={log.status === "FAILED" ? "text-red-400" : log.status === "SUCCESS" ? "text-green-400" : "text-gray-400"}>
-                                        {log.status}
+                                    {getStatusIcon((log as any).status)}
+                                    <span className={(log as any).status === "FAILED" ? "text-red-400" : (log as any).status === "SUCCESS" ? "text-green-400" : "text-gray-400"}>
+                                        {(log as any).status}
                                     </span>
                                 </div>
-                                <div className="w-40 text-indigo-400 truncate" title={log.eventType}>{log.eventType}</div>
+                                <div className="w-40 text-indigo-400 truncate" title={(log as any).eventType}>{(log as any).eventType}</div>
                                 <div className="w-32 flex items-center gap-2">
-                                    <span className={`px-1.5 py-0.5 rounded text-[10px] ${log.responseCode >= 200 && log.responseCode < 300 ? "bg-green-900/30 text-green-400 border border-green-900" : "bg-red-900/30 text-red-400 border border-red-900"}`}>
-                                        HTTP {log.responseCode || "---"}
+                                    <span className={`px-1.5 py-0.5 rounded text-[10px] ${(log as any).responseCode >= 200 && (log as any).responseCode < 300 ? "bg-green-900/30 text-green-400 border border-green-900" : "bg-red-900/30 text-red-400 border border-red-900"}`}>
+                                        HTTP {(log as any).responseCode || "---"}
                                     </span>
                                 </div>
                                 <div className="flex-1 truncate text-gray-500 group-hover:text-gray-300 transition-colors">
-                                    {log.storeId}
+                                    {(log as any).storeId}
                                 </div>
                                 <div className="w-40 text-right text-gray-600">
-                                    {new Date(log.createdAt).toLocaleTimeString()}
+                                    {new Date((log as any).createdAt).toLocaleTimeString()}
                                 </div>
                             </div>
                         ))

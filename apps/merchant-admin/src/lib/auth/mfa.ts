@@ -5,7 +5,7 @@ export const MFA_APP_NAME = "Vayva Platform";
  * Generate a new MFA secret for a user.
  * Returns the secret (store in DB) and a data URL for the QR code (show to user).
  */
-export async function generateMfaSecret(userEmail: unknown) {
+export async function generateMfaSecret(userEmail: any) {
     const secret = speakeasy.generateSecret({
         length: 20,
         name: `${MFA_APP_NAME} (${userEmail})`,
@@ -26,7 +26,7 @@ export async function generateMfaSecret(userEmail: unknown) {
  * Verify a token against a stored secret.
  * Returns true if valid.
  */
-export function verifyMfaToken(secret: unknown, token: unknown) {
+export function verifyMfaToken(secret: any, token: any) {
     return speakeasy.totp.verify({
         secret,
         encoding: "base32",

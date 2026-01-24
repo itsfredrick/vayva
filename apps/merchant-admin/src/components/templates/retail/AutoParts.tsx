@@ -49,13 +49,13 @@ export const AutoPartsTemplate: React.FC<TemplateProps> = ({
     ]
     : products
       .filter((p) => p.type === "retail")
-      .map((p) => ({
+      .map((p: any) => ({
         ...p,
         img:
           p.images?.[0] ||
           "https://images.unsplash.com/photo-1486262715619-67b85e0b08d3?w=800&q=80",
         condition: p.category || "Used",
-        tags: (p as unknown).searchTags || [],
+        tags: (p as any).searchTags || [],
       }));
 
   return (
@@ -97,7 +97,7 @@ export const AutoPartsTemplate: React.FC<TemplateProps> = ({
             "Suspension",
             "Electrical",
             "Body Parts",
-          ].map((cat) => (
+          ].map((cat: any) => (
             <Button
               key={cat}
               className="text-xs font-bold bg-slate-100 text-slate-700 px-3 py-1.5 rounded-md hover:bg-slate-200 border border-slate-200 whitespace-nowrap h-auto"
@@ -114,7 +114,7 @@ export const AutoPartsTemplate: React.FC<TemplateProps> = ({
           New Arrivals (Tokunbo)
         </h2>
 
-        {partItems.map((item) => (
+        {partItems.map((item: any) => (
           <div
             key={item.id}
             className="bg-white rounded-lg border border-slate-200 p-3 flex gap-4 shadow-sm hover:shadow-md transition-shadow group"
@@ -125,7 +125,7 @@ export const AutoPartsTemplate: React.FC<TemplateProps> = ({
                 alt={item.name}
                 className="w-full h-full object-cover"
               />
-              {(item as unknown).tags?.includes("Warranty Included") && (
+              {(item as any).tags?.includes("Warranty Included") && (
                 <div className="absolute bottom-0 left-0 right-0 bg-green-600 text-white text-[8px] font-bold text-center py-0.5">
                   WARRANTY
                 </div>
@@ -138,7 +138,7 @@ export const AutoPartsTemplate: React.FC<TemplateProps> = ({
                 </h3>
                 <div className="flex items-center gap-2 mb-1">
                   <span className="text-[10px] font-bold bg-slate-100 text-slate-600 px-1.5 py-0.5 rounded border border-slate-200 uppercase">
-                    {(item as unknown).condition || "Used"}
+                    {(item as any).condition || "Used"}
                   </span>
                 </div>
               </div>

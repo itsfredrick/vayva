@@ -17,7 +17,7 @@ interface ProductCardProps {
   storeSlug: string;
 }
 
-export function ProductCard({ product, storeSlug }: ProductCardProps) {
+export function ProductCard({ product, storeSlug }: ProductCardProps): React.JSX.Element {
   return (
     <div className="group relative">
       <Link

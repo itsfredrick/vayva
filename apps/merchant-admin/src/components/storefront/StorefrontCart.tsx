@@ -1,1 +1,1 @@
-export const StorefrontCart = (props: unknown) => null;
+export const StorefrontCart = (props: any) => null;

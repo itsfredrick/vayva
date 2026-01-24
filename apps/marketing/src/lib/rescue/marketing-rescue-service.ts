@@ -96,12 +96,12 @@ export class MarketingRescueService {
                 data: {
                     status: nextStatus,
                     diagnostics: {
-                        ...(incident.diagnostics as unknown),
+                        ...(incident.diagnostics as any),
                         aiAnalysis: analysis,
                     },
                 },
             });
-        } catch (error) {
+        } catch (error: any) {
             console.error("Rescue Analysis Error", error);
         }
     }

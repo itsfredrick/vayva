@@ -4,7 +4,7 @@ if (typeof window !== "undefined" && window.location.hostname !== "localhost" &&
     console.warn("AuthClient initialized with localhost API in production environment.");
 }
 class AuthClient {
-    async request(endpoint, method, body) {
+    async request(endpoint: any, method: any, body: any) {
         const headers = {
             "Content-Type": "application/json",
         };
@@ -12,7 +12,7 @@ class AuthClient {
             ? localStorage.getItem("vayva_token")
             : null;
         if (token) {
-            headers["Authorization"] = `Bearer ${token}`;
+            (headers as any)["Authorization"] = `Bearer ${token}`;
         }
         try {
             const response = await fetch(`${API_URL}${endpoint}`, {
@@ -26,28 +26,28 @@ class AuthClient {
             }
             return data;
         }
-        catch (error) {
+        catch (error: any) {
             throw error;
         }
     }
-    async login(data) {
+    async login(data: any) {
         const response = await this.request("/auth/login", "POST", data);
         if (response.token) {
             this.setSession(response.token, response.user);
         }
         return response;
     }
-    async signup(data) {
+    async signup(data: any) {
         const response = await this.request("/auth/signup", "POST", data);
         if (response.token) {
             this.setSession(response.token, response.user);
         }
         return response;
     }
-    async forgotPassword(data) {
+    async forgotPassword(data: any) {
         return this.request("/auth/forgot-password", "POST", data);
     }
-    async resetPassword(data) {
+    async resetPassword(data: any) {
         return this.request("/auth/reset-password", "POST", data);
     }
     logout() {
@@ -57,7 +57,7 @@ class AuthClient {
             window.location.href = "/signin";
         }
     }
-    setSession(token, user) {
+    setSession(token: any, user: any) {
         if (typeof window !== "undefined") {
             localStorage.setItem("vayva_token", token);
             localStorage.setItem("vayva_user", JSON.stringify(user));

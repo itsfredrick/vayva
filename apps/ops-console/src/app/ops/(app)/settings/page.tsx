@@ -1,11 +1,11 @@
 "use client";
 
 import React, { useState } from "react";
-import { Settings, Shield, Zap, AlertTriangle, Save } from "lucide-react";
-import { toast } from "sonner";
+import { Settings, Shield, Zap, AlertTriangle, Save } from 'lucide-react';
+import { toast } from 'sonner';
 import { Button } from "@vayva/ui";
 
-export default function GlobalSettingsPage() {
+export default function GlobalSettingsPage(): React.JSX.Element {
     const [settings, setSettings] = useState({
         aiEnabled: true,
         evolutionApiEnabled: true,
@@ -29,7 +29,7 @@ export default function GlobalSettingsPage() {
                 success: "System configuration updated.",
                 error: "Failed to update configuration"
             });
-        } catch (e) {
+        } catch {
             toast.error("Error saving settings");
         }
     };

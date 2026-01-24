@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { TEMPLATE_REGISTRY } from "@/lib/templates-registry";
-export async function POST(req: unknown) {
+export async function POST(req: any) {
     try {
         const body = await req.json();
         const { storeId, templateId } = body;
@@ -9,7 +9,7 @@ export async function POST(req: unknown) {
             return NextResponse.json({ error: "Missing storeId or templateId" }, { status: 400 });
         }
         // 1. Validate Template
-        const template = TEMPLATE_REGISTRY[templateId];
+        const template = (TEMPLATE_REGISTRY as any)[templateId];
         if (!template) {
             return NextResponse.json({ error: "Invalid template ID" }, { status: 400 });
         }
@@ -71,7 +71,7 @@ export async function POST(req: unknown) {
         if (!store) {
             return NextResponse.json({ error: "Store not found" }, { status: 404 });
         }
-        const currentSettings = store.settings || {};
+        const currentSettings = (store.settings as any) || {};
         const newSettings = {
             ...currentSettings,
             installedTemplateId: template.templateId,
@@ -91,7 +91,7 @@ export async function POST(req: unknown) {
             message: `Template ${template.displayName} installed successfully`,
         });
     }
-    catch (error) {
+    catch (error: any) {
         console.error("Template installation failed:", error);
         return NextResponse.json({ error: error.message || "Installation failed" }, { status: 500 });
     }

@@ -113,7 +113,7 @@ export default function SellerProfilePage({
 
         {/* Content */}
         <div className="grid grid-cols-2 md:grid-cols-3 gap-6">
-          {DEMO_PRODUCTS.map((product) => (
+          {DEMO_PRODUCTS.map((product: any) => (
             <MarketProductCard key={product.id} product={product} />
           ))}
         </div>

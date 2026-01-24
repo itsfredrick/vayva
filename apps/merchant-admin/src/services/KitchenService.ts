@@ -1,7 +1,7 @@
 import { db } from "@/lib/db";
 class KitchenServiceManager {
-    maxConcurrentOrders: unknown;
-    averagePrepTime: unknown;
+    maxConcurrentOrders: any;
+    averagePrepTime: any;
 
     constructor() {
         // Config
@@ -11,7 +11,7 @@ class KitchenServiceManager {
     /**
      * Fetches active orders for the kitchen (Unfulfilled or Preparing)
      */
-    async getOrders(storeId: unknown) {
+    async getOrders(storeId: any) {
         return await db.order.findMany({
             where: {
                 storeId,
@@ -29,7 +29,7 @@ class KitchenServiceManager {
     /**
      * Updates order status from the kitchen
      */
-    async updateStatus(orderId: unknown, status: unknown) {
+    async updateStatus(orderId: any, status: any) {
         // READY -> READY_FOR_PICKUP or SHIPPED
         // PREPARING -> PREPARING
         // 1. Update Order
@@ -52,7 +52,7 @@ class KitchenServiceManager {
     /**
      * Fetches daily kitchen metrics
      */
-    async getMetrics(storeId: unknown) {
+    async getMetrics(storeId: any) {
         const today = new Date();
         today.setHours(0, 0, 0, 0);
         const now = new Date();
@@ -121,16 +121,16 @@ class KitchenServiceManager {
             throughput,
         };
     }
-    checkCapacity(storeId: unknown) {
+    checkCapacity(storeId: any) {
         // For now returning default, in a real system we would count active orders
         return { allowed: true, waitTime: this.averagePrepTime };
     }
     // --- Client-side Compatibility Mocks (No-ops for real DB) ---
-    subscribe(callback: unknown) {
+    subscribe(callback: any) {
         // This used to be for in-memory updates. Now handled by polling in KitchenBoard.
         return () => { };
     }
-    addOrder(order: unknown) {
+    addOrder(order: any) {
         console.warn("KitchenService.addOrder is a no-op on the server. Use /api/orders instead.");
     }
 }

@@ -17,7 +17,7 @@ export default async function TemplatePreviewPage({
   const template = getNormalizedTemplates().find((t) => t.slug === slug);
   if (!template) return notFound();
 
-  const layoutKey = (template as unknown).layoutKey || (template as unknown).layoutComponent;
+  const layoutKey = (template as any).layoutKey || (template as any).layoutComponent;
   const LayoutComponent = resolveLayout(layoutKey);
 
   return (

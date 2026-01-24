@@ -16,7 +16,8 @@ interface TrackEventOptions {
 
 class AnalyticsTracker {
   private eventQueue: TrackEventOptions[] = [];
-  private flushInterval: NodeJS.Timeout | null = null;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  private flushInterval: any = null;
   private readonly BATCH_SIZE = 10;
   private readonly FLUSH_INTERVAL_MS = 5000;
 

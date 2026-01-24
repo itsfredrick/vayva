@@ -11,14 +11,14 @@ import {
 } from "lucide-react";
 import { Button } from "@vayva/ui";
 
-export default function MarketplaceHome() {
+export default function MarketplaceHome(): React.JSX.Element {
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
   const [interest, setInterest] = useState("buying");
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent): Promise<void> => {
     e.preventDefault();
     setLoading(true);
 

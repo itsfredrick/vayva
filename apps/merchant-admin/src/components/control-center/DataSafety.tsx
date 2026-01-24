@@ -47,7 +47,7 @@ export const DataSafety = ({ plan }: DataSafetyProps) => {
           <div>
             <h3 className="font-bold text-gray-900">Activity Log</h3>
             <p className="text-sm text-gray-500">
-              See who made changes to your store settings.
+              See who made changes to your (store.settings as any).
             </p>
           </div>
         </div>

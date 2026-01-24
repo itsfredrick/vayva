@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Button } from "@vayva/ui";
-import { CartItem } from "@/hooks/storefront/useStorefrontCart";
+import { type CartItem } from "@/hooks/storefront/useStorefrontCart";
 import {
   Dialog,
   DialogContent,
@@ -16,13 +16,21 @@ interface CheckoutModalProps {
   cart: CartItem[];
   total: number;
   storeSlug: string;
-  onSuccess: (customerData?: unknown) => void;
+  onSuccess: (customerData?: any) => void;
   requireAddress?: boolean;
-  submitFn?: (data: unknown) => Promise<unknown>;
+  submitFn?: (data: any) => Promise<unknown>;
 }
 
 export function CheckoutModal({
-  isOpen: unknown, onClose: unknown, cart: unknown, total: unknown, storeSlug: unknown, onSuccess: unknown, requireAddress = true, submitFn: unknown, }: CheckoutModalProps) {
+  isOpen,
+  onClose,
+  cart,
+  total,
+  storeSlug,
+  onSuccess,
+  requireAddress = true,
+  submitFn,
+}: CheckoutModalProps) {
   const [isLoading, setIsLoading] = useState(false);
   const [formData, setFormData] = useState({
     name: "",
@@ -72,7 +80,7 @@ export function CheckoutModal({
           onClose();
         }
       }
-    } catch (error) {
+    } catch (error: any) {
       console.error(error);
       toast.error(error.message || "Failed to process order");
     } finally {
@@ -95,8 +103,8 @@ export function CheckoutModal({
               type="text"
               placeholder="Full Name"
               className="w-full p-2 border rounded-md"
-              value={formData.name}
-              onChange={(e: unknown) =>
+              value={(formData.name as any)}
+              onChange={(e: any) =>
                 setFormData({ ...formData, name: e.target.value })
               }
             />
@@ -106,8 +114,8 @@ export function CheckoutModal({
                 type="email"
                 placeholder="Email"
                 className="w-full p-2 border rounded-md"
-                value={formData.email}
-                onChange={(e: unknown) =>
+                value={(formData.email as any)}
+                onChange={(e: any) =>
                   setFormData({ ...formData, email: e.target.value })
                 }
               />
@@ -116,8 +124,8 @@ export function CheckoutModal({
                 type="tel"
                 placeholder="Phone"
                 className="w-full p-2 border rounded-md"
-                value={formData.phone}
-                onChange={(e: unknown) =>
+                value={(formData.phone as any)}
+                onChange={(e: any) =>
                   setFormData({ ...formData, phone: e.target.value })
                 }
               />
@@ -132,8 +140,8 @@ export function CheckoutModal({
                 type="text"
                 placeholder="Address Line"
                 className="w-full p-2 border rounded-md"
-                value={formData.address}
-                onChange={(e: unknown) =>
+                value={(formData.address as any)}
+                onChange={(e: any) =>
                   setFormData({ ...formData, address: e.target.value })
                 }
               />
@@ -142,8 +150,8 @@ export function CheckoutModal({
                 type="text"
                 placeholder="City"
                 className="w-full p-2 border rounded-md"
-                value={formData.city}
-                onChange={(e: unknown) =>
+                value={(formData.city as any)}
+                onChange={(e: any) =>
                   setFormData({ ...formData, city: e.target.value })
                 }
               />

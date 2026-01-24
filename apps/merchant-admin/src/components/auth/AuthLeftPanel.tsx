@@ -23,10 +23,14 @@ export const AuthLeftPanel = ({
             {/* Top: Branding */}
             <div className="relative z-10">
                 <Link href="/" className="inline-flex items-center gap-3 group">
-                    <div className="w-10 h-10 bg-white rounded-xl flex items-center justify-center">
-                        <span className="font-black text-xl tracking-tighter">V</span>
-                    </div>
-                    <span className="text-2xl font-bold text-white tracking-tight">Vayva</span>
+                    <Image
+                        src="/vayva-logo-white.svg"
+                        alt="Vayva"
+                        width={140}
+                        height={40}
+                        className="object-contain"
+                        priority
+                    />
                 </Link>
             </div>
 

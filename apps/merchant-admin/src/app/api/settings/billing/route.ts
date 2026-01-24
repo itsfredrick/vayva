@@ -40,7 +40,7 @@ export async function GET() {
             invoices,
         });
     }
-    catch (error) {
+    catch (error: any) {
         console.error("Billing fetch error:", error);
         return NextResponse.json({ error: "Failed to fetch billing info" }, { status: 500 });
     }

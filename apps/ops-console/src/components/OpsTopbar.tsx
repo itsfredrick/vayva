@@ -2,10 +2,10 @@
 "use client";
 
 import React from "react";
-import { Search, Bell, MonitorCheck, MonitorX } from "lucide-react";
+import { Search, Bell, MonitorCheck, MonitorX } from 'lucide-react';
 import { Button } from "@vayva/ui";
 
-export function OpsTopbar() {
+export function OpsTopbar(): React.JSX.Element {
     const isProd = process.env.NEXT_PUBLIC_VERCEL_ENV === "production" || process.env.NODE_ENV === "production";
 
     return (

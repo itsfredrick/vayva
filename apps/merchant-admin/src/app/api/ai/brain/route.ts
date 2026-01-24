@@ -13,7 +13,7 @@ export async function POST(req: NextRequest) {
         const context = await MerchantBrainService.retrieveContext(storeId, query, limit);
         return NextResponse.json({ context });
     }
-    catch (error) {
+    catch (error: any) {
         return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
     }
 }
