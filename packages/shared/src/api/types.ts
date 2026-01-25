@@ -1,4 +1,3 @@
-import { NextResponse } from "next/server";
 import { User } from "../types";
 
 /**
@@ -21,13 +20,6 @@ export interface ApiResponse<T = unknown> {
 }
 
 /**
- * Next.js App Router Route Context
- */
-export interface RouteContext<P = Record<string, string>> {
-    params: Promise<P>;
-}
-
-/**
  * Common API Error Codes
  */
 export enum ApiErrorCode {
@@ -38,11 +30,6 @@ export enum ApiErrorCode {
     RATE_LIMIT_EXCEEDED = "RATE_LIMIT_EXCEEDED",
     INTERNAL_SERVER_ERROR = "INTERNAL_SERVER_ERROR",
 }
-
-/**
- * Standard Helper to create NextResponses with strict typing
- */
-export type ApiHandlerResponse<T> = Promise<NextResponse<ApiResponse<T>>>;
 
 /**
  * Auth Domain Interfaces
@@ -199,4 +186,11 @@ export interface TicketResponseData {
         category: string;
     };
     handoffEvents: unknown[];
+}
+
+/**
+ * Route Handler Context (Next.js 15+)
+ */
+export interface RouteContext<T = Record<string, string>> {
+    params: Promise<T>;
 }

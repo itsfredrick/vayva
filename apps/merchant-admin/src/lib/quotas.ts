@@ -1,4 +1,4 @@
-import { redis } from "@/lib/redis";
+import { getRedisClient } from "@/lib/redis";
 export enum QuotaType {
     EXPORT_GENERATION = "EXPORT_GENERATION",
     BULK_IMPORT = "BULK_IMPORT",
@@ -16,7 +16,10 @@ const QUOTA_DEFAULTS = {
  * Returns { allowed: boolean, remaining: number, resetAt: Date }
  */
 export async function checkQuota(storeId: string, type: QuotaType) {
-    if (!redis) {
+    let redis;
+    try {
+        redis = await getRedisClient();
+    } catch (err) {
         console.warn("Redis not available for quota check. allowing.");
         return { allowed: true, remaining: 999, limit: 999, resetInSeconds: 0 };
     }
@@ -40,8 +43,12 @@ export async function checkQuota(storeId: string, type: QuotaType) {
  * Increments the quota usage for a store.
  */
 export async function incrementQuota(storeId: any, type: any) {
-    if (!redis)
+    let redis;
+    try {
+        redis = await getRedisClient();
+    } catch (e) {
         return;
+    }
     const dateKey = new Date().toISOString().split("T")[0];
     const key = `quota:${storeId}:${type}:${dateKey}`;
     await redis.incr(key);

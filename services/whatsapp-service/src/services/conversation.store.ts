@@ -80,7 +80,7 @@ export class ConversationStore {
         data: {
           status: MessageStatus.FAILED,
           errorCode: "PROVIDER_ERROR",
-          errorMessage: e.message,
+          errorMessage: (e instanceof Error ? e.message : String(e)),
         },
       });
       throw e;

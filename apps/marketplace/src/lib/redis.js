@@ -1,8 +1,7 @@
-import Redis from "ioredis";
+import { getRedis } from "@vayva/redis";
+
 const globalForRedis = global;
-export const redis = globalForRedis.redis ||
-    new Redis(process.env.REDIS_URL || "redis://localhost:6379", {
-        maxRetriesPerRequest: 3,
-    });
+export const redis = globalForRedis.redis || getRedis();
+
 if (process.env.NODE_ENV !== "production")
     globalForRedis.redis = redis;

@@ -1,4 +1,4 @@
-import Fastify from "fastify";
+import Fastify, { FastifyRequest } from "fastify";
 import cors from "@fastify/cors";
 import { whatsappRoutes } from "./routes";
 
@@ -9,15 +9,21 @@ server.register(cors);
 // Health check
 server.get("/health", async () => ({ status: "ok" }));
 
+interface RawBodyRequest extends FastifyRequest {
+  rawBody?: Buffer;
+}
+
 // Register Custom Parser for Webhook Signature Verification
 server.addContentTypeParser("application/json", { parseAs: "buffer" }, (req, body, done) => {
   try {
-    (req as unknown).rawBody = body; // Store buffer for HMAC verification
-    const json = JSON.parse(body.toString());
+    const buffer = body as Buffer;
+    (req as RawBodyRequest).rawBody = buffer; // Store buffer for HMAC verification
+    const json = JSON.parse(buffer.toString());
     done(null, json);
   } catch (err: unknown) {
-    err.statusCode = 400;
-    done(err, undefined);
+    const error = err instanceof Error ? err : new Error(String(err));
+    (error as any).statusCode = 400;
+    done(error, undefined);
   }
 });
 
@@ -28,7 +34,7 @@ const start = async () => {
   try {
     await server.listen({ port: 3005, host: "0.0.0.0" });
   } catch (err) {
-    (server.log as unknown).error(err);
+    (server.log as any).error(err);
     process.exit(1);
   }
 };

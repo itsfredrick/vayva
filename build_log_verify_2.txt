@@ -1,0 +1,576 @@
+ WARNING  --no-cache is deprecated and will be removed in a future major version. Use --cache=local:r,remote:r
+• turbo 2.7.5
+• Packages in scope: merchant-admin
+• Running build in 1 packages
+• Remote caching disabled
+@vayva/schemas:build: cache miss, executing fff2e4e48c9d9ef2
+@vayva/db:build: cache miss, executing 8d088f71e8e77cc2
+@vayva/redis:build: cache miss, executing cee90bd739d6840c
+@vayva/redis:build: 
+@vayva/redis:build: > @vayva/redis@0.0.0 build /Users/fredrick/Documents/GitHub/vayva/packages/redis
+@vayva/redis:build: > tsc
+@vayva/redis:build: 
+@vayva/schemas:build: 
+@vayva/schemas:build: > @vayva/schemas@0.0.0 build /Users/fredrick/Documents/GitHub/vayva/packages/schemas
+@vayva/schemas:build: > tsc
+@vayva/schemas:build: 
+@vayva/db:build: 
+@vayva/db:build: > @vayva/db@0.0.0 build /Users/fredrick/Documents/GitHub/vayva/infra/db
+@vayva/db:build: > pnpm run db:generate
+@vayva/db:build: 
+@vayva/db:build: 
+@vayva/db:build: > @vayva/db@0.0.0 db:generate /Users/fredrick/Documents/GitHub/vayva/infra/db
+@vayva/db:build: > prisma generate --schema=./prisma/schema.prisma
+@vayva/db:build: 
+@vayva/db:build: Environment variables loaded from .env
+@vayva/db:build: Prisma schema loaded from prisma/schema.prisma
+@vayva/db:build: 
+@vayva/db:build: ✔ Generated Prisma Client (v5.22.0) to ./src/generated/client in 444ms
+@vayva/db:build: 
+@vayva/db:build: Start by importing your Prisma Client (See: https://pris.ly/d/importing-client)
+@vayva/db:build: 
+@vayva/db:build: Tip: Easily identify and fix slow SQL queries in your app. Optimize helps you enhance your visibility: https://pris.ly/--optimize
+@vayva/db:build: 
+merchant-admin:build: cache miss, executing 8e6e74c7b5a29ac9
+merchant-admin:build: 
+merchant-admin:build: > merchant-admin@0.0.0 build /Users/fredrick/Documents/GitHub/vayva/apps/merchant-admin
+merchant-admin:build: > next build
+merchant-admin:build: 
+merchant-admin:build: ▲ Next.js 16.1.1 (Turbopack)
+merchant-admin:build: - Environments: .env.local, .env
+merchant-admin:build: - Experiments (use with caution):
+merchant-admin:build:   · clientTraceMetadata
+merchant-admin:build:   · optimizePackageImports
+merchant-admin:build:   · staleTimes
+merchant-admin:build: 
+merchant-admin:build:   Creating an optimized production build ...
+merchant-admin:build: ✓ Compiled successfully in 26.4s
+merchant-admin:build:   Running next.config.js provided runAfterProductionCompile ...
+merchant-admin:build: ✓ Completed runAfterProductionCompile in 2197ms
+merchant-admin:build:   Running TypeScript ...
+merchant-admin:build:   Collecting page data using 9 workers ...
+merchant-admin:build: {"level":"warn","category":"unknown","message":"[GroqClient] No API key found for SUPPORT context. AI features will fallback.","timestamp":"2026-01-25T02:04:33.203Z","environment":"production"}
+merchant-admin:build:   Generating static pages using 9 workers (0/275) ...
+merchant-admin:build:   Generating static pages using 9 workers (68/275) 
+merchant-admin:build:   Generating static pages using 9 workers (137/275) 
+merchant-admin:build:   Generating static pages using 9 workers (206/275) 
+merchant-admin:build: {"level":"warn","category":"unknown","message":"[GroqClient] No API key found for SUPPORT context. AI features will fallback.","timestamp":"2026-01-25T02:04:33.956Z","environment":"production"}
+merchant-admin:build: ✓ Generating static pages using 9 workers (275/275) in 347.7ms
+merchant-admin:build:   Finalizing page optimization ...
+merchant-admin:build: 
+merchant-admin:build: Route (app)
+merchant-admin:build: ┌ ƒ /
+merchant-admin:build: ├ ƒ /_not-found
+merchant-admin:build: ├ ƒ /analytics
+merchant-admin:build: ├ ƒ /api/account/bank
+merchant-admin:build: ├ ƒ /api/account/billing
+merchant-admin:build: ├ ƒ /api/account/branding
+merchant-admin:build: ├ ƒ /api/account/branding/upload
+merchant-admin:build: ├ ƒ /api/account/deletion
+merchant-admin:build: ├ ƒ /api/account/domains
+merchant-admin:build: ├ ƒ /api/account/domains/verify
+merchant-admin:build: ├ ƒ /api/account/export
+merchant-admin:build: ├ ƒ /api/account/kyc/status
+merchant-admin:build: ├ ƒ /api/account/overview
+merchant-admin:build: ├ ƒ /api/account/payouts
+merchant-admin:build: ├ ƒ /api/account/security
+merchant-admin:build: ├ ƒ /api/account/security/change-password
+merchant-admin:build: ├ ƒ /api/account/security/logout-all
+merchant-admin:build: ├ ƒ /api/account/security/status
+merchant-admin:build: ├ ƒ /api/account/usage
+merchant-admin:build: ├ ƒ /api/ai/brain
+merchant-admin:build: ├ ƒ /api/ai/business-health
+merchant-admin:build: ├ ƒ /api/ai/chat
+merchant-admin:build: ├ ƒ /api/ai/coach/messages
+merchant-admin:build: ├ ƒ /api/ai/forecast/cashflow
+merchant-admin:build: ├ ƒ /api/ai/forecast/revenue
+merchant-admin:build: ├ ƒ /api/ai/forecast/risk
+merchant-admin:build: ├ ƒ /api/ai/index
+merchant-admin:build: ├ ƒ /api/ai/insights
+merchant-admin:build: ├ ƒ /api/ai/templates/recommendations
+merchant-admin:build: ├ ƒ /api/ai/usage
+merchant-admin:build: ├ ƒ /api/analytics/activation
+merchant-admin:build: ├ ƒ /api/analytics/business-intelligence
+merchant-admin:build: ├ ƒ /api/analytics/dashboard
+merchant-admin:build: ├ ƒ /api/analytics/events
+merchant-admin:build: ├ ƒ /api/analytics/insights
+merchant-admin:build: ├ ƒ /api/analytics/onboarding/summary
+merchant-admin:build: ├ ƒ /api/analytics/overview
+merchant-admin:build: ├ ƒ /api/audit
+merchant-admin:build: ├ ƒ /api/audit/aml
+merchant-admin:build: ├ ƒ /api/audit/disputes
+merchant-admin:build: ├ ƒ /api/audit/export
+merchant-admin:build: ├ ƒ /api/audit/kyc
+merchant-admin:build: ├ ƒ /api/audit/ledger
+merchant-admin:build: ├ ƒ /api/audit/logs
+merchant-admin:build: ├ ƒ /api/audit/overview
+merchant-admin:build: ├ ƒ /api/auth/[...nextauth]
+merchant-admin:build: ├ ƒ /api/auth/forgot-password
+merchant-admin:build: ├ ƒ /api/auth/logout
+merchant-admin:build: ├ ƒ /api/auth/merchant/login
+merchant-admin:build: ├ ƒ /api/auth/merchant/logout
+merchant-admin:build: ├ ƒ /api/auth/merchant/register
+merchant-admin:build: ├ ƒ /api/auth/merchant/resend-otp
+merchant-admin:build: ├ ƒ /api/auth/merchant/verify-otp
+merchant-admin:build: ├ ƒ /api/auth/pin/setup
+merchant-admin:build: ├ ƒ /api/auth/pin/verify
+merchant-admin:build: ├ ƒ /api/auth/reset-password
+merchant-admin:build: ├ ƒ /api/auth/security/signout-all
+merchant-admin:build: ├ ƒ /api/auth/session
+merchant-admin:build: ├ ƒ /api/auth/sudo
+merchant-admin:build: ├ ƒ /api/billing/invoices
+merchant-admin:build: ├ ƒ /api/billing/paystack/initiate
+merchant-admin:build: ├ ƒ /api/billing/subscription
+merchant-admin:build: ├ ƒ /api/billing/verify-payment
+merchant-admin:build: ├ ƒ /api/bookings
+merchant-admin:build: ├ ƒ /api/bookings/[id]
+merchant-admin:build: ├ ƒ /api/checkout/initialize
+merchant-admin:build: ├ ƒ /api/checkout/optimization/status
+merchant-admin:build: ├ ƒ /api/checkout/optimization/toggle
+merchant-admin:build: ├ ƒ /api/collections
+merchant-admin:build: ├ ƒ /api/collections/[id]
+merchant-admin:build: ├ ƒ /api/compliance/reports/create
+merchant-admin:build: ├ ƒ /api/consent/cookies
+merchant-admin:build: ├ ƒ /api/consent/merchant-whatsapp
+merchant-admin:build: ├ ƒ /api/customers
+merchant-admin:build: ├ ƒ /api/customers/[id]
+merchant-admin:build: ├ ƒ /api/customers/[id]/history
+merchant-admin:build: ├ ƒ /api/customers/[id]/notes
+merchant-admin:build: ├ ƒ /api/customers/details
+merchant-admin:build: ├ ƒ /api/customers/insights
+merchant-admin:build: ├ ƒ /api/customers/list
+merchant-admin:build: ├ ƒ /api/dashboard/activity
+merchant-admin:build: ├ ƒ /api/dashboard/context
+merchant-admin:build: ├ ƒ /api/dashboard/earnings
+merchant-admin:build: ├ ƒ /api/dashboard/health
+merchant-admin:build: ├ ƒ /api/dashboard/metrics
+merchant-admin:build: ├ ƒ /api/designer/templates
+merchant-admin:build: ├ ƒ /api/designer/templates/submit
+merchant-admin:build: ├ ƒ /api/dev/clear-db
+merchant-admin:build: ├ ƒ /api/dev/reset-password
+merchant-admin:build: ├ ƒ /api/dev/verification-codes
+merchant-admin:build: ├ ƒ /api/exports
+merchant-admin:build: ├ ƒ /api/exports/[id]/download
+merchant-admin:build: ├ ƒ /api/exports/create
+merchant-admin:build: ├ ƒ /api/fulfillment/shipments
+merchant-admin:build: ├ ƒ /api/health
+merchant-admin:build: ├ ƒ /api/health/integrations
+merchant-admin:build: ├ ƒ /api/integrations
+merchant-admin:build: ├ ƒ /api/integrations/kyc/verify
+merchant-admin:build: ├ ƒ /api/integrations/whatsapp/connect
+merchant-admin:build: ├ ƒ /api/integrations/whatsapp/send-receipt
+merchant-admin:build: ├ ƒ /api/integrations/whatsapp/verify
+merchant-admin:build: ├ ƒ /api/invoices
+merchant-admin:build: ├ ƒ /api/invoices/[id]/[action]
+merchant-admin:build: ├ ƒ /api/jobs
+merchant-admin:build: ├ ƒ /api/jobs/cron/trial-reminders
+merchant-admin:build: ├ ƒ /api/kitchen/orders
+merchant-admin:build: ├ ƒ /api/kitchen/orders/[id]
+merchant-admin:build: ├ ƒ /api/kitchen/orders/[id]/status
+merchant-admin:build: ├ ƒ /api/kyc/status
+merchant-admin:build: ├ ƒ /api/kyc/upload
+merchant-admin:build: ├ ƒ /api/kyc/verify
+merchant-admin:build: ├ ƒ /api/marketing/affiliates
+merchant-admin:build: ├ ƒ /api/marketing/discounts
+merchant-admin:build: ├ ƒ /api/marketing/discounts/[id]
+merchant-admin:build: ├ ƒ /api/marketing/flash-sales
+merchant-admin:build: ├ ƒ /api/marketing/flash-sales/[id]
+merchant-admin:build: ├ ƒ /api/marketplace/templates
+merchant-admin:build: ├ ƒ /api/me/onboarding-summary
+merchant-admin:build: ├ ƒ /api/me/plan
+merchant-admin:build: ├ ƒ /api/menu-items
+merchant-admin:build: ├ ƒ /api/merchant/approvals
+merchant-admin:build: ├ ƒ /api/merchant/approvals/[id]/approve
+merchant-admin:build: ├ ƒ /api/merchant/approvals/[id]/reject
+merchant-admin:build: ├ ƒ /api/merchant/audit
+merchant-admin:build: ├ ƒ /api/merchant/billing/cancel
+merchant-admin:build: ├ ƒ /api/merchant/billing/status
+merchant-admin:build: ├ ƒ /api/merchant/billing/subscribe
+merchant-admin:build: ├ ƒ /api/merchant/imports/[id]
+merchant-admin:build: ├ ƒ /api/merchant/imports/init
+merchant-admin:build: ├ ƒ /api/merchant/imports/run
+merchant-admin:build: ├ ƒ /api/merchant/imports/validate
+merchant-admin:build: ├ ƒ /api/merchant/inbox/conversations
+merchant-admin:build: ├ ƒ /api/merchant/inbox/conversations/[id]
+merchant-admin:build: ├ ƒ /api/merchant/inbox/conversations/[id]/notes
+merchant-admin:build: ├ ƒ /api/merchant/notifications
+merchant-admin:build: ├ ƒ /api/merchant/notifications/mark-read
+merchant-admin:build: ├ ƒ /api/merchant/notifications/preferences
+merchant-admin:build: ├ ƒ /api/merchant/notifications/send
+merchant-admin:build: ├ ƒ /api/merchant/onboarding/complete
+merchant-admin:build: ├ ƒ /api/merchant/onboarding/products
+merchant-admin:build: ├ ƒ /api/merchant/onboarding/state
+merchant-admin:build: ├ ƒ /api/merchant/policies
+merchant-admin:build: ├ ƒ /api/merchant/policies/[type]
+merchant-admin:build: ├ ƒ /api/merchant/policies/[type]/publish
+merchant-admin:build: ├ ƒ /api/merchant/policies/generate
+merchant-admin:build: ├ ƒ /api/merchant/policies/publish-all
+merchant-admin:build: ├ ƒ /api/merchant/reports/export/[type]
+merchant-admin:build: ├ ƒ /api/merchant/reports/reconciliation
+merchant-admin:build: ├ ƒ /api/merchant/reports/summary
+merchant-admin:build: ├ ƒ /api/merchant/session/switch
+merchant-admin:build: ├ ƒ /api/merchant/settings/ai-agent
+merchant-admin:build: ├ ƒ /api/merchant/stores
+merchant-admin:build: ├ ƒ /api/merchant/team
+merchant-admin:build: ├ ƒ /api/merchant/team/member/remove
+merchant-admin:build: ├ ƒ /api/merchant/team/member/update-role
+merchant-admin:build: ├ ƒ /api/merchant/templates
+merchant-admin:build: ├ ƒ /api/merchant/templates/apply
+merchant-admin:build: ├ ƒ /api/merchant/templates/current
+merchant-admin:build: ├ ƒ /api/notifications
+merchant-admin:build: ├ ƒ /api/notifications/mark-read
+merchant-admin:build: ├ ƒ /api/notifications/preferences
+merchant-admin:build: ├ ƒ /api/notifications/settings
+merchant-admin:build: ├ ƒ /api/notifications/trigger
+merchant-admin:build: ├ ƒ /api/notifications/unread-count
+merchant-admin:build: ├ ƒ /api/onboarding/check-slug
+merchant-admin:build: ├ ƒ /api/onboarding/save-progress
+merchant-admin:build: ├ ƒ /api/onboarding/state
+merchant-admin:build: ├ ƒ /api/ops/audit
+merchant-admin:build: ├ ƒ /api/ops/auth/login
+merchant-admin:build: ├ ƒ /api/ops/auth/logout
+merchant-admin:build: ├ ƒ /api/ops/kyc
+merchant-admin:build: ├ ƒ /api/ops/kyc/[id]/override
+merchant-admin:build: ├ ƒ /api/ops/kyc/[id]/retry
+merchant-admin:build: ├ ƒ /api/ops/merchants
+merchant-admin:build: ├ ƒ /api/ops/merchants/[id]
+merchant-admin:build: ├ ƒ /api/ops/merchants/[id]/notifications
+merchant-admin:build: ├ ƒ /api/ops/merchants/[id]/notifications/preferences
+merchant-admin:build: ├ ƒ /api/ops/merchants/[id]/summary
+merchant-admin:build: ├ ƒ /api/ops/metrics
+merchant-admin:build: ├ ƒ /api/ops/notifications/[id]/resend
+merchant-admin:build: ├ ƒ /api/ops/payouts
+merchant-admin:build: ├ ƒ /api/ops/support/metrics
+merchant-admin:build: ├ ƒ /api/ops/support/tickets
+merchant-admin:build: ├ ƒ /api/ops/support/tickets/[id]
+merchant-admin:build: ├ ƒ /api/ops/support/tickets/[id]/reply
+merchant-admin:build: ├ ƒ /api/ops/users
+merchant-admin:build: ├ ƒ /api/ops/users/[id]
+merchant-admin:build: ├ ƒ /api/ops/webhooks
+merchant-admin:build: ├ ƒ /api/orders
+merchant-admin:build: ├ ƒ /api/orders/[id]
+merchant-admin:build: ├ ƒ /api/orders/[id]/delivery/dispatch
+merchant-admin:build: ├ ƒ /api/orders/[id]/delivery/manual-status
+merchant-admin:build: ├ ƒ /api/orders/[id]/notes
+merchant-admin:build: ├ ƒ /api/orders/bulk-status
+merchant-admin:build: ├ ƒ /api/orders/export
+merchant-admin:build: ├ ƒ /api/orders/stats
+merchant-admin:build: ├ ƒ /api/payments/banks
+merchant-admin:build: ├ ƒ /api/payments/funnel
+merchant-admin:build: ├ ƒ /api/payments/initialize
+merchant-admin:build: ├ ƒ /api/payments/resolve
+merchant-admin:build: ├ ƒ /api/payments/resolve-account
+merchant-admin:build: ├ ƒ /api/payments/verify
+merchant-admin:build: ├ ƒ /api/payments/wallet/pin/set
+merchant-admin:build: ├ ƒ /api/payments/wallet/pin/verify
+merchant-admin:build: ├ ƒ /api/payments/wallet/summary
+merchant-admin:build: ├ ƒ /api/payments/wallet/withdraw/confirm
+merchant-admin:build: ├ ƒ /api/payments/wallet/withdraw/initiate
+merchant-admin:build: ├ ƒ /api/paystack/banks
+merchant-admin:build: ├ ƒ /api/paystack/resolve-account
+merchant-admin:build: ├ ƒ /api/portfolio
+merchant-admin:build: ├ ƒ /api/portfolio/[id]
+merchant-admin:build: ├ ƒ /api/posts/create
+merchant-admin:build: ├ ƒ /api/products/[id]
+merchant-admin:build: ├ ƒ /api/products/[id]/inventory
+merchant-admin:build: ├ ƒ /api/products/[id]/inventory/history
+merchant-admin:build: ├ ƒ /api/products/[id]/variants
+merchant-admin:build: ├ ƒ /api/products/[id]/variants/[variantId]
+merchant-admin:build: ├ ƒ /api/products/bulk
+merchant-admin:build: ├ ƒ /api/products/create
+merchant-admin:build: ├ ƒ /api/products/items
+merchant-admin:build: ├ ƒ /api/products/items/[id]
+merchant-admin:build: ├ ƒ /api/products/limits
+merchant-admin:build: ├ ƒ /api/properties
+merchant-admin:build: ├ ƒ /api/properties/[id]
+merchant-admin:build: ├ ƒ /api/properties/viewings
+merchant-admin:build: ├ ƒ /api/properties/viewings/[id]/status
+merchant-admin:build: ├ ƒ /api/public/ai/chat
+merchant-admin:build: ├ ƒ /api/public/returns/request
+merchant-admin:build: ├ ƒ /api/public/status
+merchant-admin:build: ├ ƒ /api/recovery/fix-perms
+merchant-admin:build: ├ ƒ /api/recovery/webhook-sync
+merchant-admin:build: ├ ƒ /api/referrals
+merchant-admin:build: ├ ƒ /api/rescue/incidents/[id]
+merchant-admin:build: ├ ƒ /api/rescue/report
+merchant-admin:build: ├ ƒ /api/resources/[primaryObject]/[id]
+merchant-admin:build: ├ ƒ /api/resources/create
+merchant-admin:build: ├ ƒ /api/resources/list
+merchant-admin:build: ├ ƒ /api/reviews
+merchant-admin:build: ├ ƒ /api/security/2fa/disable
+merchant-admin:build: ├ ƒ /api/security/2fa/enable
+merchant-admin:build: ├ ƒ /api/security/2fa/verify
+merchant-admin:build: ├ ƒ /api/security/password
+merchant-admin:build: ├ ƒ /api/security/sessions
+merchant-admin:build: ├ ƒ /api/seller/ai/knowledge-base
+merchant-admin:build: ├ ƒ /api/seller/ai/profile
+merchant-admin:build: ├ ƒ /api/seller/ai/whatsapp-settings
+merchant-admin:build: ├ ƒ /api/services
+merchant-admin:build: ├ ƒ /api/services/list
+merchant-admin:build: ├ ƒ /api/settings
+merchant-admin:build: ├ ƒ /api/settings/api-keys/[id]
+merchant-admin:build: ├ ƒ /api/settings/audit-logs
+merchant-admin:build: ├ ƒ /api/settings/billing
+merchant-admin:build: ├ ƒ /api/settings/branding
+merchant-admin:build: ├ ƒ /api/settings/domains
+merchant-admin:build: ├ ƒ /api/settings/domains/verify
+merchant-admin:build: ├ ƒ /api/settings/integrations
+merchant-admin:build: ├ ƒ /api/settings/notifications
+merchant-admin:build: ├ ƒ /api/settings/payments/beneficiaries
+merchant-admin:build: ├ ƒ /api/settings/payments/gateway
+merchant-admin:build: ├ ƒ /api/settings/payouts
+merchant-admin:build: ├ ƒ /api/settings/policies
+merchant-admin:build: ├ ƒ /api/settings/profile
+merchant-admin:build: ├ ƒ /api/settings/roles
+merchant-admin:build: ├ ƒ /api/settings/security
+merchant-admin:build: ├ ƒ /api/settings/shipping
+merchant-admin:build: ├ ƒ /api/settings/team
+merchant-admin:build: ├ ƒ /api/settings/team/invite
+merchant-admin:build: ├ ƒ /api/settings/whatsapp
+merchant-admin:build: ├ ƒ /api/settings/whatsapp/stats
+merchant-admin:build: ├ ƒ /api/settings/whatsapp/templates
+merchant-admin:build: ├ ƒ /api/status
+merchant-admin:build: ├ ƒ /api/storage/upload
+merchant-admin:build: ├ ƒ /api/store/policies
+merchant-admin:build: ├ ƒ /api/storefront/[slug]/availability
+merchant-admin:build: ├ ƒ /api/storefront/[slug]/bookings
+merchant-admin:build: ├ ƒ /api/storefront/[slug]/products
+merchant-admin:build: ├ ƒ /api/storefront/[slug]/raffles/enter
+merchant-admin:build: ├ ƒ /api/storefront/[slug]/store
+merchant-admin:build: ├ ƒ /api/storefront/draft
+merchant-admin:build: ├ ƒ /api/storefront/publish
+merchant-admin:build: ├ ƒ /api/storefront/reset
+merchant-admin:build: ├ ƒ /api/storefront/status
+merchant-admin:build: ├ ƒ /api/storefront/url
+merchant-admin:build: ├ ƒ /api/stores/public/policies
+merchant-admin:build: ├ ƒ /api/support/chat
+merchant-admin:build: ├ ƒ /api/support/context
+merchant-admin:build: ├ ƒ /api/support/conversations
+merchant-admin:build: ├ ƒ /api/support/conversations/[id]/messages
+merchant-admin:build: ├ ƒ /api/support/create
+merchant-admin:build: ├ ƒ /api/support/disputes
+merchant-admin:build: ├ ƒ /api/support/disputes/[id]/evidence
+merchant-admin:build: ├ ƒ /api/support/escalate
+merchant-admin:build: ├ ƒ /api/support/feedback
+merchant-admin:build: ├ ƒ /api/support/incidents
+merchant-admin:build: ├ ƒ /api/support/resolve-check
+merchant-admin:build: ├ ƒ /api/support/tickets
+merchant-admin:build: ├ ƒ /api/support/tickets/[id]
+merchant-admin:build: ├ ƒ /api/support/tickets/[id]/messages
+merchant-admin:build: ├ ƒ /api/telemetry/event
+merchant-admin:build: ├ ƒ /api/templates
+merchant-admin:build: ├ ƒ /api/templates/apply
+merchant-admin:build: ├ ƒ /api/templates/install
+merchant-admin:build: ├ ƒ /api/templates/optimization/enable
+merchant-admin:build: ├ ƒ /api/templates/optimization/revert
+merchant-admin:build: ├ ƒ /api/templates/optimization/status
+merchant-admin:build: ├ ƒ /api/templates/performance/active
+merchant-admin:build: ├ ƒ /api/templates/performance/compare
+merchant-admin:build: ├ ƒ /api/templates/performance/insights
+merchant-admin:build: ├ ƒ /api/templates/purchase
+merchant-admin:build: ├ ƒ /api/templates/recommendations
+merchant-admin:build: ├ ƒ /api/templates/seasonal/apply
+merchant-admin:build: ├ ƒ /api/templates/seasonal/suggestions
+merchant-admin:build: ├ ƒ /api/test/seed
+merchant-admin:build: ├ ƒ /api/wa-agent/compliance-settings
+merchant-admin:build: ├ ƒ /api/wallet/balance
+merchant-admin:build: ├ ƒ /api/wallet/disputes
+merchant-admin:build: ├ ƒ /api/wallet/payout-accounts
+merchant-admin:build: ├ ƒ /api/wallet/payout-accounts/resolve
+merchant-admin:build: ├ ƒ /api/wallet/pin/reset-request
+merchant-admin:build: ├ ƒ /api/wallet/pin/setup
+merchant-admin:build: ├ ƒ /api/wallet/pin/verify
+merchant-admin:build: ├ ƒ /api/wallet/settlements
+merchant-admin:build: ├ ƒ /api/wallet/transactions
+merchant-admin:build: ├ ƒ /api/wallet/withdraw/eligibility
+merchant-admin:build: ├ ƒ /api/wallet/withdraw/quote
+merchant-admin:build: ├ ƒ /api/wallet/withdrawals
+merchant-admin:build: ├ ƒ /api/wallet/withdrawals/export
+merchant-admin:build: ├ ƒ /api/webhooks/delivery/kwik
+merchant-admin:build: ├ ƒ /api/webhooks/paystack
+merchant-admin:build: ├ ƒ /api/whatsapp/conversations
+merchant-admin:build: ├ ƒ /api/whatsapp/conversations/[id]/link
+merchant-admin:build: ├ ƒ /api/whatsapp/instance
+merchant-admin:build: ├ ƒ /api/whatsapp/messages
+merchant-admin:build: ├ ƒ /api/whatsapp/messages/send
+merchant-admin:build: ├ ƒ /api/whatsapp/notifications
+merchant-admin:build: ├ ƒ /api/whatsapp/notifications/read
+merchant-admin:build: ├ ƒ /api/whatsapp/webhook
+merchant-admin:build: ├ ƒ /api/whatsapp/webhook/status
+merchant-admin:build: ├ ƒ /app
+merchant-admin:build: ├ ƒ /auth/forgot-password
+merchant-admin:build: ├ ƒ /billing/trial-expired
+merchant-admin:build: ├ ƒ /blog
+merchant-admin:build: ├ ƒ /blog/[id]
+merchant-admin:build: ├ ƒ /blog/new
+merchant-admin:build: ├ ƒ /control-center/policies
+merchant-admin:build: ├ ƒ /dashboard
+merchant-admin:build: ├ ƒ /dashboard/account
+merchant-admin:build: ├ ƒ /dashboard/ai-agent/channels
+merchant-admin:build: ├ ƒ /dashboard/ai-agent/profile
+merchant-admin:build: ├ ƒ /dashboard/analytics
+merchant-admin:build: ├ ƒ /dashboard/approvals
+merchant-admin:build: ├ ƒ /dashboard/automations
+merchant-admin:build: ├ ƒ /dashboard/billing
+merchant-admin:build: ├ ƒ /dashboard/bookings
+merchant-admin:build: ├ ƒ /dashboard/campaigns
+merchant-admin:build: ├ ƒ /dashboard/campaigns/[id]
+merchant-admin:build: ├ ƒ /dashboard/campaigns/new
+merchant-admin:build: ├ ƒ /dashboard/catalog/collections
+merchant-admin:build: ├ ƒ /dashboard/check-in
+merchant-admin:build: ├ ƒ /dashboard/control-center
+merchant-admin:build: ├ ƒ /dashboard/control-center/customize
+merchant-admin:build: ├ ƒ /dashboard/courses
+merchant-admin:build: ├ ƒ /dashboard/courses/[id]
+merchant-admin:build: ├ ƒ /dashboard/courses/new
+merchant-admin:build: ├ ƒ /dashboard/creative-editor
+merchant-admin:build: ├ ƒ /dashboard/customers
+merchant-admin:build: ├ ƒ /dashboard/customers/insights
+merchant-admin:build: ├ ƒ /dashboard/developer/apps
+merchant-admin:build: ├ ƒ /dashboard/digital-assets
+merchant-admin:build: ├ ƒ /dashboard/digital-assets/[id]
+merchant-admin:build: ├ ƒ /dashboard/digital-assets/new
+merchant-admin:build: ├ ƒ /dashboard/events
+merchant-admin:build: ├ ƒ /dashboard/events/[id]
+merchant-admin:build: ├ ƒ /dashboard/events/new
+merchant-admin:build: ├ ƒ /dashboard/finance
+merchant-admin:build: ├ ƒ /dashboard/finance/payouts
+merchant-admin:build: ├ ƒ /dashboard/finance/statements
+merchant-admin:build: ├ ƒ /dashboard/finance/transactions
+merchant-admin:build: ├ ƒ /dashboard/finance/wallet
+merchant-admin:build: ├ ƒ /dashboard/fulfillment/issues
+merchant-admin:build: ├ ƒ /dashboard/fulfillment/pickups
+merchant-admin:build: ├ ƒ /dashboard/fulfillment/shipments
+merchant-admin:build: ├ ƒ /dashboard/inbox
+merchant-admin:build: ├ ƒ /dashboard/inventory
+merchant-admin:build: ├ ƒ /dashboard/kitchen
+merchant-admin:build: ├ ƒ /dashboard/leads
+merchant-admin:build: ├ ƒ /dashboard/leads/[id]
+merchant-admin:build: ├ ƒ /dashboard/listings
+merchant-admin:build: ├ ƒ /dashboard/listings/[id]
+merchant-admin:build: ├ ƒ /dashboard/listings/new
+merchant-admin:build: ├ ƒ /dashboard/logistics
+merchant-admin:build: ├ ƒ /dashboard/marketing/affiliates
+merchant-admin:build: ├ ƒ /dashboard/marketing/bundles
+merchant-admin:build: ├ ƒ /dashboard/marketing/discounts
+merchant-admin:build: ├ ƒ /dashboard/marketing/discounts/[id]
+merchant-admin:build: ├ ƒ /dashboard/marketing/discounts/new
+merchant-admin:build: ├ ƒ /dashboard/marketing/flash-sales
+merchant-admin:build: ├ ƒ /dashboard/menu-items
+merchant-admin:build: ├ ƒ /dashboard/menu-items/[id]
+merchant-admin:build: ├ ƒ /dashboard/menu-items/new
+merchant-admin:build: ├ ƒ /dashboard/notifications
+merchant-admin:build: ├ ƒ /dashboard/ops-console
+merchant-admin:build: ├ ƒ /dashboard/ops-console/commissions
+merchant-admin:build: ├ ƒ /dashboard/ops-console/vendors
+merchant-admin:build: ├ ƒ /dashboard/orders
+merchant-admin:build: ├ ƒ /dashboard/orders/[id]
+merchant-admin:build: ├ ƒ /dashboard/posts
+merchant-admin:build: ├ ƒ /dashboard/posts/[id]
+merchant-admin:build: ├ ƒ /dashboard/posts/new
+merchant-admin:build: ├ ƒ /dashboard/products
+merchant-admin:build: ├ ƒ /dashboard/products/[id]
+merchant-admin:build: ├ ƒ /dashboard/products/new
+merchant-admin:build: ├ ƒ /dashboard/projects
+merchant-admin:build: ├ ƒ /dashboard/projects/[id]
+merchant-admin:build: ├ ƒ /dashboard/properties
+merchant-admin:build: ├ ƒ /dashboard/quotes
+merchant-admin:build: ├ ƒ /dashboard/referrals
+merchant-admin:build: ├ ƒ /dashboard/reports
+merchant-admin:build: ├ ƒ /dashboard/reviews
+merchant-admin:build: ├ ƒ /dashboard/services
+merchant-admin:build: ├ ƒ /dashboard/services/[id]
+merchant-admin:build: ├ ƒ /dashboard/services/new
+merchant-admin:build: ├ ƒ /dashboard/settings
+merchant-admin:build: ├ ƒ /dashboard/settings/activity
+merchant-admin:build: ├ ƒ /dashboard/settings/ai-agent
+merchant-admin:build: ├ ƒ /dashboard/settings/audit-log
+merchant-admin:build: ├ ƒ /dashboard/settings/billing
+merchant-admin:build: ├ ƒ /dashboard/settings/industry
+merchant-admin:build: ├ ƒ /dashboard/settings/integrations
+merchant-admin:build: ├ ƒ /dashboard/settings/notifications
+merchant-admin:build: ├ ƒ /dashboard/settings/overview
+merchant-admin:build: ├ ƒ /dashboard/settings/payments
+merchant-admin:build: ├ ƒ /dashboard/settings/roles
+merchant-admin:build: ├ ƒ /dashboard/settings/security
+merchant-admin:build: ├ ƒ /dashboard/settings/seo
+merchant-admin:build: ├ ƒ /dashboard/settings/shipping
+merchant-admin:build: ├ ƒ /dashboard/settings/store
+merchant-admin:build: ├ ƒ /dashboard/settings/store-policies
+merchant-admin:build: ├ ƒ /dashboard/settings/team
+merchant-admin:build: ├ ƒ /dashboard/setup-checklist
+merchant-admin:build: ├ ƒ /dashboard/stays
+merchant-admin:build: ├ ƒ /dashboard/stays/[id]
+merchant-admin:build: ├ ƒ /dashboard/stays/new
+merchant-admin:build: ├ ƒ /dashboard/support
+merchant-admin:build: ├ ƒ /dashboard/support/disputes
+merchant-admin:build: ├ ƒ /dashboard/support/messages
+merchant-admin:build: ├ ƒ /dashboard/support/messages/[id]
+merchant-admin:build: ├ ƒ /dashboard/support/new
+merchant-admin:build: ├ ƒ /dashboard/vehicles
+merchant-admin:build: ├ ƒ /dashboard/vehicles/[id]
+merchant-admin:build: ├ ƒ /dashboard/vehicles/new
+merchant-admin:build: ├ ƒ /dashboard/viewings
+merchant-admin:build: ├ ƒ /dashboard/wa-agent
+merchant-admin:build: ├ ƒ /dashboard/wholesale-catalog
+merchant-admin:build: ├ ƒ /designer
+merchant-admin:build: ├ ƒ /designer/submit
+merchant-admin:build: ├ ƒ /forgot-password
+merchant-admin:build: ├ ƒ /growth/qr
+merchant-admin:build: ├ ƒ /healthz
+merchant-admin:build: ├ ƒ /invite/[token]
+merchant-admin:build: ├ ƒ /kitchen
+merchant-admin:build: ├ ƒ /legal/cookies
+merchant-admin:build: ├ ƒ /legal/privacy
+merchant-admin:build: ├ ƒ /legal/terms
+merchant-admin:build: ├ ƒ /market
+merchant-admin:build: ├ ƒ /market/account/orders
+merchant-admin:build: ├ ƒ /market/account/profile
+merchant-admin:build: ├ ƒ /market/cart
+merchant-admin:build: ├ ƒ /market/categories/[category]
+merchant-admin:build: ├ ƒ /market/checkout
+merchant-admin:build: ├ ƒ /market/order-confirmation
+merchant-admin:build: ├ ƒ /market/orders
+merchant-admin:build: ├ ƒ /market/products/[id]
+merchant-admin:build: ├ ƒ /market/search
+merchant-admin:build: ├ ƒ /market/sellers/[id]
+merchant-admin:build: ├ ƒ /onboarding
+merchant-admin:build: ├ ƒ /portfolio/[id]
+merchant-admin:build: ├ ƒ /preview
+merchant-admin:build: ├ ƒ /preview/[slug]
+merchant-admin:build: ├ ƒ /privacy
+merchant-admin:build: ├ ƒ /reset-password
+merchant-admin:build: ├ ○ /robots.txt
+merchant-admin:build: ├ ƒ /settings/api-keys
+merchant-admin:build: ├ ƒ /settings/branding
+merchant-admin:build: ├ ƒ /settings/domains
+merchant-admin:build: ├ ƒ /settings/notifications
+merchant-admin:build: ├ ƒ /settings/payments
+merchant-admin:build: ├ ƒ /settings/profile
+merchant-admin:build: ├ ƒ /settings/store/delivery
+merchant-admin:build: ├ ƒ /settings/store/pickup
+merchant-admin:build: ├ ƒ /settings/team
+merchant-admin:build: ├ ƒ /settings/theme/builder
+merchant-admin:build: ├ ƒ /settings/whatsapp
+merchant-admin:build: ├ ƒ /signin
+merchant-admin:build: ├ ƒ /signup
+merchant-admin:build: ├ ƒ /status
+merchant-admin:build: ├ ƒ /store/[slug]
+merchant-admin:build: ├ ƒ /store/[slug]/cart
+merchant-admin:build: ├ ƒ /store/[slug]/checkout
+merchant-admin:build: ├ ƒ /store/[slug]/collections/[collection]
+merchant-admin:build: ├ ƒ /store/[slug]/order-confirmation
+merchant-admin:build: ├ ƒ /store/[slug]/products/[id]
+merchant-admin:build: ├ ƒ /store/[slug]/track
+merchant-admin:build: ├ ƒ /terms
+merchant-admin:build: └ ƒ /verify
+merchant-admin:build: 
+merchant-admin:build: 
+merchant-admin:build: ○  (Static)   prerendered as static content
+merchant-admin:build: ƒ  (Dynamic)  server-rendered on demand
+merchant-admin:build: 
+
+ Tasks:    4 successful, 4 total
+Cached:    0 cached, 4 total
+  Time:    49.36s 
+

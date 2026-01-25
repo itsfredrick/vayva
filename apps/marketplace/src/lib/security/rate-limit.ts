@@ -1,5 +1,5 @@
 
-import { redis } from "@/lib/redis";
+import { getRedisClient } from "@/lib/redis";
 import { NextResponse } from "next/server";
 
 interface RateLimitConfig {
@@ -17,6 +17,7 @@ export class RateLimitService {
         const redisKey = `ratelimit:marketplace:${key}`; // Namespace for marketplace
 
         try {
+            const redis = await getRedisClient();
             const current = await redis.incr(redisKey);
 
             if (current === 1) {

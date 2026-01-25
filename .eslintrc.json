@@ -233,6 +233,28 @@
                 "no-console": "off",
                 "no-empty": "off"
             }
+        },
+        {
+            "files": [
+                "packages/shared/src/**/*.ts"
+            ],
+            "rules": {
+                "no-restricted-imports": [
+                    "error",
+                    {
+                        "paths": [
+                            "next/server",
+                            "next/navigation",
+                            "next/headers",
+                            "react",
+                            "react-dom"
+                        ],
+                        "patterns": [
+                            "next/*"
+                        ]
+                    }
+                ]
+            }
         }
     ],
     "settings": {

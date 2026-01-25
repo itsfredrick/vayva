@@ -233,12 +233,12 @@ export const createVirtualAccountHandler = async (
 
     return reply.send(updated);
   } catch (error: any) {
-    console.error("Paystack DVA Error:", error.response?.data || error.message);
+    console.error("Paystack DVA Error:", ((error as any).response?.data) || (error instanceof Error ? error.message : String(error)));
     return reply
       .status(500)
       .send({
         error: "Failed to create virtual account",
-        details: error.response?.data,
+        details: ((error as any).response?.data),
       });
   }
 };

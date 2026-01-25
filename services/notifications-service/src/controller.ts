@@ -40,8 +40,8 @@ export const notifyHandler = async (
       metadata: {
         recipient: body.recipient,
         channel: body.channel,
-        originalData: body.data
-      }
+        originalData: body.data,
+      } as any,
     },
   });
 

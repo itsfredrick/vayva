@@ -1,10 +1,14 @@
-import { prisma } from "@vayva/db";
-// Using any for some types if they are strings in schema now
+import {
+  prisma,
+  DisputeProvider,
+  DisputeStatus,
+  DisputeEvidenceType,
+} from "@vayva/db";
 
 export class DisputeService {
   async createDispute(data: {
     merchantId: string;
-    provider: unknown;
+    provider: DisputeProvider;
     providerDisputeId: string;
     amount: number;
     currency: string;
@@ -37,8 +41,7 @@ export class DisputeService {
         reasonCode: data.reasonCode || "Unknown", // Field is 'reasonCode' not 'reason'
         orderId: data.orderId,
         evidenceDueAt: data.evidenceDueAt, // Field is 'evidenceDueAt' not 'deadlineAt'
-        status: "OPENED",
-        // correlationId // Field absent in schema? I'll remove it.
+        status: DisputeStatus.OPENED,
       },
     });
   }
@@ -47,16 +50,16 @@ export class DisputeService {
     disputeId: string,
     data: {
       merchantId: string;
-      type: unknown;
+      type: DisputeEvidenceType;
       url?: string;
       textExcerpt?: string;
-      metadata?: unknown;
+      metadata?: any;
     },
   ) {
     const evidence = await prisma.disputeEvidence.create({
       data: {
         disputeId,
-        type: data.type || "OTHER", // Enum required
+        type: data.type || DisputeEvidenceType.OTHER,
         url: data.url || "",
         // Mapping extra fields to metadata since schema lacks them
         metadata: {

@@ -31,7 +31,11 @@ const signupRoute: FastifyPluginAsync = async (fastify) => {
       },
     });
 
-    const token = fastify.jwt.sign({ id: user.id, email: user.email });
+    const token = fastify.jwt.sign({
+      sub: user.id,
+      email: user.email,
+      aud: "merchant",
+    });
 
     return {
       message: "User created successfully",

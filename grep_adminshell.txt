@@ -1,0 +1,3 @@
+apps/merchant-admin/src/components/admin-shell.tsx:export interface AdminShellProps {
+apps/merchant-admin/src/components/admin-shell.tsx:export const AdminShell = ({
+apps/merchant-admin/src/components/admin-shell.tsx:}: AdminShellProps) => {

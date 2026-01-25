@@ -1,5 +1,5 @@
 import { FastifyRequest, FastifyReply } from "fastify";
-import { _prisma } from "@vayva/db";
+import { prisma } from "@vayva/db";
 
 // const prisma = new PrismaClient(); // Removed
 

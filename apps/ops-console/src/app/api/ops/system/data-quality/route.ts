@@ -1,13 +1,15 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from "@vayva/db";
-import { withOpsAuth } from "@/lib/withOpsAuth";
+import { OpsAuthService } from "@/lib/ops-auth";
 
 /**
  * Data Quality Audit API for Ops Console.
  * Scans for orphaned records, negative totals, and stale drafts.
  */
-export const GET = withOpsAuth(async (_req: NextRequest) => {
+export async function GET(_req: NextRequest) {
     try {
+        const { user } = await OpsAuthService.requireSession();
+        OpsAuthService.requireRole(user, "OPS_OWNER");
         interface QualityResults {
             orphanedOrders: number;
             negativeWallets: { storeId: string; storeName: string; balance: number }[];
@@ -83,13 +85,15 @@ export const GET = withOpsAuth(async (_req: NextRequest) => {
             error: "Failed to perform data quality scan"
         }, { status: 500 });
     }
-}, { requiredRole: "OPS_OWNER" });
+}
 
 /**
  * Trigger remediation for a specific issue
  */
-export const POST = withOpsAuth(async (req: NextRequest) => {
+export async function POST(req: NextRequest) {
     try {
+        const { user } = await OpsAuthService.requireSession();
+        OpsAuthService.requireRole(user, "OPS_OWNER");
         const body = await req.json();
         const { type, action } = body;
 
@@ -113,4 +117,4 @@ export const POST = withOpsAuth(async (req: NextRequest) => {
         const err = error as Error;
         return NextResponse.json({ error: err.message || "Internal server error" }, { status: 500 });
     }
-}, { requiredRole: "OPS_OWNER" });
+}

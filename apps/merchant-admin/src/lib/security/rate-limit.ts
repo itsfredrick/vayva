@@ -1,4 +1,4 @@
-import { redis } from "@/lib/redis";
+import { getRedisClient } from "@/lib/redis";
 import { NextResponse } from "next/server";
 export class RateLimitService {
     /**
@@ -13,6 +13,7 @@ export class RateLimitService {
             // Use a simple counter with expiration
             // In a real production scenario with high concurrency, a Lua script or sliding window is better
             // But for this hardening phase, a fixed window counter is sufficient and robust enough
+            const redis = await getRedisClient();
             const current = await redis.incr(redisKey);
             if (current === 1) {
                 // Set expiration if it's the first request
@@ -51,7 +52,7 @@ export class RateLimitService {
                 // Dynamic import to avoid circular dependencies if any
                 const { logAuditEvent, AuditEventType } = await import("@/lib/audit");
                 await logAuditEvent(null, // No specific store context for global middleware check
-                "system", AuditEventType.SECURITY_RATE_LIMIT_BLOCKED, {
+                    "system", AuditEventType.SECURITY_RATE_LIMIT_BLOCKED, {
                     ipAddress: ip,
                     targetType: "endpoint",
                     targetId: req.url,

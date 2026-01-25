@@ -10,13 +10,23 @@ export const processPaystackEvent = async (job: Job) => {
     }
 };
 
-async function handleChargeSuccess(data: unknown, metadata: unknown) {
+interface PaystackPayload {
+    id: number;
+    reference: string;
+    amount: number;
+    currency: string;
+    paid_at?: string;
+    receipt_number?: string;
+    fees?: number;
+}
+
+async function handleChargeSuccess(data: PaystackPayload, metadata: any) {
     const reference = data.reference;
     const existingCharge = await prisma.charge.findFirst({
         where: {
             provider: "PAYSTACK",
-            providerChargeId: String(data.id)
-        }
+            providerChargeId: String(data.id),
+        },
     });
 
     if (existingCharge) {
@@ -26,39 +36,31 @@ async function handleChargeSuccess(data: unknown, metadata: unknown) {
     const amountKobo = data.amount;
     const amountNaira = amountKobo / 100;
     const currency = data.currency;
-    const storeId = metadata?.storeId; // We rely on metadata heavily
-    const orderId = metadata?.orderId; // Optional link
+    const storeId = metadata?.storeId;
 
     if (!storeId) {
-        console.error("[PAYSTACK_WORKER] Missing storeId in metadata, cannot record ledger");
+        console.error(
+            "[PAYSTACK_WORKER] Missing storeId in metadata, cannot record ledger",
+        );
         return;
-        // In prod we might try to infer from customer or reference format, 
-        // but metadata is safest for multi-tenant.
     }
 
     // 1. Create Charge Record
     const charge = await prisma.charge.create({
         data: {
             storeId,
-            orderId, // Link if present
+            orderId: metadata?.orderId,
             provider: "PAYSTACK",
             providerChargeId: String(data.id),
             status: "succeeded",
             amount: amountNaira,
             currency: currency,
             paidAt: new Date(data.paid_at || new Date()),
-            receiptUrl: data.receipt_number || null, // Paystack doesn't always send URL in webhook data immediately
-            // PaymentIntentId? Paystack doesn't strictly have Intents like Stripe, 
-            // but we could map 'reference' to a transient intent if needed. 
-            // For now we leave it null or map checking 'reference'.
-        }
+            receiptUrl: data.receipt_number || null,
+        },
     });
 
-    // 2. Create Ledger Entries (Double Entry)
-    // Debit Cash (Asset)
-    // Credit Revenue (Income)
-
-    // Note: Fees handling would require `data.fees` (Paystack sends fees in kobo usually)
+    // 2. Create Ledger Entries
     const feesKobo = data.fees || 0;
     const feesNaira = feesKobo / 100;
     const netNaira = amountNaira - feesNaira;
@@ -71,7 +73,7 @@ async function handleChargeSuccess(data: unknown, metadata: unknown) {
                 referenceId: charge.id,
                 direction: "DEBIT",
                 account: "cash",
-                amount: netNaira, // We received Net
+                amount: netNaira,
                 currency,
                 description: `Net Sale Settlement - ${reference}`,
             },
@@ -81,7 +83,7 @@ async function handleChargeSuccess(data: unknown, metadata: unknown) {
                 referenceId: charge.id,
                 direction: "DEBIT",
                 account: "fees",
-                amount: feesNaira, // Expense
+                amount: feesNaira,
                 currency,
                 description: `Processing Fees - ${reference}`,
             },
@@ -91,11 +93,10 @@ async function handleChargeSuccess(data: unknown, metadata: unknown) {
                 referenceId: charge.id,
                 direction: "CREDIT",
                 account: "revenue",
-                amount: amountNaira, // Gross Revenue
+                amount: amountNaira,
                 currency,
                 description: `Revenue from Sale - ${reference}`,
-            }
-        ]
+            },
+        ],
     });
-
 }

@@ -27,10 +27,15 @@ export const emitAuditHandler = async (
       entityType: body.resource,
       entityId: body.resourceId,
       beforeState: Prisma.JsonNull,
-      afterState: body.metadata || Prisma.JsonNull,
+      afterState: body.metadata
+        ? (body.metadata as Prisma.InputJsonValue)
+        : Prisma.JsonNull,
       storeId: body.storeId,
       ipAddress: (req.headers["x-forwarded-for"] as string) || req.ip,
-      correlationId: body.metadata?.correlationId || `audit-${Date.now()}`,
+      correlationId:
+        typeof body.metadata?.correlationId === "string"
+          ? body.metadata.correlationId
+          : `audit-${Date.now()}`,
     },
   });
 

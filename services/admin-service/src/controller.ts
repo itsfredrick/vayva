@@ -1,20 +1,20 @@
-/* eslint-disable */
-// @ts-nocheck
 import { prisma } from "@vayva/db";
+
+interface AdminAuditLogData {
+  targetType: string;
+  targetId: string;
+  storeId?: string;
+  reason: string;
+  before?: unknown;
+  after?: unknown;
+  ipAddress?: string;
+  userAgent?: string;
+}
 
 const logAdminAction = async (
   actorUserId: string,
   action: string,
-  data: {
-    targetType: string;
-    targetId: string;
-    storeId?: string;
-    reason: string;
-    before?: unknown;
-    after?: unknown;
-    ipAddress?: string;
-    userAgent?: string;
-  },
+  data: AdminAuditLogData,
 ) => {
   await prisma.adminAuditLog.create({
     data: {
@@ -24,15 +24,20 @@ const logAdminAction = async (
       targetId: data.targetId,
       storeId: data.storeId,
       reason: data.reason,
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       before: data.before as any,
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       after: data.after as any,
       ipAddress: data.ipAddress,
       userAgent: data.userAgent,
     },
   });
 };
+
+export interface CreateSupportCaseData {
+  storeId: string;
+  category: string;
+  summary: string;
+  links?: string[];
+}
 
 export const AdminController = {
   // --- Merchant Management ---
@@ -46,22 +51,12 @@ export const AdminController = {
         ],
       },
       take: 20,
-      include: {
-        // merchantSubscription: true, // Removed from schema
-        // merchantFlags: true // No relation
-      },
     });
   },
 
   getMerchantDetail: async (storeId: string): Promise<unknown> => {
     const store = await prisma.store.findUnique({
       where: { id: storeId },
-      include: {
-        // merchantSubscription: true, // Removed from schema
-        // merchantFlags: true // No relation
-        // featureOverrides: true // No relation
-        // supportCases: true // No relation
-      },
     });
 
     if (!store) return null;
@@ -142,7 +137,6 @@ export const AdminController = {
   listPendingReviews: async (): Promise<unknown> => {
     return await prisma.review.findMany({
       where: { status: "PENDING" },
-      // include: { store: true, product: true }, // No relations
       orderBy: { createdAt: "desc" },
       take: 50,
     });
@@ -176,19 +170,13 @@ export const AdminController = {
 
   // --- Support Cases ---
   createSupportCase: async (
-    data: {
-      storeId: string;
-      category: string;
-      summary: string;
-      links?: string[];
-    },
+    data: CreateSupportCaseData,
     actorUserId: string,
   ): Promise<unknown> => {
     return await prisma.supportCase.create({
       data: {
         storeId: data.storeId,
         createdByAdminId: actorUserId,
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         category: data.category as any,
         summary: data.summary,
         links: data.links || [],
@@ -200,7 +188,6 @@ export const AdminController = {
   listSupportCases: async (status?: string): Promise<unknown> => {
     return await prisma.supportCase.findMany({
       where: status ? { status: status as any } : undefined,
-      // include: { store: true }, // No relation
       orderBy: { createdAt: "desc" },
       take: 100,
     });

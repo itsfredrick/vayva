@@ -22,11 +22,13 @@ fastify.post("/v1/validate/:storeId", async (request, reply) => {
             success: true,
             report,
         });
-    } catch (error) {
+    } catch (error: unknown) {
         fastify.log.error(error);
-        return reply.status(error.name === "ZodError" ? 400 : 500).send({
+        const name = error instanceof Error ? error.name : "";
+        const message = error instanceof Error ? error.message : String(error);
+        return reply.status(name === "ZodError" ? 400 : 500).send({
             success: false,
-            error: error.message || "Internal server error",
+            error: message || "Internal server error",
         });
     }
 });

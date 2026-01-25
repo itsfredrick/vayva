@@ -1,4 +1,4 @@
-import { redis } from "./redis";
+import { getRedisClient } from "./redis";
 
 const RATES = {
     auth: { limit: 5, window: 60 * 15 }, // 5 failures per 15 min
@@ -8,8 +8,12 @@ const RATES = {
 };
 
 export async function checkRateLimit(identifier: any, type: any = "default") {
-    // If no redis, skip (dev mode or fallback)
-    if (!redis) return { success: true, limit: 0, remaining: 100, reset: 0 };
+    let redis;
+    try {
+        redis = await getRedisClient();
+    } catch (e) {
+        return { success: true, limit: 0, remaining: 100, reset: 0 };
+    }
 
     const rate = (RATES as any)[type] || RATES.default;
     const key = `ratelimit:${type}:${identifier}`;

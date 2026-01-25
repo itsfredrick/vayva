@@ -63,18 +63,22 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     // Fetch live merchant slugs (Search Console Dominance)
     let merchantPages: MetadataRoute.Sitemap = [];
     try {
-        const merchants = await prisma.store.findMany({
-            where: { isLive: true },
-            select: { slug: true, updatedAt: true },
-            take: 5000 // Limit for now to prevent sitemap overflow
-        });
+        if (!process.env.DATABASE_URL) {
+            console.warn("Skipping merchant sitemap generation: DATABASE_URL not set");
+        } else {
+            const merchants = await prisma.store.findMany({
+                where: { isLive: true },
+                select: { slug: true, updatedAt: true },
+                take: 5000 // Limit for now to prevent sitemap overflow
+            });
 
-        merchantPages = merchants.map((m: any) => ({
-            url: `https://${m.slug}.vayva.ng`,
-            lastModified: m.updatedAt,
-            changeFrequency: "daily" as const,
-            priority: 0.9,
-        }));
+            merchantPages = merchants.map((m: any) => ({
+                url: `https://${m.slug}.vayva.ng`,
+                lastModified: m.updatedAt,
+                changeFrequency: "daily" as const,
+                priority: 0.9,
+            }));
+        }
     } catch (error: any) {
         console.error("Failed to fetch merchant slugs for sitemap:", error);
     }

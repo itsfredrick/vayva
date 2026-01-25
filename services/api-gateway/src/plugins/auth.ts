@@ -2,6 +2,7 @@ import fp from "fastify-plugin";
 import fastifyJwt from "@fastify/jwt";
 import fastifyCookie from "@fastify/cookie";
 import { FastifyInstance, FastifyReply, FastifyRequest } from "fastify";
+import { UserPayload } from "../types/auth";
 
 declare module "fastify" {
   interface FastifyInstance {
@@ -39,9 +40,9 @@ export default fp(async (fastify: FastifyInstance) => {
         }
 
         // Verify manually if it's from cookie or if jwtVerify fails on req
-        const decoded = fastify.jwt.verify<unknown>(token);
+        const decoded = fastify.jwt.verify<UserPayload>(token);
         request.user = decoded;
-      } catch (err) {
+      } catch (err: unknown) {
         reply.status(401).send({ error: "UNAUTHENTICATED", details: err });
       }
     },

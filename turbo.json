@@ -13,7 +13,8 @@
                 ".next/**",
                 "!.next/cache/**",
                 "dist/**",
-                "lib/**"
+                "lib/**",
+                "src/generated/**"
             ]
         },
         "lint": {},
@@ -39,7 +40,7 @@
             ]
         },
         "db:generate": {
-            "cache": false,
+            "cache": true,
             "outputs": [
                 "src/generated/**"
             ]

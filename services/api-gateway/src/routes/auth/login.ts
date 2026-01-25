@@ -31,7 +31,11 @@ const loginRoute: FastifyPluginAsync = async (fastify) => {
       });
     }
 
-    const token = fastify.jwt.sign({ id: user.id, email: user.email });
+    const token = fastify.jwt.sign({
+      sub: user.id,
+      email: user.email,
+      aud: "merchant",
+    });
 
     return {
       message: "Login successful",
@@ -39,7 +43,7 @@ const loginRoute: FastifyPluginAsync = async (fastify) => {
       user: {
         id: user.id,
         email: user.email,
-        name: `${(user as unknown).firstName} ${(user as unknown).lastName}`,
+        name: `${user.firstName} ${user.lastName}`,
       },
     };
   });

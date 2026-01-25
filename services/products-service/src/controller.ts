@@ -16,11 +16,10 @@ export const listProductsHandler = async (
 };
 
 export const listPublicProductsHandler = async (
-  req: FastifyRequest,
+  req: FastifyRequest<{ Querystring: { storeId: string } }>,
   reply: FastifyReply,
 ) => {
-  // Expect storeId via query param (rewritten by gateway or passed directly)
-  const { storeId } = req.query as { storeId: string };
+  const { storeId } = req.query;
 
   if (!storeId) return reply.status(400).send({ error: "Store ID required" });
 
@@ -34,14 +33,22 @@ export const listPublicProductsHandler = async (
   return reply.send(products);
 };
 
+interface CreateProductBody {
+  name: string;
+  description?: string;
+  price: string;
+  sku?: string;
+  stock?: string;
+}
+
 export const createProductHandler = async (
-  req: FastifyRequest,
+  req: FastifyRequest<{ Body: CreateProductBody }>,
   reply: FastifyReply,
 ) => {
   const storeId = req.headers["x-store-id"] as string;
   if (!storeId) return reply.status(400).send({ error: "Store ID required" });
 
-  const { name, description, price, sku, stock } = req.body as unknown;
+  const { name, description, price, sku, stock } = req.body;
   const title = name;
   const handle = name
     .toLowerCase()
@@ -68,24 +75,25 @@ export const createProductHandler = async (
   });
 
   // Log Inventory Event
-  await prisma.inventoryEvent.create({
-    data: {
-      variantId: (product as unknown).productVariants[0].id,
-      quantity: parseInt(stock || "0"),
-      action: "ADJUSTMENT",
-      reason: "Initial stock",
-      // performedBy: 'user' // Placeholder
-    },
-  });
+  if (product.productVariants[0]) {
+    await prisma.inventoryEvent.create({
+      data: {
+        variantId: product.productVariants[0].id,
+        quantity: parseInt(stock || "0"),
+        action: "ADJUSTMENT",
+        reason: "Initial stock",
+      },
+    });
+  }
 
   return reply.send(product);
 };
 
 export const getProductHandler = async (
-  req: FastifyRequest,
+  req: FastifyRequest<{ Params: { id: string } }>,
   reply: FastifyReply,
 ) => {
-  const { id } = req.params as { id: string };
+  const { id } = req.params;
   const product = await prisma.product.findUnique({
     where: { id },
     include: { productVariants: true },
@@ -94,15 +102,19 @@ export const getProductHandler = async (
   return reply.send(product);
 };
 
+interface UpdateProductBody {
+  name?: string;
+  description?: string;
+  price?: string;
+  stock?: string;
+}
+
 export const updateProductHandler = async (
-  req: FastifyRequest,
+  req: FastifyRequest<{ Params: { id: string }; Body: UpdateProductBody }>,
   reply: FastifyReply,
 ) => {
-  const { id } = req.params as { id: string };
-  const { name, description, price, _stock } = req.body as unknown;
-
-  // Simple V1 Update: Update Product and Default Variant Price/Stock
-  // Real world needs robust variant handling.
+  const { id } = req.params;
+  const { name, description, price } = req.body;
 
   const product = await prisma.product.update({
     where: { id },
@@ -116,15 +128,14 @@ export const updateProductHandler = async (
   // Update default variant price/stock if provided
   if (product.productVariants.length > 0) {
     await prisma.productVariant.update({
-      where: { id: (product as unknown).productVariants[0].id },
+      where: { id: product.productVariants[0].id },
       data: {
         price: price ? parseFloat(price) : undefined,
-        // inventory removed as it's not on variant model
       },
     });
   }
 
-  // Return updated
+  // Return updated (re-fetch to get latest state)
   const updated = await prisma.product.findUnique({
     where: { id },
     include: { productVariants: true },
@@ -133,10 +144,10 @@ export const updateProductHandler = async (
 };
 
 export const deleteProductHandler = async (
-  req: FastifyRequest,
+  req: FastifyRequest<{ Params: { id: string } }>,
   reply: FastifyReply,
 ) => {
-  const { id } = req.params as { id: string };
+  const { id } = req.params;
   await prisma.product.delete({ where: { id } });
   return reply.send({ status: "deleted" });
 };

@@ -1,11 +1,15 @@
-import Redis from "ioredis";
+import type { Redis } from "ioredis";
+import { getRedis } from "@vayva/redis";
 
 const globalForRedis = global as unknown as { redis: Redis };
 
-export const redis = globalForRedis.redis ||
-    new Redis(process.env.REDIS_URL || "redis://localhost:6379", {
-        maxRetriesPerRequest: 3,
-    });
+export async function getRedisClient(): Promise<Redis> {
+    if (globalForRedis.redis) return globalForRedis.redis;
 
-if (process.env.NODE_ENV !== "production")
-    globalForRedis.redis = redis;
+    const client = await getRedis();
+
+    if (process.env.NODE_ENV !== "production") {
+        globalForRedis.redis = client;
+    }
+    return client;
+}

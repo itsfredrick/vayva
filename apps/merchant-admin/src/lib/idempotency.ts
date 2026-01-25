@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { redis } from "@/lib/redis";
+import { getRedisClient } from "@/lib/redis";
 const IDEMPOTENCY_HEADER = "x-idempotency-key";
 const EXPIRY_SECONDS = 60 * 60 * 24; // 24 hours
 export async function verifyIdempotency(req: any) {
@@ -7,6 +7,7 @@ export async function verifyIdempotency(req: any) {
     if (!key)
         return { cached: null, key: null };
     const compositeKey = `idempotency:${key}`;
+    const redis = await getRedisClient();
     const data = await redis.get(compositeKey);
     if (data) {
         const record = JSON.parse(data);
@@ -38,5 +39,6 @@ export async function saveIdempotencyResponse(key: any, response: any, bodyData:
         headers: {}, // Serialize essential headers if needed
         createdAt: Date.now(),
     };
+    const redis = await getRedisClient();
     await redis.setex(key, EXPIRY_SECONDS, JSON.stringify(record));
 }

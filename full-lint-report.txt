@@ -1,0 +1,42 @@
+
+> vayva@ lint /Users/fredrick/Documents/GitHub/vayva
+> eslint . --ext .ts,.tsx,.js,.jsx
+
+
+/Users/fredrick/Documents/GitHub/vayva/apps/merchant-admin/proxy.ts
+  120:13  warning  'retailPaths' is assigned a value but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+
+/Users/fredrick/Documents/GitHub/vayva/apps/merchant-admin/src/components/products/ProductDrawer.tsx
+  206:24  warning  Compilation Skipped: Use of incompatible library
+
+This API returns functions which cannot be memoized without leading to stale UI. To prevent this, by default React Compiler will skip memoizing this component/hook. However, you may see issues if values from this API are passed to other components/hooks that are memoized.
+
+/Users/fredrick/Documents/GitHub/vayva/apps/merchant-admin/src/components/products/ProductDrawer.tsx:206:24
+  204 |   });
+  205 |
+> 206 |   const selectedType = watch("type");
+      |                        ^^^^^ React Hook Form's `useForm()` API returns a `watch()` function which cannot be memoized safely.
+  207 |   const inventoryEnabled = watch("inventory.enabled");
+  208 |   const currentImages = watch("images") || [];
+  209 |  react-hooks/incompatible-library
+
+/Users/fredrick/Documents/GitHub/vayva/apps/merchant-admin/src/components/wallet/WithdrawModal.tsx
+  14:9  warning  Use the <Button> component from @vayva/ui instead of raw <button> unless absolutely necessary  no-restricted-syntax
+
+/Users/fredrick/Documents/GitHub/vayva/seed-order.js
+  21:5  warning  Unexpected console statement  no-console
+
+/Users/fredrick/Documents/GitHub/vayva/services/api-gateway/src/routes/auth/reset-password.ts
+  43:14  warning  '_e' is defined but never used  @typescript-eslint/no-unused-vars
+
+/Users/fredrick/Documents/GitHub/vayva/services/auth-service/src/staff/controller.ts
+  80:3  warning  Unexpected console statement  no-console
+
+/Users/fredrick/Documents/GitHub/vayva/services/fulfillment-service/src/carriers/kwik.ts
+  43:19  warning  'providerJobId' is defined but never used. Allowed unused args must match /^_/u  @typescript-eslint/no-unused-vars
+
+/Users/fredrick/Documents/GitHub/vayva/services/payments-service/src/worker.ts
+  36:29  warning  'job' is defined but never used. Allowed unused args must match /^_/u  @typescript-eslint/no-unused-vars
+
+✖ 8 problems (0 errors, 8 warnings)
+

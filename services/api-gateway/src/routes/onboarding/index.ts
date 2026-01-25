@@ -1,9 +1,9 @@
 import { FastifyPluginAsync } from "fastify";
 import { prisma } from "@vayva/db";
-import { _StoreSchema } from "@vayva/schemas";
+import { StoreSchema } from "@vayva/schemas";
 import { z } from "zod";
 
-const onboardingRoute: FastifyPluginAsync = async (fastify) => {
+const onboardingRoute: FastifyPluginAsync = async fastify => {
   // Save Store Details
   fastify.post(
     "/store",
@@ -11,10 +11,6 @@ const onboardingRoute: FastifyPluginAsync = async (fastify) => {
       onRequest: [fastify.authenticate],
     },
     async (request, reply) => {
-      // We expect the body to match components of the Store schema or a specific Onboarding schema
-      // For now, let's assume we are receiving the full Store object or partial
-      // But StoreSchema requires tenantId etc. In wizard we might just get name, type, contact.
-
       // Simplification for v1 wizard:
       const WizardSchema = z.object({
         name: z.string(),
@@ -23,7 +19,7 @@ const onboardingRoute: FastifyPluginAsync = async (fastify) => {
       });
 
       const body = WizardSchema.parse(request.body);
-      const user = (request as unknown).user as { id: string; email: string };
+      const user = request.user;
 
       // 0. Check for slug collision
       const existingStore = await prisma.store.findUnique({
@@ -31,20 +27,19 @@ const onboardingRoute: FastifyPluginAsync = async (fastify) => {
       });
 
       if (existingStore) {
-        return reply.status(409).send({ error: "Store URL (slug) is already taken." });
+        return reply
+          .status(409)
+          .send({ error: "Store URL (slug) is already taken." });
       }
 
       // 1. Create Tenant (One-to-one with User for V1 solo founders)
-      // In a real app we might check if user already has a tenant or if we are inviting.
-      // For V1 Signup -> Onboarding flow, we create a new Tenant.
-
       const tenant = await prisma.tenant.create({
         data: {
           name: body.name,
           slug: body.slug,
           tenantMemberships: {
             create: {
-              userId: user.id,
+              userId: user.sub,
               role: "OWNER",
             },
           },
@@ -57,7 +52,7 @@ const onboardingRoute: FastifyPluginAsync = async (fastify) => {
           tenantId: tenant.id,
           name: body.name,
           slug: body.slug,
-          settings: body.settings || {},
+          settings: (body.settings || {}) as any,
         },
       });
 
@@ -77,13 +72,9 @@ const onboardingRoute: FastifyPluginAsync = async (fastify) => {
               publishedAt: new Date(),
             },
           });
-        } else {
-          console.warn(
-            'Default template "vayva-default" not found. Skipping theme assignment.',
-          );
         }
       } catch (err) {
-        console.error("Failed to assign default template:", err);
+        request.log.error(`Failed to assign default template: ${err}`);
       }
 
       return {

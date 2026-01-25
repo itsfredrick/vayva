@@ -1,0 +1,85 @@
+ WARNING  --no-cache is deprecated and will be removed in a future major version. Use --cache=local:r,remote:r
+• turbo 2.7.5
+• Packages in scope: merchant-admin
+• Running build in 1 packages
+• Remote caching disabled
+@vayva/redis:build: cache miss, executing 7653a73ee2fc468e
+@vayva/db:build: cache miss, executing 8d088f71e8e77cc2
+@vayva/schemas:build: cache miss, executing fff2e4e48c9d9ef2
+@vayva/db:build: 
+@vayva/db:build: > @vayva/db@0.0.0 build /Users/fredrick/Documents/GitHub/vayva/infra/db
+@vayva/db:build: > pnpm run db:generate
+@vayva/db:build: 
+@vayva/redis:build: 
+@vayva/redis:build: > @vayva/redis@0.0.0 build /Users/fredrick/Documents/GitHub/vayva/packages/redis
+@vayva/redis:build: > tsc
+@vayva/redis:build: 
+@vayva/schemas:build: 
+@vayva/schemas:build: > @vayva/schemas@0.0.0 build /Users/fredrick/Documents/GitHub/vayva/packages/schemas
+@vayva/schemas:build: > tsc
+@vayva/schemas:build: 
+@vayva/db:build: 
+@vayva/db:build: > @vayva/db@0.0.0 db:generate /Users/fredrick/Documents/GitHub/vayva/infra/db
+@vayva/db:build: > prisma generate --schema=./prisma/schema.prisma
+@vayva/db:build: 
+@vayva/db:build: Environment variables loaded from .env
+@vayva/db:build: Prisma schema loaded from prisma/schema.prisma
+@vayva/db:build: 
+@vayva/db:build: ✔ Generated Prisma Client (v5.22.0) to ./src/generated/client in 487ms
+@vayva/db:build: 
+@vayva/db:build: Start by importing your Prisma Client (See: https://pris.ly/d/importing-client)
+@vayva/db:build: 
+@vayva/db:build: Tip: Need your database queries to be 1000x faster? Accelerate offers you that and more: https://pris.ly/tip-2-accelerate
+@vayva/db:build: 
+merchant-admin:build: cache miss, executing 363aa13f1b2d8fcb
+merchant-admin:build: 
+merchant-admin:build: > merchant-admin@0.0.0 build /Users/fredrick/Documents/GitHub/vayva/apps/merchant-admin
+merchant-admin:build: > next build
+merchant-admin:build: 
+merchant-admin:build: ▲ Next.js 16.1.1 (Turbopack)
+merchant-admin:build: - Environments: .env.local, .env
+merchant-admin:build: - Experiments (use with caution):
+merchant-admin:build:   · clientTraceMetadata
+merchant-admin:build:   · optimizePackageImports
+merchant-admin:build:   · staleTimes
+merchant-admin:build: 
+merchant-admin:build:   Creating an optimized production build ...
+merchant-admin:build: ✓ Compiled successfully in 32.0s
+merchant-admin:build:   Running next.config.js provided runAfterProductionCompile ...
+merchant-admin:build: ✓ Completed runAfterProductionCompile in 816ms
+merchant-admin:build:   Running TypeScript ...
+merchant-admin:build:   Collecting page data using 9 workers ...
+merchant-admin:build: {"level":"warn","category":"unknown","message":"[GroqClient] No API key found for SUPPORT context. AI features will fallback.","timestamp":"2026-01-25T01:47:39.337Z","environment":"production"}
+merchant-admin:build: ⚠️ Redis initialization attempted during build time. Returning a proxy to prevent connection.
+merchant-admin:build: ⚠️ Redis initialization attempted during build time. Returning a proxy to prevent connection.
+merchant-admin:build: ⚠️ Redis initialization attempted during build time. Returning a proxy to prevent connection.
+merchant-admin:build: ⚠️ Redis initialization attempted during build time. Returning a proxy to prevent connection.
+merchant-admin:build: ⚠️ Redis initialization attempted during build time. Returning a proxy to prevent connection.
+merchant-admin:build: ⚠️ Redis initialization attempted during build time. Returning a proxy to prevent connection.
+merchant-admin:build: ⚠️ Redis initialization attempted during build time. Returning a proxy to prevent connection.
+merchant-admin:build: 
+merchant-admin:build: > Build error occurred
+merchant-admin:build: Error: The file "./src/proxy.ts" must export a function, either as a default export or as a named "proxy" export.
+merchant-admin:build: This function is what Next.js runs for every request handled by this proxy (previously called middleware).
+merchant-admin:build: 
+merchant-admin:build: Why this happens:
+merchant-admin:build: - You are migrating from `middleware` to `proxy`, but haven't updated the exported function.
+merchant-admin:build: - The file exists but doesn't export a function.
+merchant-admin:build: - The export is not a function (e.g., an object or constant).
+merchant-admin:build: - There's a syntax error preventing the export from being recognized.
+merchant-admin:build: 
+merchant-admin:build: To fix it:
+merchant-admin:build: - Ensure this file has either a default or "proxy" function export.
+merchant-admin:build: 
+merchant-admin:build: Learn more: https://nextjs.org/docs/messages/middleware-to-proxy
+merchant-admin:build:     at ignore-listed frames
+merchant-admin:build:  ELIFECYCLE  Command failed with exit code 1.
+merchant-admin:build: ERROR: command finished with error: command (/Users/fredrick/Documents/GitHub/vayva/apps/merchant-admin) /Users/fredrick/Library/pnpm/.tools/pnpm/10.2.0/bin/pnpm run build exited (1)
+merchant-admin#build: command (/Users/fredrick/Documents/GitHub/vayva/apps/merchant-admin) /Users/fredrick/Library/pnpm/.tools/pnpm/10.2.0/bin/pnpm run build exited (1)
+
+ Tasks:    3 successful, 4 total
+Cached:    0 cached, 4 total
+  Time:    51.915s 
+Failed:    merchant-admin#build
+
+ ERROR  run failed: command  exited (1)

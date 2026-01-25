@@ -1,0 +1,428 @@
+
+> vayva@ typecheck /Users/fredrick/Documents/GitHub/vayva
+> turbo run typecheck
+
+• turbo 2.7.5
+• Packages in scope: @vayva/analytics, @vayva/api-client, @vayva/compliance, @vayva/content, @vayva/db, @vayva/education, @vayva/extensions, @vayva/load-test, @vayva/policies, @vayva/redis, @vayva/reliability, @vayva/schemas, @vayva/shared, @vayva/template-service, @vayva/theme, @vayva/ui, admin-service, ai-orchestrator, analytics-service, api-gateway, approvals-service, audit-service, auth-service, billing-service, catalog-service, compliance-service, fulfillment-service, marketing, marketing-service, marketplace, marketplace-service, merchant-admin, mobile, notifications-service, onboarding-service, ops-console, orders-service, payments-service, products-service, risk-service, storefront, support-service, theme-service, webhook-service, whatsapp-service, worker
+• Running typecheck in 46 packages
+• Remote caching disabled
+merchant-admin:typecheck: cache miss, executing b0da1a031fc5d321
+marketing:typecheck: cache hit, replaying logs a6398bc324797d53
+marketing:typecheck: 
+marketing:typecheck: 
+marketing:typecheck: > marketing@0.0.0 typecheck /Users/fredrick/Documents/GitHub/vayva/apps/marketing
+marketing:typecheck: > tsc --noEmit
+marketing:typecheck: 
+marketplace:typecheck: cache hit, replaying logs c641ecc66097d033
+marketplace:typecheck: 
+marketplace:typecheck: 
+marketplace:typecheck: > marketplace@0.0.0 typecheck /Users/fredrick/Documents/GitHub/vayva/apps/marketplace
+marketplace:typecheck: > tsc --noEmit
+marketplace:typecheck: 
+ops-console:typecheck: cache hit, replaying logs e058e0c0069936c8
+ops-console:typecheck: 
+ops-console:typecheck: > ops-console@0.0.0 typecheck /Users/fredrick/Documents/GitHub/vayva/apps/ops-console
+ops-console:typecheck: > tsc --noEmit
+ops-console:typecheck: 
+storefront:typecheck: cache hit, replaying logs 49e373b9a5168281
+storefront:typecheck: 
+storefront:typecheck: > storefront@0.0.0 typecheck /Users/fredrick/Documents/GitHub/vayva/apps/storefront
+storefront:typecheck: > tsc --noEmit
+storefront:typecheck: 
+@vayva/content:typecheck: cache hit, replaying logs 70af3d93f4abdef4
+@vayva/content:typecheck: 
+@vayva/content:typecheck: 
+@vayva/content:typecheck: > @vayva/content@0.0.0 typecheck /Users/fredrick/Documents/GitHub/vayva/packages/content
+@vayva/content:typecheck: > tsc --noEmit
+@vayva/content:typecheck: 
+@vayva/redis:typecheck: cache hit, replaying logs 0ffab1d37c3b0369
+@vayva/redis:typecheck: 
+@vayva/redis:typecheck: 
+@vayva/redis:typecheck: > @vayva/redis@0.0.0 typecheck /Users/fredrick/Documents/GitHub/vayva/packages/redis
+@vayva/redis:typecheck: > tsc --noEmit
+@vayva/redis:typecheck: 
+merchant-admin:typecheck: 
+merchant-admin:typecheck: > merchant-admin@0.0.0 typecheck /Users/fredrick/Documents/GitHub/vayva/apps/merchant-admin
+merchant-admin:typecheck: > tsc --noEmit
+merchant-admin:typecheck: 
+merchant-admin:typecheck: src/app/(dashboard)/dashboard/bookings/page.tsx(89,73): error TS1005: ')' expected.
+merchant-admin:typecheck: src/app/(dashboard)/dashboard/bookings/page.tsx(89,119): error TS1381: Unexpected token. Did you mean `{'}'}` or `&rbrace;`?
+merchant-admin:typecheck: src/app/(dashboard)/dashboard/bookings/page.tsx(89,120): error TS1382: Unexpected token. Did you mean `{'>'}` or `&gt;`?
+merchant-admin:typecheck: src/app/(dashboard)/dashboard/bookings/page.tsx(91,43): error TS17002: Expected corresponding JSX closing tag for 'div'.
+merchant-admin:typecheck: src/app/(dashboard)/dashboard/bookings/page.tsx(98,33): error TS1005: ')' expected.
+merchant-admin:typecheck: src/app/(dashboard)/dashboard/bookings/page.tsx(99,30): error TS1005: '}' expected.
+merchant-admin:typecheck: src/app/(dashboard)/dashboard/bookings/page.tsx(99,31): error TS1381: Unexpected token. Did you mean `{'}'}` or `&rbrace;`?
+merchant-admin:typecheck: src/app/(dashboard)/dashboard/bookings/page.tsx(101,22): error TS1381: Unexpected token. Did you mean `{'}'}` or `&rbrace;`?
+merchant-admin:typecheck: src/app/(dashboard)/dashboard/bookings/page.tsx(104,9): error TS1005: ')' expected.
+merchant-admin:typecheck: src/app/(dashboard)/dashboard/bookings/page.tsx(105,5): error TS1109: Expression expected.
+merchant-admin:typecheck: src/app/(dashboard)/dashboard/settings/activity/page.tsx(31,42): error TS1005: '}' expected.
+merchant-admin:typecheck: src/app/(dashboard)/dashboard/settings/activity/page.tsx(31,47): error TS1381: Unexpected token. Did you mean `{'}'}` or `&rbrace;`?
+merchant-admin:typecheck: src/app/(dashboard)/dashboard/settings/activity/page.tsx(31,50): error TS1382: Unexpected token. Did you mean `{'>'}` or `&gt;`?
+merchant-admin:typecheck: src/app/(dashboard)/dashboard/setup-checklist/page.tsx(46,33): error TS1005: '}' expected.
+merchant-admin:typecheck: src/app/(dashboard)/dashboard/setup-checklist/page.tsx(46,38): error TS1381: Unexpected token. Did you mean `{'}'}` or `&rbrace;`?
+merchant-admin:typecheck: src/app/(dashboard)/dashboard/setup-checklist/page.tsx(46,51): error TS1382: Unexpected token. Did you mean `{'>'}` or `&gt;`?
+merchant-admin:typecheck: src/app/(dashboard)/dashboard/setup-checklist/page.tsx(73,42): error TS1005: '}' expected.
+merchant-admin:typecheck: src/app/(dashboard)/dashboard/setup-checklist/page.tsx(74,19): error TS1381: Unexpected token. Did you mean `{'}'}` or `&rbrace;`?
+merchant-admin:typecheck: src/app/(dashboard)/dashboard/setup-checklist/page.tsx(76,18): error TS1382: Unexpected token. Did you mean `{'>'}` or `&gt;`?
+merchant-admin:typecheck: src/app/api/merchant/onboarding/complete/route.ts(49,43): error TS1005: ',' expected.
+merchant-admin:typecheck: src/app/api/merchant/onboarding/complete/route.ts(49,49): error TS1005: ',' expected.
+merchant-admin:typecheck: src/app/api/merchant/onboarding/complete/route.ts(49,52): error TS1005: ',' expected.
+merchant-admin:typecheck: src/app/control-center/policies/page.tsx(65,17): error TS1005: '}' expected.
+merchant-admin:typecheck: src/app/control-center/policies/page.tsx(65,22): error TS1003: Identifier expected.
+merchant-admin:typecheck: src/app/control-center/policies/page.tsx(68,27): error TS1005: ',' expected.
+merchant-admin:typecheck: src/app/control-center/policies/page.tsx(69,6): error TS1109: Expression expected.
+merchant-admin:typecheck: src/app/control-center/policies/page.tsx(70,3): error TS1109: Expression expected.
+merchant-admin:typecheck: src/app/control-center/policies/page.tsx(71,1): error TS1128: Declaration or statement expected.
+merchant-admin:typecheck: src/app/market/cart/page.tsx(44,40): error TS1005: '}' expected.
+merchant-admin:typecheck: src/app/market/cart/page.tsx(44,45): error TS1381: Unexpected token. Did you mean `{'}'}` or `&rbrace;`?
+merchant-admin:typecheck: src/app/market/cart/page.tsx(47,20): error TS1382: Unexpected token. Did you mean `{'>'}` or `&gt;`?
+merchant-admin:typecheck: src/app/market/cart/page.tsx(56,50): error TS1005: '}' expected.
+merchant-admin:typecheck: src/app/market/cart/page.tsx(56,55): error TS1381: Unexpected token. Did you mean `{'}'}` or `&rbrace;`?
+merchant-admin:typecheck: src/app/market/cart/page.tsx(56,68): error TS1382: Unexpected token. Did you mean `{'>'}` or `&gt;`?
+merchant-admin:typecheck: src/app/market/page.tsx(113,36): error TS1005: '}' expected.
+merchant-admin:typecheck: src/app/market/page.tsx(113,41): error TS1381: Unexpected token. Did you mean `{'}'}` or `&rbrace;`?
+merchant-admin:typecheck: src/app/market/page.tsx(116,20): error TS1382: Unexpected token. Did you mean `{'>'}` or `&gt;`?
+merchant-admin:typecheck: src/app/market/page.tsx(210,39): error TS1005: '}' expected.
+merchant-admin:typecheck: src/app/market/page.tsx(210,44): error TS1381: Unexpected token. Did you mean `{'}'}` or `&rbrace;`?
+merchant-admin:typecheck: src/app/market/page.tsx(210,57): error TS1382: Unexpected token. Did you mean `{'>'}` or `&gt;`?
+merchant-admin:typecheck: src/app/preview/[slug]/page.tsx(21,37): error TS1005: '=>' expected.
+merchant-admin:typecheck: src/app/preview/[slug]/page.tsx(21,48): error TS1005: ',' expected.
+merchant-admin:typecheck: src/app/preview/[slug]/page.tsx(21,61): error TS1005: ')' expected.
+merchant-admin:typecheck: src/app/preview/[slug]/page.tsx(21,63): error TS1434: Unexpected keyword or identifier.
+merchant-admin:typecheck: src/app/preview/[slug]/page.tsx(21,66): error TS1128: Declaration or statement expected.
+merchant-admin:typecheck: src/app/preview/[slug]/page.tsx(21,67): error TS1128: Declaration or statement expected.
+merchant-admin:typecheck: src/app/preview/page.tsx(22,33): error TS1005: ')' expected.
+merchant-admin:typecheck: src/app/preview/page.tsx(22,38): error TS1005: ',' expected.
+merchant-admin:typecheck: src/app/preview/page.tsx(22,39): error TS1134: Variable declaration expected.
+merchant-admin:typecheck: src/app/store/[slug]/collections/[collection]/page.tsx(91,37): error TS1005: '}' expected.
+merchant-admin:typecheck: src/app/store/[slug]/collections/[collection]/page.tsx(91,42): error TS1381: Unexpected token. Did you mean `{'}'}` or `&rbrace;`?
+merchant-admin:typecheck: src/app/store/[slug]/collections/[collection]/page.tsx(91,72): error TS1382: Unexpected token. Did you mean `{'>'}` or `&gt;`?
+merchant-admin:typecheck: src/app/store/[slug]/track/page.tsx(99,40): error TS1005: '}' expected.
+merchant-admin:typecheck: src/app/store/[slug]/track/page.tsx(99,45): error TS1381: Unexpected token. Did you mean `{'}'}` or `&rbrace;`?
+merchant-admin:typecheck: src/app/store/[slug]/track/page.tsx(99,58): error TS1382: Unexpected token. Did you mean `{'>'}` or `&gt;`?
+merchant-admin:typecheck: src/components/action-approval-card.tsx(44,63): error TS1005: '}' expected.
+merchant-admin:typecheck: src/components/action-approval-card.tsx(44,68): error TS1381: Unexpected token. Did you mean `{'}'}` or `&rbrace;`?
+merchant-admin:typecheck: src/components/action-approval-card.tsx(48,10): error TS1382: Unexpected token. Did you mean `{'>'}` or `&gt;`?
+merchant-admin:typecheck: src/components/action-approval-card.tsx(93,28): error TS1005: '}' expected.
+merchant-admin:typecheck: src/components/action-approval-card.tsx(94,13): error TS1381: Unexpected token. Did you mean `{'}'}` or `&rbrace;`?
+merchant-admin:typecheck: src/components/action-approval-card.tsx(96,12): error TS1382: Unexpected token. Did you mean `{'>'}` or `&gt;`?
+merchant-admin:typecheck: src/components/admin-shell.tsx(62,42): error TS1005: '=>' expected.
+merchant-admin:typecheck: src/components/admin-shell.tsx(62,63): error TS1005: ':' expected.
+merchant-admin:typecheck: src/components/admin-shell.tsx(62,64): error TS1005: ',' expected.
+merchant-admin:typecheck: src/components/admin-shell.tsx(62,65): error TS1005: ',' expected.
+merchant-admin:typecheck: src/components/admin-shell.tsx(62,66): error TS1180: Property destructuring pattern expected.
+merchant-admin:typecheck: src/components/admin-shell.tsx(62,78): error TS1005: '=>' expected.
+merchant-admin:typecheck: src/components/admin-shell.tsx(62,98): error TS1128: Declaration or statement expected.
+merchant-admin:typecheck: src/components/admin-shell.tsx(522,1): error TS1160: Unterminated template literal.
+merchant-admin:typecheck: src/components/ai/CommandPalette.tsx(23,23): error TS1005: '=>' expected.
+merchant-admin:typecheck: src/components/ai/CommandPalette.tsx(28,28): error TS1005: ')' expected.
+merchant-admin:typecheck: src/components/ai/CommandPalette.tsx(28,30): error TS1434: Unexpected keyword or identifier.
+merchant-admin:typecheck: src/components/ai/CommandPalette.tsx(28,33): error TS1128: Declaration or statement expected.
+merchant-admin:typecheck: src/components/ai/CommandPalette.tsx(30,5): error TS1128: Declaration or statement expected.
+merchant-admin:typecheck: src/components/ai/CommandPalette.tsx(30,6): error TS1128: Declaration or statement expected.
+merchant-admin:typecheck: src/components/ai/CommandPalette.tsx(30,10): error TS1005: ';' expected.
+merchant-admin:typecheck: src/components/ai/CommandPalette.tsx(92,59): error TS1005: '}' expected.
+merchant-admin:typecheck: src/components/ai/CommandPalette.tsx(92,64): error TS1381: Unexpected token. Did you mean `{'}'}` or `&rbrace;`?
+merchant-admin:typecheck: src/components/ai/CommandPalette.tsx(92,103): error TS1382: Unexpected token. Did you mean `{'>'}` or `&gt;`?
+merchant-admin:typecheck: src/components/ai/CommandPalette.tsx(114,1): error TS1128: Declaration or statement expected.
+merchant-admin:typecheck: src/components/control-center/ControlCenterCard.tsx(31,32): error TS1005: '}' expected.
+merchant-admin:typecheck: src/components/control-center/ControlCenterCard.tsx(31,37): error TS1381: Unexpected token. Did you mean `{'}'}` or `&rbrace;`?
+merchant-admin:typecheck: src/components/control-center/ControlCenterCard.tsx(31,50): error TS1382: Unexpected token. Did you mean `{'>'}` or `&gt;`?
+merchant-admin:typecheck: src/components/control-center/ControlCenterCard.tsx(42,26): error TS1005: '}' expected.
+merchant-admin:typecheck: src/components/control-center/ControlCenterCard.tsx(42,31): error TS1381: Unexpected token. Did you mean `{'}'}` or `&rbrace;`?
+merchant-admin:typecheck: src/components/control-center/ControlCenterCard.tsx(44,14): error TS1382: Unexpected token. Did you mean `{'>'}` or `&gt;`?
+merchant-admin:typecheck: src/components/control-center/IntegrationsList.tsx(34,46): error TS1005: ')' expected.
+merchant-admin:typecheck: src/components/control-center/IntegrationsList.tsx(34,64): error TS1381: Unexpected token. Did you mean `{'}'}` or `&rbrace;`?
+merchant-admin:typecheck: src/components/control-center/IntegrationsList.tsx(37,18): error TS1382: Unexpected token. Did you mean `{'>'}` or `&gt;`?
+merchant-admin:typecheck: src/components/control-center/TemplatePreview.tsx(27,21): error TS1005: '=>' expected.
+merchant-admin:typecheck: src/components/control-center/TemplatePreview.tsx(27,40): error TS1005: ')' expected.
+merchant-admin:typecheck: src/components/control-center/TemplatePreview.tsx(28,3): error TS1128: Declaration or statement expected.
+merchant-admin:typecheck: src/components/control-center/TemplatePreview.tsx(81,32): error TS1005: '=>' expected.
+merchant-admin:typecheck: src/components/control-center/TemplatePreview.tsx(81,67): error TS1381: Unexpected token. Did you mean `{'}'}` or `&rbrace;`?
+merchant-admin:typecheck: src/components/control-center/TemplatePreview.tsx(117,1): error TS1128: Declaration or statement expected.
+merchant-admin:typecheck: src/components/control-center/ThemeCustomizer.tsx(31,59): error TS1005: ')' expected.
+merchant-admin:typecheck: src/components/control-center/ThemeCustomizer.tsx(31,64): error TS1005: ',' expected.
+merchant-admin:typecheck: src/components/control-center/ThemeCustomizer.tsx(31,65): error TS1134: Variable declaration expected.
+merchant-admin:typecheck: src/components/control-center/ThemeCustomizer.tsx(31,76): error TS1005: ',' expected.
+merchant-admin:typecheck: src/components/control-center/UpsellModal.tsx(27,27): error TS1005: '}' expected.
+merchant-admin:typecheck: src/components/control-center/UpsellModal.tsx(27,32): error TS1381: Unexpected token. Did you mean `{'}'}` or `&rbrace;`?
+merchant-admin:typecheck: src/components/control-center/UpsellModal.tsx(27,45): error TS1382: Unexpected token. Did you mean `{'>'}` or `&gt;`?
+merchant-admin:typecheck: src/components/control-center/UpsellModal.tsx(32,32): error TS1005: '}' expected.
+merchant-admin:typecheck: src/components/control-center/UpsellModal.tsx(32,37): error TS1381: Unexpected token. Did you mean `{'}'}` or `&rbrace;`?
+merchant-admin:typecheck: src/components/control-center/UpsellModal.tsx(32,50): error TS1382: Unexpected token. Did you mean `{'>'}` or `&gt;`?
+merchant-admin:typecheck: src/components/dashboard/GoLiveCard.tsx(111,33): error TS1005: '}' expected.
+merchant-admin:typecheck: src/components/dashboard/GoLiveCard.tsx(111,38): error TS1381: Unexpected token. Did you mean `{'}'}` or `&rbrace;`?
+merchant-admin:typecheck: src/components/dashboard/GoLiveCard.tsx(111,68): error TS1382: Unexpected token. Did you mean `{'>'}` or `&gt;`?
+merchant-admin:typecheck: src/components/dashboard/GoLiveCard.tsx(137,45): error TS1005: '}' expected.
+merchant-admin:typecheck: src/components/dashboard/GoLiveCard.tsx(137,50): error TS1381: Unexpected token. Did you mean `{'}'}` or `&rbrace;`?
+merchant-admin:typecheck: src/components/dashboard/GoLiveCard.tsx(137,63): error TS1382: Unexpected token. Did you mean `{'>'}` or `&gt;`?
+merchant-admin:typecheck: src/components/dashboard/GoLiveCard.tsx(170,38): error TS1005: '}' expected.
+merchant-admin:typecheck: src/components/dashboard/GoLiveCard.tsx(170,43): error TS1381: Unexpected token. Did you mean `{'}'}` or `&rbrace;`?
+merchant-admin:typecheck: src/components/dashboard/GoLiveCard.tsx(170,56): error TS1382: Unexpected token. Did you mean `{'>'}` or `&gt;`?
+merchant-admin:typecheck: src/components/dashboard/overview/FoodOverview.tsx(62,36): error TS1005: '}' expected.
+merchant-admin:typecheck: src/components/dashboard/overview/FoodOverview.tsx(62,41): error TS1381: Unexpected token. Did you mean `{'}'}` or `&rbrace;`?
+merchant-admin:typecheck: src/components/dashboard/overview/FoodOverview.tsx(65,14): error TS1382: Unexpected token. Did you mean `{'>'}` or `&gt;`?
+merchant-admin:typecheck: src/components/dashboard/StorefrontSnapshot.tsx(37,45): error TS1005: '=>' expected.
+merchant-admin:typecheck: src/components/dashboard/StorefrontSnapshot.tsx(38,35): error TS1005: '=>' expected.
+merchant-admin:typecheck: src/components/dashboard/StorefrontSnapshot.tsx(38,46): error TS1005: ':' expected.
+merchant-admin:typecheck: src/components/dashboard/StorefrontSnapshot.tsx(38,47): error TS1005: '}' expected.
+merchant-admin:typecheck: src/components/dashboard/StorefrontSnapshot.tsx(40,13): error TS1381: Unexpected token. Did you mean `{'}'}` or `&rbrace;`?
+merchant-admin:typecheck: src/components/dashboard/StorefrontSnapshot.tsx(40,14): error TS1381: Unexpected token. Did you mean `{'}'}` or `&rbrace;`?
+merchant-admin:typecheck: src/components/dashboard/StorefrontSnapshot.tsx(41,11): error TS1382: Unexpected token. Did you mean `{'>'}` or `&gt;`?
+merchant-admin:typecheck: src/components/dashboard/StorefrontSnapshot.tsx(85,7): error TS1005: ')' expected.
+merchant-admin:typecheck: src/components/dashboard/StorefrontSnapshot.tsx(90,28): error TS1005: '=>' expected.
+merchant-admin:typecheck: src/components/dashboard/StorefrontSnapshot.tsx(90,60): error TS1005: '}' expected.
+merchant-admin:typecheck: src/components/dashboard/StorefrontSnapshot.tsx(90,79): error TS1381: Unexpected token. Did you mean `{'}'}` or `&rbrace;`?
+merchant-admin:typecheck: src/components/dashboard/StorefrontSnapshot.tsx(113,5): error TS1128: Declaration or statement expected.
+merchant-admin:typecheck: src/components/dashboard/StorefrontSnapshot.tsx(114,3): error TS1109: Expression expected.
+merchant-admin:typecheck: src/components/dashboard/StorefrontSnapshot.tsx(115,1): error TS1128: Declaration or statement expected.
+merchant-admin:typecheck: src/components/designer/DesignerDashboard.tsx(124,34): error TS1005: '=>' expected.
+merchant-admin:typecheck: src/components/designer/DesignerDashboard.tsx(127,21): error TS1381: Unexpected token. Did you mean `{'}'}` or `&rbrace;`?
+merchant-admin:typecheck: src/components/designer/DesignerDashboard.tsx(130,20): error TS1382: Unexpected token. Did you mean `{'>'}` or `&gt;`?
+merchant-admin:typecheck: src/components/ErrorBoundary.tsx(20,55): error TS1005: ',' expected.
+merchant-admin:typecheck: src/components/notifications-drawer.tsx(131,52): error TS1005: '}' expected.
+merchant-admin:typecheck: src/components/notifications-drawer.tsx(131,57): error TS1381: Unexpected token. Did you mean `{'}'}` or `&rbrace;`?
+merchant-admin:typecheck: src/components/notifications-drawer.tsx(131,70): error TS1382: Unexpected token. Did you mean `{'>'}` or `&gt;`?
+merchant-admin:typecheck: src/components/notifications/NotificationItem.tsx(55,28): error TS1005: '}' expected.
+merchant-admin:typecheck: src/components/notifications/NotificationItem.tsx(55,33): error TS1381: Unexpected token. Did you mean `{'}'}` or `&rbrace;`?
+merchant-admin:typecheck: src/components/notifications/NotificationItem.tsx(55,46): error TS1382: Unexpected token. Did you mean `{'>'}` or `&gt;`?
+merchant-admin:typecheck: src/components/onboarding/steps/UrlStep.tsx(48,36): error TS1005: ')' expected.
+merchant-admin:typecheck: src/components/onboarding/steps/UrlStep.tsx(48,41): error TS1005: ',' expected.
+merchant-admin:typecheck: src/components/onboarding/steps/UrlStep.tsx(51,10): error TS1128: Declaration or statement expected.
+merchant-admin:typecheck: src/components/onboarding/steps/UrlStep.tsx(53,5): error TS1128: Declaration or statement expected.
+merchant-admin:typecheck: src/components/onboarding/steps/UrlStep.tsx(102,1): error TS1128: Declaration or statement expected.
+merchant-admin:typecheck: src/components/onboarding/steps/WelcomeStep.tsx(37,51): error TS1005: '}' expected.
+merchant-admin:typecheck: src/components/onboarding/steps/WelcomeStep.tsx(37,56): error TS1381: Unexpected token. Did you mean `{'}'}` or `&rbrace;`?
+merchant-admin:typecheck: src/components/onboarding/steps/WelcomeStep.tsx(37,120): error TS1382: Unexpected token. Did you mean `{'>'}` or `&gt;`?
+merchant-admin:typecheck: src/components/ops/ops-shell.tsx(57,37): error TS1005: '}' expected.
+merchant-admin:typecheck: src/components/ops/ops-shell.tsx(57,42): error TS1381: Unexpected token. Did you mean `{'}'}` or `&rbrace;`?
+merchant-admin:typecheck: src/components/ops/ops-shell.tsx(60,20): error TS1382: Unexpected token. Did you mean `{'>'}` or `&gt;`?
+merchant-admin:typecheck: src/components/ops/risk-chip.tsx(47,29): error TS1005: '}' expected.
+merchant-admin:typecheck: src/components/ops/risk-chip.tsx(47,34): error TS1381: Unexpected token. Did you mean `{'}'}` or `&rbrace;`?
+merchant-admin:typecheck: src/components/ops/risk-chip.tsx(50,10): error TS1382: Unexpected token. Did you mean `{'>'}` or `&gt;`?
+merchant-admin:typecheck: src/components/ops/risk-chip.tsx(51,8): error TS1381: Unexpected token. Did you mean `{'}'}` or `&rbrace;`?
+merchant-admin:typecheck: src/components/products/forms/RetailProductForm.tsx(156,44): error TS1005: '=>' expected.
+merchant-admin:typecheck: src/components/products/forms/RetailProductForm.tsx(164,5): error TS1005: ',' expected.
+merchant-admin:typecheck: src/components/products/forms/RetailProductForm.tsx(164,6): error TS1128: Declaration or statement expected.
+merchant-admin:typecheck: src/components/products/forms/RetailProductForm.tsx(570,1): error TS1128: Declaration or statement expected.
+merchant-admin:typecheck: src/components/products/ProductDrawer.tsx(192,42): error TS1005: ',' expected.
+merchant-admin:typecheck: src/components/requirement-checklist.tsx(31,62): error TS1005: '}' expected.
+merchant-admin:typecheck: src/components/requirement-checklist.tsx(31,67): error TS1381: Unexpected token. Did you mean `{'}'}` or `&rbrace;`?
+merchant-admin:typecheck: src/components/requirement-checklist.tsx(33,16): error TS1382: Unexpected token. Did you mean `{'>'}` or `&gt;`?
+merchant-admin:typecheck: src/components/settings/DataPrivacySettings.tsx(82,42): error TS1005: '}' expected.
+merchant-admin:typecheck: src/components/settings/DataPrivacySettings.tsx(82,47): error TS1381: Unexpected token. Did you mean `{'}'}` or `&rbrace;`?
+merchant-admin:typecheck: src/components/settings/DataPrivacySettings.tsx(82,60): error TS1382: Unexpected token. Did you mean `{'>'}` or `&gt;`?
+merchant-admin:typecheck: src/components/support/support-chat.tsx(212,47): error TS1005: ')' expected.
+merchant-admin:typecheck: src/components/support/support-chat.tsx(214,35): error TS1005: '=>' expected.
+merchant-admin:typecheck: src/components/support/support-chat.tsx(214,77): error TS1382: Unexpected token. Did you mean `{'>'}` or `&gt;`?
+merchant-admin:typecheck: src/components/support/support-chat.tsx(228,25): error TS1381: Unexpected token. Did you mean `{'}'}` or `&rbrace;`?
+merchant-admin:typecheck: src/components/support/support-chat.tsx(230,20): error TS1381: Unexpected token. Did you mean `{'}'}` or `&rbrace;`?
+merchant-admin:typecheck: src/components/templates/food/FoodCatering.tsx(62,24): error TS1005: '=>' expected.
+merchant-admin:typecheck: src/components/templates/food/FoodCatering.tsx(63,25): error TS1005: '=>' expected.
+merchant-admin:typecheck: src/components/templates/food/FoodCatering.tsx(63,41): error TS1005: ':' expected.
+merchant-admin:typecheck: src/components/templates/food/FoodCatering.tsx(63,42): error TS1005: ')' expected.
+merchant-admin:typecheck: src/components/templates/food/FoodCatering.tsx(150,27): error TS1005: ',' expected.
+merchant-admin:typecheck: src/components/templates/food/FoodCatering.tsx(150,32): error TS1005: ',' expected.
+merchant-admin:typecheck: src/components/templates/food/FoodCatering.tsx(150,41): error TS1005: ',' expected.
+merchant-admin:typecheck: src/components/templates/food/FoodCatering.tsx(150,54): error TS1005: ',' expected.
+merchant-admin:typecheck: src/components/templates/food/FoodCatering.tsx(150,60): error TS1005: ',' expected.
+merchant-admin:typecheck: src/components/templates/food/FoodCatering.tsx(150,61): error TS1005: ',' expected.
+merchant-admin:typecheck: src/components/templates/food/FoodCatering.tsx(150,64): error TS1005: ',' expected.
+merchant-admin:typecheck: src/components/templates/food/FoodCatering.tsx(150,110): error TS1005: ',' expected.
+merchant-admin:typecheck: src/components/templates/food/FoodCatering.tsx(150,111): error TS1005: ',' expected.
+merchant-admin:typecheck: src/components/templates/food/FoodCatering.tsx(153,29): error TS1005: ';' expected.
+merchant-admin:typecheck: src/components/templates/food/FoodCatering.tsx(153,34): error TS1005: ';' expected.
+merchant-admin:typecheck: src/components/templates/food/FoodCatering.tsx(153,39): error TS1005: ';' expected.
+merchant-admin:typecheck: src/components/templates/food/FoodCatering.tsx(153,48): error TS1351: An identifier or keyword cannot immediately follow a numeric literal.
+merchant-admin:typecheck: src/components/templates/food/FoodCatering.tsx(153,51): error TS1434: Unexpected keyword or identifier.
+merchant-admin:typecheck: src/components/templates/food/FoodCatering.tsx(153,69): error TS1005: ';' expected.
+merchant-admin:typecheck: src/components/templates/food/FoodCatering.tsx(153,84): error TS1005: ';' expected.
+merchant-admin:typecheck: src/components/templates/food/FoodCatering.tsx(153,90): error TS1351: An identifier or keyword cannot immediately follow a numeric literal.
+merchant-admin:typecheck: src/components/templates/food/FoodCatering.tsx(153,103): error TS1005: ';' expected.
+merchant-admin:typecheck: src/components/templates/food/FoodCatering.tsx(234,1): error TS1160: Unterminated template literal.
+merchant-admin:typecheck: src/components/templates/hospitality/HotelBooking.tsx(85,66): error TS1005: ')' expected.
+merchant-admin:typecheck: src/components/templates/hospitality/HotelBooking.tsx(85,90): error TS1381: Unexpected token. Did you mean `{'}'}` or `&rbrace;`?
+merchant-admin:typecheck: src/components/templates/hospitality/HotelBooking.tsx(88,38): error TS1382: Unexpected token. Did you mean `{'>'}` or `&gt;`?
+merchant-admin:typecheck: src/components/templates/retail/AutoParts.tsx(58,24): error TS1005: '=>' expected.
+merchant-admin:typecheck: src/components/templates/retail/AutoParts.tsx(128,28): error TS1005: '=>' expected.
+merchant-admin:typecheck: src/components/templates/retail/AutoParts.tsx(132,16): error TS1381: Unexpected token. Did you mean `{'}'}` or `&rbrace;`?
+merchant-admin:typecheck: src/components/templates/retail/AutoParts.tsx(141,34): error TS1005: '=>' expected.
+merchant-admin:typecheck: src/components/templates/retail/AutoParts.tsx(141,54): error TS1381: Unexpected token. Did you mean `{'}'}` or `&rbrace;`?
+merchant-admin:typecheck: src/components/templates/retail/ElectronicsMarket.tsx(126,54): error TS1005: '=>' expected.
+merchant-admin:typecheck: src/components/templates/retail/ElectronicsMarket.tsx(126,94): error TS1381: Unexpected token. Did you mean `{'}'}` or `&rbrace;`?
+merchant-admin:typecheck: src/components/templates/retail/ElectronicsMarket.tsx(129,34): error TS1382: Unexpected token. Did you mean `{'>'}` or `&gt;`?
+merchant-admin:typecheck: src/components/templates/retail/ElectronicsMarket.tsx(141,54): error TS1005: '=>' expected.
+merchant-admin:typecheck: src/components/templates/retail/ElectronicsMarket.tsx(141,70): error TS1381: Unexpected token. Did you mean `{'}'}` or `&rbrace;`?
+merchant-admin:typecheck: src/components/templates/retail/PerfumeLuxury.tsx(183,34): error TS1005: '=>' expected.
+merchant-admin:typecheck: src/components/templates/retail/PerfumeLuxury.tsx(183,40): error TS1381: Unexpected token. Did you mean `{'}'}` or `&rbrace;`?
+merchant-admin:typecheck: src/components/templates/retail/PhoneGadget.tsx(162,30): error TS1005: '=>' expected.
+merchant-admin:typecheck: src/components/templates/retail/PhoneGadget.tsx(164,38): error TS1005: '=>' expected.
+merchant-admin:typecheck: src/components/templates/retail/PhoneGadget.tsx(164,44): error TS1381: Unexpected token. Did you mean `{'}'}` or `&rbrace;`?
+merchant-admin:typecheck: src/components/templates/retail/PhoneGadget.tsx(167,20): error TS1382: Unexpected token. Did you mean `{'>'}` or `&gt;`?
+merchant-admin:typecheck: src/components/templates/retail/PhoneGadget.tsx(168,18): error TS1381: Unexpected token. Did you mean `{'}'}` or `&rbrace;`?
+merchant-admin:typecheck: src/components/templates/retail/PhoneGadget.tsx(169,30): error TS1005: '=>' expected.
+merchant-admin:typecheck: src/components/templates/retail/PhoneGadget.tsx(171,34): error TS1005: '=>' expected.
+merchant-admin:typecheck: src/components/templates/retail/PhoneGadget.tsx(171,50): error TS1381: Unexpected token. Did you mean `{'}'}` or `&rbrace;`?
+merchant-admin:typecheck: src/components/templates/retail/PhoneGadget.tsx(173,18): error TS1381: Unexpected token. Did you mean `{'}'}` or `&rbrace;`?
+merchant-admin:typecheck: src/components/templates/retail/PhoneGadget.tsx(179,30): error TS1005: '=>' expected.
+merchant-admin:typecheck: src/components/templates/retail/PhoneGadget.tsx(181,34): error TS1005: '=>' expected.
+merchant-admin:typecheck: src/components/templates/retail/PhoneGadget.tsx(183,38): error TS1005: '=>' expected.
+merchant-admin:typecheck: src/components/templates/retail/PhoneGadget.tsx(183,52): error TS1381: Unexpected token. Did you mean `{'}'}` or `&rbrace;`?
+merchant-admin:typecheck: src/components/templates/retail/PhoneGadget.tsx(185,22): error TS1381: Unexpected token. Did you mean `{'}'}` or `&rbrace;`?
+merchant-admin:typecheck: src/components/templates/retail/PhoneGadget.tsx(186,34): error TS1005: '=>' expected.
+merchant-admin:typecheck: src/components/templates/retail/PhoneGadget.tsx(188,41): error TS1005: '=>' expected.
+merchant-admin:typecheck: src/components/templates/retail/PhoneGadget.tsx(188,55): error TS1381: Unexpected token. Did you mean `{'}'}` or `&rbrace;`?
+merchant-admin:typecheck: src/components/templates/retail/PhoneGadget.tsx(190,22): error TS1381: Unexpected token. Did you mean `{'}'}` or `&rbrace;`?
+merchant-admin:typecheck: src/components/templates/retail/PhoneGadget.tsx(192,18): error TS1381: Unexpected token. Did you mean `{'}'}` or `&rbrace;`?
+merchant-admin:typecheck: src/components/templates/services/SoloProfessional.tsx(60,28): error TS1005: '=>' expected.
+merchant-admin:typecheck: src/components/templates/services/SoloProfessional.tsx(61,25): error TS1005: '=>' expected.
+merchant-admin:typecheck: src/components/templates/services/SoloProfessional.tsx(61,41): error TS1005: ':' expected.
+merchant-admin:typecheck: src/components/templates/services/SoloProfessional.tsx(61,43): error TS1005: ')' expected.
+merchant-admin:typecheck: src/components/templates/services/SoloProfessional.tsx(193,1): error TS1160: Unterminated template literal.
+merchant-admin:typecheck: src/components/templates/storefront/FoodTemplate.tsx(167,46): error TS1005: '}' expected.
+merchant-admin:typecheck: src/components/templates/storefront/FoodTemplate.tsx(167,51): error TS1381: Unexpected token. Did you mean `{'}'}` or `&rbrace;`?
+merchant-admin:typecheck: src/components/templates/storefront/FoodTemplate.tsx(167,64): error TS1382: Unexpected token. Did you mean `{'>'}` or `&gt;`?
+merchant-admin:typecheck: src/components/templates/storefront/RetailTemplate.tsx(138,33): error TS1005: '}' expected.
+merchant-admin:typecheck: src/components/templates/storefront/RetailTemplate.tsx(138,38): error TS1381: Unexpected token. Did you mean `{'}'}` or `&rbrace;`?
+merchant-admin:typecheck: src/components/templates/storefront/RetailTemplate.tsx(141,18): error TS1382: Unexpected token. Did you mean `{'>'}` or `&gt;`?
+merchant-admin:typecheck: src/components/templates/storefront/RetailTemplate.tsx(236,40): error TS1005: '}' expected.
+merchant-admin:typecheck: src/components/templates/storefront/RetailTemplate.tsx(236,45): error TS1381: Unexpected token. Did you mean `{'}'}` or `&rbrace;`?
+merchant-admin:typecheck: src/components/templates/storefront/RetailTemplate.tsx(239,12): error TS1382: Unexpected token. Did you mean `{'>'}` or `&gt;`?
+merchant-admin:typecheck: src/components/templates/storefront/RetailTemplate.tsx(386,44): error TS1005: '}' expected.
+merchant-admin:typecheck: src/components/templates/storefront/RetailTemplate.tsx(386,49): error TS1381: Unexpected token. Did you mean `{'}'}` or `&rbrace;`?
+merchant-admin:typecheck: src/components/templates/storefront/RetailTemplate.tsx(389,18): error TS1382: Unexpected token. Did you mean `{'>'}` or `&gt;`?
+merchant-admin:typecheck: src/components/wallet/AddBankModal.tsx(38,9): error TS1005: ',' expected.
+merchant-admin:typecheck: src/components/wallet/DisputeList.tsx(53,45): error TS1005: '}' expected.
+merchant-admin:typecheck: src/components/wallet/DisputeList.tsx(53,50): error TS1381: Unexpected token. Did you mean `{'}'}` or `&rbrace;`?
+merchant-admin:typecheck: src/components/wallet/DisputeList.tsx(53,63): error TS1382: Unexpected token. Did you mean `{'>'}` or `&gt;`?
+merchant-admin:typecheck: src/components/wallet/SettlementList.tsx(25,32): error TS1005: '}' expected.
+merchant-admin:typecheck: src/components/wallet/SettlementList.tsx(25,37): error TS1381: Unexpected token. Did you mean `{'}'}` or `&rbrace;`?
+merchant-admin:typecheck: src/components/wallet/SettlementList.tsx(28,10): error TS1382: Unexpected token. Did you mean `{'>'}` or `&gt;`?
+merchant-admin:typecheck: src/components/wallet/WithdrawalModal.tsx(120,53): error TS1005: '}' expected.
+merchant-admin:typecheck: src/components/wallet/WithdrawalModal.tsx(120,58): error TS1381: Unexpected token. Did you mean `{'}'}` or `&rbrace;`?
+merchant-admin:typecheck: src/components/wallet/WithdrawalModal.tsx(120,71): error TS1382: Unexpected token. Did you mean `{'>'}` or `&gt;`?
+merchant-admin:typecheck: src/context/OnboardingContext.tsx(123,42): error TS1005: '=>' expected.
+merchant-admin:typecheck: src/lib/support/support-context.service.ts(8,20): error TS1003: Identifier expected.
+merchant-admin:typecheck: src/lib/support/support-context.service.ts(17,9): error TS1135: Argument expression expected.
+merchant-admin:typecheck: src/lib/templates/layout-resolver.ts(6,182): error TS1005: ')' expected.
+merchant-admin:typecheck: src/lib/templates/layout-resolver.ts(7,167): error TS1005: ')' expected.
+merchant-admin:typecheck: src/lib/templates/layout-resolver.ts(8,167): error TS1005: ')' expected.
+merchant-admin:typecheck: src/lib/templates/layout-resolver.ts(9,158): error TS1005: ')' expected.
+merchant-admin:typecheck: src/lib/templates/layout-resolver.ts(10,185): error TS1005: ')' expected.
+merchant-admin:typecheck: src/lib/templates/layout-resolver.ts(11,170): error TS1005: ')' expected.
+merchant-admin:typecheck: src/lib/templates/layout-resolver.ts(12,185): error TS1005: ')' expected.
+merchant-admin:typecheck: src/lib/templates/layout-resolver.ts(13,182): error TS1005: ')' expected.
+merchant-admin:typecheck: src/lib/templates/layout-resolver.ts(14,185): error TS1005: ')' expected.
+merchant-admin:typecheck: src/lib/templates/layout-resolver.ts(15,167): error TS1005: ')' expected.
+merchant-admin:typecheck: src/lib/templates/layout-resolver.ts(16,185): error TS1005: ')' expected.
+merchant-admin:typecheck: src/lib/templates/layout-resolver.ts(17,164): error TS1005: ')' expected.
+merchant-admin:typecheck: src/lib/templates/layout-resolver.ts(18,164): error TS1005: ')' expected.
+merchant-admin:typecheck: src/lib/templates/layout-resolver.ts(19,170): error TS1005: ')' expected.
+merchant-admin:typecheck: src/lib/templates/layout-resolver.ts(20,170): error TS1005: ')' expected.
+merchant-admin:typecheck: src/lib/templates/layout-resolver.ts(21,176): error TS1005: ')' expected.
+merchant-admin:typecheck: src/lib/templates/layout-resolver.ts(22,179): error TS1005: ')' expected.
+merchant-admin:typecheck: src/lib/templates/layout-resolver.ts(23,173): error TS1005: ')' expected.
+merchant-admin:typecheck: src/lib/templates/layout-resolver.ts(24,179): error TS1005: ')' expected.
+merchant-admin:typecheck: src/lib/templates/layout-resolver.ts(25,173): error TS1005: ')' expected.
+merchant-admin:typecheck: src/lib/templates/layout-resolver.ts(26,179): error TS1005: ')' expected.
+merchant-admin:typecheck: src/lib/templates/layout-resolver.ts(27,173): error TS1005: ')' expected.
+merchant-admin:typecheck: src/lib/templates/templateService.ts(21,27): error TS1005: ')' expected.
+merchant-admin:typecheck: src/lib/templates/templateService.ts(21,29): error TS1136: Property assignment expected.
+merchant-admin:typecheck: src/lib/templates/templateService.ts(22,39): error TS1005: ',' expected.
+merchant-admin:typecheck: src/lib/templates/templateService.ts(23,36): error TS1005: ',' expected.
+merchant-admin:typecheck: src/lib/templates/templateService.ts(24,35): error TS1005: ',' expected.
+merchant-admin:typecheck: src/lib/templates/templateService.ts(25,30): error TS1005: ',' expected.
+merchant-admin:typecheck: src/lib/templates/templateService.ts(26,30): error TS1005: ',' expected.
+merchant-admin:typecheck: src/lib/templates/templateService.ts(27,17): error TS1135: Argument expression expected.
+merchant-admin:typecheck: src/lib/templates/templateService.ts(28,23): error TS1005: ',' expected.
+merchant-admin:typecheck: src/lib/templates/templateService.ts(32,27): error TS1005: ')' expected.
+merchant-admin:typecheck: src/lib/templates/templateService.ts(32,29): error TS1136: Property assignment expected.
+merchant-admin:typecheck: src/lib/templates/templateService.ts(33,30): error TS1005: ',' expected.
+merchant-admin:typecheck: src/lib/templates/templateService.ts(34,30): error TS1005: ',' expected.
+merchant-admin:typecheck: src/lib/templates/templateService.ts(35,17): error TS1135: Argument expression expected.
+merchant-admin:typecheck: src/lib/templates/templateService.ts(36,13): error TS1135: Argument expression expected.
+merchant-admin:typecheck: src/lib/templates/templateService.ts(36,14): error TS1068: Unexpected token. A constructor, method, accessor, or property was expected.
+merchant-admin:typecheck: src/lib/templates/templateService.ts(38,20): error TS1138: Parameter declaration expected.
+merchant-admin:typecheck: src/lib/templates/templateService.ts(46,83): error TS1005: ')' expected.
+merchant-admin:typecheck: src/lib/templates/templateService.ts(49,9): error TS1128: Declaration or statement expected.
+merchant-admin:typecheck: src/lib/templates/templateService.ts(49,10): error TS1128: Declaration or statement expected.
+merchant-admin:typecheck: src/lib/templates/templateService.ts(51,5): error TS1128: Declaration or statement expected.
+merchant-admin:typecheck: src/lib/templates/templateService.ts(52,5): error TS1128: Declaration or statement expected.
+merchant-admin:typecheck: src/lib/templates/templateService.ts(52,12): error TS1434: Unexpected keyword or identifier.
+merchant-admin:typecheck: src/lib/templates/templateService.ts(52,44): error TS1005: ';' expected.
+merchant-admin:typecheck: src/lib/templates/templateService.ts(77,15): error TS1005: ')' expected.
+merchant-admin:typecheck: src/lib/templates/templateService.ts(91,15): error TS1005: ')' expected.
+merchant-admin:typecheck: src/lib/templates/templateService.ts(95,1): error TS1128: Declaration or statement expected.
+merchant-admin:typecheck: src/lib/validation/resource-validator.ts(7,61): error TS1005: ')' expected.
+merchant-admin:typecheck: src/lib/validation/resource-validator.ts(20,118): error TS1005: ')' expected.
+merchant-admin:typecheck: src/lib/validation/resource-validator.ts(23,147): error TS1005: ')' expected.
+merchant-admin:typecheck: src/lib/validation/resource-validator.ts(28,118): error TS1005: ')' expected.
+merchant-admin:typecheck: src/lib/validation/resource-validator.ts(33,95): error TS1005: ')' expected.
+merchant-admin:typecheck: src/lib/validation/resource-validator.ts(36,97): error TS1005: ')' expected.
+merchant-admin:typecheck: src/lib/validation/resource-validator.ts(39,70): error TS1005: ')' expected.
+merchant-admin:typecheck: src/lib/validation/resource-validator.ts(43,67): error TS1005: ')' expected.
+merchant-admin:typecheck: src/services/BookingService.ts(39,25): error TS1005: ';' expected.
+merchant-admin:typecheck: src/services/inventory.service.ts(72,20): error TS1005: ';' expected.
+merchant-admin:typecheck: src/services/inventory.service.ts(110,24): error TS1005: ';' expected.
+merchant-admin:typecheck: src/services/kyc.ts(41,42): error TS1003: Identifier expected.
+merchant-admin:typecheck: src/services/kyc.ts(41,96): error TS1005: ')' expected.
+merchant-admin:typecheck: src/services/kyc.ts(43,55): error TS1003: Identifier expected.
+merchant-admin:typecheck: src/services/kyc.ts(44,34): error TS1005: ',' expected.
+merchant-admin:typecheck: src/services/kyc.ts(44,45): error TS1003: Identifier expected.
+merchant-admin:typecheck: src/services/kyc.ts(45,27): error TS1005: ',' expected.
+merchant-admin:typecheck: src/services/kyc.ts(45,38): error TS1003: Identifier expected.
+merchant-admin:typecheck: src/services/kyc.ts(48,23): error TS1005: ',' expected.
+merchant-admin:typecheck: src/services/kyc.ts(48,54): error TS1003: Identifier expected.
+merchant-admin:typecheck: src/services/kyc.ts(51,28): error TS1005: ',' expected.
+merchant-admin:typecheck: src/services/kyc.ts(52,22): error TS1005: ',' expected.
+merchant-admin:typecheck: src/services/kyc.ts(52,33): error TS1003: Identifier expected.
+merchant-admin:typecheck: src/services/kyc.ts(53,31): error TS1003: Identifier expected.
+merchant-admin:typecheck: src/services/kyc.ts(56,13): error TS1109: Expression expected.
+merchant-admin:typecheck: src/services/offline.service.ts(23,87): error TS1005: ')' expected.
+merchant-admin:typecheck: src/services/offline.service.ts(49,62): error TS1005: ')' expected.
+merchant-admin:typecheck: src/services/offline.service.ts(50,56): error TS1005: ')' expected.
+merchant-admin:typecheck: src/services/offline.service.ts(58,62): error TS1005: ')' expected.
+merchant-admin:typecheck: src/services/offline.service.ts(59,58): error TS1005: ')' expected.
+merchant-admin:typecheck: src/services/offline.service.ts(68,62): error TS1005: ')' expected.
+merchant-admin:typecheck: src/services/offline.service.ts(69,52): error TS1005: ')' expected.
+merchant-admin:typecheck: src/services/offline.service.ts(74,48): error TS1005: ')' expected.
+merchant-admin:typecheck: src/services/offline.service.ts(84,62): error TS1005: ')' expected.
+merchant-admin:typecheck: src/services/offline.service.ts(85,36): error TS1005: ')' expected.
+merchant-admin:typecheck: src/services/offline.service.ts(86,77): error TS1005: ')' expected.
+merchant-admin:typecheck: src/services/offline.service.ts(87,54): error TS1005: ')' expected.
+merchant-admin:typecheck: src/services/offline.service.ts(88,68): error TS1005: ')' expected.
+merchant-admin:typecheck: src/services/offline.service.ts(94,62): error TS1005: ')' expected.
+merchant-admin:typecheck: src/services/offline.service.ts(95,53): error TS1005: ')' expected.
+merchant-admin:typecheck: src/services/onboarding.service.ts(37,17): error TS1005: ')' expected.
+merchant-admin:typecheck: src/services/onboarding.service.ts(37,61): error TS1005: ')' expected.
+merchant-admin:typecheck: src/services/onboarding.service.ts(68,138): error TS1005: ')' expected.
+merchant-admin:typecheck: src/services/onboarding.service.ts(69,137): error TS1005: ')' expected.
+merchant-admin:typecheck: src/services/onboarding.service.ts(79,15): error TS1005: ')' expected.
+merchant-admin:typecheck: src/services/onboarding.service.ts(91,69): error TS1005: ')' expected.
+merchant-admin:typecheck: src/services/onboarding.service.ts(93,71): error TS1005: ')' expected.
+merchant-admin:typecheck: src/services/onboarding.service.ts(95,36): error TS1003: Identifier expected.
+merchant-admin:typecheck: src/services/onboarding.service.ts(98,19): error TS1005: ')' expected.
+merchant-admin:typecheck: src/services/onboarding.service.ts(123,23): error TS1005: ')' expected.
+merchant-admin:typecheck: src/services/onboarding.service.ts(128,52): error TS1005: ')' expected.
+merchant-admin:typecheck: src/services/onboarding.service.ts(132,19): error TS1005: ')' expected.
+merchant-admin:typecheck: src/services/onboarding.service.ts(142,23): error TS1005: ')' expected.
+merchant-admin:typecheck: src/services/onboarding.service.ts(154,23): error TS1005: ')' expected.
+merchant-admin:typecheck: src/services/ops/handlers.ts(129,40): error TS1005: ')' expected.
+merchant-admin:typecheck: src/services/ops/handlers.ts(129,46): error TS1005: ',' expected.
+merchant-admin:typecheck: src/services/ops/handlers.ts(129,49): error TS1005: ',' expected.
+merchant-admin:typecheck: src/services/ops/handlers.ts(129,61): error TS1005: ',' expected.
+merchant-admin:typecheck: src/services/ops/handlers.ts(129,63): error TS1005: ',' expected.
+merchant-admin:typecheck: src/services/ops/handlers.ts(148,10): error TS1472: 'catch' or 'finally' expected.
+merchant-admin:typecheck: src/services/ops/handlers.ts(154,7): error TS1005: 'try' expected.
+merchant-admin:typecheck: src/services/ops/handlers.ts(164,1): error TS1128: Declaration or statement expected.
+merchant-admin:typecheck:  ELIFECYCLE  Command failed with exit code 2.
+merchant-admin:typecheck: ERROR: command finished with error: command (/Users/fredrick/Documents/GitHub/vayva/apps/merchant-admin) /Users/fredrick/Library/pnpm/.tools/pnpm/10.2.0/bin/pnpm run typecheck exited (2)
+merchant-admin#typecheck: command (/Users/fredrick/Documents/GitHub/vayva/apps/merchant-admin) /Users/fredrick/Library/pnpm/.tools/pnpm/10.2.0/bin/pnpm run typecheck exited (2)
+
+ Tasks:    6 successful, 7 total
+Cached:    6 cached, 7 total
+  Time:    3.842s 
+Failed:    merchant-admin#typecheck
+
+ ERROR  run failed: command  exited (2)
+ ELIFECYCLE  Command failed with exit code 2.

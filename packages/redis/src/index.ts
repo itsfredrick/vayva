@@ -1,4 +1,4 @@
-import IORedis, { Redis, RedisOptions } from "ioredis";
+import type { Redis, RedisOptions } from "ioredis";
 
 /**
  * ANTIGRAVITY BUILD-SAFE REDIS FACTORY
@@ -32,7 +32,7 @@ export function isBuildTime(): boolean {
  * Returns a Redis instance, lazily initialized.
  * Throws an error if called during build time (unless forced).
  */
-export function getRedis(config: RedisConfig = {}): Redis {
+export async function getRedis(config: RedisConfig = {}): Promise<Redis> {
     if (redisInstance) return redisInstance;
 
     if (isBuildTime()) {
@@ -51,6 +51,7 @@ export function getRedis(config: RedisConfig = {}): Redis {
     const url = config.url || process.env.REDIS_URL || "redis://localhost:6379";
 
     try {
+        const { default: IORedis } = await import("ioredis");
         redisInstance = new IORedis(url, {
             maxRetriesPerRequest: null,
             ...config.options,

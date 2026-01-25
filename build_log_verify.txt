@@ -1,0 +1,106 @@
+ WARNING  --no-cache is deprecated and will be removed in a future major version. Use --cache=local:r,remote:r
+• turbo 2.7.5
+• Packages in scope: merchant-admin
+• Running build in 1 packages
+• Remote caching disabled
+@vayva/schemas:build: cache miss, executing b9698787abe9036a
+@vayva/db:build: cache miss, executing 7f452f2db15efce7
+@vayva/redis:build: cache miss, executing f2204598134899ef
+@vayva/redis:build: 
+@vayva/redis:build: > @vayva/redis@0.0.0 build /Users/fredrick/Documents/GitHub/vayva/packages/redis
+@vayva/redis:build: > tsc
+@vayva/redis:build: 
+@vayva/db:build: 
+@vayva/db:build: > @vayva/db@0.0.0 build /Users/fredrick/Documents/GitHub/vayva/infra/db
+@vayva/db:build: > pnpm run db:generate
+@vayva/db:build: 
+@vayva/schemas:build: 
+@vayva/schemas:build: > @vayva/schemas@0.0.0 build /Users/fredrick/Documents/GitHub/vayva/packages/schemas
+@vayva/schemas:build: > tsc
+@vayva/schemas:build: 
+@vayva/db:build: 
+@vayva/db:build: > @vayva/db@0.0.0 db:generate /Users/fredrick/Documents/GitHub/vayva/infra/db
+@vayva/db:build: > prisma generate --schema=./prisma/schema.prisma
+@vayva/db:build: 
+@vayva/db:build: Environment variables loaded from .env
+@vayva/db:build: Prisma schema loaded from prisma/schema.prisma
+@vayva/db:build: 
+@vayva/db:build: ✔ Generated Prisma Client (v5.22.0) to ./src/generated/client in 498ms
+@vayva/db:build: 
+@vayva/db:build: Start by importing your Prisma Client (See: https://pris.ly/d/importing-client)
+@vayva/db:build: 
+@vayva/db:build: Help us improve the Prisma ORM for everyone. Share your feedback in a short 2-min survey: https://pris.ly/orm/survey/release-5-22
+@vayva/db:build: 
+merchant-admin:build: cache miss, executing 93ac9484cb4ee49a
+merchant-admin:build: 
+merchant-admin:build: > merchant-admin@0.0.0 build /Users/fredrick/Documents/GitHub/vayva/apps/merchant-admin
+merchant-admin:build: > next build
+merchant-admin:build: 
+merchant-admin:build: ▲ Next.js 16.1.1 (Turbopack)
+merchant-admin:build: - Environments: .env.local, .env
+merchant-admin:build: - Experiments (use with caution):
+merchant-admin:build:   · clientTraceMetadata
+merchant-admin:build:   · optimizePackageImports
+merchant-admin:build:   · staleTimes
+merchant-admin:build: 
+merchant-admin:build:   Creating an optimized production build ...
+merchant-admin:build: 
+merchant-admin:build: > Build error occurred
+merchant-admin:build: Error: Turbopack build failed with 2 errors:
+merchant-admin:build: ./apps/merchant-admin/proxy.ts:5:1
+merchant-admin:build: Export redis doesn't exist in target module
+merchant-admin:build: [0m [90m 3 |[39m [36mimport[39m { getToken } [36mfrom[39m [32m"next-auth/jwt"[39m[33m;[39m
+merchant-admin:build:  [90m 4 |[39m
+merchant-admin:build: [31m[1m>[22m[39m[90m 5 |[39m [36mimport[39m { redis } [36mfrom[39m [32m"@/lib/redis"[39m[33m;[39m
+merchant-admin:build:  [90m   |[39m [31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m
+merchant-admin:build:  [90m 6 |[39m
+merchant-admin:build:  [90m 7 |[39m [36mconst[39m [33mFALLBACK_TENANT_MAP[39m[33m:[39m [33mRecord[39m[33m<[39m[33mstring[39m[33m,[39m string[33m>[39m [33m=[39m {
+merchant-admin:build:  [90m 8 |[39m   bloom[33m:[39m [32m"tenant_bloom_001"[39m[33m,[39m[0m
+merchant-admin:build: 
+merchant-admin:build: The export redis was not found in module [project]/apps/merchant-admin/src/lib/redis.ts [middleware] (ecmascript).
+merchant-admin:build: Did you mean to import getRedisClient?
+merchant-admin:build: All exports of the module are statically known (It doesn't have dynamic exports). So it's known statically that the requested export doesn't exist.
+merchant-admin:build: 
+merchant-admin:build: Import trace:
+merchant-admin:build:   App Route:
+merchant-admin:build:     ./apps/merchant-admin/proxy.ts
+merchant-admin:build:     ./infra/db/src/generated/client/index.js
+merchant-admin:build:     ./apps/merchant-admin/src/app/api/whatsapp/messages/route.ts
+merchant-admin:build: 
+merchant-admin:build: 
+merchant-admin:build: ./apps/merchant-admin/src/lib/ratelimit.ts:1:1
+merchant-admin:build: Export redis doesn't exist in target module
+merchant-admin:build: [0m[31m[1m>[22m[39m[90m 1 |[39m [36mimport[39m { redis } [36mfrom[39m [32m"./redis"[39m[33m;[39m
+merchant-admin:build:  [90m   |[39m [31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m
+merchant-admin:build:  [90m 2 |[39m
+merchant-admin:build:  [90m 3 |[39m [36mconst[39m [33mRATES[39m [33m=[39m {
+merchant-admin:build:  [90m 4 |[39m     auth[33m:[39m { limit[33m:[39m [35m5[39m[33m,[39m window[33m:[39m [35m60[39m [33m*[39m [35m15[39m }[33m,[39m [90m// 5 failures per 15 min[39m[0m
+merchant-admin:build: 
+merchant-admin:build: The export redis was not found in module [project]/apps/merchant-admin/src/lib/redis.ts [app-route] (ecmascript).
+merchant-admin:build: Did you mean to import getRedisClient?
+merchant-admin:build: All exports of the module are statically known (It doesn't have dynamic exports). So it's known statically that the requested export doesn't exist.
+merchant-admin:build: 
+merchant-admin:build: Import traces:
+merchant-admin:build:   #1 [App Route]:
+merchant-admin:build:     ./apps/merchant-admin/src/lib/ratelimit.ts
+merchant-admin:build:     ./infra/db/src/generated/client/index.js
+merchant-admin:build:     ./apps/merchant-admin/src/app/api/whatsapp/messages/route.ts
+merchant-admin:build: 
+merchant-admin:build:   #2 [App Route]:
+merchant-admin:build:     ./apps/merchant-admin/src/lib/ratelimit.ts
+merchant-admin:build:     ./apps/merchant-admin/src/lib/api-handler.ts
+merchant-admin:build:     ./apps/merchant-admin/src/app/api/account/export/route.ts
+merchant-admin:build: 
+merchant-admin:build: 
+merchant-admin:build:     at <unknown> (./apps/merchant-admin/proxy.ts:5:1)
+merchant-admin:build:     at <unknown> (./apps/merchant-admin/src/lib/ratelimit.ts:1:1)
+merchant-admin:build:  ELIFECYCLE  Command failed with exit code 1.
+merchant-admin:build: ERROR: command finished with error: command (/Users/fredrick/Documents/GitHub/vayva/apps/merchant-admin) /Users/fredrick/Library/pnpm/.tools/pnpm/10.2.0/bin/pnpm run build exited (1)
+merchant-admin#build: command (/Users/fredrick/Documents/GitHub/vayva/apps/merchant-admin) /Users/fredrick/Library/pnpm/.tools/pnpm/10.2.0/bin/pnpm run build exited (1)
+
+ Tasks:    3 successful, 4 total
+Cached:    0 cached, 4 total
+  Time:    35.323s 
+Failed:    merchant-admin#build
+
+ ERROR  run failed: command  exited (1)

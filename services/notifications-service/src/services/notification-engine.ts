@@ -65,7 +65,7 @@ export const NotificationService = {
         channel,
         templateKey,
         to,
-        payload: { subject, body, variables },
+        payload: { subject, body, variables } as any,
         recipientId: customerId,
         orderId,
         status: "QUEUED",

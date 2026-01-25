@@ -1,5 +1,6 @@
 import { FastifyRequest, FastifyReply } from "fastify";
-import { prisma } from "@vayva/db";
+import { prisma, AppRole } from "@vayva/db";
+import { UserPayload } from "../types/auth";
 
 const ROLE_HIERARCHY: Record<string, number> = {
   STAFF: 1,
@@ -11,7 +12,7 @@ const ROLE_HIERARCHY: Record<string, number> = {
 
 export const requirePermission = (requiredPermissionOrRole: string) => {
   return async (req: FastifyRequest, reply: FastifyReply) => {
-    const user = req.user as { sub: string; email?: string };
+    const user = req.user as UserPayload;
     if (!user) {
       return reply.status(401).send({ error: "Unauthorized" });
     }
@@ -19,7 +20,8 @@ export const requirePermission = (requiredPermissionOrRole: string) => {
     // Logic for Merchant Roles
     if (user.aud === "merchant") {
       const storeId =
-        (req.headers["x-store-id"] as string) || (req.params as Record<string, string>).storeId;
+        (req.headers["x-store-id"] as string) ||
+        (req.params as Record<string, string>).storeId;
 
       if (!storeId) {
         return reply.status(400).send({ error: "Store ID header required" });
@@ -38,11 +40,11 @@ export const requirePermission = (requiredPermissionOrRole: string) => {
           role: {
             include: {
               rolePermissions: {
-                include: { permission: true }
-              }
-            }
-          }
-        }
+                include: { permission: true },
+              },
+            },
+          },
+        },
       });
 
       if (!membership) {
@@ -52,8 +54,10 @@ export const requirePermission = (requiredPermissionOrRole: string) => {
       }
 
       // 1. Check fine-grained permissions if Role is assigned
-      if (membership.role && (membership.role as unknown).rolePermissions) {
-        const permissions = (membership.role as unknown).rolePermissions.map((rp: unknown) => rp.permission.key);
+      if (membership.role?.rolePermissions) {
+        const permissions = membership.role.rolePermissions.map(
+          rp => rp.permission.key,
+        );
         if (permissions.includes(requiredPermissionOrRole)) {
           return; // Authorized via specific permission
         }
@@ -76,9 +80,13 @@ export const requirePermission = (requiredPermissionOrRole: string) => {
       // If we are here, it means the requirement was a permission key that the user doesn't have,
       // and it wasn't a known role name.
       // Exception: Owners bypass permission checks? Usually yes.
-      if (membership.role_enum === "OWNER") return;
+      if (membership.role_enum === AppRole.OWNER) return;
 
-      return reply.status(403).send({ error: `Forbidden: Missing permission ${requiredPermissionOrRole}` });
+      return reply
+        .status(403)
+        .send({
+          error: `Forbidden: Missing permission ${requiredPermissionOrRole}`,
+        });
     }
 
     // Logic for Ops Roles

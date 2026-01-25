@@ -1,0 +1,12 @@
+
+> vayva@ lint /Users/fredrick/Documents/GitHub/vayva
+> eslint . --ext .ts,.tsx,.js,.jsx
+
+
+/Users/fredrick/Documents/GitHub/vayva/services/fulfillment-service/src/carriers/kwik.ts
+   6:3   warning  'WebhookResult' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+  38:35  error    Unexpected any. Specify a different type                                         @typescript-eslint/no-explicit-any
+
+✖ 2 problems (1 error, 1 warning)
+
+ ELIFECYCLE  Command failed with exit code 1.

@@ -1,7 +1,7 @@
 import Fastify from "fastify";
 import cors from "@fastify/cors";
 import { protectedRoutes, publicRoutes } from "./api/routes";
-import { _prisma } from "@vayva/db";
+import { prisma } from "@vayva/db";
 
 const server = Fastify({
   logger: true,
@@ -19,7 +19,7 @@ const start = async () => {
 
     await server.listen({ port: 3008, host: "0.0.0.0" });
   } catch (err) {
-    (server.log as unknown).error(err);
+    (server.log as any).error(err);
     process.exit(1);
   }
 };

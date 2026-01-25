@@ -1,34 +1,36 @@
 import { FastifyRequest, FastifyReply } from "fastify";
 import { disputeService } from "../services/dispute-service";
-// import { DisputeProvider, DisputeEvidenceType } from '@prisma/client';
+import { DisputeProvider, DisputeEvidenceType } from "@vayva/db";
+
+interface CreateDisputeBody {
+  merchantId: string;
+  provider: DisputeProvider;
+  providerDisputeId: string;
+  amount: number;
+  currency: string;
+  reasonCode?: string;
+  paymentId?: string;
+  orderId?: string;
+  evidenceDueAt?: string;
+}
 
 export const createDisputeHandler = async (
   request: FastifyRequest<{
-    Body: {
-      merchantId: string;
-      provider: string;
-      providerDisputeId: string;
-      amount: number;
-      currency: string;
-      reasonCode?: string;
-      paymentId?: string;
-      orderId?: string;
-      evidenceDueAt?: string;
-    };
+    Body: CreateDisputeBody;
   }>,
   reply: FastifyReply,
 ) => {
   try {
     const dispute = await disputeService.createDispute({
-      ...(request.body as unknown),
-      evidenceDueAt: (request.body as unknown).evidenceDueAt
-        ? new Date((request.body as unknown).evidenceDueAt)
+      ...request.body,
+      evidenceDueAt: request.body.evidenceDueAt
+        ? new Date(request.body.evidenceDueAt)
         : undefined,
     });
     return reply.code(201).send(dispute);
   } catch (error) {
-    (request.log as unknown).error(error);
-    return reply.code(500).send({ error: "Failed to ..." });
+    request.log.error(error);
+    return reply.code(500).send({ error: "Failed to create dispute" });
   }
 };
 
@@ -36,10 +38,11 @@ export const addEvidenceHandler = async (
   request: FastifyRequest<{
     Params: { id: string };
     Body: {
-      type: string;
+      merchantId: string;
+      type: DisputeEvidenceType;
       url?: string;
       textExcerpt?: string;
-      metadata?: unknown;
+      metadata?: any;
     };
   }>,
   reply: FastifyReply,
@@ -47,11 +50,11 @@ export const addEvidenceHandler = async (
   try {
     const evidence = await disputeService.addEvidence(
       request.params.id,
-      request.body as unknown,
+      request.body,
     );
     return reply.code(201).send(evidence);
   } catch (error) {
-    (request.log as unknown).error(error);
+    request.log.error(error);
     return reply.code(500).send({ error: "Failed to add evidence" });
   }
 };
@@ -69,7 +72,7 @@ export const listDisputesHandler = async (
     const disputes = await disputeService.getDisputes(request.query.merchantId);
     return reply.send(disputes);
   } catch (error) {
-    (request.log as unknown).error(error);
+    request.log.error(error);
     return reply.code(500).send({ error: "Failed to list disputes" });
   }
 };
@@ -85,7 +88,7 @@ export const getDisputeHandler = async (
     if (!dispute) return reply.code(404).send({ error: "Dispute not found" });
     return reply.send(dispute);
   } catch (error) {
-    (request.log as unknown).error(error);
+    request.log.error(error);
     return reply.code(500).send({ error: "Failed to get dispute" });
   }
 };

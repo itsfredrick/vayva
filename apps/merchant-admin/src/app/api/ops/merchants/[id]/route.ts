@@ -4,8 +4,9 @@ import { OpsAuthService } from "@/lib/ops-auth";
 
 export async function GET(
     request: Request,
-    { params }: { params: { id: string } }
+    context: { params: Promise<{ id: string }> }
 ) {
+    const params = await context.params;
     const session = await OpsAuthService.getSession();
     if (!session) {
         return NextResponse.json({ error: "Unauthorized" }, { status: 401 });

@@ -35,6 +35,9 @@
             ],
             "@vayva/analytics/*": [
                 "packages/analytics/src/*"
+            ],
+            "@vayva/redis": [
+                "packages/redis/src/index.ts"
             ]
         }
     },

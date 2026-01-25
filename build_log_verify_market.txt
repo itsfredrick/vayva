@@ -1,0 +1,85 @@
+ WARNING  --no-cache is deprecated and will be removed in a future major version. Use --cache=local:r,remote:r
+• turbo 2.7.5
+• Packages in scope: marketplace
+• Running build in 1 packages
+• Remote caching disabled
+@vayva/db:build: cache miss, executing 7f452f2db15efce7
+@vayva/schemas:build: cache miss, executing b9698787abe9036a
+@vayva/schemas:build: 
+@vayva/schemas:build: > @vayva/schemas@0.0.0 build /Users/fredrick/Documents/GitHub/vayva/packages/schemas
+@vayva/schemas:build: > tsc
+@vayva/schemas:build: 
+@vayva/db:build: 
+@vayva/db:build: > @vayva/db@0.0.0 build /Users/fredrick/Documents/GitHub/vayva/infra/db
+@vayva/db:build: > pnpm run db:generate
+@vayva/db:build: 
+@vayva/db:build: 
+@vayva/db:build: > @vayva/db@0.0.0 db:generate /Users/fredrick/Documents/GitHub/vayva/infra/db
+@vayva/db:build: > prisma generate --schema=./prisma/schema.prisma
+@vayva/db:build: 
+@vayva/db:build: Environment variables loaded from .env
+@vayva/db:build: Prisma schema loaded from prisma/schema.prisma
+@vayva/db:build: 
+@vayva/db:build: ✔ Generated Prisma Client (v5.22.0) to ./src/generated/client in 450ms
+@vayva/db:build: 
+@vayva/db:build: Start by importing your Prisma Client (See: https://pris.ly/d/importing-client)
+@vayva/db:build: 
+@vayva/db:build: Tip: Curious about the SQL queries Prisma ORM generates? Optimize helps you enhance your visibility: https://pris.ly/tip-2-optimize
+@vayva/db:build: 
+marketplace:build: cache miss, executing dca36854c3ae06f2
+marketplace:build: 
+marketplace:build: > marketplace@0.0.0 build /Users/fredrick/Documents/GitHub/vayva/apps/marketplace
+marketplace:build: > next build
+marketplace:build: 
+marketplace:build: ▲ Next.js 16.1.1 (Turbopack)
+marketplace:build: - Experiments (use with caution):
+marketplace:build:   · optimizePackageImports
+marketplace:build:   · staleTimes
+marketplace:build: 
+marketplace:build:   Creating an optimized production build ...
+marketplace:build: ✓ Compiled successfully in 5.8s
+marketplace:build:   Running TypeScript ...
+marketplace:build:   Collecting page data using 9 workers ...
+marketplace:build:   Generating static pages using 9 workers (0/19) ...
+marketplace:build:   Generating static pages using 9 workers (4/19) 
+marketplace:build:   Generating static pages using 9 workers (9/19) 
+marketplace:build:   Generating static pages using 9 workers (14/19) 
+marketplace:build: ✓ Generating static pages using 9 workers (19/19) in 157.3ms
+marketplace:build:   Finalizing page optimization ...
+marketplace:build: 
+marketplace:build: Route (app)
+marketplace:build: ┌ ○ /
+marketplace:build: ├ ○ /_not-found
+marketplace:build: ├ ƒ /api/cart
+marketplace:build: ├ ƒ /api/cart/[itemId]
+marketplace:build: ├ ƒ /api/checkout
+marketplace:build: ├ ƒ /api/conversations
+marketplace:build: ├ ƒ /api/conversations/[id]
+marketplace:build: ├ ƒ /api/delivery/consolidate
+marketplace:build: ├ ƒ /api/disputes
+marketplace:build: ├ ƒ /api/health
+marketplace:build: ├ ƒ /api/products/[id]
+marketplace:build: ├ ƒ /api/search
+marketplace:build: ├ ƒ /api/sourcing/request
+marketplace:build: ├ ƒ /api/waitlist
+marketplace:build: ├ ƒ /category/[slug]
+marketplace:build: ├ ○ /chat
+marketplace:build: ├ ƒ /chat/[id]
+marketplace:build: ├ ○ /checkout
+marketplace:build: ├ ƒ /listing/[id]
+marketplace:build: ├ ƒ /orders
+marketplace:build: ├ ƒ /orders/[id]
+marketplace:build: ├ ○ /privacy
+marketplace:build: ├ ○ /robots.txt
+marketplace:build: ├ ○ /search
+marketplace:build: └ ○ /sourcing/request
+marketplace:build: 
+marketplace:build: 
+marketplace:build: ○  (Static)   prerendered as static content
+marketplace:build: ƒ  (Dynamic)  server-rendered on demand
+marketplace:build: 
+
+ Tasks:    3 successful, 3 total
+Cached:    0 cached, 3 total
+  Time:    13.296s 
+

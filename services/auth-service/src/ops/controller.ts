@@ -46,7 +46,7 @@ export const verifyMfaHandler = async (
   const { preAuthToken, code } = mfaVerifySchema.parse(req.body);
 
   // Decode/Verify PreAuth Token
-  const decoded = req.server.jwt.verify<unknown>(preAuthToken);
+  const decoded = req.server.jwt.verify<any>(preAuthToken);
   if (decoded.aud !== "ops-pre-mfa") {
     return reply.status(401).send({ error: "Invalid token audience" });
   }

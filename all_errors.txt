@@ -1,0 +1,387 @@
+merchant-admin:typecheck: src/app/api/kyc/upload/route.ts(8,32): error TS18046: 'request' is of type 'unknown'.
+merchant-admin:typecheck: src/app/api/kyc/upload/route.ts(64,28): error TS2339: Property 'bvnDocument' does not exist on type '{ status: string; }'.
+merchant-admin:typecheck: src/app/api/kyc/upload/route.ts(67,28): error TS2339: Property 'idDocument' does not exist on type '{ status: string; }'.
+merchant-admin:typecheck: src/app/api/kyc/upload/route.ts(70,28): error TS2339: Property 'cacDocument' does not exist on type '{ status: string; }'.
+merchant-admin:typecheck: src/app/api/kyc/upload/route.ts(85,28): error TS2339: Property 'bvnDocument' does not exist on type '{ storeId: any; status: string; businessType: string; }'.
+merchant-admin:typecheck: src/app/api/kyc/upload/route.ts(88,28): error TS2339: Property 'idDocument' does not exist on type '{ storeId: any; status: string; businessType: string; }'.
+merchant-admin:typecheck: src/app/api/kyc/upload/route.ts(91,28): error TS2339: Property 'cacDocument' does not exist on type '{ storeId: any; status: string; businessType: string; }'.
+merchant-admin:typecheck: src/app/api/merchant/settings/ai-agent/route.ts(46,21): error TS2698: Spread types may only be created from object types.
+merchant-admin:typecheck: src/app/api/notifications/settings/route.ts(59,21): error TS2698: Spread types may only be created from object types.
+merchant-admin:typecheck: src/app/api/ops/kyc/route.ts(36,47): error TS2339: Property 'plan' does not exist on type '{ id: string; storeId: string; updatedAt: Date; status: string; planId: string; planKey: string; periodStart: Date; periodEnd: Date; monthTokensUsed: number; monthImagesUsed: number; ... 6 more ...; closedAt: Date | null; }'.
+merchant-admin:typecheck: src/app/api/ops/metrics/route.ts(10,31): error TS2554: Expected 1 arguments, but got 0.
+merchant-admin:typecheck: src/app/api/ops/support/metrics/route.ts(50,34): error TS2339: Property 'trigger' does not exist on type 'string | number | boolean | JsonObject | JsonArray'.
+merchant-admin:typecheck: src/app/api/ops/support/tickets/[id]/reply/route.ts(32,14): error TS18047: 'ticket' is possibly 'null'.
+merchant-admin:typecheck: src/app/api/orders/bulk-status/route.ts(25,15): error TS7034: Variable 'errors' implicitly has type 'any[]' in some locations where its type cannot be determined.
+merchant-admin:typecheck: src/app/api/orders/bulk-status/route.ts(45,17): error TS7005: Variable 'errors' implicitly has an 'any[]' type.
+merchant-admin:typecheck: src/app/api/payments/resolve-account/route.ts(16,50): error TS2339: Property 'message' does not exist on type '{}'.
+merchant-admin:typecheck: src/app/api/properties/route.ts(15,21): error TS2353: Object literal may only specify known properties, and 'name' does not exist in type 'Without<ProductCreateInput, ProductUncheckedCreateInput> & ProductUncheckedCreateInput'.
+merchant-admin:typecheck: src/app/api/referrals/route.ts(13,37): error TS2339: Property 'referralCode' does not exist on type 'string | number | boolean | JsonObject | JsonArray'.
+merchant-admin:typecheck: src/app/api/rescue/report/route.ts(7,19): error TS2339: Property 'user' does not exist on type '{}'.
+merchant-admin:typecheck: src/app/api/rescue/report/route.ts(22,31): error TS2339: Property 'user' does not exist on type '{}'.
+merchant-admin:typecheck: src/app/api/rescue/report/route.ts(23,30): error TS2339: Property 'user' does not exist on type '{}'.
+merchant-admin:typecheck: src/app/api/resources/[primaryObject]/[id]/route.ts(33,13): error TS2698: Spread types may only be created from object types.
+merchant-admin:typecheck: src/app/api/resources/[primaryObject]/[id]/route.ts(66,31): error TS2698: Spread types may only be created from object types.
+merchant-admin:typecheck: src/app/api/settings/team/invite/route.ts(62,25): error TS2698: Spread types may only be created from object types.
+merchant-admin:typecheck: src/app/api/settings/team/invite/route.ts(107,21): error TS2698: Spread types may only be created from object types.
+merchant-admin:typecheck: src/app/api/settings/whatsapp/route.ts(14,10): error TS7023: 'sanitizePayload' implicitly has return type 'any' because it does not have a return type annotation and is referenced directly or indirectly in one of its return expressions.
+merchant-admin:typecheck: src/app/api/store/policies/route.ts(37,13): error TS2698: Spread types may only be created from object types.
+merchant-admin:typecheck: src/app/api/storefront/reset/route.ts(53,40): error TS2698: Spread types may only be created from object types.
+merchant-admin:typecheck: src/app/api/support/chat/route.ts(42,40): error TS7017: Element implicitly has an 'any' type because type 'typeof globalThis' has no index signature.
+merchant-admin:typecheck: src/app/api/support/chat/route.ts(99,34): error TS7017: Element implicitly has an 'any' type because type 'typeof globalThis' has no index signature.
+merchant-admin:typecheck: src/app/api/templates/apply/route.ts(102,21): error TS2698: Spread types may only be created from object types.
+merchant-admin:typecheck: src/app/api/templates/install/route.ts(76,13): error TS2698: Spread types may only be created from object types.
+merchant-admin:typecheck: src/app/api/webhooks/paystack/route.ts(52,15): error TS18047: 'paymentsQueue' is possibly 'null'.
+merchant-admin:typecheck: src/app/control-center/policies/page.tsx(45,20): error TS2698: Spread types may only be created from object types.
+merchant-admin:typecheck: src/app/control-center/policies/page.tsx(65,7): error TS2322: Type 'unknown' is not assignable to type '"returns" | "terms" | "privacy" | "shipping"'.
+merchant-admin:typecheck: src/app/market/page.tsx(113,21): error TS2322: Type 'unknown' is not assignable to type 'IconName'.
+merchant-admin:typecheck: src/app/market/page.tsx(210,23): error TS2322: Type 'unknown' is not assignable to type 'IconName'.
+merchant-admin:typecheck: src/app/preview/[slug]/page.tsx(20,21): error TS2571: Object is of type 'unknown'.
+merchant-admin:typecheck: src/app/preview/[slug]/page.tsx(20,56): error TS2571: Object is of type 'unknown'.
+merchant-admin:typecheck: src/app/preview/page.tsx(21,19): error TS2571: Object is of type 'unknown'.
+merchant-admin:typecheck: src/app/store/[slug]/collections/[collection]/page.tsx(91,21): error TS2322: Type 'unknown' is not assignable to type 'IconName'.
+merchant-admin:typecheck: src/app/store/[slug]/track/page.tsx(99,21): error TS2322: Type 'unknown' is not assignable to type 'IconName'.
+merchant-admin:typecheck: src/components/admin-shell.tsx(342,30): error TS2571: Object is of type 'unknown'.
+merchant-admin:typecheck: src/components/ai/CommandPalette.tsx(23,9): error TS2571: Object is of type 'unknown'.
+merchant-admin:typecheck: src/components/ai/CommandPalette.tsx(28,20): error TS2571: Object is of type 'unknown'.
+merchant-admin:typecheck: src/components/ai/CommandPalette.tsx(92,43): error TS2322: Type 'unknown' is not assignable to type 'IconName'.
+merchant-admin:typecheck: src/components/bookings/BookingListActions.tsx(16,47): error TS2300: Duplicate identifier 'unknown'.
+merchant-admin:typecheck: src/components/bookings/BookingListActions.tsx(16,66): error TS2300: Duplicate identifier 'unknown'.
+merchant-admin:typecheck: src/components/bookings/BookingListActions.tsx(25,54): error TS2304: Cannot find name 'booking'.
+merchant-admin:typecheck: src/components/bookings/BookingListActions.tsx(60,31): error TS2304: Cannot find name 'services'.
+merchant-admin:typecheck: src/components/bookings/BookingListActions.tsx(63,34): error TS2304: Cannot find name 'booking'.
+merchant-admin:typecheck: src/components/bookings/BookingListActions.tsx(76,83): error TS2304: Cannot find name 'booking'.
+merchant-admin:typecheck: src/components/control-center/IntegrationsList.tsx(34,19): error TS2322: Type '{}' is not assignable to type 'IconName'.
+merchant-admin:typecheck: src/components/control-center/MarketplaceGrid.tsx(3,10): error TS2305: Module '"@/types/intelligence"' has no exported member 'MarketplaceTemplate'.
+merchant-admin:typecheck: src/components/control-center/MarketplaceGrid.tsx(20,15): error TS2322: Type 'unknown' is not assignable to type 'Key | null | undefined'.
+merchant-admin:typecheck: src/components/control-center/MarketplaceGrid.tsx(25,15): error TS2322: Type 'unknown' is not assignable to type 'ReactNode'.
+merchant-admin:typecheck: src/components/control-center/MarketplaceGrid.tsx(48,21): error TS2322: Type 'unknown' is not assignable to type 'Key | null | undefined'.
+merchant-admin:typecheck: src/components/control-center/MarketplaceGrid.tsx(51,21): error TS2322: Type 'unknown' is not assignable to type 'ReactNode'.
+merchant-admin:typecheck: src/components/control-center/MarketplaceGrid.tsx(99,21): error TS2322: Type 'unknown' is not assignable to type 'Key | null | undefined'.
+merchant-admin:typecheck: src/components/control-center/MarketplaceGrid.tsx(102,21): error TS2322: Type 'unknown' is not assignable to type 'ReactNode'.
+merchant-admin:typecheck: src/components/control-center/OptimizationHub.tsx(3,10): error TS2305: Module '"@/types/intelligence"' has no exported member 'OptimizationStatus'.
+merchant-admin:typecheck: src/components/control-center/PaymentFunnelCard.tsx(3,10): error TS2305: Module '"@/types/checkout"' has no exported member 'PaymentFunnel'.
+merchant-admin:typecheck: src/components/control-center/PaymentFunnelCard.tsx(21,18): error TS2322: Type 'unknown' is not assignable to type 'Key | null | undefined'.
+merchant-admin:typecheck: src/components/control-center/PaymentOptimizationCard.tsx(3,10): error TS2305: Module '"@/types/checkout"' has no exported member 'CheckoutOptimizationStatus'.
+merchant-admin:typecheck: src/components/control-center/SeasonalBanner.tsx(3,10): error TS2305: Module '"@/types/intelligence"' has no exported member 'SeasonalSuggestion'.
+merchant-admin:typecheck: src/components/control-center/SeasonalBanner.tsx(43,17): error TS2322: Type 'unknown' is not assignable to type 'Key | null | undefined'.
+merchant-admin:typecheck: src/components/control-center/SeasonalBanner.tsx(47,17): error TS2322: Type 'unknown' is not assignable to type 'ReactNode'.
+merchant-admin:typecheck: src/components/control-center/TemplateCard.tsx(3,10): error TS2305: Module '"@/types/designer"' has no exported member 'Recommendation'.
+merchant-admin:typecheck: src/components/control-center/TemplatePreview.tsx(5,10): error TS2305: Module '"@/types/templates"' has no exported member 'Template'.
+merchant-admin:typecheck: src/components/control-center/TemplatePreview.tsx(27,5): error TS2571: Object is of type 'unknown'.
+merchant-admin:typecheck: src/components/control-center/TemplatePreview.tsx(27,35): error TS2571: Object is of type 'unknown'.
+merchant-admin:typecheck: src/components/control-center/TemplatePreview.tsx(81,16): error TS2571: Object is of type 'unknown'.
+merchant-admin:typecheck: src/components/control-center/TemplatePreview.tsx(81,46): error TS2571: Object is of type 'unknown'.
+merchant-admin:typecheck: src/components/control-center/ThemeCustomizer.tsx(31,72): error TS2339: Property 'settings' does not exist on type '{}'.
+merchant-admin:typecheck: src/components/control-center/ThemeCustomizer.tsx(40,29): error TS2698: Spread types may only be created from object types.
+merchant-admin:typecheck: src/components/control-center/UpsellModal.tsx(27,17): error TS2322: Type 'unknown' is not assignable to type 'IconName'.
+merchant-admin:typecheck: src/components/control-center/UpsellModal.tsx(32,19): error TS2322: Type 'unknown' is not assignable to type 'IconName'.
+merchant-admin:typecheck: src/components/customers/CustomerComponents.tsx(5,3): error TS2459: Module '"@/services/customers"' declares 'CustomerNote' locally, but it is not exported.
+merchant-admin:typecheck: src/components/customers/CustomerComponents.tsx(6,3): error TS2305: Module '"@/services/customers"' has no exported member 'CustomerOrderSummary'.
+merchant-admin:typecheck: src/components/customers/CustomerForm.tsx(18,43): error TS2339: Property 'name' does not exist on type '{}'.
+merchant-admin:typecheck: src/components/customers/CustomerForm.tsx(19,42): error TS2339: Property 'name' does not exist on type '{}'.
+merchant-admin:typecheck: src/components/customers/CustomerForm.tsx(98,48): error TS2339: Property 'email' does not exist on type '{}'.
+merchant-admin:typecheck: src/components/customers/CustomerForm.tsx(109,48): error TS2339: Property 'phone' does not exist on type '{}'.
+merchant-admin:typecheck: src/components/customers/CustomerForm.tsx(122,48): error TS2339: Property 'notes' does not exist on type '{}'.
+merchant-admin:typecheck: src/components/customers/CustomerList.tsx(145,9): error TS2322: Type 'Customer[]' is not assignable to type 'Record<string, unknown>[]'.
+merchant-admin:typecheck: src/components/customers/CustomerList.tsx(146,9): error TS2322: Type 'Column<Customer>[]' is not assignable to type 'Column<Record<string, unknown>>[]'.
+merchant-admin:typecheck: src/components/customers/CustomerList.tsx(148,9): error TS2322: Type '(customer: Customer) => void' is not assignable to type '(item: Record<string, unknown>) => void'.
+merchant-admin:typecheck: src/components/dashboard/ActivationWelcome.tsx(38,17): error TS2554: Expected 2 arguments, but got 1.
+merchant-admin:typecheck: src/components/dashboard/GoLiveCard.tsx(87,26): error TS2339: Property 'isLive' does not exist on type '{}'.
+merchant-admin:typecheck: src/components/dashboard/GoLiveCard.tsx(88,29): error TS2339: Property 'readiness' does not exist on type '{}'.
+merchant-admin:typecheck: src/components/dashboard/GoLiveCard.tsx(111,19): error TS2322: Type 'unknown' is not assignable to type 'IconName'.
+merchant-admin:typecheck: src/components/dashboard/GoLiveCard.tsx(137,23): error TS2322: Type 'unknown' is not assignable to type 'IconName'.
+merchant-admin:typecheck: src/components/dashboard/GoLiveCard.tsx(170,19): error TS2322: Type 'unknown' is not assignable to type 'IconName'.
+merchant-admin:typecheck: src/components/dashboard/StorefrontSnapshot.tsx(6,10): error TS2305: Module '"@/types"' has no exported member 'Store'.
+merchant-admin:typecheck: src/components/dashboard/StorefrontSnapshot.tsx(37,32): error TS2571: Object is of type 'unknown'.
+merchant-admin:typecheck: src/components/dashboard/StorefrontSnapshot.tsx(38,22): error TS2571: Object is of type 'unknown'.
+merchant-admin:typecheck: src/components/dashboard/StorefrontSnapshot.tsx(90,15): error TS2571: Object is of type 'unknown'.
+merchant-admin:typecheck: src/components/dashboard/WelcomeModal.tsx(39,42): error TS2769: No overload matches this call.
+merchant-admin:typecheck: src/components/dashboard/WelcomeModal.tsx(47,40): error TS2769: No overload matches this call.
+merchant-admin:typecheck: src/components/designer/DesignerDashboard.tsx(5,10): error TS2305: Module '"@/types/designer"' has no exported member 'DesignerTemplate'.
+merchant-admin:typecheck: src/components/designer/DesignerDashboard.tsx(124,23): error TS2571: Object is of type 'unknown'.
+merchant-admin:typecheck: src/components/designer/DesignerDashboard.tsx(125,23): error TS2571: Object is of type 'unknown'.
+merchant-admin:typecheck: src/components/designer/DesignerDashboard.tsx(158,31): error TS2322: Type 'unknown' is not assignable to type 'Key | null | undefined'.
+merchant-admin:typecheck: src/components/designer/DesignerDashboard.tsx(158,41): error TS2322: Type 'unknown' is not assignable to type 'ReactNode'.
+merchant-admin:typecheck: src/components/ErrorBoundary.tsx(20,36): error TS2345: Argument of type '{ extra: unknown; }' is not assignable to parameter of type 'ExclusiveEventHintOrCaptureContext | undefined'.
+merchant-admin:typecheck: src/components/kitchen/KitchenBoard.tsx(38,50): error TS2769: No overload matches this call.
+merchant-admin:typecheck: src/components/kitchen/KitchenBoard.tsx(84,21): error TS2322: Type 'unknown' is not assignable to type 'Order'.
+merchant-admin:typecheck: src/components/mobile/OfflineSyncBanner.tsx(21,36): error TS2698: Spread types may only be created from object types.
+merchant-admin:typecheck: src/components/mobile/OfflineSyncBanner.tsx(28,38): error TS2698: Spread types may only be created from object types.
+merchant-admin:typecheck: src/components/notifications-drawer.tsx(131,27): error TS2322: Type 'unknown' is not assignable to type 'IconName'.
+merchant-admin:typecheck: src/components/notifications/NotificationItem.tsx(55,17): error TS2322: Type 'unknown' is not assignable to type 'IconName'.
+merchant-admin:typecheck: src/components/onboarding/steps/BrandingStep.tsx(22,13): error TS2353: Object literal may only specify known properties, and 'branding' does not exist in type 'Partial<OnboardingState>'.
+merchant-admin:typecheck: src/components/onboarding/steps/BusinessStep.tsx(15,13): error TS2353: Object literal may only specify known properties, and 'business' does not exist in type 'Partial<OnboardingState>'.
+merchant-admin:typecheck: src/components/onboarding/steps/IdentityStep.tsx(15,13): error TS2353: Object literal may only specify known properties, and 'identity' does not exist in type 'Partial<OnboardingState>'.
+merchant-admin:typecheck: src/components/onboarding/steps/PaymentStep.tsx(73,13): error TS2353: Object literal may only specify known properties, and 'finance' does not exist in type 'Partial<OnboardingState>'.
+merchant-admin:typecheck: src/components/onboarding/steps/UrlStep.tsx(47,13): error TS2353: Object literal may only specify known properties, and 'business' does not exist in type 'Partial<OnboardingState>'.
+merchant-admin:typecheck: src/components/onboarding/steps/UrlStep.tsx(48,17): error TS2698: Spread types may only be created from object types.
+merchant-admin:typecheck: src/components/onboarding/steps/WelcomeStep.tsx(36,35): error TS2322: Type 'unknown' is not assignable to type 'IconName'.
+merchant-admin:typecheck: src/components/ops/ops-shell.tsx(57,21): error TS2322: Type 'unknown' is not assignable to type 'IconName'.
+merchant-admin:typecheck: src/components/ops/risk-chip.tsx(47,11): error TS2322: Type 'unknown' is not assignable to type 'IconName'.
+merchant-admin:typecheck: src/components/orders/fulfillment-drawer.tsx(29,27): error TS2339: Property 'shipment' does not exist on type '{}'.
+merchant-admin:typecheck: src/components/orders/fulfillment-drawer.tsx(141,37): error TS2339: Property 'orderNumber' does not exist on type '{}'.
+merchant-admin:typecheck: src/components/orders/fulfillment-drawer.tsx(141,59): error TS2339: Property 'refCode' does not exist on type '{}'.
+merchant-admin:typecheck: src/components/orders/OrderModals.tsx(6,10): error TS2305: Module '"@/services/orders"' has no exported member 'Order'.
+merchant-admin:typecheck: src/components/orders/PrepTimeCard.tsx(14,41): error TS2300: Duplicate identifier 'unknown'.
+merchant-admin:typecheck: src/components/orders/PrepTimeCard.tsx(14,67): error TS2300: Duplicate identifier 'unknown'.
+merchant-admin:typecheck: src/components/orders/PrepTimeCard.tsx(16,46): error TS2552: Cannot find name 'currentPrepTime'. Did you mean 'setPrepTime'?
+merchant-admin:typecheck: src/components/orders/PrepTimeCard.tsx(28,59): error TS2304: Cannot find name 'orderId'.
+merchant-admin:typecheck: src/components/orders/PrepTimeCard.tsx(50,21): error TS2552: Cannot find name 'currentPrepTime'. Did you mean 'setPrepTime'?
+merchant-admin:typecheck: src/components/orders/PrepTimeCard.tsx(61,32): error TS2552: Cannot find name 'currentPrepTime'. Did you mean 'setPrepTime'?
+merchant-admin:typecheck: src/components/orders/PrepTimeCard.tsx(111,17): error TS2552: Cannot find name 'currentPrepTime'. Did you mean 'setPrepTime'?
+merchant-admin:typecheck: src/components/orders/PrepTimeCard.tsx(113,70): error TS2552: Cannot find name 'currentPrepTime'. Did you mean 'setPrepTime'?
+merchant-admin:typecheck: src/components/portfolio/ProjectCard.tsx(20,41): error TS2571: Object is of type 'unknown'.
+merchant-admin:typecheck: src/components/preview/demo/DemoCollection.tsx(2,15): error TS2724: '"@/lib/preview/demo-data"' has no exported member named 'DemoStore'. Did you mean 'getDemoStore'?
+merchant-admin:typecheck: src/components/preview/demo/DemoCollection.tsx(6,9): error TS2300: Duplicate identifier 'unknown'.
+merchant-admin:typecheck: src/components/preview/demo/DemoCollection.tsx(6,34): error TS2300: Duplicate identifier 'unknown'.
+merchant-admin:typecheck: src/components/preview/demo/DemoCollection.tsx(10,17): error TS2304: Cannot find name 'demo'.
+merchant-admin:typecheck: src/components/preview/demo/DemoCollection.tsx(10,78): error TS2304: Cannot find name 'activeCategory'.
+merchant-admin:typecheck: src/components/preview/demo/DemoCollection.tsx(16,12): error TS2304: Cannot find name 'activeCategory'.
+merchant-admin:typecheck: src/components/preview/demo/DemoHome.tsx(2,15): error TS2724: '"@/lib/preview/demo-data"' has no exported member named 'DemoStore'. Did you mean 'getDemoStore'?
+merchant-admin:typecheck: src/components/preview/demo/DemoProduct.tsx(2,15): error TS2305: Module '"@/lib/preview/demo-data"' has no exported member 'DemoProduct'.
+merchant-admin:typecheck: src/components/preview/LivePreviewClient.tsx(150,17): error TS2322: Type 'unknown' is not assignable to type 'Key | null | undefined'.
+merchant-admin:typecheck: src/components/preview/LivePreviewClient.tsx(160,17): error TS2322: Type 'unknown' is not assignable to type 'ReactNode'.
+merchant-admin:typecheck: src/components/preview/LivePreviewClient.tsx(298,14): error TS2769: No overload matches this call.
+merchant-admin:typecheck: src/components/pricing/PlanComparisonMobile.tsx(4,23): error TS2305: Module '"@/config/pricing"' has no exported member 'PlanKey'.
+merchant-admin:typecheck: src/components/product-form.tsx(59,27): error TS2339: Property 'price' does not exist on type '{}'.
+merchant-admin:typecheck: src/components/product-form.tsx(132,46): error TS2339: Property 'name' does not exist on type '{}'.
+merchant-admin:typecheck: src/components/product-form.tsx(142,46): error TS2339: Property 'description' does not exist on type '{}'.
+merchant-admin:typecheck: src/components/product-form.tsx(238,60): error TS2339: Property 'price' does not exist on type '{}'.
+merchant-admin:typecheck: src/components/product-form.tsx(282,48): error TS2339: Property 'status' does not exist on type '{}'.
+merchant-admin:typecheck: src/components/product-form.tsx(293,48): error TS2339: Property 'status' does not exist on type '{}'.
+merchant-admin:typecheck: src/components/product-form.tsx(310,46): error TS2339: Property 'price' does not exist on type '{}'.
+merchant-admin:typecheck: src/components/product-form.tsx(343,51): error TS2339: Property 'sku' does not exist on type '{}'.
+merchant-admin:typecheck: src/components/product-form.tsx(360,46): error TS2339: Property 'inventory' does not exist on type '{}'.
+merchant-admin:typecheck: src/components/product-form.tsx(391,35): error TS2339: Property 'id' does not exist on type '{}'.
+merchant-admin:typecheck: src/components/products/forms/EventsProductForm.tsx(39,9): error TS2322: Type 'string' is not assignable to type 'never'.
+merchant-admin:typecheck: src/components/products/forms/EventsProductForm.tsx(42,28): error TS2769: No overload matches this call.
+merchant-admin:typecheck: src/components/products/forms/EventsProductForm.tsx(69,30): error TS2304: Cannot find name 'productId'.
+merchant-admin:typecheck: src/components/products/forms/EventsProductForm.tsx(70,36): error TS2304: Cannot find name 'productId'.
+merchant-admin:typecheck: src/components/products/forms/EventsProductForm.tsx(73,28): error TS2304: Cannot find name 'productId'.
+merchant-admin:typecheck: src/components/products/forms/EventsProductForm.tsx(83,27): error TS2304: Cannot find name 'productId'.
+merchant-admin:typecheck: src/components/products/forms/EventsProductForm.tsx(101,38): error TS2345: Argument of type '"title"' is not assignable to parameter of type 'never'.
+merchant-admin:typecheck: src/components/products/forms/EventsProductForm.tsx(111,38): error TS2345: Argument of type '"description"' is not assignable to parameter of type 'never'.
+merchant-admin:typecheck: src/components/products/forms/EventsProductForm.tsx(124,46): error TS2345: Argument of type '"isOnline"' is not assignable to parameter of type 'never'.
+merchant-admin:typecheck: src/components/products/forms/EventsProductForm.tsx(134,50): error TS2345: Argument of type '"venue"' is not assignable to parameter of type 'never'.
+merchant-admin:typecheck: src/components/products/forms/EventsProductForm.tsx(146,42): error TS2345: Argument of type '"isDigitalTicket"' is not assignable to parameter of type 'never'.
+merchant-admin:typecheck: src/components/products/forms/EventsProductForm.tsx(158,42): error TS2345: Argument of type '"startDate"' is not assignable to parameter of type 'never'.
+merchant-admin:typecheck: src/components/products/forms/EventsProductForm.tsx(166,42): error TS2345: Argument of type '"endDate"' is not assignable to parameter of type 'never'.
+merchant-admin:typecheck: src/components/products/forms/EventsProductForm.tsx(174,42): error TS2345: Argument of type '"doorTime"' is not assignable to parameter of type 'never'.
+merchant-admin:typecheck: src/components/products/forms/EventsProductForm.tsx(194,50): error TS2345: Argument of type '`ticketTiers.${string}.name`' is not assignable to parameter of type 'never'.
+merchant-admin:typecheck: src/components/products/forms/EventsProductForm.tsx(203,50): error TS2345: Argument of type '`ticketTiers.${string}.price`' is not assignable to parameter of type 'never'.
+merchant-admin:typecheck: src/components/products/forms/EventsProductForm.tsx(211,50): error TS2345: Argument of type '`ticketTiers.${string}.quantity`' is not assignable to parameter of type 'never'.
+merchant-admin:typecheck: src/components/products/forms/EventsProductForm.tsx(232,51): error TS2304: Cannot find name 'productId'.
+merchant-admin:typecheck: src/components/products/forms/FashionProductForm.tsx(24,13): error TS2698: Spread types may only be created from object types.
+merchant-admin:typecheck: src/components/products/forms/FashionProductForm.tsx(92,34): error TS2322: Type 'unknown' is not assignable to type 'Key | null | undefined'.
+merchant-admin:typecheck: src/components/products/forms/FashionProductForm.tsx(94,84): error TS2322: Type 'unknown' is not assignable to type 'ReactNode'.
+merchant-admin:typecheck: src/components/products/forms/MarketplaceProductForm.tsx(50,30): error TS2304: Cannot find name 'productId'.
+merchant-admin:typecheck: src/components/products/forms/MarketplaceProductForm.tsx(51,36): error TS2304: Cannot find name 'productId'.
+merchant-admin:typecheck: src/components/products/forms/MarketplaceProductForm.tsx(54,28): error TS2304: Cannot find name 'productId'.
+merchant-admin:typecheck: src/components/products/forms/MarketplaceProductForm.tsx(64,27): error TS2304: Cannot find name 'productId'.
+merchant-admin:typecheck: src/components/products/forms/MarketplaceProductForm.tsx(82,38): error TS2345: Argument of type '"title"' is not assignable to parameter of type 'never'.
+merchant-admin:typecheck: src/components/products/forms/MarketplaceProductForm.tsx(91,38): error TS2345: Argument of type '"description"' is not assignable to parameter of type 'never'.
+merchant-admin:typecheck: src/components/products/forms/MarketplaceProductForm.tsx(102,38): error TS2345: Argument of type '"price"' is not assignable to parameter of type 'never'.
+merchant-admin:typecheck: src/components/products/forms/MarketplaceProductForm.tsx(111,38): error TS2345: Argument of type '"categoryTags"' is not assignable to parameter of type 'never'.
+merchant-admin:typecheck: src/components/products/forms/MarketplaceProductForm.tsx(125,42): error TS2345: Argument of type '"vendorName"' is not assignable to parameter of type 'never'.
+merchant-admin:typecheck: src/components/products/forms/MarketplaceProductForm.tsx(133,42): error TS2345: Argument of type '"vendorId"' is not assignable to parameter of type 'never'.
+merchant-admin:typecheck: src/components/products/forms/MarketplaceProductForm.tsx(146,42): error TS2345: Argument of type '"commissionRate"' is not assignable to parameter of type 'never'.
+merchant-admin:typecheck: src/components/products/forms/MarketplaceProductForm.tsx(154,42): error TS2345: Argument of type '"approvalStatus"' is not assignable to parameter of type 'never'.
+merchant-admin:typecheck: src/components/products/forms/MarketplaceProductForm.tsx(166,51): error TS2304: Cannot find name 'productId'.
+merchant-admin:typecheck: src/components/products/forms/NonprofitProductForm.tsx(46,30): error TS2304: Cannot find name 'productId'.
+merchant-admin:typecheck: src/components/products/forms/NonprofitProductForm.tsx(47,36): error TS2304: Cannot find name 'productId'.
+merchant-admin:typecheck: src/components/products/forms/NonprofitProductForm.tsx(50,28): error TS2304: Cannot find name 'productId'.
+merchant-admin:typecheck: src/components/products/forms/NonprofitProductForm.tsx(60,27): error TS2304: Cannot find name 'productId'.
+merchant-admin:typecheck: src/components/products/forms/NonprofitProductForm.tsx(78,38): error TS2345: Argument of type '"title"' is not assignable to parameter of type 'never'.
+merchant-admin:typecheck: src/components/products/forms/NonprofitProductForm.tsx(89,38): error TS2345: Argument of type '"goalAmount"' is not assignable to parameter of type 'never'.
+merchant-admin:typecheck: src/components/products/forms/NonprofitProductForm.tsx(99,38): error TS2345: Argument of type '"impactDescription"' is not assignable to parameter of type 'never'.
+merchant-admin:typecheck: src/components/products/forms/NonprofitProductForm.tsx(113,38): error TS2345: Argument of type '"suggestedAmounts"' is not assignable to parameter of type 'never'.
+merchant-admin:typecheck: src/components/products/forms/NonprofitProductForm.tsx(124,38): error TS2345: Argument of type '"allowRecurring"' is not assignable to parameter of type 'never'.
+merchant-admin:typecheck: src/components/products/forms/NonprofitProductForm.tsx(142,51): error TS2304: Cannot find name 'productId'.
+merchant-admin:typecheck: src/components/products/forms/RetailProductForm.tsx(134,63): error TS2698: Spread types may only be created from object types.
+merchant-admin:typecheck: src/components/products/forms/RetailProductForm.tsx(134,71): error TS2698: Spread types may only be created from object types.
+merchant-admin:typecheck: src/components/products/forms/RetailProductForm.tsx(135,41): error TS2769: No overload matches this call.
+merchant-admin:typecheck: src/components/products/forms/WholesaleProductForm.tsx(35,9): error TS2322: Type 'string' is not assignable to type 'never'.
+merchant-admin:typecheck: src/components/products/forms/WholesaleProductForm.tsx(61,30): error TS2304: Cannot find name 'productId'.
+merchant-admin:typecheck: src/components/products/forms/WholesaleProductForm.tsx(62,36): error TS2304: Cannot find name 'productId'.
+merchant-admin:typecheck: src/components/products/forms/WholesaleProductForm.tsx(65,28): error TS2304: Cannot find name 'productId'.
+merchant-admin:typecheck: src/components/products/forms/WholesaleProductForm.tsx(75,27): error TS2304: Cannot find name 'productId'.
+merchant-admin:typecheck: src/components/products/forms/WholesaleProductForm.tsx(93,38): error TS2345: Argument of type '"title"' is not assignable to parameter of type 'never'.
+merchant-admin:typecheck: src/components/products/forms/WholesaleProductForm.tsx(103,38): error TS2345: Argument of type '"description"' is not assignable to parameter of type 'never'.
+merchant-admin:typecheck: src/components/products/forms/WholesaleProductForm.tsx(115,42): error TS2345: Argument of type '"moq"' is not assignable to parameter of type 'never'.
+merchant-admin:typecheck: src/components/products/forms/WholesaleProductForm.tsx(123,42): error TS2345: Argument of type '"unitOfMeasure"' is not assignable to parameter of type 'never'.
+merchant-admin:typecheck: src/components/products/forms/WholesaleProductForm.tsx(147,50): error TS2345: Argument of type '`pricingTiers.${string}.minQty`' is not assignable to parameter of type 'never'.
+merchant-admin:typecheck: src/components/products/forms/WholesaleProductForm.tsx(154,50): error TS2345: Argument of type '`pricingTiers.${string}.maxQty`' is not assignable to parameter of type 'never'.
+merchant-admin:typecheck: src/components/products/forms/WholesaleProductForm.tsx(162,50): error TS2345: Argument of type '`pricingTiers.${string}.price`' is not assignable to parameter of type 'never'.
+merchant-admin:typecheck: src/components/products/forms/WholesaleProductForm.tsx(193,51): error TS2304: Cannot find name 'productId'.
+merchant-admin:typecheck: src/components/products/ProductDrawer.tsx(6,25): error TS2305: Module '"@/lib/product-schema"' has no exported member 'ProductFormValues'.
+merchant-admin:typecheck: src/components/products/ProductDrawer.tsx(64,35): error TS2339: Property 'plan' does not exist on type '{ name?: string | null | undefined; email?: string | null | undefined; image?: string | null | undefined; }'.
+merchant-admin:typecheck: src/components/products/ProductDrawer.tsx(96,13): error TS2322: Type 'unknown' is not assignable to type 'Key | null | undefined'.
+merchant-admin:typecheck: src/components/products/ProductDrawer.tsx(100,15): error TS2322: Type 'unknown' is not assignable to type 'string | Blob | undefined'.
+merchant-admin:typecheck: src/components/products/ProductDrawer.tsx(192,5): error TS2322: Type 'unknown' is not assignable to type 'Resolver<ProductFormValues, any, ProductFormValues> | undefined'.
+merchant-admin:typecheck: src/components/products/ProductsFilterBar.tsx(27,26): error TS2698: Spread types may only be created from object types.
+merchant-admin:typecheck: src/components/products/ProductsFilterBar.tsx(67,59): error TS2698: Spread types may only be created from object types.
+merchant-admin:typecheck: src/components/properties/RealEstateForm.tsx(72,13): error TS2304: Cannot find name 'onSuccess'.
+merchant-admin:typecheck: src/components/properties/RealEstateForm.tsx(151,66): error TS2304: Cannot find name 'onSuccess'.
+merchant-admin:typecheck: src/components/properties/ViewingRequestCard.tsx(68,40): error TS2322: Type '{ className: string; }' is not assignable to type 'IntrinsicAttributes'.
+merchant-admin:typecheck: src/components/properties/ViewingRequestCard.tsx(126,17): error TS2698: Spread types may only be created from object types.
+merchant-admin:typecheck: src/components/requirement-checklist.tsx(31,17): error TS2322: Type 'unknown' is not assignable to type 'IconName'.
+merchant-admin:typecheck: src/components/resources/DynamicResourceForm.tsx(59,43): error TS2698: Spread types may only be created from object types.
+merchant-admin:typecheck: src/components/resources/DynamicResourceForm.tsx(63,32): error TS2698: Spread types may only be created from object types.
+merchant-admin:typecheck: src/components/settings/DataPrivacySettings.tsx(82,25): error TS2322: Type 'unknown' is not assignable to type 'IconName'.
+merchant-admin:typecheck: src/components/storefront/AAFashionHome.tsx(36,30): error TS2339: Property 'name' does not exist on type 'never'.
+merchant-admin:typecheck: src/components/storefront/BloomeHome.tsx(39,30): error TS2339: Property 'name' does not exist on type 'never'.
+merchant-admin:typecheck: src/components/storefront/BulkTradeHome.tsx(18,32): error TS2339: Property 'name' does not exist on type 'never'.
+merchant-admin:typecheck: src/components/storefront/CheckoutModal.tsx(3,10): error TS2305: Module '"@/hooks/storefront/useStorefrontCart"' has no exported member 'CartItem'.
+merchant-admin:typecheck: src/components/storefront/CheckoutModal.tsx(25,11): error TS2300: Duplicate identifier 'unknown'.
+merchant-admin:typecheck: src/components/storefront/CheckoutModal.tsx(25,29): error TS2300: Duplicate identifier 'unknown'.
+merchant-admin:typecheck: src/components/storefront/CheckoutModal.tsx(25,44): error TS2300: Duplicate identifier 'unknown'.
+merchant-admin:typecheck: src/components/storefront/CheckoutModal.tsx(25,60): error TS2300: Duplicate identifier 'unknown'.
+merchant-admin:typecheck: src/components/storefront/CheckoutModal.tsx(25,80): error TS2300: Duplicate identifier 'unknown'.
+merchant-admin:typecheck: src/components/storefront/CheckoutModal.tsx(25,100): error TS2300: Duplicate identifier 'unknown'.
+merchant-admin:typecheck: src/components/storefront/CheckoutModal.tsx(25,142): error TS2300: Duplicate identifier 'unknown'.
+merchant-admin:typecheck: src/components/storefront/CheckoutModal.tsx(40,11): error TS2304: Cannot find name 'submitFn'.
+merchant-admin:typecheck: src/components/storefront/CheckoutModal.tsx(41,15): error TS2304: Cannot find name 'submitFn'.
+merchant-admin:typecheck: src/components/storefront/CheckoutModal.tsx(43,18): error TS2304: Cannot find name 'cart'.
+merchant-admin:typecheck: src/components/storefront/CheckoutModal.tsx(44,11): error TS18004: No value exists in scope for the shorthand property 'total'. Either declare one or provide an initializer.
+merchant-admin:typecheck: src/components/storefront/CheckoutModal.tsx(47,9): error TS2304: Cannot find name 'onSuccess'.
+merchant-admin:typecheck: src/components/storefront/CheckoutModal.tsx(48,9): error TS2552: Cannot find name 'onClose'. Did you mean 'onclose'?
+merchant-admin:typecheck: src/components/storefront/CheckoutModal.tsx(50,52): error TS2304: Cannot find name 'storeSlug'.
+merchant-admin:typecheck: src/components/storefront/CheckoutModal.tsx(55,20): error TS2304: Cannot find name 'cart'.
+merchant-admin:typecheck: src/components/storefront/CheckoutModal.tsx(56,13): error TS18004: No value exists in scope for the shorthand property 'total'. Either declare one or provide an initializer.
+merchant-admin:typecheck: src/components/storefront/CheckoutModal.tsx(71,11): error TS2304: Cannot find name 'onSuccess'.
+merchant-admin:typecheck: src/components/storefront/CheckoutModal.tsx(72,11): error TS2304: Cannot find name 'onClose'.
+merchant-admin:typecheck: src/components/storefront/CheckoutModal.tsx(84,19): error TS2304: Cannot find name 'isOpen'.
+merchant-admin:typecheck: src/components/storefront/CheckoutModal.tsx(84,41): error TS2304: Cannot find name 'onClose'.
+merchant-admin:typecheck: src/components/storefront/CheckoutModal.tsx(87,36): error TS2304: Cannot find name 'total'.
+merchant-admin:typecheck: src/components/storefront/CheckoutModal.tsx(156,23): error TS2304: Cannot find name 'total'.
+merchant-admin:typecheck: src/components/storefront/CheckoutModal.tsx(164,21): error TS2304: Cannot find name 'total'.
+merchant-admin:typecheck: src/components/storefront/CreativeMarketStore.tsx(35,30): error TS2339: Property 'name' does not exist on type 'never'.
+merchant-admin:typecheck: src/components/storefront/DigitalVaultStore.tsx(35,30): error TS2339: Property 'name' does not exist on type 'never'.
+merchant-admin:typecheck: src/components/storefront/EventTicketsPro.tsx(35,30): error TS2339: Property 'name' does not exist on type 'never'.
+merchant-admin:typecheck: src/components/storefront/GiveFlowHome.tsx(18,32): error TS2339: Property 'name' does not exist on type 'never'.
+merchant-admin:typecheck: src/components/storefront/GizmoTechHome.tsx(35,30): error TS2339: Property 'name' does not exist on type 'never'.
+merchant-admin:typecheck: src/components/storefront/GourmetDiningFood.tsx(47,30): error TS2339: Property 'name' does not exist on type 'never'.
+merchant-admin:typecheck: src/components/storefront/HomeListHome.tsx(18,32): error TS2339: Property 'name' does not exist on type 'never'.
+merchant-admin:typecheck: src/components/storefront/LearnHubCourses.tsx(35,30): error TS2339: Property 'name' does not exist on type 'never'.
+merchant-admin:typecheck: src/components/storefront/OneProductHome.tsx(18,32): error TS2339: Property 'name' does not exist on type 'never'.
+merchant-admin:typecheck: src/components/storefront/ProConsultBooking.tsx(44,30): error TS2339: Property 'name' does not exist on type 'never'.
+merchant-admin:typecheck: src/components/storefront/QuickBitesFood.tsx(61,30): error TS2339: Property 'name' does not exist on type 'never'.
+merchant-admin:typecheck: src/components/storefront/SkillAcademyCourses.tsx(35,30): error TS2339: Property 'name' does not exist on type 'never'.
+merchant-admin:typecheck: src/components/storefront/SliceLifePizza.tsx(10,37): error TS2554: Expected 2 arguments, but got 1.
+merchant-admin:typecheck: src/components/storefront/SliceLifePizza.tsx(27,17): error TS2322: Type '{ title: string; description: string; }' is not assignable to type 'IntrinsicAttributes'.
+merchant-admin:typecheck: src/components/storefront/SliceLifePizza.tsx(42,41): error TS2322: Type '{ storeSlug: string; }' is not assignable to type 'IntrinsicAttributes'.
+merchant-admin:typecheck: src/components/storefront/StandardDigitalHome.tsx(25,32): error TS2339: Property 'name' does not exist on type 'never'.
+merchant-admin:typecheck: src/components/storefront/StandardEventsHome.tsx(25,32): error TS2339: Property 'name' does not exist on type 'never'.
+merchant-admin:typecheck: src/components/storefront/StandardFoodHome.tsx(25,32): error TS2339: Property 'name' does not exist on type 'never'.
+merchant-admin:typecheck: src/components/storefront/StandardRetailHome.tsx(28,30): error TS2339: Property 'name' does not exist on type 'never'.
+merchant-admin:typecheck: src/components/storefront/StandardServiceHome.tsx(31,32): error TS2339: Property 'name' does not exist on type 'never'.
+merchant-admin:typecheck: src/components/storefront/WellnessBooking.tsx(35,30): error TS2339: Property 'name' does not exist on type 'never'.
+merchant-admin:typecheck: src/components/support/support-chat.tsx(212,42): error TS2571: Object is of type 'unknown'.
+merchant-admin:typecheck: src/components/support/support-chat.tsx(214,24): error TS2571: Object is of type 'unknown'.
+merchant-admin:typecheck: src/components/support/SupportDrawer.tsx(166,11): error TS2322: Type 'unknown' is not assignable to type 'IconName'.
+merchant-admin:typecheck: src/components/templates/food/FoodCatering.tsx(62,15): error TS2571: Object is of type 'unknown'.
+merchant-admin:typecheck: src/components/templates/food/FoodCatering.tsx(63,16): error TS2571: Object is of type 'unknown'.
+merchant-admin:typecheck: src/components/templates/hospitality/HotelBooking.tsx(85,60): error TS2571: Object is of type 'unknown'.
+merchant-admin:typecheck: src/components/templates/retail/AutoParts.tsx(58,15): error TS2571: Object is of type 'unknown'.
+merchant-admin:typecheck: src/components/templates/retail/AutoParts.tsx(128,16): error TS2571: Object is of type 'unknown'.
+merchant-admin:typecheck: src/components/templates/retail/AutoParts.tsx(141,22): error TS2571: Object is of type 'unknown'.
+merchant-admin:typecheck: src/components/templates/retail/ElectronicsMarket.tsx(126,42): error TS2571: Object is of type 'unknown'.
+merchant-admin:typecheck: src/components/templates/retail/ElectronicsMarket.tsx(126,69): error TS2571: Object is of type 'unknown'.
+merchant-admin:typecheck: src/components/templates/retail/ElectronicsMarket.tsx(141,42): error TS2571: Object is of type 'unknown'.
+merchant-admin:typecheck: src/components/templates/retail/PerfumeLuxury.tsx(183,22): error TS2571: Object is of type 'unknown'.
+merchant-admin:typecheck: src/components/templates/retail/PhoneGadget.tsx(162,18): error TS2571: Object is of type 'unknown'.
+merchant-admin:typecheck: src/components/templates/retail/PhoneGadget.tsx(164,26): error TS2571: Object is of type 'unknown'.
+merchant-admin:typecheck: src/components/templates/retail/PhoneGadget.tsx(169,18): error TS2571: Object is of type 'unknown'.
+merchant-admin:typecheck: src/components/templates/retail/PhoneGadget.tsx(171,22): error TS2571: Object is of type 'unknown'.
+merchant-admin:typecheck: src/components/templates/retail/PhoneGadget.tsx(179,18): error TS2571: Object is of type 'unknown'.
+merchant-admin:typecheck: src/components/templates/retail/PhoneGadget.tsx(181,22): error TS2571: Object is of type 'unknown'.
+merchant-admin:typecheck: src/components/templates/retail/PhoneGadget.tsx(183,26): error TS2571: Object is of type 'unknown'.
+merchant-admin:typecheck: src/components/templates/retail/PhoneGadget.tsx(186,22): error TS2571: Object is of type 'unknown'.
+merchant-admin:typecheck: src/components/templates/retail/PhoneGadget.tsx(188,29): error TS2571: Object is of type 'unknown'.
+merchant-admin:typecheck: src/components/templates/services/SoloProfessional.tsx(60,19): error TS2571: Object is of type 'unknown'.
+merchant-admin:typecheck: src/components/templates/services/SoloProfessional.tsx(61,16): error TS2571: Object is of type 'unknown'.
+merchant-admin:typecheck: src/components/templates/services/SoloProfessional.tsx(125,20): error TS2571: Object is of type 'unknown'.
+merchant-admin:typecheck: src/components/templates/services/SoloProfessional.tsx(127,24): error TS2571: Object is of type 'unknown'.
+merchant-admin:typecheck: src/components/templates/storefront/FoodTemplate.tsx(5,10): error TS2305: Module '"@/types/storefront"' has no exported member 'StorefrontConfig'.
+merchant-admin:typecheck: src/components/templates/storefront/FoodTemplate.tsx(5,28): error TS2305: Module '"@/types/storefront"' has no exported member 'StorefrontProduct'.
+merchant-admin:typecheck: src/components/templates/storefront/FoodTemplate.tsx(128,18): error TS2698: Spread types may only be created from object types.
+merchant-admin:typecheck: src/components/templates/storefront/FoodTemplate.tsx(132,20): error TS2698: Spread types may only be created from object types.
+merchant-admin:typecheck: src/components/templates/storefront/FoodTemplate.tsx(134,20): error TS2698: Spread types may only be created from object types.
+merchant-admin:typecheck: src/components/templates/storefront/FoodTemplate.tsx(167,19): error TS2322: Type 'unknown' is not assignable to type 'IconName'.
+merchant-admin:typecheck: src/components/templates/storefront/FoodTemplate.tsx(334,15): error TS2322: Type 'unknown' is not assignable to type 'Key | null | undefined'.
+merchant-admin:typecheck: src/components/templates/storefront/FoodTemplate.tsx(344,15): error TS2322: Type 'unknown' is not assignable to type 'ReactNode'.
+merchant-admin:typecheck: src/components/templates/storefront/FoodTemplate.tsx(355,18): error TS2322: Type 'unknown' is not assignable to type 'Key | null | undefined'.
+merchant-admin:typecheck: src/components/templates/storefront/FoodTemplate.tsx(356,59): error TS2322: Type 'unknown' is not assignable to type 'ReactNode'.
+merchant-admin:typecheck: src/components/templates/storefront/FoodTemplate.tsx(426,15): error TS2322: Type 'unknown' is not assignable to type 'Key | null | undefined'.
+merchant-admin:typecheck: src/components/templates/storefront/RetailTemplate.tsx(5,10): error TS2305: Module '"@/types/storefront"' has no exported member 'StorefrontConfig'.
+merchant-admin:typecheck: src/components/templates/storefront/RetailTemplate.tsx(5,28): error TS2305: Module '"@/types/storefront"' has no exported member 'StorefrontProduct'.
+merchant-admin:typecheck: src/components/templates/storefront/RetailTemplate.tsx(138,19): error TS2322: Type 'unknown' is not assignable to type 'IconName'.
+merchant-admin:typecheck: src/components/templates/storefront/RetailTemplate.tsx(236,13): error TS2322: Type 'unknown' is not assignable to type 'IconName'.
+merchant-admin:typecheck: src/components/templates/storefront/RetailTemplate.tsx(263,21): error TS2322: Type 'unknown' is not assignable to type 'Key | null | undefined'.
+merchant-admin:typecheck: src/components/templates/storefront/RetailTemplate.tsx(267,25): error TS2698: Spread types may only be created from object types.
+merchant-admin:typecheck: src/components/templates/storefront/RetailTemplate.tsx(278,21): error TS2322: Type 'unknown' is not assignable to type 'ReactNode'.
+merchant-admin:typecheck: src/components/templates/storefront/RetailTemplate.tsx(381,15): error TS2322: Type 'unknown' is not assignable to type 'Key | null | undefined'.
+merchant-admin:typecheck: src/components/templates/storefront/RetailTemplate.tsx(386,19): error TS2322: Type 'unknown' is not assignable to type 'IconName'.
+merchant-admin:typecheck: src/components/templates/storefront/ServiceTemplate.tsx(5,10): error TS2305: Module '"@/types/storefront"' has no exported member 'StorefrontConfig'.
+merchant-admin:typecheck: src/components/templates/storefront/ServiceTemplate.tsx(5,28): error TS2305: Module '"@/types/storefront"' has no exported member 'StorefrontProduct'.
+merchant-admin:typecheck: src/components/templates/storefront/ServiceTemplate.tsx(103,25): error TS2322: Type 'unknown' is not assignable to type 'Key | null | undefined'.
+merchant-admin:typecheck: src/components/templates/storefront/ServiceTemplate.tsx(109,23): error TS2322: Type 'unknown' is not assignable to type 'ReactNode'.
+merchant-admin:typecheck: src/components/templates/storefront/StorefrontContext.tsx(4,10): error TS2305: Module '"@/types/storefront"' has no exported member 'StorefrontProduct'.
+merchant-admin:typecheck: src/components/templates/storefront/StorefrontContext.tsx(78,29): error TS2488: Type 'unknown' must have a '[Symbol.iterator]()' method that returns an iterator.
+merchant-admin:typecheck: src/components/templates/storefront/StorefrontContext.tsx(84,12): error TS2488: Type 'unknown' must have a '[Symbol.iterator]()' method that returns an iterator.
+merchant-admin:typecheck: src/components/templates/storefront/StorefrontContext.tsx(101,27): error TS2488: Type 'unknown' must have a '[Symbol.iterator]()' method that returns an iterator.
+merchant-admin:typecheck: src/components/templates/storefront/StorefrontContext.tsx(144,9): error TS2322: Type 'unknown' is not assignable to type 'number'.
+merchant-admin:typecheck: src/components/templates/storefront/StorefrontContext.tsx(150,9): error TS2322: Type 'unknown' is not assignable to type 'number'.
+merchant-admin:typecheck: src/components/templates/TemplatePreviewModal.tsx(5,10): error TS2724: '"@/lib/templates"' has no exported member named 'Template'. Did you mean 'TEMPLATES'?
+merchant-admin:typecheck: src/components/templates/TemplatePreviewModal.tsx(5,20): error TS2305: Module '"@/lib/templates"' has no exported member 'PlanTier'.
+merchant-admin:typecheck: src/components/templates/TemplatePreviewModal.tsx(72,25): error TS2322: Type 'unknown' is not assignable to type 'Key | null | undefined'.
+merchant-admin:typecheck: src/components/templates/TemplatePreviewModal.tsx(76,25): error TS2322: Type 'unknown' is not assignable to type 'ReactNode'.
+merchant-admin:typecheck: src/components/templates/TemplatePreviewModal.tsx(88,25): error TS2322: Type 'unknown' is not assignable to type 'Key | null | undefined'.
+merchant-admin:typecheck: src/components/templates/TemplatePreviewModal.tsx(92,25): error TS2322: Type 'unknown' is not assignable to type 'ReactNode'.
+merchant-admin:typecheck: src/components/templates/TemplatePreviewModal.tsx(158,23): error TS2322: Type 'unknown' is not assignable to type 'Key | null | undefined'.
+merchant-admin:typecheck: src/components/templates/TemplatePreviewModal.tsx(174,23): error TS2322: Type 'unknown' is not assignable to type 'ReactNode'.
+merchant-admin:typecheck: src/components/ui/AddressInputNG.tsx(19,16): error TS2698: Spread types may only be created from object types.
+merchant-admin:typecheck: src/components/ui/AddressInputNG.tsx(29,25): error TS2339: Property 'addressLine1' does not exist on type '{}'.
+merchant-admin:typecheck: src/components/ui/AddressInputNG.tsx(34,18): error TS2339: Property 'addressLine1' does not exist on type '{}'.
+merchant-admin:typecheck: src/components/ui/AddressInputNG.tsx(45,27): error TS2339: Property 'state' does not exist on type '{}'.
+merchant-admin:typecheck: src/components/ui/AddressInputNG.tsx(56,20): error TS2339: Property 'state' does not exist on type '{}'.
+merchant-admin:typecheck: src/components/ui/AddressInputNG.tsx(65,27): error TS2339: Property 'city' does not exist on type '{}'.
+merchant-admin:typecheck: src/components/ui/AddressInputNG.tsx(70,20): error TS2339: Property 'city' does not exist on type '{}'.
+merchant-admin:typecheck: src/components/ui/AddressInputNG.tsx(81,25): error TS2339: Property 'landmark' does not exist on type '{}'.
+merchant-admin:typecheck: src/components/ui/AddressInputNG.tsx(86,18): error TS2339: Property 'landmark' does not exist on type '{}'.
+merchant-admin:typecheck: src/components/ui/ResponsiveTable.tsx(79,41): error TS2322: Type 'unknown' is not assignable to type 'ReactNode'.
+merchant-admin:typecheck: src/components/ui/ResponsiveTable.tsx(107,41): error TS2322: Type 'unknown' is not assignable to type 'ReactNode'.
+merchant-admin:typecheck: src/components/utils.ts(3,20): error TS7019: Rest parameter 'inputs' implicitly has an 'any[]' type.
+merchant-admin:typecheck: src/components/wa-agent/WaInbox.tsx(4,10): error TS2305: Module '"@/services/wa-agent"' has no exported member 'WaThread'.
+merchant-admin:typecheck: src/components/wa-agent/WaInbox.tsx(4,20): error TS2305: Module '"@/services/wa-agent"' has no exported member 'WaMessage'.
+merchant-admin:typecheck: src/components/wallet/DisputeList.tsx(53,23): error TS2322: Type 'unknown' is not assignable to type 'IconName'.
+merchant-admin:typecheck: src/components/wallet/SettlementList.tsx(25,11): error TS2322: Type 'unknown' is not assignable to type 'IconName'.
+merchant-admin:typecheck: src/components/wallet/WithdrawalModal.tsx(120,31): error TS2322: Type 'unknown' is not assignable to type 'IconName'.
+merchant-admin:typecheck: src/components/whatsapp/ChatWindowContainer.tsx(14,77): error TS2304: Cannot find name 'conversationId'.
+merchant-admin:typecheck: src/components/whatsapp/ChatWindowContainer.tsx(18,10): error TS2304: Cannot find name 'conversationId'.
+merchant-admin:typecheck: src/components/whatsapp/ChatWindowContainer.tsx(21,52): error TS2304: Cannot find name 'conversationId'.
+merchant-admin:typecheck: src/components/whatsapp/ChatWindowContainer.tsx(30,7): error TS2304: Cannot find name 'conversationId'.
+merchant-admin:typecheck: src/components/whatsapp/ChatWindowContainer.tsx(37,7): error TS18004: No value exists in scope for the shorthand property 'conversationId'. Either declare one or provide an initializer.
+merchant-admin:typecheck: src/components/whatsapp/ChatWindowContainer.tsx(43,40): error TS2488: Type 'unknown' must have a '[Symbol.iterator]()' method that returns an iterator.
+merchant-admin:typecheck: src/components/whatsapp/ChatWindowContainer.tsx(49,32): error TS18004: No value exists in scope for the shorthand property 'conversationId'. Either declare one or provide an initializer.
+merchant-admin:typecheck: src/components/whatsapp/settings/ConnectionCard.tsx(18,34): error TS2339: Property 'status' does not exist on type '{}'.
+merchant-admin:typecheck: src/components/whatsapp/settings/ConnectionCard.tsx(21,33): error TS2339: Property 'phoneNumberId' does not exist on type '{}'.
+merchant-admin:typecheck: src/components/whatsapp/settings/ConnectionCard.tsx(22,26): error TS2339: Property 'wabaId' does not exist on type '{}'.
+merchant-admin:typecheck: src/components/whatsapp/settings/ConnectionCard.tsx(76,31): error TS2339: Property 'updatedAt' does not exist on type '{}'.
+merchant-admin:typecheck: src/components/whatsapp/settings/SafetyFilters.tsx(34,27): error TS2304: Cannot find name 'settings'.
+merchant-admin:typecheck: src/components/whatsapp/settings/SafetyFilters.tsx(35,27): error TS2304: Cannot find name 'settings'.
+merchant-admin:typecheck: src/components/whatsapp/settings/SafetyFilters.tsx(36,31): error TS2304: Cannot find name 'settings'.
+merchant-admin:typecheck: src/components/whatsapp/settings/SafetyFilters.tsx(37,26): error TS2304: Cannot find name 'settings'.
+merchant-admin:typecheck: src/components/whatsapp/settings/SafetyFilters.tsx(38,27): error TS2304: Cannot find name 'settings'.
+merchant-admin:typecheck: src/components/whatsapp/settings/SafetyFilters.tsx(39,24): error TS2304: Cannot find name 'settings'.
+merchant-admin:typecheck: src/components/whatsapp/settings/SafetyFilters.tsx(40,34): error TS2304: Cannot find name 'settings'.
+merchant-admin:typecheck: src/components/whatsapp/settings/TemplateManager.tsx(133,107): error TS2322: Type 'unknown' is not assignable to type 'string'.
+merchant-admin:typecheck: src/components/whatsapp/settings/TemplateManager.tsx(149,107): error TS2322: Type 'unknown' is not assignable to type 'string'.
+merchant-admin:typecheck: src/components/whatsapp/settings/TemplateManager.tsx(199,26): error TS2304: Cannot find name 'templates'.
+merchant-admin:typecheck: src/components/whatsapp/settings/TemplateManager.tsx(213,28): error TS2304: Cannot find name 'templates'.
+merchant-admin:typecheck: src/components/whatsapp/settings/TemplateManager.tsx(213,41): error TS2304: Cannot find name 'templates'.
+merchant-admin:typecheck: src/context/OnboardingContext.tsx(40,9): error TS2353: Object literal may only specify known properties, and 'isComplete' does not exist in type 'OnboardingState | ((prevState: OnboardingState | null) => OnboardingState | null)'.
+merchant-admin:typecheck: src/context/OnboardingContext.tsx(123,19): error TS2571: Object is of type 'unknown'.
+merchant-admin:typecheck: src/context/OnboardingContext.tsx(125,24): error TS2353: Object literal may only specify known properties, and 'industrySlug' does not exist in type 'OnboardingState'.
+merchant-admin:typecheck: src/context/OnboardingContext.tsx(146,5): error TS2353: Object literal may only specify known properties, and 'industrySlug' does not exist in type 'OnboardingState'.
+merchant-admin:typecheck: src/hooks/useUserPlan.ts(26,21): error TS2339: Property 'plan' does not exist on type 'never'.

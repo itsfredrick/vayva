@@ -1,23 +1,13 @@
 import { FastifyRequest, FastifyReply } from "fastify";
-import { returnService } from "../services/return-service";
-// import { ReturnReason, ReturnResolution, ReturnMethod, ReturnStatus } from '@prisma/client';
+import {
+  returnService,
+  CreateReturnRequestData,
+} from "../services/return-service";
+import { ReturnStatus } from "@vayva/db";
 
 export const createReturnHandler = async (
   request: FastifyRequest<{
-    Body: {
-      merchantId: string;
-      orderId: string;
-      customerId?: string;
-      reasonCode: unknown;
-      reasonText?: string;
-      resolutionType: unknown;
-      items: unknown;
-      logistics: {
-        method: unknown;
-        pickupAddress?: unknown;
-        dropoffInstructions?: string;
-      };
-    };
+    Body: CreateReturnRequestData;
   }>,
   reply: FastifyReply,
 ) => {
@@ -33,7 +23,7 @@ export const createReturnHandler = async (
 export const updateReturnStatusHandler = async (
   request: FastifyRequest<{
     Params: { id: string };
-    Body: { status: unknown };
+    Body: { status: ReturnStatus };
   }>,
   reply: FastifyReply,
 ) => {

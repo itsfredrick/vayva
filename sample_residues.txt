@@ -1,0 +1,100 @@
+
+> vayva@ typecheck /Users/fredrick/Documents/GitHub/vayva
+> turbo run typecheck
+
+• turbo 2.7.5
+• Packages in scope: @vayva/analytics, @vayva/api-client, @vayva/compliance, @vayva/content, @vayva/db, @vayva/education, @vayva/extensions, @vayva/load-test, @vayva/policies, @vayva/redis, @vayva/reliability, @vayva/schemas, @vayva/shared, @vayva/template-service, @vayva/theme, @vayva/ui, admin-service, ai-orchestrator, analytics-service, api-gateway, approvals-service, audit-service, auth-service, billing-service, catalog-service, compliance-service, fulfillment-service, marketing, marketing-service, marketplace, marketplace-service, merchant-admin, mobile, notifications-service, onboarding-service, ops-console, orders-service, payments-service, products-service, risk-service, storefront, support-service, theme-service, webhook-service, whatsapp-service, worker
+• Running typecheck in 46 packages
+• Remote caching disabled
+marketing:typecheck: cache hit, replaying logs 2836f5b333851795
+storefront:typecheck: cache hit, replaying logs 53356a5f0ae7108a
+storefront:typecheck: 
+storefront:typecheck: > storefront@0.0.0 typecheck /Users/fredrick/Documents/GitHub/vayva/apps/storefront
+storefront:typecheck: > tsc --noEmit
+storefront:typecheck: 
+marketing:typecheck: 
+marketing:typecheck: > marketing@0.0.0 typecheck /Users/fredrick/Documents/GitHub/vayva/apps/marketing
+marketing:typecheck: > tsc --noEmit
+marketing:typecheck: 
+merchant-admin:typecheck: cache miss, executing e9f5301f946e0dab
+@vayva/content:typecheck: cache hit, replaying logs 70af3d93f4abdef4
+@vayva/content:typecheck: 
+@vayva/content:typecheck: 
+@vayva/content:typecheck: > @vayva/content@0.0.0 typecheck /Users/fredrick/Documents/GitHub/vayva/packages/content
+@vayva/content:typecheck: > tsc --noEmit
+@vayva/content:typecheck: 
+@vayva/redis:typecheck: cache hit, replaying logs 0ffab1d37c3b0369
+@vayva/redis:typecheck: 
+@vayva/redis:typecheck: 
+@vayva/redis:typecheck: > @vayva/redis@0.0.0 typecheck /Users/fredrick/Documents/GitHub/vayva/packages/redis
+@vayva/redis:typecheck: > tsc --noEmit
+@vayva/redis:typecheck: 
+ops-console:typecheck: cache hit, replaying logs 75871eeec58bed8c
+ops-console:typecheck: 
+ops-console:typecheck: > ops-console@0.0.0 typecheck /Users/fredrick/Documents/GitHub/vayva/apps/ops-console
+ops-console:typecheck: > tsc --noEmit
+ops-console:typecheck: 
+marketplace:typecheck: cache hit, replaying logs 9f8d9866adf2a0e0
+marketplace:typecheck: 
+marketplace:typecheck: > marketplace@0.0.0 typecheck /Users/fredrick/Documents/GitHub/vayva/apps/marketplace
+marketplace:typecheck: > tsc --noEmit
+marketplace:typecheck: 
+merchant-admin:typecheck: 
+merchant-admin:typecheck: > merchant-admin@0.0.0 typecheck /Users/fredrick/Documents/GitHub/vayva/apps/merchant-admin
+merchant-admin:typecheck: > tsc --noEmit
+merchant-admin:typecheck: 
+merchant-admin:typecheck: src/app/api/dashboard/health/route.ts(12,35): error TS2322: Type '"PAID"' is not assignable to type 'PaymentStatus | EnumPaymentStatusFilter<"Order"> | undefined'.
+merchant-admin:typecheck: src/app/api/exports/route.ts(15,22): error TS2353: Object literal may only specify known properties, and 'storeId' does not exist in type 'ExportJobWhereInput'.
+merchant-admin:typecheck: src/app/api/exports/route.ts(43,17): error TS2353: Object literal may only specify known properties, and 'storeId' does not exist in type '(Without<ExportJobCreateInput, ExportJobUncheckedCreateInput> & ExportJobUncheckedCreateInput) | (Without<...> & ExportJobCreateInput)'.
+merchant-admin:typecheck: src/app/api/merchant/billing/subscribe/route.ts(11,10): error TS7053: Element implicitly has an 'any' type because expression of type 'any' can't be used to index type '{ STARTER: { slug: string; name: string; priceNgn: number; limits: { teamSeats: number; templatesAvailable: string; monthlyCampaignSends: number; }; features: { approvals: boolean; inboxOps: boolean; reports: boolean; advancedAnalytics: boolean; }; }; GROWTH: { ...; }; PRO: { ...; }; }'.
+merchant-admin:typecheck: src/app/api/merchant/imports/validate/route.ts(46,52): error TS7053: Element implicitly has an 'any' type because expression of type 'any' can't be used to index type '{}'.
+merchant-admin:typecheck: src/app/api/notifications/preferences/route.ts(27,32): error TS2339: Property 'orders' does not exist on type 'string | number | true | JsonObject | JsonArray'.
+merchant-admin:typecheck:   Property 'orders' does not exist on type 'string'.
+merchant-admin:typecheck: src/app/api/notifications/preferences/route.ts(28,31): error TS2339: Property 'orders' does not exist on type 'string | number | true | JsonObject | JsonArray'.
+merchant-admin:typecheck:   Property 'orders' does not exist on type 'string'.
+merchant-admin:typecheck: src/app/api/notifications/preferences/route.ts(29,33): error TS2339: Property 'payouts' does not exist on type 'string | number | true | JsonObject | JsonArray'.
+merchant-admin:typecheck:   Property 'payouts' does not exist on type 'string'.
+merchant-admin:typecheck: src/app/api/notifications/preferences/route.ts(30,32): error TS2339: Property 'payouts' does not exist on type 'string | number | true | JsonObject | JsonArray'.
+merchant-admin:typecheck:   Property 'payouts' does not exist on type 'string'.
+merchant-admin:typecheck: src/app/api/notifications/preferences/route.ts(33,35): error TS2339: Property 'marketing' does not exist on type 'string | number | true | JsonObject | JsonArray'.
+merchant-admin:typecheck:   Property 'marketing' does not exist on type 'string'.
+merchant-admin:typecheck: src/app/api/notifications/settings/route.ts(15,47): error TS2339: Property 'notifications' does not exist on type 'string | number | true | JsonObject | JsonArray'.
+merchant-admin:typecheck:   Property 'notifications' does not exist on type 'string'.
+merchant-admin:typecheck: src/app/api/notifications/settings/route.ts(59,21): error TS2698: Spread types may only be created from object types.
+merchant-admin:typecheck: src/app/api/notifications/trigger/route.ts(25,58): error TS2339: Property 'name' does not exist on type '{ id: string; email: string; firstName: string | null; lastName: string | null; storeId: string; storeName: string; role: AppRole; }'.
+merchant-admin:typecheck: src/app/api/ops/kyc/route.ts(13,22): error TS2322: Type 'string' is not assignable to type 'KycStatus | EnumKycStatusFilter<"KycRecord"> | undefined'.
+merchant-admin:typecheck: src/app/api/ops/metrics/route.ts(10,31): error TS2554: Expected 1 arguments, but got 0.
+merchant-admin:typecheck: src/app/api/ops/support/metrics/route.ts(51,13): error TS7053: Element implicitly has an 'any' type because expression of type 'any' can't be used to index type '{}'.
+merchant-admin:typecheck: src/app/api/ops/support/metrics/route.ts(51,33): error TS7053: Element implicitly has an 'any' type because expression of type 'any' can't be used to index type '{}'.
+merchant-admin:typecheck: src/app/api/ops/support/tickets/[id]/reply/route.ts(32,14): error TS18047: 'ticket' is possibly 'null'.
+merchant-admin:typecheck: src/app/api/ops/support/tickets/[id]/reply/route.ts(33,24): error TS2339: Property 'firstOpsReplyAt' does not exist on type '{ lastMessageAt: Date; }'.
+merchant-admin:typecheck: src/app/api/orders/[id]/delivery/manual-status/route.ts(32,25): error TS7053: Element implicitly has an 'any' type because expression of type 'string' can't be used to index type '{ REQUESTED: string[]; ACCEPTED: string[]; PICKED_UP: string[]; IN_TRANSIT: string[]; }'.
+merchant-admin:typecheck:   No index signature with a parameter of type 'string' was found on type '{ REQUESTED: string[]; ACCEPTED: string[]; PICKED_UP: string[]; IN_TRANSIT: string[]; }'.
+merchant-admin:typecheck: src/app/api/orders/bulk-status/route.ts(25,15): error TS7034: Variable 'errors' implicitly has type 'any[]' in some locations where its type cannot be determined.
+merchant-admin:typecheck: src/app/api/orders/bulk-status/route.ts(45,17): error TS7005: Variable 'errors' implicitly has an 'any[]' type.
+merchant-admin:typecheck: src/app/api/payments/banks/route.ts(9,21): error TS7006: Parameter 'b' implicitly has an 'any' type.
+merchant-admin:typecheck: src/app/api/payments/banks/route.ts(11,18): error TS7006: Parameter 'b' implicitly has an 'any' type.
+merchant-admin:typecheck: src/app/api/payments/wallet/pin/verify/route.ts(33,28): error TS2339: Property 'isLocked' does not exist on type '{ failedPinAttempts: number; }'.
+merchant-admin:typecheck: src/app/api/payments/wallet/pin/verify/route.ts(34,28): error TS2339: Property 'lockedUntil' does not exist on type '{ failedPinAttempts: number; }'.
+merchant-admin:typecheck: src/app/api/products/[id]/variants/route.ts(36,25): error TS2551: Property 'productImages' does not exist on type '{ productImage: { id: string; createdAt: Date; updatedAt: Date; url: string; productId: string; position: number; width: number | null; height: number | null; altText: string | null; s3Key: string | null; } | null; inventoryItems: { ...; }[]; } & { ...; }'. Did you mean 'productImage'?
+merchant-admin:typecheck: src/app/api/products/limits/route.ts(29,13): error TS2322: Type 'string' is not assignable to type 'number'.
+merchant-admin:typecheck: src/app/api/referrals/route.ts(13,37): error TS2339: Property 'referralCode' does not exist on type 'string | number | boolean | JsonObject | JsonArray'.
+merchant-admin:typecheck:   Property 'referralCode' does not exist on type 'string'.
+merchant-admin:typecheck: src/app/api/rescue/report/route.ts(7,19): error TS2339: Property 'user' does not exist on type '{}'.
+merchant-admin:typecheck: src/app/api/rescue/report/route.ts(22,31): error TS2339: Property 'user' does not exist on type '{}'.
+merchant-admin:typecheck: src/app/api/rescue/report/route.ts(23,30): error TS2339: Property 'user' does not exist on type '{}'.
+merchant-admin:typecheck: src/app/api/resources/[primaryObject]/[id]/route.ts(33,13): error TS2698: Spread types may only be created from object types.
+merchant-admin:typecheck: src/app/api/resources/[primaryObject]/[id]/route.ts(66,31): error TS2698: Spread types may only be created from object types.
+merchant-admin:typecheck: src/app/api/security/2fa/enable/route.ts(15,47): error TS2345: Argument of type 'string | undefined' is not assignable to parameter of type 'string | QRCodeSegment[]'.
+merchant-admin:typecheck:   Type 'undefined' is not assignable to type 'string | QRCodeSegment[]'.
+merchant-admin:typecheck: src/app/api/settings/team/invite/route.ts(46,52): error TS2339: Property 'invites' does not exist on type 'string | number | true | JsonObject | JsonArray'.
+merchant-admin:typecheck:   Property 'invites' does not exist on type 'string'.
+merchant-admin:typecheck: src/app/api/settings/team/invite/route.ts(62,25): error TS2698: Spread types may only be created from object types.
+merchant-admin:typecheck: src/app/api/settings/team/invite/route.ts(101,48): error TS2339: Property 'invites' does not exist on type 'string | number | true | JsonObject | JsonArray'.
+merchant-admin:typecheck:   Property 'invites' does not exist on type 'string'.
+merchant-admin:typecheck: src/app/api/settings/team/invite/route.ts(107,21): error TS2698: Spread types may only be created from object types.
+merchant-admin:typecheck: src/app/api/settings/whatsapp/route.ts(14,10): error TS7023: 'sanitizePayload' implicitly has return type 'any' because it does not have a return type annotation and is referenced directly or indirectly in one of its return expressions.
+merchant-admin:typecheck: src/app/api/settings/whatsapp/route.ts(22,13): error TS7053: Element implicitly has an 'any' type because expression of type 'string' can't be used to index type '{}'.
+merchant-admin:typecheck:   No index signature with a parameter of type 'string' was found on type '{}'.
+merchant-admin:typecheck: src/app/api/storage/upload/route.ts(35,18): error TS2339: Property 'size' does not exist on type 'FormDataEntryValue'.
+merchant-admin:typecheck:   Property 'size' does not exist on type 'string'.

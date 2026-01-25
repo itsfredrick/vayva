@@ -2,7 +2,7 @@ import { NextResponse, type NextRequest } from "next/server";
 import { resolveRequest } from "@/lib/routing/tenant-engine";
 import { getToken } from "next-auth/jwt";
 
-import { redis } from "@/lib/redis";
+// import { redis } from "@/lib/redis"; // Removed to prevent build-time import
 
 const FALLBACK_TENANT_MAP: Record<string, string> = {
   bloom: "tenant_bloom_001",
@@ -12,6 +12,8 @@ const FALLBACK_TENANT_MAP: Record<string, string> = {
 
 const getTenantMap = async () => {
   try {
+    const { getRedisClient } = await import("@/lib/redis");
+    const redis = await getRedisClient();
     const cached = await redis.get("tenant_map");
     if (cached) return JSON.parse(cached);
   } catch (e) {

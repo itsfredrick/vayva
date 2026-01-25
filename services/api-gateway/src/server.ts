@@ -211,7 +211,7 @@ server.post("/webhooks/paystack", async (request, reply) => {
 
 server.get("/webhooks/whatsapp", async (request, reply) => {
   // Proxy verification to WhatsApp Service
-  const query = new URLSearchParams(request.query as unknown).toString();
+  const query = new URLSearchParams(request.query as Record<string, string>).toString();
   const response = await fetch(
     `${config.services.WHATSAPP}/v1/whatsapp/webhooks/whatsapp?${query}`,
     {
@@ -263,7 +263,7 @@ const start = async () => {
       host: "0.0.0.0",
     });
   } catch (err) {
-    (server.log as unknown).error(err);
+    (server.log as any).error(err);
     process.exit(1);
   }
 };

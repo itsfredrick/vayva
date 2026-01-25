@@ -1,0 +1,103 @@
+
+> vayva@ typecheck /Users/fredrick/Documents/GitHub/vayva
+> turbo run typecheck
+
+• turbo 2.7.5
+• Packages in scope: @vayva/analytics, @vayva/api-client, @vayva/compliance, @vayva/content, @vayva/db, @vayva/education, @vayva/extensions, @vayva/load-test, @vayva/policies, @vayva/redis, @vayva/reliability, @vayva/schemas, @vayva/shared, @vayva/template-service, @vayva/theme, @vayva/ui, admin-service, ai-orchestrator, analytics-service, api-gateway, approvals-service, audit-service, auth-service, billing-service, catalog-service, compliance-service, fulfillment-service, marketing, marketing-service, marketplace, marketplace-service, merchant-admin, mobile, notifications-service, onboarding-service, ops-console, orders-service, payments-service, products-service, risk-service, storefront, support-service, theme-service, webhook-service, whatsapp-service, worker
+• Running typecheck in 46 packages
+• Remote caching disabled
+@vayva/redis:typecheck: cache hit, replaying logs 0ffab1d37c3b0369
+@vayva/redis:typecheck: 
+@vayva/redis:typecheck: 
+@vayva/redis:typecheck: > @vayva/redis@0.0.0 typecheck /Users/fredrick/Documents/GitHub/vayva/packages/redis
+@vayva/redis:typecheck: > tsc --noEmit
+@vayva/redis:typecheck: 
+@vayva/content:typecheck: cache hit, replaying logs 70af3d93f4abdef4
+@vayva/content:typecheck: 
+@vayva/content:typecheck: 
+@vayva/content:typecheck: > @vayva/content@0.0.0 typecheck /Users/fredrick/Documents/GitHub/vayva/packages/content
+@vayva/content:typecheck: > tsc --noEmit
+@vayva/content:typecheck: 
+marketing:typecheck: cache hit, replaying logs a6398bc324797d53
+marketing:typecheck: 
+marketing:typecheck: 
+marketing:typecheck: > marketing@0.0.0 typecheck /Users/fredrick/Documents/GitHub/vayva/apps/marketing
+marketing:typecheck: > tsc --noEmit
+marketing:typecheck: 
+marketplace:typecheck: cache hit, replaying logs c641ecc66097d033
+marketplace:typecheck: 
+marketplace:typecheck: 
+marketplace:typecheck: > marketplace@0.0.0 typecheck /Users/fredrick/Documents/GitHub/vayva/apps/marketplace
+marketplace:typecheck: > tsc --noEmit
+marketplace:typecheck: 
+storefront:typecheck: cache hit, replaying logs 49e373b9a5168281
+storefront:typecheck: 
+storefront:typecheck: > storefront@0.0.0 typecheck /Users/fredrick/Documents/GitHub/vayva/apps/storefront
+storefront:typecheck: > tsc --noEmit
+storefront:typecheck: 
+merchant-admin:typecheck: cache miss, executing 8ef7ee339d6da5c6
+ops-console:typecheck: cache hit, replaying logs e058e0c0069936c8
+ops-console:typecheck: 
+ops-console:typecheck: > ops-console@0.0.0 typecheck /Users/fredrick/Documents/GitHub/vayva/apps/ops-console
+ops-console:typecheck: > tsc --noEmit
+ops-console:typecheck: 
+merchant-admin:typecheck: 
+merchant-admin:typecheck: > merchant-admin@0.0.0 typecheck /Users/fredrick/Documents/GitHub/vayva/apps/merchant-admin
+merchant-admin:typecheck: > tsc --noEmit
+merchant-admin:typecheck: 
+merchant-admin:typecheck: src/app/(auth)/forgot-password/page.tsx(26,23): error TS1005: ',' expected.
+merchant-admin:typecheck: src/app/(auth)/reset-password/page.tsx(40,23): error TS1005: ',' expected.
+merchant-admin:typecheck: src/app/(auth)/signin/page.tsx(33,23): error TS1005: ',' expected.
+merchant-admin:typecheck: src/app/(auth)/signup/page.tsx(43,23): error TS1005: ',' expected.
+merchant-admin:typecheck: src/app/(auth)/verify/page.tsx(50,23): error TS1005: ',' expected.
+merchant-admin:typecheck: src/app/(auth)/verify/page.tsx(68,23): error TS1005: ',' expected.
+merchant-admin:typecheck: src/app/(dashboard)/dashboard/control-center/page.tsx(80,33): error TS1005: ',' expected.
+merchant-admin:typecheck: src/app/(dashboard)/dashboard/inbox/page.tsx(60,11): error TS1005: ')' expected.
+merchant-admin:typecheck: src/app/(dashboard)/dashboard/inbox/page.tsx(60,13): error TS1434: Unexpected keyword or identifier.
+merchant-admin:typecheck: src/app/(dashboard)/dashboard/inbox/page.tsx(60,16): error TS1128: Declaration or statement expected.
+merchant-admin:typecheck: src/app/(dashboard)/dashboard/inbox/page.tsx(60,18): error TS1005: ';' expected.
+merchant-admin:typecheck: src/app/(dashboard)/dashboard/inbox/page.tsx(61,23): error TS1005: ',' expected.
+merchant-admin:typecheck: src/app/(dashboard)/dashboard/inbox/page.tsx(62,23): error TS1005: ',' expected.
+merchant-admin:typecheck: src/app/(dashboard)/dashboard/inbox/page.tsx(63,7): error TS1128: Declaration or statement expected.
+merchant-admin:typecheck: src/app/(dashboard)/dashboard/inbox/page.tsx(67,4): error TS1128: Declaration or statement expected.
+merchant-admin:typecheck: src/app/(dashboard)/dashboard/inbox/page.tsx(67,20): error TS1005: ';' expected.
+merchant-admin:typecheck: src/app/(dashboard)/dashboard/inbox/page.tsx(279,1): error TS1128: Declaration or statement expected.
+merchant-admin:typecheck: src/app/(dashboard)/dashboard/inventory/page.tsx(59,36): error TS1005: ',' expected.
+merchant-admin:typecheck: src/app/(dashboard)/dashboard/orders/[id]/page.tsx(74,15): error TS1005: ')' expected.
+merchant-admin:typecheck: src/app/(dashboard)/dashboard/orders/[id]/page.tsx(74,17): error TS1434: Unexpected keyword or identifier.
+merchant-admin:typecheck: src/app/(dashboard)/dashboard/orders/[id]/page.tsx(74,20): error TS1128: Declaration or statement expected.
+merchant-admin:typecheck: src/app/(dashboard)/dashboard/orders/[id]/page.tsx(74,22): error TS1005: ';' expected.
+merchant-admin:typecheck: src/app/(dashboard)/dashboard/orders/[id]/page.tsx(75,6): error TS1128: Declaration or statement expected.
+merchant-admin:typecheck: src/app/(dashboard)/dashboard/orders/[id]/page.tsx(75,12): error TS1005: ';' expected.
+merchant-admin:typecheck: src/app/(dashboard)/dashboard/orders/[id]/page.tsx(331,1): error TS1128: Declaration or statement expected.
+merchant-admin:typecheck: src/app/(dashboard)/dashboard/support/disputes/page.tsx(53,32): error TS1005: ',' expected.
+merchant-admin:typecheck: src/components/bundles/ProductPicker.tsx(48,36): error TS1005: ',' expected.
+merchant-admin:typecheck: src/components/control-center/ThemeSelector.tsx(23,22): error TS1005: ',' expected.
+merchant-admin:typecheck: src/components/marketing/DiscountForm.tsx(33,15): error TS1005: ')' expected.
+merchant-admin:typecheck: src/components/marketing/DiscountForm.tsx(33,17): error TS1434: Unexpected keyword or identifier.
+merchant-admin:typecheck: src/components/marketing/DiscountForm.tsx(33,20): error TS1128: Declaration or statement expected.
+merchant-admin:typecheck: src/components/marketing/DiscountForm.tsx(33,22): error TS1005: ';' expected.
+merchant-admin:typecheck: src/components/marketing/DiscountForm.tsx(52,6): error TS1128: Declaration or statement expected.
+merchant-admin:typecheck: src/components/marketing/DiscountForm.tsx(52,12): error TS1005: ';' expected.
+merchant-admin:typecheck: src/components/marketing/DiscountForm.tsx(250,1): error TS1128: Declaration or statement expected.
+merchant-admin:typecheck: src/components/settings/DataPrivacySettings.tsx(35,35): error TS1005: ',' expected.
+merchant-admin:typecheck: src/components/templates/TemplateRenderer.tsx(29,21): error TS1005: ')' expected.
+merchant-admin:typecheck: src/components/templates/TemplateRenderer.tsx(29,23): error TS1130: 'case' or 'default' expected.
+merchant-admin:typecheck: src/components/templates/TemplateRenderer.tsx(29,26): error TS1128: Declaration or statement expected.
+merchant-admin:typecheck: src/components/templates/TemplateRenderer.tsx(30,5): error TS1128: Declaration or statement expected.
+merchant-admin:typecheck: src/components/templates/TemplateRenderer.tsx(30,25): error TS1005: ';' expected.
+merchant-admin:typecheck: src/components/templates/TemplateRenderer.tsx(31,5): error TS1128: Declaration or statement expected.
+merchant-admin:typecheck: src/components/templates/TemplateRenderer.tsx(31,38): error TS1005: ';' expected.
+merchant-admin:typecheck: src/components/templates/TemplateRenderer.tsx(36,5): error TS1128: Declaration or statement expected.
+merchant-admin:typecheck: src/components/templates/TemplateRenderer.tsx(36,12): error TS1128: Declaration or statement expected.
+merchant-admin:typecheck:  ELIFECYCLE  Command failed with exit code 2.
+merchant-admin:typecheck: ERROR: command finished with error: command (/Users/fredrick/Documents/GitHub/vayva/apps/merchant-admin) /Users/fredrick/Library/pnpm/.tools/pnpm/10.2.0/bin/pnpm run typecheck exited (2)
+merchant-admin#typecheck: command (/Users/fredrick/Documents/GitHub/vayva/apps/merchant-admin) /Users/fredrick/Library/pnpm/.tools/pnpm/10.2.0/bin/pnpm run typecheck exited (2)
+
+ Tasks:    6 successful, 7 total
+Cached:    6 cached, 7 total
+  Time:    3.458s 
+Failed:    merchant-admin#typecheck
+
+ ERROR  run failed: command  exited (2)
+ ELIFECYCLE  Command failed with exit code 2.

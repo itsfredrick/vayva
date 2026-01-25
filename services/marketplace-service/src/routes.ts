@@ -1,51 +1,51 @@
-import { FastifyInstance } from "fastify";
+import { FastifyInstance, FastifyRequest } from "fastify";
 import { MarketplaceController } from "./controller";
 
 export async function marketplaceRoutes(server: FastifyInstance) {
   // --- Directory ---
-  server.get("/stores", async (req: unknown, _reply) => {
-    return await MarketplaceController.searchStores(req.query);
+  server.get("/stores", async (req: FastifyRequest, _reply) => {
+    return await MarketplaceController.searchStores(req.query as Record<string, any>);
   });
 
-  server.get("/stores/:slug", async (req: unknown, _reply) => {
-    const { slug } = req.params;
+  server.get("/stores/:slug", async (req: FastifyRequest, _reply) => {
+    const { slug } = req.params as { slug: string };
     return await MarketplaceController.getStoreProfile(slug);
   });
 
   // --- Reviews ---
-  server.post("/reviews", async (req: unknown, _reply) => {
-    return await MarketplaceController.createReview(req.body);
+  server.post("/reviews", async (req: FastifyRequest, _reply) => {
+    return await MarketplaceController.createReview(req.body as any);
   });
 
-  server.get("/reviews", async (req: unknown, _reply) => {
-    const storeId = req.headers["x-store-id"];
-    const { status } = req.query;
+  server.get("/reviews", async (req: FastifyRequest, _reply) => {
+    const storeId = req.headers["x-store-id"] as string;
+    const { status } = req.query as { status?: string };
     return await MarketplaceController.listReviews(storeId, status);
   });
 
-  server.post("/reviews/:id/publish", async (req: unknown, _reply) => {
-    const { id } = req.params;
+  server.post("/reviews/:id/publish", async (req: FastifyRequest, _reply) => {
+    const { id } = req.params as { id: string };
     return await MarketplaceController.publishReview(id);
   });
 
-  server.post("/reviews/:id/hide", async (req: unknown, _reply) => {
-    const { id } = req.params;
+  server.post("/reviews/:id/hide", async (req: FastifyRequest, _reply) => {
+    const { id } = req.params as { id: string };
     return await MarketplaceController.hideReview(id);
   });
 
   // --- Trust Badges ---
-  server.get("/trust-badges/:storeId", async (req: unknown, _reply) => {
-    const { storeId } = req.params;
+  server.get("/trust-badges/:storeId", async (req: FastifyRequest, _reply) => {
+    const { storeId } = req.params as { storeId: string };
     return await MarketplaceController.computeTrustBadges(storeId);
   });
 
   // --- Reports ---
-  server.post("/reports", async (req: unknown, _reply) => {
-    return await MarketplaceController.createReport(req.body);
+  server.post("/reports", async (req: FastifyRequest, _reply) => {
+    return await MarketplaceController.createReport(req.body as any);
   });
 
-  server.get("/reports", async (req: unknown, _reply) => {
-    const { status } = req.query;
-    return await MarketplaceController.listReports(status);
+  server.get("/reports", async (req: FastifyRequest, _reply) => {
+    const { status } = req.query as { status?: string };
+    return await MarketplaceController.listReports(status as string);
   });
 }
