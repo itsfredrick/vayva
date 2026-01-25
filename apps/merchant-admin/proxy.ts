@@ -27,7 +27,7 @@ export async function proxy(request: NextRequest) {
   const path = request.nextUrl.pathname;
   const query = Object.fromEntries(request.nextUrl.searchParams);
 
-  // 0. Tenant Resolution (AntiGravity Engine)
+  // 0. Tenant Resolution
   const isPublicAsset =
     path.startsWith("/_next") ||
     path.startsWith("/favicon.ico") ||

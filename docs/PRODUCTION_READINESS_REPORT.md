@@ -2,7 +2,7 @@
 
 ## Status: READY FOR DEPLOYMENT (v1.0)
 **Date**: December 31, 2025
-**Author**: Antigravity Operations Team
+**Author**: Operations Team
 
 ---
 

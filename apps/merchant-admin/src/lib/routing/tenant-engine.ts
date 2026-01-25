@@ -1,5 +1,5 @@
 /**
- * ANTIGRAVITY TENANT RESOLVER
+ * TENANT RESOLVER
  * Authoritative logic for Vayva domain routing.
  */
 export function resolveRequest(input: any) {

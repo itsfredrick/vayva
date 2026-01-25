@@ -1,6 +1,6 @@
 import { describe, it, expect } from "vitest";
 import { resolveRequest } from "./tenant-engine";
-describe("AntiGravity Tenant Resolver", () => {
+describe("Tenant Resolver", () => {
     const testTenantMap = {
         bloom: "tenant_bloom_id",
         gizmo: "tenant_gizmo_id",

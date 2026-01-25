@@ -1,7 +1,7 @@
 import IORedis, { Redis, RedisOptions } from "ioredis";
 
 /**
- * ANTIGRAVITY BUILD-SAFE REDIS FACTORY
+ * BUILD-SAFE REDIS FACTORY
  * 
  * Prevents Redis connection attempts during Next.js build phase.
  * Provides lazy initialization and explicit error handling.

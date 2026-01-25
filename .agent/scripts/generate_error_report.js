@@ -75,7 +75,7 @@ function generateReport() {
     }
 
     // Write to absolute path in artifacts dir to be safe and accessible
-    const artifactPath = path.join('/Users/fredrick/.gemini/antigravity/brain/913d18c7-d749-4964-ad5b-00f04e984c9a', OUTPUT_FILE);
+    const artifactPath = path.join(process.cwd(), OUTPUT_FILE);
     fs.writeFileSync(artifactPath, md);
     console.log(`Report generated at ${artifactPath}`);
 }
