@@ -12,14 +12,41 @@ interface CreateDiscountRuleBody {
   endsAt?: string;
 }
 
+function isCreateDiscountRuleBody(body: unknown): body is CreateDiscountRuleBody {
+  return (
+    typeof body === "object" &&
+    body !== null &&
+    "name" in body &&
+    "code" in body
+  );
+}
+
 interface CreateCouponBody {
   ruleId: string;
   code: string;
 }
 
+function isCreateCouponBody(body: unknown): body is CreateCouponBody {
+  return (
+    typeof body === "object" &&
+    body !== null &&
+    "ruleId" in body &&
+    "code" in body
+  );
+}
+
 interface CreateSegmentBody {
   name: string;
   criteria: Record<string, unknown>;
+}
+
+function isCreateSegmentBody(body: unknown): body is CreateSegmentBody {
+  return (
+    typeof body === "object" &&
+    body !== null &&
+    "name" in body &&
+    "criteria" in body
+  );
 }
 
 interface CreateCampaignBody {
@@ -29,6 +56,15 @@ interface CreateCampaignBody {
   segmentId: string;
   content?: string;
   scheduledAt?: string;
+}
+
+function isCreateCampaignBody(body: unknown): body is CreateCampaignBody {
+  return (
+    typeof body === "object" &&
+    body !== null &&
+    "name" in body &&
+    "segmentId" in body
+  );
 }
 
 interface UpsertAutomationRuleBody {
@@ -41,6 +77,10 @@ interface UpsertAutomationRuleBody {
   config?: Record<string, unknown>;
 }
 
+function isUpsertAutomationRuleBody(body: unknown): body is UpsertAutomationRuleBody {
+  return typeof body === "object" && body !== null;
+}
+
 export async function marketingRoutes(server: FastifyInstance) {
   // --- Discounts ---
   server.get("/discounts/rules", async (req: FastifyRequest, _reply) => {
@@ -50,7 +90,11 @@ export async function marketingRoutes(server: FastifyInstance) {
 
   server.post("/discounts/rules", async (req: FastifyRequest, _reply) => {
     const storeId = req.headers["x-store-id"] as string;
-    const body = req.body as CreateDiscountRuleBody;
+    const body = req.body;
+
+    if (!isCreateDiscountRuleBody(body)) {
+      throw new Error("Invalid request body");
+    }
 
     // Fix: correct shape for CreateDiscountRule and remove legacy any
     const payload = {
@@ -67,7 +111,12 @@ export async function marketingRoutes(server: FastifyInstance) {
 
   server.post("/discounts/coupons", async (req: FastifyRequest, _reply) => {
     const storeId = req.headers["x-store-id"] as string;
-    const body = req.body as CreateCouponBody;
+    const body = req.body;
+
+    if (!isCreateCouponBody(body)) {
+      throw new Error("Invalid request body");
+    }
+
     return await MarketingController.createCoupon(storeId, {
       discountRuleId: body.ruleId,
       code: body.code,
@@ -82,7 +131,12 @@ export async function marketingRoutes(server: FastifyInstance) {
 
   server.post("/segments", async (req: FastifyRequest, _reply) => {
     const storeId = req.headers["x-store-id"] as string;
-    const body = req.body as CreateSegmentBody;
+    const body = req.body;
+
+    if (!isCreateSegmentBody(body)) {
+      throw new Error("Invalid request body");
+    }
+
     return await MarketingController.createSegment(storeId, {
       name: body.name,
       criteria: body.criteria,
@@ -98,10 +152,10 @@ export async function marketingRoutes(server: FastifyInstance) {
   server.post("/campaigns", async (req: FastifyRequest, _reply) => {
     const storeId = req.headers["x-store-id"] as string;
     const userId = (req.headers["x-user-id"] as string | undefined) || "system";
-    const body = req.body as CreateCampaignBody;
+    const body = req.body;
 
-    if (!body.segmentId) {
-      throw new Error("segmentId is required");
+    if (!isCreateCampaignBody(body)) {
+      throw new Error("Invalid request body");
     }
 
     return await MarketingController.createCampaign(storeId, {
@@ -120,7 +174,11 @@ export async function marketingRoutes(server: FastifyInstance) {
   server.put("/automations/:key", async (req: FastifyRequest, _reply) => {
     const storeId = req.headers["x-store-id"] as string;
     const { key } = req.params as { key: string };
-    const body = req.body as UpsertAutomationRuleBody;
+    const body = req.body;
+
+    if (!isUpsertAutomationRuleBody(body)) {
+      throw new Error("Invalid request body");
+    }
 
     return await MarketingController.upsertAutomationRule(
       storeId,

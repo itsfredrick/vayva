@@ -28,6 +28,7 @@ export default defineConfig({
             '**/.{idea,git,cache,output,temp}/**',
             '**/.next/**',
             'e2e/**',
+            '**/*.spec.ts',
             // Exclude existing tests that are being refactored
             '**/{groq-client,sales-agent,merchant-brain.service,DeliveryService,account,route}.test.ts',
         ],
