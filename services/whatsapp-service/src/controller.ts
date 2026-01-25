@@ -27,6 +27,32 @@ export const verifyWebhook = async (
   return reply.status(403).send("Forbidden");
 };
 
+// Types for WhatsApp Webhook
+type WhatsAppMessage = {
+  id: string;
+  type?: string;
+  text?: {
+    body: string;
+  };
+};
+
+type WhatsAppStatus = {
+  id: string;
+  status: string;
+};
+
+type WhatsAppValue = {
+  metadata: {
+    phone_number_id: string;
+  };
+  messages?: WhatsAppMessage[];
+  statuses?: WhatsAppStatus[];
+  contacts?: Array<{
+    wa_id: string;
+    profile?: { name: string };
+  }>;
+};
+
 /**
  * Handle Inbound Messages & Status Updates
  */
@@ -72,30 +98,16 @@ export const webhookHandler = async (
   const body = req.body as {
     entry?: Array<{
       changes: Array<{
-        value: {
-          metadata: { phone_number_id: string };
-          messages?: Array<{
-            id: string;
-            type?: string;
-            text?: { body: string };
-          }>;
-          statuses?: Array<{
-            id: string;
-            status: string;
-          }>;
-          contacts?: Array<{
-            wa_id: string;
-            profile?: { name: string };
-          }>;
-        };
+        value: unknown;
       }>;
     }>;
   };
+
   if (!body.entry) return reply.send({ status: "ignored" });
 
   for (const entry of body.entry) {
     for (const change of entry.changes) {
-      const value = change.value;
+      const value = change.value as WhatsAppValue;
       const metadata = value.metadata;
 
       // Resolve storeId by phone_number_id
@@ -109,10 +121,10 @@ export const webhookHandler = async (
       }
       const storeId = channel.storeId;
 
-      if (value.messages) {
+      if (value.messages?.length) {
         await InboundProcessor.processMessage(storeId, value);
       }
-      if (value.statuses) {
+      if (value.statuses?.length) {
         for (const status of value.statuses) {
           await InboundProcessor.processStatus(storeId, status);
         }

@@ -21,6 +21,7 @@ interface PaystackPayload {
 }
 
 async function handleChargeSuccess(data: PaystackPayload, metadata: unknown) {
+    const meta = metadata as { storeId?: string; orderId?: string } || {};
     const reference = data.reference;
     const existingCharge = await prisma.charge.findFirst({
         where: {
@@ -36,7 +37,7 @@ async function handleChargeSuccess(data: PaystackPayload, metadata: unknown) {
     const amountKobo = data.amount;
     const amountNaira = amountKobo / 100;
     const currency = data.currency;
-    const storeId = metadata?.storeId;
+    const storeId = meta.storeId;
 
     if (!storeId) {
         console.error(
@@ -49,7 +50,7 @@ async function handleChargeSuccess(data: PaystackPayload, metadata: unknown) {
     const charge = await prisma.charge.create({
         data: {
             storeId,
-            orderId: metadata?.orderId,
+            orderId: meta.orderId,
             provider: "PAYSTACK",
             providerChargeId: String(data.id),
             status: "succeeded",

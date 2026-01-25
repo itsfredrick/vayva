@@ -1,4 +1,4 @@
-import { prisma } from "@vayva/db";
+import { prisma, PolicyType } from "@vayva/db";
 
 export interface ComplianceReport {
     storeId: string;
@@ -40,9 +40,8 @@ export async function validateStoreCompliance(storeId: string): Promise<Complian
     }
 
     // 1. Legal Policies
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const policyTypes = policies.map((p: unknown) => p.type);
-    const requiredPolicies = ["PRIVACY_POLICY", "TERMS_OF_SERVICE", "REFUND_POLICY"];
+    const policyTypes = policies.map(p => p.type);
+    const requiredPolicies: PolicyType[] = [PolicyType.PRIVACY, PolicyType.TERMS, PolicyType.REFUNDS];
     const missingPolicies = requiredPolicies.filter(type => !policyTypes.includes(type));
     const legalPolicies = missingPolicies.length === 0;
 

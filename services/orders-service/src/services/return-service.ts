@@ -1,5 +1,6 @@
 import {
   prisma,
+  Prisma,
   ReturnStatus,
   ReturnReason,
   ReturnResolution,
@@ -17,7 +18,7 @@ export interface CreateReturnRequestData {
   items: Array<{ orderItemId?: string; qty: number }>;
   logistics: {
     method: ReturnMethod;
-    pickupAddress?: unknown;
+    pickupAddress?: Prisma.InputJsonValue;
     dropoffInstructions?: string;
   };
 }
