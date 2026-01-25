@@ -3,8 +3,9 @@ const path = require("path");
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   transpilePackages: ["@vayva/ui", "@vayva/theme", "@vayva/schemas", "@vayva/api-client", "@vayva/content"],
+  reactCompiler: true,
   experimental: {
-    optimizePackageImports: ["lucide-react", "@vayva/ui", "@vayva/shared", "@vayva/api-client"]
+    optimizePackageImports: ["lucide-react", "@vayva/ui", "@vayva/shared", "@vayva/api-client", "framer-motion", "date-fns"]
   },
   turbopack: {
     root: path.resolve(__dirname, "../../"),
