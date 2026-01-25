@@ -20,7 +20,7 @@ interface PaystackPayload {
     fees?: number;
 }
 
-async function handleChargeSuccess(data: PaystackPayload, metadata: any) {
+async function handleChargeSuccess(data: PaystackPayload, metadata: unknown) {
     const reference = data.reference;
     const existingCharge = await prisma.charge.findFirst({
         where: {

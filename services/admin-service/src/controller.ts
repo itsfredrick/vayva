@@ -1,4 +1,4 @@
-import { prisma } from "@vayva/db";
+import { prisma, Prisma, SupportCaseCategory, SupportCaseStatus } from "@vayva/db";
 
 interface AdminAuditLogData {
   targetType: string;
@@ -24,8 +24,8 @@ const logAdminAction = async (
       targetId: data.targetId,
       storeId: data.storeId,
       reason: data.reason,
-      before: data.before as any,
-      after: data.after as any,
+      before: data.before as unknown as Prisma.InputJsonValue,
+      after: data.after as unknown as Prisma.InputJsonValue,
       ipAddress: data.ipAddress,
       userAgent: data.userAgent,
     },
@@ -177,7 +177,7 @@ export const AdminController = {
       data: {
         storeId: data.storeId,
         createdByAdminId: actorUserId,
-        category: data.category as any,
+        category: data.category as SupportCaseCategory,
         summary: data.summary,
         links: data.links || [],
         status: "OPEN",
@@ -187,7 +187,7 @@ export const AdminController = {
 
   listSupportCases: async (status?: string): Promise<unknown> => {
     return await prisma.supportCase.findMany({
-      where: status ? { status: status as any } : undefined,
+      where: status ? { status: status as SupportCaseStatus } : undefined,
       orderBy: { createdAt: "desc" },
       take: 100,
     });

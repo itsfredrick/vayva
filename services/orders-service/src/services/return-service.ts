@@ -17,7 +17,7 @@ export interface CreateReturnRequestData {
   items: Array<{ orderItemId?: string; qty: number }>;
   logistics: {
     method: ReturnMethod;
-    pickupAddress?: any;
+    pickupAddress?: unknown;
     dropoffInstructions?: string;
   };
 }

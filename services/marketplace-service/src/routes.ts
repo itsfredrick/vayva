@@ -4,7 +4,7 @@ import { MarketplaceController } from "./controller";
 export async function marketplaceRoutes(server: FastifyInstance) {
   // --- Directory ---
   server.get("/stores", async (req: FastifyRequest, _reply) => {
-    return await MarketplaceController.searchStores(req.query as Record<string, any>);
+    return await MarketplaceController.searchStores(req.query as Record<string, string>);
   });
 
   server.get("/stores/:slug", async (req: FastifyRequest, _reply) => {
@@ -14,7 +14,12 @@ export async function marketplaceRoutes(server: FastifyInstance) {
 
   // --- Reviews ---
   server.post("/reviews", async (req: FastifyRequest, _reply) => {
-    return await MarketplaceController.createReview(req.body as any);
+    return await MarketplaceController.createReview(req.body as {
+      storeId: string;
+      rating: number;
+      comment?: string;
+      userId: string;
+    });
   });
 
   server.get("/reviews", async (req: FastifyRequest, _reply) => {
@@ -41,7 +46,12 @@ export async function marketplaceRoutes(server: FastifyInstance) {
 
   // --- Reports ---
   server.post("/reports", async (req: FastifyRequest, _reply) => {
-    return await MarketplaceController.createReport(req.body as any);
+    return await MarketplaceController.createReport(req.body as {
+      targetType: string;
+      targetId: string;
+      reason: string;
+      userId: string;
+    });
   });
 
   server.get("/reports", async (req: FastifyRequest, _reply) => {

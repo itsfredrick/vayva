@@ -24,6 +24,11 @@ export async function analyticsRoutes(server: FastifyInstance) {
 
   server.post("/goals", async (req: FastifyRequest, _reply) => {
     const storeId = req.headers["x-store-id"] as string;
-    return await AnalyticsController.createGoal(storeId, req.body as any);
+    return await AnalyticsController.createGoal(storeId, req.body as {
+      metricKey: string;
+      period: string;
+      targetValue: number;
+      startDate: string | Date;
+    });
   });
 }

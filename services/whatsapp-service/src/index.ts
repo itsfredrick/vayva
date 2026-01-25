@@ -21,9 +21,8 @@ server.addContentTypeParser("application/json", { parseAs: "buffer" }, (req, bod
     const json = JSON.parse(buffer.toString());
     done(null, json);
   } catch (err: unknown) {
-    const error = err instanceof Error ? err : new Error(String(err));
-    (error as any).statusCode = 400;
-    done(error, undefined);
+    const fastifyError = Object.assign(new Error(String(err)), { statusCode: 400 });
+    done(fastifyError, undefined);
   }
 });
 
@@ -34,7 +33,7 @@ const start = async () => {
   try {
     await server.listen({ port: 3005, host: "0.0.0.0" });
   } catch (err) {
-    (server.log as any).error(err);
+    server.log.error(err);
     process.exit(1);
   }
 };

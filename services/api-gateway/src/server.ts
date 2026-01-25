@@ -263,7 +263,7 @@ const start = async () => {
       host: "0.0.0.0",
     });
   } catch (err) {
-    (server.log as any).error(err);
+    server.log.error(err);
     process.exit(1);
   }
 };

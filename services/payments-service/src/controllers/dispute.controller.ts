@@ -42,7 +42,7 @@ export const addEvidenceHandler = async (
       type: DisputeEvidenceType;
       url?: string;
       textExcerpt?: string;
-      metadata?: any;
+      metadata?: unknown;
     };
   }>,
   reply: FastifyReply,

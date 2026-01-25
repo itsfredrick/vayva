@@ -65,3 +65,16 @@ health-*.js
 health_*.js
 **/prisma/seed*.ts
 **/prisma/seed*.js
+
+# One-off scripts / reports
+*.txt
+*.log
+final-*.js
+fix-*.js
+mass_*.js
+nuclear_*.js
+refine-services.js
+regression_cleanup.js
+scripts/
+.agent/scripts/
+

@@ -21,7 +21,7 @@ export function sanitizeHTML(html: any, options = DEFAULT_CONFIG) {
 /**
  * Normalizes and whitelists user-supplied URLs to prevent SSRF and Open Redirects.
  */
-export function validateRedirectURL(url: any, allowedDomains: any= ['vayva.ng', 'vayva.com']) {
+export function validateRedirectURL(url: any, allowedDomains: any = ['vayva.ng']) {
     if (!url)
         return null;
     try {

@@ -16,7 +16,7 @@ const start = async () => {
   try {
     await server.listen({ port: 3004, host: "0.0.0.0" });
   } catch (err) {
-    (server.log as any).error(err);
+    server.log.error(err);
     process.exit(1);
   }
 };

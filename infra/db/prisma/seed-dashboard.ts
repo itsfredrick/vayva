@@ -38,7 +38,7 @@ async function main() {
       });
       await prisma.user.delete({ where: { id: existingUser.id } });
     }
-  } catch (e: any) {
+  } catch (e: unknown) {
     console.warn("Cleanup error:", e.message);
     console.warn("Stack:", e.stack);
   }
@@ -121,8 +121,8 @@ async function main() {
   });
 
   // 9. Seed Orders for Analytics
-  const statuses: any[] = ["DELIVERED", "PROCESSING", "CANCELLED"];
-  const paymentStatuses: any[] = ["SUCCESS", "PENDING", "FAILED"];
+  const statuses: unknown[] = ["DELIVERED", "PROCESSING", "CANCELLED"];
+  const paymentStatuses: unknown[] = ["SUCCESS", "PENDING", "FAILED"];
 
   for (let i = 0; i < 25; i++) {
     const daysAgo = Math.floor(Math.random() * 7);

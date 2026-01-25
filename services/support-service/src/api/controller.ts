@@ -16,7 +16,7 @@ interface AddMessageBody {
   message: string;
   sender?: string;
   senderId?: string;
-  attachments?: any;
+  attachments?: unknown;
 }
 
 export const SupportController = {
@@ -90,7 +90,7 @@ export const SupportController = {
   },
 
   updateTicket: async (
-    req: FastifyRequest<{ Params: { id: string }; Body: any }>,
+    req: FastifyRequest<{ Params: { id: string }; Body: unknown }>,
     _reply: FastifyReply,
   ): Promise<unknown> => {
     const { id } = req.params;

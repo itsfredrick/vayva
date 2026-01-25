@@ -188,9 +188,3 @@ export interface TicketResponseData {
     handoffEvents: unknown[];
 }
 
-/**
- * Route Handler Context (Next.js 15+)
- */
-export interface RouteContext<T = Record<string, string>> {
-    params: Promise<T>;
-}

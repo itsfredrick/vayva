@@ -157,7 +157,7 @@ export class NotificationManager {
               textBody: body // Fallback text
             })
           });
-        } catch (err: any) {
+        } catch (err: unknown) {
           console.error(`[NotificationManager] Failed to send WA to ${recipient}:`, err);
         }
       }

@@ -44,7 +44,7 @@ export class MetaProvider implements WhatsAppProvider {
         providerMessageId: response.data.messages[0].id,
       };
     } catch (error) {
-      console.error("[MetaProvider] Send Failed:", ((error as any).response?.data) || (error instanceof Error ? error.message : String(error)));
+      console.error("[MetaProvider] Send Failed:", (axios.isAxiosError(error) ? error.response?.data : (error instanceof Error ? error.message : String(error))));
       throw new Error(`WhatsApp Send Failed: ${(error instanceof Error ? error.message : String(error))}`);
     }
   }

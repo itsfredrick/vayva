@@ -75,9 +75,9 @@ export const webhookHandler = async (
         value: {
           metadata: { phone_number_id: string };
           // eslint-disable-next-line @typescript-eslint/no-explicit-any
-          messages?: any[];
+          messages?: unknown[];
           // eslint-disable-next-line @typescript-eslint/no-explicit-any
-          statuses?: any[];
+          statuses?: unknown[];
         };
       }>;
     }>;

@@ -11,7 +11,7 @@ interface CreateProductBody {
   description: string;
   status: string;
   trackInventory: boolean;
-  variants: any[];
+  variants: unknown[];
 }
 
 interface GenerateVariantsBody {
@@ -177,7 +177,7 @@ export const CatalogController = {
   },
 
   updateProduct: async (
-    req: FastifyRequest<{ Params: { id: string }; Body: any }>,
+    req: FastifyRequest<{ Params: { id: string }; Body: unknown }>,
     _reply: FastifyReply,
   ): Promise<unknown> => {
     const { id } = req.params;
@@ -224,7 +224,7 @@ export const CatalogController = {
     const { options } = req.body;
 
     const keys = Object.keys(options);
-    const cartesian = (...a: any[][]): any[][] =>
+    const cartesian = (...a: unknown[][]): unknown[][] =>
       a.reduce((a, b) =>
         a.flatMap((d) => b.map((e) => [d, e].flat())),
       );
@@ -240,7 +240,7 @@ export const CatalogController = {
     const product = await prisma.product.findUnique({ where: { id } });
     if (!product) return reply.status(404).send({ error: "Product not found" });
 
-    const variantsToCreate = combinations.map((combo: any[]) => {
+    const variantsToCreate = combinations.map((combo: unknown[]) => {
       const variantOptions: Record<string, string> = {};
       keys.forEach((key, idx) => {
         variantOptions[key] = combo[idx];

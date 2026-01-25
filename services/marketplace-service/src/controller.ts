@@ -4,7 +4,7 @@ import { prisma } from "@vayva/db";
 
 export const MarketplaceController = {
   // --- Directory Search ---
-  searchStores: async (filters: any): Promise<unknown> => {
+  searchStores: async (filters: unknown): Promise<unknown> => {
     const {
       state,
       city,
@@ -14,7 +14,7 @@ export const MarketplaceController = {
       limit = 20,
     } = filters;
 
-    const where: any = { isDirectoryListed: true };
+    const where: unknown = { isDirectoryListed: true };
     if (state) where.state = state;
     if (city) where.city = city;
     if (category) where.categories = { has: category };
@@ -38,7 +38,7 @@ export const MarketplaceController = {
   },
 
   // --- Reviews ---
-  createReview: async (data: any): Promise<unknown> => {
+  createReview: async (data: unknown): Promise<unknown> => {
     return await prisma.review.create({
       data: {
         storeId: data.storeId,
@@ -99,7 +99,7 @@ export const MarketplaceController = {
     });
 
     const badges: string[] = [];
-    const metrics: any = {};
+    const metrics: unknown = {};
 
     // Verified Store
     const store = await prisma.store.findUnique({
@@ -133,7 +133,7 @@ export const MarketplaceController = {
   },
 
   // --- Moderation ---
-  createReport: async (data: any): Promise<unknown> => {
+  createReport: async (data: unknown): Promise<unknown> => {
     return await prisma.report.create({
       data: {
         entityType: data.entityType,

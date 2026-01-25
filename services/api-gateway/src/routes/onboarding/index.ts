@@ -1,6 +1,5 @@
 import { FastifyPluginAsync } from "fastify";
-import { prisma } from "@vayva/db";
-import { StoreSchema } from "@vayva/schemas";
+import { prisma, Prisma } from "@vayva/db";
 import { z } from "zod";
 
 const onboardingRoute: FastifyPluginAsync = async fastify => {
@@ -52,7 +51,7 @@ const onboardingRoute: FastifyPluginAsync = async fastify => {
           tenantId: tenant.id,
           name: body.name,
           slug: body.slug,
-          settings: (body.settings || {}) as any,
+          settings: (body.settings || {}) as unknown as Prisma.InputJsonValue,
         },
       });
 

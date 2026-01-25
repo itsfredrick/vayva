@@ -1,4 +1,4 @@
-import { FastifyInstance, FastifyRequest } from "fastify";
+import { FastifyInstance, FastifyRequest, FastifyReply } from "fastify";
 import { RbacService, PermissionGuard } from "../rbac/service";
 import { TeamService } from "../staff/service";
 
@@ -6,8 +6,9 @@ export async function rbacRoutes(server: FastifyInstance) {
   // --- ROLES ---
   // Middleware Factory
   // Middleware Factory: Verifies user permissions via RBAC service
-  const ensurePermission = (permission: string) => async (req: FastifyRequest, reply: any) => {
-    const userId = (req as any).user?.id || (req.headers["x-user-id"] as string | undefined);
+  const ensurePermission = (permission: string) => async (req: FastifyRequest, reply: FastifyReply) => {
+    const user = (req.user as { id: string } | undefined);
+    const userId = user?.id || (req.headers["x-user-id"] as string | undefined);
     const storeId = req.headers["x-store-id"] as string;
 
     if (!userId || !storeId) {

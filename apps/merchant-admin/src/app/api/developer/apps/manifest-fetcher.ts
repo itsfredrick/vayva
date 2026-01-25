@@ -22,7 +22,7 @@ export async function fetchAndValidateManifest(url: any) {
             }
         }
         // Ensure it's not trying to hijack internal vayva.* namespace without permission
-        if (manifest.id.startsWith('vayva.') && !url.includes('vayva.com')) {
+        if (manifest.id.startsWith('vayva.') && !url.includes('vayva.ng')) {
             // In production, we'd enforce this. For now, just a warning or prefix.
         }
         return manifest;

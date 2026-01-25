@@ -53,7 +53,7 @@ export class DisputeService {
       type: DisputeEvidenceType;
       url?: string;
       textExcerpt?: string;
-      metadata?: any;
+      metadata?: unknown;
     },
   ) {
     const evidence = await prisma.disputeEvidence.create({

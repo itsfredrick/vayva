@@ -109,7 +109,7 @@ export const initializeTransactionHandler = async (
     const errorMessage = error instanceof Error ? (error instanceof Error ? error.message : String(error)) : "Unknown error";
     console.error(
       "Paystack Initialize Error:",
-      axios.isAxiosError(error) ? ((error as any).response?.data) : errorMessage,
+      axios.isAxiosError(error) ? (error.response?.data as unknown) : errorMessage,
     );
     return reply.status(500).send({ error: "Failed to initialize payment" });
   }
@@ -146,7 +146,7 @@ export const verifyPaymentHandler = async (
       const errorMessage = error instanceof Error ? (error instanceof Error ? error.message : String(error)) : "Unknown error";
       console.error(
         "Paystack Verify Error:",
-        axios.isAxiosError(error) ? ((error as any).response?.data) : errorMessage,
+        axios.isAxiosError(error) ? (error.response?.data as unknown) : errorMessage,
       );
       return reply.status(500).send({ error: "Failed to verify payment" });
     }

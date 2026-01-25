@@ -1,4 +1,4 @@
-import { prisma } from "@vayva/db";
+// import { prisma } from "@vayva/db";
 
 export async function checkIdempotency(_key: string, _tenantId: string) {
   // Pending implementation

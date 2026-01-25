@@ -5,7 +5,7 @@ import {
     ApiErrorCode,
     RouteContext,
     ProductResponseData
-} from "@vayva/shared";
+} from "@vayva/next-types";
 
 /**
  * handleGetProduct

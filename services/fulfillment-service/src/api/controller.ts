@@ -38,7 +38,7 @@ export const FulfillmentController = {
   },
 
   createZone: async (
-    req: FastifyRequest<{ Body: any }>,
+    req: FastifyRequest<{ Body: unknown }>,
     _reply: FastifyReply,
   ) => {
     const {
@@ -79,11 +79,11 @@ export const FulfillmentController = {
 
   // 2. Dispatch / Fulfillment
   createShipment: async (
-    req: FastifyRequest<{ Body: any }>,
+    req: FastifyRequest<{ Body: unknown }>,
     _reply: FastifyReply,
   ) => {
     const { storeId, orderId, deliveryOptionType, address, deliveryFee } =
-      req.body as { storeId: string; orderId: string; deliveryOptionType: string; address: any; deliveryFee: number };
+      req.body as { storeId: string; orderId: string; deliveryOptionType: string; address: unknown; deliveryFee: number };
 
     // 1. Create Shipment Record
     const shipment = await prisma.shipment.create({
@@ -111,10 +111,10 @@ export const FulfillmentController = {
   },
 
   dispatchShipment: async (
-    req: FastifyRequest<{ Body: any }>,
+    req: FastifyRequest<{ Body: unknown }>,
     _reply: FastifyReply,
   ) => {
-    const { storeId, shipmentId, carrier, carrierParams } = req.body as { storeId: string; shipmentId: string; carrier: string; carrierParams: any };
+    const { storeId, shipmentId, carrier, carrierParams } = req.body as { storeId: string; shipmentId: string; carrier: string; carrierParams: unknown };
 
     const shipment = await prisma.shipment.findUniqueOrThrow({
       where: { id: shipmentId },

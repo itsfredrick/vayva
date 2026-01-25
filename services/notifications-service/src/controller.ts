@@ -1,6 +1,6 @@
 import { FastifyRequest, FastifyReply } from "fastify";
 import { z } from "zod";
-import { prisma } from "@vayva/db";
+import { prisma, Prisma } from "@vayva/db";
 
 const notifySchema = z.object({
   channel: z.enum(["EMAIL", "SMS", "PUSH", "WHATSAPP"]),
@@ -41,7 +41,7 @@ export const notifyHandler = async (
         recipient: body.recipient,
         channel: body.channel,
         originalData: body.data,
-      } as any,
+      } as unknown as Prisma.InputJsonValue,
     },
   });
 

@@ -1,4 +1,4 @@
-import { prisma } from "@vayva/db";
+import { prisma, Prisma } from "@vayva/db";
 
 interface SendNotificationParams {
   storeId: string;
@@ -65,7 +65,7 @@ export const NotificationService = {
         channel,
         templateKey,
         to,
-        payload: { subject, body, variables } as any,
+        payload: { subject, body, variables } as unknown as Prisma.InputJsonValue,
         recipientId: customerId,
         orderId,
         status: "QUEUED",
