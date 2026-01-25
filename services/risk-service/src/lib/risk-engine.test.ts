@@ -1,7 +1,13 @@
 import { RiskEngine } from "./risk-engine";
 import { prisma } from "@vayva/db";
 
-// Test Prisma directly in factory
+const mockPrisma = {
+  riskSignal: { create: jest.fn() },
+  riskProfile: { upsert: jest.fn(), update: jest.fn() },
+  customerRiskProfile: { upsert: jest.fn() },
+  enforcementAction: { findFirst: jest.fn(), create: jest.fn() },
+};
+
 jest.mock("@vayva/db", () => ({
   prisma: {
     riskSignal: { create: jest.fn() },
@@ -9,6 +15,11 @@ jest.mock("@vayva/db", () => ({
     customerRiskProfile: { upsert: jest.fn() },
     enforcementAction: { findFirst: jest.fn(), create: jest.fn() },
   },
+  RiskScope: { MERCHANT: "MERCHANT", CUSTOMER: "CUSTOMER" },
+  RiskSeverity: { HIGH: "HIGH", MEDIUM: "MEDIUM", LOW: "LOW" },
+  EnforcementActionType: { REQUIRE_MANUAL_APPROVAL: "REQUIRE_MANUAL_APPROVAL" },
+  EnforcementScope: { MERCHANT: "MERCHANT" },
+  RiskStatus: { CRITICAL: "CRITICAL" },
 }));
 
 describe("RiskEngine", () => {
@@ -66,7 +77,7 @@ describe("RiskEngine", () => {
 
     expect(prisma.riskProfile.update).toHaveBeenCalledWith({
       where: { merchantId: "m1" },
-      data: { status: "RESTRICTED" },
+      data: { status: "CRITICAL" },
     });
     expect(prisma.enforcementAction.create).toHaveBeenCalled();
   });

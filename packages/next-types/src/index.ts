@@ -1,5 +1,3 @@
-import type { NextRequest } from "next/server";
-
 export interface RouteContext<T = Record<string, string>> {
     params: Promise<T>;
 }
@@ -26,5 +24,3 @@ export interface ApiResponse<T = unknown> {
 export interface ProductResponseData {
     product: Record<string, unknown>;
 }
-
-export type { NextRequest };
