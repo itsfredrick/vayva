@@ -2,7 +2,13 @@ import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import jwt from "jsonwebtoken";
 import { Resend } from "resend";
-const resend = new Resend(process.env.RESEND_API_KEY);
+// Factory to ensure lazy loading of API key
+function getResend() {
+    const key = process.env.RESEND_API_KEY;
+    if (!key) throw new Error("RESEND_API_KEY is not defined");
+    return new Resend(key);
+}
+
 export async function POST(req: NextRequest) {
     try {
         const body = await req.json() as Record<string, string>;
@@ -27,7 +33,7 @@ export async function POST(req: NextRequest) {
         // 4. Construct Link
         const resetLink = `${process.env.NEXT_PUBLIC_APP_URL}/auth/reset-password?token=${token}&id=${user.id}`;
         // 5. Send Email
-        await resend.emails.send({
+        await getResend().emails.send({
             from: "Vayva Security <security@vayva.ng>",
             to: email,
             subject: "Reset your Vayva password",

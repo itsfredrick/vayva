@@ -74,10 +74,19 @@ export const webhookHandler = async (
       changes: Array<{
         value: {
           metadata: { phone_number_id: string };
-          // eslint-disable-next-line @typescript-eslint/no-explicit-any
-          messages?: unknown[];
-          // eslint-disable-next-line @typescript-eslint/no-explicit-any
-          statuses?: unknown[];
+          messages?: Array<{
+            id: string;
+            type?: string;
+            text?: { body: string };
+          }>;
+          statuses?: Array<{
+            id: string;
+            status: string;
+          }>;
+          contacts?: Array<{
+            wa_id: string;
+            profile?: { name: string };
+          }>;
         };
       }>;
     }>;
