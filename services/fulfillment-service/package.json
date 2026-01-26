@@ -12,7 +12,7 @@
         "@fastify/env": "^4.4.0",
         "@vayva/db": "workspace:*",
         "@vayva/shared": "workspace:*",
-        "axios": "^1.13.2",
+        "axios": "^1.13.3",
         "bullmq": "^5.66.5",
         "dotenv": "^16.6.1",
         "fastify": "^5.7.1",
