@@ -14,6 +14,7 @@ export const PERMISSIONS = {
     COMMERCE_VIEW: "commerce:view",
     VIEWER: "viewer",
     METRICS_VIEW: "metrics:view",
+    OPS_VIEW: "ops:view",
     ORDERS_VIEW: "orders:view",
     ORDERS_MANAGE: "orders:manage",
     PRODUCTS_VIEW: "products:view",
