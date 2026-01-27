@@ -7,16 +7,12 @@ export async function POST(
     req: NextRequest,
     { params }: { params: Promise<{ id: string }> }
 ) {
-    const session = await OpsAuthService.getSession();
-    if (!session) {
-        return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    const { user } = await OpsAuthService.requireSession();
+    if (!["OPS_OWNER", "OPS_ADMIN"].includes(user.role)) {
+        return NextResponse.json({ error: "Insufficient permissions" }, { status: 403 });
     }
 
     try {
-        const { user } = await OpsAuthService.requireSession();
-        if (!["OPS_OWNER", "OPS_ADMIN"].includes(user.role)) {
-            return NextResponse.json({ error: "Insufficient permissions" }, { status: 403 });
-        }
 
         const { id: storeId } = await params;
 

@@ -5,16 +5,13 @@ export async function POST(
     req: NextRequest,
     { params }: { params: Promise<{ id: string }> }
 ) {
-    const session = await OpsAuthService.getSession();
-    if (!session) {
-        return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-    }
+    const { user } = await OpsAuthService.requireSession();
 
     try {
         const { id } = await params;
 
         // Log the resolution
-        await OpsAuthService.logEvent(session.user?.id || "unknown", "RISK_FLAG_RESOLVED", {
+        await OpsAuthService.logEvent(user.id, "RISK_FLAG_RESOLVED", {
             flagId: id,
         });
 

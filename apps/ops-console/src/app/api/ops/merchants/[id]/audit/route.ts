@@ -6,10 +6,7 @@ export async function GET(
     req: NextRequest,
     { params }: { params: Promise<{ id: string }> }
 ) {
-    const session = await OpsAuthService.getSession();
-    if (!session) {
-        return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-    }
+    await OpsAuthService.requireSession();
 
     try {
         const { id: storeId } = await params;

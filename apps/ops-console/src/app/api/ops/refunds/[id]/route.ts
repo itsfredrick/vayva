@@ -6,10 +6,7 @@ export async function POST(
     req: NextRequest,
     { params }: { params: Promise<{ id: string }> }
 ) {
-    const session = await OpsAuthService.getSession();
-    if (!session) {
-        return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-    }
+    const { user } = await OpsAuthService.requireSession();
 
     try {
         const { id } = await params;
@@ -26,7 +23,7 @@ export async function POST(
             data: { status: newStatus as any },
         });
 
-        await OpsAuthService.logEvent(session.user?.id || "unknown", `REFUND_${action.toUpperCase()}`, {
+        await OpsAuthService.logEvent(user.id, `REFUND_${action.toUpperCase()}`, {
             returnRequestId: id,
         });
 

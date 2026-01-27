@@ -3,10 +3,7 @@ import { prisma } from "@vayva/db";
 import { OpsAuthService } from "@/lib/ops-auth";
 
 export async function GET(req: NextRequest) {
-    const session = await OpsAuthService.getSession();
-    if (!session) {
-        return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-    }
+    await OpsAuthService.requireSession();
 
     try {
         const { searchParams } = new URL(req.url);

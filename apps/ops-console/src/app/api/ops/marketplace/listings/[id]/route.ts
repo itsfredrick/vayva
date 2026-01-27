@@ -6,10 +6,7 @@ export async function PATCH(
     req: NextRequest,
     { params }: { params: Promise<{ id: string }> }
 ) {
-    const session = await OpsAuthService.getSession();
-    if (!session) {
-        return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-    }
+    const { user } = await OpsAuthService.requireSession();
 
     try {
         const { id } = await params;
@@ -32,7 +29,7 @@ export async function PATCH(
             data: {
                 status: newStatus as any,
                 moderationNote: note || null,
-                moderatedBy: session.user?.id || "ops_admin",
+                moderatedBy: user.id || "ops_admin",
             },
         });
 

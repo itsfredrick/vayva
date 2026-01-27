@@ -3,10 +3,7 @@ import { prisma } from "@vayva/db";
 import { OpsAuthService } from "@/lib/ops-auth";
 
 export async function POST(req: NextRequest) {
-    const session = await OpsAuthService.getSession();
-    if (!session) {
-        return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-    }
+    const { user } = await OpsAuthService.requireSession();
 
     try {
         const { merchantIds, type, template, customMessage } = await req.json();
@@ -77,7 +74,7 @@ export async function POST(req: NextRequest) {
                             payload: {
                                 subject: selectedTemplate.subject,
                                 body: selectedTemplate.body.replace("{{name}}", owner.firstName || "Merchant"),
-                                sentBy: session.user?.email || "ops_admin",
+                                sentBy: user.email || "ops_admin",
                                 sentAt: new Date().toISOString(),
                             },
                         },
@@ -96,7 +93,7 @@ export async function POST(req: NextRequest) {
                             payload: {
                                 subject: selectedTemplate.subject,
                                 body: selectedTemplate.body.replace("{{name}}", owner.firstName || "Merchant"),
-                                sentBy: session.user?.email || "ops_admin",
+                                sentBy: user.email || "ops_admin",
                                 sentAt: new Date().toISOString(),
                             },
                         },
@@ -112,7 +109,7 @@ export async function POST(req: NextRequest) {
         }
 
         // Log the action
-        await OpsAuthService.logEvent(session.user?.id || "unknown", "SEND_BULK_NOTIFICATION", {
+        await OpsAuthService.logEvent(user.id, "SEND_BULK_NOTIFICATION", {
             type,
             template,
             merchantCount: merchantIds.length,

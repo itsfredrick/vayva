@@ -20,10 +20,7 @@ interface MerchantData {
 }
 
 export async function GET() {
-    const session = await OpsAuthService.getSession();
-    if (!session) {
-        return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-    }
+    await OpsAuthService.requireSession();
 
     try {
         const now = new Date();
