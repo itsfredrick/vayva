@@ -205,7 +205,8 @@ export default function IndustriesInteractiveSection(props: {
                   {INDUSTRIES.map((it) => {
                     const isActive = it.key === selected;
                     return (
-                      <button
+                      <Button
+                        variant="ghost"
                         key={it.key}
                         type="button"
                         onClick={() => setSelected(it.key)}
@@ -217,7 +218,7 @@ export default function IndustriesInteractiveSection(props: {
                         }
                       >
                         {it.buttonLabel}
-                      </button>
+                      </Button>
                     );
                   })}
                 </div>

@@ -237,7 +237,8 @@ export function PromoCarousel({ slides, className }: PromoCarouselProps): React.
 
             <div className="mt-5 flex items-center gap-2">
               {data.map((s, i) => (
-                <button
+                <Button
+                  variant="ghost"
                   key={s.id}
                   className={cn(
                     "h-1.5 w-6 rounded-full transition-opacity",

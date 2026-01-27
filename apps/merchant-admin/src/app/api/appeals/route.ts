@@ -124,8 +124,6 @@ export const POST = withVayvaAPI(PERMISSIONS.SETTINGS_EDIT, async (req, { storeI
             data: { settings: nextSettings },
         });
 
-        // TODO: Send notification to ops team about new appeal
-
         return NextResponse.json({
             success: true,
             appeal

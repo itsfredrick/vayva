@@ -7,6 +7,7 @@ export const PERMISSIONS = {
     CAMPAIGNS_SEND: "campaigns.send",
     POLICIES_PUBLISH: "policies.publish",
     AUDIT_VIEW: "audit.view",
+    OPS_VIEW: "ops.view",
     BILLING_MANAGE: "billing.manage",
     ORDERS_MANAGE: "orders.manage",
     PRODUCTS_MANAGE: "products.manage",
