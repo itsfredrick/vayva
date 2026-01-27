@@ -3,10 +3,7 @@ import { prisma } from "@vayva/db";
 import { OpsAuthService } from "@/lib/ops-auth";
 
 export async function GET() {
-    const session = await OpsAuthService.getSession();
-    if (!session) {
-        return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-    }
+    await OpsAuthService.requireSession();
 
     try {
         const records = await prisma.kycRecord.findMany({
@@ -63,10 +60,7 @@ export async function GET() {
 }
 
 export async function POST(req: NextRequest) {
-    const session = await OpsAuthService.getSession();
-    if (!session) {
-        return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-    }
+    const { user } = await OpsAuthService.requireSession();
 
     try {
         const { id, action, notes, rejectionReason } = await req.json();
@@ -92,7 +86,7 @@ export async function POST(req: NextRequest) {
             data: {
                 status: newStatus as any,
                 reviewedAt: new Date(),
-                reviewedBy: session.user?.id || "ops_admin",
+                reviewedBy: user.id || "ops_admin",
                 notes: notes || null,
                 rejectionReason: action === "reject" ? rejectionReason : null,
             },
@@ -116,7 +110,7 @@ export async function POST(req: NextRequest) {
         });
 
         // Log audit event
-        await OpsAuthService.logEvent(session.user?.id || "unknown", `KYC_${action.toUpperCase()}`, {
+        await OpsAuthService.logEvent(user.id, `KYC_${action.toUpperCase()}`, {
             kycRecordId: id,
             storeId: record.storeId,
             storeName: record.store?.name,
