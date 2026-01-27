@@ -17,6 +17,8 @@ import {
   Wrench,
 } from "lucide-react";
 
+import { Button } from "@vayva/ui";
+
 type IndustryKey = "retail" | "food" | "fashion" | "realestate" | "beauty" | "electronics" | "services";
 
 const INDUSTRIES: Array<{
