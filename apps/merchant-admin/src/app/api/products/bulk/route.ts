@@ -7,12 +7,12 @@ export async function PATCH(req: NextRequest) {
     try {
         const session = await getServerSession(authOptions);
         if (!session?.user?.id || !session?.user?.storeId) {
-            return new NextResponse("Unauthorized", { status: 401 });
+            return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
         }
         const body = await req.json();
         const { items }: { items: { id: string, data: any }[] } = body;
         if (!Array.isArray(items) || items.length === 0) {
-            return new NextResponse("No items to update", { status: 400 });
+            return NextResponse.json({ error: "No items to update" }, { status: 400 });
         }
         // 1. Fetch current state for logging
         const ids = items.map(i => i.id);
@@ -58,6 +58,6 @@ export async function PATCH(req: NextRequest) {
     }
     catch (error: any) {
         console.error("Bulk update failed:", error);
-        return new NextResponse("Internal Server Error", { status: 500 });
+        return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
     }
 }

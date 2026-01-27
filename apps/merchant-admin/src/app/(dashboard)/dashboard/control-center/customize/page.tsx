@@ -3,11 +3,11 @@
 
 import React, { useState, useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
-import { Button, Icon } from "@vayva/ui";
-import { useAuth } from "@/context/AuthContext";
+import { Button } from "@vayva/ui";
 import { ThemeCustomizer } from "@/components/control-center/ThemeCustomizer";
 import { toast } from "sonner";
 import { Loader2, Monitor, Smartphone, Globe, ArrowLeft } from "lucide-react";
+import { buildPreviewStorefrontUrl } from "@/lib/storefront/urls";
 
 interface StorefrontDraft {
     store: {
@@ -20,7 +20,6 @@ interface StorefrontDraft {
 }
 
 export default function StorefrontCustomizePage() {
-    const { merchant } = useAuth();
     const router = useRouter();
     const [draft, setDraft] = useState<StorefrontDraft | null>(null);
     const [loading, setLoading] = useState(true);
@@ -34,7 +33,7 @@ export default function StorefrontCustomizePage() {
 
     const loadDraft = async () => {
         try {
-            const res = await fetch("/api/control-center/draft");
+            const res = await fetch("/api/storefront/draft");
             if (!res.ok) throw new Error("Failed to load draft");
             const data = await res.json();
             setDraft(data);
@@ -62,7 +61,7 @@ export default function StorefrontCustomizePage() {
         // 3. Persist to DB (Debounced or on Blur? For now simple patch)
         // Note: Real Shopify debounces this to avoid spamming the DB
         try {
-            await fetch("/api/control-center/draft", {
+            await fetch("/api/storefront/draft", {
                 method: "PATCH",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ themeConfig: newConfig })
@@ -75,7 +74,7 @@ export default function StorefrontCustomizePage() {
     const handlePublish = async () => {
         setIsSaving(true);
         try {
-            const res = await fetch("/api/control-center/publish", { method: "POST" });
+            const res = await fetch("/api/storefront/publish", { method: "POST" });
             if (!res.ok) throw new Error("Publish failed");
             toast.success("Storefront Published Live!");
         } catch (error: any) {
@@ -87,7 +86,7 @@ export default function StorefrontCustomizePage() {
 
     if (loading) return (
         <div className="h-screen flex items-center justify-center">
-            <Loader2 className="animate-spin w-10 h-10 text-gray-200" />
+            <Loader2 className="animate-spin w-10 h-10 text-gray-400" />
         </div>
     );
 
@@ -98,10 +97,12 @@ export default function StorefrontCustomizePage() {
         </div>
     );
 
-    const storefrontUrl = `${process.env.NEXT_PUBLIC_STOREFRONT_URL || "http://localhost:3001"}/?store=${draft.store?.slug}&preview=true`;
+    const storefrontUrl = draft.store?.slug
+        ? buildPreviewStorefrontUrl(draft.store.slug)
+        : "";
 
     return (
-        <div className="h-screen flex flex-col bg-gray-50 overflow-hidden">
+        <div className="h-screen flex flex-col bg-white overflow-hidden">
             {/* Toolbar */}
             <div className="h-14 bg-white border-b border-gray-200 flex items-center justify-between px-4 z-20">
                 <div className="flex items-center gap-4">
@@ -154,7 +155,7 @@ export default function StorefrontCustomizePage() {
                 />
 
                 {/* Preview Area */}
-                <div className="flex-1 bg-gray-100 p-8 flex justify-center overflow-auto relative">
+                <div className="flex-1 bg-gray-50 p-8 flex justify-center overflow-auto relative">
                     <div
                         className={`bg-white shadow-2xl transition-all duration-300 overflow-hidden ${viewMode === "desktop" ? "w-full h-full" : "w-[375px] h-[667px] rounded-[32px] border-[8px] border-black"
                             }`}
@@ -169,7 +170,7 @@ export default function StorefrontCustomizePage() {
 
                     {/* Floating Helper */}
                     <div className="absolute bottom-4 right-4 bg-white/80 backdrop-blur shadow-sm border border-gray-100 px-3 py-1.5 rounded-full text-[10px] font-bold text-gray-400 flex items-center gap-2">
-                        <div className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
+                        <div className="w-2 h-2 rounded-full bg-primary animate-pulse" />
                         Live Synchronized
                     </div>
                 </div>

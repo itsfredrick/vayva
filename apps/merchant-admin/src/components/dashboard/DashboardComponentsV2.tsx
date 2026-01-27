@@ -12,6 +12,7 @@ import {
 } from "lucide-react";
 import Link from "next/link";
 import React from "react";
+import { buildLiveStorefrontUrl, buildPreviewStorefrontUrl } from "@/lib/storefront/urls";
 
 // Types
 export interface DashboardStats {
@@ -100,11 +101,9 @@ interface CustomCSSProperties extends React.CSSProperties {
 
 export const StoreSummaryCard = ({ store, isPublished }: { store: StoreContext; isPublished: boolean }) => {
   const APP_DOMAIN = process.env.NEXT_PUBLIC_APP_DOMAIN || "vayva.app";
-  const storefrontBase = process.env.NEXT_PUBLIC_STOREFRONT_URL ||
-    (process.env.NODE_ENV === "production" ? "https://vayva.store" : "http://localhost:3001");
   const storeUrl = isPublished
-    ? `https://${store.slug}.${APP_DOMAIN}`
-    : `${storefrontBase}?store=${store.slug}`;
+    ? buildLiveStorefrontUrl(store.slug)
+    : buildPreviewStorefrontUrl(store.slug);
 
 
   return (

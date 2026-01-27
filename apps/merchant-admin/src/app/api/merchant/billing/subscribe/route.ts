@@ -9,7 +9,7 @@ export const POST = withVayvaAPI(PERMISSIONS.BILLING_MANAGE, async (request, { s
     const body = await request.json();
     const { plan_slug } = body;
     if (!(PLANS as any)[plan_slug]) {
-        return new NextResponse("Invalid Plan", { status: 400 });
+        return NextResponse.json({ error: "Invalid Plan" }, { status: 400 });
     }
     try {
         const { PaystackService } = await import("@/lib/payment/paystack");
@@ -35,6 +35,6 @@ export const POST = withVayvaAPI(PERMISSIONS.BILLING_MANAGE, async (request, { s
         return NextResponse.json({ ok: true, checkout_url: payment.authorization_url });
     }
     catch (e: any) {
-        return new NextResponse(e.message, { status: 500 });
+        return NextResponse.json({ error: e.message }, { status: 500 });
     }
 });

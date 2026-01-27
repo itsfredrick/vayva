@@ -3,6 +3,7 @@
 import React from "react";
 import Link from "next/link";
 import { Button, Icon } from "@vayva/ui";
+import { Logo } from "@/components/Logo";
 
 export default function CheckoutPage({
   params,
@@ -11,19 +12,12 @@ export default function CheckoutPage({
 }) {
   const { slug } = React.use(params);
   return (
-    <div className="min-h-screen bg-[#142210] text-white">
+    <div className="min-h-screen bg-background text-foreground">
       {/* Simple Checkout Header */}
-      <header className="border-b border-white/5 bg-[#142210]">
+      <header className="border-b border-border bg-background">
         <div className="max-w-5xl mx-auto px-4 h-20 flex items-center justify-between">
-          <Link href={`/store/${slug}`} className="flex items-center gap-2">
-            <div className="w-8 h-8 rounded-lg bg-primary flex items-center justify-center text-black font-bold">
-              V
-            </div>
-            <span className="font-bold text-lg hidden md:block">
-              Vayva Store
-            </span>
-          </Link>
-          <div className="flex items-center gap-2 text-sm text-text-secondary">
+          <Logo href={`/store/${slug}`} size="sm" showText />
+          <div className="flex items-center gap-2 text-sm text-muted-foreground">
             <Icon name="Lock" size={14} /> Secure Checkout
           </div>
         </div>
@@ -34,15 +28,15 @@ export default function CheckoutPage({
         <div className="space-y-8">
           {/* Contact */}
           <section>
-            <h2 className="font-bold text-white text-lg mb-4 flex items-center gap-2">
-              <span className="w-6 h-6 rounded-full bg-primary/20 text-primary flex items-center justify-center text-xs">
+            <h2 className="font-bold text-foreground text-lg mb-4 flex items-center gap-2">
+              <span className="w-6 h-6 rounded-full bg-primary/10 text-primary flex items-center justify-center text-xs">
                 1
               </span>
               Contact Info
             </h2>
             <div className="space-y-4">
               <input
-                className="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-primary placeholder:text-text-secondary/50"
+                className="w-full bg-background border border-border rounded-lg px-4 py-3 text-foreground focus:outline-none focus:border-primary placeholder:text-muted-foreground/70"
                 placeholder="Email address"
               />
               <div className="flex items-center gap-2">
@@ -54,7 +48,7 @@ export default function CheckoutPage({
                 />
                 <label
                   htmlFor="news"
-                  className="text-xs text-text-secondary cursor-pointer"
+                  className="text-xs text-muted-foreground cursor-pointer"
                 >
                   Email me with news and offers
                 </label>
@@ -64,31 +58,31 @@ export default function CheckoutPage({
 
           {/* Delivery */}
           <section>
-            <h2 className="font-bold text-white text-lg mb-4 flex items-center gap-2">
-              <span className="w-6 h-6 rounded-full bg-primary/20 text-primary flex items-center justify-center text-xs">
+            <h2 className="font-bold text-foreground text-lg mb-4 flex items-center gap-2">
+              <span className="w-6 h-6 rounded-full bg-primary/10 text-primary flex items-center justify-center text-xs">
                 2
               </span>
               Delivery Address
             </h2>
             <div className="grid grid-cols-2 gap-4">
               <input
-                className="col-span-2 bg-white/5 border border-white/10 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-primary placeholder:text-text-secondary/50"
+                className="col-span-2 bg-background border border-border rounded-lg px-4 py-3 text-foreground focus:outline-none focus:border-primary placeholder:text-muted-foreground/70"
                 placeholder="Full name"
               />
               <input
-                className="col-span-2 bg-white/5 border border-white/10 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-primary placeholder:text-text-secondary/50"
+                className="col-span-2 bg-background border border-border rounded-lg px-4 py-3 text-foreground focus:outline-none focus:border-primary placeholder:text-muted-foreground/70"
                 placeholder="Address"
               />
               <input
-                className="bg-white/5 border border-white/10 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-primary placeholder:text-text-secondary/50"
+                className="bg-background border border-border rounded-lg px-4 py-3 text-foreground focus:outline-none focus:border-primary placeholder:text-muted-foreground/70"
                 placeholder="City"
               />
-              <select className="bg-white/5 border border-white/10 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-primary text-text-secondary">
+              <select className="bg-background border border-border rounded-lg px-4 py-3 text-foreground focus:outline-none focus:border-primary text-muted-foreground">
                 <option>Lagos</option>
                 <option>Abuja</option>
               </select>
               <input
-                className="col-span-2 bg-white/5 border border-white/10 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-primary placeholder:text-text-secondary/50"
+                className="col-span-2 bg-background border border-border rounded-lg px-4 py-3 text-foreground focus:outline-none focus:border-primary placeholder:text-muted-foreground/70"
                 placeholder="Phone (+234...)"
               />
             </div>
@@ -96,19 +90,19 @@ export default function CheckoutPage({
 
           {/* Payment */}
           <section>
-            <h2 className="font-bold text-white text-lg mb-4 flex items-center gap-2">
-              <span className="w-6 h-6 rounded-full bg-primary/20 text-primary flex items-center justify-center text-xs">
+            <h2 className="font-bold text-foreground text-lg mb-4 flex items-center gap-2">
+              <span className="w-6 h-6 rounded-full bg-primary/10 text-primary flex items-center justify-center text-xs">
                 3
               </span>
               Payment
             </h2>
-            <div className="p-4 rounded-xl border border-white/10 bg-white/5 text-center space-y-3">
+            <div className="p-4 rounded-xl border border-border bg-muted text-center space-y-3">
               <Icon
                 name="CreditCard"
                 size={32}
-                className="mx-auto text-white/50"
+                className="mx-auto text-muted-foreground"
               />
-              <p className="text-sm text-text-secondary">
+              <p className="text-sm text-muted-foreground">
                 After clicking "Pay Now", you will be redirected to Paystack to
                 complete your purchase securely.
               </p>
@@ -118,7 +112,7 @@ export default function CheckoutPage({
           <Link href={`/store/${slug}/order-confirmation`}>
             <Button
               size="lg"
-              className="w-full rounded-full bg-primary text-black hover:bg-primary/90 font-bold h-12"
+              className="w-full rounded-full bg-primary text-primary-foreground hover:bg-primary/90 font-bold h-12"
             >
               Pay Now ₦ 24,000
             </Button>
@@ -126,39 +120,39 @@ export default function CheckoutPage({
         </div>
 
         {/* Right: Summary */}
-        <div className="bg-white/5 rounded-2xl p-6 h-fit border border-white/5">
-          <h3 className="font-bold text-white mb-6">Order Summary</h3>
-          <div className="space-y-4 mb-6 border-b border-white/10 pb-6 max-h-[300px] overflow-y-auto">
+        <div className="bg-card rounded-2xl p-6 h-fit border border-border">
+          <h3 className="font-bold text-foreground mb-6">Order Summary</h3>
+          <div className="space-y-4 mb-6 border-b border-border pb-6 max-h-[300px] overflow-y-auto">
             {[1, 2].map((item: any) => (
               <div key={item} className="flex gap-4">
-                <div className="w-16 h-16 bg-white/5 rounded-lg border border-white/5 relative">
-                  <span className="absolute -top-2 -right-2 w-5 h-5 bg-white/20 rounded-full flex items-center justify-center text-[10px] font-bold text-white">
+                <div className="w-16 h-16 bg-muted rounded-lg border border-border relative">
+                  <span className="absolute -top-2 -right-2 w-5 h-5 bg-muted rounded-full flex items-center justify-center text-[10px] font-bold text-foreground">
                     1
                   </span>
                 </div>
                 <div className="flex-1">
-                  <h4 className="text-sm font-bold text-white">
+                  <h4 className="text-sm font-bold text-foreground">
                     Premium Cotton Tee
                   </h4>
-                  <p className="text-xs text-text-secondary">M / Black</p>
+                  <p className="text-xs text-muted-foreground">M / Black</p>
                 </div>
-                <div className="text-sm font-bold text-white">₦ 12,000</div>
+                <div className="text-sm font-bold text-foreground">₦ 12,000</div>
               </div>
             ))}
           </div>
           <div className="space-y-2 mb-6 text-sm">
             <div className="flex justify-between">
-              <span className="text-text-secondary">Subtotal</span>
-              <span className="text-white">₦ 24,000</span>
+              <span className="text-muted-foreground">Subtotal</span>
+              <span className="text-foreground">₦ 24,000</span>
             </div>
             <div className="flex justify-between">
-              <span className="text-text-secondary">Shipping</span>
-              <span className="text-white">Free</span>
+              <span className="text-muted-foreground">Shipping</span>
+              <span className="text-foreground">Free</span>
             </div>
           </div>
-          <div className="flex justify-between items-center border-t border-white/10 pt-4">
-            <span className="font-bold text-white">Total</span>
-            <span className="text-2xl font-bold text-white">₦ 24,000</span>
+          <div className="flex justify-between items-center border-t border-border pt-4">
+            <span className="font-bold text-foreground">Total</span>
+            <span className="text-2xl font-bold text-foreground">₦ 24,000</span>
           </div>
         </div>
       </main>

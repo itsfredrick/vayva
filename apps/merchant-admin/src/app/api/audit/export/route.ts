@@ -10,7 +10,7 @@ import { logAuditEvent, AuditEventType } from "@/lib/audit";
 export async function POST(req: NextRequest) {
     const session = await getServerSession(authOptions);
     if (!session?.user?.storeId) {
-        return new NextResponse("Unauthorized", { status: 401 });
+        return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
     try {
         const body = await req.json();

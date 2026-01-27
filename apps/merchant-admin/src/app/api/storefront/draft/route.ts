@@ -67,3 +67,35 @@ export async function POST(req: any) {
         return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
     }
 }
+
+export async function PATCH(req: any) {
+    try {
+        const session = await getServerSession(authOptions);
+        if (!session?.user) {
+            return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+        }
+        const storeId = session.user.storeId;
+        if (!storeId) {
+            return NextResponse.json({ error: "No store context" }, { status: 400 });
+        }
+        const body = await req.json();
+        const { themeConfig, sectionConfig, sectionOrder, assets } = body;
+
+        // Build update object with only provided fields
+        const updateData: any = {};
+        if (themeConfig !== undefined) updateData.themeConfig = themeConfig;
+        if (sectionConfig !== undefined) updateData.sectionConfig = sectionConfig;
+        if (sectionOrder !== undefined) updateData.sectionOrder = sectionOrder;
+        if (assets !== undefined) updateData.assets = assets;
+
+        const draft = await prisma.storefrontDraft.update({
+            where: { storeId },
+            data: updateData,
+        });
+        return NextResponse.json({ success: true, draft });
+    }
+    catch (error: any) {
+        console.error("PATCH /api/storefront/draft error:", error);
+        return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
+    }
+}

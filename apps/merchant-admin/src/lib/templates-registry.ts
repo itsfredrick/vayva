@@ -808,6 +808,121 @@ export const TEMPLATE_REGISTRY = {
         layoutKey: "StandardServiceHome",
         onboardingProfile: { prefill: { industryCategory: "services" } },
     },
+    // --- NIGHTLIFE & ENTERTAINMENT TEMPLATES ---
+    "vayva-noir-club": {
+        templateId: "vayva-noir-club",
+        slug: "noir-club-demo",
+        displayName: "Noir Club",
+        category: "Nightlife",
+        industry: "nightlife",
+        businessModel: "Venue",
+        primaryUseCase: "Clubs & Lounges",
+        requiredPlan: "free",
+        defaultTheme: "dark",
+        status: "active",
+        preview: { thumbnailUrl: null, mobileUrl: null, desktopUrl: null },
+        compare: {
+            headline: "Premium nightclub experience.",
+            bullets: [
+                "Immersive dark theme with gold accents",
+                "Table reservation with bottle pre-orders",
+                "VIP section showcase",
+                "Event calendar integration",
+            ],
+            bestFor: ["Nightclubs", "Lounges", "VIP venues"],
+            keyModules: ["Table Booking", "Bottle Menu", "Event Listings", "Guest List"],
+        },
+        routes: ["/", "/events", "/tables", "/bottles", "/reserve"],
+        layoutKey: "NoirClubHome",
+        componentProps: {
+            heroText: "EXPERIENCE\nTHE NIGHT",
+            heroSubtext: "Premium Tables • Bottle Service • Unforgettable Nights"
+        },
+        onboardingProfile: {
+            prefill: {
+                industryCategory: "nightlife",
+                deliveryEnabled: false,
+                paymentsEnabled: true,
+            },
+            requireSteps: ["venue_profile", "table_setup", "bottle_menu"],
+        },
+    },
+    "vayva-pulse-events": {
+        templateId: "vayva-pulse-events",
+        slug: "pulse-events-demo",
+        displayName: "Pulse Events",
+        category: "Nightlife",
+        industry: "nightlife",
+        businessModel: "Promoter",
+        primaryUseCase: "Event Promoters",
+        requiredPlan: "free",
+        defaultTheme: "dark",
+        status: "active",
+        preview: { thumbnailUrl: null, mobileUrl: null, desktopUrl: null },
+        compare: {
+            headline: "Event promotion made powerful.",
+            bullets: [
+                "Bold event showcase with countdown timers",
+                "Multi-tier ticket sales",
+                "Past event gallery for credibility",
+                "Social proof and testimonials",
+            ],
+            bestFor: ["Event promoters", "Party organizers", "Concert promoters"],
+            keyModules: ["Ticket Sales", "Event Gallery", "Countdown Timer", "Social Sharing"],
+        },
+        routes: ["/", "/events/:slug", "/tickets", "/gallery"],
+        layoutKey: "PulseEventsHome",
+        componentProps: {
+            heroText: "UNFORGETTABLE\nNIGHTS",
+            heroSubtext: "Tickets • Events • Experiences"
+        },
+        onboardingProfile: {
+            prefill: {
+                industryCategory: "nightlife",
+                deliveryEnabled: false,
+                paymentsEnabled: true,
+            },
+            requireSteps: ["promoter_profile", "first_event"],
+        },
+    },
+    "vayva-velvet-lounge": {
+        templateId: "vayva-velvet-lounge",
+        slug: "velvet-lounge-demo",
+        displayName: "Velvet Lounge",
+        category: "Nightlife",
+        industry: "nightlife",
+        businessModel: "Venue",
+        primaryUseCase: "Upscale Lounges",
+        requiredPlan: "starter",
+        defaultTheme: "dark",
+        status: "active",
+        preview: { thumbnailUrl: null, mobileUrl: null, desktopUrl: null },
+        compare: {
+            headline: "Luxury lounge sophistication.",
+            bullets: [
+                "Elegant burgundy and gold design",
+                "Interactive table map selection",
+                "Premium bottle showcase",
+                "Dress code and ambiance highlights",
+            ],
+            bestFor: ["Upscale lounges", "Rooftop bars", "Speakeasies"],
+            keyModules: ["Table Map", "Bottle Catalog", "Reservation System", "Dress Code"],
+        },
+        routes: ["/", "/reserve", "/menu", "/events", "/gallery"],
+        layoutKey: "VelvetLoungeHome",
+        componentProps: {
+            heroText: "ELEVATE\nYOUR NIGHT",
+            heroSubtext: "Exclusive Tables • Premium Spirits • Refined Atmosphere"
+        },
+        onboardingProfile: {
+            prefill: {
+                industryCategory: "nightlife",
+                deliveryEnabled: false,
+                paymentsEnabled: true,
+            },
+            requireSteps: ["venue_profile", "table_setup", "bottle_menu"],
+        },
+    },
 };
 export function getNormalizedTemplates() {
     return Object.values(TEMPLATE_REGISTRY).filter((t: any) => t.status !== "deprecated");
@@ -825,6 +940,7 @@ export const TEMPLATE_CATEGORIES = [
     { slug: "marketplace", displayName: "Marketplace", isActive: true },
     { slug: "donations-fundraising", displayName: "Non-profit", isActive: true },
     { slug: "real-estate", displayName: "Real Estate", isActive: true },
+    { slug: "nightlife", displayName: "Nightlife & Entertainment", isActive: true },
 ].map(c => ({
     ...c,
     // Helper to find templates for this category

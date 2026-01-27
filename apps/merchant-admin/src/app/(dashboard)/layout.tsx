@@ -1,27 +1,19 @@
-"use client";
-
+import React from "react";
+import { redirect } from "next/navigation";
+import { getServerSession } from "next-auth";
+import { authOptions } from "@/lib/auth";
 import { AdminShell } from "@/components/admin-shell";
-import { useAuth } from "@/context/AuthContext";
-import { usePathname } from "next/navigation";
 
-export default function DashboardLayout({
-    children,
+export default async function DashboardLayout({
+  children,
 }: {
-    children: React.ReactNode;
-}) {
-    const pathname = usePathname();
+  children: React.ReactNode;
+}): Promise<React.JSX.Element> {
+  const session = await getServerSession(authOptions);
 
-    // Determine if we should show the admin shell
-    // We exclude paths that handle their own shell or are standalone
-    const isExcluded = pathname.startsWith("/dashboard/kitchen"); // Example exclusion
+  if (!session?.user) {
+    redirect("/signin");
+  }
 
-    if (isExcluded) {
-        return <>{children}</>;
-    }
-
-    return (
-        <AdminShell>
-            {children}
-        </AdminShell>
-    );
+  return <AdminShell>{children}</AdminShell>;
 }

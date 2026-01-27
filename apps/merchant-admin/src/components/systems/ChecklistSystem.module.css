@@ -1,5 +1,5 @@
 .progressBar {
-  background-color: #22c55e;
+  background-color: hsl(var(--primary));
   transition: width 0.5s ease;
 }
 

@@ -81,7 +81,7 @@ export const PlanComparisonMobile = () => {
                 {typeof feat.val === "boolean" ? (
                   feat.val ? (
                     <svg
-                      className="w-5 h-5 text-[#22C55E]"
+                      className="w-5 h-5 text-primary"
                       fill="none"
                       stroke="currentColor"
                       viewBox="0 0 24 24"

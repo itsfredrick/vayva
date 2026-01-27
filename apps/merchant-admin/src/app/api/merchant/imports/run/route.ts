@@ -9,7 +9,7 @@ export async function POST(req: any) {
     const { jobId } = await req.json();
     const job = await prisma.importJob.findUnique({ where: { id: jobId } });
     if (!job || job.merchantId !== session.user.storeId)
-        return new NextResponse("Forbidden", { status: 403 });
+        return NextResponse.json({ error: "Forbidden" }, { status: 403 });
     // Idempotency: If already completed, just return. (But 'run' might imply restart if failed? Plan said allow re-run only if failed/pending).
     if (job.status === "completed")
         return NextResponse.json(job);
@@ -39,6 +39,6 @@ export async function POST(req: any) {
             where: { id: jobId },
             data: { status: "failed" },
         });
-        return new NextResponse("Run Failed", { status: 500 });
+        return NextResponse.json({ error: "Run Failed" }, { status: 500 });
     }
 }

@@ -34,7 +34,7 @@ export function ActivationProgress({
         <h3 className="text-sm font-semibold text-black">Setup progress</h3>
         <Button
           onClick={handleDismiss}
-          className="text-[#64748B] hover:text-black text-sm"
+          className="text-muted-foreground hover:text-foreground text-sm"
           aria-label="Dismiss"
         >
           ×
@@ -45,13 +45,13 @@ export function ActivationProgress({
         <div className="flex items-center gap-2">
           <div
             className={`w-4 h-4 rounded-full flex items-center justify-center ${
-              firstOrder ? "bg-[#22C55E]" : "bg-gray-200"
+              firstOrder ? "bg-primary" : "bg-gray-200"
             }`}
           >
             {firstOrder && <span className="text-white text-xs">✓</span>}
           </div>
           <span
-            className={`text-sm ${firstOrder ? "text-black" : "text-[#64748B]"}`}
+            className={`text-sm ${firstOrder ? "text-black" : "text-muted-foreground"}`}
           >
             Receive first order
           </span>
@@ -60,13 +60,13 @@ export function ActivationProgress({
         <div className="flex items-center gap-2">
           <div
             className={`w-4 h-4 rounded-full flex items-center justify-center ${
-              firstPayment ? "bg-[#22C55E]" : "bg-gray-200"
+              firstPayment ? "bg-primary" : "bg-gray-200"
             }`}
           >
             {firstPayment && <span className="text-white text-xs">✓</span>}
           </div>
           <span
-            className={`text-sm ${firstPayment ? "text-black" : "text-[#64748B]"}`}
+            className={`text-sm ${firstPayment ? "text-black" : "text-muted-foreground"}`}
           >
             Record a payment
           </span>
@@ -75,13 +75,13 @@ export function ActivationProgress({
         <div className="flex items-center gap-2">
           <div
             className={`w-4 h-4 rounded-full flex items-center justify-center ${
-              firstCompletion ? "bg-[#22C55E]" : "bg-gray-200"
+              firstCompletion ? "bg-primary" : "bg-gray-200"
             }`}
           >
             {firstCompletion && <span className="text-white text-xs">✓</span>}
           </div>
           <span
-            className={`text-sm ${firstCompletion ? "text-black" : "text-[#64748B]"}`}
+            className={`text-sm ${firstCompletion ? "text-black" : "text-muted-foreground"}`}
           >
             Complete an order
           </span>

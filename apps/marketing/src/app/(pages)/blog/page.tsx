@@ -4,6 +4,7 @@ import Image from "next/image";
 import { Button } from "@vayva/ui";
 import { ArrowRight, Calendar, User, Tag } from "lucide-react";
 import { APP_URL } from "@/lib/constants";
+import { NewsletterForm } from "@/components/blog/NewsletterForm";
 
 export const metadata = {
   title: "Blog | Vayva - Business Growth & WhatsApp Tips",
@@ -120,7 +121,8 @@ export default function BlogPage(): React.JSX.Element {
           {/* Post Grid */}
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
             {POSTS.map((post: any) => (
-              <article
+              <Link
+                href={`/blog/${post.slug}`}
                 key={post.id}
                 className="group flex flex-col bg-white border border-gray-100 rounded-2xl overflow-hidden hover:shadow-xl transition-all duration-300 hover:-translate-y-1"
               >
@@ -170,7 +172,7 @@ export default function BlogPage(): React.JSX.Element {
                     </span>
                   </div>
                 </div>
-              </article>
+              </Link>
             ))}
           </div>
         </div>
@@ -180,17 +182,12 @@ export default function BlogPage(): React.JSX.Element {
       <section className="py-24 px-4 bg-[#0F172A] text-white">
         <div className="max-w-4xl mx-auto text-center">
           <h2 className="text-3xl font-bold mb-6">
-            Get business tips delivered to your WhatsApp
+            Get business tips delivered to your inbox
           </h2>
           <p className="text-gray-400 mb-8 text-lg">
             Join 5,000+ merchants receiving weekly growth strategies.
           </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center max-w-md mx-auto">
-            <input type="email" placeholder="Enter your email address" className="bg-white/10 border border-white/20 rounded-xl px-5 py-3 text-white placeholder:text-gray-500 focus:outline-none focus:border-[#22C55E] flex-1" />
-            <Button className="bg-[#22C55E] hover:bg-[#16A34A] text-white rounded-xl px-8">
-              Subscribe
-            </Button>
-          </div>
+          <NewsletterForm />
         </div>
       </section>
     </div>

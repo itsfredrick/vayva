@@ -13,6 +13,7 @@ export function BottomNav(): React.ReactNode {
 
     // Hide on specific routes if needed (e.g., auth, checkout might want less distraction)
     if (pathname.includes("/auth")) return null;
+    if (pathname.startsWith("/signin") || pathname.startsWith("/signup")) return null;
 
     const toggleCart = () => setIsOpen(!isOpen);
 
@@ -65,7 +66,7 @@ export function BottomNav(): React.ReactNode {
                             <div className="relative">
                                 <Icon className="h-6 w-6" strokeWidth={isActive ? 2.5 : 2} />
                                 {item.badge && item.badge > 0 ? (
-                                    <span className="absolute -top-1 -right-2 bg-red-500 text-white text-[10px] font-bold px-1.5 min-w-[16px] h-4 rounded-full flex items-center justify-center border-2 border-white">
+                                    <span className="absolute -top-1 -right-2 bg-primary text-white text-[10px] font-bold px-1.5 min-w-[16px] h-4 rounded-full flex items-center justify-center border-2 border-white">
                                         {item.badge}
                                     </span>
                                 ) : null}

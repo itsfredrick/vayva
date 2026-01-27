@@ -9,6 +9,6 @@ export async function GET(req: NextRequest, { params }: { params: Promise<{ id: 
     const { id } = await params;
     const job = await prisma.importJob.findUnique({ where: { id } });
     if (!job || job.merchantId !== session.user.storeId)
-        return new NextResponse("Forbidden", { status: 403 });
+        return NextResponse.json({ error: "Forbidden" }, { status: 403 });
     return NextResponse.json(job);
 }

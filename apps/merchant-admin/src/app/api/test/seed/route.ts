@@ -5,7 +5,7 @@ import { hash } from "bcryptjs";
 const IS_TEST_ENV = process.env.NODE_ENV !== "production";
 export async function POST(req: any) {
     if (!IS_TEST_ENV) {
-        return new NextResponse("Not Allowed", { status: 403 });
+        return NextResponse.json({ error: "Not Allowed" }, { status: 403 });
     }
     try {
         const body = await req.json();
@@ -51,6 +51,6 @@ export async function POST(req: any) {
         });
     }
     catch (e: any) {
-        return new NextResponse(e.message, { status: 500 });
+        return NextResponse.json({ error: e.message }, { status: 500 });
     }
 }

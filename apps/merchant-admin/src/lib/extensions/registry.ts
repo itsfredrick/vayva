@@ -82,6 +82,127 @@ export const INTERNAL_EXTENSIONS: ExtensionManifest[] = [
             { id: "automations", label: "Automations", href: "/dashboard/automations", icon: "Zap", parentGroup: "ops" }
         ],
         primaryObject: "workflow"
+    },
+    {
+        id: "vayva.bookings",
+        name: "Appointment Bookings",
+        version: "1.0.0",
+        description: "Calendar-based appointment scheduling for service businesses.",
+        category: "industry",
+        sidebarItems: [
+            { id: "bookings", label: "Bookings", href: "/dashboard/bookings", icon: "Calendar", parentGroup: "sales" },
+            { id: "services", label: "Services", href: "/dashboard/services", icon: "Briefcase", parentGroup: "sales" }
+        ],
+        primaryObject: "service",
+        dashboardWidgets: [
+            { id: "bookings.upcoming", label: "Upcoming Bookings", type: "list_activity", gridCols: 2, icon: "Calendar", apiEndpoint: "/api/bookings/upcoming" }
+        ]
+    },
+    {
+        id: "vayva.education",
+        name: "Course Management",
+        version: "1.0.0",
+        description: "LMS features for online courses and student management.",
+        category: "industry",
+        sidebarItems: [
+            { id: "courses", label: "Courses", href: "/dashboard/courses", icon: "GraduationCap", parentGroup: "sales" },
+            { id: "enrollments", label: "Enrollments", href: "/dashboard/enrollments", icon: "Users", parentGroup: "sales" }
+        ],
+        primaryObject: "course",
+        dashboardWidgets: [
+            { id: "education.enrollments", label: "Active Enrollments", type: "large_stat", gridCols: 1, icon: "Users", apiEndpoint: "/api/education/stats" }
+        ]
+    },
+    {
+        id: "vayva.events",
+        name: "Event Ticketing",
+        version: "1.0.0",
+        description: "Ticket sales and event management for nightlife and events.",
+        category: "industry",
+        sidebarItems: [
+            { id: "events", label: "Events", href: "/dashboard/events", icon: "PartyPopper", parentGroup: "sales" },
+            { id: "tickets", label: "Tickets", href: "/dashboard/tickets", icon: "Ticket", parentGroup: "sales" }
+        ],
+        primaryObject: "event",
+        dashboardWidgets: [
+            { id: "events.tickets_sold", label: "Tickets Sold", type: "large_stat", gridCols: 1, icon: "Ticket", apiEndpoint: "/api/events/stats" }
+        ]
+    },
+    {
+        id: "vayva.b2b",
+        name: "B2B Wholesale",
+        version: "1.0.0",
+        description: "Wholesale catalog, quotes, and volume pricing for B2B businesses.",
+        category: "industry",
+        sidebarItems: [
+            { id: "wholesale", label: "Wholesale Catalog", href: "/dashboard/wholesale-catalog", icon: "Warehouse", parentGroup: "sales" },
+            { id: "quotes", label: "Quotes", href: "/dashboard/quotes", icon: "FileText", parentGroup: "sales" },
+            { id: "leads", label: "Leads", href: "/dashboard/leads", icon: "Users", parentGroup: "sales" }
+        ],
+        primaryObject: "product",
+        dashboardWidgets: [
+            { id: "b2b.pending_quotes", label: "Pending Quotes", type: "large_stat", gridCols: 1, icon: "FileText", apiEndpoint: "/api/quotes/stats" }
+        ]
+    },
+    {
+        id: "vayva.nonprofit",
+        name: "Donation Campaigns",
+        version: "1.0.0",
+        description: "Fundraising campaigns and donor management for nonprofits.",
+        category: "industry",
+        sidebarItems: [
+            { id: "campaigns", label: "Campaigns", href: "/dashboard/campaigns", icon: "Heart", parentGroup: "sales" },
+            { id: "donors", label: "Donors", href: "/dashboard/donors", icon: "Users", parentGroup: "sales" }
+        ],
+        primaryObject: "campaign",
+        dashboardWidgets: [
+            { id: "nonprofit.total_raised", label: "Total Raised", type: "large_stat", gridCols: 1, icon: "Heart", apiEndpoint: "/api/campaigns/stats" }
+        ]
+    },
+    {
+        id: "vayva.automotive",
+        name: "Vehicle Inventory",
+        version: "1.0.0",
+        description: "Vehicle listings and inventory management for dealerships.",
+        category: "industry",
+        sidebarItems: [
+            { id: "vehicles", label: "Vehicles", href: "/dashboard/vehicles", icon: "Car", parentGroup: "sales" },
+            { id: "inquiries", label: "Inquiries", href: "/dashboard/inquiries", icon: "MessageSquare", parentGroup: "sales" }
+        ],
+        primaryObject: "vehicle",
+        dashboardWidgets: [
+            { id: "automotive.active_listings", label: "Active Listings", type: "large_stat", gridCols: 1, icon: "Car", apiEndpoint: "/api/vehicles/stats" }
+        ]
+    },
+    {
+        id: "vayva.travel",
+        name: "Stays & Reservations",
+        version: "1.0.0",
+        description: "Property listings and reservation management for hospitality.",
+        category: "industry",
+        sidebarItems: [
+            { id: "stays", label: "Stays", href: "/dashboard/stays", icon: "Bed", parentGroup: "sales" },
+            { id: "reservations", label: "Reservations", href: "/dashboard/reservations", icon: "CalendarCheck", parentGroup: "sales" }
+        ],
+        primaryObject: "stay",
+        dashboardWidgets: [
+            { id: "travel.upcoming_reservations", label: "Upcoming Reservations", type: "large_stat", gridCols: 1, icon: "CalendarCheck", apiEndpoint: "/api/stays/stats" }
+        ]
+    },
+    {
+        id: "vayva.creative",
+        name: "Creative Portfolio",
+        version: "1.0.0",
+        description: "Project showcase and client management for creative professionals.",
+        category: "industry",
+        sidebarItems: [
+            { id: "projects", label: "Projects", href: "/dashboard/projects", icon: "Palette", parentGroup: "sales" },
+            { id: "clients", label: "Clients", href: "/dashboard/clients", icon: "Users", parentGroup: "sales" }
+        ],
+        primaryObject: "project",
+        dashboardWidgets: [
+            { id: "creative.active_projects", label: "Active Projects", type: "large_stat", gridCols: 1, icon: "Palette", apiEndpoint: "/api/projects/stats" }
+        ]
     }
 ];
 class ExtensionRegistry {
@@ -120,14 +241,27 @@ class ExtensionRegistry {
             return active;
         }
         // Fallback for new stores or pre-migration: derive from industrySlug
-        if (industrySlug === "food") {
-            const ext = this.extensions.get("vayva.kitchen");
-            if (ext) active.push(ext);
-        }
-        if (industrySlug === "real_estate") {
-            const ext = this.extensions.get("vayva.real-estate");
-            if (ext) active.push(ext);
-        }
+        const industryExtensionMap: Record<string, string[]> = {
+            food: ["vayva.kitchen"],
+            real_estate: ["vayva.real-estate"],
+            services: ["vayva.bookings"],
+            education: ["vayva.education"],
+            nightlife_events: ["vayva.events"],
+            b2b_wholesale: ["vayva.b2b"],
+            nonprofit: ["vayva.nonprofit"],
+            automotive: ["vayva.automotive"],
+            travel_hospitality: ["vayva.travel"],
+            creative_portfolio: ["vayva.creative"],
+        };
+
+        const extIds = industryExtensionMap[industrySlug] || [];
+        extIds.forEach((extId) => {
+            const ext = this.extensions.get(extId);
+            if (ext && !active.find(a => a.id === extId)) {
+                active.push(ext);
+            }
+        });
+
         return active;
     }
 }

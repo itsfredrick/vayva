@@ -32,11 +32,16 @@ export async function GET() {
         const disputesCount = await prisma.dispute.count({
             where: { status: "OPENED" },
         });
+
+        // Calculate real dispute ratio based on total orders
+        const totalOrders = await prisma.order.count();
+        const disputeRatio = totalOrders > 0 ? disputesCount / totalOrders : 0;
+
         return NextResponse.json({
             kycCoverage: Math.round(kycCoverageFn),
             amlRiskLevel,
             walletReconciliationStatus,
-            disputeRatio: 0.02, // Placeholder for calculated ratio
+            disputeRatio: Math.round(disputeRatio * 10000) / 10000, // Real calculated ratio
             outstandingActions: {
                 count: disputesCount + highRiskStores,
                 severity: highRiskStores > 0 ? "HIGH" : "MEDIUM",

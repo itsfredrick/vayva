@@ -65,7 +65,7 @@ export function OnboardingProvider({ children }: { children: React.ReactNode }) 
                     }
                 }
                 // If completed, maybe redirect?
-                if (data?.status === 'COMPLETED') {
+                if (data?.status === "COMPLETE") {
                     toast.success("Store setup already completed!");
                     router.push('/dashboard');
                 }
@@ -81,7 +81,7 @@ export function OnboardingProvider({ children }: { children: React.ReactNode }) 
                 data: newState,
                 step: newStep,
                 isComplete,
-                status: isComplete ? "COMPLETED" : "IN_PROGRESS"
+                status: isComplete ? "COMPLETE" : "IN_PROGRESS"
             };
 
             const res = await fetch("/api/onboarding/state", {
@@ -175,7 +175,7 @@ export function OnboardingProvider({ children }: { children: React.ReactNode }) 
     };
 
     const completeOnboarding = async () => {
-        await saveState(formData, "complete", true);
+        await saveState(formData, "review", true);
         toast.success("Welcome to Vayva! Your store is ready.");
         router.refresh(); // Refresh auth session to pick up storeId/onboardingCompleted claim?
     };

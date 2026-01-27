@@ -37,6 +37,7 @@ export const SIDEBAR_GROUPS = [
             { name: "Portfolio", href: "/dashboard/portfolio/overview", icon: "GalleryVerticalEnd" },
             { name: "Kitchen Display", href: "/dashboard/kitchen", icon: "UtensilsCrossed" },
             { name: "Creative Editor", href: "/dashboard/creative-editor", icon: "Megaphone" },
+            { name: "Appeals", href: "/dashboard/appeals", icon: "FileText" },
             MODULE_DEFAULTS.support,
         ].map((m: any) => ({ name: m.label || m.name, href: m.href, icon: m.icon }))
     },
@@ -57,33 +58,70 @@ export const SIDEBAR_GROUPS = [
     }
 ];
 import { extensionRegistry } from "@/lib/extensions/registry";
+
+// Map module keys to default sidebar items
+const MODULE_TO_SIDEBAR: Record<string, { name: string; href: string; icon: string }> = {
+    dashboard: { name: "Dashboard", href: "/dashboard", icon: "LayoutDashboard" },
+    catalog: { name: "Products", href: "/dashboard/products", icon: "Package" },
+    sales: { name: "Orders", href: "/dashboard/orders", icon: "ShoppingBag" },
+    bookings: { name: "Bookings", href: "/dashboard/bookings", icon: "Calendar" },
+    fulfillment: { name: "Fulfillment", href: "/dashboard/fulfillment/shipments", icon: "Truck" },
+    finance: { name: "Finance", href: "/dashboard/finance", icon: "CreditCard" },
+    marketing: { name: "Marketing", href: "/dashboard/marketing/discounts", icon: "Megaphone" },
+    content: { name: "Content", href: "/dashboard/posts", icon: "FileText" },
+    ops_console: { name: "Ops Console", href: "/dashboard/ops-console", icon: "Terminal" },
+    settings: { name: "Settings", href: "/dashboard/settings/profile", icon: "Settings" },
+};
+
 export function getSidebar(industrySlug: any, enabledIds: any) {
     // 1. Get Base Industry Config
     const config = INDUSTRY_CONFIG[industrySlug as keyof typeof INDUSTRY_CONFIG];
     if (!config)
         return SIDEBAR_GROUPS;
-    // 2. Load Extensions for this store
+
+    // 2. Build sidebar items from industry modules
+    const salesItems: any[] = [];
+    const opsItems: any[] = [];
+
+    config.modules.forEach((mod: string) => {
+        if (mod === "dashboard" || mod === "settings") return; // Handled separately
+
+        const defaultItem = MODULE_TO_SIDEBAR[mod];
+        if (!defaultItem) return;
+
+        // Apply industry-specific labels and routes
+        const label = config.moduleLabels?.[mod] || defaultItem.name;
+        const route = config.moduleRoutes?.[mod]?.index || defaultItem.href;
+
+        const item = { name: label, href: route, icon: defaultItem.icon };
+
+        // Group items: catalog/sales/bookings/fulfillment -> Sales, finance/marketing/content -> Ops
+        if (["catalog", "sales", "bookings", "fulfillment", "ops_console"].includes(mod)) {
+            salesItems.push(item);
+        } else {
+            opsItems.push(item);
+        }
+    });
+
+    // 3. Load Extensions for this store
     const activeExtensions = extensionRegistry.getActiveForStore(industrySlug, enabledIds);
-    // 3. Build Sidebar from Extensions
+
+    // 4. Build final sidebar groups
     const groups = [
         { name: "General", items: [{ name: "Dashboard", href: "/dashboard", icon: "LayoutDashboard" }] },
-        { name: "Sales & Marketplace", items: [] },
-        {
-            name: "Operations",
-            items: [
-                { name: "Finance", href: "/dashboard/finance", icon: "CreditCard" },
-                { name: "Blog", href: "/dashboard/blog", icon: "BookOpen" },
-            ]
-        },
+        { name: "Sales & Marketplace", items: salesItems },
+        { name: "Operations", items: opsItems },
         {
             name: "System", items: [
-                { name: "WhatsApp Agent", href: "/dashboard/ai-agent/profile", icon: "MessageSquare" },
+                { name: "WhatsApp Agent", href: "/dashboard/wa-agent", icon: "MessageSquare" },
                 { name: "Control Center", href: "/dashboard/control-center", icon: "LayoutTemplate" },
                 { name: "Roles & Permissions", href: "/dashboard/settings/roles", icon: "ShieldCheck" },
                 { name: "Developer Hub", href: "/dashboard/developer/apps", icon: "Code" },
             ]
         },
     ];
+
+    // 5. Add extension items
     activeExtensions.forEach((ext: any) => {
         ext.sidebarItems?.forEach((item: any) => {
             let groupId = 1; // Default to Sales
@@ -99,7 +137,7 @@ export function getSidebar(industrySlug: any, enabledIds: any) {
         });
     });
 
-    // 4. Move Control Center to the absolute bottom
+    // 6. Move Control Center to the absolute bottom
     const systemGroup = groups.find(g => g.name === "System");
     if (systemGroup) {
         const ccIndex = systemGroup.items.findIndex(i => i.name === "Control Center");

@@ -4,6 +4,8 @@
 import React, { useState, useEffect } from "react";
 import { Button, Icon } from "@vayva/ui";
 import { toast } from "sonner";
+import { DragDropContext, Droppable, Draggable } from "@hello-pangea/dnd";
+import { ProductShowcaseEditor } from "./ProductShowcaseEditor";
 
 interface SchemaField {
     id: string;
@@ -19,15 +21,13 @@ interface ThemeCustomizerProps {
     onReset: () => void;
 }
 
-import { DragDropContext, Droppable, Draggable } from "@hello-pangea/dnd";
-
 /**
  * ThemeCustomizer
  * Renders a form to edit theme settings and a reorderable list of sections.
  */
 export const ThemeCustomizer = ({ draft, onUpdate, onReset }: ThemeCustomizerProps) => {
     const [config, setConfig] = useState<any>(draft.themeConfig || {});
-    const [activeTab, setActiveTab] = useState<"settings" | "sections">("settings");
+    const [activeTab, setActiveTab] = useState<"settings" | "sections" | "products">("settings");
     const template = draft.template;
 
     // Default sections if none exist
@@ -71,17 +71,25 @@ export const ThemeCustomizer = ({ draft, onUpdate, onReset }: ThemeCustomizerPro
                         variant="ghost"
                         size="sm"
                         onClick={() => setActiveTab("settings")}
-                        className={`text-[10px] uppercase font-bold px-3 ${activeTab === "settings" ? "bg-white shadow-sm" : "text-gray-400"}`}
+                        className={`text-[10px] uppercase font-bold px-2 ${activeTab === "settings" ? "bg-white shadow-sm" : "text-gray-400"}`}
                     >
-                        Settings
+                        Theme
                     </Button>
                     <Button
                         variant="ghost"
                         size="sm"
                         onClick={() => setActiveTab("sections")}
-                        className={`text-[10px] uppercase font-bold px-3 ${activeTab === "sections" ? "bg-white shadow-sm" : "text-gray-400"}`}
+                        className={`text-[10px] uppercase font-bold px-2 ${activeTab === "sections" ? "bg-white shadow-sm" : "text-gray-400"}`}
                     >
-                        Sections
+                        Layout
+                    </Button>
+                    <Button
+                        variant="ghost"
+                        size="sm"
+                        onClick={() => setActiveTab("products")}
+                        className={`text-[10px] uppercase font-bold px-2 ${activeTab === "products" ? "bg-white shadow-sm" : "text-gray-400"}`}
+                    >
+                        Products
                     </Button>
                 </div>
                 <Button variant="ghost" size="sm" onClick={onReset} className="h-auto p-1 text-gray-400">
@@ -145,7 +153,7 @@ export const ThemeCustomizer = ({ draft, onUpdate, onReset }: ThemeCustomizerPro
                             )}
                         </div>
                     ))
-                ) : (
+                ) : activeTab === "sections" ? (
                     <div className="space-y-4">
                         <p className="text-[10px] text-gray-400 uppercase font-bold tracking-widest">Homepage Layout</p>
                         <DragDropContext onDragEnd={onDragEnd}>
@@ -187,12 +195,23 @@ export const ThemeCustomizer = ({ draft, onUpdate, onReset }: ThemeCustomizerPro
                             <Icon name="Plus" size={12} className="mr-1" /> Add Section
                         </Button>
                     </div>
+                ) : (
+                    <div className="space-y-4">
+                        <p className="text-[10px] text-gray-400 uppercase font-bold tracking-widest">Featured Products</p>
+                        <ProductShowcaseEditor onConfigChange={(showcaseConfig) => {
+                            handleChange("showcaseConfig", showcaseConfig);
+                        }} />
+                    </div>
                 )}
             </div>
 
             <div className="p-4 border-t border-gray-100 bg-gray-50">
                 <p className="text-[10px] text-gray-400 leading-tight">
-                    {activeTab === "sections" ? "Drag sections to reorder how they appear on your homepage." : "Tip: Changes are saved to draft automatically and visible in the preview window."}
+                    {activeTab === "sections" 
+                        ? "Drag sections to reorder how they appear on your homepage." 
+                        : activeTab === "products"
+                        ? "Choose which products to showcase on your storefront."
+                        : "Tip: Changes are saved to draft automatically and visible in the preview window."}
                 </p>
             </div>
         </div>

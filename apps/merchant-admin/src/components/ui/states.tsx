@@ -30,7 +30,7 @@ export function EmptyState({
           {icon}
         </div>
       )}
-      <h3 className="text-lg font-semibold text-[#0B1220] mb-2">{title}</h3>
+      <h3 className="text-lg font-semibold text-foreground mb-2">{title}</h3>
       <p className="text-sm text-gray-500 max-w-sm mb-6">{description}</p>
       {action}
     </div>
@@ -72,12 +72,12 @@ export function ErrorState({
           />
         </svg>
       </div>
-      <h3 className="text-lg font-semibold text-[#0B1220] mb-2">{title}</h3>
+      <h3 className="text-lg font-semibold text-foreground mb-2">{title}</h3>
       <p className="text-sm text-gray-500 max-w-sm mb-6">{message}</p>
       {onRetry && (
         <Button
           onClick={onRetry}
-          className="px-4 py-2 bg-[#22C55E] text-white rounded-lg text-sm font-medium hover:bg-[#16A34A] transition-colors"
+          className="px-4 py-2 bg-primary text-primary-foreground rounded-lg text-sm font-medium hover:bg-primary/90 transition-colors"
         >
           Try Again
         </Button>
@@ -102,7 +102,7 @@ export function LoadingState({
         className,
       )}
     >
-      <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-[#22C55E] mb-4" />
+      <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mb-4" />
       <p className="text-sm text-gray-500">{message}</p>
     </div>
   );

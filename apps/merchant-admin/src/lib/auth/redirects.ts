@@ -9,7 +9,8 @@ import { OnboardingStatus } from "@vayva/shared";
  */
 export const getAuthRedirect = (user: any, merchant: any) => {
     // 1. Email Verification
-    if (!user.emailVerified) {
+    const emailVerified = user?.isEmailVerified ?? user?.emailVerified ?? false;
+    if (!emailVerified) {
         return `/verify?email=${encodeURIComponent(user.email)}`;
     }
     // 2. Onboarding Status
@@ -23,6 +24,6 @@ export const getAuthRedirect = (user: any, merchant: any) => {
     if (onboardingStatus === OnboardingStatus.COMPLETE) {
         return "/dashboard";
     }
-    // 4. Incomplete -> Resume Onboarding
-    return "/onboarding/resume";
+    // 4. Incomplete -> Onboarding
+    return "/onboarding";
 };

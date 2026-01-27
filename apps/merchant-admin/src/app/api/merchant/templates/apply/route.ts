@@ -13,7 +13,7 @@ export async function POST(req: any) {
     const cookieStore = await cookies();
     const storeId = cookieStore.get("x-active-store-id")?.value;
     if (!storeId)
-        return new NextResponse("No active store session", { status: 400 });
+        return NextResponse.json({ error: "No active store session" }, { status: 400 });
     const { templateId } = await req.json();
     try {
         // 1. Check Gating (Premium Templates)
@@ -43,6 +43,6 @@ export async function POST(req: any) {
         return NextResponse.json({ success: true });
     }
     catch (e: any) {
-        return new NextResponse(e.message, { status: 500 });
+        return NextResponse.json({ error: e.message }, { status: 500 });
     }
 }

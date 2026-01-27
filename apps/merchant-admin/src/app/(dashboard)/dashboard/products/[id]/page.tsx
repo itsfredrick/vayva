@@ -5,9 +5,8 @@ import { useParams, useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { Button, Input, Label, Textarea } from "@vayva/ui";
 import Link from "next/link";
-import { ChevronLeft, Save, Trash, Globe, ExternalLink } from "lucide-react";
+import { ChevronLeft, Save, Trash, Globe } from "lucide-react";
 import { ConfirmDialog } from "@/components/ConfirmDialog";
-import { PublishMarketplaceDialog } from "@/components/products/PublishMarketplaceDialog";
 
 export default function EditProductPage() {
     const params = useParams();
@@ -18,9 +17,7 @@ export default function EditProductPage() {
     const [saving, setSaving] = useState(false);
     const [deleting, setDeleting] = useState(false);
     const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
-    const [showPublishDialog, setShowPublishDialog] = useState(false);
     const [product, setProduct] = useState<any>(null);
-    const [publishing, setPublishing] = useState(false);
 
     // Form State
     const [formData, setFormData] = useState({
@@ -102,14 +99,6 @@ export default function EditProductPage() {
         }
     };
 
-    const handlePublishToMarketplace = () => {
-        setShowPublishDialog(true);
-    };
-
-    const handlePublishSuccess = () => {
-        // Refresh product data to show "Listed" state
-        window.location.reload();
-    };
 
 
     if (loading) {
@@ -216,49 +205,22 @@ export default function EditProductPage() {
                         </p>
                     </div>
 
-                    {/* Marketplace Card */}
+                    {/* Marketplace Coming Soon */}
                     <div className="bg-white p-6 rounded-xl border border-gray-100 shadow-sm space-y-4">
-                        <div className="flex items-center justify-between">
-                            <h2 className="font-semibold text-gray-900 flex items-center gap-2">
-                                <Globe size={16} /> Marketplace
-                            </h2>
-                            {product.MarketplaceListing ? (
-                                <span className="text-[10px] font-bold bg-green-100 text-green-700 px-2 py-0.5 rounded-full uppercase tracking-wide">
-                                    Listed
-                                </span>
-                            ) : (
-                                <span className="text-[10px] font-bold bg-gray-100 text-gray-500 px-2 py-0.5 rounded-full uppercase tracking-wide">
-                                    Not Listed
-                                </span>
-                            )}
+                        <div className="flex items-center gap-2">
+                            <Globe size={16} className="text-gray-400" />
+                            <h2 className="font-semibold text-gray-900">Marketplace</h2>
                         </div>
-
-                        {product.MarketplaceListing ? (
-                            <div className="space-y-3">
-                                <p className="text-sm text-gray-500">
-                                    This product is active on Vayva Marketplace.
+                        <div className="space-y-3">
+                            <div className="bg-blue-50 p-3 rounded-lg border border-blue-100">
+                                <p className="text-sm text-blue-700">
+                                    🚀 <span className="font-medium">Marketplace Coming Soon</span>
                                 </p>
-                                <Link href={`http://localhost:3001/listing/${product.MarketplaceListing.id}`} target="_blank" className="text-sm text-blue-600 font-medium flex items-center gap-1 hover:underline">
-                                    View Listing <ExternalLink size={12} />
-                                </Link>
-                                <Button variant="outline" className="w-full text-xs" size="sm">
-                                    Manage Listing
-                                </Button>
-                            </div>
-                        ) : (
-                            <div className="space-y-3">
-                                <p className="text-sm text-gray-500">
-                                    Reach thousands of new customers by listing this product on Vayva Marketplace.
+                                <p className="text-xs text-blue-600 mt-1">
+                                    We're working on an exciting new marketplace experience. Stay tuned for updates!
                                 </p>
-                                <Button
-                                    className="w-full bg-[#22C55E] hover:bg-[#1ea851] text-white"
-                                    onClick={handlePublishToMarketplace}
-                                    disabled={publishing}
-                                >
-                                    {publishing ? "Publishing..." : "Publish to Marketplace"}
-                                </Button>
                             </div>
-                        )}
+                        </div>
                     </div>
 
                     {/* Image upload functionality will be added in a future update
@@ -285,15 +247,6 @@ export default function EditProductPage() {
                 loading={deleting}
             />
 
-            {product && (
-                <PublishMarketplaceDialog
-                    isOpen={showPublishDialog}
-                    onClose={() => setShowPublishDialog(false)}
-                    productId={product.id}
-                    productPrice={product.price}
-                    onSuccess={handlePublishSuccess}
-                />
-            )}
         </div>
     );
 }

@@ -14,6 +14,7 @@ export async function GET(req: NextRequest, { params }: { params: Promise<{ slug
                 category: true,
                 plan: true,
                 isLive: true,
+                isActive: true,
                 // agent: {
                 //   select: {
                 //     enabled: true,
@@ -32,7 +33,7 @@ export async function GET(req: NextRequest, { params }: { params: Promise<{ slug
                 },
             },
         });
-        if (!store) {
+        if (!store || !store.isActive || !store.isLive) {
             return NextResponse.json({ error: "Store not found" }, { status: 404 });
         }
         return NextResponse.json(store);

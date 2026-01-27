@@ -1,10 +1,10 @@
 "use client";
 
 import { useOnboarding } from "../OnboardingContext";
-import { Button, Input, Label } from "@vayva/ui"; // Removed Select, SelectContent, SelectItem, SelectTrigger, SelectValue
+import { Button, Input, Label } from "@vayva/ui";
 import { useState, useEffect } from "react";
 import { toast } from "sonner";
-import { Loader2, CheckCircle2 } from "lucide-react";
+import { Loader2, CheckCircle2, CreditCard, ArrowRight, ArrowLeft, Shield } from "lucide-react";
 
 interface Bank {
     name: string;
@@ -15,14 +15,13 @@ export default function PaymentStep() {
     const { nextStep, prevStep, updateData, state: rawState, isSaving } = useOnboarding();
     const state = rawState as any;
     const [accountNumber, setAccountNumber] = useState(state.finance?.accountNumber || "");
-    const [selectedBankCode, setSelectedBankCode] = useState(state.finance?.bankCode || ""); // Initialize with existing state
+    const [selectedBankCode, setSelectedBankCode] = useState(state.finance?.bankCode || "");
     const [banks, setBanks] = useState<Bank[]>([]);
-    const [resolvedName, setResolvedName] = useState(state.finance?.accountName || ""); // Initialize with existing state
+    const [resolvedName, setResolvedName] = useState(state.finance?.accountName || "");
     const [resolving, setResolving] = useState(false);
     const [loadingBanks, setLoadingBanks] = useState(true);
 
     useEffect(() => {
-        // Load Banks
         fetch("/api/payments/banks")
             .then(res => res.json())
             .then((data: any) => {
@@ -32,12 +31,10 @@ export default function PaymentStep() {
             .finally(() => setLoadingBanks(false));
     }, []);
 
-    // Auto-resolve when account number is 10 digits and bank selected
     useEffect(() => {
         if (accountNumber.length === 10 && selectedBankCode) {
             resolveAccount();
         } else {
-            // Only clear if it was previously resolved and conditions are no longer met
             if (resolvedName && (accountNumber.length !== 10 || !selectedBankCode)) {
                 setResolvedName("");
             }
@@ -87,21 +84,24 @@ export default function PaymentStep() {
     };
 
     return (
-        <div className="space-y-6">
-            <div className="space-y-1">
-                <h2 className="text-2xl font-bold">Payout Details</h2>
-                <p className="text-gray-500">Where should we send your money?</p>
+        <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500">
+            <div className="space-y-2 text-center">
+                <div className="inline-flex items-center justify-center p-3 bg-vayva-green/10 rounded-2xl mb-2">
+                    <CreditCard className="text-vayva-green h-6 w-6" />
+                </div>
+                <h2 className="text-3xl font-black text-black">Payout Details</h2>
+                <p className="text-gray-500">Where should we send your money? Powered by Paystack.</p>
             </div>
 
-            <div className="space-y-4">
+            <div className="space-y-5">
                 <div className="space-y-2">
-                    <Label htmlFor="bankSelect">Select Bank</Label>
+                    <Label htmlFor="bankSelect" className="text-black font-semibold">Select Bank</Label>
                     <select
                         id="bankSelect"
                         value={(selectedBankCode as any)}
                         onChange={(e: any) => setSelectedBankCode(e.target.value)}
                         disabled={loadingBanks}
-                        className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+                        className="flex h-12 w-full rounded-xl border border-gray-200 bg-white px-4 py-2 text-sm focus:outline-none focus:border-vayva-green focus:ring-2 focus:ring-vayva-green/20 disabled:cursor-not-allowed disabled:opacity-50"
                         title="Select Bank"
                     >
                         <option value="" disabled>Select a bank</option>
@@ -112,7 +112,7 @@ export default function PaymentStep() {
                 </div>
 
                 <div className="space-y-2">
-                    <Label htmlFor="accountNumber">Account Number</Label>
+                    <Label htmlFor="accountNumber" className="text-black font-semibold">Account Number</Label>
                     <div className="relative">
                         <Input
                             id="accountNumber"
@@ -120,35 +120,49 @@ export default function PaymentStep() {
                             value={(accountNumber as any)}
                             onChange={(e: any) => setAccountNumber(e.target.value.replace(/\D/g, '').slice(0, 10))}
                             maxLength={10}
-                            className={resolvedName ? "border-green-500 pr-10" : ""}
+                            className={`h-12 rounded-xl border-gray-200 focus:border-vayva-green focus:ring-vayva-green/20 ${resolvedName ? "border-vayva-green pr-10" : ""}`}
                         />
                         {resolving && (
-                            <div className="absolute right-3 top-2.5">
+                            <div className="absolute right-3 top-3.5">
                                 <Loader2 className="h-5 w-5 animate-spin text-gray-400" />
                             </div>
                         )}
                         {resolvedName && !resolving && (
-                            <div className="absolute right-3 top-2.5">
-                                <CheckCircle2 className="h-5 w-5 text-green-500" />
+                            <div className="absolute right-3 top-3.5">
+                                <CheckCircle2 className="h-5 w-5 text-vayva-green" />
                             </div>
                         )}
                     </div>
                 </div>
 
                 {resolvedName && (
-                    <div className="p-3 bg-green-50 text-green-700 rounded-lg text-sm font-medium border border-green-100 flex items-center justify-between animate-in fade-in slide-in-from-top-2">
-                        <span>Account Name:</span>
-                        <span className="font-bold">{resolvedName}</span>
+                    <div className="p-4 bg-vayva-green/5 text-vayva-green rounded-xl text-sm font-medium border border-vayva-green/20 flex items-center justify-between animate-in fade-in slide-in-from-top-2">
+                        <span className="text-gray-600">Account Name:</span>
+                        <span className="font-bold text-black">{resolvedName}</span>
                     </div>
                 )}
+
+                <div className="flex items-center gap-2 text-xs text-gray-400 bg-gray-50 p-3 rounded-xl">
+                    <Shield className="h-4 w-4 text-vayva-green" />
+                    <span>Your bank details are securely encrypted and processed by Paystack.</span>
+                </div>
             </div>
 
             <div className="pt-4 flex gap-3">
-                <Button variant="outline" onClick={prevStep} disabled={isSaving}>
-                    Back
+                <Button 
+                    variant="outline" 
+                    onClick={prevStep} 
+                    disabled={isSaving}
+                    className="h-12 px-6 rounded-xl border-gray-200 hover:bg-gray-50"
+                >
+                    <ArrowLeft className="mr-2 h-4 w-4" /> Back
                 </Button>
-                <Button className="flex-1" onClick={handleContinue} disabled={!resolvedName || isSaving || resolving}>
-                    Continue
+                <Button 
+                    className="flex-1 h-12 bg-vayva-green hover:bg-vayva-green/90 text-white rounded-xl font-bold" 
+                    onClick={handleContinue} 
+                    disabled={!resolvedName || isSaving || resolving}
+                >
+                    Continue <ArrowRight className="ml-2 h-4 w-4" />
                 </Button>
             </div>
         </div>

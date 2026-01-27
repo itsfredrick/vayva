@@ -35,15 +35,14 @@ const VerifyContent = () => {
     setError(null);
 
     try {
-      // Corrected: AuthService via apiClient expects { email, otp }
       const response = await apiClient.auth.verifyOtp({ email, otp: otpValue });
 
-      if (response.success && response.data) {
-        // We might need to fetch profile after verification if the verification 
-        // response doesn't include full user/token info.
-        // For now, let's assume we need to redirect to signin or dashboard.
-        router.push("/dashboard");
+      if (!response.success || !response.data) {
+        throw new Error("Invalid verification code");
       }
+
+      const { token, user, merchant } = response.data as any;
+      login(token, user, merchant || null);
     } catch (err: any) {
       console.error(err);
       const message = err instanceof Error ? err.message : "Invalid verification code";
@@ -75,6 +74,7 @@ const VerifyContent = () => {
       title="Verify your account"
       subtitle={`We sent a 6-digit code to ${email || "your email"}`}
       showSignInLink
+      leftVariant="support"
     >
       {/* Icon */}
       <div className="flex justify-center mb-6">
@@ -106,7 +106,7 @@ const VerifyContent = () => {
           <Button
             variant="link"
             onClick={handleResend}
-            className="text-sm text-[#0D1D1E] hover:text-black font-medium pl-0 pr-0"
+            className="text-sm text-gray-900 hover:text-black font-medium pl-0 pr-0"
           >
             Resend code
           </Button>
@@ -142,7 +142,7 @@ const VerifyContent = () => {
             variant="link"
             onClick={handleResend}
             disabled={!canResend}
-            className="text-[#0D1D1E] hover:text-black disabled:opacity-50 disabled:cursor-not-allowed font-medium pl-0 pr-0 h-auto"
+            className="text-gray-900 hover:text-black disabled:opacity-50 disabled:cursor-not-allowed font-medium pl-0 pr-0 h-auto"
           >
             request a new one
           </Button>

@@ -9,10 +9,10 @@ export async function POST(req: NextRequest, { params }: { params: Promise<{ id:
     const { id } = await params;
     const { note } = await req.json();
     if (!note)
-        return new NextResponse("Note empty", { status: 400 });
+        return NextResponse.json({ error: "Note empty" }, { status: 400 });
     const conv = await prisma.conversation.findUnique({ where: { id } });
     if (!conv || conv.storeId !== session.user.storeId)
-        return new NextResponse("Forbidden", { status: 403 });
+        return NextResponse.json({ error: "Forbidden" }, { status: 403 });
     const created = await prisma.internalNote.create({
         data: {
             merchantId: conv.storeId,

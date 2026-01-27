@@ -35,7 +35,7 @@ export async function GET() {
             usage: {
                 products: productsCount,
                 orders: ordersCount,
-                storage: "120MB", // Placeholder (Storage calc is expensive)
+                storage: null, // Storage calculation not implemented
             },
             invoices,
         });

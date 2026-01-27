@@ -18,7 +18,7 @@ services:
 
   # WhatsApp API Engine
   evolution-api:
-    image: atendare/evolution-api:latest
+    image: atendai/evolution-api:latest
     container_name: vayva-evolution
     ports:
       - "8080:8080"
@@ -29,7 +29,17 @@ services:
       - DATABASE_CONNECTION_URI=postgresql://${DB_USER}:${DB_PASS}@${DB_HOST}:5432/${DB_NAME}?schema=public
       - DATABASE_CONNECTION_CLIENT_NAME=vayva_evolution
       - REDIS_ENABLED=true
-      - REDIS_URI=redis://${DB_HOST}:6379
+      - REDIS_URI=redis://redis:6379
+    volumes:
+      - evolution_store:/evolution/store
+      - evolution_instances:/evolution/instances
+    restart: always
+
+  redis:
+    image: redis:7-alpine
+    container_name: vayva-redis
+    ports:
+      - "6379:6379"
     restart: always
 
   # Reverse Proxy & SSL Management
@@ -47,3 +57,5 @@ services:
 
 volumes:
   minio_data:
+  evolution_store:
+  evolution_instances:

@@ -98,7 +98,7 @@ export function ChatRoom({ conversationId }: ChatRoomProps): React.JSX.Element {
     }
 
     return (
-        <div className="flex flex-col h-[calc(100vh-60px)] bg-gray-50">
+        <div className="flex flex-col h-[calc(100vh-60px)] bg-white">
             {/* Helper Header for standalone view */}
             <header className="bg-white px-4 py-3 border-b flex items-center gap-3 shadow-sm sticky top-0 z-10">
                 <Link href="/chat" className="p-2 -ml-2 hover:bg-gray-100 rounded-full text-gray-600">
@@ -106,7 +106,7 @@ export function ChatRoom({ conversationId }: ChatRoomProps): React.JSX.Element {
                 </Link>
                 <div>
                     <h2 className="font-bold text-gray-900">{storeName}</h2>
-                    <p className="text-xs text-green-600">Online</p>
+                    <p className="text-xs text-primary">Online</p>
                 </div>
             </header>
 
@@ -143,14 +143,14 @@ export function ChatRoom({ conversationId }: ChatRoomProps): React.JSX.Element {
                         value={inputText}
                         onChange={(e) => setInputText(e.target.value)}
                         placeholder="Type a message..."
-                        className="flex-1 bg-gray-100 border-none rounded-full px-4 py-3 focus:ring-2 focus:ring-black outline-none transition-all"
+                        className="flex-1 bg-gray-100 border-none rounded-full px-4 py-3 focus:ring-2 focus:ring-primary outline-none transition-all"
                     />
                     <Button
                         type="submit"
                         disabled={!inputText.trim() || sending}
                         variant="primary"
                         size="icon"
-                        className="rounded-full w-12 h-12"
+                        className="rounded-full w-12 h-12 glow-primary"
                     >
                         {sending ? <Loader2 size={18} className="animate-spin" /> : <Send size={18} />}
                     </Button>

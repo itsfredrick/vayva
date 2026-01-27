@@ -86,7 +86,8 @@ async function dispatchWhatsApp(phone: any, text: any) {
     const EVOLUTION_API_KEY = process.env.EVOLUTION_API_KEY;
     const instanceName = process.env.EVOLUTION_INSTANCE_NAME || "vayva_global";
     if (!EVOLUTION_API_URL || !EVOLUTION_API_KEY) {
-        return { success: true, mocked: true };
+        console.warn("Trial reminder skipped: WhatsApp API not configured");
+        return { success: false, skipped: true, reason: "WhatsApp API not configured" };
     }
     try {
         const response = await fetch(`${EVOLUTION_API_URL}/message/sendText/${instanceName}`, {

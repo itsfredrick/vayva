@@ -10,9 +10,11 @@ import { useAuth } from "@/context/AuthContext";
 
 // Groupings for UI
 const INDUSTRY_GROUPS = {
-    "Commerce & Retail": ["retail", "fashion", "electronics", "beauty", "grocery", "food", "b2b", "marketplace"],
-    "Services & Knowledge": ["services", "education", "events", "digital"],
-    "Specialized & Other": ["real_estate", "automotive", "travel_hospitality", "blog_media", "creative_portfolio", "nonprofit"],
+    "Commerce & Retail": ["retail", "fashion", "electronics", "beauty", "grocery", "one_product", "b2b", "marketplace"],
+    "Food & Services": ["food", "services"],
+    "Education & Digital": ["education", "events", "digital"],
+    "Entertainment & Hospitality": ["nightlife", "travel_hospitality"],
+    "Specialized": ["real_estate", "automotive", "blog_media", "creative_portfolio", "nonprofit"],
 };
 
 export default function IndustrySettingsPage() {
@@ -91,14 +93,22 @@ export default function IndustrySettingsPage() {
 
                                     <h3 className="font-bold text-lg mb-1">{config.displayName}</h3>
                                     <p className="text-sm text-gray-500 mb-4 line-clamp-2">
-                                        Optimization for {config.displayName}
+                                        {config.description || `Optimized for ${config.displayName.toLowerCase()} businesses`}
                                     </p>
 
-                                    {/* Feature Tags Pilled - Simplified */}
-                                    <div className="flex flex-wrap gap-2">
-                                        {(config as any).features?.bookings && <span className="text-[10px] bg-blue-50 text-blue-700 px-2 py-1 rounded">Bookings</span>}
-                                        {(config as any).features?.delivery && <span className="text-[10px] bg-green-50 text-green-700 px-2 py-1 rounded">Delivery</span>}
-                                        {(config as any).features?.content && <span className="text-[10px] bg-pink-50 text-pink-700 px-2 py-1 rounded">Content</span>}
+                                    {/* Feature Tags */}
+                                    <div className="flex flex-wrap gap-1.5">
+                                        {config.features?.bookings && <span className="text-[10px] bg-blue-50 text-blue-700 px-2 py-0.5 rounded-full">Bookings</span>}
+                                        {config.features?.delivery && <span className="text-[10px] bg-green-50 text-green-700 px-2 py-0.5 rounded-full">Delivery</span>}
+                                        {config.features?.inventory && <span className="text-[10px] bg-amber-50 text-amber-700 px-2 py-0.5 rounded-full">Inventory</span>}
+                                        {config.features?.content && <span className="text-[10px] bg-pink-50 text-pink-700 px-2 py-0.5 rounded-full">Content</span>}
+                                        {config.features?.reservations && <span className="text-[10px] bg-purple-50 text-purple-700 px-2 py-0.5 rounded-full">Reservations</span>}
+                                        {config.features?.tickets && <span className="text-[10px] bg-indigo-50 text-indigo-700 px-2 py-0.5 rounded-full">Tickets</span>}
+                                        {config.features?.quotes && <span className="text-[10px] bg-cyan-50 text-cyan-700 px-2 py-0.5 rounded-full">Quotes</span>}
+                                        {config.features?.donations && <span className="text-[10px] bg-rose-50 text-rose-700 px-2 py-0.5 rounded-full">Donations</span>}
+                                        {config.features?.enrollments && <span className="text-[10px] bg-teal-50 text-teal-700 px-2 py-0.5 rounded-full">Enrollments</span>}
+                                        {config.features?.viewings && <span className="text-[10px] bg-orange-50 text-orange-700 px-2 py-0.5 rounded-full">Viewings</span>}
+                                        {config.features?.testDrives && <span className="text-[10px] bg-slate-100 text-slate-700 px-2 py-0.5 rounded-full">Test Drives</span>}
                                     </div>
                                 </div>
                             );

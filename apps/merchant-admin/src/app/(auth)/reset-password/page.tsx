@@ -49,6 +49,7 @@ const ResetPasswordContent = () => {
         title="Invalid reset link"
         subtitle="This password reset link is invalid or has expired"
         showSignInLink
+        leftVariant="support"
       >
         <div className="text-center">
           <div className="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-6">
@@ -58,10 +59,7 @@ const ResetPasswordContent = () => {
             />
           </div>
           <Link href="/forgot-password">
-            <Button
-              variant="primary"
-              className="w-full !bg-black !text-white !rounded-xl !h-12"
-            >
+            <Button variant="primary" className="w-full rounded-xl h-12">
               Request new link
             </Button>
           </Link>
@@ -75,10 +73,11 @@ const ResetPasswordContent = () => {
       title="Set new password"
       subtitle="Choose a strong password for your account"
       showSignInLink
+      leftVariant="support"
     >
       <div className="flex justify-center mb-6">
-        <div className="w-16 h-16 bg-black/5 rounded-full flex items-center justify-center">
-          <Icon name="Lock" className="w-8 h-8 text-black" />
+        <div className="w-16 h-16 bg-muted rounded-full flex items-center justify-center">
+          <Icon name="Lock" className="w-8 h-8 text-foreground" />
         </div>
       </div>
 
@@ -145,7 +144,7 @@ const ResetPasswordContent = () => {
           type="submit"
           variant="primary"
           size="lg"
-          className="w-full !bg-black !text-white hover:!bg-black/90 !rounded-xl !h-12"
+          className="w-full rounded-xl h-12"
           disabled={loading || password !== confirmPassword || !password}
         >
           {loading ? (
@@ -162,7 +161,7 @@ const ResetPasswordContent = () => {
       <div className="mt-6 text-center">
         <Link
           href="/signin"
-          className="text-sm text-[#0D1D1E] hover:text-black font-medium transition-colors inline-flex items-center gap-1"
+          className="text-sm text-gray-900 hover:text-black font-medium transition-colors inline-flex items-center gap-1"
         >
           <Icon name="ArrowLeft" className="w-4 h-4" />
           Back to sign in

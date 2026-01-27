@@ -43,7 +43,7 @@ export function CartItemRow({ item }: CartItemProps): React.JSX.Element {
     };
 
     return (
-        <div className="flex gap-4 py-4 border-b last:border-0 hover:bg-gray-50/50 transition-colors">
+        <div className="flex gap-4 py-4 border-b last:border-0 hover:bg-gray-100/50 transition-colors">
             <div className="h-20 w-20 relative bg-gray-100 rounded-lg overflow-hidden shrink-0 border border-gray-100">
                 {image ? (
                     <Image
@@ -99,7 +99,7 @@ export function CartItemRow({ item }: CartItemProps): React.JSX.Element {
                         onClick={() => removeItem(item.id)}
                         variant="ghost"
                         size="icon"
-                        className="text-red-500 hover:text-red-700 h-6 w-6 p-1"
+                        className="text-gray-500 hover:text-black hover:bg-gray-100 h-6 w-6 p-1"
                         disabled={isLoading}
                         aria-label="Remove item"
                         title="Remove item"

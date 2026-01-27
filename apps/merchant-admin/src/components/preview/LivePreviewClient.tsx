@@ -153,7 +153,7 @@ export function LivePreviewClient({
                 className={cn(
                   "rounded-full border px-3 py-1 text-sm h-auto",
                   c === activeCategory
-                    ? "bg-black text-white hover:bg-black/90 hover:text-white"
+                    ? "bg-primary text-primary-foreground hover:bg-primary/90 hover:text-primary-foreground"
                     : "hover:bg-gray-100",
                 )}
               >
@@ -170,7 +170,7 @@ export function LivePreviewClient({
 
   return (
     <div>
-      <div className="sticky top-0 z-50 border-b bg-white/80 backdrop-blur">
+      <div className="sticky top-0 z-50 border-b border-border bg-background/80 backdrop-blur">
         <div className="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-3 px-4 py-3">
           <div className="min-w-0">
             <div className="truncate text-sm font-medium">
@@ -183,7 +183,7 @@ export function LivePreviewClient({
 
           <div className="flex flex-wrap items-center gap-2">
             {/* Live / Images */}
-            <div className="flex overflow-hidden rounded-lg border bg-white">
+            <div className="flex overflow-hidden rounded-lg border border-border bg-background">
               <Button
                 variant="ghost"
                 onClick={() => setMode("live")}
@@ -191,8 +191,8 @@ export function LivePreviewClient({
                 className={cn(
                   "px-3 py-2 text-sm h-auto rounded-none",
                   mode === "live"
-                    ? "bg-black text-white hover:bg-black/90 hover:text-white"
-                    : "hover:bg-gray-100",
+                    ? "bg-primary text-primary-foreground hover:bg-primary/90 hover:text-primary-foreground"
+                    : "hover:bg-muted",
                   !supportsLive && "opacity-50",
                 )}
               >
@@ -204,8 +204,8 @@ export function LivePreviewClient({
                 className={cn(
                   "px-3 py-2 text-sm h-auto rounded-none",
                   mode === "images"
-                    ? "bg-black text-white hover:bg-black/90 hover:text-white"
-                    : "hover:bg-gray-100",
+                    ? "bg-primary text-primary-foreground hover:bg-primary/90 hover:text-primary-foreground"
+                    : "hover:bg-muted",
                 )}
               >
                 Images
@@ -213,15 +213,15 @@ export function LivePreviewClient({
             </div>
 
             {/* Desktop / Mobile */}
-            <div className="flex overflow-hidden rounded-lg border bg-white">
+            <div className="flex overflow-hidden rounded-lg border border-border bg-background">
               <Button
                 variant="ghost"
                 onClick={() => setDevice("desktop")}
                 className={cn(
                   "px-3 py-2 text-sm h-auto rounded-none",
                   device === "desktop"
-                    ? "bg-black text-white hover:bg-black/90 hover:text-white"
-                    : "hover:bg-gray-100",
+                    ? "bg-primary text-primary-foreground hover:bg-primary/90 hover:text-primary-foreground"
+                    : "hover:bg-muted",
                 )}
               >
                 Desktop
@@ -232,8 +232,8 @@ export function LivePreviewClient({
                 className={cn(
                   "px-3 py-2 text-sm h-auto rounded-none",
                   device === "mobile"
-                    ? "bg-black text-white hover:bg-black/90 hover:text-white"
-                    : "hover:bg-gray-100",
+                    ? "bg-primary text-primary-foreground hover:bg-primary/90 hover:text-primary-foreground"
+                    : "hover:bg-muted",
                 )}
               >
                 Mobile
@@ -242,15 +242,15 @@ export function LivePreviewClient({
 
             {/* Home / Collection / Product */}
             {mode === "live" && supportsLive && (
-              <div className="flex overflow-hidden rounded-lg border bg-white">
+              <div className="flex overflow-hidden rounded-lg border border-border bg-background">
                 <Button
                   variant="ghost"
                   onClick={() => setView("home")}
                   className={cn(
                     "px-3 py-2 text-sm h-auto rounded-none",
                     view === "home"
-                      ? "bg-black text-white hover:bg-black/90 hover:text-white"
-                      : "hover:bg-gray-100",
+                      ? "bg-primary text-primary-foreground hover:bg-primary/90 hover:text-primary-foreground"
+                      : "hover:bg-muted",
                   )}
                 >
                   Home
@@ -261,8 +261,8 @@ export function LivePreviewClient({
                   className={cn(
                     "px-3 py-2 text-sm h-auto rounded-none",
                     view === "collection"
-                      ? "bg-black text-white hover:bg-black/90 hover:text-white"
-                      : "hover:bg-gray-100",
+                      ? "bg-primary text-primary-foreground hover:bg-primary/90 hover:text-primary-foreground"
+                      : "hover:bg-muted",
                   )}
                 >
                   Collection
@@ -273,8 +273,8 @@ export function LivePreviewClient({
                   className={cn(
                     "px-3 py-2 text-sm h-auto rounded-none",
                     view === "product"
-                      ? "bg-black text-white hover:bg-black/90 hover:text-white"
-                      : "hover:bg-gray-100",
+                      ? "bg-primary text-primary-foreground hover:bg-primary/90 hover:text-primary-foreground"
+                      : "hover:bg-muted",
                   )}
                 >
                   Product
@@ -284,7 +284,7 @@ export function LivePreviewClient({
 
             <Link
               href={`/dashboard/control-center/templates?intent=${slug}`}
-              className="flex-1 bg-gray-900 text-white text-center py-2.5 rounded-lg text-sm font-medium hover:bg-gray-800 transition-colors"
+              className="flex-1 bg-primary text-primary-foreground text-center py-2.5 rounded-lg text-sm font-medium hover:bg-primary/90 transition-colors"
             >
               Customize in Builder
             </Link>

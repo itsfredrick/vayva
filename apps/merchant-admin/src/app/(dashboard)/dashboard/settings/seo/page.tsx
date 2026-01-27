@@ -12,9 +12,8 @@ export default async function SeoSettingsPage() {
     const session = await getServerSession(authOptions);
     const user = session?.user;
 
-    if (!user || !user.storeId) {
-        redirect("/signin");
-    }
+    if (!user) redirect("/signin");
+    if (!user.storeId) redirect("/onboarding");
 
     const store = await prisma.store.findUnique({
         where: { id: user.storeId },

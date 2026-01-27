@@ -5,8 +5,11 @@ import { prisma } from "@/lib/prisma";
 import { validateRow } from "@/lib/imports/csv";
 // Test fetching file content from URL
 const fetchFileContent = async (url: any) => {
-    // In dev, if url is "demo://...", return placeholder CSV
+    // Demo URLs only allowed in development
     if (url.startsWith("demo://")) {
+        if (process.env.NODE_ENV === "production") {
+            throw new Error("Demo URLs not allowed in production");
+        }
         return `Name,Price,Stock,Category
 T-Shirt,₦ 5000,10,Clothes
 Jeans,,5,Clothes
@@ -26,7 +29,7 @@ export async function POST(req: any) {
     const { jobId } = await req.json();
     const job = await prisma.importJob.findUnique({ where: { id: jobId } });
     if (!job || job.merchantId !== user.storeId)
-        return new NextResponse("Forbidden", { status: 403 });
+        return NextResponse.json({ error: "Forbidden" }, { status: 403 });
     try {
         await prisma.importJob.update({
             where: { id: jobId },
@@ -73,6 +76,6 @@ export async function POST(req: any) {
             where: { id: jobId },
             data: { status: "failed", summary: { error: e.message } },
         });
-        return new NextResponse("Validation Failed", { status: 500 });
+        return NextResponse.json({ error: "Validation Failed" }, { status: 500 });
     }
 }

@@ -7,30 +7,19 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/com
 import { TrendingUp, Users, DollarSign, ArrowRight, ShieldCheck, Zap } from "lucide-react";
 
 export const MarketplaceMetrics = () => {
-    const stats = [
-        { label: "Active Vendors", value: "12", icon: Users, color: "text-blue-600", bg: "bg-blue-50" },
-        { label: "Platform GMV", value: "₦1.2M", icon: TrendingUp, color: "text-green-600", bg: "bg-green-50" },
-        { label: "Owed Commission", value: "₦45,000", icon: DollarSign, color: "text-purple-600", bg: "bg-purple-50" },
-        { label: "Pending Payouts", value: "4", icon: Zap, color: "text-orange-600", bg: "bg-orange-50" },
-    ];
-
     return (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-            {stats.map((stat, i) => (
-                <Card key={i} className="border-none shadow-sm bg-white/50 backdrop-blur-sm">
-                    <CardContent className="p-6">
-                        <div className="flex items-center gap-4">
-                            <div className={`p-3 rounded-2xl ${stat.bg} ${stat.color}`}>
-                                <stat.icon size={20} />
-                            </div>
-                            <div>
-                                <p className="text-xs font-bold text-gray-400 uppercase tracking-widest">{stat.label}</p>
-                                <h3 className="text-2xl font-black text-gray-900">{stat.value}</h3>
-                            </div>
-                        </div>
-                    </CardContent>
-                </Card>
-            ))}
+        <div className="bg-blue-50 border border-blue-100 rounded-xl p-6">
+            <div className="flex items-center gap-3">
+                <div className="bg-blue-100 p-2 rounded-lg">
+                    <Zap className="h-5 w-5 text-blue-600" />
+                </div>
+                <div>
+                    <h3 className="font-semibold text-blue-900">Marketplace Coming Soon</h3>
+                    <p className="text-sm text-blue-700 mt-1">
+                        We're working on an exciting new marketplace experience. Stay tuned for updates!
+                    </p>
+                </div>
+            </div>
         </div>
     );
 };

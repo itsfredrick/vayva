@@ -32,10 +32,12 @@ export type IndustrySlug =
     | "nonprofit"
     | "education"
     | "marketplace"
-    | "one_product";
+    | "one_product"
+    | "nightlife";
 
 export interface IndustryConfig {
     displayName: string;
+    description?: string;
     primaryObject: string;
     modules: string[];
     moduleLabels?: Record<string, string>;
@@ -43,6 +45,20 @@ export interface IndustryConfig {
     dashboardWidgets: any[];
     forms: Record<string, any>;
     onboardingSteps: string[];
+    features?: {
+        bookings?: boolean;
+        delivery?: boolean;
+        content?: boolean;
+        inventory?: boolean;
+        reservations?: boolean;
+        tickets?: boolean;
+        quotes?: boolean;
+        donations?: boolean;
+        enrollments?: boolean;
+        viewings?: boolean;
+        testDrives?: boolean;
+    };
+    aiTools?: string[];
 }
 
 export interface Store {

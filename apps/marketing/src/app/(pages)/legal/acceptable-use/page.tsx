@@ -5,24 +5,21 @@ const legalDocuments = [
   { title: "Legal Hub", href: "/legal" },
   { title: "Terms of Service", href: "/legal/terms" },
   { title: "Privacy Policy", href: "/legal/privacy" },
-  {
-    title: "Acceptable Use Policy",
-    href: "/legal/acceptable-use",
-    active: true,
-  },
+  { title: "Acceptable Use Policy", href: "/legal/acceptable-use", active: true },
   { title: "Prohibited Items", href: "/legal/prohibited-items" },
   { title: "Refund Policy", href: "/legal/refund-policy" },
   { title: "KYC & Compliance", href: "/legal/kyc-safety" },
   { title: "Manage Cookies", href: "/legal/cookies" },
+  { title: "EULA", href: "/legal/eula" },
 ];
 
 export default function AcceptableUsePolicyPage(): React.JSX.Element {
   return (
     <div className="min-h-screen bg-white">
       <div className="max-w-7xl mx-auto px-6 py-16">
-        <div className="flex gap-12">
+        <div className="flex flex-col lg:flex-row gap-8 lg:gap-12">
           {/* Sidebar Navigation */}
-          <aside className="w-64 flex-shrink-0">
+          <aside className="w-full lg:w-64 flex-shrink-0 hidden lg:block">
             <nav className="sticky top-24">
               <h3 className="text-sm font-semibold text-gray-900 mb-4">
                 Legal Documents
@@ -52,7 +49,7 @@ export default function AcceptableUsePolicyPage(): React.JSX.Element {
 
             <div className="not-prose mb-8 text-sm text-gray-600">
               <p>
-                <strong>Last Updated:</strong> January 1, 2025
+                <strong>Effective Date:</strong> February 1, 2026
               </p>
               <p>
                 <strong>Status:</strong> Enforceable
@@ -139,7 +136,7 @@ export default function AcceptableUsePolicyPage(): React.JSX.Element {
 
             <h2>4. Reporting</h2>
             <p>
-              report violations of this policy to <strong>abuse@vayva.ng</strong>.
+              Report violations of this policy to <strong>support@vayva.ng</strong>.
             </p>
           </main>
         </div>

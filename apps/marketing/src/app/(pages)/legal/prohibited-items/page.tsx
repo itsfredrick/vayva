@@ -10,6 +10,7 @@ const legalDocuments = [
   { title: "Refund Policy", href: "/legal/refund-policy" },
   { title: "KYC & Compliance", href: "/legal/kyc-safety" },
   { title: "Manage Cookies", href: "/legal/cookies" },
+  { title: "EULA", href: "/legal/eula" },
 ];
 
 export default function ProhibitedItemsPage(): React.JSX.Element {
@@ -47,7 +48,7 @@ export default function ProhibitedItemsPage(): React.JSX.Element {
 
             <div className="not-prose mb-8 text-sm text-gray-600">
               <p>
-                <strong>Last Updated:</strong> January 1, 2025
+                <strong>Effective Date:</strong> February 1, 2026
               </p>
               <p>
                 <strong>Jurisdiction:</strong> Federal Republic of Nigeria
@@ -229,9 +230,9 @@ export default function ProhibitedItemsPage(): React.JSX.Element {
               please report them immediately:
             </p>
             <p>
-              <strong>Report Prohibited Items:</strong> abuse@vayva.shop
+              <strong>Report Prohibited Items:</strong> support@vayva.ng
               <br />
-              <strong>Security Issues:</strong> security@vayva.shop
+              <strong>Security Issues:</strong> support@vayva.ng
             </p>
             <p>Include as much detail as possible, including:</p>
             <ul>
@@ -250,7 +251,7 @@ export default function ProhibitedItemsPage(): React.JSX.Element {
               listing it:
             </p>
             <p>
-              <strong>Compliance Questions:</strong> compliance@vayva.shop
+              <strong>Compliance Questions:</strong> support@vayva.ng
             </p>
             <p>
               We will review your inquiry and provide guidance. However, the
@@ -274,11 +275,7 @@ export default function ProhibitedItemsPage(): React.JSX.Element {
             <p>
               <strong>Vayva Tech (operating in Nigeria)</strong>
               <br />
-              Email: legal@vayva.shop
-              <br />
-              Compliance: compliance@vayva.shop
-              <br />
-              Support: support@vayva.shop
+              Email: support@vayva.ng
             </p>
 
             <div className="not-prose mt-12 pt-8 border-t border-gray-200">

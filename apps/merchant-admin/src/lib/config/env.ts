@@ -4,7 +4,7 @@ const envSchema = z.object({
     DATABASE_URL: z.string().url(),
     REDIS_URL: z.string().url().optional().default("redis://localhost:6379"),
     // App URLs
-    NEXT_PUBLIC_APP_URL: z.string().url(),
+    NEXT_PUBLIC_APP_URL: z.string().url().optional(),
     NEXT_PUBLIC_APP_DOMAIN: z.string().default("vayva.ng"),
     // Auth / Secrets
     NEXTAUTH_SECRET: z.string().min(1),
@@ -49,4 +49,13 @@ if (!_env.success) {
         throw new Error("Invalid environment variables");
     }
 }
-export const env = _env.success ? _env.data : process.env;
+
+const parsed = _env.success ? _env.data : (process.env as unknown as z.infer<typeof envSchema>);
+
+const vercelUrl = process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : undefined;
+const resolvedAppUrl = parsed.NEXT_PUBLIC_APP_URL || parsed.NEXTAUTH_URL || vercelUrl || "https://vayva.ng";
+
+export const env = {
+    ...parsed,
+    NEXT_PUBLIC_APP_URL: resolvedAppUrl,
+} as typeof parsed & { NEXT_PUBLIC_APP_URL: string };

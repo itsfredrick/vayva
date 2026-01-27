@@ -14,6 +14,12 @@ export default function CheckoutPage(): React.JSX.Element {
     const router = useRouter();
     const [isPlacingOrder, setIsPlacingOrder] = useState(false);
 
+    useEffect(() => {
+        if (!isLoading && !session?.user) {
+            router.push(`/signin?callbackUrl=${encodeURIComponent("/checkout")}`);
+        }
+    }, [isLoading, router, session?.user]);
+
     // Redirect if empty
     useEffect(() => {
         if (!isLoading && (!cart || cart.items.length === 0)) {
@@ -78,7 +84,7 @@ export default function CheckoutPage(): React.JSX.Element {
 
                 {/* Sidebar - Summary */}
                 <div className="lg:col-span-1">
-                    <div className="bg-gray-50 p-6 rounded-xl border sticky top-24">
+                    <div className="bg-white p-6 rounded-xl border border-gray-100 sticky top-24">
                         <h2 className="text-xl font-semibold mb-4">Order Summary</h2>
 
                         <div className="space-y-3 text-sm border-b pb-4 mb-4">
@@ -99,12 +105,12 @@ export default function CheckoutPage(): React.JSX.Element {
 
                         {/* Deposit Breakdown */}
                         {cart.payableAmount < grandTotal && (
-                            <div className="bg-blue-50 border border-blue-100 rounded-lg p-3 mb-6">
-                                <div className="flex justify-between text-sm mb-1 text-blue-800">
+                            <div className="bg-primary/10 border border-primary/20 rounded-lg p-3 mb-6">
+                                <div className="flex justify-between text-sm mb-1 text-foreground">
                                     <span>Pay Today</span>
                                     <span className="font-bold">₦{Number(cart.payableAmount).toLocaleString()}</span>
                                 </div>
-                                <div className="flex justify-between text-xs text-blue-600">
+                                <div className="flex justify-between text-xs text-muted-foreground">
                                     <span>Pay Later</span>
                                     <span>₦{(grandTotal - cart.payableAmount).toLocaleString()}</span>
                                 </div>
@@ -112,7 +118,7 @@ export default function CheckoutPage(): React.JSX.Element {
                         )}
 
                         <Button
-                            className="w-full h-12 text-base"
+                            className="w-full h-12 text-base glow-primary"
                             onClick={handlePlaceOrder}
                             disabled={isPlacingOrder}
                         >
@@ -133,7 +139,7 @@ export default function CheckoutPage(): React.JSX.Element {
 function CheckoutGroup({ group }: { group: SplitCartGroup }): React.JSX.Element {
     return (
         <div className="border rounded-xl bg-white overflow-hidden">
-            <div className="bg-gray-50 px-6 py-3 border-b">
+            <div className="bg-white px-6 py-3 border-b border-gray-100">
                 <h3 className="font-semibold flex items-center gap-2">
                     Package from {group.storeName}
                 </h3>

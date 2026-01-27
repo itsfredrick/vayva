@@ -58,10 +58,19 @@ export async function POST(request: Request) {
             }
             catch (apiError: any) {
                 console.error("Evolution API Network Error:", apiError);
-                // Fallback/Mock for Dev if API is unreachable
+                return NextResponse.json({ 
+                    error: "WhatsApp API unreachable", 
+                    details: apiError?.message || "Network error" 
+                }, { status: 503 });
             }
         }
         else {
+            console.warn("WhatsApp receipt skipped: EVOLUTION_API_URL not configured");
+            return NextResponse.json({ 
+                success: false, 
+                skipped: true, 
+                message: "WhatsApp not configured" 
+            });
         }
         return NextResponse.json({ success: true, message: "Receipt sent" });
     }

@@ -20,49 +20,82 @@ import {
   Terminal,
   DollarSign,
   BadgeCheck,
+  TrendingUp,
+  Store,
+  ShoppingBag,
+  CreditCard,
+  Bell,
+  Activity,
+  Globe,
+  Package,
+  Truck,
+  BarChart3,
+  Settings,
+  Wallet,
+  FileText,
+  Shield,
+  Zap,
 } from 'lucide-react';
 
 const MENU_ITEMS = [
   {
-    header: "Overview", items: [
+    header: "Command Center", items: [
       { label: "Dashboard", href: "/ops", icon: LayoutDashboard },
-      { label: "System Health", href: "/ops/health", icon: ShieldAlert },
+      { label: "Platform Analytics", href: "/ops/analytics", icon: BarChart3 },
+      { label: "System Health", href: "/ops/health", icon: Activity },
+      { label: "Alerts & Incidents", href: "/ops/alerts", icon: Bell },
     ]
   },
   {
-    header: "Operations", items: [
-      { label: "Orders & Payments", href: "/ops/orders", icon: Receipt },
-      { label: "Deliveries", href: "/ops/deliveries", icon: AlertTriangle },
-      { label: "Webhooks", href: "/ops/webhooks", icon: Scale },
-    ]
-  },
-  {
-    header: "Merchants", items: [
-      { label: "Merchants", href: "/ops/merchants", icon: Users },
+    header: "Merchant Admin", items: [
+      { label: "All Merchants", href: "/ops/merchants", icon: Store },
+      { label: "Onboarding", href: "/ops/onboarding", icon: Users },
       { label: "KYC Queue", href: "/ops/kyc", icon: BadgeCheck },
+      { label: "Subscriptions", href: "/ops/subscriptions", icon: CreditCard },
+      { label: "Payouts", href: "/ops/payouts", icon: Wallet },
+      { label: "Industry Breakdown", href: "/ops/industries", icon: Globe },
     ]
   },
   {
-    header: "Support", items: [
-      { label: "Inbox", href: "/ops/inbox", icon: MessageSquare },
+    header: "Marketplace", items: [
+      { label: "Listings Moderation", href: "/ops/marketplace/listings", icon: Package },
+      { label: "Seller Verification", href: "/ops/marketplace/sellers", icon: BadgeCheck },
+      { label: "Categories", href: "/ops/marketplace/categories", icon: FileText },
+      { label: "Templates & Apps", href: "/ops/marketplace", icon: ShoppingBag },
     ]
   },
   {
-    header: "Governance", items: [
-      { label: "Audit Log", href: "/ops/audit", icon: ShieldAlert },
-      { label: "Disputes", href: "/ops/disputes", icon: DollarSign },
-      { label: "Security", href: "/ops/security", icon: ShieldAlert },
+    header: "Transactions", items: [
+      { label: "Orders", href: "/ops/orders", icon: Receipt },
+      { label: "Payments", href: "/ops/payments", icon: DollarSign },
+      { label: "Deliveries", href: "/ops/deliveries", icon: Truck },
+      { label: "Webhooks", href: "/ops/webhooks", icon: Zap },
     ]
   },
   {
-    header: "Rescue", items: [
+    header: "Support & Disputes", items: [
+      { label: "Support Inbox", href: "/ops/inbox", icon: MessageSquare },
+      { label: "Disputes", href: "/ops/disputes", icon: Scale },
+      { label: "Refund Requests", href: "/ops/refunds", icon: DollarSign },
+    ]
+  },
+  {
+    header: "Governance & Security", items: [
+      { label: "Audit Log", href: "/ops/audit", icon: FileText },
+      { label: "Security Center", href: "/ops/security", icon: Shield },
+      { label: "Risk Flags", href: "/ops/risk", icon: AlertTriangle },
+    ]
+  },
+  {
+    header: "Emergency", items: [
       { label: "Rescue Console", href: "/ops/rescue", icon: AlertTriangle },
     ]
   },
   {
-    header: "Admin", items: [
-      { label: "Team", href: "/ops/users", icon: Users },
+    header: "Administration", items: [
+      { label: "Ops Team", href: "/ops/users", icon: Users },
       { label: "System Tools", href: "/ops/tools", icon: Terminal },
+      { label: "Settings", href: "/ops/settings", icon: Settings },
     ]
   },
 ];

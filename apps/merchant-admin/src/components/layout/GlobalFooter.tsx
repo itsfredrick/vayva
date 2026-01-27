@@ -2,6 +2,7 @@
 
 import React from "react";
 import Link from "next/link";
+import { Logo } from "@/components/Logo";
 
 export function GlobalFooter() {
   return (
@@ -12,9 +13,7 @@ export function GlobalFooter() {
           {/* Column 1 - Brand */}
           <div className="lg:col-span-1">
             <div className="mb-6">
-              <Link href="/" className="inline-block">
-                <span className="text-2xl font-bold text-black border-b-2 border-vayva-green">Vayva</span>
-              </Link>
+              <Logo size="sm" showText href="/" />
             </div>
 
             <p className="text-sm text-gray-400 leading-relaxed mb-6">
@@ -29,7 +28,7 @@ export function GlobalFooter() {
                 href="https://twitter.com/vayva"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-gray-400 hover:text-[#22C55E] transition-colors"
+                className="text-gray-400 hover:text-primary transition-colors"
                 aria-label="X (Twitter)"
               >
                 <svg
@@ -50,7 +49,7 @@ export function GlobalFooter() {
                 href="https://linkedin.com/company/vayva"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-gray-400 hover:text-[#22C55E] transition-colors"
+                className="text-gray-400 hover:text-primary transition-colors"
                 aria-label="LinkedIn"
               >
                 <svg
@@ -79,7 +78,7 @@ export function GlobalFooter() {
                 href="https://instagram.com/vayva"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-gray-400 hover:text-[#22C55E] transition-colors"
+                className="text-gray-400 hover:text-primary transition-colors"
                 aria-label="Instagram"
               >
                 <svg
@@ -120,7 +119,7 @@ export function GlobalFooter() {
                 href="https://facebook.com/vayva"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-gray-400 hover:text-[#22C55E] transition-colors"
+                className="text-gray-400 hover:text-primary transition-colors"
                 aria-label="Facebook"
               >
                 <svg
@@ -342,7 +341,7 @@ export function GlobalFooter() {
               Contact{" "}
               <a
                 href="mailto:support@vayva.ng"
-                className="text-[#22C55E] hover:underline"
+                className="text-primary hover:underline"
               >
                 support@vayva.ng
               </a>{" "}

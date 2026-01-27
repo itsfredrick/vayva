@@ -10,6 +10,7 @@ import {
   CheckCircle,
 } from "lucide-react";
 import { Button } from "@vayva/ui";
+import { BrandLogo } from "@/components/BrandLogo";
 
 export default function MarketplaceHome(): React.JSX.Element {
   const [email, setEmail] = useState("");
@@ -43,23 +44,20 @@ export default function MarketplaceHome(): React.JSX.Element {
       {/* Header */}
       <header className="flex items-center justify-between px-6 py-6 max-w-7xl mx-auto w-full">
         <div className="flex items-center gap-2 font-bold text-xl tracking-tight">
-          <div className="w-8 h-8 bg-black rounded-lg flex items-center justify-center text-white">
-            <ShoppingBag size={18} />
-          </div>
-          Vayva Market
+          <BrandLogo priority className="h-7" />
         </div>
         <Link
           href="/"
           className="text-sm font-medium hover:opacity-70 transition-opacity flex items-center gap-1"
         >
-          Back to Vayva <ArrowRight size={14} />
+          Back to Marketplace <ArrowRight size={14} />
         </Link>
       </header>
 
       {/* Hero Content */}
       <main className="flex-1 flex flex-col items-center justify-center px-4 py-12 md:py-20 text-center max-w-4xl mx-auto w-full">
         <div className="mb-6 inline-flex items-center gap-2 px-3 py-1 bg-gray-100 rounded-full text-xs font-semibold uppercase tracking-wider text-gray-600">
-          <span className="w-2 h-2 rounded-full bg-black animate-pulse"></span>
+          <span className="w-2 h-2 rounded-full bg-primary animate-pulse"></span>
           Coming Soon
         </div>
 
@@ -69,14 +67,14 @@ export default function MarketplaceHome(): React.JSX.Element {
         </h1>
 
         <p className="text-lg md:text-xl text-gray-500 max-w-2xl mb-12 leading-relaxed">
-          Sell faster with Vayva. Experience a Jiji-style marketplace powered by
+          Sell faster. Experience a Jiji-style marketplace powered by
           automated AI agents that handle inquiries, negotiations, and sales for
           you 24/7.
         </p>
 
         {/* Feature Grid */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 w-full max-w-3xl mb-16 text-left">
-          <div className="p-6 bg-gray-50 rounded-2xl border border-gray-100">
+          <div className="p-6 bg-white rounded-2xl border border-gray-100 shadow-sm">
             <div className="w-10 h-10 bg-white rounded-lg border border-gray-200 flex items-center justify-center mb-4 shadow-sm">
               <Zap size={20} />
             </div>
@@ -85,16 +83,16 @@ export default function MarketplaceHome(): React.JSX.Element {
               Our agents handle price haggling and Q&A so you don't have to.
             </p>
           </div>
-          <div className="p-6 bg-gray-50 rounded-2xl border border-gray-100">
+          <div className="p-6 bg-white rounded-2xl border border-gray-100 shadow-sm">
             <div className="w-10 h-10 bg-white rounded-lg border border-gray-200 flex items-center justify-center mb-4 shadow-sm">
               <ShoppingBag size={20} />
             </div>
             <h3 className="font-bold mb-2">Unified Inventory</h3>
             <p className="text-sm text-gray-500">
-              Sync products from your Vayva Storefront instantly.
+              Sync products from your storefront instantly.
             </p>
           </div>
-          <div className="p-6 bg-gray-50 rounded-2xl border border-gray-100">
+          <div className="p-6 bg-white rounded-2xl border border-gray-100 shadow-sm">
             <div className="w-10 h-10 bg-white rounded-lg border border-gray-200 flex items-center justify-center mb-4 shadow-sm">
               <CheckCircle size={20} />
             </div>
@@ -109,16 +107,16 @@ export default function MarketplaceHome(): React.JSX.Element {
         <div className="w-full max-w-md bg-white border border-gray-200 rounded-2xl p-6 md:p-8 shadow-xl shadow-gray-100">
           {success ? (
             <div className="text-center py-10">
-              <div className="mx-auto w-16 h-16 bg-green-100 text-green-600 rounded-full flex items-center justify-center mb-4">
+              <div className="mx-auto w-16 h-16 bg-primary/10 text-primary rounded-full flex items-center justify-center mb-4">
                 <CheckCircle size={32} />
               </div>
               <h3 className="text-2xl font-bold mb-2">You're on the list!</h3>
               <p className="text-gray-500 mb-6">
-                We'll notify you as soon as early access opens.
+                We'll notify you as soon as the marketplace launches.
               </p>
               <Link href="/">
                 <Button className="w-full py-3 font-bold rounded-lg">
-                  Return to Vayva
+                  Return to Marketplace
                 </Button>
               </Link>
             </div>
@@ -136,7 +134,7 @@ export default function MarketplaceHome(): React.JSX.Element {
                 <input
                   type="email"
                   required
-                  className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent transition-all"
+                  className="w-full px-4 py-3 bg-white border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all"
                   placeholder="you@example.com"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
@@ -150,7 +148,7 @@ export default function MarketplaceHome(): React.JSX.Element {
                 <input
                   type="tel"
                   required
-                  className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent transition-all"
+                  className="w-full px-4 py-3 bg-white border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all"
                   placeholder="+234..."
                   value={phone}
                   onChange={(e) => setPhone(e.target.value)}
@@ -163,7 +161,7 @@ export default function MarketplaceHome(): React.JSX.Element {
                 </label>
                 <select
                   id="interest"
-                  className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent transition-all"
+                  className="w-full px-4 py-3 bg-white border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all"
                   value={interest}
                   onChange={(e) => setInterest(e.target.value)}
                 >
@@ -189,17 +187,17 @@ export default function MarketplaceHome(): React.JSX.Element {
       {/* Footer */}
       <footer className="py-8 text-center text-sm text-gray-400 border-t border-gray-100 w-full">
         <div className="max-w-7xl mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-4">
-          <p>&copy; {new Date().getFullYear()} Vayva. All rights reserved.</p>
+          <p>&copy; {new Date().getFullYear()} Marketplace. All rights reserved.</p>
           <div className="flex gap-6">
             <Link
               href="/legal/privacy"
-              className="hover:text-black transition-colors"
+              className="hover:text-gray-600 transition-colors"
             >
               Privacy Policy
             </Link>
             <Link
               href="/legal/terms"
-              className="hover:text-black transition-colors"
+              className="hover:text-gray-600 transition-colors"
             >
               Terms of Service
             </Link>

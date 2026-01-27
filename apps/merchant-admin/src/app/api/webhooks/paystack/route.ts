@@ -12,17 +12,17 @@ export async function POST(req: any) {
     const secret = process.env.PAYSTACK_SECRET_KEY;
     if (!secret) {
         console.error("PAYSTACK_SECRET_KEY is not configured");
-        return new NextResponse("Webhook Misconfigured", { status: 500 });
+        return NextResponse.json({ error: "Webhook Misconfigured" }, { status: 500 });
     }
     let event;
     try {
         event = JSON.parse(rawBody);
     }
     catch (e: any) {
-        return new NextResponse("Invalid JSON", { status: 400 });
+        return NextResponse.json({ error: "Invalid JSON" }, { status: 400 });
     }
     if (!verifyPaystackSignature(rawBody, signature, secret)) {
-        return new NextResponse("Invalid Signature", { status: 401 });
+        return NextResponse.json({ error: "Invalid Signature" }, { status: 401 });
     }
     const eventType = event.event;
     const data = event.data;
@@ -134,10 +134,10 @@ export async function POST(req: any) {
                 console.error("Receipt logic error", receiptErr);
             }
         }
-        return new NextResponse("OK", { status: 200 });
+        return NextResponse.json({ success: true }, { status: 200 });
     }
     catch (e: any) {
         console.error("Webhook ingestion error:", e);
-        return new NextResponse("Error", { status: 500 });
+        return NextResponse.json({ error: "Webhook processing error" }, { status: 500 });
     }
 }

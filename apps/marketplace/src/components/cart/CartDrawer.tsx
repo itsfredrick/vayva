@@ -60,7 +60,7 @@ export function CartDrawer(): React.JSX.Element {
                         {/* Render Groups */}
                         {cart.groups.map((group: SplitCartGroup) => (
                             <div key={group.storeId} className="border rounded-xl overflow-hidden bg-white shadow-sm">
-                                <div className="bg-gray-50 px-4 py-2 border-b flex items-center gap-2">
+                                <div className="bg-white px-4 py-2 border-b border-gray-100 flex items-center gap-2">
                                     <Store className="h-4 w-4 text-gray-500" />
                                     <span className="font-semibold text-sm">{group.storeName}</span>
                                 </div>
@@ -71,8 +71,8 @@ export function CartDrawer(): React.JSX.Element {
                                     ))}
                                 </div>
 
-                                <div className="bg-blue-50/30 px-4 py-3 border-t flex justify-between items-center text-sm">
-                                    <div className="flex items-center gap-2 text-blue-800">
+                                <div className="bg-primary/10 px-4 py-3 border-t border-primary/20 flex justify-between items-center text-sm">
+                                    <div className="flex items-center gap-2 text-foreground">
                                         <Truck className="h-3 w-3" />
                                         <span>Delivery Fee</span>
                                     </div>
@@ -83,7 +83,7 @@ export function CartDrawer(): React.JSX.Element {
                     </div>
 
                     {/* Footer Fixed */}
-                    <div className="border-t bg-gray-50 mt-auto -mx-6 px-6 py-4 space-y-4">
+                    <div className="border-t border-gray-100 bg-white mt-auto -mx-6 px-6 py-4 space-y-4">
                         <div className="space-y-2 text-sm">
                             <div className="flex justify-between text-muted-foreground">
                                 <span>Subtotal</span>
@@ -101,7 +101,7 @@ export function CartDrawer(): React.JSX.Element {
 
                         <Button
                             onClick={handleCheckout}
-                            className="w-full h-12 text-base font-semibold bg-primary hover:bg-primary/90"
+                            className="w-full h-12 text-base font-semibold glow-primary"
                         >
                             Checkout Now
                         </Button>

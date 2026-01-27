@@ -14,6 +14,7 @@ const legalDocuments = [
   { title: "Refund Policy", href: "/legal/refund-policy" },
   { title: "KYC & Compliance", href: "/legal/kyc-safety" },
   { title: "Manage Cookies", href: "/legal/cookies", active: true },
+  { title: "EULA", href: "/legal/eula" },
 ];
 
 export default function ManageCookiesPage(): React.JSX.Element {
@@ -355,9 +356,7 @@ export default function ManageCookiesPage(): React.JSX.Element {
               <p>
                 <strong>Vayva Tech</strong>
                 <br />
-                Email: privacy@vayva.ng
-                <br />
-                Support: support@vayva.ng
+                Email: support@vayva.ng
               </p>
             </div>
 

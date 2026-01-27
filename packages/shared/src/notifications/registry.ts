@@ -7,7 +7,10 @@ export type NotificationType =
   | "INTEGRATION_DISCONNECTED_WHATSAPP"
   | "INTEGRATION_DISCONNECTED_PAYMENTS"
   | "INTEGRATION_DISCONNECTED_DELIVERY"
-  | "WEBHOOK_FAILURE_SPIKE";
+  | "WEBHOOK_FAILURE_SPIKE"
+  | "WARNING_ISSUED"
+  | "RESTRICTION_APPLIED"
+  | "APPEAL_STATUS_UPDATED";
 
 export interface NotificationMetadata {
   title: string;
@@ -97,5 +100,29 @@ export const NOTIFICATION_REGISTRY: Record<
     ctaLink: "/settings/integrations/webhooks",
     category: "system",
     severity: "warning",
+  },
+  WARNING_ISSUED: {
+    title: "Account Warning",
+    message: "A warning has been issued for your account: {{reason}}",
+    ctaLabel: "View Details",
+    ctaLink: "/appeals",
+    category: "account",
+    severity: "warning",
+  },
+  RESTRICTION_APPLIED: {
+    title: "Account Restriction Applied",
+    message: "Your account has been restricted: {{restriction}}. Contact support for assistance.",
+    ctaLabel: "Submit Appeal",
+    ctaLink: "/appeals",
+    category: "account",
+    severity: "critical",
+  },
+  APPEAL_STATUS_UPDATED: {
+    title: "Appeal Status Update",
+    message: "Your appeal has been updated: {{status}}. {{notes}}",
+    ctaLabel: "View Appeal",
+    ctaLink: "/appeals",
+    category: "account",
+    severity: "info",
   },
 };

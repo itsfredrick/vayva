@@ -8,7 +8,7 @@ import { redirect } from "next/navigation";
 
 export default async function OrdersPage({ searchParams }: { searchParams: { tab?: string } }): Promise<React.JSX.Element> {
     const session = await getServerSession(authOptions);
-    if (!session?.user) return redirect("/api/auth/signin");
+    if (!session?.user) return redirect("/signin?callbackUrl=/orders");
 
     const tab = searchParams.tab || "orders";
 
@@ -47,7 +47,7 @@ export default async function OrdersPage({ searchParams }: { searchParams: { tab
             {tab === "orders" && (
                 <>
                     {orders.length === 0 ? (
-                        <div className="text-center py-20 bg-gray-50 rounded-xl border">
+                        <div className="text-center py-20 bg-white rounded-xl border border-gray-100">
                             <Package className="mx-auto h-12 w-12 text-gray-300 mb-4" />
                             <h3 className="text-lg font-medium">No orders yet</h3>
                             <p className="text-muted-foreground mb-6">Start shopping to see your orders here.</p>
@@ -67,8 +67,8 @@ export default async function OrdersPage({ searchParams }: { searchParams: { tab
                                         <div>
                                             <div className="flex items-center gap-2 mb-1">
                                                 <span className="font-semibold">{order.orderNumber}</span>
-                                                <span className={`text-[10px] px-2 py-0.5 rounded-full font-bold uppercase ${order.status === 'DELIVERED' ? 'bg-green-100 text-green-700' :
-                                                    order.status === 'CANCELLED' ? 'bg-red-100 text-red-700' :
+                                                <span className={`text-[10px] px-2 py-0.5 rounded-full font-bold uppercase ${order.status === 'DELIVERED' ? 'bg-primary/10 text-primary' :
+                                                    order.status === 'CANCELLED' ? 'bg-gray-100 text-gray-700' :
                                                         'bg-gray-100 text-gray-700'
                                                     }`}>
                                                     {order.status}
@@ -98,7 +98,7 @@ export default async function OrdersPage({ searchParams }: { searchParams: { tab
             {tab === "requests" && (
                 <>
                     {requests.length === 0 ? (
-                        <div className="text-center py-20 bg-gray-50 rounded-xl border">
+                        <div className="text-center py-20 bg-white rounded-xl border border-gray-100">
                             <HelpCircle className="mx-auto h-12 w-12 text-gray-300 mb-4" />
                             <h3 className="text-lg font-medium">No requests yet</h3>
                             <p className="text-muted-foreground mb-6">Need something from China? Submit a request.</p>
@@ -117,10 +117,9 @@ export default async function OrdersPage({ searchParams }: { searchParams: { tab
                                         <div className="flex-1">
                                             <div className="flex items-center gap-2 mb-1">
                                                 <span className="font-semibold">{request.productName}</span>
-                                                <span className={`text-[10px] px-2 py-0.5 rounded-full font-bold uppercase ${request.status === 'PENDING' ? 'bg-yellow-100 text-yellow-700' :
-                                                        request.status === 'QUOTED' ? 'bg-green-100 text-green-700' :
-                                                            request.status === 'REJECTED' ? 'bg-red-100 text-red-700' :
-                                                                'bg-blue-100 text-blue-700'
+                                                <span className={`text-[10px] px-2 py-0.5 rounded-full font-bold uppercase ${request.status === 'QUOTED' ? 'bg-primary/10 text-primary' :
+                                                        request.status === 'REJECTED' ? 'bg-gray-100 text-gray-700' :
+                                                            'bg-gray-100 text-gray-700'
                                                     }`}>
                                                     {request.status}
                                                 </span>
@@ -138,14 +137,14 @@ export default async function OrdersPage({ searchParams }: { searchParams: { tab
                                         {request.status === 'QUOTED' && (
                                             <Link
                                                 href={`/sourcing/request/${request.id}`}
-                                                className="text-sm font-bold text-blue-600 hover:underline"
+                                                className="text-sm font-bold text-primary hover:underline"
                                             >
                                                 View Quote
                                             </Link>
                                         )}
                                     </div>
                                     {request.adminNote && (
-                                        <div className="mt-3 p-3 bg-gray-50 rounded text-sm text-gray-600 italic">
+                                        <div className="mt-3 p-3 bg-white rounded border border-gray-100 text-sm text-gray-600 italic">
                                             "{request.adminNote}"
                                         </div>
                                     )}

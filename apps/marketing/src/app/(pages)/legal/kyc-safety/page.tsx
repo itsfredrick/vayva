@@ -137,7 +137,7 @@ export default function KycSafetyPage(): React.JSX.Element {
             Have questions about your data safety?
           </p>
           <div className="flex justify-center gap-4">
-            <Link href="mailto:compliance@vayva.ng">
+            <Link href="mailto:support@vayva.ng">
               <Button
                 variant="outline"
                 size="sm"

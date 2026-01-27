@@ -1,7 +1,7 @@
 export const SENDER_IDENTITIES = {
     SECURITY: { email: "no-reply@vayva.ng", name: "Vayva Security" },
     BILLING: { email: "billing@vayva.ng", name: "Vayva Billing" },
-    TEAM: { email: "team@vayva.ng", name: "Vayva Team" },
+    TEAM: { email: "no-reply@vayva.ng", name: "Vayva Team" },
     SUPPORT: { email: "support@vayva.ng", name: "Vayva Support" },
 };
 export const REPLY_TO_ADDRESSES = {

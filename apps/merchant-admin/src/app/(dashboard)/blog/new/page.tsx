@@ -6,7 +6,8 @@ import { redirect } from "next/navigation";
 
 export default async function NewBlogPage() {
     const session = await getServerSession(authOptions);
-    if (!session?.user?.storeId) redirect("/signin");
+    if (!session?.user) redirect("/signin");
+    if (!session.user.storeId) redirect("/onboarding");
 
     const createAction = createBlogPost.bind(null, session.user.storeId);
 

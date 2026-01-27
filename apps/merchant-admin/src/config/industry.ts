@@ -23,14 +23,18 @@ export const INDUSTRY_CONFIG: Record<IndustrySlug, IndustryConfig> = {
     // --- RETAIL & COMMERCE ---
     retail: {
         displayName: "General Retail",
+        description: "Sell physical products online with inventory, orders, and shipping.",
         primaryObject: "product",
         modules: COMMERCE_MODULES,
         dashboardWidgets: COMMERCE_WIDGETS,
         forms: { product: { ...BASE_PRODUCT_FORM } },
         onboardingSteps: ["store_profile", "payments", "shipping", "first_product"],
+        features: { inventory: true, delivery: true },
+        aiTools: ["get_inventory", "get_delivery_quote", "get_promotions"],
     },
     fashion: {
         displayName: "Fashion & Apparel",
+        description: "Clothing, accessories, and fashion items with size guides and variants.",
         primaryObject: "product",
         modules: COMMERCE_MODULES,
         dashboardWidgets: COMMERCE_WIDGETS,
@@ -43,9 +47,12 @@ export const INDUSTRY_CONFIG: Record<IndustrySlug, IndustryConfig> = {
             }
         },
         onboardingSteps: ["store_profile", "size_charts", "first_product"],
+        features: { inventory: true, delivery: true },
+        aiTools: ["get_inventory", "get_delivery_quote", "get_promotions"],
     },
     electronics: {
         displayName: "Electronics",
+        description: "Gadgets, devices, and tech products with specs and warranty info.",
         primaryObject: "product",
         modules: COMMERCE_MODULES,
         dashboardWidgets: COMMERCE_WIDGETS,
@@ -58,9 +65,12 @@ export const INDUSTRY_CONFIG: Record<IndustrySlug, IndustryConfig> = {
             }
         },
         onboardingSteps: ["store_profile", "first_product"],
+        features: { inventory: true, delivery: true },
+        aiTools: ["get_inventory", "get_delivery_quote", "get_promotions"],
     },
     beauty: {
         displayName: "Beauty & Cosmetics",
+        description: "Skincare, makeup, and beauty products with ingredients and shades.",
         primaryObject: "product",
         modules: COMMERCE_MODULES,
         dashboardWidgets: COMMERCE_WIDGETS,
@@ -73,9 +83,12 @@ export const INDUSTRY_CONFIG: Record<IndustrySlug, IndustryConfig> = {
             }
         },
         onboardingSteps: ["store_profile", "first_product"],
+        features: { inventory: true, delivery: true },
+        aiTools: ["get_inventory", "get_delivery_quote", "get_promotions"],
     },
     grocery: {
         displayName: "Grocery",
+        description: "Food items, groceries, and perishables with expiry tracking.",
         primaryObject: "product",
         modules: COMMERCE_MODULES,
         dashboardWidgets: COMMERCE_WIDGETS,
@@ -88,6 +101,8 @@ export const INDUSTRY_CONFIG: Record<IndustrySlug, IndustryConfig> = {
             }
         },
         onboardingSteps: ["store_profile", "delivery_zones", "inventory"],
+        features: { inventory: true, delivery: true },
+        aiTools: ["get_inventory", "get_delivery_quote", "get_promotions"],
     },
     // --- FOOD & RESTAURANT ---
     food: {
@@ -113,10 +128,13 @@ export const INDUSTRY_CONFIG: Record<IndustrySlug, IndustryConfig> = {
             }
         },
         onboardingSteps: ["store_profile", "menu_setup", "delivery_settings"],
+        features: { delivery: true },
+        aiTools: ["get_menu", "place_order", "check_order_status", "get_promotions"],
     },
     // --- SERVICES & BOOKINGS ---
     services: {
         displayName: "Professional Services",
+        description: "Salons, spas, consultants, and service-based businesses with appointments.",
         primaryObject: "service",
         modules: ["dashboard", "bookings", "finance", "marketing", "content", "settings"],
         moduleLabels: { bookings: "Bookings" },
@@ -135,6 +153,8 @@ export const INDUSTRY_CONFIG: Record<IndustrySlug, IndustryConfig> = {
             }
         },
         onboardingSteps: ["store_profile", "service_menu", "availability"],
+        features: { bookings: true },
+        aiTools: ["get_services", "get_available_slots", "book_appointment"],
     },
     // --- DIGITAL & COURSES ---
     digital: {
@@ -157,10 +177,13 @@ export const INDUSTRY_CONFIG: Record<IndustrySlug, IndustryConfig> = {
             }
         },
         onboardingSteps: ["store_profile", "file_setup"],
+        features: { content: true },
+        aiTools: ["get_inventory", "get_promotions"],
     },
     // --- EVENTS & TICKETING ---
     events: {
         displayName: "Events & Ticketing",
+        description: "Concerts, conferences, and events with ticket sales and check-in.",
         primaryObject: "event",
         modules: ["dashboard", "catalog", "sales", "marketing", "finance", "settings"],
         moduleLabels: { catalog: "Events", sales: "Guest List" },
@@ -182,6 +205,8 @@ export const INDUSTRY_CONFIG: Record<IndustrySlug, IndustryConfig> = {
             }
         },
         onboardingSteps: ["organizer_profile", "event_setup"],
+        features: { tickets: true },
+        aiTools: ["get_upcoming_events", "get_promotions"],
     },
     // --- B2B & WHOLESALE ---
     b2b: {
@@ -207,10 +232,13 @@ export const INDUSTRY_CONFIG: Record<IndustrySlug, IndustryConfig> = {
             }
         },
         onboardingSteps: ["company_verification", "first_product"],
+        features: { quotes: true, inventory: true },
+        aiTools: ["get_wholesale_pricing", "request_quote", "get_inventory"],
     },
     // --- REAL ESTATE & AUTO ---
     real_estate: {
         displayName: "Real Estate",
+        description: "Property listings, rentals, and sales with viewing appointments.",
         primaryObject: "listing",
         modules: ["dashboard", "catalog", "bookings", "marketing", "settings"],
         moduleLabels: { catalog: "Properties", bookings: "Viewings" },
@@ -232,6 +260,8 @@ export const INDUSTRY_CONFIG: Record<IndustrySlug, IndustryConfig> = {
             }
         },
         onboardingSteps: ["agency_profile", "listings_upload"],
+        features: { viewings: true },
+        aiTools: ["search_properties", "schedule_viewing"],
     },
     automotive: {
         displayName: "Automotive",
@@ -262,9 +292,12 @@ export const INDUSTRY_CONFIG: Record<IndustrySlug, IndustryConfig> = {
             }
         },
         onboardingSteps: ["dealer_profile", "inventory_upload"],
+        features: { testDrives: true },
+        aiTools: ["search_vehicles", "schedule_test_drive"],
     },
     travel_hospitality: {
-        displayName: "Travel",
+        displayName: "Travel & Hospitality",
+        description: "Hotels, vacation rentals, and accommodation bookings.",
         primaryObject: "stay",
         modules: ["dashboard", "catalog", "bookings", "finance", "settings"],
         moduleLabels: { catalog: "Stays", bookings: "Reservations" },
@@ -283,6 +316,8 @@ export const INDUSTRY_CONFIG: Record<IndustrySlug, IndustryConfig> = {
             }
         },
         onboardingSteps: ["property_profile", "room_setup"],
+        features: { bookings: true, reservations: true },
+        aiTools: ["check_availability", "book_stay"],
     },
     // --- CONTENT & MEDIA ---
     blog_media: {
@@ -305,9 +340,12 @@ export const INDUSTRY_CONFIG: Record<IndustrySlug, IndustryConfig> = {
             }
         },
         onboardingSteps: ["profile", "content_strategy"],
+        features: { content: true },
+        aiTools: ["get_promotions"],
     },
     creative_portfolio: {
         displayName: "Portfolio",
+        description: "Showcase creative work, photography, design, and art projects.",
         primaryObject: "project",
         modules: ["dashboard", "content", "settings"],
         moduleLabels: { content: "Projects" },
@@ -325,6 +363,8 @@ export const INDUSTRY_CONFIG: Record<IndustrySlug, IndustryConfig> = {
             }
         },
         onboardingSteps: ["profile", "upload_work"],
+        features: { content: true },
+        aiTools: ["get_promotions"],
     },
     nonprofit: {
         displayName: "Nonprofit",
@@ -346,9 +386,12 @@ export const INDUSTRY_CONFIG: Record<IndustrySlug, IndustryConfig> = {
             }
         },
         onboardingSteps: ["org_profile", "campaign_setup"],
+        features: { donations: true },
+        aiTools: ["get_campaigns", "make_donation"],
     },
     education: {
         displayName: "Education & Courses",
+        description: "Online courses, training programs, and educational content.",
         primaryObject: "course",
         modules: ["dashboard", "catalog", "sales", "finance", "content", "settings"],
         moduleLabels: { catalog: "Courses", sales: "Enrollments" },
@@ -370,6 +413,8 @@ export const INDUSTRY_CONFIG: Record<IndustrySlug, IndustryConfig> = {
             }
         },
         onboardingSteps: ["instructor_profile", "course_setup"],
+        features: { enrollments: true, content: true },
+        aiTools: ["get_courses", "enroll_course"],
     },
     marketplace: {
         displayName: "Marketplace",
@@ -393,9 +438,12 @@ export const INDUSTRY_CONFIG: Record<IndustrySlug, IndustryConfig> = {
             }
         },
         onboardingSteps: ["marketplace_setup", "vendor_onboarding"],
+        features: { inventory: true },
+        aiTools: ["get_inventory", "get_promotions"],
     },
     one_product: {
         displayName: "One Product Store",
+        description: "Focused store selling a single hero product with high conversion.",
         primaryObject: "product",
         modules: ["dashboard", "catalog", "sales", "marketing", "finance", "settings"],
         moduleLabels: { catalog: "The Product" },
@@ -414,5 +462,57 @@ export const INDUSTRY_CONFIG: Record<IndustrySlug, IndustryConfig> = {
             }
         },
         onboardingSteps: ["product_setup", "funnel_design"],
+        features: { inventory: true, delivery: true },
+        aiTools: ["get_inventory", "get_delivery_quote", "get_promotions"],
+    },
+    // --- NIGHTLIFE & ENTERTAINMENT ---
+    nightlife: {
+        displayName: "Nightlife & Entertainment",
+        primaryObject: "event",
+        modules: ["dashboard", "catalog", "bookings", "sales", "finance", "marketing", "settings"],
+        moduleLabels: {
+            catalog: "Events",
+            bookings: "Reservations",
+            sales: "Tickets & Orders",
+        },
+        moduleRoutes: {
+            catalog: { index: "/dashboard/nightlife/events", create: "/dashboard/nightlife/events/new" },
+            bookings: { index: "/dashboard/nightlife/reservations" },
+            sales: { index: "/dashboard/nightlife/tickets" },
+        },
+        dashboardWidgets: [
+            { id: "tickets_sold_today", title: "Tickets Sold Today", dataSource: "real", type: "stat", w: 1 },
+            { id: "reservations_tonight", title: "Reservations Tonight", dataSource: "real", type: "stat", w: 1 },
+            { id: "revenue_this_week", title: "Revenue This Week", dataSource: "real", type: "stat", w: 1 },
+            { id: "upcoming_events", title: "Upcoming Events", dataSource: "real", type: "stat", w: 1 },
+            ...COMMON_WIDGETS
+        ],
+        forms: {
+            event: {
+                requiredFields: ["title", "event_date", "event_time", "venue", "description", "images"],
+                optionalFields: ["dress_code", "age_limit", "music_genre"],
+                variantLabel: "Ticket Types",
+                validation: { minImages: 1, requiredGroups: ["schedule", "venue"] },
+            },
+            table: {
+                requiredFields: ["table_name", "table_type", "capacity", "minimum_spend"],
+                optionalFields: ["location_description", "is_vip"],
+                variantLabel: "Table Options",
+                validation: { minImages: 0 },
+            },
+            bottle: {
+                requiredFields: ["name", "price", "category"],
+                optionalFields: ["description", "volume", "is_available"],
+                validation: { minImages: 1 },
+            },
+            reservation: {
+                requiredFields: ["guest_name", "guest_phone", "table_id", "date", "party_size"],
+                optionalFields: ["special_requests", "bottles"],
+                validation: {},
+            },
+        },
+        onboardingSteps: ["venue_profile", "table_setup", "bottle_menu", "first_event"],
+        features: { reservations: true, tickets: true, bookings: true },
+        aiTools: ["get_available_tables", "get_bottle_menu", "create_reservation", "get_upcoming_events"],
     },
 };

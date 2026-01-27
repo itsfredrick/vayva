@@ -2,6 +2,7 @@
 
 import React from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { Icon } from "@vayva/ui";
 
 export const AuthShell = ({ children }: { children: React.ReactNode }) => {
@@ -12,7 +13,7 @@ export const AuthShell = ({ children }: { children: React.ReactNode }) => {
         {/* Background Effects */}
         <div className="absolute inset-0 pointer-events-none">
           {/* Green Glow Top Right */}
-          <div className="absolute -top-[20%] -right-[20%] w-[80%] h-[80%] rounded-full bg-[#22C55E] opacity-20 blur-[120px]" />
+          <div className="absolute -top-[20%] -right-[20%] w-[80%] h-[80%] rounded-full bg-primary opacity-20 blur-[120px]" />
           {/* Blue/Dark Bottom Left */}
           <div className="absolute -bottom-[20%] -left-[10%] w-[60%] h-[60%] rounded-full bg-blue-900 opacity-20 blur-[100px]" />
           
@@ -23,17 +24,26 @@ export const AuthShell = ({ children }: { children: React.ReactNode }) => {
         {/* Logo Area */}
         <div className="relative z-20 p-8">
            <Link href="/" className="flex items-center gap-3">
-            <div className="w-10 h-10 bg-white/10 backdrop-blur-md border border-white/20 rounded-xl flex items-center justify-center">
-              <Icon name="Store" className="text-white w-5 h-5" />
-             </div>
-            <span className="text-xl font-bold text-white tracking-tight">Vayva</span>
+            <div className="h-10 flex items-center">
+              <Image
+                src="/vayva-logo-white.svg"
+                alt="Vayva"
+                width={120}
+                height={28}
+                priority
+                className="h-7 w-auto"
+              />
+            </div>
+            <span className="text-xl font-bold text-white tracking-tight">
+              Vayva Merchant
+            </span>
            </Link>
         </div>
 
         {/* Hero Card Content */}
         <div className="relative z-20 flex-1 flex flex-col justify-center px-12">
           <div className="bg-white/5 backdrop-blur-2xl border border-white/10 rounded-[32px] p-10 shadow-2xl">
-            <div className="w-12 h-12 rounded-full bg-[#22C55E]/20 flex items-center justify-center mb-8 text-[#22C55E]">
+            <div className="w-12 h-12 rounded-full bg-primary/20 flex items-center justify-center mb-8 text-primary">
                <Icon name="Zap" size={24} fill="currentColor" />
             </div>
 
@@ -47,7 +57,7 @@ export const AuthShell = ({ children }: { children: React.ReactNode }) => {
 
             <div className="flex items-center gap-6 text-sm font-medium text-gray-300">
               <div className="flex items-center gap-2">
-                <span className="w-2 h-2 rounded-full bg-[#22C55E]" />
+                <span className="w-2 h-2 rounded-full bg-primary" />
                 Real-time Sync
               </div>
               <div className="flex items-center gap-2">
@@ -68,10 +78,16 @@ export const AuthShell = ({ children }: { children: React.ReactNode }) => {
       <div className="flex-1 flex flex-col">
         {/* Mobile Logo */}
         <div className="lg:hidden p-6">
-           <div className="flex items-center gap-2 text-black font-bold text-xl">
-             <div className="w-8 h-8 bg-black rounded-lg text-white flex items-center justify-center">V</div>
-             Vayva
-           </div>
+          <Link href="/" className="inline-flex items-center gap-2">
+            <Image
+              src="/vayva-logo-white.svg"
+              alt="Vayva"
+              width={120}
+              height={28}
+              className="h-6 w-auto"
+            />
+            <span className="text-black font-bold text-xl">Vayva Merchant</span>
+          </Link>
         </div>
 
         <div className="flex-1 flex items-center justify-center p-6 sm:p-12">

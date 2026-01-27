@@ -22,6 +22,14 @@ export interface OnboardingState {
     };
     business?: {
         storeName?: string;
+        legalName?: string;
+        registeredAddress?: {
+            addressLine1?: string;
+            addressLine2?: string;
+            city?: string;
+            state?: string;
+            landmark?: string;
+        };
         country?: string;
         industry?: string;
         name?: string;
@@ -31,6 +39,16 @@ export interface OnboardingState {
         email?: string;
         phone?: string;
         businessRegistrationType?: string;
+    };
+    logistics?: {
+        pickupAddress?: string;
+        pickupAddressObj?: {
+            addressLine1?: string;
+            addressLine2?: string;
+            city?: string;
+            state?: string;
+            landmark?: string;
+        };
     };
     finance?: {
         accountNumber?: string;

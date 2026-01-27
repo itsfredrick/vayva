@@ -81,7 +81,7 @@ export const AdminShell = ({
   }, []);
 
   useEffect(() => {
-    // Fetch Store Info & Industry
+    // Fetch Store Info & Industry (one-time bootstrap)
     fetch("/api/auth/merchant/me")
       .then((res) => res.json())
       .then((data) => {
@@ -91,17 +91,7 @@ export const AdminShell = ({
           setStoreLogo(merchantData.logoUrl);
         }
 
-        const fetchedIndustry = merchantData.industrySlug as IndustrySlug;
-
-        // Critical Redirect Logic
-        // If no industry set, and we are NOT already on the settings page, redirect.
-        // MIGRATION FIX: If industry is missing, force them to the new onboarding step
-        // We added a whitelist for the target page to avoid loops
-        if (!fetchedIndustry && !pathname.includes("/onboarding/industry")) {
-          router.push("/onboarding/industry");
-        } else {
-          setIndustrySlug(fetchedIndustry);
-        }
+        setIndustrySlug((merchantData.industrySlug || null) as IndustrySlug | null);
 
         if (merchantData.enabledExtensionIds) {
           setEnabledExtensionIds(merchantData.enabledExtensionIds);
@@ -116,7 +106,7 @@ export const AdminShell = ({
       .catch((err) => console.error("Failed to load (store.settings as any)", err))
       .finally(() => setIsLoadingIndustry(false));
 
-    // Fetch real store status and URL from API
+    // Fetch real store status and URL from API (one-time bootstrap)
     fetch("/api/storefront/url")
       .then((res) => res.json())
       .then((data) => setStoreLink(data.url))
@@ -126,7 +116,14 @@ export const AdminShell = ({
       .then((res) => res.json())
       .then((data) => setStoreStatus(data.status))
       .catch(() => { });
-  }, [router, pathname]);
+  }, []);
+
+  useEffect(() => {
+    if (_isLoadingIndustry) return;
+    if (!industrySlug && !pathname.startsWith("/onboarding")) {
+      router.push("/onboarding");
+    }
+  }, [_isLoadingIndustry, industrySlug, pathname, router]);
 
   // Close mobile menu on route change
   useEffect(() => {
@@ -367,7 +364,7 @@ export const AdminShell = ({
                 <Avatar
                   src={storeLogo || user?.avatarUrl || user?.image || undefined}
                   fallback={initials}
-                  className="bg-indigo-600"
+                  className="bg-primary"
                 />
                 <Icon
                   name="ChevronDown"
@@ -513,7 +510,6 @@ export const AdminShell = ({
         />
       )}
       <SupportChat />
-      <CommandPalette />
     </div>
   );
 };

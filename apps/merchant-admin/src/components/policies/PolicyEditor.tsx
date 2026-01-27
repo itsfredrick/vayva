@@ -12,6 +12,7 @@ import {
   FileText,
 } from "lucide-react";
 import { useRouter } from "next/navigation";
+import { buildLiveStorefrontUrl } from "@/lib/storefront/urls";
 
 interface PolicyEditorProps {
   type: "returns" | "shipping" | "privacy" | "terms";
@@ -76,12 +77,8 @@ export const PolicyEditor: React.FC<PolicyEditorProps> = ({
   };
 
   const handleViewOnStorefront = () => {
-    // SAFETY: Use configured URL or generic fallback. In production, this must be set.
-    const fallback = process.env.NODE_ENV === "production" ? "https://vayva.ng" : "http://localhost:3001";
-    const storefrontBase = process.env.NEXT_PUBLIC_STOREFRONT_URL || fallback;
-
     window.open(
-      `${storefrontBase}/policies/${type}?store=${storeSlug}`,
+      `${buildLiveStorefrontUrl(storeSlug)}/policies/${type}`,
       "_blank",
     );
   };

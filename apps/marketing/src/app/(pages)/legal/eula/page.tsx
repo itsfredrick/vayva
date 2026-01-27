@@ -17,9 +17,9 @@ export default function EULAPage(): React.JSX.Element {
     return (
         <div className="min-h-screen bg-white">
             <div className="max-w-7xl mx-auto px-6 py-16">
-                <div className="flex gap-12">
+                <div className="flex flex-col lg:flex-row gap-8 lg:gap-12">
                     {/* Sidebar Navigation */}
-                    <aside className="w-64 flex-shrink-0 hidden lg:block">
+                    <aside className="w-full lg:w-64 flex-shrink-0 hidden lg:block">
                         <nav className="sticky top-24">
                             <h3 className="text-sm font-semibold text-gray-900 mb-4">
                                 Legal Documents
@@ -51,7 +51,7 @@ export default function EULAPage(): React.JSX.Element {
                                 <strong>Version:</strong> 1.0 (Apple App Store Compliant)
                             </p>
                             <p>
-                                <strong>Effective Date:</strong> January 1, 2026
+                                <strong>Effective Date:</strong> February 1, 2026
                             </p>
                         </div>
 
@@ -106,7 +106,7 @@ export default function EULAPage(): React.JSX.Element {
                         <p>
                             For legal inquiries or to report violations manually:
                             <br />
-                            <strong>Email:</strong> legal@vayva.shop
+                            <strong>Email:</strong> support@vayva.ng
                         </p>
 
                         <div className="not-prose mt-12 pt-8 border-t border-gray-200">

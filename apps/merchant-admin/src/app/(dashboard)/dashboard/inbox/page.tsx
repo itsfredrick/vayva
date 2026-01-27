@@ -74,11 +74,14 @@ export default function InboxPage() {
   const fetchConversations = async () => {
     try {
       const res = await fetch("/api/merchant/inbox/conversations");
-      const data = await res.json();
-      setConversations(data.items || []);
-      setLoading(false);
+      const data = await res.json().catch(() => null);
+      if (!res.ok) {
+        throw new Error(data?.error || "Failed to load conversations");
+      }
+      setConversations(data?.items || []);
     } catch (e: any) {
       console.error(e);
+    } finally {
       setLoading(false);
     }
   };
@@ -86,8 +89,11 @@ export default function InboxPage() {
   const fetchQuickReplies = async () => {
     try {
       const res = await fetch("/api/merchant/quick-replies");
-      const data = await res.json();
-      setQuickReplies(data.items || []);
+      const data = await res.json().catch(() => null);
+      if (!res.ok) {
+        throw new Error(data?.error || "Failed to load quick replies");
+      }
+      setQuickReplies(data?.items || []);
     } catch (_error: any) {
     // Intentionally empty
   }
@@ -97,8 +103,11 @@ export default function InboxPage() {
     setLoadingMessages(true);
     try {
       const res = await fetch(`/api/merchant/inbox/conversations/${id}`);
-      const data = await res.json();
-      setMessages(data.messages || []);
+      const data = await res.json().catch(() => null);
+      if (!res.ok) {
+        throw new Error(data?.error || "Failed to load messages");
+      }
+      setMessages(data?.messages || []);
     } catch (e: any) {
       console.error(e);
     } finally {
@@ -114,6 +123,7 @@ export default function InboxPage() {
         `/api/merchant/inbox/conversations/${selectedId}/send`,
         {
           method: "POST",
+          headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ text: messageText }),
         },
       );

@@ -44,11 +44,34 @@ export default function PricingPage(): React.JSX.Element {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.2 }}
-            className="text-xl text-[#64748B] max-w-2xl mx-auto mb-10 leading-relaxed"
+            className="text-xl text-[#64748B] max-w-2xl mx-auto mb-6 leading-relaxed"
           >
             Choose a plan that matches your volume. Every plan includes
-            our core WhatsApp capture engine and local payment infrastructure.
+            our core WhatsApp capture engine and Paystack-powered payments.
           </motion.p>
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.25 }}
+            className="flex flex-wrap items-center justify-center gap-3 mb-10"
+          >
+            <span className="inline-flex items-center gap-2 px-4 py-2 bg-white border border-gray-200 rounded-full text-xs font-bold text-gray-600">
+              <span className="w-2 h-2 bg-green-500 rounded-full"></span>
+              Visa & Mastercard
+            </span>
+            <span className="inline-flex items-center gap-2 px-4 py-2 bg-white border border-gray-200 rounded-full text-xs font-bold text-gray-600">
+              <span className="w-2 h-2 bg-blue-500 rounded-full"></span>
+              Bank Transfer
+            </span>
+            <span className="inline-flex items-center gap-2 px-4 py-2 bg-white border border-gray-200 rounded-full text-xs font-bold text-gray-600">
+              <span className="w-2 h-2 bg-purple-500 rounded-full"></span>
+              USSD
+            </span>
+            <span className="inline-flex items-center gap-2 px-4 py-2 bg-white border border-gray-200 rounded-full text-xs font-bold text-gray-600">
+              <span className="w-2 h-2 bg-orange-500 rounded-full"></span>
+              Dollar Cards
+            </span>
+          </motion.div>
 
 
           {/* FEE DISCLOSURE - CLEAR & HONEST */}
@@ -249,8 +272,16 @@ export default function PricingPage(): React.JSX.Element {
                 a: "You get full access to all features for 7 days. No credit card required. If you don't subscribe after the trial, your account will be paused.",
               },
               {
+                q: "What payment methods can my customers use?",
+                a: "Your customers can pay with Visa, Mastercard, Verve cards, bank transfers, USSD, and mobile money. International customers can pay with dollar cards. All powered by Paystack.",
+              },
+              {
                 q: "When is the withdrawal fee charged?",
                 a: "The 3% fee is deducted only when you move money from your Vayva Wallet to your external bank account. No fees for incoming payments.",
+              },
+              {
+                q: "Can I accept international payments?",
+                a: "Yes! Through Paystack, you can accept payments from international customers using Visa and Mastercard (including dollar cards). Funds settle in Naira.",
               },
               {
                 q: "Can I cancel any time?",
@@ -258,7 +289,7 @@ export default function PricingPage(): React.JSX.Element {
               },
               {
                 q: "Are there transaction fees?",
-                a: "Vayva doesn't charge per-transaction fees. You only pay your monthly subscription and the withdrawal fee when moving cash out.",
+                a: "Vayva doesn't charge per-transaction fees. You only pay your monthly subscription and the withdrawal fee when moving cash out. Standard Paystack fees apply to card payments.",
               },
             ].map((faq, i) => (
               <motion.div

@@ -36,7 +36,7 @@ export function UpdateReviewScreen({
           <h1 className="text-3xl font-bold text-black mb-2">
             Update available for {templateName}
           </h1>
-          <p className="text-[#64748B]">
+          <p className="text-muted-foreground">
             Version {currentVersion} → {newVersion}
           </p>
         </div>
@@ -49,7 +49,7 @@ export function UpdateReviewScreen({
           <ul className="space-y-2">
             {whatsNew.map((item, i) => (
               <li key={i} className="flex items-start gap-2">
-                <span className="text-[#22C55E] mt-1">✓</span>
+                <span className="text-primary mt-1">✓</span>
                 <span className="text-black">{item}</span>
               </li>
             ))}
@@ -65,7 +65,7 @@ export function UpdateReviewScreen({
             {whatStaysSame.map((item, i) => (
               <span
                 key={i}
-                className="text-sm bg-white border border-gray-200 text-[#64748B] px-3 py-1 rounded"
+                className="text-sm bg-white border border-gray-200 text-muted-foreground px-3 py-1 rounded"
               >
                 {item}
               </span>
@@ -83,7 +83,7 @@ export function UpdateReviewScreen({
               {whatsOptional.map((item, i) => (
                 <li key={i} className="flex items-start gap-2">
                   <span className="text-blue-500 mt-1">○</span>
-                  <span className="text-[#64748B] text-sm">{item}</span>
+                  <span className="text-muted-foreground text-sm">{item}</span>
                 </li>
               ))}
             </ul>
@@ -109,7 +109,7 @@ export function UpdateReviewScreen({
                 <p className="font-semibold text-black">
                   Keep current version
                 </p>
-                <p className="text-sm text-[#64748B]">
+                <p className="text-sm text-muted-foreground">
                   Your setup will continue working as it does now
                 </p>
               </div>
@@ -126,7 +126,7 @@ export function UpdateReviewScreen({
               />
               <div>
                 <p className="font-semibold text-black">Apply update</p>
-                <p className="text-sm text-[#64748B]">
+                <p className="text-sm text-muted-foreground">
                   Add new capabilities while keeping your existing setup
                 </p>
               </div>
@@ -138,7 +138,7 @@ export function UpdateReviewScreen({
         <div className="flex gap-4">
           <Button
             onClick={selectedOption === "apply" ? onApply : onKeepCurrent}
-            className="flex-1 bg-[#22C55E] hover:bg-[#16A34A] text-white py-4 text-lg font-semibold"
+            className="flex-1 bg-primary hover:bg-primary/90 text-primary-foreground py-4 text-lg font-semibold"
           >
             {selectedOption === "apply"
               ? "Apply update"

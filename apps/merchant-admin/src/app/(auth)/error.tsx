@@ -29,14 +29,14 @@ export default function AuthError({
         <h2 className="text-2xl font-bold text-black mb-4">
           Something went wrong
         </h2>
-        <p className="text-[#64748B] mb-8 leading-relaxed">
+        <p className="text-muted-foreground mb-8 leading-relaxed">
           We encountered an error while trying to process your request. This has
           been logged and we're looking into it.
         </p>
         <div className="flex flex-col gap-3">
           <Button
             onClick={() => reset()}
-            className="bg-[#22C55E] hover:bg-[#16A34A] text-white py-3 font-semibold"
+            className="bg-primary hover:bg-primary/90 text-primary-foreground py-3 font-semibold"
           >
             Try again
           </Button>

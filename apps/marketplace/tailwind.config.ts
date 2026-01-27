@@ -9,10 +9,10 @@ const config: Config = {
     extend: {
       colors: {
         primary: {
-          DEFAULT: "var(--color-primary)",
-          foreground: "#ffffff",
+          DEFAULT: "hsl(var(--primary))",
+          foreground: "hsl(var(--primary-foreground))",
         },
-        background: "var(--color-background)",
+        background: "hsl(var(--background))",
         border: "hsl(var(--border) / 0.1)",
       },
       fontFamily: {

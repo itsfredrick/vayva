@@ -16,11 +16,10 @@ export async function register() {
         critical.forEach((f: any) => {
             console.log(`  - ${f.name}: ${f.status ? '✅' : '❌'}`);
         });
-        // 3. Fail Fast Check (Production)
+        // 3. Production warnings (do not hard-crash)
         if (process.env.NODE_ENV === 'production' && process.env.VAYVA_E2E_MODE !== 'true') {
             if (!FEATURES.PAYMENTS_ENABLED || !FEATURES.EMAIL_ENABLED) {
-                console.error('🚨 CRITICAL: Payments or Email disabled in PRODUCTION. Exiting.');
-                process.exit(1);
+                console.warn('⚠️  Payments or Email is disabled in production. Related UI/features should be hidden/guarded.');
             }
         }
     }

@@ -82,15 +82,15 @@ export default function ContactPage(): React.JSX.Element {
               </a>
             </div>
             <div>
-              <h3 className="text-lg font-bold text-[#1d1d1f] mb-2">Sales</h3>
+              <h3 className="text-lg font-bold text-[#1d1d1f] mb-2">General Inquiries</h3>
               <p className="text-[#1d1d1f]/60 mb-2">
-                Ready to scale? Talk to our sales team about enterprise plans.
+                Questions about Vayva? Partnerships? We'd love to hear from you.
               </p>
               <a
-                href="mailto:sales@vayva.ng"
+                href="mailto:hello@vayva.ng"
                 className="text-[#16a34a] font-bold hover:underline"
               >
-                sales@vayva.ng
+                hello@vayva.ng
               </a>
             </div>
             <div>

@@ -5,14 +5,14 @@ export async function POST(req: any) {
     const signature = req.headers.get("x-kwik-signature");
     // 1. Security Guard
     if (!secret || !signature) {
-        return new NextResponse("Unauthorized", { status: 401 });
+        return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
     // Verify Signature (Simple string match for MVP if Kwik uses static token, or HMAC)
     // Assuming HMAC-SHA256 for robustness, or direct secret match.
     // For this MVP, we'll implement strict equality check safe against timing attacks?
     // Actually, Kwik usually sends a token. Let's assume it matches secret.
     if (signature !== secret) {
-        return new NextResponse("Invalid Signature", { status: 403 });
+        return NextResponse.json({ error: "Invalid Signature" }, { status: 403 });
     }
     const body = await req.json();
     const { job_id, status, job_status } = body;
@@ -42,7 +42,7 @@ export async function POST(req: any) {
         default: vayvaStatus = "UNKNOWN"; // Do not update if unknown
     }
     if (vayvaStatus === "UNKNOWN") {
-        return new NextResponse("Ignored Status", { status: 200 });
+        return NextResponse.json({ message: "Ignored Status" }, { status: 200 });
     }
     // 2. Idempotency & Locking (Shipment Status)
     // We only want to update if the status is advancing.
@@ -54,9 +54,9 @@ export async function POST(req: any) {
         where: { trackingCode: String(job_id) }
     });
     if (!shipment)
-        return new NextResponse("Shipment Not Found", { status: 404 });
+        return NextResponse.json({ error: "Shipment Not Found" }, { status: 404 });
     if (shipment.status === vayvaStatus) {
-        return new NextResponse("Idempotent: Status already set", { status: 200 });
+        return NextResponse.json({ message: "Idempotent: Status already set" }, { status: 200 });
     }
     // 3. Update Status
     await prisma.shipment.update({
@@ -78,5 +78,5 @@ export async function POST(req: any) {
     catch (_error: any) {
     // Intentionally empty
   }
-    return new NextResponse("Updated", { status: 200 });
+    return NextResponse.json({ message: "Updated" }, { status: 200 });
 }

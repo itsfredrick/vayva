@@ -7,8 +7,8 @@ export async function GET(req: NextRequest, { params }: { params: Promise<{ id: 
     if (!session?.user)
         return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     const { id } = await params;
-    const conversation = await prisma.conversation.findUnique({
-        where: { id },
+    const conversation = await prisma.conversation.findFirst({
+        where: { id, storeId: session.user.storeId },
         include: {
             contact: {
                 include: {
@@ -29,9 +29,7 @@ export async function GET(req: NextRequest, { params }: { params: Promise<{ id: 
         },
     });
     if (!conversation)
-        return new NextResponse("Not Found", { status: 404 });
-    if (conversation.storeId !== session.user.storeId)
-        return new NextResponse("Forbidden", { status: 403 });
+        return NextResponse.json({ error: "Not Found" }, { status: 404 });
     // Mark as Read? Usually separated endpoint or side-effect.
     // We'll leave it to explicit action if needed, or assume opening = read eventually.
     return NextResponse.json(conversation);

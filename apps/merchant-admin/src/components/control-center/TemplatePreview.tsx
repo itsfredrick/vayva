@@ -32,11 +32,18 @@ export const TemplatePreview = ({
   const iframeSrc = `/preview/${template.id}?mode=${viewMode}`;
 
   return (
-    <div className="fixed inset-0 z-50 bg-gray-900/95 backdrop-blur-sm flex flex-col animate-in fade-in duration-200">
+    <div className="fixed inset-0 z-50 bg-black/70 backdrop-blur-sm flex flex-col animate-in fade-in duration-200">
       {/* Top Bar */}
       <div className="h-16 bg-white border-b border-gray-200 flex items-center justify-between px-6 shadow-sm z-10">
         <div className="flex items-center gap-4">
-          <Button onClick={onClose} className="p-2 hover:bg-gray-100">
+          <Button
+            onClick={onClose}
+            variant="ghost"
+            size="icon"
+            className="hover:bg-gray-100"
+            aria-label="Close preview"
+            title="Close preview"
+          >
             <Icon name="X" size={20} />
           </Button>
           <div>
@@ -92,7 +99,7 @@ export const TemplatePreview = ({
       <div className="flex-1 bg-gray-100 overflow-hidden flex items-center justify-center relative">
         {loading && (
           <div className="absolute inset-0 flex items-center justify-center">
-            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-black" />
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary" />
           </div>
         )}
 
@@ -100,7 +107,7 @@ export const TemplatePreview = ({
           className={cn(
             "transition-all duration-500 ease-in-out bg-white shadow-2xl overflow-hidden",
             viewMode === "mobile"
-              ? "w-[375px] h-[812px] rounded-[40px] border-[8px] border-gray-900"
+              ? "w-[375px] h-[812px] rounded-[40px] border-[8px] border-gray-200"
               : "w-full h-full",
           )}
         >

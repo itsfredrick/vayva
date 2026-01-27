@@ -22,14 +22,26 @@ export default function BillingPage() {
   const [status, setStatus] = useState<BillingStatus | null>(null);
   const [loading, setLoading] = useState(true);
   const [processing, setProcessing] = useState<string | null>(null); // plan slug
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     fetch("/api/merchant/billing/status")
-      .then((res) => res.json())
+      .then(async (res) => {
+        const data = await res.json().catch(() => null);
+        if (!res.ok) {
+          throw new Error(data?.error || "Failed to load billing status");
+        }
+        return data;
+      })
       .then((data) => {
         setStatus(data);
-        setLoading(false);
-      });
+        setError(null);
+      })
+      .catch((e: any) => {
+        setStatus(null);
+        setError(e?.message || "Failed to load billing status");
+      })
+      .finally(() => setLoading(false));
   }, []);
 
   const handleSubscribe = async (slug: string) => {
@@ -37,19 +49,40 @@ export default function BillingPage() {
     try {
       const res = await fetch("/api/merchant/billing/subscribe", {
         method: "POST",
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ plan_slug: slug }),
       });
-      const data = await res.json();
-      if (data.checkout_url) {
-        window.location.href = data.checkout_url; // Redirect to payment
+      const data = await res.json().catch(() => null);
+      if (!res.ok) {
+        throw new Error(data?.error || data?.message || "Failed to start checkout");
       }
+      if (data?.checkout_url) {
+        window.location.href = data.checkout_url; // Redirect to payment
+        return;
+      }
+      throw new Error("Checkout URL not returned");
     } catch (e: any) {
       alert("Error: " + ((e as any).message || "Unknown error"));
+    } finally {
       setProcessing(null);
     }
   };
 
   if (loading) return <div className="p-8">Loading billing...</div>;
+  if (error) {
+    return (
+      <div className="max-w-5xl mx-auto py-12 px-6">
+        <h1 className="text-3xl font-bold mb-4">Billing & Plans</h1>
+        <div className="bg-red-50 border border-red-100 p-4 rounded-xl mb-6">
+          <div className="font-bold text-red-900">Could not load billing</div>
+          <div className="text-sm text-red-700 mt-1">{error}</div>
+        </div>
+        <Button onClick={() => window.location.reload()} className="h-11">
+          Retry
+        </Button>
+      </div>
+    );
+  }
 
   const currentPlan = status?.planKey || "none";
   const isPastDue = status?.status === "past_due";

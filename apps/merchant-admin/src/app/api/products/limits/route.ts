@@ -8,7 +8,7 @@ export async function GET(req: any) {
     // Assuming session.user.storeId exists based on project patterns
     const storeId = session?.user?.storeId;
     if (!storeId) {
-        return new NextResponse("Unauthorized", { status: 401 });
+        return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
     try {
         // 1. Get Plan
@@ -35,6 +35,6 @@ export async function GET(req: any) {
     }
     catch (error: any) {
         console.error("[PRODUCTS_LIMITS]", error);
-        return new NextResponse("Internal Error", { status: 500 });
+        return NextResponse.json({ error: "Internal Error" }, { status: 500 });
     }
 }

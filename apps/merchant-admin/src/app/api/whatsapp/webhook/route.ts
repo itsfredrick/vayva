@@ -34,13 +34,31 @@ export async function POST(req: any) {
         }
         // 3. Extract Message Content
         // Evolution API normalizes text in `data.message.conversation` or `extendedTextMessage.text`
+        const imageMessage = data.message?.imageMessage;
+        const imageCaption = imageMessage?.caption || "";
+        const imageUrlCandidate = imageMessage?.url || imageMessage?.mediaUrl || "";
+        let imageUrl = typeof imageUrlCandidate === "string" && /^https?:\/\//i.test(imageUrlCandidate)
+            ? imageUrlCandidate
+            : "";
+        if (imageMessage && !imageUrl) {
+            try {
+                imageUrl = await WhatsappManager.getMediaDataUrlFromMessage(instance, data?.key, imageMessage?.mimetype);
+            }
+            catch (_e: any) {
+                imageUrl = "";
+            }
+        }
         const messageContent = data.message?.conversation ||
             data.message?.extendedTextMessage?.text ||
-            data.message?.imageMessage?.caption ||
-            "";
+            imageCaption ||
+            (imageMessage ? "[IMAGE_RECEIVED]" : "");
         if (!messageContent) {
             return NextResponse.json({ status: "no_text_content" });
         }
+
+        const enrichedContent = imageMessage
+            ? `${messageContent}\n\nIMAGE_META:\n- imageUrl: ${imageUrl || "N/A"}\n- caption: ${imageCaption || ""}\n- mimetype: ${imageMessage?.mimetype || ""}\n- messageId: ${data?.key?.id || ""}\n- remoteJid: ${data?.key?.remoteJid || ""}`
+            : messageContent;
         // 4. Identify Store
         // Format: "merchant_{storeId}" -> extract storeId
         const storeId = instance.replace("merchant_", "");
@@ -50,7 +68,7 @@ export async function POST(req: any) {
         }
         // 5. Send to AI Brain (SalesAgent)
         // We pass the storeId so it calls the right tools (Inventory, Delivery, etc)
-        const aiResponse = await SalesAgent.handleMessage(storeId, [{ role: "user", content: messageContent }], {
+        const aiResponse = await SalesAgent.handleMessage(storeId, [{ role: "user", content: enrichedContent }], {
             userId: sender, // Use phone as user ID for session/context
             conversationId: sender // Simple session key
         });

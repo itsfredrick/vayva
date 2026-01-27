@@ -27,6 +27,115 @@ export function withVayvaAPI(permission: any, handler: (req: NextRequest, contex
             // 1. Authentication & Tenant Isolation
             user = await requireAuth();
             const storeId = user.storeId;
+
+            const store = await prisma.store.findUnique({
+                where: { id: storeId },
+                select: { isActive: true, settings: true }
+            });
+            if (!store?.isActive) {
+                logger.warn("Store suspended", ErrorCategory.SECURITY, {
+                    userId: user.id,
+                    storeId,
+                    endpoint,
+                    correlationId
+                });
+                return NextResponse.json({
+                    error: "Store is suspended",
+                    correlationId,
+                    code: "STORE_SUSPENDED"
+                }, { status: 403 });
+            }
+
+            const restrictions = (store.settings as any)?.restrictions || {};
+            const isWrite = ["POST", "PUT", "PATCH", "DELETE"].includes(method);
+            if (isWrite && restrictions?.writeDisabled === true) {
+                logger.warn("Store restricted (writeDisabled)", ErrorCategory.SECURITY, {
+                    userId: user.id,
+                    storeId,
+                    endpoint,
+                    correlationId
+                });
+                return NextResponse.json({
+                    error: "Store is restricted",
+                    correlationId,
+                    code: "STORE_RESTRICTED"
+                }, { status: 403 });
+            }
+
+            if (isWrite) {
+                const isOrders = endpoint.startsWith("/api/orders") || endpoint.startsWith("/api/kitchen/orders");
+                const isProducts = endpoint.startsWith("/api/products") || endpoint.startsWith("/api/collections");
+                const isMarketing = endpoint.startsWith("/api/marketing");
+                const isSettings = endpoint.startsWith("/api/settings") || endpoint.startsWith("/api/merchant/policies") || endpoint.startsWith("/api/storefront") || endpoint.startsWith("/api/domains") || endpoint.startsWith("/api/merchant/store/publish");
+                const isSales = endpoint.startsWith("/api/leads") || endpoint.startsWith("/api/quotes") || endpoint.startsWith("/api/portfolio");
+                const isPayments = endpoint.startsWith("/api/billing") || endpoint.startsWith("/api/invoices") || endpoint.startsWith("/api/payments");
+                const isUploads = endpoint.startsWith("/api/storage");
+                const isAi = endpoint.startsWith("/api/ai");
+
+                if (restrictions?.ordersDisabled === true && isOrders) {
+                    return NextResponse.json({
+                        error: "Orders are restricted for this store",
+                        correlationId,
+                        code: "STORE_RESTRICTED_ORDERS"
+                    }, { status: 403 });
+                }
+
+                if (restrictions?.productsDisabled === true && isProducts) {
+                    return NextResponse.json({
+                        error: "Products are restricted for this store",
+                        correlationId,
+                        code: "STORE_RESTRICTED_PRODUCTS"
+                    }, { status: 403 });
+                }
+
+                if (restrictions?.marketingDisabled === true && isMarketing) {
+                    return NextResponse.json({
+                        error: "Marketing is restricted for this store",
+                        correlationId,
+                        code: "STORE_RESTRICTED_MARKETING"
+                    }, { status: 403 });
+                }
+
+                if (restrictions?.settingsEditsDisabled === true && isSettings) {
+                    return NextResponse.json({
+                        error: "Settings edits are restricted for this store",
+                        correlationId,
+                        code: "STORE_RESTRICTED_SETTINGS"
+                    }, { status: 403 });
+                }
+
+                if (restrictions?.salesDisabled === true && isSales) {
+                    return NextResponse.json({
+                        error: "Sales operations are restricted for this store",
+                        correlationId,
+                        code: "STORE_RESTRICTED_SALES"
+                    }, { status: 403 });
+                }
+
+                if (restrictions?.paymentsDisabled === true && isPayments) {
+                    return NextResponse.json({
+                        error: "Payment operations are restricted for this store",
+                        correlationId,
+                        code: "STORE_RESTRICTED_PAYMENTS"
+                    }, { status: 403 });
+                }
+
+                if (restrictions?.uploadsDisabled === true && isUploads) {
+                    return NextResponse.json({
+                        error: "File uploads are restricted for this store",
+                        correlationId,
+                        code: "STORE_RESTRICTED_UPLOADS"
+                    }, { status: 403 });
+                }
+
+                if (restrictions?.aiDisabled === true && isAi) {
+                    return NextResponse.json({
+                        error: "AI features are restricted for this store",
+                        correlationId,
+                        code: "STORE_RESTRICTED_AI"
+                    }, { status: 403 });
+                }
+            }
             // 2. RBAC
             if (!checkPermission(user.role, permission)) {
                 logger.warn("Permission denied", ErrorCategory.SECURITY, {

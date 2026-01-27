@@ -36,13 +36,30 @@ export async function handleGetProduct(
                 },
                 store: {
                     include: {
-                        deliverySettings: true
+                        deliverySettings: true,
+                        subscription: true,
                     }
                 }
             }
         });
 
         if (!product) {
+            return NextResponse.json(
+                {
+                    success: false,
+                    error: { code: ApiErrorCode.NOT_FOUND, message: "Product not found" }
+                },
+                { status: 404 }
+            );
+        }
+
+        if (
+            !product.store ||
+            product.store.isActive !== true ||
+            product.store.isLive !== true ||
+            !product.store.subscription ||
+            !["TRIALING", "ACTIVE"].includes(String(product.store.subscription.status))
+        ) {
             return NextResponse.json(
                 {
                     success: false,

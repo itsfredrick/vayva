@@ -51,7 +51,9 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         setUser(newUser);
         setMerchant((newMerchant || null) as any);
         const destination = getAuthRedirect(newUser, newMerchant || null);
-        router.push(destination);
+        if (destination !== pathname) {
+            router.replace(destination);
+        }
     };
 
     const logout = async () => {
@@ -63,7 +65,9 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         }
         setUser(null);
         setMerchant(null);
-        router.push("/signin");
+        if (pathname !== "/signin") {
+            router.replace("/signin");
+        }
     };
 
     // Route Guard & Redirection Logic
@@ -92,14 +96,16 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
             "/blog",
             "/community",
             "/trust",
-            "/system-status",
+            "/status",
         ];
 
         const isPublicRoute = publicRoutes.some((p) => pathname === p || (p !== "/" && pathname.startsWith(p + "/")));
         const isAuthRoute = ["/signin", "/signup", "/verify"].includes(pathname);
 
         if (!user && !isPublicRoute) {
-            router.push("/signin");
+            if (pathname !== "/signin") {
+                router.replace("/signin");
+            }
             return;
         }
 
@@ -110,7 +116,9 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
                 if (pathname.startsWith("/verify") && destination.startsWith("/verify")) {
                     return;
                 }
-                router.push(destination);
+                if (destination !== pathname) {
+                    router.replace(destination);
+                }
                 return;
             }
 
@@ -119,20 +127,26 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
             const isDestinationVerify = destination.startsWith("/verify");
 
             if (isDestinationVerify && !pathname.startsWith("/verify")) {
-                router.push(destination);
+                if (destination !== pathname) {
+                    router.replace(destination);
+                }
                 return;
             }
 
             if (isDestinationOnboarding) {
                 if (!pathname.startsWith("/onboarding")) {
-                    router.push(destination);
+                    if (destination !== pathname) {
+                        router.replace(destination);
+                    }
                     return;
                 }
             }
 
             if (isDestinationDashboard) {
                 if (pathname.startsWith("/onboarding")) {
-                    router.push(destination);
+                    if (destination !== pathname) {
+                        router.replace(destination);
+                    }
                     return;
                 }
             }

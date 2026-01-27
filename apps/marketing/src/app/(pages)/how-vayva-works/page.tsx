@@ -166,9 +166,8 @@ export default function HowItWorksPage(): React.JSX.Element {
                   Accept Payments
                 </h3>
                 <p className="text-[#64748B] leading-relaxed">
-                  Customers can pay you immediately through secure links sent
-                  in-chat. Verify payments automatically without sending
-                  screenshots back and forth.
+                  Accept cards (Visa, Mastercard), bank transfers, USSD, and mobile money — powered by Paystack. 
+                  International customers can pay with dollar cards. Payments verify automatically, no screenshots needed.
                 </p>
               </div>
             </div>

@@ -90,7 +90,7 @@ export default async function CategoryPage({ params }: CategoryPageProps): Promi
                                         )}
                                         {/* Overlay Info */}
                                         <div className="absolute bottom-3 right-3 bg-white px-2 py-1 rounded-lg text-xs font-bold shadow-sm flex items-center gap-1">
-                                            <Clock size={12} className="text-[#22C55E]" />
+                                            <Clock size={12} className="text-primary" />
                                             30-45 min
                                         </div>
                                     </div>
@@ -102,7 +102,7 @@ export default async function CategoryPage({ params }: CategoryPageProps): Promi
                                             </p>
                                         </div>
                                         <div className="bg-gray-100 px-2 py-1 rounded-full text-xs font-bold flex items-center gap-1">
-                                            <Star size={10} className="fill-orange-400 text-orange-400" />
+                                            <Star size={10} className="fill-primary text-primary" />
                                             4.5
                                         </div>
                                     </div>
@@ -120,7 +120,7 @@ export default async function CategoryPage({ params }: CategoryPageProps): Promi
                         ) : (
                             (items as MarketProduct[]).map((product) => (
                                 <Link href={`/listing/${product.id}`} key={product.id} className="bg-white border border-gray-100 rounded-xl overflow-hidden block">
-                                    <div className="aspect-square bg-gray-50 relative">
+                                    <div className="aspect-square bg-gray-100 relative">
                                         {product.productImages?.[0] ? (
                                             <Image
                                                 src={product.productImages[0].url}
@@ -131,7 +131,7 @@ export default async function CategoryPage({ params }: CategoryPageProps): Promi
                                         ) : null}
                                     </div>
                                     <div className="p-3">
-                                        <div className="text-xs text-[#22C55E] font-medium mb-1 line-clamp-1">{product.store?.name}</div>
+                                        <div className="text-xs text-primary font-medium mb-1 line-clamp-1">{product.store?.name}</div>
                                         <h3 className="font-medium text-sm text-gray-900 line-clamp-2 h-10">{product.title}</h3>
                                         <div className="mt-2 font-bold">₦{Number(product.price).toLocaleString()}</div>
                                     </div>

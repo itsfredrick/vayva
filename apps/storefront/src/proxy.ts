@@ -2,9 +2,25 @@ import { NextResponse, type NextRequest } from "next/server";
 
 const rateLimit = new Map<string, { count: number; lastReset: number }>();
 
+const RESERVED_STORE_SLUGS = new Set([
+  "admin",
+  "merchant",
+  "ops",
+  "www",
+  "api",
+  "support",
+  "app",
+  "dashboard",
+  "help",
+  "docs",
+  "blog",
+  "status",
+]);
+
 export function proxy(request: NextRequest) {
   const url = request.nextUrl;
-  const hostname = request.headers.get("host") || "";
+  const rawHost = request.headers.get("host") || "";
+  const hostname = rawHost.split(":")[0] || "";
 
   // Handle localhost for development
   if (hostname.includes("localhost") && hostname.includes(":")) {
@@ -29,8 +45,7 @@ export function proxy(request: NextRequest) {
 
   // Clean hostname to get subdomain
   // logic: if hostname is "freds-shop.vayva.ng", subdomain is "freds-shop"
-  const isVercelDomain = hostname.includes("vercel.app"); // fallback
-  const _rootDomain = isVercelDomain ? "vercel.app" : "vayva.ng"; // Adjust validation as needed
+  const isVercelDomain = hostname.endsWith(".vercel.app"); // fallback
 
   // Extract subdomain
   // const subdomain = hostname.split('.')[0]; -- Reference logic
@@ -42,15 +57,17 @@ export function proxy(request: NextRequest) {
   // Check if subdomain
   // We look for [slug].vayva.ng
   // Exclude 'www' and base domain
-  if (
-    hostname.includes(".") &&
-    hostname !== "vayva.ng" &&
-    hostname !== "www.vayva.ng" &&
-    !hostname.startsWith("localhost") // Simple dev check, can refine
-  ) {
-    const subdomain = hostname.split(".")[0];
-    // Rewrite to the dynamic route
-    return NextResponse.rewrite(new URL(`/_sites/${subdomain}${path}`, request.url));
+  if (!hostname.startsWith("localhost") && hostname.includes(".")) {
+    const isVayvaNg = hostname.endsWith(".vayva.ng");
+    if (isVayvaNg || isVercelDomain) {
+      const parts = hostname.split(".");
+      const subdomain = parts[0] || "";
+      const isApex = hostname === "vayva.ng" || hostname === "www.vayva.ng";
+      const isValidSlug = /^[a-z0-9-]{3,63}$/.test(subdomain);
+      if (!isApex && isValidSlug && !RESERVED_STORE_SLUGS.has(subdomain)) {
+        return NextResponse.rewrite(new URL(`/_sites/${subdomain}${path}`, request.url));
+      }
+    }
   }
 
   // Development / Localhost Loopback for testing

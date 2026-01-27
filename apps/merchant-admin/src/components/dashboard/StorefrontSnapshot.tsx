@@ -4,6 +4,7 @@ import React from "react";
 import Link from "next/link";
 import { Icon, cn, Button } from "@vayva/ui";
 import { Store } from "@/lib/templates/types";
+import { buildLiveStorefrontUrl, buildPreviewStorefrontUrl } from "@/lib/storefront/urls";
 
 interface StorefrontSnapshotProps {
   store: any; // Relaxed type for display component
@@ -13,12 +14,9 @@ export const StorefrontSnapshot = ({ store }: StorefrontSnapshotProps) => {
   if (!store) return null;
 
   const isPublished = store.status === "published";
-  const APP_DOMAIN = process.env.NEXT_PUBLIC_APP_DOMAIN || "vayva.ng";
-  const storefrontBase = process.env.NEXT_PUBLIC_STOREFRONT_URL ||
-    (process.env.NODE_ENV === "production" ? "https://vayva.store" : "http://localhost:3001");
   const storeUrl = isPublished
-    ? `https://${store.slug}.${APP_DOMAIN}`
-    : `${storefrontBase}?store=${store.slug}`;
+    ? buildLiveStorefrontUrl(store.slug)
+    : buildPreviewStorefrontUrl(store.slug);
 
 
   const handleCopyLink = () => {
@@ -56,7 +54,7 @@ export const StorefrontSnapshot = ({ store }: StorefrontSnapshotProps) => {
             <h3 className="text-xl font-bold text-white mb-1">{store.name}</h3>
             <div className="flex items-center gap-2">
               <span className="text-sm text-text-secondary">
-                {APP_DOMAIN}/{store.slug}
+                {store.slug}.{process.env.NEXT_PUBLIC_APP_DOMAIN || "vayva.ng"}
 
               </span>
               <Button

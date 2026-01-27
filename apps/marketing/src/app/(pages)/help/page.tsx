@@ -12,7 +12,16 @@ export default function HelpCenterPage(): React.JSX.Element {
   const [searchQuery, setSearchQuery] = useState("");
   const [isAiOpen, setIsAiOpen] = useState(false);
 
-  const categories = Array.from(new Set(HELP_ARTICLES.map((a: any) => a.category)));
+  // Filter articles based on search query
+  const filteredArticles = searchQuery.trim()
+    ? HELP_ARTICLES.filter((a: HelpArticle) =>
+        a.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        a.summary.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        a.category.toLowerCase().includes(searchQuery.toLowerCase())
+      )
+    : HELP_ARTICLES;
+
+  const categories = Array.from(new Set(filteredArticles.map((a: any) => a.category)));
 
   return (
     <div className="min-h-screen bg-white pt-32 pb-24 px-4 overflow-hidden">
@@ -64,7 +73,7 @@ export default function HelpCenterPage(): React.JSX.Element {
                     {cat as string}
                   </h3>
                   <div className="space-y-3">
-                    {HELP_ARTICLES.filter((a: HelpArticle) => a.category === cat).map((article: any) => (
+                    {filteredArticles.filter((a: HelpArticle) => a.category === cat).map((article: any) => (
                         <Link
                           key={article.id}
                           href={`/help/${article.slug}`}

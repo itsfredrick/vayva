@@ -3,10 +3,11 @@
 import React from "react";
 import Image from "next/image";
 import * as motion from "framer-motion/client";
-import { MessageSquareText } from "lucide-react";
+import { CheckCircle2, CreditCard, LayoutDashboard, Package, Truck } from "lucide-react";
 import { PremiumButton } from "@/components/marketing/PremiumButton";
-import { HeroDownloadButton } from "@/components/marketing/HeroDownloadButton";
+import { Button } from "@vayva/ui";
 import { APP_URL } from "@/lib/constants";
+import Link from "next/link";
 
 interface LandingHeroProps {
     headline: React.ReactNode;
@@ -14,112 +15,130 @@ interface LandingHeroProps {
 }
 
 export function LandingHero({ headline, sub }: LandingHeroProps): React.JSX.Element {
+    const controlPillars: Array<{ label: string; Icon: React.ComponentType<{ className?: string }> }> = [
+        { label: "Orders", Icon: LayoutDashboard },
+        { label: "Payments", Icon: CreditCard },
+        { label: "Inventory", Icon: Package },
+        { label: "Delivery", Icon: Truck },
+    ];
+
     return (
-        <section className="pt-12 pb-20 px-4">
-            <motion.div
-                initial={{ opacity: 0, scale: 0.95 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ duration: 0.5 }}
-                className="max-w-4xl mx-auto text-center"
-            >
-                {/* Status Pill Removed */}
+        <section className="relative overflow-hidden pt-10 pb-16 md:pt-16 md:pb-24 px-4">
+            <div className="pointer-events-none absolute inset-0">
+                <div className="absolute -top-24 -left-24 h-64 w-64 rounded-full bg-green-100 blur-3xl opacity-60" />
+                <div className="absolute -bottom-24 -right-24 h-64 w-64 rounded-full bg-blue-100 blur-3xl opacity-50" />
+            </div>
+            <div className="relative max-w-[1760px] mx-auto">
+                <div className="grid lg:grid-cols-2 gap-10 xl:gap-14 items-center">
+                    {/* Left: Text Content */}
+                    <motion.div
+                        initial={{ opacity: 0, x: -30 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        transition={{ duration: 0.6 }}
+                    >
+                        <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-[#0F172A] mb-6 leading-[1.1] tracking-tight">
+                            {headline}
+                        </h1>
 
-                <h1 className="text-5xl md:text-7xl font-bold text-[#0F172A] mb-8 leading-[1.1] tracking-tight">
-                    {headline}
-                </h1>
+                        <p className="text-lg text-[#64748B] mb-8 leading-relaxed max-w-xl">
+                            {sub}
+                        </p>
 
-                <p className="text-xl text-[#64748B] mb-10 max-w-3xl mx-auto leading-relaxed">
-                    {sub}
-                </p>
+                        <div className="max-w-xl space-y-3 text-sm text-[#0F172A]">
+                            <div className="flex items-start gap-3">
+                                <span className="mt-1 w-2 h-2 rounded-full bg-[#22C55E] flex-shrink-0" />
+                                <p className="leading-relaxed">
+                                    Turn DMs into <span className="font-bold">tracked orders</span> — no more “I forgot this order” or “I didn’t see the message”.
+                                </p>
+                            </div>
+                            <div className="flex items-start gap-3">
+                                <span className="mt-1 w-2 h-2 rounded-full bg-[#22C55E] flex-shrink-0" />
+                                <p className="leading-relaxed">
+                                    Send <span className="font-bold">payment links</span>, confirm payment faster, and keep receipts/records clean for every sale.
+                                </p>
+                            </div>
+                            <div className="flex items-start gap-3">
+                                <span className="mt-1 w-2 h-2 rounded-full bg-[#22C55E] flex-shrink-0" />
+                                <p className="leading-relaxed">
+                                    Manage <span className="font-bold">inventory & delivery</span> from one dashboard — from packing to dispatch updates.
+                                </p>
+                            </div>
+                        </div>
 
-                <div className="flex flex-col sm:flex-row gap-4 justify-center mb-12 items-center">
-                    <a href={`${APP_URL}/signup`}>
-                        <PremiumButton data-testid="landing-get-started">
-                            Start selling for free
-                        </PremiumButton>
-                    </a>
-                    <HeroDownloadButton />
-                </div>
+                        {/* CTA Buttons */}
+                        <div className="flex flex-col sm:flex-row gap-4 mb-8">
+                            <a href={`${APP_URL}/signup`}>
+                                <PremiumButton data-testid="landing-get-started" className="px-8 py-4">
+                                    Start Selling for Free
+                                </PremiumButton>
+                            </a>
+                            <Link href="/how-vayva-works">
+                                <Button variant="outline" className="px-8 py-4 border-2 border-gray-200 text-[#0F172A] font-bold rounded-xl hover:bg-gray-50 flex items-center gap-2">
+                                    <span className="w-2 h-2 bg-[#22C55E] rounded-full" />
+                                    View Demo
+                                </Button>
+                            </Link>
+                        </div>
 
-                {/* Mini-Preview / "Aha!" Moment */}
-                <div className="relative max-w-5xl mx-auto mb-20">
-                    <div className="absolute -inset-0.5 bg-gradient-to-r from-[#22C55E] to-blue-500 rounded-[40px] blur opacity-20 animate-pulse"></div>
-                    <div className="relative bg-white border border-gray-100 rounded-[40px] shadow-2xl p-4 md:p-8">
-                        {/* Removed inner overflow-hidden container to allow full image visibility */}
-                        <div className="relative rounded-[32px] border border-gray-100 bg-gray-50 flex justify-center">
-                            <Image
-                                src="/images/mobile-showcase.png"
-                                alt="Vayva Mobile Showcase"
-                                width={1200}
-                                height={800}
-                                priority
-                                className="object-contain w-full h-auto rounded-[32px]"
-                            />
-                            {/* Floating Notification Simulation */}
-                            <motion.div
-                                initial={{ x: 100, opacity: 0 }}
-                                animate={{ x: 0, opacity: 1 }}
-                                transition={{ delay: 2, duration: 0.5 }}
-                                className="absolute top-8 right-8 bg-white/90 backdrop-blur-md p-4 rounded-2xl shadow-xl border border-green-100 max-w-[240px] hidden sm:block"
-                            >
-                                <div className="flex items-center gap-3">
-                                    <div className="w-8 h-8 rounded-full bg-green-500 flex items-center justify-center">
-                                        <MessageSquareText className="w-4 h-4 text-white" />
-                                    </div>
-                                    <div>
-                                        <p className="text-[10px] font-black text-gray-400 uppercase">Incoming Order</p>
-                                        <p className="text-sm font-bold text-gray-900">Captured via WhatsApp AI</p>
+                        {/* Trust Badges */}
+                        <div className="flex flex-wrap items-center gap-6 text-sm text-[#64748B]">
+                            <span className="flex items-center gap-2">
+                                <CheckCircle2 className="w-4 h-4 text-[#22C55E]" />
+                                No credit card required
+                            </span>
+                            <span className="flex items-center gap-2">
+                                <span className="w-2 h-2 bg-[#22C55E] rounded-full" />
+                                Built for African commerce (network-friendly)
+                            </span>
+                        </div>
+
+                        <div className="mt-6 grid grid-cols-2 gap-3 max-w-xl md:grid-cols-4">
+                            {controlPillars.map((p) => (
+                                <div key={p.label} className="rounded-2xl border border-gray-100 bg-white px-4 py-3 shadow-sm">
+                                    <div className="flex items-center gap-2">
+                                        <div className="w-8 h-8 rounded-xl bg-green-50 flex items-center justify-center">
+                                            <p.Icon className="w-4 h-4 text-[#22C55E]" />
+                                        </div>
+                                        <div className="text-xs font-bold text-slate-800">{p.label}</div>
                                     </div>
                                 </div>
-                            </motion.div>
+                            ))}
                         </div>
-                    </div>
-                </div>
+                    </motion.div>
 
-                <p className="text-sm font-semibold text-gray-500 uppercase tracking-wider mb-6">
-                    Trusted by modern businesses
-                </p>
+                    {/* Right: Product Visual */}
+                    <motion.div
+                        initial={{ opacity: 0, x: 30 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        transition={{ duration: 0.6, delay: 0.2 }}
+                        className="relative"
+                    >
+                        <div className="relative rounded-3xl bg-white border border-gray-100 shadow-2xl overflow-hidden">
+                            <div className="absolute inset-0 bg-gradient-to-br from-green-50 via-white to-blue-50" />
+                            <div className="relative p-4 sm:p-6 lg:p-7">
+                                <div className="flex items-center justify-between">
+                                    <div className="text-[10px] font-black uppercase tracking-widest text-slate-500">Preview</div>
+                                    <div className="inline-flex items-center gap-2 rounded-full bg-white px-3 py-1 text-[11px] font-bold text-slate-700 border border-slate-200">
+                                        <span className="w-1.5 h-1.5 bg-[#22C55E] rounded-full" />
+                                        Storefront + Dashboard
+                                    </div>
+                                </div>
 
-                <div className="flex flex-wrap justify-center items-center gap-8 md:gap-12 transition-all duration-500">
-                    <Image
-                        src="/logos/partner-paystack.png"
-                        alt="Paystack"
-                        width={120}
-                        height={40}
-                        className="h-8 w-auto object-contain"
-                    />
-                    <Image
-                        src="/logos/youverify_logo.png"
-                        alt="YouVerify"
-                        width={120}
-                        height={40}
-                        className="h-8 w-auto object-contain"
-                    />
-                    <Image
-                        src="/logos/123design_logo.jpg"
-                        alt="123Design"
-                        width={120}
-                        height={40}
-                        className="h-10 w-auto object-contain mix-blend-multiply"
-                    />
-                    <Image
-                        src="/logos/kwikdelivery_logo.jpeg"
-                        alt="Kwik Delivery"
-                        width={120}
-                        height={40}
-                        className="h-10 w-auto object-contain"
-                    />
+                                <div className="mt-5">
+                                    <Image
+                                        src="/images/mobile-showcase.png"
+                                        alt="Vayva storefront preview"
+                                        width={900}
+                                        height={650}
+                                        className="w-full h-auto object-contain"
+                                        priority
+                                    />
+                                </div>
+                            </div>
+                        </div>
+                    </motion.div>
                 </div>
-
-                {/* Trust Indicators */}
-                <div className="flex flex-wrap justify-center items-center gap-6 sm:gap-8 text-sm text-[#64748B] font-medium mt-12">
-                    <span className="flex items-center gap-2"> Secured Payments </span>
-                    <span className="w-1 h-1 rounded-full bg-gray-300 hidden sm:block"></span>
-                    <span className="flex items-center gap-2"> Identity Verified </span>
-                    <span className="w-1 h-1 rounded-full bg-gray-300 hidden sm:block"></span>
-                    <span className="flex items-center gap-2 text-green-500 font-bold"> No card required </span>
-                </div>
-            </motion.div>
+            </div>
         </section>
     );
 }

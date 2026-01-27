@@ -1,3 +1,4 @@
+/* eslint-env serviceworker */
 const CACHE_NAME = 'vayva-merchant-v1';
 const STATIC_ASSETS = [
     '/',

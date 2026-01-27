@@ -53,6 +53,25 @@ export default function WhatsappSettingsPage() {
         }
     };
 
+    // Load existing persona settings on mount
+    useEffect(() => {
+        fetch("/api/seller/ai/profile")
+            .then((r) => r.ok ? r.json() : null)
+            .then((data) => {
+                if (data?.data) {
+                    const profile = data.data;
+                    setPersona({
+                        name: profile.agentName || "Vayva Assistant",
+                        tone: profile.tonePreset === "Professional" ? "professional" :
+                              profile.tonePreset === "Luxury" ? "luxurious" :
+                              profile.tonePreset === "Minimal" ? "urgent" : "friendly",
+                        language: "en",
+                    });
+                }
+            })
+            .catch(() => {});
+    }, []);
+
     useEffect(() => {
         let timer: NodeJS.Timeout;
         if (qrCode) {
@@ -66,8 +85,27 @@ export default function WhatsappSettingsPage() {
     }, [qrCode]);
 
     const handleSavePersona = async () => {
-        toast.success("Persona settings saved!");
-        // API call would go here: await fetch('/api/whatsapp/config', { method: 'POST', body: JSON.stringify({ aiConfig: persona }) })
+        try {
+            // Update MerchantAiProfile (used by SalesAgent for WhatsApp responses)
+            const res = await fetch("/api/seller/ai/profile", {
+                method: "PUT",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    agentName: persona.name,
+                    tonePreset: persona.tone === "friendly" ? "Friendly" : 
+                                persona.tone === "professional" ? "Professional" :
+                                persona.tone === "urgent" ? "Minimal" :
+                                persona.tone === "luxurious" ? "Luxury" : "Friendly",
+                    brevityMode: "Short",
+                    persuasionLevel: 1,
+                    oneQuestionRule: true,
+                }),
+            });
+            if (!res.ok) throw new Error("Failed to save");
+            toast.success("Persona settings saved!");
+        } catch (error: any) {
+            toast.error("Failed to save settings");
+        }
     };
 
     const handleTestSend = async () => {
@@ -75,17 +113,22 @@ export default function WhatsappSettingsPage() {
         setIsTesting(true);
         setTestResponse(null);
 
-        // Simulate API call
-        setTimeout(() => {
-            const responses: any = {
-                friendly: `Hey there! 🌟 I'm ${persona.name}. Thanks for reaching out! How can I help you today?`,
-                professional: `Hello. This is ${persona.name}. How may I assist you with your inquiry?`,
-                urgent: `${persona.name} here. State your request.`,
-                luxurious: `Greetings. ${persona.name} at your service. Indulge in our collection.`
-            };
-            setTestResponse((responses as any)[persona.tone] || (responses as any).friendly);
+        try {
+            const res = await fetch("/api/ai-agent/test-message", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ text: testInput }),
+            });
+            const data = await res.json().catch(() => null);
+            if (!res.ok) {
+                throw new Error(data?.error || "Test failed");
+            }
+            setTestResponse(data?.reply || "No response");
+        } catch (error: any) {
+            setTestResponse(`Error: ${error?.message || "Test failed"}`);
+        } finally {
             setIsTesting(false);
-        }, 1200);
+        }
     };
 
     return (

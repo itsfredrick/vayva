@@ -35,6 +35,9 @@ yarn-error.log*
 .env.test.local
 .env.production.local
 
+# Deploy secrets (never commit)
+scripts/deploy/.env.app
+
 # IDE
 .vscode/
 .idea/

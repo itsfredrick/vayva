@@ -49,7 +49,7 @@ export default function TrackOrderPage({
         </div>
 
         {/* Test Result (Hidden in real form init state, shown here for demo) */}
-        <div className="border border-white/10 rounded-2xl p-6 bg-[#0b141a]">
+        <div className="border border-white/10 rounded-2xl p-6 bg-card">
           <div className="flex justify-between items-start mb-6">
             <div>
               <h3 className="font-bold text-white text-lg">Order #VV-90123</h3>
@@ -82,7 +82,7 @@ export default function TrackOrderPage({
             ].map((event, i) => (
               <div key={i} className="relative">
                 <div
-                  className={`absolute -left-[29px] top-1 w-3 h-3 rounded-full border-2 ${event.active ? "bg-primary border-primary" : "bg-[#0b141a] border-white/30"}`}
+                  className={`absolute -left-[29px] top-1 w-3 h-3 rounded-full border-2 ${event.active ? "bg-primary border-primary" : "bg-card border-white/30"}`}
                 />
                 <div
                   className={`font-bold ${event.active ? "text-white" : "text-text-secondary"}`}
@@ -98,7 +98,7 @@ export default function TrackOrderPage({
             <p className="flex items-center justify-center gap-2">
               <Icon name={"HelpCircle" as any} size={16} />
               Need help with this order?{" "}
-              <a href="#" className="underline">
+              <a href="#" className="underline" aria-label="Contact support">
                 Contact Support
               </a>
             </p>

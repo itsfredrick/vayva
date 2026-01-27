@@ -11,42 +11,35 @@ export async function GET(
   try {
     const store = await prisma.store.findUnique({
       where: { slug },
+      select: {
+        id: true,
+        name: true,
+        slug: true,
+        logoUrl: true,
+        settings: true,
+        plan: true,
+        isLive: true,
+        isActive: true,
+      },
     });
 
-    if (!store) {
+    if (!store || !store.isActive || !store.isLive) {
       return NextResponse.json({ error: "Store not found" }, { status: 404 });
     }
 
-    const { searchParams } = new URL(request.url);
-    const isPreview = searchParams.get("preview") === "true";
-
-    // Fetch published version or draft
+    // Public API only serves published storefront config
     let activeConfig: any = null;
 
-    if (isPreview) {
-      const draft = await prisma.storefrontDraft.findUnique({
-        where: { storeId: store.id },
-      });
-      if (draft) {
-        activeConfig = {
-          theme: draft.themeConfig,
-          sections: draft.sectionConfig,
-          order: draft.sectionOrder,
-          templateId: draft.activeTemplateId,
-        };
-      }
-    } else {
-      const published = await prisma.storefrontPublished.findUnique({
-        where: { storeId: store.id },
-      });
-      if (published) {
-        activeConfig = {
-          theme: published.themeConfig,
-          sections: published.sectionConfig,
-          order: (published as any).sectionOrder || [],
-          templateId: published.activeTemplateId,
-        };
-      }
+    const published = await prisma.storefrontPublished.findUnique({
+      where: { storeId: store.id },
+    });
+    if (published) {
+      activeConfig = {
+        theme: published.themeConfig,
+        sections: published.sectionConfig,
+        order: (published as any).sectionOrder || [],
+        templateId: published.activeTemplateId,
+      };
     }
 
     // Transform to PublicStore format

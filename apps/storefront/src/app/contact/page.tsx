@@ -48,10 +48,10 @@ export default async function ContactPage(): Promise<React.JSX.Element> {
                   Email Us
                 </p>
                 <a
-                  href={`mailto:${contact?.email || "support@vayva.shop"}`}
+                  href={`mailto:${contact?.email || "support@vayva.ng"}`}
                   className="text-black font-bold hover:underline break-all"
                 >
-                  {contact?.email || "support@vayva.shop"}
+                  {contact?.email || "support@vayva.ng"}
                 </a>
               </div>
             </div>

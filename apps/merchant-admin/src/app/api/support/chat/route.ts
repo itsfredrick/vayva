@@ -104,7 +104,7 @@ export async function POST(req: any) {
                 eventType: "BOT_MESSAGE_CREATED",
                 messageId,
                 payload: {
-                    intent: "UNKNOWN", // Placeholder until NLU is separate
+                    intent: "GENERAL_INQUIRY", // NLU classification not yet implemented
                     suggestedActions: result.actions,
                     toolFailures: 0,
                 },

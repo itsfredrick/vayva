@@ -6,9 +6,10 @@ import "./globals.css";
 // const inter = Inter({ ... });
 
 export const metadata = {
-    title: "Vayva - WhatsApp Business Platform for Nigeria",
-    description: "Stop fighting with chat bubbles. Let Vayva's AI auto-capture orders, track payments, and organize your business.",
-    keywords: ["WhatsApp business", "Nigeria", "e-commerce", "order management", "payments"],
+    metadataBase: new URL("https://vayva.ng"),
+    title: "Vayva - WhatsApp Business Platform for Nigeria | Accept Card & Bank Payments",
+    description: "Turn WhatsApp into a complete business platform. Accept payments via cards (Visa, Mastercard), bank transfers, and USSD. Powered by Paystack. AI-powered order capture, inventory sync, and logistics.",
+    keywords: ["WhatsApp business", "Nigeria", "e-commerce", "order management", "payments", "Paystack", "card payments", "bank transfer", "online store Nigeria", "accept payments Nigeria"],
     authors: [{ name: "Vayva" }],
     manifest: "/manifest.json",
     openGraph: {
@@ -44,8 +45,6 @@ export const metadata = {
 
 import Script from "next/script";
 
-import { MobileAppWaitlist } from "@/components/MobileAppWaitlist";
-
 interface RootLayoutProps {
     children: React.ReactNode;
 }
@@ -61,7 +60,7 @@ export default function RootLayout({
         "logo": "https://vayva.ng/favicon.svg",
         "contactPoint": {
             "@type": "ContactPoint",
-            "telephone": "+234-XXX-XXXX-XXXX",
+            "telephone": "+234-916-000-0000",
             "contactType": "customer service",
             "email": "support@vayva.ng"
         },
@@ -83,7 +82,6 @@ export default function RootLayout({
             </head>
             <body className="antialiased font-sans bg-white text-black" suppressHydrationWarning>
                 {children}
-                <MobileAppWaitlist />
             </body>
         </html>
     );

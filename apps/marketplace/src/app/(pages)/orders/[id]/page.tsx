@@ -36,7 +36,7 @@ type OrderWithRelations = Prisma.OrderGetPayload<{
 
 export default async function OrderDetailsPage({ params }: { params: { id: string } }): Promise<React.JSX.Element> {
     const session = await getServerSession(authOptions);
-    if (!session?.user) return redirect("/api/auth/signin");
+    if (!session?.user) return redirect(`/signin?callbackUrl=${encodeURIComponent(`/orders/${params.id}`)}`);
 
     const order = await prisma.order.findUnique({
         where: { id: params.id },
@@ -86,14 +86,14 @@ export default async function OrderDetailsPage({ params }: { params: { id: strin
                 {/* Main Content */}
                 <div className="flex-1 space-y-6">
                     <div className="bg-white border rounded-xl overflow-hidden">
-                        <div className="bg-gray-50 px-6 py-4 border-b flex justify-between items-center">
+                        <div className="bg-white px-6 py-4 border-b border-gray-100 flex justify-between items-center">
                             <div>
                                 <h1 className="text-xl font-bold">{order.orderNumber}</h1>
                                 <p className="text-sm text-muted-foreground">
                                     Placed on {new Date(order.createdAt).toLocaleDateString()}
                                 </p>
                             </div>
-                            <div className="bg-blue-100 text-blue-700 px-3 py-1 rounded-full text-sm font-medium">
+                            <div className="bg-primary/10 text-primary px-3 py-1 rounded-full text-sm font-medium">
                                 {order.status}
                             </div>
                         </div>
@@ -101,12 +101,12 @@ export default async function OrderDetailsPage({ params }: { params: { id: strin
                         <div className="p-6">
                             {/* China Import Milestones (if applicable) */}
                             {order.importStatus && (
-                                <div className="mb-8 p-4 bg-orange-50 rounded-lg border border-orange-100">
+                                <div className="mb-8 p-4 bg-white rounded-lg border border-gray-100">
                                     <div className="flex items-center gap-2 mb-4">
-                                        <div className="bg-orange-600 p-1.5 rounded-lg">
+                                        <div className="bg-primary p-1.5 rounded-lg">
                                             <Truck className="h-4 w-4 text-white" />
                                         </div>
-                                        <h2 className="font-bold text-orange-900">China Import Journey</h2>
+                                        <h2 className="font-bold text-gray-900">China Import Journey</h2>
                                     </div>
                                     <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-4">
                                         {[
@@ -127,17 +127,17 @@ export default async function OrderDetailsPage({ params }: { params: { id: strin
 
                                             return (
                                                 <div key={idx} className="flex flex-col items-center text-center gap-2">
-                                                    <div className={`h-8 w-8 rounded-full flex items-center justify-center border-2 ${isPast ? 'bg-orange-600 border-orange-600 text-white' : 'bg-white border-orange-200 text-orange-200'}`}>
+                                                    <div className={`h-8 w-8 rounded-full flex items-center justify-center border-2 ${isPast ? 'bg-primary border-primary text-white' : 'bg-white border-gray-200 text-gray-300'}`}>
                                                         {isPast ? <CheckCircle2 className="h-4 w-4" /> : <Clock className="h-4 w-4" />}
                                                     </div>
-                                                    <span className={`text-[10px] uppercase font-bold tracking-tight ${isPast ? 'text-orange-900' : 'text-orange-300'}`}>
+                                                    <span className={`text-[10px] uppercase font-bold tracking-tight ${isPast ? 'text-gray-900' : 'text-gray-400'}`}>
                                                         {milestone.label}
                                                     </span>
                                                 </div>
                                             );
                                         })}
                                     </div>
-                                    <div className="mt-4 text-xs text-orange-600 bg-white/50 p-2 rounded italic">
+                                    <div className="mt-4 text-xs text-muted-foreground bg-white/50 p-2 rounded italic">
                                         * China Import orders undergo strict quality control before shipping. Estimated shipping time is 10-15 days after production.
                                     </div>
                                 </div>
@@ -150,7 +150,7 @@ export default async function OrderDetailsPage({ params }: { params: { id: strin
                                     {typedOrder.orderTimelineEvents?.length > 0 ? (
                                         typedOrder.orderTimelineEvents.map((event: { id: string, title: string, body: string | null, createdAt: Date }) => (
                                             <div key={event.id} className="relative">
-                                                <div className="absolute -left-[21px] top-1 h-3 w-3 rounded-full bg-blue-500 ring-4 ring-white" />
+                                                <div className="absolute -left-[21px] top-1 h-3 w-3 rounded-full bg-primary ring-4 ring-white" />
                                                 <div>
                                                     <p className="font-medium text-sm">{event.title}</p>
                                                     <p className="text-xs text-muted-foreground">{event.body}</p>
@@ -162,7 +162,7 @@ export default async function OrderDetailsPage({ params }: { params: { id: strin
                                         ))
                                     ) : (
                                         <div className="relative">
-                                            <div className="absolute -left-[21px] top-1 h-3 w-3 rounded-full bg-blue-500 ring-4 ring-white" />
+                                            <div className="absolute -left-[21px] top-1 h-3 w-3 rounded-full bg-primary ring-4 ring-white" />
                                             <p className="font-medium text-sm">Order Placed</p>
                                             <p className="text-xs text-muted-foreground">We have received your order.</p>
                                         </div>
@@ -238,7 +238,7 @@ export default async function OrderDetailsPage({ params }: { params: { id: strin
                             <span>Total</span>
                             <span>₦{Number(order.total).toLocaleString()}</span>
                         </div>
-                        <div className="text-xs text-center text-muted-foreground bg-gray-50 p-2 rounded">
+                        <div className="text-xs text-center text-muted-foreground bg-white border border-gray-100 p-2 rounded">
                             Payment Status: <span className="font-medium text-foreground">{order.paymentStatus}</span>
                         </div>
                     </div>
@@ -250,7 +250,7 @@ export default async function OrderDetailsPage({ params }: { params: { id: strin
                             orderNumber={order.orderNumber}
                             totalAmount={Number(order.total)}
                         />
-                        <Button variant="ghost" className="w-full text-red-500 hover:text-red-600 hover:bg-red-50" size="sm">
+                        <Button variant="ghost" className="w-full text-gray-700 hover:text-black hover:bg-gray-100" size="sm">
                             Cancel Order
                         </Button>
                     </div>

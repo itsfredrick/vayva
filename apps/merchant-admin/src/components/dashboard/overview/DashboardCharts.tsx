@@ -31,7 +31,7 @@ export const RevenueAreaChart = ({ data }: RevenueChartProps) => {
           <p className="text-sm text-gray-500">Last 7 Days</p>
         </div>
         <div className="flex gap-2">
-          <span className="w-3 h-3 rounded-full bg-green-500"></span>
+          <span className="w-3 h-3 rounded-full bg-primary"></span>
           <span className="text-xs text-gray-500 font-medium">Revenue</span>
         </div>
       </div>
@@ -44,8 +44,16 @@ export const RevenueAreaChart = ({ data }: RevenueChartProps) => {
           >
             <defs>
               <linearGradient id="colorRevenue" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="5%" stopColor="#22c55e" stopOpacity={0.1} />
-                <stop offset="95%" stopColor="#22c55e" stopOpacity={0} />
+                <stop
+                  offset="5%"
+                  stopColor="hsl(var(--primary))"
+                  stopOpacity={0.1}
+                />
+                <stop
+                  offset="95%"
+                  stopColor="hsl(var(--primary))"
+                  stopOpacity={0}
+                />
               </linearGradient>
             </defs>
             <CartesianGrid
@@ -88,7 +96,7 @@ export const RevenueAreaChart = ({ data }: RevenueChartProps) => {
             <Area
               type="monotone"
               dataKey="revenue"
-              stroke="#22c55e"
+              stroke="hsl(var(--primary))"
               strokeWidth={3}
               fillOpacity={1}
               fill="url(#colorRevenue)"
@@ -170,7 +178,7 @@ export const OrdersBreakdownChart = ({ data }: OrdersChartProps) => {
             <Bar
               dataKey="completed"
               stackId="a"
-              fill="#22c55e"
+              fill="hsl(var(--primary))"
               radius={[0, 0, 4, 4]}
               name="Completed"
               barSize={20}

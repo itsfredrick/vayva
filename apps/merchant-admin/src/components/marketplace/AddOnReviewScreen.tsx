@@ -23,7 +23,7 @@ export function AddOnReviewScreen({
           <h1 className="text-3xl font-bold text-black mb-2">
             Review Add-On
           </h1>
-          <p className="text-[#64748B]">
+          <p className="text-muted-foreground">
             {addon.name} • {addon.version}
           </p>
         </div>
@@ -41,7 +41,7 @@ export function AddOnReviewScreen({
           <ul className="space-y-2">
             {addon.whatItAdds.map((item, i) => (
               <li key={i} className="flex items-start gap-2">
-                <span className="text-[#22C55E] mt-1">✓</span>
+                <span className="text-primary mt-1">✓</span>
                 <span className="text-black">{item}</span>
               </li>
             ))}
@@ -56,8 +56,8 @@ export function AddOnReviewScreen({
           <ul className="space-y-2">
             {addon.whatItDoesNotChange.map((item, i) => (
               <li key={i} className="flex items-start gap-2">
-                <span className="text-[#64748B] mt-1">○</span>
-                <span className="text-[#64748B] text-sm">{item}</span>
+                <span className="text-muted-foreground mt-1">○</span>
+                <span className="text-muted-foreground text-sm">{item}</span>
               </li>
             ))}
           </ul>
@@ -82,7 +82,7 @@ export function AddOnReviewScreen({
           </Button>
           <Button
             onClick={onEnable}
-            className="flex-1 bg-[#22C55E] hover:bg-[#16A34A] text-white py-4 text-lg font-semibold"
+            className="flex-1 bg-primary hover:bg-primary/90 text-primary-foreground py-4 text-lg font-semibold"
           >
             Enable add-on
           </Button>

@@ -39,8 +39,9 @@ export default function SigninPage() {
   return (
     <SplitAuthLayout
       title="Welcome back"
-      subtitle="Sign in to manage your business operations"
+      subtitle="Sign in to your Merchant Dashboard"
       showSignUpLink
+      leftVariant="signin"
     >
       <form onSubmit={handleSubmit} className="space-y-5">
         {error && (

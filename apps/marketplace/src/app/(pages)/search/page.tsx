@@ -1,11 +1,22 @@
 "use client";
 
-import React, { useState, useEffect, Suspense } from "react";
+import React, { useCallback, useState, useEffect, Suspense } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import Link from "next/link";
-import { Search, MapPin, Filter, ArrowLeft, Loader2, MessageCircle, ShoppingCart } from "lucide-react";
-import { Button } from "@vayva/ui";
+import { Search, ArrowLeft, Loader2, SlidersHorizontal } from "lucide-react";
+import { Button, Drawer, Select } from "@vayva/ui";
 import { SearchResult } from "@vayva/shared";
+import { BrandLogo } from "@/components/BrandLogo";
+import {
+    ProductCard,
+} from "@/components/marketplace/ProductCard";
+import {
+    ProductCardSkeleton,
+} from "@/components/marketplace/ProductCardSkeleton";
+import {
+    SearchFilters,
+    SearchFilterState,
+} from "@/components/marketplace/SearchFilters";
 
 function SearchContent(): React.JSX.Element {
     const searchParams = useSearchParams();
@@ -14,50 +25,162 @@ function SearchContent(): React.JSX.Element {
     const initialQuery = searchParams.get("q") || "";
     const initialCategory = searchParams.get("category") || "All";
     const initialChinaBulk = searchParams.get("chinaBulk") === "true";
+    const initialSort = (searchParams.get("sort") || "new") as "new" | "price_asc" | "price_desc";
 
     const [query, setQuery] = useState(initialQuery);
     const [category, setCategory] = useState(initialCategory);
-    const [chinaBulk, setChinaBulk] = useState(initialChinaBulk);
+    const [sort, setSort] = useState<"new" | "price_asc" | "price_desc">(initialSort);
+
     const [results, setResults] = useState<SearchResult[]>([]);
     const [loading, setLoading] = useState(true);
+    const [page, setPage] = useState(1);
+    const [hasMore, setHasMore] = useState(false);
+    const [isFetchingMore, setIsFetchingMore] = useState(false);
+    const [isFilterOpen, setIsFilterOpen] = useState(false);
+
+    const [filters, setFilters] = useState<SearchFilterState>({
+        minPrice: searchParams.get("minPrice") || "",
+        maxPrice: searchParams.get("maxPrice") || "",
+        minMoq: searchParams.get("minMoq") || "",
+        verifiedOnly: searchParams.get("verified") === "true",
+        chinaBulkOnly: initialChinaBulk,
+        location: searchParams.get("location") || "All Nigeria",
+    });
 
     const CATEGORIES = ["All", "Vehicles", "Property", "Electronics", "Fashion", "Food"];
 
+    const pushQueryState = (next: {
+        query: string;
+        category: string;
+        sort: "new" | "price_asc" | "price_desc";
+        filters: SearchFilterState;
+    }): void => {
+        const params = new URLSearchParams();
+        if (next.query) params.set("q", next.query);
+        if (next.category && next.category !== "All") params.set("category", next.category);
+        if (next.sort && next.sort !== "new") params.set("sort", next.sort);
+
+        if (next.filters.minPrice) params.set("minPrice", next.filters.minPrice);
+        if (next.filters.maxPrice) params.set("maxPrice", next.filters.maxPrice);
+        if (next.filters.minMoq) params.set("minMoq", next.filters.minMoq);
+        if (next.filters.verifiedOnly) params.set("verified", "true");
+        if (next.filters.chinaBulkOnly) params.set("chinaBulk", "true");
+        if (next.filters.location && next.filters.location !== "All Nigeria") params.set("location", next.filters.location);
+
+        router.push(`/search?${params.toString()}`);
+    };
+
     useEffect(() => {
-        const fetchResults = async () => {
+        let cancelled = false;
+
+        const fetchPage = async () => {
             setLoading(true);
             try {
                 const params = new URLSearchParams();
-                if (query) params.append("q", query);
-                if (category && category !== "All") params.append("category", category);
-                if (chinaBulk) params.append("chinaBulk", "true");
+                if (query) params.set("q", query);
+                if (category && category !== "All") params.set("category", category);
+                if (filters.chinaBulkOnly) params.set("chinaBulk", "true");
+                if (sort && sort !== "new") params.set("sort", sort);
+
+                if (filters.minPrice) params.set("minPrice", filters.minPrice);
+                if (filters.maxPrice) params.set("maxPrice", filters.maxPrice);
+                if (filters.minMoq) params.set("minMoq", filters.minMoq);
+                if (filters.verifiedOnly) params.set("verified", "true");
+                if (filters.location && filters.location !== "All Nigeria") params.set("location", filters.location);
+
+                params.set("page", "1");
+                params.set("limit", "24");
 
                 const res = await fetch(`/api/search?${params.toString()}`);
-                const data = await res.json();
-                setResults(data.results || []);
+                const payload = await res.json();
+
+                const nextResults = (payload?.data?.results ?? payload?.results ?? []) as SearchResult[];
+                const nextHasMore = Boolean(payload?.meta?.hasMore ?? payload?.metadata?.hasMore);
+
+                if (cancelled) return;
+                setResults(nextResults);
+                setHasMore(nextHasMore);
+                setPage(1);
             } catch (error) {
                 console.error("Search failed", error);
             } finally {
-                setLoading(false);
+                if (!cancelled) setLoading(false);
             }
         };
 
-        const debounce = setTimeout(fetchResults, 500);
-        return () => clearTimeout(debounce);
-    }, [query, category, chinaBulk]);
+        const debounce = setTimeout(fetchPage, 350);
+        return () => {
+            cancelled = true;
+            clearTimeout(debounce);
+        };
+    }, [query, category, filters, sort]);
+
+    const loadMore = useCallback(async (): Promise<void> => {
+        if (!hasMore) return;
+        setIsFetchingMore(true);
+        try {
+            const nextPage = page + 1;
+            const params = new URLSearchParams();
+            if (query) params.set("q", query);
+            if (category && category !== "All") params.set("category", category);
+            if (filters.chinaBulkOnly) params.set("chinaBulk", "true");
+            if (sort && sort !== "new") params.set("sort", sort);
+
+            if (filters.minPrice) params.set("minPrice", filters.minPrice);
+            if (filters.maxPrice) params.set("maxPrice", filters.maxPrice);
+            if (filters.minMoq) params.set("minMoq", filters.minMoq);
+            if (filters.verifiedOnly) params.set("verified", "true");
+
+            params.set("page", String(nextPage));
+            params.set("limit", "24");
+
+            const res = await fetch(`/api/search?${params.toString()}`);
+            const payload = await res.json();
+            const nextResults = (payload?.data?.results ?? payload?.results ?? []) as SearchResult[];
+            const nextHasMore = Boolean(payload?.meta?.hasMore ?? payload?.metadata?.hasMore);
+
+            setResults((prev) => [...prev, ...nextResults]);
+            setHasMore(nextHasMore);
+            setPage(nextPage);
+        } catch (error) {
+            console.error("Load more failed", error);
+        } finally {
+            setIsFetchingMore(false);
+        }
+    }, [category, filters, hasMore, page, query, sort]);
+
+    useEffect(() => {
+        if (!hasMore) return;
+
+        const onScroll = () => {
+            if (loading || isFetchingMore) return;
+            const scrollPos = window.innerHeight + window.scrollY;
+            const threshold = document.body.offsetHeight - 900;
+            if (scrollPos >= threshold) {
+                void loadMore();
+            }
+        };
+
+        window.addEventListener("scroll", onScroll, { passive: true });
+        return () => window.removeEventListener("scroll", onScroll);
+    }, [hasMore, isFetchingMore, loadMore, loading]);
 
     const handleSearch = (e: React.FormEvent): void => {
         e.preventDefault();
-        router.push(`/search?q=${encodeURIComponent(query)}&category=${encodeURIComponent(category)}`);
+        pushQueryState({ query, category, sort, filters });
     };
 
     return (
-        <div className="min-h-screen bg-gray-50 flex flex-col">
+        <div className="min-h-screen bg-white flex flex-col">
             {/* Header */}
             <header className="bg-white border-b border-gray-100 sticky top-0 z-50">
                 <div className="max-w-7xl mx-auto px-4 py-3 flex items-center gap-3">
-                    <Link href="/" className="p-2 hover:bg-gray-50 rounded-full text-gray-500">
+                    <Link href="/" className="p-2 hover:bg-gray-100 rounded-full text-gray-500">
                         <ArrowLeft size={20} />
+                    </Link>
+
+                    <Link href="/" className="shrink-0">
+                        <BrandLogo className="h-5" />
                     </Link>
 
                     <form onSubmit={handleSearch} className="flex-1 flex items-center gap-2 bg-gray-100 rounded-full px-4 py-2.5">
@@ -71,9 +194,18 @@ function SearchContent(): React.JSX.Element {
                         />
                     </form>
 
-                    <Button variant="ghost" size="icon" className="rounded-full text-gray-600 relative">
-                        <Filter size={20} />
-                        {category !== "All" && <span className="absolute top-1.5 right-1.5 w-2 h-2 bg-[#22C55E] rounded-full"></span>}
+                    <Button
+                        variant="ghost"
+                        size="icon"
+                        className="rounded-full text-gray-600 relative"
+                        onClick={() => setIsFilterOpen(true)}
+                        aria-label="Filters"
+                        title="Filters"
+                    >
+                        <SlidersHorizontal size={20} />
+                        {(filters.verifiedOnly || filters.minPrice || filters.maxPrice || filters.minMoq || filters.chinaBulkOnly || category !== "All") && (
+                            <span className="absolute top-1.5 right-1.5 w-2 h-2 bg-primary rounded-full"></span>
+                        )}
                     </Button>
                 </div>
 
@@ -82,10 +214,18 @@ function SearchContent(): React.JSX.Element {
                     {CATEGORIES.map((cat) => (
                         <Button
                             key={cat}
-                            onClick={() => setCategory(cat)}
+                            onClick={() => {
+                                setCategory(cat);
+                                pushQueryState({
+                                    query,
+                                    category: cat,
+                                    sort,
+                                    filters,
+                                });
+                            }}
                             variant="ghost"
                             className={`pb-3 text-sm font-medium whitespace-nowrap transition-colors border-b-2 rounded-none h-auto ${category === cat
-                                ? "border-[#22C55E] text-[#22C55E]"
+                                ? "border-primary text-primary"
                                 : "border-transparent text-gray-500 hover:text-gray-800"
                                 }`}
                         >
@@ -94,99 +234,191 @@ function SearchContent(): React.JSX.Element {
                     ))}
                     <div className="flex-1" />
                     <Button
-                        onClick={() => setChinaBulk(!chinaBulk)}
+                        onClick={() => {
+                            const nextChinaBulkOnly = !filters.chinaBulkOnly;
+                            const nextFilters: SearchFilterState = {
+                                ...filters,
+                                chinaBulkOnly: nextChinaBulkOnly,
+                            };
+                            setFilters(nextFilters);
+                            pushQueryState({
+                                query,
+                                category,
+                                sort,
+                                filters: nextFilters,
+                            });
+                        }}
                         variant="ghost"
-                        className={`pb-3 px-3 text-sm font-medium whitespace-nowrap transition-colors border-b-2 rounded-t-lg h-auto ${chinaBulk
-                            ? "border-orange-500 text-orange-600 bg-orange-50"
-                            : "border-transparent text-gray-500 hover:text-gray-800 hover:bg-gray-50"
+                        className={`pb-3 px-3 text-sm font-medium whitespace-nowrap transition-colors border-b-2 rounded-t-lg h-auto ${filters.chinaBulkOnly
+                            ? "border-primary text-primary bg-primary/10"
+                            : "border-transparent text-gray-500 hover:text-gray-800 hover:bg-gray-100"
                             }`}
                     >
-                        🇨🇳 China Bulk {chinaBulk && "✓"}
+                        🇨🇳 China Bulk {filters.chinaBulkOnly && "✓"}
                     </Button>
+                </div>
+
+                <div className="max-w-7xl mx-auto px-4 py-2 flex items-center justify-between gap-3">
+                    <div className="text-xs text-gray-500">
+                        {loading ? "Searching…" : `${results.length.toLocaleString()} results`}
+                    </div>
+                    <div className="flex items-center gap-2">
+                        <div className="text-xs font-medium text-gray-500">Sort</div>
+                        <Select
+                            value={sort}
+                            onChange={(e) => {
+                                const nextSort = e.target.value as "new" | "price_asc" | "price_desc";
+                                setSort(nextSort);
+                                pushQueryState({ query, category, sort: nextSort, filters });
+                            }}
+                            className="h-9 rounded-lg"
+                        >
+                            <option value="new">Newest</option>
+                            <option value="price_asc">Price: Low → High</option>
+                            <option value="price_desc">Price: High → Low</option>
+                        </Select>
+                    </div>
                 </div>
             </header>
 
             {/* Results */}
             <main className="flex-1 max-w-7xl mx-auto w-full p-4">
-                {loading ? (
-                    <div className="flex flex-col items-center justify-center py-20 text-gray-400">
-                        <Loader2 size={32} className="animate-spin mb-3" />
-                        <p className="text-sm">Searching...</p>
-                    </div>
-                ) : results.length === 0 ? (
-                    <div className="text-center py-20">
-                        <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4 text-gray-400">
-                            <Search size={32} />
+                <div className="grid grid-cols-1 lg:grid-cols-[280px_1fr] gap-6">
+                    <aside className="hidden lg:block">
+                        <div className="sticky top-[140px] rounded-xl border border-gray-100 bg-white p-4">
+                            <div className="flex items-center justify-between mb-3">
+                                <div className="text-sm font-bold text-gray-900">Filters</div>
+                                <Button
+                                    variant="ghost"
+                                    size="sm"
+                                    className="text-xs"
+                                    onClick={() => {
+                                        const cleared: SearchFilterState = {
+                                            minPrice: "",
+                                            maxPrice: "",
+                                            minMoq: "",
+                                            verifiedOnly: false,
+                                            chinaBulkOnly: false,
+                                            location: "All Nigeria",
+                                        };
+                                        setFilters(cleared);
+                                        pushQueryState({ query, category, sort, filters: cleared });
+                                    }}
+                                >
+                                    Reset
+                                </Button>
+                            </div>
+
+                            <SearchFilters
+                                value={filters}
+                                onChange={(next) => {
+                                    setFilters(next);
+                                }}
+                            />
+
+                            <div className="mt-4">
+                                <Button
+                                    className="w-full"
+                                    onClick={() => {
+                                        pushQueryState({ query, category, sort, filters });
+                                    }}
+                                >
+                                    Apply
+                                </Button>
+                            </div>
                         </div>
-                        <h3 className="text-lg font-bold text-gray-900 mb-1">No results found</h3>
-                        <p className="text-gray-500 text-sm">Try adjusting your filters or search terms.</p>
-                    </div>
-                ) : (
-                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
-                        {results.map((item) => (
-                            <Link key={item.id} href={`/listing/${item.id}`} className="group block bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden hover:shadow-md transition-shadow">
-                                <div className="aspect-[4/3] bg-gray-100 relative">
-                                    <img src={item.image} alt={item.title} className="w-full h-full object-cover" />
+                    </aside>
 
-                                    {/* Mode Badge */}
-                                    <div className={`absolute top-2 left-2 px-2 py-0.5 rounded-md text-[10px] font-bold uppercase tracking-wide text-white ${item.isChinaBulk
-                                        ? "bg-orange-600"
-                                        : item.mode === "CHECKOUT"
-                                            ? "bg-black"
-                                            : "bg-blue-600"
-                                        }`}>
-                                        {item.isChinaBulk ? "China Bulk" : item.mode === "CHECKOUT" ? "Buy Now" : "Classified"}
-                                    </div>
-
-                                    {item.isPromoted && (
-                                        <div className="absolute top-2 right-2 px-2 py-0.5 rounded-md text-[10px] font-bold uppercase bg-yellow-400 text-yellow-900">
-                                            Promoted
-                                        </div>
-                                    )}
+                    <section>
+                        {loading ? (
+                            <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-4">
+                                {Array.from({ length: 12 }).map((_, i) => (
+                                    <ProductCardSkeleton key={i} className="rounded-xl overflow-hidden" />
+                                ))}
+                            </div>
+                        ) : results.length === 0 ? (
+                            <div className="text-center py-20">
+                                <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4 text-gray-400">
+                                    <Search size={32} />
+                                </div>
+                                <h3 className="text-lg font-bold text-gray-900 mb-1">No results found</h3>
+                                <p className="text-gray-500 text-sm">Try adjusting your filters or search terms.</p>
+                            </div>
+                        ) : (
+                            <>
+                                <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-4">
+                                    {results.map((item) => (
+                                        <ProductCard key={item.id} item={item} />
+                                    ))}
                                 </div>
 
-                                <div className="p-3">
-                                    <div className="flex items-start justify-between gap-2 mb-1">
-                                        <h3 className="font-medium text-gray-900 line-clamp-2 text-sm group-hover:text-[#22C55E] transition-colors">
-                                            {item.title}
-                                        </h3>
+                                {isFetchingMore ? (
+                                    <div className="mt-6 grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-4">
+                                        {Array.from({ length: 8 }).map((_, i) => (
+                                            <ProductCardSkeleton key={i} className="rounded-xl overflow-hidden" />
+                                        ))}
                                     </div>
+                                ) : null}
 
-                                    <p className="text-[#22C55E] font-bold text-lg">
-                                        ₦{item.price.toLocaleString()}
-                                    </p>
-
-                                    <div className="flex items-center gap-1 text-xs text-gray-400 mt-2 mb-3">
-                                        <MapPin size={12} />
-                                        <span className="truncate">{item.location}</span>
+                                {!hasMore ? (
+                                    <div className="py-10 text-center text-sm text-gray-500">
+                                        You’ve reached the end.
                                     </div>
-
-                                    <div className="flex items-center justify-between pt-3 border-t border-gray-50">
-                                        <div className="flex items-center gap-1.5">
-                                            <div className="w-5 h-5 rounded-full bg-gray-100 flex items-center justify-center text-[10px] font-bold text-gray-500">
-                                                {item.merchant.name[0]}
-                                            </div>
-                                            <span className="text-xs text-gray-600 truncate max-w-[80px]">{item.merchant.name}</span>
-                                            {item.merchant.isVerified && (
-                                                <svg className="w-3 h-3 text-blue-500" fill="currentColor" viewBox="0 0 20 20">
-                                                    <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
-                                                </svg>
-                                            )}
-                                        </div>
-
+                                ) : (
+                                    <div className="py-10 text-center">
                                         <Button
-                                            variant={item.mode === "CHECKOUT" ? "primary" : "secondary"}
-                                            size="icon"
-                                            className="rounded-full h-8 w-8"
+                                            variant="outline"
+                                            onClick={() => void loadMore()}
+                                            disabled={isFetchingMore}
                                         >
-                                            {item.mode === "CHECKOUT" ? <ShoppingCart size={14} /> : <MessageCircle size={14} />}
+                                            Load more
                                         </Button>
                                     </div>
-                                </div>
-                            </Link>
-                        ))}
+                                )}
+                            </>
+                        )}
+                    </section>
+                </div>
+
+                <Drawer
+                    isOpen={isFilterOpen}
+                    onClose={() => setIsFilterOpen(false)}
+                    title="Filters"
+                    className="sm:max-w-[440px]"
+                >
+                    <SearchFilters
+                        value={filters}
+                        onChange={(next) => {
+                            setFilters(next);
+                        }}
+                    />
+                    <div className="mt-6 grid grid-cols-2 gap-3">
+                        <Button
+                            variant="outline"
+                            onClick={() => {
+                                const cleared: SearchFilterState = {
+                                    minPrice: "",
+                                    maxPrice: "",
+                                    minMoq: "",
+                                    verifiedOnly: false,
+                                    chinaBulkOnly: false,
+                                    location: "All Nigeria",
+                                };
+                                setFilters(cleared);
+                            }}
+                        >
+                            Reset
+                        </Button>
+                        <Button
+                            onClick={() => {
+                                setIsFilterOpen(false);
+                                pushQueryState({ query, category, sort, filters });
+                            }}
+                        >
+                            Apply
+                        </Button>
                     </div>
-                )}
+                </Drawer>
             </main>
         </div>
     );
@@ -195,7 +427,7 @@ function SearchContent(): React.JSX.Element {
 export default function SearchPage(): React.JSX.Element {
     return (
         <Suspense fallback={
-            <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+            <div className="min-h-screen bg-white flex items-center justify-center">
                 <Loader2 size={32} className="animate-spin text-gray-400" />
             </div>
         }>

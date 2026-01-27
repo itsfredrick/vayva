@@ -210,9 +210,8 @@ export function validateEnvironment() {
         validation.errors.forEach((error: any) => console.error(`  - ${error}`));
         if (ENV.NODE_ENV === "production") {
             console.error("");
-            console.error("🚨 CRITICAL: Cannot start in production with missing required configuration.");
-            console.error("Please set all required environment variables.");
-            process.exit(1);
+            console.error("⚠️  PRODUCTION CONFIG INCOMPLETE: App will start, but some features will be disabled.");
+            console.error("Set missing environment variables to enable the full experience.");
         }
     }
     else {

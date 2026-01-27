@@ -50,7 +50,7 @@ export function ChatInbox(): React.JSX.Element {
                 </div>
                 <h3 className="text-lg font-bold text-gray-900 mb-2">No messages yet</h3>
                 <p className="text-gray-500 mb-6">Start a conversation with a seller from any listing.</p>
-                <Link href="/" className="inline-block bg-black text-white font-bold py-3 px-6 rounded-lg hover:bg-gray-800">
+                <Link href="/" className="inline-block bg-black text-white font-bold py-3 px-6 rounded-lg hover:bg-gray-800 glow-primary-soft">
                     Browse Marketplace
                 </Link>
             </div>
@@ -83,7 +83,7 @@ export function ChatInbox(): React.JSX.Element {
                             <p className="text-sm text-gray-600 truncate">{conv.lastMessage}</p>
                         </div>
                         {conv.unreadCount > 0 && (
-                            <div className="w-2.5 h-2.5 bg-blue-600 rounded-full mt-2"></div>
+                            <div className="w-2.5 h-2.5 bg-primary rounded-full mt-2"></div>
                         )}
                     </div>
                 </Link>

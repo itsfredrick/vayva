@@ -350,7 +350,11 @@ export default function FinancePage() {
                                         axisLine={false}
                                         tickFormatter={(value) => `₦${value}`}
                                     />
-                                    <Bar dataKey="sales" fill="#22C55E" radius={[4, 4, 0, 0]} />
+                                    <Bar
+                                        dataKey="sales"
+                                        fill="hsl(var(--primary))"
+                                        radius={[4, 4, 0, 0]}
+                                    />
                                     <Tooltip />
                                 </BarChart>
                             </ResponsiveContainer>

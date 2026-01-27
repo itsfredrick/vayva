@@ -48,9 +48,10 @@ export default function SignupPage() {
 
   return (
     <SplitAuthLayout
-      title="Create your Vayva account"
-      subtitle="Set up your business system in minutes"
+      title="Welcome to Vayva Merchant"
+      subtitle="Create your account to start taking orders, tracking payments, and staying on top of your business."
       showSignInLink
+      leftVariant="signup"
     >
       <form onSubmit={handleSubmit} className="space-y-5">
         {error && (

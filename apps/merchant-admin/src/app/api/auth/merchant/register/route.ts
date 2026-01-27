@@ -8,7 +8,7 @@ export async function POST(request: NextRequest) {
     let body: any;
     try {
         body = await request.json();
-        const { email, password, firstName, lastName } = body as Record<string, string>;
+        const { email, password, firstName, lastName, businessName } = body as Record<string, string>;
         // 0. Kill Switch & Rate Limit
         const isEnabled = process.env.NODE_ENV !== 'production' || await FlagService.isEnabled("onboarding.enabled");
         if (!isEnabled) {
@@ -68,6 +68,9 @@ export async function POST(request: NextRequest) {
         const otpCode = Math.floor(100000 + Math.random() * 900000).toString();
         const otpExpiresAt = new Date();
         otpExpiresAt.setMinutes(otpExpiresAt.getMinutes() + 10); // 10 minutes expiry
+        const storeName = `${firstName}'s Store`;
+        const legalName = (businessName || "").trim() || undefined;
+        const fullName = `${firstName} ${lastName}`.trim();
         // Create user and store in a transaction
         const user = await prisma.$transaction(async (tx) => {
             // Create user
@@ -81,7 +84,6 @@ export async function POST(request: NextRequest) {
                 },
             });
             // Create initial store for the merchant
-            const storeName = `${firstName}'s Store`;
             const store = await tx.store.create({
                 data: {
                     name: storeName,
@@ -117,7 +119,12 @@ export async function POST(request: NextRequest) {
                     data: {
                         business: {
                             name: storeName,
+                            storeName,
+                            legalName,
                             email: email.toLowerCase(),
+                        },
+                        identity: {
+                            fullName,
                         },
                         user: {
                             firstName,

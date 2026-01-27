@@ -21,8 +21,54 @@ import { ChinaSyncService } from "@vayva/shared/china-sync-service";
 const whatsappOutboundQueue = new Queue(QUEUES.WHATSAPP_OUTBOUND, { connection });
 const agentActionsQueue = new Queue(QUEUES.AGENT_ACTIONS, { connection });
 const deliveryQueue = new Queue(QUEUES.DELIVERY_SCHEDULER, { connection });
+const maintenanceQueue = new Queue(QUEUES.MAINTENANCE_CLEANUP, { connection });
+
+function computeCutoff(days: number) {
+  const cutoff = new Date();
+  cutoff.setDate(cutoff.getDate() - days);
+  return cutoff;
+}
 
 async function start() {
+
+  // Nightly retention cleanup (gated)
+  // Enabled only if explicitly turned on in the worker environment.
+  if (process.env.WORKER_ENABLE_MAINTENANCE_CLEANUP === "true") {
+    await maintenanceQueue.add(
+      "nightly",
+      {},
+      {
+        repeat: { pattern: "0 2 * * *" },
+        removeOnComplete: true,
+        removeOnFail: false,
+      },
+    );
+  }
+
+  new Worker(
+    QUEUES.MAINTENANCE_CLEANUP,
+    async (_job) => {
+      const sessionCutoff = computeCutoff(30);
+      const auditCutoff = computeCutoff(365);
+
+      // 1) Session cleanup
+      await prisma.userSession.deleteMany({
+        where: { lastSeenAt: { lt: sessionCutoff } },
+      });
+
+      // 2) Audit log cleanup
+      await prisma.auditLog.deleteMany({
+        where: { createdAt: { lt: auditCutoff } },
+      });
+
+      return {
+        ok: true,
+        sessionCutoff: sessionCutoff.toISOString(),
+        auditCutoff: auditCutoff.toISOString(),
+      };
+    },
+    { connection },
+  );
 
   /**
    * 1. WHATSAPP INBOUND

@@ -21,7 +21,7 @@ export function MarketingHeader(): React.JSX.Element {
 
   return (
     <header className="sticky top-0 z-50 bg-white border-b border-[#E5E7EB]">
-      <div className="max-w-7xl mx-auto px-4 lg:px-6 h-20 flex items-center justify-between">
+      <div className="max-w-[1760px] mx-auto px-4 lg:px-6 h-20 flex items-center justify-between">
         {/* Logo */}
         <Logo href="/" size="sm" showText={true} />
 

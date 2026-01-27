@@ -1,83 +1,114 @@
 "use client";
 
-import React from "react";
-import Link from "next/link";
-import { useRouter } from "next/navigation"; // Import useRouter
-import { Search, MapPin, ShoppingBag } from "lucide-react";
-import { Button } from "@vayva/ui";
+import React, { useState } from "react";
+import { useRouter } from "next/navigation";
+import { Search, MapPin } from "lucide-react";
+import { Button, Input } from "@vayva/ui";
+import { DealHero } from "@/components/marketplace/DealHero";
+import { CategoryGrid } from "@/components/marketplace/CategoryGrid";
+import { PromoCarousel } from "@/components/marketplace/PromoCarousel";
+import { FlashDealsStrip } from "@/components/marketplace/FlashDealsStrip";
+import { HomeProductModule } from "@/components/marketplace/HomeProductModule";
+import { BrandLogo } from "@/components/BrandLogo";
 
 export default function MarketplaceHome(): React.JSX.Element {
-    const router = useRouter(); // Initialize useRouter
+    const router = useRouter();
+    const [query, setQuery] = useState("");
+
+    const goSearch = (): void => {
+        const params = new URLSearchParams();
+        if (query.trim()) params.set("q", query.trim());
+        router.push(`/search?${params.toString()}`);
+    };
 
     return (
-        <div className="min-h-screen bg-gray-50 pb-20">
-            {/* Mobile Header */}
-            <header className="sticky top-0 z-50 bg-white border-b border-gray-100 px-4 py-3 flex items-center justify-between shadow-sm">
-                <div className="flex items-center gap-2 font-bold text-xl tracking-tight text-[#22C55E]">
-                    Vayva
+        <div className="min-h-screen bg-white pb-20">
+            <header className="sticky top-0 z-50 bg-white/95 backdrop-blur border-b border-gray-100">
+                <div className="max-w-7xl mx-auto px-4 py-3 flex items-center gap-3">
+                    <div className="shrink-0">
+                        <BrandLogo priority className="h-6" />
+                    </div>
+
+                    <div className="flex-1">
+                        <form
+                            onSubmit={(e) => {
+                                e.preventDefault();
+                                goSearch();
+                            }}
+                            className="relative"
+                        >
+                            <div className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400">
+                                <Search className="h-5 w-5" />
+                            </div>
+                            <Input
+                                value={query}
+                                onChange={(e) => setQuery(e.target.value)}
+                                placeholder="Search products, suppliers, factories…"
+                                className="h-11 rounded-full pl-11 pr-28 bg-gray-100 border-gray-100 focus:bg-white"
+                            />
+                            <Button
+                                type="submit"
+                                className="absolute right-1 top-1 h-9 rounded-full px-4 font-extrabold glow-primary"
+                            >
+                                Search
+                            </Button>
+                        </form>
+                    </div>
+
+                    <div className="hidden sm:flex items-center gap-2 text-xs text-gray-600">
+                        <MapPin className="h-4 w-4 text-primary" />
+                        Lagos
+                    </div>
                 </div>
 
-                <div className="flex items-center gap-3">
-                    <Button variant="ghost" size="icon" className="rounded-full text-gray-600" aria-label="Search" title="Search" onClick={() => router.push("/search")}>
-                        <Search size={20} />
-                    </Button>
-                    <Button variant="ghost" size="icon" className="rounded-full text-gray-600" aria-label="Cart" title="Cart">
-                        <ShoppingBag size={20} />
-                    </Button>
+                <div className="max-w-7xl mx-auto px-4 pb-3 flex gap-2 overflow-x-auto">
+                    {[
+                        { label: "All", href: "/search" },
+                        { label: "Phones", href: "/search?category=Electronics" },
+                        { label: "Electronics", href: "/search?category=Electronics" },
+                        { label: "Fashion", href: "/search?category=Fashion" },
+                        { label: "Food", href: "/search?category=Food" },
+                        { label: "China Bulk", href: "/search?chinaBulk=true" },
+                        { label: "Verified", href: "/search?verified=true" },
+                    ].map((c) => (
+                        <a key={c.label} href={c.href} className="shrink-0">
+                            <div className="h-8 px-3 rounded-full bg-gray-100 hover:bg-gray-200 transition-colors flex items-center text-xs font-bold text-gray-800">
+                                {c.label}
+                            </div>
+                        </a>
+                    ))}
                 </div>
             </header>
 
-            {/* Location Filter */}
-            <div className="bg-white px-4 py-3 border-b border-gray-100 flex items-center gap-2 text-sm text-gray-600">
-                <MapPin size={14} className="text-[#22C55E]" />
-                <span>Lagos, Nigeria</span> • <span className="text-[#22C55E] font-medium">Change</span>
-            </div>
+            <main className="max-w-7xl mx-auto px-4 py-5 space-y-6">
+                <DealHero />
+                <CategoryGrid />
+                <PromoCarousel />
+                <FlashDealsStrip />
 
-            <main className="max-w-7xl mx-auto px-4 py-6 space-y-8">
+                <HomeProductModule
+                    title="Trending Now"
+                    subtitle="Fast-moving items people are buying today"
+                    href="/search"
+                    sort="new"
+                    limit={12}
+                />
 
-                {/* Categories Grid */}
-                <section>
-                    <h2 className="font-bold text-lg mb-4 text-gray-900">Browse Categories</h2>
-                    <div className="grid grid-cols-4 gap-4 text-center">
-                        {["Vehicles", "Property", "Phones", "Fashion", "Home", "Food", "Jobs", "More"].map((cat) => (
-                            <Button
-                                key={cat}
-                                onClick={() => router.push(`/search?category=${encodeURIComponent(cat === "More" ? "All" : cat)}`)}
-                                variant="ghost"
-                                className="flex flex-col items-center gap-2 h-auto p-0"
-                            >
-                                <div className="w-14 h-14 bg-white rounded-2xl shadow-sm border border-gray-100 flex items-center justify-center text-xs font-bold text-gray-400 hover:border-[#22C55E] hover:text-[#22C55E] transition-colors">
-                                    {cat[0]}
-                                </div>
-                                <span className="text-xs font-medium text-gray-700">{cat}</span>
-                            </Button>
-                        ))}
-                    </div>
-                </section>
+                <HomeProductModule
+                    title="China Bulk · Factory Direct"
+                    subtitle="MOQ + wholesale tiers. Best for importers"
+                    href="/search?chinaBulk=true"
+                    chinaBulk
+                    limit={12}
+                />
 
-                {/* Trending Section */}
-                <section>
-                    <div className="flex items-center justify-between mb-4">
-                        <h2 className="font-bold text-lg text-gray-900">Trending Near You</h2>
-                        <Link href="/search" className="text-sm text-[#22C55E] font-medium">See All</Link>
-                    </div>
-
-                    <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                        {[1, 2, 3, 4].map((i) => (
-                            <div key={i} className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
-                                <div className="aspect-square bg-gray-100 relative">
-                                    {/* Image Placeholder */}
-                                </div>
-                                <div className="p-3">
-                                    <h3 className="font-medium text-gray-900 truncate">iPhone 14 Pro Max</h3>
-                                    <p className="text-[#22C55E] font-bold mt-1">₦950,000</p>
-                                    <p className="text-xs text-gray-500 mt-1">Lekki Phase 1</p>
-                                </div>
-                            </div>
-                        ))}
-                    </div>
-                </section>
-
+                <HomeProductModule
+                    title="Verified Suppliers"
+                    subtitle="Trust-first browsing"
+                    href="/search?verified=true"
+                    verifiedOnly
+                    limit={12}
+                />
             </main>
         </div>
     );

@@ -11,6 +11,6 @@ export async function GET() {
             "Menu: Iftar specials prioritized",
             'CTA: "Order before Iftar" enabled',
         ],
-        preview_image: "/assets/demo-preview-ramadan.jpg", // Placeholder
+        preview_image: "https://placehold.co/600x400/16213e/ffffff?text=Ramadan+Kareem+Theme"
     });
 }

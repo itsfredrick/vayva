@@ -12,16 +12,14 @@ export const POST = withVayvaAPI(PERMISSIONS.TEAM_MANAGE, async (req, { storeId,
             select: { role_enum: true, id: true },
         });
         if (!targetMembership)
-            return new NextResponse("Member not found", { status: 404 });
+            return NextResponse.json({ error: "Member not found" }, { status: 404 });
         // Cannot change OWNER role
         if (targetMembership.role_enum === "OWNER") {
-            return new NextResponse("Cannot modify owner role", { status: 400 });
+            return NextResponse.json({ error: "Cannot modify owner role" }, { status: 400 });
         }
         // Cannot assign OWNER role via this route (transfer ownership is separate flow)
         if (role.toUpperCase() === "OWNER") {
-            return new NextResponse("Cannot assign owner role directly", {
-                status: 400,
-            });
+            return NextResponse.json({ error: "Cannot assign owner role directly" }, { status: 400 });
         }
         const isCustomRole = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(role);
         await prisma.membership.update({

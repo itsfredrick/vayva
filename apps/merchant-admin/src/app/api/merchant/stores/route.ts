@@ -2,6 +2,22 @@ import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { withVayvaAPI } from "@/lib/api-handler";
 import { PERMISSIONS } from "@/lib/team/permissions";
+
+const RESERVED_STORE_SLUGS = new Set([
+    "admin",
+    "merchant",
+    "ops",
+    "www",
+    "api",
+    "support",
+    "app",
+    "dashboard",
+    "help",
+    "docs",
+    "blog",
+    "status",
+]);
+
 export const GET = withVayvaAPI(PERMISSIONS.COMMERCE_VIEW, async (req, { user }) => {
     try {
         const memberships = await prisma.membership.findMany({
@@ -23,14 +39,20 @@ export const POST = withVayvaAPI(PERMISSIONS.COMMERCE_VIEW, async (req, { user }
         if (!name || !slug) {
             return NextResponse.json({ error: "Name and Slug required" }, { status: 400 });
         }
-        const existing = await prisma.store.findUnique({ where: { slug } });
+
+        const normalized = String(slug).trim().toLowerCase();
+        if (RESERVED_STORE_SLUGS.has(normalized)) {
+            return NextResponse.json({ error: "Slug is reserved" }, { status: 400 });
+        }
+
+        const existing = await prisma.store.findUnique({ where: { slug: normalized } });
         if (existing) {
             return NextResponse.json({ error: "Slug already taken" }, { status: 409 });
         }
         const newStore = await prisma.store.create({
             data: {
                 name,
-                slug,
+                slug: normalized,
                 category: category || "general",
                 onboardingStatus: "NOT_STARTED",
                 memberships: {

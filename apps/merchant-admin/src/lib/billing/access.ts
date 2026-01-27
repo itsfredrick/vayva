@@ -109,6 +109,16 @@ export async function checkFeatureAccess(storeId: string, feature: string): Prom
             message: "Vayva Cut Pro is only available on the Pro plan.",
         };
     }
+    
+    // Marketplace publishing requires paid subscription
+    if (feature === "marketplace_publish" && plan === "STARTER") {
+        return {
+            allowed: false,
+            reason: "feature_locked",
+            message: "Publishing to the Vayva Marketplace requires a Growth or Pro subscription.",
+        };
+    }
+    
     if (plan === "STARTER" || plan === "GROWTH") {
         if (feature === "custom_domain" || feature === "advanced_analytics") {
             if (plan === "STARTER") {

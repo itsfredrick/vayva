@@ -12,9 +12,9 @@ export const POST = withVayvaAPI(PERMISSIONS.TEAM_MANAGE, async (req, { storeId,
             select: { role_enum: true },
         });
         if (!targetMembership)
-            return new NextResponse("Member not found", { status: 404 });
+            return NextResponse.json({ error: "Member not found" }, { status: 404 });
         if (targetMembership.role_enum === "OWNER") {
-            return new NextResponse("Cannot remove owner", { status: 400 });
+            return NextResponse.json({ error: "Cannot remove owner" }, { status: 400 });
         }
         await prisma.membership.delete({
             where: { userId_storeId: { userId: targetUserId, storeId } },

@@ -117,6 +117,10 @@ export async function getSessionUser() {
         return null;
     }
     const membership = user.memberships[0];
+    if (!membership.store?.isActive) {
+        await clearSession();
+        return null;
+    }
     return {
         id: user.id,
         email: user.email,

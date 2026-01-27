@@ -6,10 +6,10 @@ export async function POST(req: any) {
         const body = await req.json();
         const { token, items, reason, notes, preferredMethod } = body;
         if (!token)
-            return new NextResponse("Missing token", { status: 400 });
+            return NextResponse.json({ error: "Missing token" }, { status: 400 });
         const claims = ReturnTokenService.validate(token);
         if (!claims)
-            return new NextResponse("Invalid or expired token", { status: 401 });
+            return NextResponse.json({ error: "Invalid or expired token" }, { status: 401 });
         // Lookup Order to get Store ID
         // const order = await prisma.order.findUnique({ where: { id: claims.orderId } });
         // Testing Store ID for V1 if Orders not fully seeded or linked
@@ -20,6 +20,6 @@ export async function POST(req: any) {
     }
     catch (e: any) {
         console.error(e);
-        return new NextResponse(e.message || "Error", { status: 500 });
+        return NextResponse.json({ error: e.message || "Error" }, { status: 500 });
     }
 }

@@ -11,6 +11,7 @@ export async function GET() {
     });
     const slug = store?.slug || "store";
     return NextResponse.json({
+        slug,
         url: `https://${slug}.vayva.ng`,
         custom_domain_url: null,
     });

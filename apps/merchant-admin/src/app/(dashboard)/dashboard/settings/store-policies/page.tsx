@@ -191,7 +191,7 @@ export default function StorePoliciesPage() {
                 variant="ghost"
                 onClick={() => setSelectedType(type)}
                 className={`w-full justify-start h-auto px-4 py-3 rounded-lg transition-colors font-normal hover:bg-slate-100 text-slate-700 ${isSelected
-                  ? "bg-[#22C55E]/10 text-[#22C55E] font-medium hover:bg-[#22C55E]/20 hover:text-[#22C55E]"
+                  ? "bg-primary/10 text-primary font-medium hover:bg-primary/20 hover:text-primary"
                   : ""
                   }`}
               >

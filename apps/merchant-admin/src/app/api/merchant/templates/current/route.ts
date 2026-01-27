@@ -10,7 +10,7 @@ export async function GET(req: any) {
     const cookieStore = await cookies();
     const storeId = cookieStore.get("x-active-store-id")?.value;
     if (!storeId)
-        return new NextResponse("No active store session", { status: 400 });
+        return NextResponse.json({ error: "No active store session" }, { status: 400 });
     const selection = await prisma.storeTemplateSelection.findUnique({
         where: { storeId },
         include: { templateManifest: true },

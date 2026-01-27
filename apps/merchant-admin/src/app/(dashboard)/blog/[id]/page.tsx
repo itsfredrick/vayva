@@ -10,7 +10,8 @@ type Props = {
 
 export default async function EditBlogPage({ params }: Props) {
     const session = await getServerSession(authOptions);
-    if (!session?.user?.storeId) redirect("/signin");
+    if (!session?.user) redirect("/signin");
+    if (!session.user.storeId) redirect("/onboarding");
 
     const post = await getBlogPost(session.user.storeId, params.id);
     if (!post) notFound();

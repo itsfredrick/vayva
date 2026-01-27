@@ -82,7 +82,7 @@ export default function SourcingRequestForm(): React.JSX.Element {
             </div>
 
             {/* Image Upload Component integration planned */}
-            <div className="p-4 bg-gray-50 rounded-lg border border-dashed text-center text-sm text-muted-foreground">
+            <div className="p-4 bg-white rounded-lg border border-dashed text-center text-sm text-muted-foreground">
                 Image upload coming soon. For now, please provide a reference link.
             </div>
 

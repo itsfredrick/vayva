@@ -1,4 +1,20 @@
 import { prisma } from "@vayva/db";
+
+const RESERVED_STORE_SLUGS = new Set([
+    "admin",
+    "merchant",
+    "ops",
+    "www",
+    "api",
+    "support",
+    "app",
+    "dashboard",
+    "help",
+    "docs",
+    "blog",
+    "status",
+]);
+
 export async function syncOnboardingData(storeId: any, state: any) {
     if (!storeId || !state)
         return;
@@ -9,12 +25,18 @@ export async function syncOnboardingData(storeId: any, state: any) {
     }
     try {
         await prisma.$transaction(async (tx: any) => {
+            const rawSlug = state.business?.slug || state.storeDetails?.slug;
+            const normalizedSlug = typeof rawSlug === "string" ? rawSlug.trim().toLowerCase() : "";
+            if (normalizedSlug && RESERVED_STORE_SLUGS.has(normalizedSlug)) {
+                throw new Error("Store slug is reserved");
+            }
+
             // 1. Update Core Store Details
             await tx.store.update({
                 where: { id: storeId },
                 data: {
                     name: state.business?.name || undefined,
-                    slug: state.business?.slug || state.storeDetails?.slug || undefined,
+                    slug: normalizedSlug || undefined,
                     // Map category for analytics bucket if present
                     category: state.business?.category || undefined,
                     // CRITICAL: Persist Industry Variant Slug
@@ -73,16 +95,31 @@ export async function syncOnboardingData(storeId: any, state: any) {
                 });
             }
             // 3. Sync Billing Profile (Legal Name)
-            if (state.business?.legalName) {
+            const registered = state.business?.registeredAddress;
+            const addressParts = [
+                registered?.addressLine1,
+                registered?.addressLine2,
+                registered?.city,
+                registered?.state,
+            ].filter(Boolean);
+            const addressText = addressParts.length > 0
+                ? registered?.landmark
+                    ? `${addressParts.join(", ")} (${registered.landmark})`
+                    : addressParts.join(", ")
+                : undefined;
+
+            if (state.business?.legalName || addressText) {
                 await tx.billingProfile.upsert({
                     where: { storeId },
                     create: {
                         storeId,
                         legalName: state.business.legalName,
+                        addressText,
                         billingEmail: state.business.email,
                     },
                     update: {
                         legalName: state.business.legalName,
+                        addressText,
                         billingEmail: state.business.email,
                     },
                 });

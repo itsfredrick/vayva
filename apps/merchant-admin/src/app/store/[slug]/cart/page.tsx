@@ -33,7 +33,13 @@ export default function CartPage({
                       <h3 className="font-bold text-white">
                         Premium Cotton Tee
                       </h3>
-                      <Button className="text-text-secondary hover:text-state-danger">
+                      <Button
+                        type="button"
+                        variant="ghost"
+                        size="icon"
+                        className="text-text-secondary hover:text-state-danger"
+                        aria-label="Remove item"
+                      >
                         <Icon name="X" size={18} />
                       </Button>
                     </div>
@@ -44,13 +50,25 @@ export default function CartPage({
                   <div className="flex justify-between items-end">
                     <div className="flex items-center gap-3">
                       <div className="flex items-center bg-white/5 border border-white/10 rounded-full h-8 px-2">
-                        <Button className="w-6 h-full flex items-center justify-center text-white/50 hover:text-white">
+                        <Button
+                          type="button"
+                          variant="ghost"
+                          size="icon"
+                          className="w-6 h-full flex items-center justify-center text-white/50 hover:text-white"
+                          aria-label="Decrease quantity"
+                        >
                           <Icon name="Minus" size={14} />
                         </Button>
                         <span className="w-6 text-center text-xs text-white font-bold">
                           1
                         </span>
-                        <Button className="w-6 h-full flex items-center justify-center text-white/50 hover:text-white">
+                        <Button
+                          type="button"
+                          variant="ghost"
+                          size="icon"
+                          className="w-6 h-full flex items-center justify-center text-white/50 hover:text-white"
+                          aria-label="Increase quantity"
+                        >
                           <Icon name="Plus" size={14} />
                         </Button>
                       </div>

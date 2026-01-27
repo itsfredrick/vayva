@@ -5,21 +5,24 @@ import { useOpsQuery } from "@/hooks/useOpsQuery";
 import {
     Users,
     DollarSign,
-    AlertCircle, ShieldAlert,
+    AlertCircle,
     ArrowRight,
-    Activity
+    Activity,
+    TrendingUp,
+    TrendingDown,
+    Store,
+    ShoppingBag,
+    CreditCard,
+    Package,
+    Clock,
+    CheckCircle,
+    AlertTriangle,
+    BarChart3,
+    Globe,
+    Zap,
 } from 'lucide-react';
 import Link from "next/link";
 import { cn } from "@vayva/ui";
-// import { formatCurrency } from "@/lib/utils"; 
-
-const _formatCurrency = (amount: number) => {
-    return new Intl.NumberFormat("en-NG", {
-        style: "currency",
-        currency: "NGN",
-        minimumFractionDigits: 0,
-    }).format(amount);
-};
 
 function GatewayHealthCard(): React.JSX.Element {
     const { data: health, isLoading } = useOpsQuery(["gateway-health"], () =>
@@ -104,42 +107,102 @@ export default function OpsDashboardPage(): React.JSX.Element {
         );
     }
 
-    const { merchants, revenue, operations } = data || {};
+    const { merchants, revenue, operations, marketplace, subscriptions } = data || {};
 
     return (
         <div className="p-8 max-w-7xl mx-auto space-y-8">
             {/* Header */}
-            <div>
-                <h1 className="text-2xl font-bold text-gray-900">Overview</h1>
-                <p className="text-gray-500 text-sm mt-1">
-                    Platform performance and operational alerts.
-                </p>
+            <div className="flex justify-between items-start">
+                <div>
+                    <h1 className="text-2xl font-bold text-gray-900">Command Center</h1>
+                    <p className="text-gray-500 text-sm mt-1">
+                        Real-time platform monitoring and control
+                    </p>
+                </div>
+                <div className="flex items-center gap-2 text-xs">
+                    <div className="flex items-center gap-1.5 px-3 py-1.5 bg-green-50 text-green-700 rounded-full font-medium">
+                        <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse" />
+                        All Systems Operational
+                    </div>
+                </div>
             </div>
 
-            {/* KPI Grid */}
+            {/* Primary KPIs */}
             <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
                 <MetricCard
-                    title="Total Revenue"
-                    value={revenue ? `₦${(revenue.total).toLocaleString()}` : "₦0"}
+                    title="Platform GMV (30d)"
+                    value={revenue ? `₦${(revenue.total / 1000000).toFixed(1)}M` : "₦0"}
                     icon={(DollarSign as any)}
-                    trend="+12% vs last month"
-                    trendUp={true}
+                    trend={revenue?.growth ? `${revenue.growth > 0 ? "+" : ""}${revenue.growth}%` : undefined}
+                    trendUp={revenue?.growth > 0}
                     color="bg-gradient-to-br from-green-50 to-emerald-50"
                 />
                 <MetricCard
                     title="Active Merchants"
                     value={merchants?.total || 0}
-                    icon={(Users as any)}
+                    icon={(Store as any)}
                     trend={merchants?.delta}
                     trendUp={true}
+                    color="bg-gradient-to-br from-blue-50 to-indigo-50"
                 />
                 <MetricCard
-                    title="Open Tickets"
-                    value={operations?.tickets || 0}
-                    icon={(AlertCircle as any)}
-                    color="bg-orange-50"
+                    title="MRR"
+                    value={subscriptions?.mrr ? `₦${subscriptions.mrr.toLocaleString()}` : "₦0"}
+                    icon={(CreditCard as any)}
+                    color="bg-gradient-to-br from-purple-50 to-pink-50"
                 />
                 <GatewayHealthCard />
+            </div>
+
+            {/* Secondary KPIs */}
+            <div className="grid grid-cols-2 md:grid-cols-6 gap-4">
+                <Link href="/ops/orders" className="block p-4 bg-white border border-gray-200 rounded-xl hover:border-indigo-200 transition-colors">
+                    <div className="flex items-center gap-2 text-gray-500 mb-2">
+                        <ShoppingBag size={16} />
+                        <span className="text-xs font-medium">Orders (24h)</span>
+                    </div>
+                    <div className="text-2xl font-black text-gray-900">{operations?.orders24h || 0}</div>
+                </Link>
+
+                <Link href="/ops/marketplace/listings" className="block p-4 bg-white border border-gray-200 rounded-xl hover:border-yellow-200 transition-colors">
+                    <div className="flex items-center gap-2 text-gray-500 mb-2">
+                        <Package size={16} />
+                        <span className="text-xs font-medium">Pending Listings</span>
+                    </div>
+                    <div className="text-2xl font-black text-yellow-600">{marketplace?.pendingListings || 0}</div>
+                </Link>
+
+                <Link href="/ops/kyc" className="block p-4 bg-white border border-gray-200 rounded-xl hover:border-orange-200 transition-colors">
+                    <div className="flex items-center gap-2 text-gray-500 mb-2">
+                        <Clock size={16} />
+                        <span className="text-xs font-medium">KYC Queue</span>
+                    </div>
+                    <div className="text-2xl font-black text-orange-600">{operations?.pendingKYC || 0}</div>
+                </Link>
+
+                <Link href="/ops/subscriptions" className="block p-4 bg-white border border-gray-200 rounded-xl hover:border-blue-200 transition-colors">
+                    <div className="flex items-center gap-2 text-gray-500 mb-2">
+                        <Clock size={16} />
+                        <span className="text-xs font-medium">Expiring Trials</span>
+                    </div>
+                    <div className="text-2xl font-black text-blue-600">{subscriptions?.expiringTrials || 0}</div>
+                </Link>
+
+                <Link href="/ops/inbox" className="block p-4 bg-white border border-gray-200 rounded-xl hover:border-purple-200 transition-colors">
+                    <div className="flex items-center gap-2 text-gray-500 mb-2">
+                        <AlertCircle size={16} />
+                        <span className="text-xs font-medium">Open Tickets</span>
+                    </div>
+                    <div className="text-2xl font-black text-purple-600">{operations?.tickets || 0}</div>
+                </Link>
+
+                <Link href="/ops/alerts" className="block p-4 bg-white border border-gray-200 rounded-xl hover:border-red-200 transition-colors">
+                    <div className="flex items-center gap-2 text-gray-500 mb-2">
+                        <AlertTriangle size={16} />
+                        <span className="text-xs font-medium">Active Alerts</span>
+                    </div>
+                    <div className="text-2xl font-black text-red-600">{operations?.alerts || 0}</div>
+                </Link>
             </div>
 
             {/* Quick Actions & Feed */}
@@ -151,7 +214,7 @@ export default function OpsDashboardPage(): React.JSX.Element {
                             <Activity className="h-5 w-5 text-indigo-600" />
                             Recent Activity
                         </h3>
-                        <Link href="/ops/admin/audit" className="text-xs font-semibold text-indigo-600 hover:underline">
+                        <Link href="/ops/audit" className="text-xs font-semibold text-indigo-600 hover:underline">
                             View Audit Log
                         </Link>
                     </div>
@@ -177,46 +240,84 @@ export default function OpsDashboardPage(): React.JSX.Element {
                     </div>
                 </div>
 
-                {/* Primary Actions */}
+                {/* Quick Actions */}
                 <div className="space-y-4">
+                    <h3 className="font-bold text-gray-900 text-sm uppercase tracking-wider">Quick Actions</h3>
+                    
+                    <Link href="/ops/analytics" className="block p-4 bg-gradient-to-r from-indigo-500 to-purple-600 text-white rounded-xl hover:from-indigo-600 hover:to-purple-700 transition-colors group">
+                        <div className="flex justify-between items-center">
+                            <div className="flex items-center gap-3">
+                                <BarChart3 className="h-5 w-5" />
+                                <span className="font-medium">Platform Analytics</span>
+                            </div>
+                            <ArrowRight className="h-4 w-4 opacity-70 group-hover:opacity-100" />
+                        </div>
+                    </Link>
+
                     <Link href="/ops/merchants" className="block p-4 bg-white border border-gray-200 rounded-xl hover:border-indigo-300 transition-colors group">
                         <div className="flex justify-between items-center">
-                            <span className="font-medium text-gray-700 group-hover:text-indigo-700">Manage Merchants</span>
+                            <div className="flex items-center gap-3">
+                                <Store className="h-5 w-5 text-gray-500" />
+                                <span className="font-medium text-gray-700 group-hover:text-indigo-700">Manage Merchants</span>
+                            </div>
                             <ArrowRight className="h-4 w-4 text-gray-400 group-hover:text-indigo-500" />
                         </div>
                     </Link>
 
-                    <Link href="/ops/rescue" className="block p-4 bg-indigo-50 border border-indigo-100 rounded-xl hover:bg-indigo-100 transition-colors group">
+                    <Link href="/ops/marketplace/listings" className="block p-4 bg-white border border-gray-200 rounded-xl hover:border-yellow-300 transition-colors group">
                         <div className="flex justify-between items-center">
-                            <span className="font-medium text-indigo-900">Rescue Dashboard</span>
-                            <ArrowRight className="h-4 w-4 text-indigo-400 group-hover:text-indigo-600" />
+                            <div className="flex items-center gap-3">
+                                <Package className="h-5 w-5 text-gray-500" />
+                                <span className="font-medium text-gray-700 group-hover:text-yellow-700">Moderate Listings</span>
+                            </div>
+                            <ArrowRight className="h-4 w-4 text-gray-400 group-hover:text-yellow-500" />
+                        </div>
+                    </Link>
+
+                    <Link href="/ops/rescue" className="block p-4 bg-red-50 border border-red-100 rounded-xl hover:bg-red-100 transition-colors group">
+                        <div className="flex justify-between items-center">
+                            <div className="flex items-center gap-3">
+                                <Zap className="h-5 w-5 text-red-500" />
+                                <span className="font-medium text-red-900">Rescue Console</span>
+                            </div>
+                            <ArrowRight className="h-4 w-4 text-red-400 group-hover:text-red-600" />
                         </div>
                     </Link>
                 </div>
             </div>
 
-            {/* Extended Quick Links */}
+            {/* Platform Modules */}
             <div>
                 <h3 className="font-bold text-gray-900 text-sm uppercase tracking-wider mb-4">Platform Modules</h3>
-                <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                    <Link href="/ops/admin/team" className="block p-4 bg-white border border-gray-200 rounded-xl hover:border-purple-300 transition-colors group">
-                        <div className="font-medium text-gray-700 group-hover:text-purple-700 mb-2">Team Access</div>
-                        <div className="text-xs text-gray-500">Invite & manage admins</div>
+                <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
+                    <Link href="/ops/subscriptions" className="block p-4 bg-white border border-gray-200 rounded-xl hover:border-emerald-300 transition-colors group">
+                        <CreditCard className="h-5 w-5 text-emerald-500 mb-2" />
+                        <div className="font-medium text-gray-700 group-hover:text-emerald-700">Subscriptions</div>
+                        <div className="text-xs text-gray-500">SaaS Revenue</div>
                     </Link>
 
-                    <Link href="/ops/financials/subscriptions" className="block p-4 bg-white border border-gray-200 rounded-xl hover:border-emerald-300 transition-colors group">
-                        <div className="font-medium text-gray-700 group-hover:text-emerald-700 mb-2">Billing</div>
-                        <div className="text-xs text-gray-500">SaaS Revenue Monitor</div>
+                    <Link href="/ops/industries" className="block p-4 bg-white border border-gray-200 rounded-xl hover:border-blue-300 transition-colors group">
+                        <Globe className="h-5 w-5 text-blue-500 mb-2" />
+                        <div className="font-medium text-gray-700 group-hover:text-blue-700">Industries</div>
+                        <div className="text-xs text-gray-500">Breakdown</div>
                     </Link>
 
-                    <Link href="/ops/growth/campaigns" className="block p-4 bg-white border border-gray-200 rounded-xl hover:border-orange-300 transition-colors group">
-                        <div className="font-medium text-gray-700 group-hover:text-orange-700 mb-2">Campaigns</div>
-                        <div className="text-xs text-gray-500">Flash Sales Tracker</div>
+                    <Link href="/ops/payouts" className="block p-4 bg-white border border-gray-200 rounded-xl hover:border-green-300 transition-colors group">
+                        <DollarSign className="h-5 w-5 text-green-500 mb-2" />
+                        <div className="font-medium text-gray-700 group-hover:text-green-700">Payouts</div>
+                        <div className="text-xs text-gray-500">Withdrawals</div>
                     </Link>
 
-                    <Link href="/ops/partners" className="block p-4 bg-white border border-gray-200 rounded-xl hover:border-blue-300 transition-colors group">
-                        <div className="font-medium text-gray-700 group-hover:text-blue-700 mb-2">Partners</div>
-                        <div className="text-xs text-gray-500">Affiliate network</div>
+                    <Link href="/ops/users" className="block p-4 bg-white border border-gray-200 rounded-xl hover:border-purple-300 transition-colors group">
+                        <Users className="h-5 w-5 text-purple-500 mb-2" />
+                        <div className="font-medium text-gray-700 group-hover:text-purple-700">Ops Team</div>
+                        <div className="text-xs text-gray-500">Admin Access</div>
+                    </Link>
+
+                    <Link href="/ops/security" className="block p-4 bg-white border border-gray-200 rounded-xl hover:border-red-300 transition-colors group">
+                        <AlertTriangle className="h-5 w-5 text-red-500 mb-2" />
+                        <div className="font-medium text-gray-700 group-hover:text-red-700">Security</div>
+                        <div className="text-xs text-gray-500">Risk & Fraud</div>
                     </Link>
                 </div>
             </div>

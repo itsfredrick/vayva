@@ -121,7 +121,7 @@ export function AddOnCard({
         {compatibility.isCompatible && onEnable && !isEnabled && (
           <Button
             onClick={onEnable}
-            className="flex-1 text-sm bg-[#22C55E] hover:bg-[#16A34A] text-white rounded px-4 py-2 font-semibold"
+            className="flex-1 text-sm bg-primary hover:bg-primary/90 text-primary-foreground rounded px-4 py-2 font-semibold"
           >
             Enable
           </Button>

@@ -12,6 +12,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import Image from "next/image";
 import { ExtensionsGallery } from "@/components/control-center/ExtensionsGallery";
+import { buildPreviewStorefrontUrl } from "@/lib/storefront/urls";
 
 interface Template {
     id: string;
@@ -46,10 +47,18 @@ export default function TemplatesPage() {
     const [isLoading, setIsLoading] = useState(true);
     const [applyingId, setApplyingId] = useState<string | null>(null);
     const [isPublishing, setIsPublishing] = useState(false);
+    const [storeSlug, setStoreSlug] = useState<string | null>(null);
 
     useEffect(() => {
         loadTemplates();
         loadHistory();
+    }, []);
+
+    useEffect(() => {
+        fetch("/api/storefront/url")
+            .then((r) => r.json())
+            .then((data) => setStoreSlug(data?.slug || null))
+            .catch(() => setStoreSlug(null));
     }, []);
 
     const loadTemplates = async () => {
@@ -68,7 +77,7 @@ export default function TemplatesPage() {
 
     const loadHistory = async () => {
         try {
-            const res = await fetch("/api/control-center/history");
+            const res = await fetch("/api/storefront/history");
             const data = await res.json();
             if (Array.isArray(data)) setHistory(data);
         } catch (_error: any) {
@@ -79,10 +88,10 @@ export default function TemplatesPage() {
     const handleApply = async (templateId: string) => {
         setApplyingId(templateId);
         try {
-            const res = await fetch("/api/control-center/apply", {
+            const res = await fetch("/api/storefront/draft", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ templateId })
+                body: JSON.stringify({ activeTemplateId: templateId })
             });
 
             if (!res.ok) throw new Error("Failed to apply");
@@ -99,7 +108,7 @@ export default function TemplatesPage() {
         if (!confirm("Are you sure? This will overwrite your current draft.")) return;
         setApplyingId(versionId);
         try {
-            const res = await fetch("/api/control-center/rollback", {
+            const res = await fetch("/api/storefront/rollback", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ versionId })
@@ -117,7 +126,7 @@ export default function TemplatesPage() {
         if (!confirm("Are you sure you want to publish the current draft live?")) return;
         setIsPublishing(true);
         try {
-            const res = await fetch("/api/control-center/publish", { method: "POST" });
+            const res = await fetch("/api/storefront/publish", { method: "POST" });
             if (!res.ok) throw new Error("Publish failed");
             toast.success("Storefront Published Live!");
             loadHistory(); // Refresh history
@@ -162,7 +171,11 @@ export default function TemplatesPage() {
                     <p className="text-sm text-gray-500">Manage your active storefront version.</p>
                 </div>
                 <div className="flex gap-2">
-                    <Button variant="outline" onClick={() => window.open(`${process.env.NEXT_PUBLIC_STOREFRONT_URL || "http://localhost:3001"}/?preview=true`, "_blank")}>
+                    <Button
+                        variant="outline"
+                        onClick={() => storeSlug && window.open(buildPreviewStorefrontUrl(storeSlug), "_blank")}
+                        disabled={!storeSlug}
+                    >
                         <Globe className="w-4 h-4 mr-2" /> Preview Draft
                     </Button>
                     <Button variant="outline" onClick={() => router.push("/dashboard/control-center/customize")}>

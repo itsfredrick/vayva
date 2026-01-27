@@ -5,18 +5,18 @@ import { DeletionService } from "@/services/DeletionService";
 export async function GET(req: NextRequest) {
     const session = await getServerSession(authOptions);
     if (!session?.user?.storeId)
-        return new NextResponse("Unauthorized", { status: 401 });
+        return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     const status = await DeletionService.getStatus(session.user.storeId);
     return NextResponse.json({ status });
 }
 export async function POST(req: NextRequest) {
     const session = await getServerSession(authOptions);
     if (!session?.user?.storeId || !session.user.id)
-        return new NextResponse("Unauthorized", { status: 401 });
+        return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     // Verify Owner Role
     const userRole = session.user.role;
     if (userRole !== "OWNER") {
-        return new NextResponse("Forbidden - Only Owner can request deletion", {
+        return NextResponse.json({ error: "Forbidden - Only Owner can request deletion" }, {
             status: 403,
         });
     }
@@ -39,7 +39,7 @@ export async function POST(req: NextRequest) {
 export async function DELETE(req: NextRequest) {
     const session = await getServerSession(authOptions);
     if (!session?.user?.storeId || !session.user.id)
-        return new NextResponse("Unauthorized", { status: 401 });
+        return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     try {
         const result = await DeletionService.cancelDeletion(session.user.storeId, session.user.id);
         if (!result.success) {

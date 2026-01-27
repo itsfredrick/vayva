@@ -69,7 +69,7 @@ export const PlanComparisonTable = () => {
                   </span>
                   {row.tooltip && (
                     <div className="relative">
-                      <span className="cursor-help text-gray-300 hover:text-[#22C55E] transition-colors">
+                      <span className="cursor-help text-gray-300 hover:text-primary transition-colors">
                         <svg
                           className="w-4 h-4"
                           fill="none"
@@ -104,7 +104,7 @@ export const PlanComparisonTable = () => {
 function renderValue(val: string | boolean) {
   if (typeof val === "boolean") {
     return val ? (
-      <span className="inline-flex items-center justify-center w-8 h-8 rounded-full bg-green-50 text-[#22C55E]">
+      <span className="inline-flex items-center justify-center w-8 h-8 rounded-full bg-primary/10 text-primary">
         <svg
           className="w-5 h-5"
           fill="none"

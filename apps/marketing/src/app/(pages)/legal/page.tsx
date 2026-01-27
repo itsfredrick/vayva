@@ -10,15 +10,16 @@ const legalDocuments = [
   { title: "Refund Policy", href: "/legal/refund-policy" },
   { title: "KYC & Compliance", href: "/legal/kyc-safety" },
   { title: "Manage Cookies", href: "/legal/cookies" },
+  { title: "EULA", href: "/legal/eula" },
 ];
 
 export default function LegalHubPage(): React.JSX.Element {
   return (
     <div className="min-h-screen bg-white">
       <div className="max-w-7xl mx-auto px-6 py-16">
-        <div className="flex gap-12">
+        <div className="flex flex-col lg:flex-row gap-8 lg:gap-12">
           {/* Sidebar Navigation */}
-          <aside className="w-64 flex-shrink-0">
+          <aside className="w-full lg:w-64 flex-shrink-0">
             <nav className="sticky top-24">
               <h3 className="text-sm font-semibold text-gray-900 mb-4">
                 Legal Documents
@@ -160,6 +161,18 @@ export default function LegalHubPage(): React.JSX.Element {
                   <p className="text-gray-700">
                     Consent controls and tracking preferences for Vayva web
                     properties.
+                  </p>
+                </div>
+
+                <div className="border-l-4 border-gray-900 pl-6">
+                  <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                    <Link href="/legal/eula" className="hover:underline">
+                      End User License Agreement (EULA)
+                    </Link>
+                  </h3>
+                  <p className="text-gray-700">
+                    License terms for the Vayva mobile application, including
+                    content moderation and user conduct policies.
                   </p>
                 </div>
               </div>

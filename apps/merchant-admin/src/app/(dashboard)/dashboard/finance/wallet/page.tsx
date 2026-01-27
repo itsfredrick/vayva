@@ -1,6 +1,7 @@
 import { prisma } from "@vayva/db";
 import { getServerSession } from "next-auth";
-import { authOptions } from "@/lib/auth"; // Adjust import if needed
+import { authOptions } from "@/lib/auth";
+import { redirect } from "next/navigation";
 import {
   Card,
   CardContent,
@@ -29,15 +30,14 @@ async function getWallet(storeId: string) {
 
 export default async function WalletPage() {
   const session = await getServerSession(authOptions);
-  if (!session?.user?.id) return <div>Please login</div>;
-  // Assuming session has storeId or we fetch it.
-  // For demo, let's fetch the membership to get storeId like in other pages
+  if (!session?.user?.id) redirect("/signin");
+
   const membership = await prisma.membership.findFirst({
     where: { userId: session.user.id },
     select: { storeId: true },
   });
 
-  if (!membership) return <div>No store found</div>;
+  if (!membership) redirect("/onboarding");
 
   const wallet = await getWallet(membership.storeId);
 

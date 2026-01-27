@@ -182,7 +182,7 @@ export default function StoreBuilderPage(): React.JSX.Element {
           <div className="grid md:grid-cols-3 gap-12">
             {[
               { title: "Inventory Sync", desc: "Products update automatically when stock changes across channels." },
-              { title: "Payment Native", desc: "Secure checkout is baked into the foundation, not added as a plugin." },
+              { title: "Payment Native", desc: "Accept cards, bank transfers, USSD via Paystack. International customers can pay with dollar cards." },
               { title: "Logistics Ready", desc: "Delivery partners are plugged in from day one for seamless fulfillment." }
             ].map((item, i) => (
               <div key={i}>

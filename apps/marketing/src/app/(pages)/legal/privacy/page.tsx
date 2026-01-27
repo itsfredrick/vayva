@@ -10,6 +10,7 @@ const legalDocuments = [
   { title: "Refund Policy", href: "/legal/refund-policy" },
   { title: "KYC & Compliance", href: "/legal/kyc-safety" },
   { title: "Manage Cookies", href: "/legal/cookies" },
+  { title: "EULA", href: "/legal/eula" },
 ];
 
 export default function PrivacyPolicyPage(): React.JSX.Element {
@@ -47,7 +48,7 @@ export default function PrivacyPolicyPage(): React.JSX.Element {
 
             <div className="not-prose mb-8 text-sm text-gray-600">
               <p>
-                <strong>Last Updated:</strong> January 1, 2025
+                <strong>Effective Date:</strong> February 1, 2026
               </p>
               <p>
                 <strong>Jurisdiction:</strong> Federal Republic of Nigeria
@@ -288,7 +289,7 @@ export default function PrivacyPolicyPage(): React.JSX.Element {
             <h2>10. Contact & Data Requests</h2>
             <p>To exercise your rights, please contact:</p>
             <p>
-              <strong>Data Protection Officer:</strong> dpo@vayva.ng
+              <strong>Data Protection Contact:</strong> support@vayva.ng
               <br />
               Response Timeline: Within 30 days.
             </p>

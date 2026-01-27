@@ -17,9 +17,9 @@ export default function TermsOfServicePage(): React.JSX.Element {
   return (
     <div className="min-h-screen bg-white">
       <div className="max-w-7xl mx-auto px-6 py-16">
-        <div className="flex gap-12">
+        <div className="flex flex-col lg:flex-row gap-8 lg:gap-12">
           {/* Sidebar Navigation */}
-          <aside className="w-64 flex-shrink-0">
+          <aside className="w-full lg:w-64 flex-shrink-0 hidden lg:block">
             <nav className="sticky top-24">
               <h3 className="text-sm font-semibold text-gray-900 mb-4">
                 Legal Documents
@@ -48,10 +48,10 @@ export default function TermsOfServicePage(): React.JSX.Element {
 
             <div className="not-prose mb-8 text-sm text-gray-600">
               <p>
-                <strong>Version:</strong> 2.1 (Authoritative)
+                <strong>Version:</strong> 1.0
               </p>
               <p>
-                <strong>Last Updated:</strong> January 1, 2025
+                <strong>Effective Date:</strong> February 1, 2026
               </p>
               <p>
                 <strong>Jurisdiction:</strong> Federal Republic of Nigeria
@@ -65,8 +65,8 @@ export default function TermsOfServicePage(): React.JSX.Element {
             <h2>1. Definitions</h2>
             <div className="bg-gray-50 p-6 rounded-xl space-y-4 text-sm">
               <p>
-                <strong>“Platform”</strong> refers to the Vayva software,
-                dashboard, and API infrastructure provided at vayva.shop and
+                <strong>"Platform"</strong> refers to the Vayva software,
+                dashboard, and API infrastructure provided at vayva.ng and
                 related subdomains.
               </p>
               <p>
@@ -85,9 +85,9 @@ export default function TermsOfServicePage(): React.JSX.Element {
                 Vayva.
               </p>
               <p>
-                <strong>“Subscription”</strong> refers to the recurring fee paid
-                by the Merchant for access to the Platform (Free, ₦30,000, or
-                ₦40,000 tiers).
+                <strong>"Subscription"</strong> refers to the recurring fee paid
+                by the Merchant for access to the Platform (Free, Starter at
+                ₦32,250/month, or Pro at ₦43,000/month, inclusive of VAT).
               </p>
               <p>
                 <strong>“Withdrawal”</strong> refers to the process of
@@ -132,8 +132,8 @@ export default function TermsOfServicePage(): React.JSX.Element {
             <ul>
               <li>
                 <strong>Subscription Plans:</strong> Plans are billed in advance
-                on a monthly basis. Fees are currently ₦0 (Free), ₦30,000, and
-                ₦40,000.
+                on a monthly basis. Current fees are: Free (₦0), Starter
+                (₦32,250/month incl. VAT), and Pro (₦43,000/month incl. VAT).
               </li>
               <li>
                 <strong>Withdrawal Fee:</strong> A{" "}
@@ -213,7 +213,7 @@ export default function TermsOfServicePage(): React.JSX.Element {
               </li>
               <li>
                 <strong>Appeals:</strong> Suspensions may be appealed via
-                appeals@vayva.shop. Review takes 5-7 business days.
+                support@vayva.ng. Review takes 5-7 business days.
               </li>
             </ul>
 
@@ -247,17 +247,66 @@ export default function TermsOfServicePage(): React.JSX.Element {
               paid by the Merchant in the 6 months preceding the claim.
             </p>
 
-            <h2>8. Contact</h2>
+            <h2>8. Governing Law & Dispute Resolution</h2>
             <p>
-              <strong>Legal Team:</strong> legal@vayva.shop
+              These Terms shall be governed by and construed in accordance with
+              the laws of the Federal Republic of Nigeria.
+            </p>
+            <ul>
+              <li>
+                <strong>Informal Resolution:</strong> Before initiating formal
+                proceedings, parties agree to attempt resolution through direct
+                communication for a period of 30 days.
+              </li>
+              <li>
+                <strong>Arbitration:</strong> Disputes that cannot be resolved
+                informally shall be submitted to binding arbitration under the
+                Arbitration and Conciliation Act (Cap A18 LFN 2004) in Lagos,
+                Nigeria.
+              </li>
+              <li>
+                <strong>Jurisdiction:</strong> For matters not subject to
+                arbitration, the Federal High Court of Nigeria shall have
+                exclusive jurisdiction.
+              </li>
+            </ul>
+
+            <h2>9. Modifications to Terms</h2>
+            <p>
+              Vayva reserves the right to modify these Terms at any time. We
+              will provide notice of material changes by:
+            </p>
+            <ul>
+              <li>Posting the updated Terms on the Platform</li>
+              <li>Sending an email notification to your registered address</li>
+              <li>Displaying a prominent notice in your dashboard</li>
+            </ul>
+            <p>
+              Continued use of the Platform after changes become effective
+              constitutes acceptance of the modified Terms. If you do not agree
+              to the changes, you must discontinue use and may request account
+              closure.
+            </p>
+
+            <h2>10. Severability</h2>
+            <p>
+              If any provision of these Terms is found to be unenforceable or
+              invalid by a court of competent jurisdiction, that provision shall
+              be limited or eliminated to the minimum extent necessary, and the
+              remaining provisions shall remain in full force and effect.
+            </p>
+
+            <h2>11. Contact</h2>
+            <p>
+              <strong>General Support:</strong> support@vayva.ng
               <br />
-              <strong>Jurisdiction:</strong> Federal High Court of Nigeria.
+              <strong>Billing Inquiries:</strong> billing@vayva.ng
             </p>
 
             <div className="not-prose mt-12 pt-8 border-t border-gray-200">
               <p className="text-sm text-gray-400 italic">
                 By using Vayva, you acknowledge that you have read,
-                understood, and agree to these authoritatively versioned Terms.
+                understood, and agree to be bound by these Terms of Service.
               </p>
             </div>
           </main>

@@ -1,4 +1,11 @@
-import { prisma, PolicyType } from "@vayva/db";
+import { prisma, PolicyType, MerchantPolicy } from "@vayva/db";
+
+type StoreCompliance = {
+    logoUrl: string | null;
+    socialImage: string | null;
+    name: string;
+    seoDescription: string | null;
+};
 
 export interface ComplianceReport {
     storeId: string;
@@ -39,10 +46,20 @@ export async function validateStoreCompliance(storeId: string): Promise<Complian
         throw new Error("Store not found");
     }
 
+    const typedStore = store as StoreCompliance;
+
     // 1. Legal Policies
-    const policyTypes = policies.map(p => p.type);
-    const requiredPolicies: PolicyType[] = [PolicyType.PRIVACY, PolicyType.TERMS, PolicyType.REFUNDS];
-    const missingPolicies = requiredPolicies.filter(type => !policyTypes.includes(type));
+    const publishedPolicyTypes = policies
+        .filter((p: MerchantPolicy) => p.status === "PUBLISHED")
+        .map((p: MerchantPolicy) => p.type);
+    const requiredPolicies: PolicyType[] = [
+        PolicyType.PRIVACY,
+        PolicyType.TERMS,
+        PolicyType.RETURNS,
+        PolicyType.REFUNDS,
+        PolicyType.SHIPPING_DELIVERY,
+    ];
+    const missingPolicies = requiredPolicies.filter(type => !publishedPolicyTypes.includes(type));
     const legalPolicies = missingPolicies.length === 0;
 
     // 2. Product Readiness
@@ -50,11 +67,10 @@ export async function validateStoreCompliance(storeId: string): Promise<Complian
 
     // 3. Branding Readiness
     // Note: Schema uses 'socialImage' as closest proxy for banner currently? Or it's missing. Using socialImage for now.
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const brandingReadiness = !!(store.logoUrl && (store as any).socialImage);
+    const brandingReadiness = !!(typedStore.logoUrl && typedStore.socialImage);
 
     // 4. Content Moderation
-    const textToScan = `${store.name} ${store.seoDescription || ""}`.toLowerCase();
+    const textToScan = `${typedStore.name} ${typedStore.seoDescription || ""}`.toLowerCase();
     const prohibitedWordsFound = PROHIBITED_KEYWORDS.filter(word => textToScan.includes(word));
     const contentModeration = prohibitedWordsFound.length === 0;
 

@@ -5,6 +5,8 @@ import { Logo } from "@/components/Logo";
 import { AuthLeftPanel } from "./AuthLeftPanel";
 import { AuthRightPanel } from "./AuthRightPanel";
 
+type AuthLeftPanelVariant = "signin" | "signup" | "support";
+
 interface SplitAuthLayoutProps {
   children: React.ReactNode;
   stepIndicator?: string;
@@ -12,6 +14,7 @@ interface SplitAuthLayoutProps {
   subtitle?: string;
   showSignInLink?: boolean;
   showSignUpLink?: boolean;
+  leftVariant?: AuthLeftPanelVariant;
 }
 
 export const SplitAuthLayout = ({
@@ -21,17 +24,19 @@ export const SplitAuthLayout = ({
   subtitle,
   showSignInLink = false,
   showSignUpLink = false,
+  leftVariant = "support",
 }: SplitAuthLayoutProps) => {
   return (
-    <div className="min-h-screen flex flex-col lg:flex-row">
+    <div className="min-h-screen flex flex-col lg:flex-row lg:h-screen lg:overflow-hidden">
       {/* Left Panel - Hidden on mobile, shows as sidebar on desktop */}
       <AuthLeftPanel
         showSignInLink={showSignInLink}
         showSignUpLink={showSignUpLink}
+        variant={leftVariant}
       />
 
       {/* Mobile header - Only visible on mobile */}
-      <div className="lg:hidden bg-[#F8F9FA] p-6 border-b border-gray-200">
+      <div className="lg:hidden bg-white p-6 border-b border-gray-200">
         <Logo size="md" showText={true} />
       </div>
 

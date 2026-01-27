@@ -20,6 +20,11 @@ export async function GET(request: Request) {
             },
             include: {
                 kycRecord: true,
+                memberships: {
+                    where: { role_enum: "OWNER" },
+                    include: { user: { select: { email: true } } },
+                    take: 1,
+                },
             },
             orderBy: { createdAt: "desc" },
             take: 50,
@@ -28,7 +33,7 @@ export async function GET(request: Request) {
             id: m.id,
             name: m.name,
             slug: m.slug,
-            ownerEmail: "Unknown", // Placeholder, field missing in Store model
+            ownerEmail: m.memberships?.[0]?.user?.email || "Unknown",
             plan: m.plan || "STARTER",
             kycStatus: m.kycStatus || "PENDING",
             onboardingStatus: m.onboardingStatus,

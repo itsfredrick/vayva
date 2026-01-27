@@ -7,7 +7,7 @@ const CreateTemplateSchema = z.object({
     name: z.string().min(1),
     language: z.string().default("en"),
     category: z.string().default("UTILITY"), // MARKETING, UTILITY, AUTHENTICATION
-    status: z.string().default("APPROVED"), // Mocking approval for internal templates
+    status: z.string().default("PENDING"), // Templates start as PENDING until approved by WhatsApp
     components: z.array(z.any()).optional(),
 });
 export async function POST(req: any) {
