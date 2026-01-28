@@ -2,6 +2,7 @@ import { FastifyPluginAsync } from "fastify";
 import { prisma } from "@vayva/db";
 import * as jwt from "jsonwebtoken";
 import { ForgotPasswordRequestSchema } from "@vayva/schemas";
+import { config } from "../../lib/config";
 
 const forgotPasswordRoute: FastifyPluginAsync = async (fastify) => {
   fastify.post("/forgot-password", async (request, _reply) => {
@@ -18,7 +19,7 @@ const forgotPasswordRoute: FastifyPluginAsync = async (fastify) => {
 
     // 1. Generate stateless JWT token
     // Secret = app secret + user password hash (invalidates if password changes)
-    const secret = (process.env.JWT_SECRET || "supersecret") + user.password;
+    const secret = config.JWT_SECRET + user.password;
     const token = jwt.sign(
       { id: user.id, email: user.email, type: "password_reset" },
       secret,
@@ -26,11 +27,11 @@ const forgotPasswordRoute: FastifyPluginAsync = async (fastify) => {
     );
 
     // 2. Construct Link (Use config or env for base URL)
-    const resetUrl = `${process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000"}/auth/reset-password?token=${token}&id=${user.id}`;
+    const resetUrl = `${config.NEXT_PUBLIC_APP_URL}/auth/reset-password?token=${token}&id=${user.id}`;
 
     // 3. Dispatch Email via Notifications Service
     try {
-      const notificationServiceUrl = process.env.NOTIFICATIONS_SERVICE_URL || "http://notifications-service:3000";
+      const notificationServiceUrl = config.services.NOTIFICATIONS;
 
       // Use fetch to trigger email notification
       const response = await fetch(`${notificationServiceUrl}/v1/notifications/email`, {

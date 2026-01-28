@@ -7,8 +7,18 @@ import { opsRoutes } from "./ops/routes";
 import { staffRoutes } from "./staff/routes";
 import { onboardingRoutes } from "./onboarding/routes";
 import { rbacRoutes } from "./rbac/routes";
+import { getEnv } from "./env";
 
 const server = Fastify({ logger: true });
+
+let env: ReturnType<typeof getEnv>;
+try {
+  env = getEnv();
+} catch (err) {
+  const message = err instanceof Error ? err.message : String(err);
+  console.error(`Invalid environment variables: ${message}`);
+  process.exit(1);
+}
 
 declare module "fastify" {
   interface FastifyInstance {
@@ -21,7 +31,7 @@ declare module "fastify" {
 
 server.register(cors);
 server.register(jwt, {
-  secret: process.env.JWT_SECRET || "supersecret",
+  secret: env.JWT_SECRET,
 });
 
 server.decorate("authenticate", async (request: FastifyRequest, reply: FastifyReply) => {
@@ -45,7 +55,7 @@ server.register(rbacRoutes, { prefix: "/v1/rbac" });
 
 const start = async () => {
   try {
-    await server.listen({ port: 3011, host: "0.0.0.0" });
+    await server.listen({ port: env.PORT, host: env.HOST });
   } catch (err) {
     server.log.error(err);
     process.exit(1);

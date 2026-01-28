@@ -7,6 +7,7 @@ import { prisma } from "@vayva/db";
 import * as bcrypt from "bcryptjs";
 import * as crypto from "crypto";
 import axios from "axios";
+import { env } from "./env";
 
 /**
  * Wallet Read Model (Summary)
@@ -168,8 +169,8 @@ export const verifyPinHandler = async (
 /**
  * Virtual Account (Paystack Dedicated Account)
  */
-const PAYSTACK_SECRET_KEY = process.env.PAYSTACK_SECRET_KEY;
-const IS_TEST_MODE = process.env.PAYSTACK_MOCK === "true";
+const PAYSTACK_SECRET_KEY = env.PAYSTACK_SECRET_KEY;
+const IS_TEST_MODE = env.PAYSTACK_MOCK;
 
 export const createVirtualAccountHandler = async (
   req: FastifyRequest,
@@ -341,7 +342,7 @@ export const initiateWithdrawalHandler = async (
 
   // 4. Notify (Placeholder call to Notifications Service)
   try {
-    const notificationsUrl = process.env.SERVICE_URL_NOTIFICATIONS || "http://localhost:3008";
+    const notificationsUrl = env.SERVICE_URL_NOTIFICATIONS;
     await axios.post(`${notificationsUrl}/v1/notifications`, {
       channel: "EMAIL",
 

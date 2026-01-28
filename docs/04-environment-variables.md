@@ -20,11 +20,31 @@
 | `BETTER_AUTH_URL` | Unknown | apps | Present in `.env.example`; usage not verified |
 | `JWT_SECRET` | Yes (for auth-service) | `services/auth-service` | Fastify JWT secret; must be strong/random |
 
+## API Gateway
+| Variable | Required | Used by | Notes |
+|---|---:|---|---|
+| `COOKIE_SECRET` | Yes | `services/api-gateway` | Cookie signing secret (32+ chars) |
+| `SERVICE_URL_AUTH` | Yes | `services/api-gateway` | Upstream auth-service base URL |
+| `SERVICE_URL_ORDERS` | Yes | `services/api-gateway` | Upstream orders-service base URL |
+| `SERVICE_URL_PAYMENTS` | Yes | `services/api-gateway` | Upstream payments-service base URL |
+| `SERVICE_URL_NOTIFICATIONS` | Yes | `services/api-gateway` | Upstream notifications-service base URL |
+| `SERVICE_URL_WHATSAPP` | Yes | `services/api-gateway` | Upstream whatsapp-service base URL |
+| `SERVICE_URL_CORE` | Yes | `services/api-gateway` | Upstream core service base URL |
+| `SERVICE_URL_AI` | Yes | `services/api-gateway` | Upstream ai-orchestrator base URL |
+| `SERVICE_URL_APPROVALS` | Yes | `services/api-gateway` | Upstream approvals-service base URL |
+| `SERVICE_URL_SUPPORT` | Yes | `services/api-gateway` | Upstream support-service base URL |
+| `SERVICE_URL_MERCHANT_ADMIN` | Yes | `services/api-gateway` | Merchant-admin origin (CORS allowlist) |
+| `SERVICE_URL_OPS_CONSOLE` | Yes | `services/api-gateway` | Ops console origin (CORS allowlist) |
+| `SERVICE_URL_STOREFRONT` | Yes | `services/api-gateway` | Storefront origin (CORS allowlist) |
+
 ## Payments (Paystack)
 | Variable | Required | Used by | Notes |
 |---|---:|---|---|
 | `PAYSTACK_SECRET_KEY` | Yes (if payments enabled) | merchant-admin / payments-service | Secret key |
 | `NEXT_PUBLIC_PAYSTACK_KEY` | Yes (if payments enabled) | client | Public key |
+| `PAYSTACK_MOCK` | Optional | `services/payments-service` | If `true`, allow running without Paystack secret |
+| `STOREFRONT_URL` | Optional | `services/payments-service` | Used for test-mode checkout URL |
+| `SERVICE_URL_NOTIFICATIONS` | Optional | `services/payments-service` | Used to emit payment events / OTP notifications |
 
 ## Email (Resend)
 | Variable | Required | Used by | Notes |

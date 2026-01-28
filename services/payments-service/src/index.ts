@@ -1,5 +1,6 @@
 import Fastify from "fastify";
 import cors from "@fastify/cors";
+import { env } from "./env";
 
 const server = Fastify({
   logger: true,
@@ -15,7 +16,7 @@ import { startWorker } from "./worker";
 
 const start = async () => {
   try {
-    await server.listen({ port: 3006, host: "0.0.0.0" });
+    await server.listen({ port: env.PORT, host: env.HOST });
 
     // Start Background Worker
     startWorker();

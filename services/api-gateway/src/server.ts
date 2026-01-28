@@ -45,7 +45,7 @@ server.post("/v1/auth/merchant/login", async (request, reply) => {
     reply.setCookie("vayva_session", data.token, {
       path: "/",
       httpOnly: true,
-      secure: process.env.NODE_ENV === "production",
+      secure: config.NODE_ENV === "production",
       sameSite: "lax",
       maxAge: 7 * 24 * 60 * 60,
     });
@@ -69,7 +69,7 @@ server.post("/v1/auth/ops/verify-mfa", async (request, reply) => {
     reply.setCookie("vayva_session", data.token, {
       path: "/",
       httpOnly: true,
-      secure: process.env.NODE_ENV === "production",
+      secure: config.NODE_ENV === "production",
       sameSite: "lax",
       maxAge: 12 * 60 * 60, // 12 hours for ops
     });
@@ -243,7 +243,7 @@ server.post("/webhooks/whatsapp", async (request, reply) => {
 
 const start = async () => {
   // Startup Validation for Production
-  if (process.env.NODE_ENV === "production") {
+  if (config.NODE_ENV === "production") {
     const services = Object.values(config.services);
     const LOCAL_INDICATOR = ["local", "host"].join("");
     const invalid = services.filter((s) => s.includes(LOCAL_INDICATOR));
@@ -259,7 +259,7 @@ const start = async () => {
 
   try {
     await server.listen({
-      port: parseInt(config.PORT) || 4000,
+      port: config.PORT,
       host: "0.0.0.0",
     });
   } catch (err) {

@@ -1,13 +1,27 @@
 import { Worker } from "bullmq";
 import { processPaystackEvent } from "./jobs/paystack-processor";
+import { env } from "./env";
 
 const QUEUE_NAME = "payments.webhooks";
 
-const redisConfig = {
-    host: process.env.REDIS_HOST || "localhost",
-    port: parseInt(process.env.REDIS_PORT || "6379"),
-    password: process.env.REDIS_PASSWORD,
-};
+const redisConfig = (() => {
+    if (env.REDIS_HOST && env.REDIS_PORT) {
+        return {
+            host: env.REDIS_HOST,
+            port: env.REDIS_PORT,
+            password: env.REDIS_PASSWORD,
+        };
+    }
+
+    const url = new URL(env.REDIS_URL);
+    const password = url.password || undefined;
+    const port = url.port ? parseInt(url.port, 10) : 6379;
+    return {
+        host: url.hostname,
+        port,
+        password,
+    };
+})();
 
 export const startWorker = () => {
     const worker = new Worker(

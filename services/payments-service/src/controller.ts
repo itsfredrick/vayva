@@ -3,10 +3,11 @@ import { z } from "zod";
 import { prisma, Prisma } from "@vayva/db";
 import axios from "axios";
 import * as crypto from "crypto";
+import { env } from "./env";
 // TODO: NotificationManager not yet exported from @vayva/shared
 
-const PAYSTACK_SECRET_KEY = process.env.PAYSTACK_SECRET_KEY;
-const IS_TEST_MODE = process.env.PAYSTACK_MOCK === "true";
+const PAYSTACK_SECRET_KEY = env.PAYSTACK_SECRET_KEY;
+const IS_TEST_MODE = env.PAYSTACK_MOCK;
 
 const verifySchema = z.object({
   reference: z.string(),
@@ -68,7 +69,7 @@ export const initializeTransactionHandler = async (
 
   // --- Paystack Logic (Existing) ---
   if (IS_TEST_MODE) {
-    const storefrontUrl = process.env.STOREFRONT_URL || "http://localhost:3001";
+    const storefrontUrl = env.STOREFRONT_URL;
     return reply.send({
       status: true,
       message: "Test Mode: Authorization URL created",
@@ -247,7 +248,7 @@ async function processSuccessfulPayment(tx: { id: string; orderId: string; curre
 
   // 5. Trigger Notifications
   try {
-    const notificationServiceUrl = process.env.NOTIFICATIONS_SERVICE_URL || "http://notifications-service:3000";
+    const notificationServiceUrl = env.SERVICE_URL_NOTIFICATIONS;
 
     await fetch(`${notificationServiceUrl}/v1/internal/event`, {
       method: "POST",

@@ -1,12 +1,11 @@
 import { prisma } from "@vayva/db";
 import { Resend } from "resend";
 import * as crypto from "crypto";
+import { getEnv } from "../env";
 
-const resendApiKey = process.env.RESEND_API_KEY;
-const resendFromEmail =
-  process.env.AUTH_OTP_FROM_EMAIL ||
-  process.env.RESEND_FROM_EMAIL ||
-  "no-reply@vayva.com";
+const env = getEnv();
+const resendApiKey = env.RESEND_API_KEY;
+const resendFromEmail = env.AUTH_OTP_FROM_EMAIL || env.RESEND_FROM_EMAIL || "no-reply@vayva.com";
 
 export const generateOtp = () => {
   return crypto.randomInt(100000, 999999).toString();

@@ -3,6 +3,7 @@ import { prisma } from "@vayva/db";
 import { ResetPasswordRequestSchema } from "@vayva/schemas";
 import * as bcrypt from "bcryptjs";
 import * as jwt from "jsonwebtoken";
+import { config } from "../../lib/config";
 
 const resetPasswordRoute: FastifyPluginAsync = async (fastify) => {
   fastify.post("/reset-password", async (request, reply) => {
@@ -36,7 +37,7 @@ const resetPasswordRoute: FastifyPluginAsync = async (fastify) => {
 
     // 2. Verify Token
     // Secret must match the one used in forgot-password (app secret + current password hash)
-    const secret = (process.env.JWT_SECRET || "supersecret") + user.password;
+    const secret = config.JWT_SECRET + user.password;
 
     try {
       jwt.verify(body.token, secret);

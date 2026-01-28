@@ -3,6 +3,7 @@ import fastifyJwt from "@fastify/jwt";
 import fastifyCookie from "@fastify/cookie";
 import { FastifyInstance, FastifyReply, FastifyRequest } from "fastify";
 import { UserPayload } from "../types/auth";
+import { config } from "../lib/config";
 
 declare module "fastify" {
   interface FastifyInstance {
@@ -15,11 +16,11 @@ declare module "fastify" {
 
 export default fp(async (fastify: FastifyInstance) => {
   fastify.register(fastifyCookie, {
-    secret: process.env.COOKIE_SECRET || "cookie-secret",
+    secret: config.COOKIE_SECRET,
   });
 
   fastify.register(fastifyJwt, {
-    secret: process.env.JWT_SECRET || "supersecret",
+    secret: config.JWT_SECRET,
   });
 
   fastify.decorate(
