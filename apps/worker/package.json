@@ -13,7 +13,7 @@
         "@vayva/db": "workspace:*",
         "@vayva/redis": "workspace:*",
         "@vayva/shared": "workspace:*",
-        "axios": "^1.13.2",
+        "axios": "^1.13.4",
         "bullmq": "^4.18.3",
         "dotenv": "^16.6.1",
         "groq-sdk": "^0.37.0",

@@ -14,7 +14,7 @@
         "@vayva/db": "workspace:*",
         "csv-parser": "^3.2.0",
         "dotenv": "^16.6.1",
-        "fastify": "^5.7.1"
+        "fastify": "^5.7.2"
     },
     "devDependencies": {
         "@types/node": "^20.19.30",

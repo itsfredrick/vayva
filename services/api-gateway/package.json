@@ -20,7 +20,7 @@
         "@vayva/shared": "workspace:*",
         "bcryptjs": "^3.0.3",
         "dotenv": "^16.6.1",
-        "fastify": "^5.7.1",
+        "fastify": "^5.7.2",
         "fastify-plugin": "^5.1.0",
         "zod": "^3.25.76"
     },
