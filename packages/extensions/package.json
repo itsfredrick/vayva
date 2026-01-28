@@ -4,7 +4,7 @@
     "main": "./src/index.ts",
     "types": "./src/index.ts",
     "scripts": {
-        "lint": "true",
+        "lint": "eslint .",
         "check-types": "tsc --noEmit"
     },
     "dependencies": {

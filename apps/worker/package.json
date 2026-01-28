@@ -6,7 +6,7 @@
         "dev": "tsx watch src/worker.ts",
         "build": "tsc",
         "start": "node dist/worker.js",
-        "lint": "true"
+        "lint": "eslint . --ignore-path ../../.eslintignore"
     },
     "dependencies": {
         "@vayva/db": "workspace:*",
