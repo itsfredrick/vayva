@@ -7,11 +7,79 @@ import _loginRoute from "./routes/auth/login";
 import _forgotPasswordRoute from "./routes/auth/forgot-password";
 import _resetPasswordRoute from "./routes/auth/reset-password";
 import _onboardingRoute from "./routes/onboarding";
+import { ApiErrorCode, apiError } from "@vayva/shared";
 
 import proxy from "@fastify/http-proxy";
 
 const server = Fastify({
   logger: true,
+});
+
+function isRecord(value: unknown): value is Record<string, unknown> {
+  return typeof value === "object" && value !== null;
+}
+
+server.setErrorHandler((err, _req, reply) => {
+  const statusCode = reply.statusCode >= 400 ? reply.statusCode : 500;
+  reply.status(statusCode).send(
+    apiError(
+      ApiErrorCode.INTERNAL_SERVER_ERROR,
+      "Internal Server Error",
+      err instanceof Error ? err.message : err,
+    ),
+  );
+});
+
+server.addHook("onSend", async (_request, reply, payload) => {
+  if (reply.statusCode < 400) return payload;
+
+  if (isRecord(payload) && "success" in payload) {
+    return payload;
+  }
+
+  const codeFromStatus = (status: number) => {
+    if (status === 400) return ApiErrorCode.VALIDATION_ERROR;
+    if (status === 401) return ApiErrorCode.UNAUTHORIZED;
+    if (status === 403) return ApiErrorCode.FORBIDDEN;
+    if (status === 404) return ApiErrorCode.NOT_FOUND;
+    if (status === 429) return ApiErrorCode.RATE_LIMIT_EXCEEDED;
+    return ApiErrorCode.INTERNAL_SERVER_ERROR;
+  };
+
+  const status = reply.statusCode;
+  const code = codeFromStatus(status);
+
+  if (typeof payload === "string") {
+    return apiError(code, payload);
+  }
+
+  const obj = isRecord(payload) ? payload : undefined;
+  if (obj && "error" in obj) {
+    const errorValue = obj.error;
+    const detailsValue = obj.details;
+
+    if (typeof errorValue === "string") {
+      return apiError(code, errorValue, detailsValue);
+    }
+
+    if (isRecord(errorValue)) {
+      const maybeCode = typeof errorValue.code === "string" ? errorValue.code : undefined;
+      const maybeMessage = typeof errorValue.message === "string" ? errorValue.message : undefined;
+      const maybeDetails = errorValue.details;
+
+      return apiError(
+        maybeCode || code,
+        maybeMessage || "Request failed",
+        maybeDetails ?? detailsValue,
+      );
+    }
+  }
+
+  if (obj && typeof obj.message === "string") {
+    return apiError(code, obj.message, obj);
+  }
+
+  return apiError(code, "Request failed", payload);
 });
 
 server.register(cors, {

@@ -4,6 +4,7 @@ import fastifyCookie from "@fastify/cookie";
 import { FastifyInstance, FastifyReply, FastifyRequest } from "fastify";
 import { UserPayload } from "../types/auth";
 import { config } from "../lib/config";
+import { ApiErrorCode, apiError } from "@vayva/shared";
 
 declare module "fastify" {
   interface FastifyInstance {
@@ -37,14 +38,18 @@ export default fp(async (fastify: FastifyInstance) => {
         const token = cookieToken || headerToken;
 
         if (!token) {
-          return reply.status(401).send({ error: "UNAUTHENTICATED" });
+          return reply
+            .status(401)
+            .send(apiError(ApiErrorCode.UNAUTHENTICATED, "UNAUTHENTICATED"));
         }
 
         // Verify manually if it's from cookie or if jwtVerify fails on req
         const decoded = fastify.jwt.verify<UserPayload>(token);
         request.user = decoded;
       } catch (err: unknown) {
-        reply.status(401).send({ error: "UNAUTHENTICATED", details: err });
+        reply
+          .status(401)
+          .send(apiError(ApiErrorCode.UNAUTHENTICATED, "UNAUTHENTICATED", err));
       }
     },
   );

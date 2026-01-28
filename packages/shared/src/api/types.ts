@@ -24,6 +24,7 @@ export interface ApiResponse<T = unknown> {
  */
 export enum ApiErrorCode {
     UNAUTHORIZED = "UNAUTHORIZED",
+    UNAUTHENTICATED = "UNAUTHENTICATED",
     FORBIDDEN = "FORBIDDEN",
     NOT_FOUND = "NOT_FOUND",
     VALIDATION_ERROR = "VALIDATION_ERROR",

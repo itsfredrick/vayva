@@ -1,5 +1,6 @@
 import { FastifyRequest, FastifyReply } from "fastify";
 import { prisma, AppRole } from "@vayva/db";
+import { ApiErrorCode, apiError } from "@vayva/shared";
 import { UserPayload } from "../types/auth";
 
 const ROLE_HIERARCHY: Record<string, number> = {
@@ -14,7 +15,7 @@ export const requirePermission = (requiredPermissionOrRole: string) => {
   return async (req: FastifyRequest, reply: FastifyReply) => {
     const user = req.user as UserPayload;
     if (!user) {
-      return reply.status(401).send({ error: "Unauthorized" });
+      return reply.status(401).send(apiError(ApiErrorCode.UNAUTHORIZED, "Unauthorized"));
     }
 
     // Logic for Merchant Roles
@@ -24,7 +25,9 @@ export const requirePermission = (requiredPermissionOrRole: string) => {
         (req.params as Record<string, string>).storeId;
 
       if (!storeId) {
-        return reply.status(400).send({ error: "Store ID header required" });
+        return reply
+          .status(400)
+          .send(apiError(ApiErrorCode.VALIDATION_ERROR, "Store ID header required"));
       }
 
       // Fetch dynamic membership for this user/store from DB
@@ -50,7 +53,7 @@ export const requirePermission = (requiredPermissionOrRole: string) => {
       if (!membership) {
         return reply
           .status(403)
-          .send({ error: "Forbidden: No access to this store" });
+          .send(apiError(ApiErrorCode.FORBIDDEN, "Forbidden: No access to this store"));
       }
 
       // 1. Check fine-grained permissions if Role is assigned
@@ -72,7 +75,7 @@ export const requirePermission = (requiredPermissionOrRole: string) => {
         if (userRolePower < requiredRolePower) {
           return reply
             .status(403)
-            .send({ error: "Forbidden: Insufficient role permissions" });
+            .send(apiError(ApiErrorCode.FORBIDDEN, "Forbidden: Insufficient role permissions"));
         }
         return; // Authorized via hierarchy
       }
@@ -84,9 +87,12 @@ export const requirePermission = (requiredPermissionOrRole: string) => {
 
       return reply
         .status(403)
-        .send({
-          error: `Forbidden: Missing permission ${requiredPermissionOrRole}`,
-        });
+        .send(
+          apiError(
+            ApiErrorCode.FORBIDDEN,
+            `Forbidden: Missing permission ${requiredPermissionOrRole}`,
+          ),
+        );
     }
 
     // Logic for Ops Roles
@@ -96,7 +102,7 @@ export const requirePermission = (requiredPermissionOrRole: string) => {
       if (user.role !== requiredPermissionOrRole) {
         return reply
           .status(403)
-          .send({ error: "Forbidden: Insufficient privileges" });
+          .send(apiError(ApiErrorCode.FORBIDDEN, "Forbidden: Insufficient privileges"));
       }
     }
   };

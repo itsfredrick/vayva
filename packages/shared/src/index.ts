@@ -3,6 +3,7 @@ export * from "./env";
 export * from "./constants";
 export * from "./types";
 export * from "./api/types";
+export * from "./api/response";
 export * from "./queues";
 // Redis moved to @vayva/redis package (server-only)
 export { NOTIFICATION_REGISTRY } from "./notifications/registry";
