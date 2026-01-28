@@ -1,7 +1,6 @@
 import { Octokit } from "@octokit/rest";
 import { prisma } from "@vayva/db";
 import { TemplateManifestSchema, SyncResult } from "./types";
-import { _z } from "zod";
 
 // const prisma = new PrismaClient(); // Removed local instantiation
 const octokit = new Octokit({ auth: process.env.GITHUB_TOKEN });

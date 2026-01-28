@@ -3,6 +3,9 @@
     "version": "0.1.0",
     "main": "./src/index.ts",
     "types": "./src/index.ts",
+    "scripts": {
+        "typecheck": "tsc --noEmit -p tsconfig.json"
+    },
     "dependencies": {
         "@octokit/rest": "^20.1.2",
         "@vayva/db": "workspace:*",
